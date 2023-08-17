@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('state', 2)->nullable();
             $table->string('zipcode', 5)->nullable();
             $table->string('county', 30)->nullable();
-            $table->string('counrty', 30)->nullable();
+            $table->string('country', 30)->nullable();
 
             $table->string('email', 50)->unique();
 
