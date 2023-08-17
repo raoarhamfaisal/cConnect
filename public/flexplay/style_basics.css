@@ -1,0 +1,61 @@
+* {
+     box-sizing: border-box;
+     margin: 0;
+     padding: 0;
+}
+
+body {
+     font-family: Arial, Helvetica, sans-serif;
+}
+
+.flex-container {
+     display: flex;
+     flex-direction: row;
+
+     background-color: #c6c4c4;
+
+     justify-content: center;
+     height: 600px;
+     width: 400px;
+     align-items: center;
+
+     /* flex-wrap: wrap; */
+}
+
+.item {
+    display: flex;
+    background: blue;
+    color: whitesmoke;
+    margin: 10px;
+    border: 1px solid rgb(223, 13, 13);
+    width: 100px;
+
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+
+    /* flex-basis: 100px; */
+    height: 100px;
+
+    /* Allows div to grow but sets flex-basis:0 */
+    /* flex: 1; */
+    /* Allows div to grow but maintains flex-basis */
+    /* flex-grow: 1; */
+
+}
+
+.item:nth-of-type(1) {
+     /* flex-grow: 1; */
+     /* align-self: start; */
+}
+
+.item:nth-of-type(2) {
+     /* flex-grow: 2; */
+     /* flex-basis: 200px; */
+     /* align-self: center; */
+}
+
+.item:nth-of-type(3) {
+     /* flex-grow: 3; */
+     /* align-self: end; */
+}
