@@ -13,7 +13,10 @@ import Views from "./Partials/Views.vue";
 defineProps({
   mustVerifyEmail: Boolean,
   status: Boolean,
+  profile: Object,
+
 });
+
 
 const tabNames = [
   "General Info",
@@ -46,11 +49,12 @@ const tabNames = [
               <GeneralInfo
                 :must-verify-email="mustVerifyEmail"
                 :status="status"
+                :profile="profile"
                 class="flex flex-col justify-center m-auto"
               />
             </div>
             <div v-if="activeTab === 1">
-              <CompanyInfo />
+              <CompanyInfo :profile="profile" />
             </div>
             <div v-if="activeTab === 2">
               <UpdatePasswordForm />

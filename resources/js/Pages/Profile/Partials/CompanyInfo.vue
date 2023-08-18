@@ -6,12 +6,18 @@ import { useForm, usePage } from "@inertiajs/inertia-vue3";
 import UserAvatar from "../components/UserAvatar.vue";
 import { ref } from "vue";
 
+const props = defineProps({
+  profile: Object,
+});
+
 const user = usePage().props.value.auth.user;
 
 const form = useForm({
-  company_logo: null,
-  company_name: null,
+  company_logo: props.profile.company_logo,
+  company_name: props.profile.company_name,
+  // business_start: props.profile.business_start,
   business_start: null,
+  phone_office: props.profile.phone_office
 });
 const handleImageUpdate = (file) => {
   console.log("Received file from child:", file);
@@ -49,7 +55,7 @@ const updateTimestamp = () => {
       </div>
     </header>
 
-    <form @submit.prevent="form.patch(route('profile.update'))">
+    <form @submit.prevent="form.patch(route('profile.updateCompanyInfo'))">
       <div
         class="mt-6 space-y-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-6"
       >
@@ -82,6 +88,22 @@ const updateTimestamp = () => {
             v-model="selectedDate"
             class="rounded w-full mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 block w-full"
             @change="updateTimestamp"
+          />
+        </div>
+
+        <div>
+          <InputLabel
+            class="font-bold"
+            for="phone_office"
+            value="Phone Office"
+          />
+          <TextInput
+            id="phone_office"
+            type="tel"
+            class="mt-1 block w-full"
+            v-model="form.phone_office"
+            placeholder="Type your office phone number"
+            autocomplete="tel"
           />
         </div>
       </div>
