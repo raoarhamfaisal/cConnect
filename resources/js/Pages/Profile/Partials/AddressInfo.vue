@@ -2,31 +2,22 @@
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import { useForm, usePage } from "@inertiajs/inertia-vue3";
+import { useForm } from "@inertiajs/inertia-vue3";
 
 const props = defineProps({
-  mustVerifyEmail: Boolean,
-  status: String,
+  profile: Object,
 });
-
-const user = usePage().props.value.auth.user;
-
 const form = useForm({
-  address_1: null,
-  address_2: null,
-  city: null,
-  state: null,
-  zipcode: null,
-  county: null,
-  country: null, // Fixed the typo in the field name
+  address_1: props.profile.address_1,
+  address_2: props.profile.address_2,
+  city: props.profile.city,
+  state: props.profile.state,
+  zipcode: props.profile.zipcode,
+  county: props.profile.county,
+  counrty: props.profile.counrty,
 });
+console.log("profile: " + props.profile.address_1, form.address_1);
 const inputFields = [
-  {
-    id: "company_name",
-    model: "company_name",
-    label: "Company Name",
-    placeholder: "Type your company name",
-  },
   {
     id: "address_1",
     model: "address_1",
@@ -60,7 +51,7 @@ const inputFields = [
   },
   {
     id: "country",
-    model: "country",
+    model: "counrty",
     label: "Country",
     placeholder: "Type your country",
   },
@@ -80,7 +71,7 @@ const inputFields = [
       </p>
     </header>
 
-    <form @submit.prevent="form.patch(route('profile.update'))">
+    <form @submit.prevent="form.patch(route('profile.updateAddressInfo'))">
       <div>
         <div
           class="mt-6 space-y-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-6"
@@ -99,7 +90,7 @@ const inputFields = [
               :id="field.id"
               type="text"
               class="mt-1 block w-full"
-              :v-model="form[field.model]"
+              v-model="form[field.model]"
               :placeholder="field.placeholder"
             />
           </div>

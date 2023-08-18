@@ -2,37 +2,24 @@
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import { useForm, usePage } from "@inertiajs/inertia-vue3";
+import { useForm } from "@inertiajs/inertia-vue3";
 import UserAvatar from "../components/UserAvatar.vue";
-import { ref } from "vue";
 
 const props = defineProps({
   profile: Object,
 });
 
-const user = usePage().props.value.auth.user;
-
 const form = useForm({
   company_logo: props.profile.company_logo,
   company_name: props.profile.company_name,
-  // business_start: props.profile.business_start,
-  business_start: null,
-  phone_office: props.profile.phone_office
+  business_start: props.profile.business_start,
+  // business_start: null,
+  phone_office: props.profile.phone_office,
 });
 const handleImageUpdate = (file) => {
   console.log("Received file from child:", file);
   // form.company_logo = file;
   // Now you can use this file as needed, e.g., uploading it to a server
-};
-
-const selectedDate = ref(null);
-const unixTimestamp = ref(null);
-
-const updateTimestamp = () => {
-  if (selectedDate.value) {
-    unixTimestamp.value = new Date(selectedDate.value).getTime() / 1000;
-    form.business_start = unixTimestamp.value;
-  }
 };
 </script>
 
@@ -85,9 +72,8 @@ const updateTimestamp = () => {
           <input
             id="datePicker"
             type="date"
-            v-model="selectedDate"
+            v-model="form.business_start"
             class="rounded w-full mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 block w-full"
-            @change="updateTimestamp"
           />
         </div>
 
