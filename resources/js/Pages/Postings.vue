@@ -329,6 +329,7 @@ export default {
           :showit="showit"
           :profile="profile"
           :isOpen="isFormOpen"
+          :show-post-buttons="true"
           @postClicked="openForm"
           @submitPostSearch="submitPostSearch"
         >

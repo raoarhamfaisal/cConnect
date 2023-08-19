@@ -5,6 +5,10 @@ import Menu_Hamburger from "@/Components/tCon/Menu_HamburgerMenu.vue";
 import tContractorWord from "@/Components/tCon/tContractorWord.vue";
 import ButtonPost from "@/Components/tCon/tConSub/ButtonPost.vue";
 import { Inertia } from "@inertiajs/inertia";
+import { Link } from "@inertiajs/inertia-vue3";
+import PostForm from "@/Components/tCon/PostForm.vue";
+
+import { ref } from "vue";
 
 const defaultPostFormObject = {
   user_id: 0,
@@ -24,8 +28,11 @@ export default {
     tContractorWord,
     ButtonPost,
     ButtonRefresh,
+    PostForm,
+    Link,
     MainSideMenu,
     Menu_Hamburger,
+    ref,
   },
   props: {
     posts: {
@@ -39,6 +46,7 @@ export default {
     },
 
     showit: Boolean,
+    showPostButtons: Boolean,
 
     // get existing search filters on page
     // from PostController.php
@@ -82,6 +90,42 @@ export default {
   },
 
   methods: {
+    saveItem(formData) {
+      // Same method for update & create
+      // if we have an item id then update
+
+      let url = "/post";
+      if (formData.id) {
+        url = "/post/" + formData.id;
+        formData._method = "PUT";
+      }
+
+      console.log("saveItem: " + url);
+
+      // see results - chrome: inpect/network/headers & payload
+      // 1) goes to web.php router
+      // 2) router listens for Route::post('/post')
+      //    to PostController store method
+      this.$inertia.post(url, formData, {
+        onError: () => {},
+        onSuccess: () => {
+          this.closeModal();
+        },
+      });
+    },
+
+    closeModal() {
+      this.isFormOpen = false;
+    },
+
+    closeModalEditMode() {
+      // edit was cancelled
+      // this make sure any left over temp uploaded
+      // file are deleted
+
+      // ****** NOT COMPLETED - WORK ON LATER *******
+      this.isFormOpen = false;
+    },
     // DISPLAY POST INPUT/EDIT FORM
     // no item # is create new
     openForm(formData) {
@@ -146,6 +190,7 @@ export default {
         <!-- ******************************************************* -->
 
         <MainSideMenu
+          :showPostButtons="showPostButtons"
           v-model="postSearch"
           :showit="showit"
           :profile="profile"
@@ -161,7 +206,7 @@ export default {
         <div
           class="flex flex-col items-center justify-start mx-auto lg:mx-1 lg:mt-0 h-full overflow-x-hidden bg-gray-400"
         >
-          <div id="NewsFeedScroll" class="">
+          <div id="NewsFeedScroll" class="h-screen">
             <!-- FIXED TOP HEADER -->
             <!-- ONLY ON MOBILE       -->
             <header
@@ -193,6 +238,7 @@ export default {
                   >
                     <!-- refresh post icon only -->
                     <ButtonRefresh
+                      v-if="showPostButtons"
                       @RefreshPostings="RefreshPostings"
                     ></ButtonRefresh>
 
@@ -210,7 +256,12 @@ export default {
                     </div>
 
                     <!-- New Post Button -->
-                    <ButtonPost :isOpen="isFormOpen" @postClicked="openForm">
+
+                    <ButtonPost
+                      v-if="showPostButtons"
+                      :isOpen="isFormOpen"
+                      @postClicked="openForm"
+                    >
                     </ButtonPost>
 
                     <!-- Hamburger menu button -->
@@ -266,6 +317,18 @@ export default {
               </Menu_Hamburger>
             </Teleport>
 
+            <Teleport to="body">
+              <PostForm
+                :isOpen="isFormOpen"
+                :isEdit="isFormEdit"
+                :form="postFormObject"
+                @formsave="saveItem"
+                @formclose="closeModal"
+                @formEditClose="closeModalEditMode"
+              >
+              </PostForm>
+            </Teleport>
+            <!-- WRAPPER END: For News Feed -->
             <slot></slot>
           </div>
           <!-- nrewsfeed scroll -->
