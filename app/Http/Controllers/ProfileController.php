@@ -150,12 +150,46 @@ class ProfileController extends Controller
 
 
     /**
-     * Update the user's company information.
+     * Update the user's Links information.
      *
      * @param  \App\Http\Requests\ProfileCompanyInformationUpdateRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updateCompanyInfo(Request $request)
+    public function updateLinks(Request $request)
+    {
+        // Get current user id
+        $userID = Auth()->user('')->id;
+        $profile = null;
+
+
+        // Get the profile information if the user id exists
+        if($userID) {
+            $profile = Profile::where('user_id', $userID)->first();
+        }
+
+        if($profile) {
+
+            $data = $request->validate([
+                'website_url' => 'nullable|string|max:50',
+                'facebook' => 'nullable|string|max:50',
+                'twitter' => 'nullable|string|max:50',
+                'tiktok' => 'nullable|string|max:50',
+                'instagram' => 'nullable|string|max:50'
+            ]);
+
+            $profile->update($data);
+
+            // // Handle the avatar upload if provided
+            // if ($request->hasFile('user_avatar')) {
+            //     $avatarPath = $request->file('user_avatar')->store('avatars');
+            //     $profile->update(['user_avatar' => $avatarPath]);
+            // }            
+            
+        }
+        return Redirect::route('profile.edit');
+
+    }
+   public function updateCompanyInfo(Request $request)
     {
         // Get current user id
         $userID = Auth()->user('')->id;
