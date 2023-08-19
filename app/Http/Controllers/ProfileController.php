@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Profile;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request as FacadeRequest;
 use Illuminate\Support\Facades\Redirect;
@@ -314,7 +315,6 @@ class ProfileController extends Controller
 
     public function updateUserAvatar(Request $request)
     {
-
         // Get current user id
         $userID = $request->user_id;
         $profile = null;
@@ -323,6 +323,8 @@ class ProfileController extends Controller
         if($userID) {
             $profile = Profile::where('user_id', $userID)->first();
         }
+
+        $url = "";
 
         if($profile) {
             $request->validate([
@@ -334,16 +336,21 @@ class ProfileController extends Controller
                 $file = $request->file('user_avatar');
                 $path = $file->store('images/avatars', 'publicc');
 
-                $url = asset($path);
-
+                $userPath = $profile->user_avatar;
                 // Update the user's profile with the new avatar path
                 $profile->update([
-                    'user_avatar' => $url,
+                    'user_avatar' => $path,
                 ]);
+                $url = asset($path);
 
-                return response()->json([
-                    'url' => $url
-                ]);
+
+                // After saving delete the old profile => user Avatar
+                if (File::exists(public_path($userPath))) {
+                    // delete old file
+                    $pathToDelete = public_path($userPath);
+                    File::delete($pathToDelete);
+                }
+    
             }else {
                 return response()->json([
                     'status' => 'error',
@@ -378,6 +385,8 @@ class ProfileController extends Controller
             if($userID) {
                 $profile = Profile::where('user_id', $userID)->first();
             }
+
+            $url = "";
     
             if($profile) {
                 $request->validate([
@@ -386,6 +395,7 @@ class ProfileController extends Controller
     
                 if ($request->hasFile('company_logo')) {
     
+                    $companyLogoPath = $profile->company_logo;
                     $file = $request->file('company_logo');
                     $path = $file->store('images/company-logos', 'publicc');
     
@@ -393,12 +403,16 @@ class ProfileController extends Controller
     
                     // Update the user's profile with the new avatar path
                     $profile->update([
-                        'company_logo' => $url,
+                        'company_logo' => $path,
                     ]);
+
+                    // After saving delete the old profile => Company Logo
+                    if (File::exists(public_path($companyLogoPath))) {
+                        // delete old file
+                        $pathToDelete = public_path($companyLogoPath);
+                        File::delete($pathToDelete);
+                    }
     
-                    return response()->json([
-                        'url' => $url
-                    ]);
                 }else {
                     return response()->json([
                         'status' => 'error',
