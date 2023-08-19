@@ -5,7 +5,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { Link, useForm, usePage } from "@inertiajs/inertia-vue3";
 import UserAvatar from "../components/UserAvatar.vue";
-import axios from 'axios'
+import axios from "axios";
 
 const props = defineProps({
   mustVerifyEmail: Boolean,
@@ -15,7 +15,7 @@ const props = defineProps({
 
 const user = usePage().props.value.auth.user;
 
-console.log("profile Data", props.profile)
+console.log("profile Data", props.profile);
 
 const form = useForm({
   first_name: props.profile.first_name,
@@ -23,42 +23,36 @@ const form = useForm({
   email: props.profile.email,
   phone_cell: props.profile.phone_cell,
   user_avatar: props.profile.user_avatar,
-  longitude: props.profile.longitude,
-  latitude: props.profile.latitude,
   file: props.profile.user_avatar,
 });
 
 // Upload User Avatar on image change
 const handleImageUpdate = (file) => {
   const formData = new FormData();
-  formData.append('user_avatar', file);
-  formData.append('user_id', user.id)
+  formData.append("user_avatar", file);
+  formData.append("user_id", user.id);
 
-  axios.post('/api/profile/user-avatar', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-      'X-CSRF-TOKEN': usePage().props.value.csrf_token,
-    },
-  })
-  .then((response) => {
-    console.log('Avatar uploaded successfully', response.data);
-    form.file = response.data.user_avatar; // Update the local state with the new avatar path
-  })
-  .catch((error) => {
-    console.log('Error uploading avatar:', error.response.data);
-    // Handle the error appropriately here
-  });
+  axios
+    .post("/api/profile/user-avatar", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        "X-CSRF-TOKEN": usePage().props.value.csrf_token,
+      },
+    })
+    .then((response) => {
+      console.log("Avatar uploaded successfully", response.data);
+      form.file = response.data.user_avatar; // Update the local state with the new avatar path
+    })
+    .catch((error) => {
+      console.log("Error uploading avatar:", error.response.data);
+      // Handle the error appropriately here
+    });
 };
-
 </script>
 
 <template>
   <section>
     <header class="flex space-x-2">
-      <UserAvatar
-        :imageSrc="form.file"
-        @update-image="handleImageUpdate"
-      />
       <div>
         <h2
           class="text-lg font-medium font-bold text-gray-900 dark:text-gray-100"
@@ -71,7 +65,11 @@ const handleImageUpdate = (file) => {
       </div>
     </header>
 
-    <form @submit.prevent="form.patch(route('profile.updateGeneralInfo'))">
+    <form
+      @submit.prevent="form.patch(route('profile.updateGeneralInfo'))"
+      class="flex flex-col items-center"
+    >
+      <UserAvatar :imageSrc="form.file" @update-image="handleImageUpdate" />
       <div
         class="mt-6 space-y-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-6"
       >
@@ -85,7 +83,7 @@ const handleImageUpdate = (file) => {
             v-model="form.first_name"
             placeholder="Type your first name"
             autocomplete="given-name"
-            />
+          />
           <InputError class="mt-2" :message="form.errors.first_name" />
         </div>
 
@@ -147,31 +145,9 @@ const handleImageUpdate = (file) => {
             A new verification link has been sent to your email address.
           </div>
         </div>
-
-        <div>
-          <InputLabel class="font-bold" for="longitude" value="Longitude" />
-          <TextInput
-            id="longitude"
-            type="text"
-            class="mt-1 block w-full"
-            v-model="form.longitude"
-            placeholder="Enter the longitude"
-          />
-        </div>
-
-        <div>
-          <InputLabel class="font-bold" for="latitude" value="Latitude" />
-          <TextInput
-            id="latitude"
-            type="text"
-            class="mt-1 block w-full"
-            v-model="form.latitude"
-            placeholder="Enter the latitude"
-          />
-        </div>
       </div>
 
-      <div class="flex items-center gap-4 mt-6">
+      <div class="flex items-center gap-4 mt-6 w-full">
         <PrimaryButton
           :disabled="form.processing"
           class="w-full flex justify-center"

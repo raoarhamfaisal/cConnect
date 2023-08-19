@@ -17,14 +17,7 @@ defineProps({
   profile: Object,
 });
 
-const tabNames = [
-  "General Info",
-  "Company Info",
-  "Update Password",
-  "Address Info",
-  "Trades",
-  "views",
-];
+const tabNames = ["General Info", "Update Password", "Trades", "views"];
 const active = ref(0);
 
 const handleTabChange = (newActiveTab) => {
@@ -38,11 +31,7 @@ const handleTabChange = (newActiveTab) => {
   <AuthenticatedLayout>
     <header class="bg-slate-30-rgba">
       <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        <h2
-          class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight"
-        >
-          Profile
-        </h2>
+        <h2 class="font-bold text-xl text-blue-rgba leading-tight">Profile</h2>
       </div>
     </header>
     <div class="bg-slate-30-rgba">
@@ -58,23 +47,29 @@ const handleTabChange = (newActiveTab) => {
               />
             </div>
             <div v-if="activeTab === 1">
-              <CompanyInfo :profile="profile" />
-            </div>
-            <div v-if="activeTab === 2">
               <UpdatePasswordForm />
             </div>
-            <div v-if="activeTab === 3">
-              <AddressInfo :profile="profile" />
-            </div>
-            <div v-if="activeTab === 4">
+            <div v-if="activeTab === 2">
               <Trades :profile="profile" />
             </div>
-            <div v-if="activeTab === 5">
+            <div v-if="activeTab === 3">
               <Views :profile="profile" />
             </div>
             <!-- ... -->
           </template>
         </Tabs>
+        <div
+          v-if="active === 0"
+          class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
+        >
+          <CompanyInfo :profile="profile" />
+        </div>
+        <div
+          v-if="active === 0"
+          class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
+        >
+          <AddressInfo :profile="profile" />
+        </div>
         <div
           v-if="active === 0"
           class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"

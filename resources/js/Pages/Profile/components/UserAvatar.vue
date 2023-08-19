@@ -4,7 +4,6 @@ import { Icon } from "@iconify/vue";
 
 const { imageSrc } = defineProps(["imageSrc"]);
 const emit = defineEmits();
-const showUpdate = ref(false);
 const file = ref(null);
 const updatedImage = ref(null);
 
@@ -31,11 +30,7 @@ const updateImage = () => {
 </script>
 
 <template>
-  <div
-    class="relative w-14 h-14 cursor-pointer inline-block"
-    @mouseover="showUpdate = true"
-    @mouseout="showUpdate = false"
-  >
+  <div class="relative w-36 h-36 inline-block mb-4 mt-8">
     <img
       v-if="imageSrc"
       class="object-cover w-full h-full rounded-full"
@@ -55,11 +50,21 @@ const updateImage = () => {
       <Icon icon="mdi:camera" color="#777" width="24" />
     </div>
     <div
-      class="rounded-full text-sm absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white"
-      v-show="showUpdate"
-      @click="updateImage"
+      class="absolute rounded-full bg-lime-600 border-2 border-green p-1 cursor-pointer positioningEditIcon"
     >
-      Update
+      <Icon
+        icon="material-symbols:edit-sharp"
+        color="white"
+        width="36"
+        @click="updateImage"
+      />
     </div>
   </div>
 </template>
+
+<style scoped>
+.positioningEditIcon {
+  top: -11px;
+  right: -8px;
+}
+</style>

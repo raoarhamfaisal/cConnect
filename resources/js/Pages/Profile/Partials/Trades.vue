@@ -33,12 +33,6 @@ const form = useForm({
   trade22: props.profile.trade22,
   trade23: props.profile.trade23,
   trade24: props.profile.trade24,
-  trade25: props.profile.trade25,
-  trade26: props.profile.trade26,
-  trade27: props.profile.trade27,
-  trade28: props.profile.trade28,
-  trade29: props.profile.trade29,
-  trade30: props.profile.trade30,
 });
 
 const options = [
@@ -66,47 +60,11 @@ const options = [
   { id: "trade22", name: "Metal Fab, Fireplaces" },
   { id: "trade23", name: "Handyman Services" },
   { id: "trade24", name: "Architectural, Engineering & Law" },
-  { id: "trade25", name: "Open 1" },
-  { id: "trade26", name: "Open 2" },
-  { id: "trade27", name: "Open 3" },
-  { id: "trade28", name: "Open 4" },
-  { id: "trade29", name: "Open 5" },
-  { id: "trade30", name: "Open 6" },
 ];
-
-const selectedItems = ref(options.map((option) => form[option.id] === 1));
-
-const isOpen = ref(false);
-
-const toggleDropdown = () => {
-  isOpen.value = !isOpen.value;
+const toggleSwitch = (field) => {
+  form[field] = form[field] === 1 ? 0 : 1;
+  console.log(form);
 };
-
-const toggleSelection = (item) => {
-  const index = options.findIndex((option) => option.id === item.id);
-  selectedItems.value[index] = !selectedItems.value[index];
-  form[item.id] = selectedItems.value[index] ? 1 : 0;
-};
-
-const isSelected = (item) => {
-  const index = options.findIndex((option) => option.id === item.id);
-  return selectedItems.value[index];
-};
-
-const closeOnOutsideClick = (event) => {
-  const isClickInside = event.target.closest(".select-container");
-  if (!isClickInside) {
-    isOpen.value = false;
-  }
-};
-
-onMounted(() => {
-  window.addEventListener("click", closeOnOutsideClick);
-});
-
-onUnmounted(() => {
-  window.removeEventListener("click", closeOnOutsideClick);
-});
 </script>
 
 <template>
@@ -124,57 +82,32 @@ onUnmounted(() => {
       </div>
     </header>
     <form @submit.prevent="form.patch(route('profile.updateTrades'))">
-      <div class="relative select-container mt-6">
-        <input
-          type="text"
-          readonly
-          :value="
-            selectedItems
-              .map((isSelected, index) =>
-                isSelected ? options[index].name : ''
-              )
-              .filter((name) => name)
-              .join(', ')
-          "
-          @click="toggleDropdown"
-          class="border p-2 pr-8 w-full rounded cursor-pointer"
-          placeholder="Select Trades"
-        />
-        <span
-          class="absolute top-2.5 right-2.5 text-gray-600 cursor-pointer"
-          @click="toggleDropdown"
-        >
-          <Icon
-            v-if="!isOpen"
-            icon="gridicons:dropdown"
-            width="20"
-            height="20"
-          />
-          <Icon
-            v-else
-            icon="gridicons:dropdown"
-            :verticalFlip="true"
-            width="20"
-            height="20"
-          />
-        </span>
+      <div class="grid mt-8 gap-3">
         <div
-          v-if="isOpen"
-          class="options-container absolute z-10 border p-2 w-full bg-white"
+          v-for="(option, index) in options"
+          :key="index"
+          class="flex items-center justify-between sm:w-96 ml-3 mb-5"
         >
-          <div
-            v-for="item in options"
-            :key="item.id"
-            @click="toggleSelection(item)"
-            class="cursor-pointer p-1"
-            :class="isSelected(item) ? 'bg-blue-200' : 'hover:bg-gray-100'"
-          >
-            {{ item.name }}
+          <label :for="option.id" class="mr-4 font-bold">{{
+            option.name
+          }}</label>
+          <div class="switch" @click="toggleSwitch(option.id)">
+            <div
+              :class="[
+                form[option.id] === 1 ? 'switch-bg-on' : 'switch-bg-off',
+              ]"
+            >
+              <div
+                :class="[
+                  form[option.id] === 1 ? 'switch-knob-on' : 'switch-knob-off',
+                ]"
+              ></div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="flex items-center gap-4 mt-6">
+      <div class="flex items-center gap-4 mt-10">
         <PrimaryButton
           :disabled="form.processing"
           class="w-full flex justify-center"
@@ -196,10 +129,40 @@ onUnmounted(() => {
     </form>
   </section>
 </template>
-
 <style scoped>
-.options-container {
-  max-height: 200px;
-  overflow-y: auto;
+.switch {
+  cursor: pointer;
+  width: 60px;
+  height: 30px;
+  position: relative;
+}
+.switch-bg-on,
+.switch-bg-off {
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  transition: background-color 0.2s;
+}
+.switch-bg-on {
+  background-color: rgba(36, 30, 109, 1);
+}
+.switch-bg-off {
+  background-color: #ccc;
+}
+.switch-knob-on,
+.switch-knob-off {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #fff;
+  position: absolute;
+  top: 1px;
+  transition: left 0.2s;
+}
+.switch-knob-on {
+  left: 31px;
+}
+.switch-knob-off {
+  left: 1px;
 }
 </style>
