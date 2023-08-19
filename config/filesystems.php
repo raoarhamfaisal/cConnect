@@ -44,7 +44,7 @@ return [
             'throw' => false,
         ],
 
-        'publicc' => [
+        'public-storage' => [
             'driver' => 'local',
             'root' => public_path(),
             'url' => env('APP_URL') . '/public',
