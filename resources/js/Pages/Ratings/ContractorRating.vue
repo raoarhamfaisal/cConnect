@@ -23,8 +23,6 @@
             <div class="flex gap-3">
               <Button @onSelect="handleSelect">Latest</Button>
               <Button @onSelect="handleSelect">Oldest</Button>
-              <Button @onSelect="handleSelect">A-Z</Button>
-              <Button @onSelect="handleSelect">Z-A</Button>
             </div>
           </div>
         </div>
@@ -55,7 +53,6 @@ import Header from "@/Layouts/Header.vue";
 import Review from "./Partials/Review.vue";
 import { Head } from "@inertiajs/inertia-vue3";
 import AverageRating from "./Partials/AverageRating.vue";
-import Heading from "./components/HeadingOutSideCard.vue";
 import Button from "./components/Button.vue";
 import HeadingCard from "./components/HeadingCard.vue";
 import Card from "@/Components/Card.vue";

@@ -27,7 +27,7 @@ module.exports = {
 
       colors: {
         "black-rgba": "rgba(0, 0,   0,  0.54)",
-        "blue-rgba": "rgba(36, 30, 109,  1.00)",
+        "blue-rgba": "rgba(36, 30, 109,  1.00)", //#241e6d
         "blue-30-rgba": "rgba(36, 30, 109,  0.33)",
         "green-rgba": "rgba(0, 204, 0,  1.00)",
         "slate-30-rgba": "rgba(226, 232, 240,  0.40)",
