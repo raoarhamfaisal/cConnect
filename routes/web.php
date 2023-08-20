@@ -31,7 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile/company-info', [ProfileController::class, 'updateCompanyInfo'])->name('profile.updateCompanyInfo');
     Route::patch('/profile/address-info', [ProfileController::class, 'updateAddressInfo'])->name('profile.updateAddressInfo');
     Route::patch('/profile/trades', [ProfileController::class, 'updateTrades'])->name('profile.updateTrades');
-    Route::patch('/profile/trades', [ProfileController::class, 'updateLinks'])->name('profile.updateLinks');
+    Route::patch('/profile/links', [ProfileController::class, 'updateLinks'])->name('profile.updateLinks');
     Route::patch('/profile/views', [ProfileController::class, 'updateViews'])->name('profile.updateViews');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
