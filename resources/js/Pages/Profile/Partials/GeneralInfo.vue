@@ -15,8 +15,6 @@ const props = defineProps({
 
 const user = usePage().props.value.auth.user;
 
-console.log("profile Data", props.profile);
-
 const form = useForm({
   first_name: props.profile.first_name,
   last_name: props.profile.last_name,

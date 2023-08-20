@@ -47,6 +47,10 @@ export default {
 
     showit: Boolean,
     showPostButtons: Boolean,
+    color: {
+      type: String,
+      required: false,
+    },
 
     // get existing search filters on page
     // from PostController.php
@@ -205,8 +209,20 @@ export default {
 
         <div
           class="flex flex-col items-center justify-start mx-auto lg:mx-1 lg:mt-0 h-full overflow-x-hidden bg-gray-400"
+          :style="{
+            backgroundColor: `${color}`,
+            flexGrow: 1,
+            maxWidth: '776px',
+          }"
         >
-          <div id="NewsFeedScroll" class="h-screen">
+          <div
+            id="NewsFeedScroll"
+            class="h-screen"
+            :style="{
+              flexGrow: 1,
+              width: '100%',
+            }"
+          >
             <!-- FIXED TOP HEADER -->
             <!-- ONLY ON MOBILE       -->
             <header
