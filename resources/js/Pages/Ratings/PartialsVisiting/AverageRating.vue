@@ -26,7 +26,7 @@
     <div class="flex flex-col justify-center space-y-2">
       <div>
         <StarRating
-          :rating="averageRating.toFixed(1)"
+          :rating="+averageRating.toFixed(1)"
           :isIndicatorActive="false"
         />
       </div>
@@ -36,9 +36,7 @@
 </template>
 
 <script setup>
-import Button from "../components/Button.vue";
 import ProgressBar from "../components/ProgressBar.vue";
-import Card from "@/Components/Card.vue";
 import StarRating from "../components/StarRating.vue";
 
 const reviews = [4.2, 4.3, 4.5, 3.2, 4.1, 2, 1, 4.3, 4.1, 3.5, 4.8];

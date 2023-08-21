@@ -42,7 +42,7 @@ button {
 
 button.selected {
   /* Styles for selected button go here */
-  background-color: #241e6d;
+  background-color: #3a357c;
   color: #fff;
 }
 </style>

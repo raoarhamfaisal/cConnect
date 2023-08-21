@@ -30,7 +30,6 @@
 
 <script setup>
 import { ref } from "vue";
-import { defineProps, defineEmits } from "vue";
 
 const { tabs } = defineProps(["tabs"]);
 const activeTab = ref(0);

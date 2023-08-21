@@ -9,7 +9,7 @@ use Inertia\Inertia;
 use App\Models\Post;
 use App\Models\Profile;
 
-class RatingController extends Controller
+class ContractorRatingController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,45 +17,44 @@ class RatingController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-          // Get current user id
-          $userID = Auth()->user('')->id;
-          $profile = null;
-  
-  
-          // Get the profile information if the user id exists
-          if($userID) {
-              $profile = Profile::where('user_id', $userID)->first();
-          }
-        return Inertia::render('Ratings/ContractorRating', [
-            'profile' => $profile,
-            'showit' => Auth::check(),
-            'posts' => Post::query()
-            ->orderBy('id', 'DESC')
-            ->when(FacadeRequest::input('postSearch'), function ($query, $postSearch) {
-                $query->where('title', 'like', "%{$postSearch}%");
-            })
-            ->paginate(5)
-            ->withQueryString() 
-            ->through(fn($post) => [
-                'id' => $post->id,
-                'user_id' => $post->user_id,
-                'view' => $post->view,
-                'title' => $post->title,
-                'image' => $post->image,
-                'body1' => $post->body1,
-                'body2' => $post->body2,
-                'body1Bold' => $post->body1Bold,
-                'body1ColorId' => $post->body1ColorId,
-                'repost' => $post->repost,
-                'shares' => $post->shares,
-            ]),
-        // pass on any existing search filters that exist
-        // along with data
-        'postSearchFilters' => FacadeRequest::only(['postSearch']),
-       
-    ]);
-    
+{
+      // Get current user id
+      $userID = Auth()->user('')->id;
+      $profile = null;
+
+
+      // Get the profile information if the user id exists
+      if($userID) {
+          $profile = Profile::where('user_id', $userID)->first();
+      }
+    return Inertia::render('Ratings/ContractorPersonal', [
+        'profile' => $profile,
+        'showit' => Auth::check(),
+        'posts' => Post::query()
+        ->orderBy('id', 'DESC')
+        ->when(FacadeRequest::input('postSearch'), function ($query, $postSearch) {
+            $query->where('title', 'like', "%{$postSearch}%");
+        })
+        ->paginate(5)
+        ->withQueryString() 
+        ->through(fn($post) => [
+            'id' => $post->id,
+            'user_id' => $post->user_id,
+            'view' => $post->view,
+            'title' => $post->title,
+            'image' => $post->image,
+            'body1' => $post->body1,
+            'body2' => $post->body2,
+            'body1Bold' => $post->body1Bold,
+            'body1ColorId' => $post->body1ColorId,
+            'repost' => $post->repost,
+            'shares' => $post->shares,
+        ]),
+    // pass on any existing search filters that exist
+    // along with data
+    'postSearchFilters' => FacadeRequest::only(['postSearch']),
+   
+]);
 }
 
     /**
