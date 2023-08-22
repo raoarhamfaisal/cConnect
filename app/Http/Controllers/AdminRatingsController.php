@@ -9,7 +9,7 @@ use Inertia\Inertia;
 use App\Models\Post;
 use App\Models\Profile;
 
-class ContractorRatingController extends Controller
+class AdminRatingsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class ContractorRatingController extends Controller
       if($userID) {
           $profile = Profile::where('user_id', $userID)->first();
       }
-    return Inertia::render('Ratings/Contractor/ContractorPersonal', [
+    return Inertia::render('Admin/Ratings/AllContractors', [
         'profile' => $profile,
         'showit' => Auth::check(),
         'posts' => Post::query()

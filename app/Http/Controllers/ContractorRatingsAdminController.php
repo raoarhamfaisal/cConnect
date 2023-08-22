@@ -9,16 +9,16 @@ use Inertia\Inertia;
 use App\Models\Post;
 use App\Models\Profile;
 
-class ContractorRatingController extends Controller
+class ContractorRatingsAdminController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-{
-      // Get current user id
+    public function getContractorReviews($id)
+    {
+          // Get current user id
       $userID = Auth()->user('')->id;
       $profile = null;
 
@@ -27,7 +27,7 @@ class ContractorRatingController extends Controller
       if($userID) {
           $profile = Profile::where('user_id', $userID)->first();
       }
-    return Inertia::render('Ratings/Contractor/ContractorPersonal', [
+    return Inertia::render('Admin/Ratings/SingleContractor', [
         'profile' => $profile,
         'showit' => Auth::check(),
         'posts' => Post::query()
@@ -55,7 +55,7 @@ class ContractorRatingController extends Controller
     'postSearchFilters' => FacadeRequest::only(['postSearch']),
    
 ]);
-}
+    }
 
     /**
      * Show the form for creating a new resource.

@@ -6,7 +6,7 @@
       'max-w-7xl mx-auto sm:px-6 md:px-6 sm:px-2 lg:px-8 space-y-6': !isInside,
     }"
   >
-    <div class="card" :style="cardStyles">
+    <div class="card p-3 xs:p-5" :style="cardStyles">
       <slot></slot>
     </div>
   </div>
@@ -28,7 +28,7 @@ export default {
     },
     padding: {
       type: String,
-      default: "20px",
+      default: "0px",
     },
     isInside: {
       type: Boolean,
@@ -53,7 +53,7 @@ export default {
     const cardStyles = computed(() => ({
       boxShadow: shadows[props.shadowLevel],
       backgroundColor: props.bgColor,
-      padding: props.padding,
+      ...(props.padding !== "0px" ? { padding: props.padding } : {}),
     }));
 
     return { cardStyles };

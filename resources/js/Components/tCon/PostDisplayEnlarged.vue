@@ -98,7 +98,7 @@ const emit = defineEmits(["close-enlarged"]);
               <!-- Premium Marking -->
               <div class="">
                 <img
-                  src="images/icons/pre-diamond.png"
+                  src="/images/icons/pre-diamond.png"
                   width="20"
                   height="30"
                 />
@@ -107,7 +107,7 @@ const emit = defineEmits(["close-enlarged"]);
               <div class="flex flex-col justify-center items-center">
                 <div class="">
                   <img
-                    src="images/icons/Stars4_icon.png"
+                    src="/images/icons/Stars4_icon.png"
                     width="40"
                     height="40"
                   />
@@ -181,7 +181,7 @@ const emit = defineEmits(["close-enlarged"]);
               <div class="flex flex-row justify-between items-center">
                 <div class="">
                   <img
-                    src="images/icons/like_green.png"
+                    src="/images/icons/like_green.png"
                     width="25"
                     height="25"
                   />
@@ -202,7 +202,7 @@ const emit = defineEmits(["close-enlarged"]);
               <div class="flex flex-row justify-between items-center">
                 <div class="">
                   <img
-                    src="images/icons/comment_icon.png"
+                    src="/images/icons/comment_icon.png"
                     width="25"
                     height="25"
                   />
@@ -221,7 +221,7 @@ const emit = defineEmits(["close-enlarged"]);
               <div class="flex flex-row justify-between items-center">
                 <div class="">
                   <img
-                    src="images/icons/share_icon.png"
+                    src="/images/icons/share_icon.png"
                     width="25"
                     height="25"
                   />
@@ -242,7 +242,7 @@ const emit = defineEmits(["close-enlarged"]);
               <div class="flex flex-row justify-between items-center">
                 <div class="">
                   <img
-                    src="images/icons/share_out_icon.png"
+                    src="/images/icons/share_out_icon.png"
                     width="20"
                     height="17"
                   />

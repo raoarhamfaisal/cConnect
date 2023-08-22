@@ -29,18 +29,37 @@
           {{ question.question }}
         </div>
         <div class="pl-2 text-md text-gray-500 mb-2">
-          {{ question.questionAnswer }}
+          {{
+            showAnswer
+              ? question.questionAnswer
+              : question.questionAnswer.substring(0, 400) +
+                (question.questionAnswer.length > 400 ? "..." : "")
+          }}
+          <span
+            v-if="!showAnswer && question.questionAnswer.length > 400"
+            @click="showAnswer = true"
+            class="cursor-pointer text-sky-700"
+          >
+            See more
+          </span>
+          <span
+            v-if="showAnswer && question.questionAnswer.length > 400"
+            @click="showAnswer = false"
+            class="cursor-pointer text-sky-700"
+          >
+            See less
+          </span>
         </div>
       </div>
     </div>
   </Card>
-  <div></div>
 </template>
 
 <script setup>
 import Card from "@/Components/Card.vue";
 import { ref } from "vue";
-const showQuestions = ref(false);
+
 const { questions } = defineProps(["questions"]);
-console.log("questions", questions);
+const showQuestions = ref(false);
+const showAnswer = ref(false);
 </script>

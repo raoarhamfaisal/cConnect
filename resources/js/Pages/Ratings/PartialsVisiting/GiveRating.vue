@@ -8,7 +8,7 @@
         Select your Rating:
       </div>
       <StarRatingEditable
-        :ratingGlobal="0"
+        :ratingGlobal="form.rating"
         @update:rating="handleRatingChange"
       />
       <!-- reason -->
@@ -167,13 +167,10 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 import InputError from "@/Components/InputError.vue";
 
-import StarRatingEditable from "../components/StarRatingEditable.vue";
+import StarRatingEditable from "@/Components/Ratings/StarRatingEditable.vue";
 const rating = ref(0);
 import { useForm } from "@inertiajs/inertia-vue3";
 
-function handleRatingChange(value) {
-  rating.value = value;
-}
 const form = useForm({
   rating_reason: null,
   hired_by_contractor: null,
@@ -181,5 +178,9 @@ const form = useForm({
   hired_contractor: null,
   paid_them: null,
   how_met_contractor: null,
+  rating: null,
 });
+function handleRatingChange(value) {
+  form.rating = value;
+}
 </script>

@@ -174,7 +174,7 @@ Array.prototype.remove = function () {
               <div
                 class="flex justify-start items-center pb-2 space-x-2 text-blue-rgba font-bold text-xl md:text-3xl"
               >
-                <img src="images/icons/post_b.png" width="25" height="25" />
+                <img src="/icons/post_b.png" width="25" height="25" />
                 <p class="">Create Post</p>
               </div>
 

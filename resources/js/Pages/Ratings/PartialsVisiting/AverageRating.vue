@@ -36,8 +36,8 @@
 </template>
 
 <script setup>
-import ProgressBar from "../components/ProgressBar.vue";
-import StarRating from "../components/StarRating.vue";
+import ProgressBar from "@/Components/Ratings/ProgressBar.vue";
+import StarRating from "@/Components/Ratings/StarRating.vue";
 
 const reviews = [4.2, 4.3, 4.5, 3.2, 4.1, 2, 1, 4.3, 4.1, 3.5, 4.8];
 

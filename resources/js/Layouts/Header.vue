@@ -236,7 +236,7 @@ export default {
                   <div class="flex items-center justify-start pl-1 space-x-2">
                     <Link href="/" class="xs:hidden md:flex w-12">
                       <img
-                        src="images/logo/icon_blue.png"
+                        src="/images/logo/icon_blue.png"
                         width="45"
                         height="45"
                       />
@@ -266,7 +266,7 @@ export default {
                     >
                       <Link href="#">
                         <img
-                          src="images/icons/contractorpage_b.png"
+                          src="/images/icons/contractorpage_b.png"
                           width="45"
                           height="45"
                         />

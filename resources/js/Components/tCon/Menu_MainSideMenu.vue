@@ -52,7 +52,7 @@ function postClicked(isOpen) {
         <tContractorWord />
       </Link>
 
-      <!-- src="images/avatars/1_avatar.jpg" -->
+      <!-- src="/images/avatars/1_avatar.jpg" -->
 
       <!-- User Image / NAME / EMAIL / CITY / STATE -->
       <div v-if="showit" class="flex flex-col items-center mt-6 -mx-2">
@@ -167,7 +167,7 @@ function postClicked(isOpen) {
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
             href="#"
           >
-            <img src="images/icons/newsfeed.png" width="30" height="30" />
+            <img src="/images/icons/newsfeed.png" width="30" height="30" />
             <span class="mx-4 font-medium">News Feed</span>
           </Link>
 
@@ -176,7 +176,7 @@ function postClicked(isOpen) {
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
             href="#"
           >
-            <img src="images/icons/contractor.png" width="30" height="30" />
+            <img src="/images/icons/contractor.png" width="30" height="30" />
             <span class="mx-4 font-medium">Sub-Finder</span>
           </Link>
 
@@ -185,7 +185,7 @@ function postClicked(isOpen) {
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
             href="#"
           >
-            <img src="images/icons/redflag.png" width="30" height="30" />
+            <img src="/images/icons/redflag.png" width="30" height="30" />
             <span class="mx-4 font-medium text-cyan-600">Red Flags</span>
           </Link>
 
@@ -194,7 +194,7 @@ function postClicked(isOpen) {
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
             href="#"
           >
-            <img src="images/icons/mentor.png" width="30" height="30" />
+            <img src="/images/icons/mentor.png" width="30" height="30" />
             <span class="mx-4 font-medium text-cyan-600">Mentoring</span>
           </Link>
 
@@ -204,7 +204,7 @@ function postClicked(isOpen) {
             href="#"
           >
             <img
-              src="images/icons/contractorpage_b.png"
+              src="/images/icons/contractorpage_b.png"
               width="30"
               height="30"
             />
@@ -220,7 +220,7 @@ function postClicked(isOpen) {
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
             href="#"
           >
-            <img src="images/icons/news_view.png" width="30" height="30" />
+            <img src="/images/icons/news_view.png" width="30" height="30" />
             <span class="mx-4 font-medium text-cyan-600">View Settings</span>
           </Link>
 
@@ -229,7 +229,7 @@ function postClicked(isOpen) {
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
             href="/profile"
           >
-            <img src="images/icons/profile.png" width="30" height="30" />
+            <img src="/images/icons/profile.png" width="30" height="30" />
             <span class="mx-4 font-medium">My Profile</span>
           </Link>
 
@@ -238,7 +238,7 @@ function postClicked(isOpen) {
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
             href="#"
           >
-            <img src="images/icons/settings_bl.png" width="30" height="30" />
+            <img src="/images/icons/settings_bl.png" width="30" height="30" />
             <span class="mx-4 font-medium">Settings</span>
           </Link>
 
@@ -247,7 +247,7 @@ function postClicked(isOpen) {
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
             href="#"
           >
-            <img src="images/icons/contactus.png" width="30" height="30" />
+            <img src="/images/icons/contactus.png" width="30" height="30" />
             <span class="mx-4 font-medium">Contact Us</span>
           </Link>
 
@@ -258,7 +258,7 @@ function postClicked(isOpen) {
             method="post"
             as="button"
           >
-            <img src="images/icons/logout_bl.png" width="30" height="30" />
+            <img src="/images/icons/logout_bl.png" width="30" height="30" />
             <span class="mx-4 font-medium">Log Out</span>
           </Link>
         </nav>
