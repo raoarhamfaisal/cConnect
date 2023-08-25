@@ -1,5 +1,5 @@
 <template>
-  <Head title="Ratings" />
+  <Head title="Appealed Reviews" />
 
   <Header
     :profile="profile"
@@ -10,12 +10,9 @@
     color="rgb(229 231 235 / var(--tw-bg-opacity))"
   >
     <div class="bg-gray-200 mt-10">
-      <Card :shadowLevel="2" bgColor="white" padding="20px">
-        <ContractorInfo :contractor="contractor" />
-        <heading-card heading="Average Ratings" class="xs:mb-12 mb-6" />
-        <AverageRating class="xs:mb-12 mb-6" />
+      <Card :shadowLevel="2" bgColor="white">
         <!-- Filters -->
-        <div class="border-t-2 border-gray-300">
+        <div class="">
           <heading-card class="mt-6" heading="Order Reviews By" />
           <div class="xs:mb-12 mb-6">
             <div class="flex gap-3">
@@ -35,12 +32,12 @@
             </div>
           </div>
         </div>
-        <div class="xs:mb-12 mb-6 border-t-2 border-gray-300 xs:mt-12 mt-7">
-          <heading-card heading="Top Reviews" class="mt-6 mb-12" />
+        <div class="xs:mb-12 mb-6 xs:mt-12 mt-7 border-t-2 border-gray-300">
+          <heading-card heading="Appealed Reviews" class="mt-6 mb-12" />
           <!-- <Loader :loading="true" background="white" height="50vh"></Loader> -->
 
           <div v-if="reviews.length > 0" class="flex gap-8 flex-col">
-            <QuestionsReview
+            <ReviewResponseAdmin
               v-for="(review, index) in reviews"
               :key="index"
               :review="review"
@@ -57,21 +54,16 @@
         </div>
       </Card>
     </div>
-
-    <!-- Reviews End-->
   </Header>
 </template>
 
 <script setup>
 import Header from "@/Layouts/Header.vue";
-import QuestionsReview from "../PartialsPersonal/QuestionsReview.vue";
+import ReviewResponseAdmin from "@/Pages/Admin/Ratings/partials/SingleContractor/ReviewResponseAdmin.vue";
 import { Head } from "@inertiajs/inertia-vue3";
-import AverageRating from "../PartialsVisiting/AverageRating.vue";
 import Button from "@/Components/Ratings/Button.vue";
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import Card from "@/Components/Card.vue";
-// import Loader from "./components/Loader.vue";
-import ContractorInfo from "../PartialsVisiting/ContractorInfo.vue";
 
 defineProps({
   profile: Object,
@@ -84,8 +76,7 @@ defineProps({
     }),
   },
 });
-
-// State
+const handleSelect = () => {};
 const reviews = [
   {
     reviewId: 1,
@@ -145,7 +136,7 @@ const reviews = [
       },
     ],
     response: {
-      id: 2,
+      id: 5,
       date: "04/03/2023",
       response_text:
         "Lorem ipsum dolor sit amet consectetur... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non, dolores debitis! Repellat quasi sit placeat, assumenda distinctio laborum nihil quaerat veniam, dolore enim voluptatum. Sequi nihil libero animi illo ad?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis ut vero facere laborum sequi ducimus ullam itaque culpa harum! Et iste consequatur doloribus repudiandae. Temporibus adipisci vel ipsa inventore saepe?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil quod corrupti iusto. Enim sint hic molestias voluptates est vitae, blanditiis iure saepe possimus quasi, distinctio laudantium consequuntur. Facere, doloremque vitae.",
@@ -203,55 +194,6 @@ const reviews = [
       },
     ],
   },
-  {
-    reviewId: 3,
-    reviewer: {
-      id: 2,
-      firstName: "John",
-      lastName: "Doe",
-      company: "John Company",
-      city: "McKinney",
-      state: "TX",
-      profilePic:
-        "http://0.0.0.0/images/avatars/I3UQW3tApC1DHTE8Onj9IT060vVGZZBWZEaEIRX2.jpg",
-    },
-    rating: 4.3,
-    date: "03/03/2023",
-    rating_reason:
-      "Lorem ipsum dolor sit amet consectetur... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non, dolores debitis! Repellat quasi sit placeat, assumenda distinctio laborum nihil quaerat veniam, dolore enim voluptatum. Sequi nihil libero animi illo ad?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis ut vero facere laborum sequi ducimus ullam itaque culpa harum! Et iste consequatur doloribus repudiandae. Temporibus adipisci vel ipsa inventore saepe?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil quod corrupti iusto. Enim sint hic molestias voluptates est vitae, blanditiis iure saepe possimus quasi, distinctio laudantium consequuntur. Facere, doloremque vitae.",
-    isUnderAppeal: 1,
-    questionsSwitch: [
-      {
-        id: 1,
-        question: "Were you hired by this contractor?",
-        questionAnswer: 1,
-      },
-      {
-        id: 2,
-        question: "Were you paid onetime?",
-        questionAnswer: 0,
-      },
-      {
-        id: 3,
-        question: "Did you hire this contractor?",
-        questionAnswer: 1,
-      },
-      {
-        id: 4,
-        question: "Did you give full  payment?",
-        questionAnswer: 1,
-      },
-    ],
-    questionsText: [
-      {
-        id: 1,
-        question: "How did you meet this contractor?",
-        questionAnswer:
-          "Curabitur non eros non ante vestibulum euismod. Fusce et facilisis urna.",
-      },
-    ],
-  },
-
   // ... more reviews
 ];
 const contractor = {
@@ -262,8 +204,23 @@ const contractor = {
   city: "McKinney",
   state: "MX",
   profilePic:
-    "http://0.0.0.0/images/avatars/I3UQW3tApC1DHTE8Onj9IT060vVGZZBWZEaEIRX2.png",
+    "http://0.0.0.0/images/avatars/I3UQW3tApC1DHTE8Onj9IT060vVGZZBWZEaEIRX2.jpg",
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.accordion-enter-active,
+.accordion-leave-active {
+  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+.accordion-enter-from, .accordion-leave-to /* .accordion-leave-active in <2.1.8 */ {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+.accordion-enter-to,
+.accordion-leave-from {
+  max-height: 300px; /* This value might need to be adjusted depending on the expected max height of your content */
+  opacity: 1;
+}
+</style>

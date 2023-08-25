@@ -9,16 +9,22 @@
       @click="closeDialog"
     >
       <div
+        :class="[dialogWidth]"
         class="bg-white md:w-2/3 w-full max-h-[90vh] max-md:max-h-full rounded-lg max-sm:rounded-none shadow-lg flex flex-col z-10"
-        :style="{
-          width: dialogWidth ? dialogWidth : '',
-        }"
         @click.stop
       >
         <div
           class="flex justify-between max-md:rounded-none rounded-lg items-center p-4 bg-gray-100"
         >
-          <h3 class="text-xl font-bold">{{ title }}</h3>
+          <div class="flex items-center gap-2">
+            <h3 class="text-xl font-bold">{{ title }}</h3>
+            <Icon
+              class="w-6 h-6"
+              v-if="errorIcon"
+              icon="ic:baseline-error"
+              color="red"
+            />
+          </div>
           <button
             @click="closeDialog"
             class="p-2 hover:bg-gray-200 rounded-full"
@@ -53,6 +59,7 @@
 </template>
 
 <script setup>
+import { Icon } from "@iconify/vue";
 import { ref } from "vue";
 
 const props = defineProps({
@@ -64,6 +71,10 @@ const props = defineProps({
   dialogWidth: {
     type: String,
     default: "",
+  },
+  errorIcon: {
+    type: Boolean,
+    default: false,
   },
 });
 const emit = defineEmits(["submit"]);

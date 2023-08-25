@@ -2,6 +2,9 @@
 import tContractorWord from "@/Components/tCon/tContractorWord.vue";
 import ButtonPost from "@/Components/tCon/tConSub/ButtonPost.vue";
 import ButtonRefresh from "@/Components/tCon/tConSub/ButtonRefresh.vue";
+import { computed } from "vue";
+import { usePage } from "@inertiajs/inertia-vue3";
+import { Icon } from "@iconify/vue";
 
 defineProps({
   showit: Boolean,
@@ -34,6 +37,10 @@ function postClicked(isOpen) {
   isOpen = true;
   emit("postClicked", isOpen);
 }
+
+const isAdminUrl = computed(() => {
+  return usePage().url.value.includes("admin");
+});
 </script>
 
 <template>
@@ -43,7 +50,7 @@ function postClicked(isOpen) {
     class="hidden lg:flex lg:flex-col items-center justify-start transition-all duration-700 ease-in-out h-screen overflow-scroll"
   >
     <div
-      class="hidden lg:flex lg:flex-col justify-start items-center w-80 xl:w-96 px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-900 dark:border-gray-700"
+      class="hidden lg:flex lg:flex-col justify-start items-center w-[32rem] px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-900 dark:border-gray-700"
     >
       <Link
         href="/"
@@ -162,6 +169,39 @@ function postClicked(isOpen) {
       <!-- SIDE MENU DIV -->
       <div class="flex flex-col justify-between flex-1 mt-6">
         <nav>
+          <!-- all contractors -->
+          <Link
+            v-if="isAdminUrl"
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            href="/admin/ratings"
+          >
+            <Icon
+              icon="ion:person-sharp"
+              color="#1098ad"
+              width="30"
+              height="30"
+            />
+            <span class="mx-4 font-medium">All Contractors</span>
+          </Link>
+          <!-- Appealed Reviews -->
+          <Link
+            v-if="isAdminUrl"
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            href="/admin/appealed"
+          >
+            <Icon
+              icon="fluent-mdl2:review-request-solid"
+              color="#1098ad"
+              width="30"
+              height="30"
+            />
+            <span class="mx-4 font-medium">Appealed Reviews</span>
+          </Link>
+          <hr
+            v-if="isAdminUrl"
+            class="mt-4 ml-6 mr-6 pt-4 pb-1 border-t-2 border-gray-400 dark:border-gray-600"
+          />
+
           <!-- MENU ITEMS -->
           <Link
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"

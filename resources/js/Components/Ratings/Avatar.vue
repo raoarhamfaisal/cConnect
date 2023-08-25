@@ -11,7 +11,9 @@ const handleImageError = () => {
 </script>
 
 <template>
-  <div class="w-20 flex justify-center items-center h-20 inline-block">
+  <div
+    class="w-14 flex justify-center items-center h-14 xs:h-20 xs:w-20 inline-block"
+  >
     <img
       v-if="imageSrc && !imageFailed"
       class="object-cover w-full h-full rounded-full"

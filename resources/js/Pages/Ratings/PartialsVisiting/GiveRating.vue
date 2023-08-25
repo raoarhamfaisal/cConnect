@@ -28,104 +28,89 @@
         <InputError class="mt-2" :message="form.errors.rating_reason" />
       </div>
       <!-- Were you hired by this contractor? -->
-      <div class="mb-4">
-        <label class="text-sm font-bold text-gray-600 block mb-2">
+      <div class="flex items-center justify-between sm:w-96 mb-5">
+        <div class="text-md font-bold text-gray-600 mt-3 mb-2">
           Were you hired by this contractor?
-        </label>
-        <input
-          type="radio"
-          class="mr-3"
-          id="hired_yes"
-          value="yes"
-          v-model="form.hired_by_contractor"
-        />
-        Yes
-        <input
-          type="radio"
-          class="mr-3 ml-4"
-          id="hired_no"
-          value="no"
-          v-model="form.hired_by_contractor"
-        />
-        No
-        <InputError class="mt-2" :message="form.errors.hired_by_contractor" />
+        </div>
+        <div class="switch" @click="toggleSwitch('hired_by_contractor')">
+          <div
+            :class="[
+              form.hired_by_contractor === 1 ? 'switch-bg-on' : 'switch-bg-off',
+            ]"
+          >
+            <div
+              :class="[
+                form.hired_by_contractor === 1
+                  ? 'switch-knob-on'
+                  : 'switch-knob-off',
+              ]"
+            ></div>
+          </div>
+        </div>
       </div>
-
       <!-- Were you paid on time? -->
-      <div class="mb-4">
-        <label class="text-sm font-bold text-gray-600 block mb-2">
+      <div class="flex items-center justify-between sm:w-96 mb-5">
+        <div class="text-md font-bold text-gray-600 mt-3 mb-2">
           Were you paid on time?
-        </label>
-        <input
-          type="radio"
-          class="mr-3"
-          id="paid_on_time_yes"
-          value="yes"
-          v-model="form.paid_on_time"
-        />
-        Yes
-        <input
-          type="radio"
-          class="mr-3 ml-4"
-          id="paid_on_time_no"
-          value="no"
-          v-model="form.paid_on_time"
-        />
-        No
-        <InputError class="mt-2" :message="form.errors.paid_on_time" />
+        </div>
+        <div class="switch" @click="toggleSwitch('paid_on_time')">
+          <div
+            :class="[
+              form.paid_on_time === 1 ? 'switch-bg-on' : 'switch-bg-off',
+            ]"
+          >
+            <div
+              :class="[
+                form.paid_on_time === 1 ? 'switch-knob-on' : 'switch-knob-off',
+              ]"
+            ></div>
+          </div>
+        </div>
       </div>
 
       <!-- Did you hire this contractor? -->
-      <div class="mb-4">
-        <label class="text-sm font-bold text-gray-600 block mb-2">
+      <div class="flex items-center justify-between sm:w-96 mb-5">
+        <div class="text-md font-bold text-gray-600 mt-3 mb-2">
           Did you hire this contractor?
-        </label>
-        <input
-          type="radio"
-          class="mr-3"
-          id="hired_contractor_yes"
-          value="yes"
-          v-model="form.hired_contractor"
-        />
-        Yes
-        <input
-          type="radio"
-          class="mr-3 ml-4"
-          id="hired_contractor_no"
-          value="no"
-          v-model="form.hired_contractor"
-        />
-        No
-        <InputError class="mt-2" :message="form.errors.hired_contractor" />
+        </div>
+        <div class="switch" @click="toggleSwitch('hired_contractor')">
+          <div
+            :class="[
+              form.hired_contractor === 1 ? 'switch-bg-on' : 'switch-bg-off',
+            ]"
+          >
+            <div
+              :class="[
+                form.hired_contractor === 1
+                  ? 'switch-knob-on'
+                  : 'switch-knob-off',
+              ]"
+            ></div>
+          </div>
+        </div>
       </div>
 
-      <!-- Did you pay them? -->
-      <div class="mb-4">
-        <label class="text-sm font-bold text-gray-600 block mb-2">
-          Did you pay them?
-        </label>
-        <input
-          type="radio"
-          class="mr-3"
-          id="paid_them_yes"
-          value="yes"
-          v-model="form.paid_them"
-        />
-        Yes
-        <input
-          type="radio"
-          class="mr-3 ml-4"
-          id="paid_them_no"
-          value="no"
-          v-model="form.paid_them"
-        />
-        No
-        <InputError class="mt-2" :message="form.errors.paid_them" />
+      <!-- Did you give full  payment? -->
+      <div class="flex items-center justify-between sm:w-96 mb-5">
+        <div class="text-md font-bold text-gray-600 mt-3 mb-2">
+          Did you give full payment?
+        </div>
+        <div class="switch" @click="toggleSwitch('paid_them')">
+          <div
+            :class="[form.paid_them === 1 ? 'switch-bg-on' : 'switch-bg-off']"
+          >
+            <div
+              :class="[
+                form.paid_them === 1 ? 'switch-knob-on' : 'switch-knob-off',
+              ]"
+            ></div>
+          </div>
+        </div>
       </div>
 
       <!-- How did you meet this contractor? -->
-      <div class="mb-4">
-        <label class="text-sm font-bold text-gray-600 block mb-2">
+      <div>
+        <label class="text-md font-bold text-gray-600 block mb-2">
           How did you meet this contractor?
         </label>
         <textarea
@@ -173,14 +158,18 @@ import { useForm } from "@inertiajs/inertia-vue3";
 
 const form = useForm({
   rating_reason: null,
-  hired_by_contractor: null,
-  paid_on_time: null,
-  hired_contractor: null,
-  paid_them: null,
+  hired_by_contractor: 0,
+  paid_on_time: 0,
+  hired_contractor: 0,
+  paid_them: 0,
   how_met_contractor: null,
   rating: null,
 });
 function handleRatingChange(value) {
   form.rating = value;
 }
+
+const toggleSwitch = (field) => {
+  form[field] = form[field] === 1 ? 0 : 1;
+};
 </script>

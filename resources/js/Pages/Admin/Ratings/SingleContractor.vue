@@ -11,6 +11,7 @@
   >
     <div class="bg-gray-200 mt-10">
       <Card :shadowLevel="2" bgColor="white">
+        <ContractorInfo :contractor="contractor" />
         <heading-card heading="Average Ratings" class="mb-12" />
         <AverageRating class="mb-12" />
         <!-- Filters -->
@@ -67,6 +68,7 @@ import AverageRating from "@/Pages/Ratings/PartialsVisiting/AverageRating.vue";
 import Button from "@/Components/Ratings/Button.vue";
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import Card from "@/Components/Card.vue";
+import ContractorInfo from "@/Pages/Ratings/PartialsVisiting/ContractorInfo.vue";
 
 defineProps({
   profile: Object,
@@ -108,44 +110,36 @@ const reviews = [
     rating_reason:
       "Lorem ipsum dolor sit amet consectetur... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non, dolores debitis! Repellat quasi sit placeat, assumenda distinctio laborum nihil quaerat veniam, dolore enim voluptatum. Sequi nihil libero animi illo ad?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis ut vero facere laborum sequi ducimus ullam itaque culpa harum! Et iste consequatur doloribus repudiandae. Temporibus adipisci vel ipsa inventore saepe?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil quod corrupti iusto. Enim sint hic molestias voluptates est vitae, blanditiis iure saepe possimus quasi, distinctio laudantium consequuntur. Facere, doloremque vitae. ",
     isUnderAppeal: 0,
-    questions: [
+    questionsSwitch: [
       {
         id: 1,
-        question: "Were you hired by this contractor?",
-        questionAnswer:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod.",
+        question: "Hired by contractor?",
+        questionAnswer: 1,
       },
       {
         id: 2,
-        question: "Were you paid onetime?",
-        questionAnswer:
-          "Ut vehicula risus a auctor lacinia. Proin vitae faucibus est, vitae tincidunt orci.",
+        question: "Paid on time?",
+        questionAnswer: 0,
       },
       {
         id: 3,
-        question: "Did you hire this contractor?",
-        questionAnswer:
-          "Pellentesque nec purus felis. Vivamus condimentum sem vel nunc cursus, quis congue neque rutrum.",
+        question: "Hired contractor?",
+        questionAnswer: 1,
       },
       {
         id: 4,
-        question: "Did you pay them?",
-        questionAnswer:
-          "Mauris posuere ligula ut quam pharetra, at pulvinar libero posuere.",
+        question: "Give full  payment?",
+        questionAnswer: 1,
       },
+    ],
+    questionsText: [
       {
-        id: 5,
+        id: 1,
         question: "How did you meet this contractor?",
         questionAnswer:
           "Curabitur non eros non ante vestibulum euismod. Fusce et facilisis urna.",
       },
     ],
-    response: {
-      id: 5,
-      date: "04/03/2023",
-      response_text:
-        "Lorem ipsum dolor sit amet consectetur... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non, dolores debitis! Repellat quasi sit placeat, assumenda distinctio laborum nihil quaerat veniam, dolore enim voluptatum. Sequi nihil libero animi illo ad?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis ut vero facere laborum sequi ducimus ullam itaque culpa harum! Et iste consequatur doloribus repudiandae. Temporibus adipisci vel ipsa inventore saepe?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil quod corrupti iusto. Enim sint hic molestias voluptates est vitae, blanditiis iure saepe possimus quasi, distinctio laudantium consequuntur. Facere, doloremque vitae.",
-    },
   },
   {
     reviewId: 2,
@@ -168,33 +162,31 @@ const reviews = [
         "Lorem Ipsum is Lorem Ipsum is Lorem Ipsum is Lorem Ips lorem. Lorem Ipsum",
       date: "03/03/2023",
     },
-    questions: [
+    questionsSwitch: [
       {
         id: 1,
         question: "Were you hired by this contractor?",
-        questionAnswer:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod.",
+        questionAnswer: 1,
       },
       {
         id: 2,
         question: "Were you paid onetime?",
-        questionAnswer:
-          "Ut vehicula risus a auctor lacinia. Proin vitae faucibus est, vitae tincidunt orci.",
+        questionAnswer: 0,
       },
       {
         id: 3,
         question: "Did you hire this contractor?",
-        questionAnswer:
-          "Pellentesque nec purus felis. Vivamus condimentum sem vel nunc cursus, quis congue neque rutrum.",
+        questionAnswer: 1,
       },
       {
         id: 4,
-        question: "Did you pay them?",
-        questionAnswer:
-          "Mauris posuere ligula ut quam pharetra, at pulvinar libero posuere.",
+        question: "Did you give full  payment?",
+        questionAnswer: 1,
       },
+    ],
+    questionsText: [
       {
-        id: 5,
+        id: 1,
         question: "How did you meet this contractor?",
         questionAnswer:
           "Curabitur non eros non ante vestibulum euismod. Fusce et facilisis urna.",
@@ -218,33 +210,37 @@ const reviews = [
     rating_reason:
       "Lorem ipsum dolor sit amet consectetur... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non, dolores debitis! Repellat quasi sit placeat, assumenda distinctio laborum nihil quaerat veniam, dolore enim voluptatum. Sequi nihil libero animi illo ad?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis ut vero facere laborum sequi ducimus ullam itaque culpa harum! Et iste consequatur doloribus repudiandae. Temporibus adipisci vel ipsa inventore saepe?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil quod corrupti iusto. Enim sint hic molestias voluptates est vitae, blanditiis iure saepe possimus quasi, distinctio laudantium consequuntur. Facere, doloremque vitae.",
     isUnderAppeal: 1,
-    questions: [
+    questionsSwitch: [
       {
         id: 1,
         question: "Were you hired by this contractor?",
-        questionAnswer:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod.",
+        questionAnswer: 1,
       },
       {
         id: 2,
         question: "Were you paid onetime?",
-        questionAnswer:
-          "Ut vehicula risus a auctor lacinia. Proin vitae faucibus est, vitae tincidunt orci.",
+        questionAnswer: 0,
       },
       {
         id: 3,
         question: "Did you hire this contractor?",
-        questionAnswer:
-          "Pellentesque nec purus felis. Vivamus condimentum sem vel nunc cursus, quis congue neque rutrum.",
+        questionAnswer: 1,
       },
       {
         id: 4,
-        question: "Did you pay them?",
-        questionAnswer:
-          "Mauris posuere ligula ut quam pharetra, at pulvinar libero posuere.",
+        question: "Did you give full  payment?",
+        questionAnswer: 1,
       },
+    ],
+    response: {
+      id: 5,
+      date: "04/03/2023",
+      response_text:
+        "Lorem ipsum dolor sit amet consectetur... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non, dolores debitis! Repellat quasi sit placeat, assumenda distinctio laborum nihil quaerat veniam, dolore enim voluptatum. Sequi nihil libero animi illo ad?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis ut vero facere laborum sequi ducimus ullam itaque culpa harum! Et iste consequatur doloribus repudiandae. Temporibus adipisci vel ipsa inventore saepe?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil quod corrupti iusto. Enim sint hic molestias voluptates est vitae, blanditiis iure saepe possimus quasi, distinctio laudantium consequuntur. Facere, doloremque vitae.",
+    },
+    questionsText: [
       {
-        id: 5,
+        id: 1,
         question: "How did you meet this contractor?",
         questionAnswer:
           "Curabitur non eros non ante vestibulum euismod. Fusce et facilisis urna.",

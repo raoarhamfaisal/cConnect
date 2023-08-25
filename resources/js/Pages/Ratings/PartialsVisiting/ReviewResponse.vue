@@ -1,6 +1,10 @@
 <template>
   <section>
-    <Review :review="review" :contractor="contractor" />
+    <Review
+      :review="review"
+      :nonEditableReview="false"
+      :contractor="contractor"
+    />
     <div v-if="review.response">
       <Response :response="review.response" :contractor="contractor" />
     </div>

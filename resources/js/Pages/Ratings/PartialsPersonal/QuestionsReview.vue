@@ -1,10 +1,11 @@
 <template>
   <section>
-    <Review :review="review" :contractor="contractor" />
-    <QualifyingQuestions
-      v-if="review?.questions?.length > 0"
-      :questions="review.questions"
+    <Review
+      :review="review"
+      :nonEditableReview="true"
+      :contractor="contractor"
     />
+
     <!-- response -->
     <div v-if="!review?.response">
       <div class="py-4 border-t-2 border-gray-300">
@@ -85,7 +86,8 @@
               v-model="form.appealReason"
               placeholder="Type your reason for the removal of appeal"
             />
-            <InputError class="mt-2" :message="form.errors.appealReason" />
+            <InputError class="mt-2" :message="form.errors.turnOffReason" />
+
             <textarea
               id="rating_reason"
               type="text"
@@ -96,7 +98,19 @@
               v-model="form.turnOffReason"
               placeholder="Type your reason for your appeal"
             />
-            <InputError class="mt-2" :message="form.errors.turnOffReason" />
+
+            <InputError class="mt-2" :message="form.errors.appealReason" />
+
+            <div v-if="form.isAppealed === 0" class="mt-3 block">
+              Send any supporting document to
+              <a
+                class="underline text-sky-600"
+                href="mailto:appeal@tContractor.com"
+                target="_blank"
+              >
+                appeal@tContractor.com
+              </a>
+            </div>
             <div class="flex items-center gap-4 mt-6 w-full">
               <PrimaryButton
                 :disabled="form.processing"
@@ -137,7 +151,6 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import Response from "../PartialsVisiting/Response.vue";
 import Review from "../PartialsVisiting/Review.vue";
 import Button from "@/Components/Ratings/Button.vue";
-import QualifyingQuestions from "./QualifyingQuestions.vue";
 import { useForm } from "@inertiajs/inertia-vue3";
 
 defineProps(["review", "contractor"]);

@@ -1,7 +1,8 @@
 <script setup>
+import { Icon } from "@iconify/vue";
 import { Inertia } from "@inertiajs/inertia";
-import { Link } from "@inertiajs/inertia-vue3";
-import { ref, watch } from "vue";
+import { Link, usePage } from "@inertiajs/inertia-vue3";
+import { computed } from "vue";
 
 defineProps({
   showit: Boolean,
@@ -32,6 +33,9 @@ function NavigationDropdown() {
 const newPostSearchValue = () => {
   emit("submitPostSearch");
 };
+const isAdminUrl = computed(() => {
+  return usePage().url.value.includes("admin");
+});
 </script>
 
 <template>
@@ -125,6 +129,38 @@ const newPostSearchValue = () => {
               <!-- +++++++++++++++++++++++++++++++++++++++ -->
             </form>
           </div>
+          <!-- DropDown: All Contractors -->
+          <Link
+            v-if="isAdminUrl"
+            href="/admin/ratings"
+            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+          >
+            <Icon
+              icon="ion:person-sharp"
+              color="#1098ad"
+              width="20"
+              height="20"
+            />
+            <span class="mx-4 font-medium">All Contractors</span>
+          </Link>
+          <!-- DropDown: Appeal Review -->
+          <Link
+            v-if="isAdminUrl"
+            href="/admin/appealed"
+            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+          >
+            <Icon
+              icon="fluent-mdl2:review-request-solid"
+              color="#1098ad"
+              width="20"
+              height="20"
+            />
+            <span class="mx-4 font-medium">Appealed Reviews</span>
+          </Link>
+          <div
+            v-if="isAdminUrl"
+            class="pt-1 border-t-2 border-gray-400 dark:border-gray-600"
+          ></div>
 
           <!-- DropDown: NEWS FEED -->
           <Link
@@ -135,8 +171,6 @@ const newPostSearchValue = () => {
             <img src="/images/icons/newsfeed.png" width="20" height="20" />
             <span class="mx-4 font-medium">News Feed</span>
           </Link>
-
-          <p>{{ Inertia.page.component }}</p>
 
           <!-- DropDown: SUB FINDER -->
           <Link
