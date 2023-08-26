@@ -1,40 +1,42 @@
 <template>
-  <div class="pl-2 text-md font-bold text-gray-600 mt-3 mb-3">
-    Feedback from Contractor &nbsp;
-    <span
-      v-if="!showQuestions"
-      @click="showQuestions = true"
-      class="cursor-pointer text-sky-700 font-semibold text-sm"
-    >
-      {{ "Show Questions" }}
-    </span>
-    <span
-      v-if="showQuestions"
-      @click="showQuestions = false"
-      class="cursor-pointer text-sky-700 font-semibold text-sm"
-    >
-      Hide Questions
-    </span>
-  </div>
+  <!-- <div class="pl-2 text-md font-bold text-gray-600 mt-3 mb-3">
+    Feedback from Contractor
+  </div> -->
   <Card
-    v-if="showQuestions"
     :shadowLevel="0"
     :isInside="true"
-    bgColor="#f1f3f5"
+    bgColor="#f8f9fa"
     padding="10px"
+    class="mt-2"
   >
     <div
-      class="grid grid-cols-1 xs:grid-cols-2 gap-x-2 items-center mt-2 gap-y-2 xs:gap-x-4 px-2 xs:px-0 sm:px-2 xl:px-8"
+      class="grid grid-cols-2 gap-x-1 items-center gap-y-2 mt-2 mb-2 xs:gap-x-2 xs:px-0 sm:px-2 xl:px-8 w-full"
     >
       <div
-        class="flex justify-between items-center gap-8"
+        class="flex items-center sx:gap-2 w-full xs:gap-4"
         v-for="(question, index) in questionsSwitch"
         :key="index"
       >
-        <div class="pl-2 text-sm xs:text-md font-bold text-gray-600 mt-3 mb-2">
+        <Icon
+          color="#099268"
+          width="24"
+          height="24"
+          v-if="question.questionAnswer === 1"
+          icon="mdi:tick-circle"
+        />
+        <Icon
+          color="#e03131"
+          width="24"
+          height="24"
+          v-if="question.questionAnswer !== 1"
+          icon="clarity:remove-solid"
+        />
+        <div
+          class="pl-2 text-xs xs:text-sm sm:text-base font-bold text-gray-600"
+        >
           {{ question.question }}
         </div>
-        <div class="switch">
+        <!-- <div class="switch">
           <div
             :class="[
               question.questionAnswer === 1
@@ -50,38 +52,20 @@
               ]"
             ></div>
           </div>
+        </div> -->
+      </div>
+      <div
+        class="w-full flex items-center col-span-2 pl-1 text-xs xs:text-sm sm:text-base font-bold text-gray-600"
+      >
+        <div>How did I meet Contractor : &nbsp;</div>
+        <div
+          :style="{
+            transform: 'translateY(-1px)',
+          }"
+          class="border-b-2 border-[#495057] text-xs xs:text-sm"
+        >
+          {{ selectedReferal[0] }}
         </div>
-      </div>
-    </div>
-    <div
-      class="px-2 xs:px-0 sm:px-2 xl:px-8"
-      v-for="(question, index) in questionsText"
-      :key="index"
-    >
-      <div class="pl-2 text-sm xs:text-md font-bold text-gray-600 mt-3 mb-2">
-        {{ question.question }}
-      </div>
-      <div class="pl-2 text-sm xs:text-md text-gray-500 mb-2">
-        {{
-          showAnswer
-            ? question.questionAnswer
-            : question.questionAnswer.substring(0, 400) +
-              (question.questionAnswer.length > 400 ? "..." : "")
-        }}
-        <span
-          v-if="!showAnswer && question.questionAnswer.length > 400"
-          @click="showAnswer = true"
-          class="cursor-pointer text-sky-700"
-        >
-          See more
-        </span>
-        <span
-          v-if="showAnswer && question.questionAnswer.length > 400"
-          @click="showAnswer = false"
-          class="cursor-pointer text-sky-700"
-        >
-          See less
-        </span>
       </div>
     </div>
   </Card>
@@ -89,13 +73,8 @@
 
 <script setup>
 import Card from "@/Components/Card.vue";
-import { ref } from "vue";
+import { Icon } from "@iconify/vue";
 
-const { questionsSwitch, questionsText } = defineProps([
-  "questionsSwitch",
-  "questionsText",
-]);
-const showQuestions = ref(false);
-const showAnswer = ref(false);
+defineProps(["questionsSwitch", "selectedReferal"]);
 </script>
 <style scoped></style>

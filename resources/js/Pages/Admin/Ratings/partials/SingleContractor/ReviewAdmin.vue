@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <!-- Edit delete with under appeal -->
+    <!-- Edit delete with under appeal desktop-->
     <div
       class="flex flex-col justify-between items-end"
       :class="{
@@ -47,6 +47,7 @@
         >Under Appeal</Badge
       >
       <div v-if="screenWidth >= 700" class="grid grid-cols-3 gap-2">
+        <!-- edit -->
         <ButtonRatings
           bgColor="bg-lime-700"
           icon="material-symbols:edit-sharp"
@@ -60,7 +61,7 @@
           @click="openInActiveDialog"
           >Inactive</ButtonRatings
         >
-
+        <!-- delete -->
         <ButtonRatings
           bgColor="bg-red-500"
           icon="ic:baseline-delete"
@@ -129,7 +130,7 @@
         review?.questionsSwitch?.length > 0 || review?.questionsText?.length > 0
       "
       :questionsSwitch="review.questionsSwitch"
-      :questionsText="review.questionsText"
+      :selectedReferal="review.selectedReferal"
     />
 
     <!-- review -->
@@ -157,6 +158,7 @@
         </span>
       </p>
     </div>
+
     <!-- turn on appeal -->
     <div class="mb-4">
       <div v-if="review?.onAppeal && Object.keys(review?.onAppeal).length > 0">

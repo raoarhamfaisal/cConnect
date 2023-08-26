@@ -108,33 +108,26 @@ const reviews = [
     questionsSwitch: [
       {
         id: 1,
-        question: "Hired by contractor?",
+        question: "I Hired Contractor",
         questionAnswer: 1,
       },
       {
         id: 2,
-        question: "Paid on time?",
+        question: "Contractor hired me",
         questionAnswer: 0,
       },
       {
         id: 3,
-        question: "Hired contractor?",
+        question: "Paid on time",
         questionAnswer: 1,
       },
       {
         id: 4,
-        question: "Give full  payment?",
+        question: "Give full  payment",
         questionAnswer: 1,
       },
     ],
-    questionsText: [
-      {
-        id: 1,
-        question: "How did you meet this contractor?",
-        questionAnswer:
-          "Curabitur non eros non ante vestibulum euismod. Fusce et facilisis urna.",
-      },
-    ],
+    selectedReferal: ["Contractor Referral"],
     response: {
       id: 5,
       date: "04/03/2023",
@@ -181,18 +174,11 @@ const reviews = [
       },
       {
         id: 4,
-        question: "Did you give full  payment?",
+        question: "Did you give full  payment",
         questionAnswer: 1,
       },
     ],
-    questionsText: [
-      {
-        id: 1,
-        question: "How did you meet this contractor?",
-        questionAnswer:
-          "Curabitur non eros non ante vestibulum euismod. Fusce et facilisis urna.",
-      },
-    ],
+    selectedReferal: ["Friend Referral"],
   },
   // ... more reviews
 ];
