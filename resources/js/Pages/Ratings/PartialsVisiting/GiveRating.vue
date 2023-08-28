@@ -113,7 +113,7 @@
           v-if="loading"
           src="/images/avatars/Spinner.gif"
           alt="spinner"
-          width="24"
+          width="30"
       /></PrimaryButton>
     </div>
   </div>
@@ -201,7 +201,7 @@ const validate = () => {
   ratingReasonError.value = "";
 
   // Validate rating value
-  if (form.rating.value <= 0) {
+  if (form.rating.value <= 0 && form.rating.value > 5) {
     ratingError.value = "Rating should be greater than 0.";
     isValid = false;
   }

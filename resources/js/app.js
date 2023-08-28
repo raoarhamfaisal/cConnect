@@ -5,6 +5,7 @@ import { createApp, h } from "vue";
 import { createInertiaApp, Link, Head } from "@inertiajs/inertia-vue3";
 import { InertiaProgress } from "@inertiajs/progress";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
+import { store } from "@/store/index.js";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
 
 const appName =
@@ -23,6 +24,7 @@ createInertiaApp({
       .component("Link", Link)
       .component("Head", Head)
       .use(ZiggyVue, Ziggy)
+      .use(store)
       .mount(el);
   },
 });

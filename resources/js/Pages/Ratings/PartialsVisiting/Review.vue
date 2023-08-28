@@ -160,9 +160,11 @@
   <EditRatingModal
     ref="editRef"
     :review="review"
+    :profileId="profileId"
     :questionsSwitch="questionsSwitch"
+    :contractorId="contractorId"
   />
-  <DeleteRatingModal ref="deleteRef" />
+  <DeleteRatingModal ref="deleteRef" :reviewId="review.id" />
 </template>
 
 <script setup>
@@ -180,10 +182,10 @@ const { review } = defineProps({
   review: {
     type: Object,
   },
-  contractor: {
-    type: Object,
-  },
   profileId: {
+    type: Number,
+  },
+  contractorId: {
     type: Number,
   },
   nonEditableReview: {

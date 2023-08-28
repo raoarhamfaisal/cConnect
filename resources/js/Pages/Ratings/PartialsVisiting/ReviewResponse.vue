@@ -3,8 +3,8 @@
     <Review
       :review="review"
       :nonEditableReview="false"
-      :contractor="contractor"
       :profileId="profileId"
+      :contractorId="contractorId"
     />
 
     <!-- <div v-if="review.response">
@@ -20,10 +20,10 @@ defineProps({
   review: {
     type: Object,
   },
-  contractor: {
-    type: Object,
-  },
   profileId: {
+    type: Number,
+  },
+  contractorId: {
     type: Number,
   },
 });
