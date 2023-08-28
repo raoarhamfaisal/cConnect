@@ -18,9 +18,24 @@ class ReviewController extends Controller
      * @param  int  $contractor_id
      * @return \Illuminate\Http\Response
      */
-    public function index($contractor_id)
+    public function index(Request $request, $contractor_id)
     {
-        // Fetch all reviews for the contractor with profile details
+        // Determine pagination parameters from the request's query parameters
+        $perPage = $request->query('per_page', 15);  // default to 15 if not provided
+        $page = $request->query('page', 1);          // default to page 1 if not provided
+
+        // Fetch all reviews for calculating ratings and counts
+        $allReviews = Review::where('contractor_id', $contractor_id)->get();
+
+        // Calculate the average rating and counts
+        $avgReview = $allReviews->avg('rating');
+        $fiveStars = $allReviews->whereBetween('rating', [4.5, 5.0])->count();
+        $fourStars = $allReviews->whereBetween('rating', [3.5, 4.4])->count();
+        $threeStars = $allReviews->whereBetween('rating', [2.5, 3.4])->count();
+        $twoStars = $allReviews->whereBetween('rating', [1.5, 2.4])->count();
+        $oneStar = $allReviews->whereBetween('rating', [0.0, 1.4])->count();
+
+        // Fetch paginated reviews for the contractor with profile details
         $reviews = Review::with([
                         'reviewer' => function($query) {
                             $query->select([
@@ -68,67 +83,63 @@ class ReviewController extends Controller
                         'review_response'
                     ])
                     ->where('contractor_id', $contractor_id)
-                    ->get();
+                    ->paginate($perPage, ['*'], 'page', $page);
 
         // Retrieve the contractor details from the Profile table
         $contractorDetails = Profile::where('id', $contractor_id)
-                                        ->select([
-                                            'id',
-                                            'user_id',
-                                            'first_name',
-                                            'last_name',
-                                            'company_name',
-                                            'city',
-                                            'state',
-                                            'user_avatar',
-                                            'company_logo',
-                                            'trade1',
-                                            'trade2',
-                                            'trade3',
-                                            'trade4',
-                                            'trade5',
-                                            'trade6',
-                                            'trade7',
-                                            'trade8',
-                                            'trade9',
-                                            'trade10',
-                                            'trade11',
-                                            'trade12',
-                                            'trade13',
-                                            'trade14',
-                                            'trade15',
-                                            'trade16',
-                                            'trade17',
-                                            'trade18',
-                                            'trade19',
-                                            'trade20',
-                                            'trade21',
-                                            'trade22',
-                                            'trade23',
-                                            'trade24',
-                                            'trade25',
-                                            'trade26',
-                                            'trade27',
-                                            'trade28',
-                                            'trade29',
-                                            'trade30',
-                                        ])
-                                        ->first();
+                                    ->select([
+                                        'id',
+                                        'user_id',
+                                        'first_name',
+                                        'last_name',
+                                        'company_name',
+                                        'city',
+                                        'state',
+                                        'user_avatar',
+                                        'company_logo',
+                                        'trade1',
+                                        'trade2',
+                                        'trade3',
+                                        'trade4',
+                                        'trade5',
+                                        'trade6',
+                                        'trade7',
+                                        'trade8',
+                                        'trade9',
+                                        'trade10',
+                                        'trade11',
+                                        'trade12',
+                                        'trade13',
+                                        'trade14',
+                                        'trade15',
+                                        'trade16',
+                                        'trade17',
+                                        'trade18',
+                                        'trade19',
+                                        'trade20',
+                                        'trade21',
+                                        'trade22',
+                                        'trade23',
+                                        'trade24',
+                                        'trade25',
+                                        'trade26',
+                                        'trade27',
+                                        'trade28',
+                                        'trade29',
+                                        'trade30',
+                                    ])
+                                    ->first();
 
-        // Calculate the average rating
-        $avgReview = $reviews->avg('rating');
-
-        // Count reviews for each star rating
-        $fiveStars = $reviews->whereBetween('rating', [4.5, 5.0])->count();
-        $fourStars = $reviews->whereBetween('rating', [3.5, 4.4])->count();
-        $threeStars = $reviews->whereBetween('rating', [2.5, 3.4])->count();
-        $twoStars = $reviews->whereBetween('rating', [1.5, 2.4])->count();
-        $oneStar = $reviews->whereBetween('rating', [0.0, 1.4])->count();
-
-        // Prepare the response
+        // Construct the response
         $response = [
             'contractor' => $contractorDetails,
-            'reviews' => $reviews,
+            'reviews' => $reviews->items(),
+            'pagination' => [
+                'current_page' => $reviews->currentPage(),
+                'last_page' => $reviews->lastPage(),
+                'per_page' => $reviews->perPage(),
+                'total' => $reviews->total(),
+            ],
             'average_rating' => $avgReview,
             'five_stars_count' => $fiveStars,
             'four_stars_count' => $fourStars,
