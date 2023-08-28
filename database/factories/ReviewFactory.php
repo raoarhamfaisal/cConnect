@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Profile;
+use App\Models\ReviewResponse;
 
 
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -22,6 +23,7 @@ class ReviewFactory extends Factory
         return [
             'reviewer_id' => Profile::inRandomOrder()->first()->id,
             'contractor_id' => Profile::inRandomOrder()->first()->id,
+            'response_id' => ReviewResponse::inRandomOrder()->first()->id,
             'rating' => $this->faker->numberBetween(1, 5),
             'rating_text' => $this->faker->text(),
             'rating_date' => $this->faker->dateTime($max = 'now'),

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->boolean('active_user')->default(1);
             $table->string('first_name', 30)->nullable();
             $table->string('last_name', 30)->nullable();
-            $table->string('company_name', 30)->nullable();
+            $table->string('company_name', 100)->nullable();
             $table->string('website_url')->nullable();
             $table->string('facebook')->nullable();
             $table->string('twitter')->nullable();
