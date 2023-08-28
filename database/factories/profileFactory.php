@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\User;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Profile>
@@ -17,7 +18,7 @@ class profileFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => fake()->numberBetween(1, 10),
+            'user_id' => User::inRandomOrder()->first()->id,
             'active_user' => fake()->numberBetween(0, 1),
             'first_name' => fake()->name(),
             'last_name' => fake()->name(),

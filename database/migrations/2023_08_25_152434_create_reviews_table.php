@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('response_id')->nullable();
-            $table->unsignedBigInteger('profile_id');
+            $table->unsignedBigInteger('reviewer_id');
             $table->unsignedBigInteger('contractor_id');
             $table->decimal('rating', $precision = 8, $scale = 2);
             $table->longText('rating_text');
@@ -33,8 +33,9 @@ return new class extends Migration
             $table->string('how_did_you_meet_this_contractor')->nullable();
             $table->timestamps();
             
-            $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('cascade');
+            $table->foreign('reviewer_id')->references('id')->on('profiles')->onDelete('cascade');
             $table->foreign('contractor_id')->references('id')->on('profiles')->onDelete('cascade');
+            $table->foreign('response_id')->references('id')->on('review_responses')->onDelete('cascade');
         });
     }
 

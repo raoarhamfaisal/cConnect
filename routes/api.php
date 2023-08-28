@@ -32,6 +32,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::post('reviews/{review}/appeal', [ReviewController::class, 'putOnAppeal']);
     Route::post('reviews/{review}/off-appeal', [ReviewController::class, 'removeAppeal']);
     Route::delete('reviews/{review}', [ReviewController::class, 'destroy']);
+    Route::post('/review-responses', [ReviewResponseController::class, 'store']);
+
 
 
 
