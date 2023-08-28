@@ -2,13 +2,19 @@
   <section>
     <Review
       :review="review"
-      :nonEditableReview="true"
-      :contractor="contractor"
+      :nonEditableReview="false"
+      :profileId="profileId"
+      :contractorId="contractorId"
     />
 
     <!-- response -->
-    <div v-if="!review?.response">
-      <div class="py-4 border-t-2 border-gray-300">
+    <div
+      v-if="
+        !review?.review_response ||
+        Object.keys(review.review_response).length < 1
+      "
+    >
+      <div class="py-4 border-t-2 border-b-2 border-gray-300">
         <Button
           @onSelect="handleResponse"
           :style="{
@@ -22,43 +28,42 @@
         <transition name="accordion">
           <div class="mb-4 mt-3" v-if="showResponseArea">
             <textarea
-              id="rating_reason"
+              id="responseText"
               type="text"
-              :rows="3"
+              :rows="5"
               class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
               required
-              v-model="form.response"
-              placeholder="Type your response"
+              v-model="response_text"
+              placeholder="Type your response text"
             />
-            <InputError class="mt-2" :message="form.errors.response" />
+            <InputError
+              v-if="responseError"
+              class="mt-2"
+              :message="responseError"
+            />
             <div class="flex items-center gap-4 mt-6 w-full">
               <PrimaryButton
-                :disabled="form.processing"
-                class="w-full flex justify-center"
                 :style="{
-                  backgroundColor: '#0e0c2c',
+                  height: '42px',
                 }"
-                >Submit Your Response</PrimaryButton
+                @click="handleSubmit"
+                :disabled="disabled"
+                class="w-full flex justify-center gap-2"
               >
-              <Transition
-                enter-from-class="opacity-0"
-                leave-to-class="opacity-0"
-                class="transition ease-in-out"
-              >
-                <p
-                  v-if="form.recentlySuccessful"
-                  class="text-sm text-gray-600 dark:text-gray-400"
-                >
-                  Saved.
-                </p>
-              </Transition>
+                <div>Add</div>
+                <img
+                  v-show="loading"
+                  src="/images/avatars/Spinner.gif"
+                  alt="spinner"
+                  width="30"
+              /></PrimaryButton>
             </div>
           </div>
         </transition>
       </div>
     </div>
     <!-- appeal -->
-    <div class="py-4 border-t-2 border-b-2 border-gray-300">
+    <!-- <div class="py-4 border-t-2 border-b-2 border-gray-300">
       <Button
         @onSelect="handleAppeal"
         :style="{
@@ -138,24 +143,88 @@
           </div>
         </div>
       </transition>
-    </div>
-    <div v-if="review?.response">
-      <Response :response="review.response" :contractor="contractor" />
+    </div> -->
+    <div
+      v-if="
+        review.review_response && Object.keys(review.review_response).length > 1
+      "
+    >
+      <Response
+        :response="review.review_response"
+        :contractorId="contractorId"
+        :profileId="profileId"
+      />
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref } from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import InputError from "@/Components/InputError.vue";
+
 import Response from "../PartialsVisiting/Response.vue";
 import Review from "../PartialsVisiting/Review.vue";
 import Button from "@/Components/Ratings/Button.vue";
-import { useForm } from "@inertiajs/inertia-vue3";
+import { ref, watch, computed } from "vue";
+import { useStore } from "vuex";
 
-defineProps(["review", "contractor"]);
+//States
+
+const { review } = defineProps({
+  review: {
+    type: Object,
+  },
+  profileId: {
+    type: Number,
+  },
+  contractorId: {
+    type: Number,
+  },
+});
+
+const store = useStore();
+const response_text = ref("");
 const showResponseArea = ref(false);
 const showAppealArea = ref(false);
+const dialogRef = ref();
+const responseError = ref("");
+
+//Computed
+const loading = computed(() => store.state.ratings.loading);
+const disabled = computed(() => store.state.ratings.disabled);
+
+//Watch
+
+watch(
+  () => response_text.value,
+  () => {
+    responseError.value = "";
+  }
+);
+
+//Methods
+const validate = () => {
+  let isValid = true;
+  // Reset the error messages before validating
+  responseError.value = "";
+
+  // Validate rating_text
+  if (!response_text.value || response_text.value.trim() === "") {
+    responseError.value = "Response should not be empty.";
+    isValid = false;
+  }
+
+  return isValid;
+};
+const handleSubmit = async () => {
+  if (validate()) {
+    const responseData = {
+      response_text: response_text.value,
+      review_id: review.id,
+    };
+    await store.dispatch("ratings/createResponse", responseData);
+  }
+};
 
 const handleResponse = () => {
   showResponseArea.value = !showResponseArea.value;
@@ -163,12 +232,6 @@ const handleResponse = () => {
 const handleAppeal = () => {
   showAppealArea.value = !showAppealArea.value;
 };
-const form = useForm({
-  response: null,
-  appealReason: null,
-  turnOffReason: null,
-  isAppealed: 0,
-});
 </script>
 
 <style scoped>

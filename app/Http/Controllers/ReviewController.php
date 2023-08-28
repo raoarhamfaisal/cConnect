@@ -99,9 +99,9 @@ class ReviewController extends Controller
         }
     
         if ($sortByDate === 'oldest') {
-            $reviewsQuery = $reviewsQuery->oldest('created_at');
+            $reviewsQuery = $reviewsQuery->oldest('rating_date');
         } else {
-            $reviewsQuery = $reviewsQuery->latest('created_at');
+            $reviewsQuery = $reviewsQuery->latest('rating_date');
         }
     
     

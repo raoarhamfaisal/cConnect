@@ -12,7 +12,7 @@
           Contractor's Response
         </div>
         <div
-          v-if="screenWidth >= 600 && response.id === contractor.id"
+          v-if="screenWidth >= 600 && contractorId === profileId"
           class="flex flex-col justify-between"
         >
           <div class="flex gap-2">
@@ -34,7 +34,7 @@
         </div>
       </div>
       <div
-        v-if="screenWidth < 600 && response.id === contractor.id"
+        v-if="screenWidth < 600 && contractorId === profileId"
         class="grid grid-cols-2 gap-4"
       >
         <!-- edit -->
@@ -53,11 +53,11 @@
         >
       </div>
       <div>
-        <div class="mt-5 ml-2 flex items-center space-x-4">
+        <div class="mt-2 ml-2 flex items-center space-x-4">
           <div
             class="font-bold flex justify-center items-center text-sm xs:text-md sm:text-xl"
           >
-            {{ response.date }}
+            {{ convertDateFormat(response.response_date) }}
           </div>
         </div>
         <div class="">
@@ -87,8 +87,12 @@
       </div>
     </section>
   </Card>
-  <EditResponseModal ref="editRef" :responseText="response?.response_text" />
-  <DeleteResponseModal ref="deleteRef" />
+  <EditResponseModal
+    ref="editRef"
+    :responseText="response?.response_text"
+    :responseId="response.id"
+  />
+  <DeleteResponseModal ref="deleteRef" :responseId="response.id" />
 </template>
 
 <script setup>
@@ -96,9 +100,21 @@ import Card from "@/Components/Card.vue";
 import EditResponseModal from "@/Pages/Ratings/Edit/EditResponseModal.vue";
 import DeleteResponseModal from "@/Pages/Ratings/Edit/DeleteResponseModal.vue";
 import { onMounted, onUnmounted, ref } from "vue";
+import { convertDateFormat } from "@/helpers/utilities";
+
 import ButtonRatings from "@/Components/Ratings/ButtonRatings.vue";
 
-defineProps(["response", "contractor"]);
+defineProps({
+  response: {
+    type: Object,
+  },
+  profileId: {
+    type: Number,
+  },
+  contractorId: {
+    type: Number,
+  },
+});
 const showFullReview = ref(false);
 const editRef = ref();
 const deleteRef = ref();

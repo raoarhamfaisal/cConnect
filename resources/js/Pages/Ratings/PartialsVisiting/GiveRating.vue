@@ -110,7 +110,7 @@
       >
         <div>Add</div>
         <img
-          v-if="loading"
+          v-show="loading"
           src="/images/avatars/Spinner.gif"
           alt="spinner"
           width="30"
