@@ -119,6 +119,11 @@ export default {
       );
     },
   },
+  watch: {
+    inputRating(newVal) {
+      this.$emit("update:rating", newVal);
+    },
+  },
   methods: {
     handleStarClick(event, starIndex) {
       const starWidth = event.currentTarget.offsetWidth;

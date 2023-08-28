@@ -35,7 +35,6 @@ return new class extends Migration
             
             $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('cascade');
             $table->foreign('contractor_id')->references('id')->on('profiles')->onDelete('cascade');
-            $table->foreign('response_id')->references('id')->on('review_responses')->onDelete('cascade');
         });
     }
 

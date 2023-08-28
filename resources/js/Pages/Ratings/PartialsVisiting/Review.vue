@@ -2,19 +2,19 @@
   <div class="flex space-x-2 justify-between">
     <div class="flex justify-center items-center space-x-2">
       <div>
-        <Avatar :imageSrc="review.reviewer.profilePic" />
+        <Avatar :imageSrc="review.profile.user_avatar" />
       </div>
       <div class="flex flex-col justify-center">
         <h2
           class="text-md xs:text-xl font-medium font-bold text-gray-900 dark:text-gray-100"
         >
-          {{ review.reviewer.firstName }} {{ review.reviewer.lastName }}
+          {{ review.profile.first_name }} {{ review.profile.last_name }}
         </h2>
-        <div class="text-sm xs:text-lg">{{ review.reviewer.company }}</div>
+        <div class="text-sm xs:text-lg">{{ review.profile.company_name }}</div>
         <span
           class="text-xs xs:text-lg"
-          v-if="review.reviewer.city || review.reviewer.state"
-          >{{ `${review.reviewer.city} ${review.reviewer.state}` }}</span
+          v-if="review.profile.city || review.profile.state"
+          >{{ `${review.profile.city} ${review.profile.state}` }}</span
         >
       </div>
       <div
@@ -24,14 +24,17 @@
           marginLeft: '20px',
         }"
       >
-        <StarRating :rating="review.rating" :isIndicatorActive="true" />
+        <StarRating
+          :rating="Number(parseFloat(review.rating).toFixed(1))"
+          :isIndicatorActive="true"
+        />
         <div
           class="font-bold flex items-center text-md"
           :style="{
             transform: 'translateY(2px)',
           }"
         >
-          {{ review.date }}
+          {{ convertDateFormat(review.rating_date) }}
         </div>
       </div>
     </div>
@@ -43,7 +46,7 @@
         v-if="
           screenWidth >= 600 &&
           nonEditableReview === false &&
-          contractor.id === review.reviewer.id
+          profileId === review.profile_id
         "
       >
         <!-- edit -->
@@ -61,7 +64,7 @@
           >Delete</ButtonRatings
         >
       </div>
-      <Badge class="bg-orange-500" v-if="review.isUnderAppeal === 1"
+      <Badge class="bg-orange-500" v-if="review.is_under_appeal === 1"
         >Under Appeal</Badge
       >
     </div>
@@ -72,7 +75,7 @@
     v-if="
       screenWidth < 600 &&
       nonEditableReview === false &&
-      contractor.id === review.reviewer.id
+      profileId === review.profile_id
     "
   >
     <!-- edit -->
@@ -93,57 +96,59 @@
   <div class="mt-3">
     <!-- trades -->
     <div class="pl-2 text-sm xs:text-md font-bold">
-      {{ review.reviewer.firstName }} {{ review.reviewer.lastName }}
+      {{ review.profile.first_name }} {{ review.profile.last_name }}
       {{ "'s Trades :" }}
     </div>
-    <Badge
-      v-for="(option, index) in options"
-      :key="option.name"
-      class="my-1 mx-1 space-x-1 flex"
-      :style="{
-        backgroundColor: index % 2 === 0 ? '#5f3dc4' : '#364fc7',
-        fontSize: '10px',
-        paddingTop: '6px',
-        paddingBottom: '6px',
-      }"
-      >{{ option.name }}</Badge
-    >
+    <template v-for="(option, index) in options" :key="option.name">
+      <Badge
+        v-if="review.profile[option.id] === 1"
+        class="my-1 mx-1 space-x-1 flex"
+        :style="{
+          backgroundColor: index % 2 === 0 ? '#5f3dc4' : '#364fc7',
+          fontSize: '10px',
+          paddingTop: '6px',
+          paddingBottom: '6px',
+        }"
+        >{{ option.name }}</Badge
+      >
+    </template>
 
     <div
       v-if="screenWidth < 1260"
       class="mt-3 mb-2 ml-1 flex items-center space-x-4"
     >
-      <StarRating :rating="review.rating" :isIndicatorActive="true" />
+      <StarRating
+        :rating="Number(parseFloat(review.rating).toFixed(1))"
+        :isIndicatorActive="true"
+      />
       <div
         class="font-bold flex justify-center items-center text-md xs:text-xl"
       >
-        {{ review.date }}
+        {{ convertDateFormat(review.rating_date) }}
       </div>
     </div>
     <QualifyingQuestions
-      v-if="
-        review?.questionsSwitch?.length > 0 || review?.questionsText?.length > 0
-      "
-      :questionsSwitch="review.questionsSwitch"
-      :selectedReferal="review.selectedReferal"
+      v-if="questionsSwitch.length && review?.how_did_you_meet_this_contractor"
+      :questionsSwitch="questionsSwitch"
+      :selectedReferal="review.how_did_you_meet_this_contractor"
     />
     <div class="mt-1">
       <p class="p-2 text-sm xs:text-lg">
         {{
           showFullReview
-            ? review.rating_reason
-            : review.rating_reason.substring(0, 400) +
-              (review.rating_reason.length > 400 ? "..." : "")
+            ? review.rating_text
+            : review.rating_text.substring(0, 400) +
+              (review.rating_text.length > 400 ? "..." : "")
         }}
         <span
-          v-if="!showFullReview && review.rating_reason.length > 400"
+          v-if="!showFullReview && review.rating_text.length > 400"
           @click="showFullReview = true"
           class="cursor-pointer text-sky-700"
         >
           See more
         </span>
         <span
-          v-if="showFullReview && review.rating_reason.length > 400"
+          v-if="showFullReview && review.rating_text.length > 400"
           @click="showFullReview = false"
           class="cursor-pointer text-sky-700"
         >
@@ -152,7 +157,11 @@
       </p>
     </div>
   </div>
-  <EditRatingModal ref="editRef" :review="review" />
+  <EditRatingModal
+    ref="editRef"
+    :review="review"
+    :questionsSwitch="questionsSwitch"
+  />
   <DeleteRatingModal ref="deleteRef" />
 </template>
 
@@ -165,13 +174,47 @@ import DeleteRatingModal from "@/Pages/Ratings/Edit/DeleteRatingModal.vue";
 import ButtonRatings from "@/Components/Ratings/ButtonRatings.vue";
 
 import QualifyingQuestions from "@/Pages/Ratings/PartialsPersonal/QualifyingQuestions.vue";
+import { convertDateFormat } from "@/helpers/utilities";
 import { ref, onMounted, onUnmounted } from "vue";
-defineProps(["review", "contractor", "nonEditableReview"]);
+const { review } = defineProps({
+  review: {
+    type: Object,
+  },
+  contractor: {
+    type: Object,
+  },
+  profileId: {
+    type: Number,
+  },
+  nonEditableReview: {
+    type: Boolean,
+  },
+});
 const options = [
   { id: "trade1", name: "Supplier & Advertiser (all trades)" },
   { id: "trade2", name: "Construction & Remodeling" },
+  { id: "trade3", name: "Tile Works, Kitchen & Bathrooms" },
+  { id: "trade4", name: "Concrete, Masonry & Foundations" },
   { id: "trade5", name: "Landscape" },
   { id: "trade6", name: "Earthworks, Drives & Parking Lots" },
+  { id: "trade7", name: "Roofing & Solar" },
+  { id: "trade8", name: "Gutters, Siding & Fencing" },
+  { id: "trade9", name: "Water/Fire & Mold Remediation" },
+  { id: "trade10", name: "Electrical & Low Voltage" },
+  { id: "trade11", name: "Plumbing (all Facets)" },
+  { id: "trade12", name: "HVAC" },
+  { id: "trade13", name: "Carpentry & Finish Carpentry" },
+  { id: "trade14", name: "Cabinets, Countertops & Furniture" },
+  { id: "trade15", name: "Decks, Pergolas & Gazzebo" },
+  { id: "trade16", name: "Flooring - All Types" },
+  { id: "trade17", name: "Painting & Staining" },
+  { id: "trade18", name: "Drywall Install & Repair Mud Texture" },
+  { id: "trade19", name: "Garage & Garage Doors" },
+  { id: "trade20", name: "Cleaning Services & Junk Haul Off" },
+  { id: "trade21", name: "Glass, Mirrors, Windows & Doors" },
+  { id: "trade22", name: "Metal Fab, Fireplaces" },
+  { id: "trade23", name: "Handyman Services" },
+  { id: "trade24", name: "Architectural, Engineering & Law" },
 ];
 
 const editRef = ref();
@@ -200,6 +243,35 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener("resize", updateWidth);
 });
+//  for quesitonSwitch
+const questionsMapping = [
+  {
+    field: "hired_by_contractor",
+    question: "I Hired Contractor",
+    id: 1,
+  },
+  {
+    field: "hired_contractor",
+    question: "Contractor hired me",
+    id: 2,
+  },
+  {
+    field: "paid_on_time",
+    question: "Paid on time",
+    id: 3,
+  },
+  {
+    field: "give_full_payment",
+    question: "Give full payment",
+    id: 4,
+  },
+];
+
+const questionsSwitch = questionsMapping.map((mapping) => ({
+  id: mapping.id,
+  question: mapping.question,
+  questionAnswer: review[mapping.field],
+}));
 </script>
 
 <style scoped>

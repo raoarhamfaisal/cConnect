@@ -18,9 +18,8 @@ import { computed } from "vue";
 export default {
   props: {
     shadowLevel: {
-      type: Number,
+      type: [Number, String],
       default: 5,
-      validator: (value) => value >= 1 && value <= 10,
     },
     bgColor: {
       type: String,

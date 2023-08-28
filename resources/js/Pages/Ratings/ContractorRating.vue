@@ -9,11 +9,20 @@
     :show-post-buttons="true"
     color="rgb(229 231 235 / var(--tw-bg-opacity))"
   >
-    <div class="bg-gray-200 mt-10">
+    <div
+      v-if="!loading && contractorReviews && average_rating && starPercentages"
+      class="bg-gray-200 mt-10"
+    >
       <Card :shadowLevel="2" bgColor="white" padding="20px">
-        <ContractorInfo :contractor="contractor" />
+        <ContractorInfo :contractor="contractorReviews[0]?.contractor" />
+
         <heading-card heading="Average Ratings" class="mb-12" />
-        <AverageRating class="mb-12" />
+        <AverageRating
+          :averageRating="average_rating"
+          :starPercentages="starPercentages"
+          :length="contractorReviews.length"
+          class="mb-12"
+        />
         <!-- Filters -->
         <div class="border-t-2 border-gray-300">
           <heading-card class="mt-6" heading="Order Reviews By" />
@@ -37,17 +46,17 @@
         </div>
         <div class="xs:mb-12 mb-6 xs:mt-12 mt-7 border-t-2 border-gray-300">
           <heading-card heading="Top Reviews" class="mt-6 mb-12" />
-          <!-- <Loader :loading="true" background="white" height="50vh"></Loader> -->
 
-          <div v-if="reviews.length > 0" class="flex gap-8 flex-col">
+          <div v-if="contractorReviews.length > 0" class="flex gap-8 flex-col">
             <ReviewResponse
-              v-for="(review, index) in reviews"
+              v-for="(review, index) in contractorReviews"
               :key="index"
               :review="review"
               :contractor="contractor"
+              :profileId="profile.user_id"
             />
           </div>
-          <div v-if="reviews.length === 0">
+          <div v-if="contractorReviews.length === 0">
             <div
               class="p-2 text-xl text-grey-600 font-bold h-60 flex items-center justify-center"
             >
@@ -75,13 +84,18 @@
               class="mt-8"
             >
               <transition name="accordion">
-                <GiveRating />
+                <GiveRating
+                  :profileId="profile.user_id"
+                  @addReview="refreshPage"
+                  :contractorId="contractorReviews[0]?.contractor_id"
+                />
               </transition>
             </Card>
           </transition>
         </div>
       </Card>
     </div>
+    <Loader :loading="loading" background="white" height="100vh"></Loader>
   </Header>
 </template>
 
@@ -91,9 +105,11 @@ import ReviewResponse from "./PartialsVisiting/ReviewResponse.vue";
 import { Head } from "@inertiajs/inertia-vue3";
 import AverageRating from "./PartialsVisiting/AverageRating.vue";
 import Button from "@/Components/Ratings/Button.vue";
+import axios from "axios";
+
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import Card from "@/Components/Card.vue";
-// import Loader from "./components/Loader.vue";
+import Loader from "@/Components/Ratings/Loader.vue";
 import ContractorInfo from "./PartialsVisiting/ContractorInfo.vue";
 import GiveRating from "./PartialsVisiting/GiveRating.vue";
 
@@ -108,13 +124,68 @@ defineProps({
     }),
   },
 });
-import { ref, nextTick } from "vue";
+import { ref, nextTick, onMounted } from "vue";
+import { somethingWentWrong } from "@/helpers/utilities";
 
 // State
+
 const showCard = ref(false);
 const cardRef = ref(null);
+const contractorReviews = ref(null);
+const loading = ref(false);
+const starPercentages = ref([]);
+const average_rating = ref(null);
+
+// Mounted
+onMounted(() => {
+  fetchReviews();
+});
 
 // Methods
+
+// Fetch REviews
+const fetchReviews = async () => {
+  try {
+    loading.value = true;
+    const response = await axios.get(`/api/reviews/1`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    contractorReviews.value = response.data.reviews;
+    console.log(response.data);
+    average_rating.value = response.data.average_rating;
+    // Extracting the star counts
+    const {
+      five_stars_count,
+      four_stars_count,
+      three_stars_count,
+      two_stars_count,
+      one_star_count,
+    } = response.data;
+
+    const totalRatings =
+      five_stars_count +
+      four_stars_count +
+      three_stars_count +
+      two_stars_count +
+      one_star_count;
+
+    // Calculate percentages for each star count
+    starPercentages.value = [
+      (five_stars_count / totalRatings) * 100,
+      (four_stars_count / totalRatings) * 100,
+      (three_stars_count / totalRatings) * 100,
+      (two_stars_count / totalRatings) * 100,
+      (one_star_count / totalRatings) * 100,
+    ];
+  } catch (err) {
+    somethingWentWrong();
+  } finally {
+    loading.value = false;
+  }
+};
+
 const handleSelect = async () => {
   showCard.value = !showCard.value;
 
@@ -128,7 +199,6 @@ const handleSelect = async () => {
         cardRef.value.$el &&
         cardRef.value.$el.scrollIntoView
       ) {
-        console.log("here2");
         const elementToScroll = cardRef.value.$el || cardRef.value;
         elementToScroll.scrollIntoView({
           behavior: "smooth",
@@ -141,162 +211,9 @@ const handleSelect = async () => {
     }, 250);
   }
 };
-const reviews = [
-  {
-    reviewId: 1,
-    reviewer: {
-      id: 1,
-      firstName: "John",
-      lastName: "Doe",
-      company: "John Company",
-      city: "McKinney",
-      state: "TX",
-      profilePic:
-        "http://0.0.0.0/images/avatars/e63Uf6DrgCqMTzQId2cCm5wF5vwtmBmOBvAPqrAC.jpg",
-    },
-    rating: 4.5,
-    date: "03/03/2023",
-    onAppeal: {
-      reason:
-        "Lorem Ipsum is Lorem Ipsum is Lorem Ipsum is Lorem Ips lorem. Lorem Ipsum",
-      date: "03/03/2023",
-    },
-    offAppeal: {
-      reason:
-        "Lorem Ipsum is Lorem Ipsum is Lorem Ipsum is Lorem Ips lorem. Lorem Ipsum",
-      date: "03/03/2023",
-    },
-    rating_reason:
-      "Lorem ipsum dolor sit amet consectetur... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non, dolores debitis! Repellat quasi sit placeat, assumenda distinctio laborum nihil quaerat veniam, dolore enim voluptatum. Sequi nihil libero animi illo ad?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis ut vero facere laborum sequi ducimus ullam itaque culpa harum! Et iste consequatur doloribus repudiandae. Temporibus adipisci vel ipsa inventore saepe?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil quod corrupti iusto. Enim sint hic molestias voluptates est vitae, blanditiis iure saepe possimus quasi, distinctio laudantium consequuntur. Facere, doloremque vitae. ",
-    isUnderAppeal: 0,
-    questionsSwitch: [
-      {
-        id: 1,
-        question: "I Hired Contractor",
-        questionAnswer: 1,
-      },
-      {
-        id: 2,
-        question: "Contractor hired me",
-        questionAnswer: 0,
-      },
-      {
-        id: 3,
-        question: "Paid on time",
-        questionAnswer: 1,
-      },
-      {
-        id: 4,
-        question: "Give full  payment",
-        questionAnswer: 1,
-      },
-    ],
-    selectedReferal: ["Friend Referral"],
-  },
-  {
-    reviewId: 2,
-    reviewer: {
-      id: 2,
-      firstName: "John",
-      lastName: "Doe",
-      company: "John Company",
-      city: "McKinney",
-      state: "TX",
-      profilePic:
-        "http://0.0.0.0/images/avatars/e63Uf6DrgCqMTzQId2cCm5wF5vwtmBmOBvAPqrAC.jpg",
-    },
-    rating: 4.3,
-    date: "03/03/2023",
-    rating_reason: "Lorem ipsum dolor sit amet consectetur...",
-    isUnderAppeal: 1,
-    onAppeal: {
-      reason:
-        "Lorem Ipsum is Lorem Ipsum is Lorem Ipsum is Lorem Ips lorem. Lorem Ipsum",
-      date: "03/03/2023",
-    },
-    questionsSwitch: [
-      {
-        id: 1,
-        question: "Were you hired by this contractor?",
-        questionAnswer: 1,
-      },
-      {
-        id: 2,
-        question: "Were you paid onetime?",
-        questionAnswer: 0,
-      },
-      {
-        id: 3,
-        question: "Did you hire this contractor?",
-        questionAnswer: 1,
-      },
-      {
-        id: 4,
-        question: "Did you give full  payment",
-        questionAnswer: 1,
-      },
-    ],
-    selectedReferal: ["Friend R"],
-  },
-  {
-    reviewId: 3,
-    reviewer: {
-      id: 2,
-      firstName: "John",
-      lastName: "Doe",
-      company: "John Company",
-      city: "McKinney",
-      state: "TX",
-      profilePic:
-        "http://0.0.0.0/images/avatars/I3UQW3tApC1DHTE8Onj9IT060vVGZZBWZEaEIRX2.jpg",
-    },
-    rating: 4.3,
-    date: "03/03/2023",
-    rating_reason:
-      "Lorem ipsum dolor sit amet consectetur... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non, dolores debitis! Repellat quasi sit placeat, assumenda distinctio laborum nihil quaerat veniam, dolore enim voluptatum. Sequi nihil libero animi illo ad?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis ut vero facere laborum sequi ducimus ullam itaque culpa harum! Et iste consequatur doloribus repudiandae. Temporibus adipisci vel ipsa inventore saepe?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil quod corrupti iusto. Enim sint hic molestias voluptates est vitae, blanditiis iure saepe possimus quasi, distinctio laudantium consequuntur. Facere, doloremque vitae.",
-    isUnderAppeal: 1,
-    response: {
-      id: 1,
-      date: "04/03/2023",
-      response_text:
-        "Lorem ipsum dolor sit amet consectetur... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non, dolores debitis! Repellat quasi sit placeat, assumenda distinctio laborum nihil quaerat veniam, dolore enim voluptatum. Sequi nihil libero animi illo ad?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis ut vero facere laborum sequi ducimus ullam itaque culpa harum! Et iste consequatur doloribus repudiandae. Temporibus adipisci vel ipsa inventore saepe?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil quod corrupti iusto. Enim sint hic molestias voluptates est vitae, blanditiis iure saepe possimus quasi, distinctio laudantium consequuntur. Facere, doloremque vitae.",
-    },
-    questionsSwitch: [
-      {
-        id: 1,
-        question: "Were you hired by this contractor?",
-        questionAnswer: 1,
-      },
-      {
-        id: 2,
-        question: "Were you paid onetime?",
-        questionAnswer: 0,
-      },
-      {
-        id: 3,
-        question: "Did you hire this contractor?",
-        questionAnswer: 1,
-      },
-      {
-        id: 4,
-        question: "Did you give full  payment",
-        questionAnswer: 1,
-      },
-    ],
-    selectedReferal: ["Friend Referral"],
-  },
-
-  // ... more reviews
-];
-const contractor = {
-  id: 1,
-  firstName: "John",
-  lastName: "Doe",
-  company: "Contractor Company",
-  city: "McKinney",
-  state: "MX",
-  profilePic:
-    "http://0.0.0.0/images/avatars/I3UQW3tApC1DHTE8Onj9IT060vVGZZBWZEaEIRX2.png",
+const refreshPage = () => {
+  fetchReviews();
+  handleSelect();
 };
 </script>
 
