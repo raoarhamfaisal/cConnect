@@ -6,13 +6,7 @@ export const store = createStore({
     ratings,
   },
   state() {
-    return {
-      count: 0,
-    };
+    return {};
   },
-  mutations: {
-    increment(state) {
-      state.count++;
-    },
-  },
+  mutations: {},
 });
