@@ -184,7 +184,7 @@ const handleSubmit = async () => {
         form.questionsSwitch.value[3].questionAnswer === 1 ? true : false,
       how_did_you_meet_this_contractor: selectedReferal.value,
       rating: form.rating.value,
-      profile_id: profileId,
+      reviewer_id: profileId,
       contractor_id: contractorId,
     };
     await store.dispatch("ratings/updateReview", {

@@ -46,13 +46,13 @@
           <heading-card heading="Top Reviews" class="mt-6 mb-12" />
 
           <div v-if="contractorReviews.length > 0" class="flex gap-8 flex-col">
-            <!-- <ReviewResponse
+            <ReviewResponse
               v-for="(review, index) in contractorReviews"
               :key="index"
               :review="review"
               :contractorId="contractor.id"
               :profileId="profile.user_id"
-            /> -->
+            />
           </div>
           <div v-if="contractorReviews.length === 0">
             <div
@@ -61,6 +61,16 @@
               No reviews Available for this Contractor
             </div>
           </div>
+        </div>
+        <div class="flex items-center justify-center mb-4">
+          <CustomPagination
+            :total-items="50"
+            :current-page="1"
+            :items-per-page="5"
+            v-model="currentPage"
+            :max-pages-shown="3"
+            :on-click="onClickHandler"
+          />
         </div>
         <div class="py-4 border-t-2 border-b-2 border-gray-300">
           <Button
@@ -103,6 +113,7 @@ import ReviewResponse from "./PartialsVisiting/ReviewResponse.vue";
 import { Head } from "@inertiajs/inertia-vue3";
 import AverageRating from "./PartialsVisiting/AverageRating.vue";
 import Button from "@/Components/Ratings/Button.vue";
+import CustomPagination from "@/Components/Ratings/CustomPagination.vue";
 import axios from "axios";
 
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
@@ -129,6 +140,7 @@ defineProps({
 });
 
 const store = useStore();
+const currentPage = ref(1);
 const showCard = ref(false);
 const cardRef = ref(null);
 const contractorReviews = ref(null);
@@ -161,7 +173,7 @@ watch(isFetchReviews, (newVal) => {
 const fetchReviews = async () => {
   try {
     loading.value = true;
-    const response = await axios.get(`/api/reviews/1`, {
+    const response = await axios.get(`/api/reviews/6`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -229,6 +241,9 @@ const handleSelect = async () => {
 const refreshPage = () => {
   fetchReviews();
   handleSelect();
+};
+const onClickHandler = (page) => {
+  console.log("pageClick", page);
 };
 </script>
 
