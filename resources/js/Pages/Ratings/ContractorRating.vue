@@ -196,7 +196,9 @@ watch(isFetchReviews, (newVal) => {
 watch(isDeleted, (newVal) => {
   if (newVal) {
     if (pagination.value.total % pagination.value.per_page === 1) {
-      currentPage.value = currentPage.value - 1;
+      if (pagination.value.last_page === currentPage.value) {
+        currentPage.value = currentPage.value - 1;
+      }
     }
     fetchReviews(perPage.value, currentPage.value);
     store.commit("ratings/setIsDeleted", false);

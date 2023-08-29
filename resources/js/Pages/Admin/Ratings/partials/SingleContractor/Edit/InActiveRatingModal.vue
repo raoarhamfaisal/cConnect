@@ -2,13 +2,15 @@
   <!-- ConfirmDialog -->
 
   <CustomDialog
-    :submitText="isActive ? 'Inactivate' : 'activate'"
+    :submitText="isActive ? 'Inactivate' : 'Activate'"
     @submit="handleSubmit"
     ref="inActiveDialogRef"
     :loading="loading"
     :disabled="disabled"
     errorIcon
-    title="Are you sure? You want to inactivate this Rating?"
+    :title="`Are you sure? You want to ${
+      isActive ? 'inactivate' : 'activate'
+    } this rating?`"
   >
     <!-- review reason -->
     <div class="mb-4">

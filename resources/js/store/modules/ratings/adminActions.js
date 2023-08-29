@@ -66,3 +66,48 @@ export const activateReview = async ({ commit }, reviewId) => {
     commit("setDisabled", false);
   }
 };
+export const deactivateResponse = async ({ commit }, reviewId) => {
+  commit("setLoading", true);
+  commit("setDisabled", true);
+
+  try {
+    const response = await axios.put(
+      `/api/admin/review-responses/${reviewId}/deactivate`
+    );
+    if (response.data) {
+      changesSaved(response.message || "Response deactivated successfully");
+      console.log(response.data);
+      setTimeout(() => {
+        commit("setIsInactive", true);
+      }, 2000);
+    }
+  } catch (err) {
+    console.log(err, "error");
+
+    somethingWentWrong();
+  } finally {
+    commit("setLoading", false);
+    commit("setDisabled", false);
+  }
+};
+export const activateResponse = async ({ commit }, reviewId) => {
+  commit("setLoading", true);
+  commit("setDisabled", true);
+
+  try {
+    const response = await axios.put(
+      `/api/admin/review-responses/${reviewId}/activate`
+    );
+    if (response.data) {
+      changesSaved(response.message || "Response activated successfully");
+      setTimeout(() => {
+        commit("setIsInactive", true);
+      }, 2000);
+    }
+  } catch (err) {
+    somethingWentWrong();
+  } finally {
+    commit("setLoading", false);
+    commit("setDisabled", false);
+  }
+};

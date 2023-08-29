@@ -174,7 +174,7 @@ watch(isDeleted, (newVal) => {
 });
 watch(isInactive, (newVal) => {
   if (newVal) {
-    configueCurrentPage();
+    fetchReviews(perPage.value, currentPage.value);
     store.commit("ratings/setIsInactive", false);
   }
 });
@@ -182,7 +182,9 @@ watch(isInactive, (newVal) => {
 // Methods
 const configueCurrentPage = () => {
   if (pagination.value.total % pagination.value.per_page === 1) {
-    currentPage.value = currentPage.value - 1;
+    if (pagination.value.last_page === currentPage.value) {
+      currentPage.value = currentPage.value - 1;
+    }
   }
   fetchReviews(perPage.value, currentPage.value);
 };
@@ -209,7 +211,7 @@ const fetchReviews = async (per_page = perPage.value, page = 1) => {
   try {
     loading.value = true;
     const response = await axios.get(
-      `/api/reviews/${contractorId.value}?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
+      `/api/admin/reviews/${contractorId.value}?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
       {
         headers: {
           "Content-Type": "application/json",

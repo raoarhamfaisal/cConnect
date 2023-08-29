@@ -4,6 +4,8 @@ import {
   getAllContractors,
   activateReview,
   deactivateReview,
+  deactivateResponse,
+  activateResponse,
 } from "./adminActions";
 export default {
   namespaced: true,
@@ -227,5 +229,7 @@ export default {
     getAllContractors,
     deactivateReview,
     activateReview,
+    deactivateResponse,
+    activateResponse,
   },
 };
