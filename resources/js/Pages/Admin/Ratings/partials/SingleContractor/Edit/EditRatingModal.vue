@@ -235,16 +235,16 @@ const handleConfirm = async () => {
       rating: form.rating.value,
       reviewer_id: profileId,
       contractor_id: contractorId,
-      editing_reason: form.editing_reason.value,
+      reason: form.editing_reason.value,
     };
     console.log(updateReview);
-    // await store.dispatch("ratings/updateReview", {
-    //   reviewId: review.id,
-    //   review: updateReview,
-    // });
-    // console.log(updateReview);
-    // submitRef.value.closeDialog();
-    // dialogRef.value.closeDialog();
+    await store.dispatch("ratings/updateReview", {
+      reviewId: review.id,
+      review: updateReview,
+    });
+    console.log(updateReview);
+    submitRef.value.closeDialog();
+    dialogRef.value.closeDialog();
   }
 };
 

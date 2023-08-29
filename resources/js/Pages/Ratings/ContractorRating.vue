@@ -174,6 +174,7 @@ const contractor = ref(null);
 const sortByDate = ref("latest");
 const sortByRating = ref("");
 const pagination = ref(0);
+const perPage = ref(15);
 
 // Mounted
 onMounted(() => {
@@ -188,7 +189,7 @@ const isDeleted = computed(() => store.state.ratings.isDeleted);
 //Watch
 watch(isFetchReviews, (newVal) => {
   if (newVal) {
-    fetchReviews(15, currentPage.value);
+    fetchReviews(perPage.value, currentPage.value);
     store.commit("ratings/setIsFetchReviews", false);
   }
 });
@@ -196,9 +197,9 @@ watch(isDeleted, (newVal) => {
   if (newVal) {
     if (pagination.value.total % pagination.value.per_page === 1) {
       currentPage.value = currentPage.value - 1;
-      fetchReviews(15, currentPage.value);
+      fetchReviews(perPage.value, currentPage.value);
     }
-    fetchReviews(15, currentPage.value);
+    fetchReviews(perPage.value, currentPage.value);
     store.commit("ratings/setIsDeleted", false);
   }
 });
@@ -211,7 +212,7 @@ const handleDate = (selected, sortByString) => {
   } else if (!selected) {
     sortByDate.value = "";
   }
-  fetchReviews(15, currentPage.value);
+  fetchReviews(perPage.value, currentPage.value);
 };
 const handleRating = (selected, sortByRate) => {
   if (selected) {
@@ -219,11 +220,11 @@ const handleRating = (selected, sortByRate) => {
   } else if (!selected) {
     sortByRating.value = "";
   }
-  fetchReviews(15, currentPage.value);
+  fetchReviews(perPage.value, currentPage.value);
 };
 
 // Fetch REviews
-const fetchReviews = async (per_page = 15, page = 1) => {
+const fetchReviews = async (per_page = perPage.value, page = 1) => {
   try {
     loading.value = true;
     const response = await axios.get(
@@ -296,11 +297,11 @@ const handleSelect = async () => {
   }
 };
 const refreshPage = () => {
-  fetchReviews(15, currentPage.value);
+  fetchReviews(perPage.value, currentPage.value);
   handleSelect();
 };
 const onClickHandler = (page) => {
-  fetchReviews(15, page);
+  fetchReviews(perPage.value, page);
 };
 </script>
 

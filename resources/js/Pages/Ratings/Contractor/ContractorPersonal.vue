@@ -116,7 +116,7 @@ import Card from "@/Components/Card.vue";
 import Loader from "@/Components/Ratings/Loader.vue";
 import ContractorInfo from "../PartialsVisiting/ContractorInfo.vue";
 
-import { ref, nextTick, onMounted, watch, computed, reactive } from "vue";
+import { ref, onMounted, watch, computed } from "vue";
 import { somethingWentWrong } from "@/helpers/utilities";
 import { useStore } from "vuex";
 
@@ -135,8 +135,6 @@ const { profile } = defineProps({
 
 const store = useStore();
 const currentPage = ref(1);
-const showCard = ref(false);
-const cardRef = ref(null);
 const contractorReviews = ref(null);
 const loading = ref(false);
 const starPercentages = ref([]);
@@ -145,6 +143,7 @@ const contractor = ref(null);
 const sortByDate = ref("latest");
 const sortByRating = ref("");
 const pagination = ref(0);
+const perPage = ref(15);
 
 // Mounted
 onMounted(() => {
@@ -159,7 +158,7 @@ const isDeleted = computed(() => store.state.ratings.isDeleted);
 //Watch
 watch(isFetchReviews, (newVal) => {
   if (newVal) {
-    fetchReviews(15, currentPage.value);
+    fetchReviews(perPage.value, currentPage.value);
     store.commit("ratings/setIsFetchReviews", false);
   }
 });
@@ -167,9 +166,9 @@ watch(isDeleted, (newVal) => {
   if (newVal) {
     if (pagination.value.total % pagination.value.per_page === 1) {
       currentPage.value = currentPage.value - 1;
-      fetchReviews(15, currentPage.value);
+      fetchReviews(perPage.value, currentPage.value);
     } else {
-      fetchReviews(15, currentPage.value);
+      fetchReviews(perPage.value, currentPage.value);
     }
     store.commit("ratings/setIsDeleted", false);
   }
@@ -183,7 +182,7 @@ const handleDate = (selected, sortByString) => {
   } else if (!selected) {
     sortByDate.value = "";
   }
-  fetchReviews(15, currentPage.value);
+  fetchReviews(perPage.value, currentPage.value);
 };
 const handleRating = (selected, sortByRate) => {
   if (selected) {
@@ -191,11 +190,11 @@ const handleRating = (selected, sortByRate) => {
   } else if (!selected) {
     sortByRating.value = "";
   }
-  fetchReviews(15, currentPage.value);
+  fetchReviews(perPage.value, currentPage.value);
 };
 
 // Fetch REviews
-const fetchReviews = async (per_page = 15, page = 1) => {
+const fetchReviews = async (per_page = perPage.value, page = 1) => {
   try {
     loading.value = true;
 
@@ -244,7 +243,7 @@ const fetchReviews = async (per_page = 15, page = 1) => {
 };
 
 const onClickHandler = (page) => {
-  fetchReviews(15, page);
+  fetchReviews(perPage.value, page);
 };
 </script>
 

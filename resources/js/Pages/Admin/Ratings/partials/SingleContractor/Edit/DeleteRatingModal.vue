@@ -79,8 +79,8 @@ const validateConfirm = () => {
 const handleSubmit = async () => {
   if (validateConfirm()) {
     console.log(editing_reason);
-    // await store.dispatch("ratings/deleteReview", reviewId);
-    // deleteDialogRef.value.closeDialog();
+    await store.dispatch("ratings/deleteReview", reviewId);
+    deleteDialogRef.value.closeDialog();
   }
 };
 

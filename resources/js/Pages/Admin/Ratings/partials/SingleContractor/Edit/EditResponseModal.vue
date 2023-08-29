@@ -138,12 +138,12 @@ const handleConfirm = async () => {
     const updateResponse = {
       response_text: response_text.value,
       response_id: responseId,
-      editing_reason: editing_reason.value,
+      reason: editing_reason.value,
     };
     console.log(updateResponse);
-    // await store.dispatch("ratings/updateResponse", updateResponse);
-    // submitRef.value.closeDialog();
-    // dialogRef.value.closeDialog();
+    await store.dispatch("ratings/updateResponse", updateResponse);
+    submitRef.value.closeDialog();
+    dialogRef.value.closeDialog();
   }
 };
 
