@@ -60,9 +60,11 @@
         <!-- Hide -->
         <ButtonRatings
           bgColor="bg-[#f08c00]"
-          icon="mdi:hide"
+          :icon="review.is_review_active === 1 ? 'mdi:hide' : 'mdi:show'"
           @click="openInActiveDialog"
-          >Inactive</ButtonRatings
+          >{{
+            review.is_review_active === 1 ? "Inactive" : "Active"
+          }}</ButtonRatings
         >
         <!-- delete -->
         <ButtonRatings
@@ -85,9 +87,11 @@
     <!-- Hide -->
     <ButtonRatings
       bgColor="bg-[#f08c00]"
-      icon="mdi:hide"
+      :icon="review.is_review_active === 1 ? 'mdi:hide' : 'mdi:show'"
       @click="openInActiveDialog"
-      >Inactive</ButtonRatings
+      >{{
+        review.is_review_active === 1 ? "Inactive" : "Active"
+      }}</ButtonRatings
     >
 
     <ButtonRatings
@@ -222,7 +226,11 @@
     :contractorId="contractorId"
   />
   <DeleteRatingModal ref="deleteRef" :reviewId="review.id" />
-  <InActiveRatingModal ref="inActiveRef" />
+  <InActiveRatingModal
+    ref="inActiveRef"
+    :isActive="review.is_review_active === 1"
+    :reviewId="review.id"
+  />
 </template>
 
 <script setup>

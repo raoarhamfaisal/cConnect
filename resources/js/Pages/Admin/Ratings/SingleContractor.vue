@@ -9,18 +9,35 @@
     :show-post-buttons="true"
     color="rgb(229 231 235 / var(--tw-bg-opacity))"
   >
-    <div class="bg-gray-200 mt-10">
-      <Card :shadowLevel="2" bgColor="white">
-        <ContractorInfo :contractor="contractor" />
-        <heading-card heading="Average Ratings" class="mb-12" />
-        <AverageRating class="mb-12" />
+    <div v-if="!loading && contractor" class="bg-gray-200 mt-10">
+      <Card :shadowLevel="2" bgColor="white" padding="20px">
         <!-- Filters -->
-        <div class="border-t-2 border-gray-300">
+        <ContractorInfo :contractor="contractor" />
+
+        <heading-card heading="Average Ratings" class="mb-12" />
+        <AverageRating
+          v-if="average_rating && starPercentages"
+          :averageRating="average_rating"
+          :starPercentages="starPercentages"
+          :length="pagination.total"
+          class="mb-12"
+        />
+        <!-- Filters -->
+        <div class="border-gray-300">
           <heading-card class="mt-6" heading="Order Reviews By" />
           <div class="xs:mb-12 mb-6">
             <div class="flex gap-3">
-              <Button @onSelect="handleSelect">Latest</Button>
-              <Button @onSelect="handleSelect">Oldest</Button>
+              <Button
+                :selected="sortByDate === 'latest'"
+                @onSelect="(selected) => handleDate(selected, 'latest')"
+                >Latest</Button
+              >
+
+              <Button
+                :selected="sortByDate === 'oldest'"
+                @onSelect="(selected) => handleDate(selected, 'oldest')"
+                >Oldest</Button
+              >
             </div>
           </div>
         </div>
@@ -29,25 +46,39 @@
           <heading-card heading="Ratings" class="mt-6" />
           <div class="flex gap-3">
             <div class="flex gap-3">
-              <Button @onSelect="handleSelect">Highest rated</Button>
-              <Button @onSelect="handleSelect">Middle Rated</Button>
-              <Button @onSelect="handleSelect">Low Rated</Button>
+              <Button
+                :selected="sortByRating === 'highest'"
+                @onSelect="(selected) => handleRating(selected, 'highest')"
+                >Highest rated</Button
+              >
+
+              <Button
+                :selected="sortByRating === 'middle'"
+                @onSelect="(selected) => handleRating(selected, 'middle')"
+                >Middle Rated</Button
+              >
+
+              <Button
+                :selected="sortByRating === 'lowest'"
+                @onSelect="(selected) => handleRating(selected, 'lowest')"
+                >Low Rated</Button
+              >
             </div>
           </div>
         </div>
         <div class="xs:mb-12 mb-6 xs:mt-12 mt-7 border-t-2 border-gray-300">
-          <heading-card heading="Top Reviews" class="mt-6 mb-12" />
-          <!-- <Loader :loading="true" background="white" height="50vh"></Loader> -->
+          <heading-card heading="Reviews" class="mt-6 mb-12" />
 
-          <div v-if="reviews.length > 0" class="flex gap-8 flex-col">
+          <div v-if="contractorReviews?.length > 0" class="flex gap-8 flex-col">
             <ReviewResponseAdmin
-              v-for="(review, index) in reviews"
+              v-for="(review, index) in contractorReviews"
               :key="index"
               :review="review"
-              :contractor="contractor"
+              :contractorId="review.contractor_id"
+              :profileId="profile.id"
             />
           </div>
-          <div v-if="reviews.length === 0">
+          <div v-if="contractorReviews?.length === 0">
             <div
               class="p-2 text-xl text-grey-600 font-bold h-60 flex items-center justify-center"
             >
@@ -55,21 +86,42 @@
             </div>
           </div>
         </div>
+        <div class="flex items-center justify-center mb-4">
+          <CustomPagination
+            v-if="pagination && Object.keys(pagination).length > 0"
+            :total-items="pagination.total"
+            :current-page="pagination.current_page"
+            :items-per-page="pagination.per_page"
+            v-model="currentPage"
+            :max-pages-shown="3"
+            :on-click="onClickHandler"
+          />
+        </div>
       </Card>
     </div>
+    <Loader :loading="loading" background="white" height="100vh"></Loader>
   </Header>
 </template>
 
 <script setup>
 import Header from "@/Layouts/Header.vue";
-import ReviewResponseAdmin from "@/Pages/Admin/Ratings/partials/SingleContractor/ReviewResponseAdmin.vue";
-import { Head } from "@inertiajs/inertia-vue3";
-import AverageRating from "@/Pages/Ratings/PartialsVisiting/AverageRating.vue";
+import { Head, usePage } from "@inertiajs/inertia-vue3";
 import Button from "@/Components/Ratings/Button.vue";
+import CustomPagination from "@/Components/Ratings/CustomPagination.vue";
+import AverageRating from "@/Pages/Ratings/PartialsVisiting/AverageRating.vue";
+import ContractorInfo from "@/Pages/Ratings/PartialsVisiting/ContractorInfo.vue";
+import axios from "axios";
+import ReviewResponseAdmin from "@/Pages/Admin/Ratings/partials/SingleContractor/ReviewResponseAdmin.vue";
+
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import Card from "@/Components/Card.vue";
-import ContractorInfo from "@/Pages/Ratings/PartialsVisiting/ContractorInfo.vue";
+import Loader from "@/Components/Ratings/Loader.vue";
 
+import { ref, onMounted, watch, computed } from "vue";
+import { somethingWentWrong } from "@/helpers/utilities";
+import { useStore } from "vuex";
+
+// State
 defineProps({
   profile: Object,
   posts: Object,
@@ -81,184 +133,126 @@ defineProps({
     }),
   },
 });
-const handleSelect = () => {};
-const reviews = [
-  {
-    reviewId: 1,
-    reviewer: {
-      id: 1,
-      firstName: "John",
-      lastName: "Doe",
-      company: "John Company",
-      city: "McKinney",
-      state: "TX",
-      profilePic:
-        "http://0.0.0.0/images/avatars/e63Uf6DrgCqMTzQId2cCm5wF5vwtmBmOBvAPqrAC.jpg",
-    },
-    rating: 4.5,
-    date: "03/03/2023",
-    onAppeal: {
-      reason:
-        "Lorem Ipsum is Lorem Ipsum is Lorem Ipsum is Lorem Ips lorem. Lorem Ipsum",
-      date: "03/03/2023",
-    },
-    offAppeal: {
-      reason:
-        "Lorem Ipsum is Lorem Ipsum is Lorem Ipsum is Lorem Ips lorem. Lorem Ipsum",
-      date: "03/03/2023",
-    },
-    rating_reason:
-      "Lorem ipsum dolor sit amet consectetur... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non, dolores debitis! Repellat quasi sit placeat, assumenda distinctio laborum nihil quaerat veniam, dolore enim voluptatum. Sequi nihil libero animi illo ad?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis ut vero facere laborum sequi ducimus ullam itaque culpa harum! Et iste consequatur doloribus repudiandae. Temporibus adipisci vel ipsa inventore saepe?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil quod corrupti iusto. Enim sint hic molestias voluptates est vitae, blanditiis iure saepe possimus quasi, distinctio laudantium consequuntur. Facere, doloremque vitae. ",
-    isUnderAppeal: 0,
-    questionsSwitch: [
-      {
-        id: 1,
-        question: "I Hired Contractor",
-        questionAnswer: 1,
-      },
-      {
-        id: 2,
-        question: "Contractor hired me",
-        questionAnswer: 0,
-      },
-      {
-        id: 3,
-        question: "Paid on time",
-        questionAnswer: 1,
-      },
-      {
-        id: 4,
-        question: "Give full  payment",
-        questionAnswer: 1,
-      },
-    ],
-    questionsText: [
-      {
-        id: 1,
-        question: "How did you meet this contractor?",
-        questionAnswer:
-          "Curabitur non eros non ante vestibulum euismod. Fusce et facilisis urna.",
-      },
-    ],
-  },
-  {
-    reviewId: 2,
-    reviewer: {
-      id: 2,
-      firstName: "John",
-      lastName: "Doe",
-      company: "John Company",
-      city: "McKinney",
-      state: "TX",
-      profilePic:
-        "http://0.0.0.0/images/avatars/e63Uf6DrgCqMTzQId2cCm5wF5vwtmBmOBvAPqrAC.jpg",
-    },
-    rating: 4.3,
-    date: "03/03/2023",
-    rating_reason: "Lorem ipsum dolor sit amet consectetur...",
-    isUnderAppeal: 1,
-    onAppeal: {
-      reason:
-        "Lorem Ipsum is Lorem Ipsum is Lorem Ipsum is Lorem Ips lorem. Lorem Ipsum",
-      date: "03/03/2023",
-    },
-    questionsSwitch: [
-      {
-        id: 1,
-        question: "Were you hired by this contractor?",
-        questionAnswer: 1,
-      },
-      {
-        id: 2,
-        question: "Were you paid onetime?",
-        questionAnswer: 0,
-      },
-      {
-        id: 3,
-        question: "Did you hire this contractor?",
-        questionAnswer: 1,
-      },
-      {
-        id: 4,
-        question: "Did you give full  payment",
-        questionAnswer: 1,
-      },
-    ],
-    questionsText: [
-      {
-        id: 1,
-        question: "How did you meet this contractor?",
-        questionAnswer:
-          "Curabitur non eros non ante vestibulum euismod. Fusce et facilisis urna.",
-      },
-    ],
-  },
-  {
-    reviewId: 3,
-    reviewer: {
-      id: 2,
-      firstName: "John",
-      lastName: "Doe",
-      company: "John Company",
-      city: "McKinney",
-      state: "TX",
-      profilePic:
-        "http://0.0.0.0/images/avatars/I3UQW3tApC1DHTE8Onj9IT060vVGZZBWZEaEIRX2.jpg",
-    },
-    rating: 4.3,
-    date: "03/03/2023",
-    rating_reason:
-      "Lorem ipsum dolor sit amet consectetur... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non, dolores debitis! Repellat quasi sit placeat, assumenda distinctio laborum nihil quaerat veniam, dolore enim voluptatum. Sequi nihil libero animi illo ad?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis ut vero facere laborum sequi ducimus ullam itaque culpa harum! Et iste consequatur doloribus repudiandae. Temporibus adipisci vel ipsa inventore saepe?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil quod corrupti iusto. Enim sint hic molestias voluptates est vitae, blanditiis iure saepe possimus quasi, distinctio laudantium consequuntur. Facere, doloremque vitae.",
-    isUnderAppeal: 1,
-    questionsSwitch: [
-      {
-        id: 1,
-        question: "Were you hired by this contractor?",
-        questionAnswer: 1,
-      },
-      {
-        id: 2,
-        question: "Were you paid onetime?",
-        questionAnswer: 0,
-      },
-      {
-        id: 3,
-        question: "Did you hire this contractor?",
-        questionAnswer: 1,
-      },
-      {
-        id: 4,
-        question: "Did you give full  payment",
-        questionAnswer: 1,
-      },
-    ],
-    response: {
-      id: 5,
-      date: "04/03/2023",
-      response_text:
-        "Lorem ipsum dolor sit amet consectetur... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non, dolores debitis! Repellat quasi sit placeat, assumenda distinctio laborum nihil quaerat veniam, dolore enim voluptatum. Sequi nihil libero animi illo ad?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis ut vero facere laborum sequi ducimus ullam itaque culpa harum! Et iste consequatur doloribus repudiandae. Temporibus adipisci vel ipsa inventore saepe?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil quod corrupti iusto. Enim sint hic molestias voluptates est vitae, blanditiis iure saepe possimus quasi, distinctio laudantium consequuntur. Facere, doloremque vitae.",
-    },
-    questionsText: [
-      {
-        id: 1,
-        question: "How did you meet this contractor?",
-        questionAnswer:
-          "Curabitur non eros non ante vestibulum euismod. Fusce et facilisis urna.",
-      },
-    ],
-  },
+const store = useStore();
+const currentPage = ref(1);
+const contractorId = ref(null);
+const contractorReviews = ref(null);
+const loading = ref(false);
+const starPercentages = ref([]);
+const average_rating = ref(null);
+const contractor = ref(null);
+const sortByDate = ref("latest");
+const sortByRating = ref("");
+const pagination = ref(0);
+const perPage = ref(15);
 
-  // ... more reviews
-];
-const contractor = {
-  id: 2,
-  firstName: "John",
-  lastName: "Doe",
-  company: "Contractor Company",
-  city: "McKinney",
-  state: "MX",
-  profilePic:
-    "http://0.0.0.0/images/avatars/I3UQW3tApC1DHTE8Onj9IT060vVGZZBWZEaEIRX2.jpg",
+// Mounted
+onMounted(() => {
+  const match = usePage().url.value.match(/\/([^\/]+)\/?$/);
+  contractorId.value = match ? match[1] : null;
+  fetchReviews();
+});
+
+//Computed
+
+const isFetchReviews = computed(() => store.state.ratings.isFetchReviews);
+const isDeleted = computed(() => store.state.ratings.isDeleted);
+const isInactive = computed(() => store.state.ratings.isInactive);
+
+//Watch
+watch(isFetchReviews, (newVal) => {
+  if (newVal) {
+    fetchReviews(perPage.value, currentPage.value);
+    store.commit("ratings/setIsFetchReviews", false);
+  }
+});
+watch(isDeleted, (newVal) => {
+  if (newVal) {
+    configueCurrentPage();
+    store.commit("ratings/setIsDeleted", false);
+  }
+});
+watch(isInactive, (newVal) => {
+  if (newVal) {
+    configueCurrentPage();
+    store.commit("ratings/setIsInactive", false);
+  }
+});
+
+// Methods
+const configueCurrentPage = () => {
+  if (pagination.value.total % pagination.value.per_page === 1) {
+    currentPage.value = currentPage.value - 1;
+  }
+  fetchReviews(perPage.value, currentPage.value);
+};
+
+const handleDate = (selected, sortByString) => {
+  if (selected) {
+    sortByDate.value = sortByString;
+  } else if (!selected) {
+    sortByDate.value = "";
+  }
+  fetchReviews(perPage.value, currentPage.value);
+};
+const handleRating = (selected, sortByRate) => {
+  if (selected) {
+    sortByRating.value = sortByRate;
+  } else if (!selected) {
+    sortByRating.value = "";
+  }
+  fetchReviews(perPage.value, currentPage.value);
+};
+
+// Fetch REviews
+const fetchReviews = async (per_page = perPage.value, page = 1) => {
+  try {
+    loading.value = true;
+    const response = await axios.get(
+      `/api/reviews/${contractorId.value}?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    contractorReviews.value = response.data.reviews;
+    contractor.value = response.data.contractor;
+    pagination.value = response.data.pagination;
+    average_rating.value = response.data.average_rating;
+    // Extracting the star counts
+    const {
+      five_stars_count,
+      four_stars_count,
+      three_stars_count,
+      two_stars_count,
+      one_star_count,
+    } = response.data;
+
+    const totalRatings =
+      five_stars_count +
+      four_stars_count +
+      three_stars_count +
+      two_stars_count +
+      one_star_count;
+
+    // Calculate percentages for each star count
+    starPercentages.value = [
+      (five_stars_count / totalRatings) * 100,
+      (four_stars_count / totalRatings) * 100,
+      (three_stars_count / totalRatings) * 100,
+      (two_stars_count / totalRatings) * 100,
+      (one_star_count / totalRatings) * 100,
+    ];
+  } catch (err) {
+    somethingWentWrong();
+  } finally {
+    loading.value = false;
+  }
+};
+
+const onClickHandler = (page) => {
+  fetchReviews(perPage.value, page);
 };
 </script>
 

@@ -197,7 +197,6 @@ watch(isDeleted, (newVal) => {
   if (newVal) {
     if (pagination.value.total % pagination.value.per_page === 1) {
       currentPage.value = currentPage.value - 1;
-      fetchReviews(perPage.value, currentPage.value);
     }
     fetchReviews(perPage.value, currentPage.value);
     store.commit("ratings/setIsDeleted", false);
@@ -228,7 +227,7 @@ const fetchReviews = async (per_page = perPage.value, page = 1) => {
   try {
     loading.value = true;
     const response = await axios.get(
-      `/api/reviews/10?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
+      `/api/reviews/4?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
       {
         headers: {
           "Content-Type": "application/json",

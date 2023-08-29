@@ -1,4 +1,4 @@
-import { somethingWentWrong } from "@/helpers/utilities";
+import { somethingWentWrong, changesSaved } from "@/helpers/utilities";
 import axios from "axios";
 
 export const getAllContractors = async ({ commit }, payload) => {
@@ -21,5 +21,48 @@ export const getAllContractors = async ({ commit }, payload) => {
     somethingWentWrong();
   } finally {
     commit("setLoading", false);
+  }
+};
+export const deactivateReview = async ({ commit }, reviewId) => {
+  commit("setLoading", true);
+  commit("setDisabled", true);
+
+  try {
+    const response = await axios.put(
+      `/api/admin/reviews/${reviewId}/deactivate`
+    );
+    if (response.data) {
+      changesSaved(response.message || "Review deactivated successfully");
+      console.log(response.data);
+      setTimeout(() => {
+        commit("setIsInactive", true);
+      }, 2000);
+    }
+  } catch (err) {
+    console.log(err, "error");
+
+    somethingWentWrong();
+  } finally {
+    commit("setLoading", false);
+    commit("setDisabled", false);
+  }
+};
+export const activateReview = async ({ commit }, reviewId) => {
+  commit("setLoading", true);
+  commit("setDisabled", true);
+
+  try {
+    const response = await axios.put(`/api/admin/reviews/${reviewId}/activate`);
+    if (response.data) {
+      changesSaved(response.message || "Review activated successfully");
+      setTimeout(() => {
+        commit("setIsInactive", true);
+      }, 2000);
+    }
+  } catch (err) {
+    somethingWentWrong();
+  } finally {
+    commit("setLoading", false);
+    commit("setDisabled", false);
   }
 };

@@ -1,6 +1,10 @@
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 import axios from "axios";
-import { getAllContractors } from "./adminActions";
+import {
+  getAllContractors,
+  activateReview,
+  deactivateReview,
+} from "./adminActions";
 export default {
   namespaced: true,
   state() {
@@ -9,6 +13,7 @@ export default {
       disabled: false,
       isFetchReviews: false,
       isDeleted: false,
+      isInactive: false,
       allContractors: [],
       pagination: {},
     };
@@ -25,6 +30,9 @@ export default {
     },
     setIsDeleted(state, payload) {
       state.isDeleted = payload;
+    },
+    setIsInactive(state, payload) {
+      state.isInactive = payload;
     },
     setAllContractors(state, payload) {
       state.allContractors = payload;
@@ -217,5 +225,7 @@ export default {
       }
     },
     getAllContractors,
+    deactivateReview,
+    activateReview,
   },
 };
