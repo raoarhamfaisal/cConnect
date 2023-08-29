@@ -17,6 +17,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  allowToggle: {
+    type: Boolean,
+    default: true,
+  },
   // You can add more props as required
 });
 const emit = defineEmits();
@@ -26,7 +30,11 @@ const isSelected = ref(props.selected);
 
 // Toggle the isSelected state
 const toggleSelect = () => {
-  isSelected.value = !isSelected.value;
+  if (!props.allowToggle && !isSelected.value) {
+    isSelected.value = !isSelected.value;
+  } else if (props.allowToggle) {
+    isSelected.value = !isSelected.value;
+  }
   emit("onSelect", isSelected.value); // For v-model compatibility
 };
 

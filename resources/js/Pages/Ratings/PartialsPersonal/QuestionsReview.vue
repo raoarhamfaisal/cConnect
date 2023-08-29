@@ -14,7 +14,7 @@
         Object.keys(review.review_response).length < 1
       "
     >
-      <div class="py-4 border-t-2 border-b-2 border-gray-300">
+      <div class="py-4 border-t-2 border-gray-300">
         <Button
           @onSelect="handleResponse"
           :style="{
@@ -63,7 +63,7 @@
       </div>
     </div>
     <!-- appeal -->
-    <!-- <div class="py-4 border-t-2 border-b-2 border-gray-300">
+    <div class="py-4 border-t-2 border-b-2 border-gray-300">
       <Button
         @onSelect="handleAppeal"
         :style="{
@@ -73,7 +73,7 @@
         }"
         class="w-full text-lg text-gray-600 font-semibold text-left rounded-lg"
         >{{
-          form.isAppealed === 1
+          review.is_under_appeal === 1
             ? "Turn off Your Appeal"
             : "Submit your Appeal for this Rating"
         }}</Button
@@ -82,31 +82,39 @@
         <div v-if="showAppealArea">
           <div class="mb-4 mt-3">
             <textarea
-              id="rating_reason"
+              id="appealReason"
               type="text"
               :rows="3"
-              v-if="form.isAppealed === 1"
+              v-if="review.is_under_appeal === 1"
               class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
               required
-              v-model="form.appealReason"
+              v-model="turnOffReason"
               placeholder="Type your reason for the removal of appeal"
             />
-            <InputError class="mt-2" :message="form.errors.turnOffReason" />
+            <InputError
+              v-if="turnOffReasonError"
+              class="mt-2"
+              :message="turnOffReasonError"
+            />
 
             <textarea
-              id="rating_reason"
+              id="appealReason"
               type="text"
               :rows="3"
-              v-if="form.isAppealed === 0"
+              v-if="review.is_under_appeal === 0"
               class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
               required
-              v-model="form.turnOffReason"
+              v-model="appealReason"
               placeholder="Type your reason for your appeal"
             />
 
-            <InputError class="mt-2" :message="form.errors.appealReason" />
+            <InputError
+              v-if="appealReasonError"
+              class="mt-2"
+              :message="appealReasonError"
+            />
 
-            <div v-if="form.isAppealed === 0" class="mt-3 block">
+            <div v-if="review.is_under_appeal === 0" class="mt-3 block">
               Send any supporting document to
               <a
                 class="underline text-sky-600"
@@ -118,32 +126,25 @@
             </div>
             <div class="flex items-center gap-4 mt-6 w-full">
               <PrimaryButton
-                :disabled="form.processing"
-                class="w-full flex justify-center"
                 :style="{
-                  backgroundColor: '#0e0c2c',
+                  height: '42px',
                 }"
-                >{{
-                  form.isAppealed === 1 ? "Submit" : "Submit your Appeal"
-                }}</PrimaryButton
+                @click="handleAppealSubmit"
+                :disabled="disabled"
+                class="w-full flex justify-center gap-2"
               >
-              <Transition
-                enter-from-class="opacity-0"
-                leave-to-class="opacity-0"
-                class="transition ease-in-out"
-              >
-                <p
-                  v-if="form.recentlySuccessful"
-                  class="text-sm text-gray-600 dark:text-gray-400"
-                >
-                  Saved.
-                </p>
-              </Transition>
+                <div>Send</div>
+                <img
+                  v-show="loading"
+                  src="/images/avatars/Spinner.gif"
+                  alt="spinner"
+                  width="30"
+              /></PrimaryButton>
             </div>
           </div>
         </div>
       </transition>
-    </div> -->
+    </div>
     <div
       v-if="
         review.review_response && Object.keys(review.review_response).length > 1
@@ -186,8 +187,12 @@ const store = useStore();
 const response_text = ref("");
 const showResponseArea = ref(false);
 const showAppealArea = ref(false);
-const dialogRef = ref();
+const appealReason = ref("");
+const turnOffReason = ref("");
+
 const responseError = ref("");
+const appealReasonError = ref("");
+const turnOffReasonError = ref("");
 
 //Computed
 const loading = computed(() => store.state.ratings.loading);
@@ -201,9 +206,49 @@ watch(
     responseError.value = "";
   }
 );
-
+watch(
+  () => appealReason.value,
+  () => {
+    appealReasonError.value = "";
+  }
+);
+watch(
+  () => turnOffReason.value,
+  () => {
+    turnOffReasonError.value = "";
+  }
+);
 //Methods
-const validate = () => {
+
+const validateAppealReason = () => {
+  let isValid = true;
+  // Reset the error messages before validating
+  appealReasonError.value = "";
+
+  // Validate rating_text
+  if (!appealReason.value || appealReason.value.trim() === "") {
+    appealReasonError.value = "Appeal Reason should not be empty.";
+    isValid = false;
+  }
+
+  return isValid;
+};
+
+const validateTurnOffReason = () => {
+  let isValid = true;
+  // Reset the error messages before validating
+  turnOffReasonError.value = "";
+
+  // Validate rating_text
+  if (!turnOffReason.value || turnOffReason.value.trim() === "") {
+    turnOffReasonError.value = "Turn off Reason should not be empty.";
+    isValid = false;
+  }
+
+  return isValid;
+};
+
+const validateResponse = () => {
   let isValid = true;
   // Reset the error messages before validating
   responseError.value = "";
@@ -217,12 +262,35 @@ const validate = () => {
   return isValid;
 };
 const handleSubmit = async () => {
-  if (validate()) {
+  if (validateResponse()) {
     const responseData = {
       response_text: response_text.value,
       review_id: review.id,
     };
     await store.dispatch("ratings/createResponse", responseData);
+  }
+};
+const handleAppealSubmit = async () => {
+  console.log("Here");
+  if (review.is_under_appeal === 0) {
+    if (validateAppealReason()) {
+      console.log("Here2");
+
+      const appealData = {
+        on_appeal_reason: appealReason.value,
+        reviewId: review.id,
+      };
+      await store.dispatch("ratings/sendAppeal", appealData);
+    }
+  } else if (review.is_under_appeal === 1) {
+    if (validateTurnOffReason()) {
+      console.log("Here3");
+      const appealTurnOffData = {
+        off_appeal_reason: turnOffReason.value,
+        reviewId: review.id,
+      };
+      await store.dispatch("ratings/sendTurnOffApeal", appealTurnOffData);
+    }
   }
 };
 
