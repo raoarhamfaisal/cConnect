@@ -240,7 +240,7 @@ const handleSubmit = async () => {
       });
       console.log(response, response.data);
       if (response.data) {
-        changesSaved(response.message);
+        changesSaved("Review Successfully Created");
         setTimeout(() => {
           emit("addReview");
         }, 2000);
