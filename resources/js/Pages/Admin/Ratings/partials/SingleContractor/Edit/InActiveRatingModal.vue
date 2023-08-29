@@ -2,45 +2,86 @@
   <!-- ConfirmDialog -->
 
   <CustomDialog
-    submitText="Save Changes"
+    submitText="Delete"
     @submit="handleSubmit"
     ref="inActiveDialogRef"
-    title="Are you sure? You want to Inactivate this Rating?"
+    :loading="loading"
+    :disabled="disabled"
+    errorIcon
+    title="Are you sure? You want to inactivate this Rating?"
   >
-    <form @submit.prevent="handleSubmit">
-      <!-- review reason -->
-      <div class="mb-4">
-        <div class="text-md font-bold text-gray-600 mt-3 mb-2">
-          Reason for Inactivating this rating
-        </div>
-        <textarea
-          id="in_active_reason"
-          type="text"
-          :rows="5"
-          class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
-          required
-          v-model="form.in_active_reason"
-          placeholder="Type your reason for inactivating this rating"
-        />
-        <InputError class="mt-2" :message="form.errors.in_active_reason" />
+    <!-- review reason -->
+    <div class="mb-4">
+      <div class="text-md font-bold text-gray-600 mt-3 mb-2">
+        Reason for inactivating this Rating
       </div>
-    </form>
+      <textarea
+        id="inactivating_reason"
+        type="text"
+        :rows="5"
+        class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+        required
+        v-model="editing_reason"
+        placeholder="Type your reason for inactivating this rating"
+      />
+      <InputError
+        v-if="editingReasonError"
+        class="mt-2"
+        :message="editingReasonError"
+      />
+    </div>
   </CustomDialog>
 </template>
 
 <script setup>
 import InputError from "@/Components/InputError.vue";
-import { useForm } from "@inertiajs/inertia-vue3";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
-import { ref } from "vue";
+import { computed, ref, watch } from "vue";
+import { useStore } from "vuex";
 
-const form = useForm({
-  in_active_reason: null,
-});
+// States
+const store = useStore();
 const inActiveDialogRef = ref();
+// const { reviewId } = defineProps({
+//   reviewId: {
+//     type: Number,
+//   },
+// });
+const editing_reason = ref("");
+const editingReasonError = ref("");
 
-const handleSubmit = () => {
-  console.log("here", form);
+//Computed
+const loading = computed(() => store.state.ratings.loading);
+const disabled = computed(() => store.state.ratings.disabled);
+
+//Watch
+watch(
+  () => editing_reason.value,
+  () => {
+    editingReasonError.value = "";
+  }
+);
+//Methods
+const validateConfirm = () => {
+  let isValid = true;
+  // Reset the error messages before validating
+  editingReasonError.value = "";
+
+  // Validate rating_text
+  if (!editing_reason.value || editing_reason.value.trim() === "") {
+    editingReasonError.value = "Inactivating reason should not be empty.";
+    isValid = false;
+  }
+
+  return isValid;
+};
+
+const handleSubmit = async () => {
+  if (validateConfirm()) {
+    console.log(editing_reason);
+    // await store.dispatch("ratings/deleteReview", reviewId);
+    // inActiveDialogRef.value.closeDialog();
+  }
 };
 
 const openDialogInActivate = () => {

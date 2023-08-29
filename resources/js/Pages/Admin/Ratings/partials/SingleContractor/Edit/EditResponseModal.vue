@@ -6,75 +6,145 @@
     ref="dialogRef"
     title="Edit Response"
   >
-    <form @submit.prevent="handleSubmit">
-      <!-- response -->
-      <div v-if="form?.response_text" class="mb-4">
-        <div class="text-md font-bold text-gray-600 mt-3 mb-2">
-          Contractors Response
-        </div>
-        <textarea
-          id="responseText"
-          type="text"
-          :rows="5"
-          class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
-          required
-          v-model="form.response_text"
-          placeholder="Type your response text"
-        />
-        <InputError class="mt-2" :message="form.errors.response_text" />
+    <!-- response -->
+    <div class="mb-4">
+      <div class="text-md font-bold text-gray-600 mt-3 mb-2">
+        Contractors Response
       </div>
-    </form>
+      <textarea
+        id="responseText"
+        type="text"
+        :rows="5"
+        class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+        required
+        v-model="response_text"
+        placeholder="Type your response text"
+      />
+      <InputError v-if="responseError" class="mt-2" :message="responseError" />
+    </div>
   </CustomDialog>
   <!-- ConfirmDialog -->
 
   <CustomDialog
     submitText="Save Changes"
-    @submit="handleSubmit"
+    :loading="loading"
+    :disabled="disabled"
+    @submit="handleConfirm"
     dialogWidth=" max-h-[70vh] width50"
     ref="submitRef"
     title="Are you sure? You want to change this Response?"
   >
-    <form @submit.prevent="handleSubmit">
-      <!-- review reason -->
-      <div class="mb-4">
-        <div class="text-md font-bold text-gray-600 mt-3 mb-2">
-          Reason for Editing the Response
-        </div>
-        <textarea
-          id="editing_reason"
-          type="text"
-          :rows="5"
-          class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
-          required
-          v-model="form.editing_reason"
-          placeholder="Type reason for Editing the response"
-        />
-        <InputError class="mt-2" :message="form.errors.editing_reason" />
+    <!-- review reason -->
+    <div class="mb-4">
+      <div class="text-md font-bold text-gray-600 mt-3 mb-2">
+        Reason for Editing the Response
       </div>
-    </form>
+      <textarea
+        id="editing_reason"
+        type="text"
+        :rows="5"
+        class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+        required
+        v-model="editing_reason"
+        placeholder="Type reason for Editing the response"
+      />
+      <InputError
+        v-if="editingReasonError"
+        class="mt-2"
+        :message="editingReasonError"
+      />
+    </div>
   </CustomDialog>
 </template>
 
 <script setup>
 import InputError from "@/Components/InputError.vue";
-import { useForm } from "@inertiajs/inertia-vue3";
 
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
-import { ref } from "vue";
-const { responseText } = defineProps(["responseText"]);
+import { ref, watch, computed } from "vue";
+import { useStore } from "vuex";
 
-const form = useForm({
-  response_text: responseText,
-  editing_reason: null,
-});
+//States
+const { responseText, responseId } = defineProps([
+  "responseText",
+  "responseId",
+]);
+const store = useStore();
 
-const submitRef = ref();
+const response_text = ref(responseText);
+const editing_reason = ref("");
+
 const dialogRef = ref();
-const handleSubmit = () => {
-  console.log("here", form);
+const submitRef = ref();
+
+const responseError = ref("");
+const editingReasonError = ref("");
+
+//Computed
+const loading = computed(() => store.state.ratings.loading);
+const disabled = computed(() => store.state.ratings.disabled);
+
+//Watch
+
+watch(
+  () => response_text.value,
+  () => {
+    responseError.value = "";
+  }
+);
+
+watch(
+  () => editing_reason.value,
+  () => {
+    editingReasonError.value = "";
+  }
+);
+
+//Methods
+const validateEdit = () => {
+  let isValid = true;
+  // Reset the error messages before validating
+  responseError.value = "";
+
+  // Validate rating_text
+  if (!response_text.value || response_text.value.trim() === "") {
+    responseError.value = "Response should not be empty.";
+    isValid = false;
+  }
+
+  return isValid;
+};
+const validateConfirm = () => {
+  let isValid = true;
+  // Reset the error messages before validating
+  editingReasonError.value = "";
+
+  // Validate rating_text
+  if (!editing_reason.value || editing_reason.value.trim() === "") {
+    editingReasonError.value = "Editing reason should not be empty.";
+    isValid = false;
+  }
+
+  return isValid;
+};
+const handleSubmit = async () => {
   //   open edit confirmDialog
-  submitRef.value.openDialog();
-  // form.patch(route('profile.updateGeneralInfo'))
+  if (validateEdit()) {
+    submitRef.value.openDialog();
+  }
+};
+const handleConfirm = async () => {
+  if (validateConfirm()) {
+    const updateResponse = {
+      response_text: response_text.value,
+      response_id: responseId,
+      editing_reason: editing_reason.value,
+    };
+    console.log(updateResponse);
+    // await store.dispatch("ratings/updateResponse", updateResponse);
+    // submitRef.value.closeDialog();
+    // dialogRef.value.closeDialog();
+  }
 };
 
 const openDialogEdit = () => {

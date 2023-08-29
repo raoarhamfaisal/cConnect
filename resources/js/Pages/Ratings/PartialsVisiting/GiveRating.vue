@@ -201,7 +201,7 @@ const validate = () => {
   ratingReasonError.value = "";
 
   // Validate rating value
-  if (form.rating.value <= 0 && form.rating.value > 5) {
+  if (form.rating.value <= 0 || form.rating.value > 5) {
     ratingError.value = "Rating should be greater than 0.";
     isValid = false;
   }
