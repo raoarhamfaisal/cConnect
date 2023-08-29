@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
+            $table->boolean('is_review_active')->default(1);
             $table->unsignedBigInteger('response_id')->nullable();
             $table->unsignedBigInteger('reviewer_id');
             $table->unsignedBigInteger('contractor_id');
@@ -31,6 +32,7 @@ return new class extends Migration
             $table->boolean('hired_contractor')->default(0);
             $table->boolean('give_full_payment')->default(0);
             $table->string('how_did_you_meet_this_contractor')->nullable();
+            $table->softDeletes();
             $table->timestamps();
             
             $table->foreign('reviewer_id')->references('id')->on('profiles')->onDelete('cascade');
