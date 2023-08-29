@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('review_id');
             $table->longText('response_text');
             $table->dateTime('response_date')->default(now());
+            $table->softDeletes();
             $table->timestamps();
 
         });

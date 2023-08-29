@@ -82,7 +82,7 @@ class ReviewController extends Controller
                 'trade29',
                 'trade30'
             ]);
-        }, 'review_response'])->where('contractor_id', $contractor_id);
+        }, 'review_response'])->where('contractor_id', $contractor_id)->where('is_review_active', 1);
     
         // Apply sorting based on filters
         $sortByDate = $request->query('sort_by_date', '');
@@ -304,13 +304,12 @@ class ReviewController extends Controller
         ]);
 
         // Set the review's appeal status to off and add the current datetime
-        $review->is_under_appeal = false;
         $review->off_appeal_reason_date = Carbon::now();
         $review->off_appeal_reason = $data['off_appeal_reason'];
 
         $review->save();
 
-        return response()->json(['message' => 'Appeal removed successfully!', 'review' => $review], 200);
+        return response()->json(['message' => 'Appeal for removal successfully submitted!', 'review' => $review], 200);
     }
 
 
@@ -454,6 +453,40 @@ class ReviewController extends Controller
     
         return response()->json($response);
     }
-        
+
+
+    /**
+     * Deactivate the review
+     *
+     * @param  \App\Models\Review  $review
+     * @return \Illuminate\Http\Response
+     */
+    public function deactivate(Request $request, $id)
+    {
+        $review = Review::findOrFail($id);
+
+        $review->is_review_active = 0;
+
+        $review->save();
+
+        return response()->json(['message' => 'Review deactivated successfully', 'review' => $review]);
+    }
+
+    /**
+     * Activate the review
+     *
+     * @param  \App\Models\Review  $review
+     * @return \Illuminate\Http\Response
+     */
+    public function activate(Request $request, $id)
+    {
+        $review = Review::findOrFail($id);
+
+        $review->is_review_active = 1;
+
+        $review->save();
+
+        return response()->json(['message' => 'Review activated successfully', 'review' => $review]);
+    }
 
 }

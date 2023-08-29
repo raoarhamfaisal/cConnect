@@ -40,8 +40,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::get('/admin/all-contractors', [ReviewController::class, 'getContractorProfiles'])->name('review.allContractors');
 
     Route::get('/admin/all-appealed-reviews', [ReviewController::class, 'getAppealedReviews'])->name('review.getAppealedReviews');
-
-
+    Route::put('/admin/reviews/{review}/deactivate', [ReviewController::class, 'deactivate']);
+    Route::put('/admin/reviews/{review}/activate', [ReviewController::class, 'activate']);
 
 
 // });
