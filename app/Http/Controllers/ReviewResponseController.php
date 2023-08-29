@@ -110,35 +110,53 @@ class ReviewResponseController extends Controller
     /**
      * Deactivate the review response
      *
-     * @param  \App\Models\ReviewResponse  $review
+     * @param  \App\Models\ReviewResponse  $reviewResponse
      * @return \Illuminate\Http\Response
      */
     public function deactivate(Request $request, $id)
     {
-        $review = ReviewResponse::findOrFail($id);
+        $reviewResponse = ReviewResponse::findOrFail($id);
 
-        $review->is_review_response_active = 0;
+        // Get the associated review
+        $review = Review::find($reviewResponse->review_id);
+    
+        // If the review exists, set its response_id to null
+        if ($review) {
+            $review->response_id = null;
+            $review->save();
+        }
 
-        $review->save();
+        $reviewResponse->is_review_response_active = 0;
 
-        return response()->json(['message' => 'Review Response deactivated successfully', 'review' => $review]);
+        $reviewResponse->save();
+
+        return response()->json(['message' => 'Review Response deactivated successfully', 'reviewResponse' => $reviewResponse]);
     }
 
     /**
-     * Activate the review
+     * Activate the ReviewResponse
      *
-     * @param  \App\Models\ReviewResponse  $review
+     * @param  \App\Models\ReviewResponse  $reviewResponse
      * @return \Illuminate\Http\Response
      */
     public function activate(Request $request, $id)
     {
-        $review = ReviewResponse::findOrFail($id);
+        $reviewResponse = ReviewResponse::findOrFail($id);
 
-        $review->is_review_response_active = 1;
+        // Get the associated review
+        $review = Review::find($reviewResponse->review_id);
+    
+        // If the review exists, set its response_id to null
+        if ($review) {
+            $review->response_id = $id;
+            $review->save();
+        }
 
-        $review->save();
+        $reviewResponse->is_review_response_active = 1;
 
-        return response()->json(['message' => 'Review Response activated successfully', 'review' => $review]);
+        $reviewResponse->save();
+
+        return response()->json(['message' => 'Review Response activated successfully', 'reviewResponse' => $reviewResponse]);
     }
 
     
