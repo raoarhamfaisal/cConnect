@@ -43,7 +43,7 @@ import { useStore } from "vuex";
 // States
 const store = useStore();
 const deleteDialogRef = ref();
-const { reviewId } = defineProps({
+const { reviewId: reviewId } = defineProps({
   reviewId: {
     type: Number,
   },
@@ -80,7 +80,10 @@ const validateConfirm = () => {
 const handleSubmit = async () => {
   if (validateConfirm()) {
     console.log(filterBadWords(editing_reason));
-    await store.dispatch("ratings/deleteReview", reviewId);
+    await store.dispatch("ratings/deleteReviewAdmin", {
+      reviewId: reviewId,
+      reason: filterBadWords(editing_reason),
+    });
     deleteDialogRef.value.closeDialog();
   }
 };

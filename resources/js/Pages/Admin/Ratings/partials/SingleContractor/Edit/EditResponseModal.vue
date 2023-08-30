@@ -139,10 +139,10 @@ const handleConfirm = async () => {
     const updateResponse = {
       response_text: filterBadWords(response_text),
       response_id: responseId,
-      reason: editing_reason.value,
+      reason: filterBadWords(editing_reason),
     };
     console.log(updateResponse);
-    await store.dispatch("ratings/updateResponse", updateResponse);
+    await store.dispatch("ratings/updateResponseAdmin", updateResponse);
     submitRef.value.closeDialog();
     dialogRef.value.closeDialog();
   }

@@ -89,11 +89,17 @@ const validateConfirm = () => {
 
 const handleSubmit = async () => {
   if (validateConfirm()) {
-    console.log(filterBadWords(editing_reason));
+    const reason = filterBadWords(editing_reason);
     if (isActive) {
-      await store.dispatch("ratings/deactivateResponse", responseId);
+      await store.dispatch("ratings/deactivateResponse", {
+        responseId: responseId,
+        reason: reason,
+      });
     } else if (!isActive) {
-      await store.dispatch("ratings/activateResponse", responseId);
+      await store.dispatch("ratings/activateResponse", {
+        responseId: responseId,
+        reason: reason,
+      });
     }
     inActiveDialogRef.value.closeDialog();
   }

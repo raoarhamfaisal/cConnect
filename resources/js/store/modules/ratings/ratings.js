@@ -4,7 +4,11 @@ import {
   getAllContractors,
   activateReview,
   deactivateReview,
+  updateReviewAdmin,
+  updateResponseAdmin,
   deactivateResponse,
+  deleteReviewAdmin,
+  deleteResponseAdmin,
   activateResponse,
 } from "./adminActions";
 export default {
@@ -231,5 +235,9 @@ export default {
     activateReview,
     deactivateResponse,
     activateResponse,
+    deleteReviewAdmin,
+    updateReviewAdmin,
+    updateResponseAdmin,
+    deleteResponseAdmin,
   },
 };

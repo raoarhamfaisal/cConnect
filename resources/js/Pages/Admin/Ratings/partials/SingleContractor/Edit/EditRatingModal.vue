@@ -236,10 +236,10 @@ const handleConfirm = async () => {
       rating: form.rating.value,
       reviewer_id: profileId,
       contractor_id: contractorId,
-      reason: form.editing_reason.value,
+      reason: filterBadWords(form.editing_reason),
     };
     console.log(updateReview);
-    await store.dispatch("ratings/updateReview", {
+    await store.dispatch("ratings/updateReviewAdmin", {
       reviewId: review.id,
       review: updateReview,
     });

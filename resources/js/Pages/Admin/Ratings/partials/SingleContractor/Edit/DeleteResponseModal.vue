@@ -76,8 +76,10 @@ const validateConfirm = () => {
 
 const handleSubmit = async () => {
   if (validateConfirm()) {
-    console.log(filterBadWords(editing_reason));
-    await store.dispatch("ratings/deleteResponse", responseId);
+    await store.dispatch("ratings/deleteResponseAdmin", {
+      responseId: responseId,
+      reason: filterBadWords(editing_reason),
+    });
     deleteDialogRef.value.closeDialog();
   }
 };
