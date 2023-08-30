@@ -61,6 +61,7 @@
 import InputError from "@/Components/InputError.vue";
 
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
+import { filterBadWords } from "@/helpers/utilities";
 import { ref, watch, computed } from "vue";
 import { useStore } from "vuex";
 
@@ -136,7 +137,7 @@ const handleSubmit = async () => {
 const handleConfirm = async () => {
   if (validateConfirm()) {
     const updateResponse = {
-      response_text: response_text.value,
+      response_text: filterBadWords(response_text),
       response_id: responseId,
       reason: editing_reason.value,
     };

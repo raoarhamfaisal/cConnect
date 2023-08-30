@@ -67,8 +67,84 @@
       <Badge class="bg-orange-500" v-if="review.is_under_appeal === 1"
         >Under Appeal</Badge
       >
+      <!-- Submit appeal -->
+      <div class="text-right" v-if="review.is_under_appeal === 0 && showAppeal">
+        <Button
+          @onSelect="handleAppeal"
+          tooltipText="Submit your appeal"
+          :style="{
+            boxShadow:
+              '0px 0px 3px rgba(0, 0, 0, 0.12), 0px 0px 2px rgba(0, 0, 0, 0.12)',
+            padding: '5px 10px',
+          }"
+          class="text-lg text-gray-600 font-semibold rounded-lg"
+          ><Icon icon="mdi:hand"
+        /></Button>
+      </div>
     </div>
   </div>
+  <!--appeal text -->
+  <transition name="accordion">
+    <div v-if="showAppealArea">
+      <div class="mb-4 mt-3">
+        <textarea
+          id="appealReason"
+          type="text"
+          :rows="3"
+          v-if="review.is_under_appeal === 0"
+          class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+          required
+          v-model="appealReason"
+          placeholder="Type your reason for your appeal"
+        />
+
+        <InputError
+          v-if="appealReasonError"
+          class="mt-2 text-left"
+          :message="appealReasonError"
+        />
+
+        <div class="flex items-center gap-4 mt-6 w-full">
+          <PrimaryButton
+            :style="{
+              height: '42px',
+            }"
+            @click="openDialog"
+            :disabled="disabled"
+            class="w-full flex justify-center gap-2"
+          >
+            <div>Send</div>
+            <img
+              v-show="loading"
+              src="/images/avatars/Spinner.gif"
+              alt="spinner"
+              width="30"
+          /></PrimaryButton>
+        </div>
+      </div>
+    </div>
+  </transition>
+  <CustomDialog
+    submitText="Send"
+    @submit="handleAppealSubmit"
+    ref="confirmDialogRef"
+    :loading="loading"
+    :disabled="disabled"
+    errorIcon
+    dialogWidth="max-h-[70vh] width50"
+    title="Are you sure? "
+  >
+    <div v-if="review.is_under_appeal === 0" class="mt-3 block">
+      Send any supporting document to
+      <a
+        class="underline text-sky-600"
+        href="mailto:appeal@tContractor.com"
+        target="_blank"
+      >
+        appeal@tContractor.com
+      </a>
+    </div>
+  </CustomDialog>
   <!-- edit delate for mobile -->
   <div
     class="grid grid-cols-2 gap-4 mt-3"
@@ -170,17 +246,24 @@
 </template>
 
 <script setup>
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import Button from "@/Components/Ratings/Button.vue";
+import InputError from "@/Components/InputError.vue";
 import Avatar from "@/Components/Ratings/Avatar.vue";
 import StarRating from "@/Components/Ratings/StarRating.vue";
+import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
+
 import Badge from "@/Components/Ratings/Badge.vue";
 import EditRatingModal from "@/Pages/Ratings/Edit/EditRatingModal.vue";
 import DeleteRatingModal from "@/Pages/Ratings/Edit/DeleteRatingModal.vue";
 import ButtonRatings from "@/Components/Ratings/ButtonRatings.vue";
 
 import QualifyingQuestions from "@/Pages/Ratings/PartialsPersonal/QualifyingQuestions.vue";
-import { convertDateFormat } from "@/helpers/utilities";
+import { convertDateFormat, filterBadWords } from "@/helpers/utilities";
+import { Icon } from "@iconify/vue";
+import { useStore } from "vuex";
 
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, watch, computed, onUnmounted } from "vue";
 const { review } = defineProps({
   review: {
     type: Object,
@@ -193,6 +276,10 @@ const { review } = defineProps({
   },
   nonEditableReview: {
     type: Boolean,
+  },
+  showAppeal: {
+    type: Boolean,
+    default: false,
   },
 });
 const options = [
@@ -221,9 +308,60 @@ const options = [
   { id: "trade23", name: "Handyman Services" },
   { id: "trade24", name: "Architectural, Engineering & Law" },
 ];
-
+const store = useStore();
 const editRef = ref();
+const showAppealArea = ref(false);
+const confirmDialogRef = ref();
 const deleteRef = ref();
+const appealReason = ref("");
+const appealReasonError = ref("");
+
+//computed
+
+const loading = computed(() => store.state.ratings.loading);
+const disabled = computed(() => store.state.ratings.disabled);
+//watch
+
+watch(
+  () => appealReason.value,
+  () => {
+    appealReasonError.value = "";
+  }
+);
+
+//Methods
+
+const validateAppealReason = () => {
+  let isValid = true;
+  // Reset the error messages before validating
+  appealReasonError.value = "";
+
+  // Validate rating_text
+  if (!appealReason.value || appealReason.value.trim() === "") {
+    appealReasonError.value = "Appeal Reason should not be empty.";
+    isValid = false;
+  }
+
+  return isValid;
+};
+
+const openDialog = () => {
+  if (validateAppealReason()) {
+    return confirmDialogRef.value.openDialog();
+  }
+};
+const handleAppealSubmit = async () => {
+  if (review.is_under_appeal === 0) {
+    const appealData = {
+      on_appeal_reason: filterBadWords(appealReason),
+      reviewId: review.id,
+    };
+    await store.dispatch("ratings/sendAppeal", appealData);
+  }
+};
+const handleAppeal = () => {
+  showAppealArea.value = !showAppealArea.value;
+};
 
 const openEditDialog = () => {
   editRef.value.openDialogEdit();

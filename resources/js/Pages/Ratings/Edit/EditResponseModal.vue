@@ -37,6 +37,7 @@
 import InputError from "@/Components/InputError.vue";
 
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
+import { filterBadWords } from "@/helpers/utilities";
 import { ref, watch, computed } from "vue";
 import { useStore } from "vuex";
 
@@ -81,7 +82,7 @@ const validate = () => {
 const handleSubmit = async () => {
   if (validate()) {
     const updateResponse = {
-      response_text: response_text.value,
+      response_text: filterBadWords(response_text),
       response_id: responseId,
     };
     await store.dispatch("ratings/updateResponse", updateResponse);

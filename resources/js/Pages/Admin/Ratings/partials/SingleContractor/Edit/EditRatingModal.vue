@@ -105,6 +105,7 @@ import StarRatingEditable from "@/Components/Ratings/StarRatingEditable.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import { computed, reactive, ref, toRefs, watch } from "vue";
 import { useStore } from "vuex";
+import { filterBadWords } from "@/helpers/utilities";
 
 // States
 const { review, questionsSwitch, profileId, contractorId } = defineProps({
@@ -222,7 +223,7 @@ const validateConfirm = () => {
 const handleConfirm = async () => {
   if (validateConfirm()) {
     const updateReview = {
-      rating_text: form.rating_text.value,
+      rating_text: filterBadWords(form.rating_text),
       hired_by_contractor:
         form.questionsSwitch.value[0].questionAnswer === 1 ? true : false,
       paid_on_time:

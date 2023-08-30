@@ -1,4 +1,20 @@
 import Swal from "sweetalert2";
+import badWordsArray from "./badword.json";
+
+const badWords = new Set(badWordsArray.map((word) => word.toLowerCase()));
+
+export const filterBadWords = (textRef) => {
+  const words = textRef.value.split(" ");
+  const filteredWords = words.map((word) => {
+    if (badWords.has(word.toLowerCase())) {
+      return "*".repeat(word.length);
+    }
+    return word;
+  });
+
+  return (textRef.value = filteredWords.join(" "));
+};
+
 export const changesSaved = (
   notificationMessage = "Changes Successfully Saved!"
 ) => {
@@ -41,4 +57,15 @@ export function convertDateFormat(dateString) {
   // Return the desired format
   return `${day}/${month}/${year}`;
 }
-// import { changesSaved, somethingWentWrong } from "@/helpers/utilities"
+
+export const filterTextFromBadWords = (textRef) => {
+  const words = textRef.value.split(" ");
+  const filteredWords = words.map((word) => {
+    if (badWordsSet.has(word.toLowerCase())) {
+      return "+".repeat(word.length);
+    }
+    return word;
+  });
+
+  textRef.value = filteredWords.join(" ");
+};
