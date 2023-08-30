@@ -2,6 +2,7 @@
   <Head title="Ratings" />
 
   <Header
+    v-if="isAdminUrl"
     :profile="profile"
     :posts="posts"
     :post-search-filters="postSearchFilters"
@@ -69,7 +70,10 @@
         <div class="xs:mb-12 mb-6 xs:mt-12 mt-7 border-t-2 border-gray-300">
           <heading-card heading="Reviews" class="mt-6 mb-12" />
 
-          <div v-if="contractorReviews?.length > 0" class="flex gap-8 flex-col">
+          <div
+            v-if="contractorReviews && contractorReviews?.length > 0"
+            class="flex gap-8 flex-col"
+          >
             <ReviewResponseAdmin
               v-for="(review, index) in contractorReviews"
               :key="index"
@@ -78,7 +82,7 @@
               :profileId="profile.id"
             />
           </div>
-          <div v-if="contractorReviews?.length === 0">
+          <div v-if="contractorReviews && contractorReviews?.length === 0">
             <div
               class="p-2 text-xl text-grey-600 font-bold h-60 flex items-center justify-center"
             >
@@ -86,9 +90,17 @@
             </div>
           </div>
         </div>
-        <div class="flex items-center justify-center mb-4">
+        <div
+          v-if="
+            pagination &&
+            Object.keys(pagination).length > 0 &&
+            pagination.last_page > 1 &&
+            contractorReviews &&
+            contractorReviews.length > 0
+          "
+          class="flex items-center justify-center mb-4"
+        >
           <CustomPagination
-            v-if="pagination && Object.keys(pagination).length > 0"
             :total-items="pagination.total"
             :current-page="pagination.current_page"
             :items-per-page="pagination.per_page"
@@ -117,13 +129,15 @@ import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import Card from "@/Components/Card.vue";
 import Loader from "@/Components/Ratings/Loader.vue";
 
-import { ref, onMounted, watch, computed } from "vue";
+import { ref, onMounted, watch, computed, onBeforeMount } from "vue";
 import { somethingWentWrong } from "@/helpers/utilities";
 import { useStore } from "vuex";
+import { Inertia } from "@inertiajs/inertia";
 
 // State
-defineProps({
+const { contractorDetails } = defineProps({
   profile: Object,
+  contractorDetails: Object,
   posts: Object,
   showit: Boolean,
   postSearchFilters: {
@@ -134,13 +148,14 @@ defineProps({
   },
 });
 const store = useStore();
+const isAdminUrl = usePage().props.value.auth.user.reviews_privileges === 1;
 const currentPage = ref(1);
 const contractorId = ref(null);
 const contractorReviews = ref(null);
 const loading = ref(false);
 const starPercentages = ref([]);
 const average_rating = ref(null);
-const contractor = ref(null);
+const contractor = ref({});
 const sortByDate = ref("latest");
 const sortByRating = ref("");
 const pagination = ref(0);
@@ -150,7 +165,13 @@ const perPage = ref(15);
 onMounted(() => {
   const match = usePage().url.value.match(/\/([^\/]+)\/?$/);
   contractorId.value = match ? match[1] : null;
+  contractor.value = contractorDetails;
   fetchReviews();
+});
+onBeforeMount(() => {
+  if (!isAdminUrl && window.location.pathname !== "/post") {
+    Inertia.visit("/post");
+  }
 });
 
 //Computed

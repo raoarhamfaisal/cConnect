@@ -13,7 +13,11 @@
       <Card :shadowLevel="2" bgColor="white" padding="20px">
         <ContractorInfo :contractor="contractor" />
 
-        <heading-card heading="Average Ratings" class="mb-12" />
+        <heading-card
+          v-if="average_rating && starPercentages"
+          heading="Average Ratings"
+          class="mb-12"
+        />
         <AverageRating
           v-if="average_rating && starPercentages"
           :averageRating="average_rating"
@@ -85,7 +89,16 @@
             </div>
           </div>
         </div>
-        <div class="flex items-center justify-center mb-4">
+        <div
+          v-if="
+            pagination &&
+            Object.keys(pagination).length > 0 &&
+            pagination.last_page > 1 &&
+            contractorReviews &&
+            contractorReviews.length > 0
+          "
+          class="flex items-center justify-center mb-4"
+        >
           <CustomPagination
             :total-items="pagination.total"
             :current-page="pagination.current_page"
@@ -149,8 +162,8 @@ const perPage = ref(15);
 // Mounted
 onMounted(() => {
   fetchReviews();
-  contractor.value = contractorDetails
-  console.log(contractor.value)
+  contractor.value = contractorDetails;
+  console.log(contractor.value);
 });
 
 //Computed

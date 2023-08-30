@@ -12,6 +12,7 @@
         </h2>
         <div v-if="contractor.company">{{ contractor.company_name }}</div>
         <StarRating
+          v-if="contractor.average_rating"
           :rating="Number(parseFloat(contractor.average_rating).toFixed(1))"
           :isIndicatorActive="true"
         />

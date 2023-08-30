@@ -2,10 +2,10 @@
 import tContractorWord from "@/Components/tCon/tContractorWord.vue";
 import ButtonPost from "@/Components/tCon/tConSub/ButtonPost.vue";
 import ButtonRefresh from "@/Components/tCon/tConSub/ButtonRefresh.vue";
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { usePage } from "@inertiajs/inertia-vue3";
 import { Icon } from "@iconify/vue";
-
+import { Inertia } from "@inertiajs/inertia";
 defineProps({
   showit: Boolean,
 
@@ -37,9 +37,8 @@ function postClicked(isOpen) {
   isOpen = true;
   emit("postClicked", isOpen);
 }
-
 const isAdminUrl = computed(() => {
-  return usePage().url.value.includes("admin");
+  return usePage().props.value.auth.user.reviews_privileges === 1;
 });
 </script>
 

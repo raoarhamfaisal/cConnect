@@ -2,6 +2,7 @@
   <Head title="Ratings" />
 
   <Header
+    v-if="isAdminUrl"
     :profile="profile"
     :posts="posts"
     :post-search-filters="postSearchFilters"
@@ -75,9 +76,17 @@
             </div>
           </div>
         </div>
-        <div class="flex items-center justify-center mb-4">
+        <div
+          v-if="
+            pagination &&
+            Object.keys(pagination).length > 0 &&
+            pagination.last_page > 1 &&
+            appealedReviews &&
+            appealedReviews.length > 0
+          "
+          class="flex items-center justify-center mb-4"
+        >
           <CustomPagination
-            v-if="pagination && Object.keys(pagination).length > 0"
             :total-items="pagination.total"
             :current-page="pagination.current_page"
             :items-per-page="pagination.per_page"
@@ -94,7 +103,7 @@
 
 <script setup>
 import Header from "@/Layouts/Header.vue";
-import { Head } from "@inertiajs/inertia-vue3";
+import { Head, usePage } from "@inertiajs/inertia-vue3";
 import Button from "@/Components/Ratings/Button.vue";
 import CustomPagination from "@/Components/Ratings/CustomPagination.vue";
 import axios from "axios";
@@ -104,9 +113,10 @@ import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import Card from "@/Components/Card.vue";
 import Loader from "@/Components/Ratings/Loader.vue";
 
-import { ref, onMounted, watch, computed } from "vue";
+import { ref, onMounted, watch, computed, onBeforeMount } from "vue";
 import { somethingWentWrong } from "@/helpers/utilities";
 import { useStore } from "vuex";
+import { Inertia } from "@inertiajs/inertia";
 
 // State
 defineProps({
@@ -122,6 +132,7 @@ defineProps({
 });
 
 const store = useStore();
+const isAdminUrl = usePage().props.value.auth.user.reviews_privileges === 1;
 const currentPage = ref(1);
 const appealedReviews = ref(null);
 const loading = ref(false);
@@ -133,6 +144,11 @@ const pagination = ref(0);
 // Mounted
 onMounted(() => {
   fetchReviews();
+});
+onBeforeMount(() => {
+  if (!isAdminUrl && window.location.pathname !== "/post") {
+    Inertia.visit("/post");
+  }
 });
 
 //Computed
