@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\User;
+use App\Models\Profile;
 
 class ProfileSeeder extends Seeder
 {
@@ -14,6 +16,12 @@ class ProfileSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Profile::factory()->count(10)->create();
+        $users = User::all();
+
+        foreach ($users as $user) {
+            Profile::factory()->create([
+                'user_id' => $user->id,
+            ]);
+        }
     }
 }

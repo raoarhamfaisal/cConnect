@@ -18,7 +18,6 @@ class profileFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => User::inRandomOrder()->first()->id,
             'active_user' => fake()->numberBetween(0, 1),
             'first_name' => fake()->name(),
             'last_name' => fake()->name(),

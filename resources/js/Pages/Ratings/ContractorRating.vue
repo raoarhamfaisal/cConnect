@@ -68,7 +68,7 @@
         <div class="xs:mb-12 mb-6 xs:mt-12 mt-7 border-t-2 border-gray-300">
           <heading-card heading="Reviews" class="mt-6 mb-12" />
 
-          <div v-if="contractorReviews.length > 0" class="flex gap-8 flex-col">
+          <div v-if="contractorReviews && contractorReviews.length > 0" class="flex gap-8 flex-col">
             <ReviewResponse
               v-for="(review, index) in contractorReviews"
               :key="index"
@@ -77,7 +77,7 @@
               :profileId="profile.id"
             />
           </div>
-          <div v-if="contractorReviews.length === 0">
+          <div v-if="contractorReviews && contractorReviews.length === 0">
             <div
               class="p-2 text-xl text-grey-600 font-bold h-60 flex items-center justify-center"
             >
@@ -150,7 +150,8 @@ import { somethingWentWrong } from "@/helpers/utilities";
 import { useStore } from "vuex";
 
 // State
-defineProps({
+const { contractorDetails } = defineProps({
+  contractorDetails: Object,
   profile: Object,
   posts: Object,
   showit: Boolean,
@@ -162,15 +163,16 @@ defineProps({
   },
 });
 
+
 const store = useStore();
 const currentPage = ref(1);
 const showCard = ref(false);
 const cardRef = ref(null);
-const contractorReviews = ref(null);
+const contractorReviews = ref([]);
 const loading = ref(false);
 const starPercentages = ref([]);
 const average_rating = ref(null);
-const contractor = ref(null);
+const contractor = ref({});
 const sortByDate = ref("latest");
 const sortByRating = ref("");
 const pagination = ref(0);
@@ -179,6 +181,8 @@ const perPage = ref(15);
 // Mounted
 onMounted(() => {
   fetchReviews();
+  contractor.value = contractorDetails
+  console.log("contractor.value", contractor.value);
 });
 
 //Computed
@@ -237,7 +241,6 @@ const fetchReviews = async (per_page = perPage.value, page = 1) => {
       }
     );
     contractorReviews.value = response.data.reviews;
-    contractor.value = response.data.contractor;
     pagination.value = response.data.pagination;
     console.log(contractor, response.data.contractor);
     average_rating.value = response.data.average_rating;
