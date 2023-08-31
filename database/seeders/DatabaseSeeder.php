@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             ProfileSeeder::class,
             ReviewResponseSeeder::class,
             ReviewSeeder::class,
+            RatingReasonSeeder::class,
         ]);
 
         \App\Models\User::factory()->create([
