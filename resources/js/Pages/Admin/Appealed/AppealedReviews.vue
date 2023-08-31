@@ -66,6 +66,7 @@
               :review="review"
               :contractorId="review.contractor_id"
               :profileId="profile.id"
+              :showContactDetails="true"
             />
           </div>
           <div v-if="appealedReviews?.length === 0">

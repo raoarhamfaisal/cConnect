@@ -40,8 +40,8 @@ const showTooltip = ref(false);
 
 // Toggle the isSelected state
 const toggleSelect = () => {
-  if (!props.allowToggle && !isSelected.value) {
-    isSelected.value = !isSelected.value;
+  if (!props.allowToggle) {
+    isSelected.value = true;
   } else if (props.allowToggle) {
     isSelected.value = !isSelected.value;
   }

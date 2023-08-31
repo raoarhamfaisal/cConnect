@@ -69,3 +69,47 @@ export const filterTextFromBadWords = (textRef) => {
 
   textRef.value = filteredWords.join(" ");
 };
+
+export const formatDateTime = (dateTime) => {
+  // Extract the date and time parts from the input string
+  const [datePart, timePart] = dateTime.split(" ");
+  const [year, month, day] = datePart.split("-");
+  const [hour, minute, second] = timePart.split(":");
+
+  // Prepare an array of month names
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  // Convert month index to month name
+  const monthName = months[parseInt(month, 10) - 1];
+
+  // Convert to 12-hour time format and set the AM/PM part
+  let ampm = "AM";
+  let formattedHour = parseInt(hour, 10);
+
+  if (formattedHour > 12) {
+    formattedHour -= 12;
+    ampm = "PM";
+  } else if (formattedHour === 12) {
+    ampm = "PM";
+  } else if (formattedHour === 0) {
+    formattedHour = 12;
+  }
+
+  // Combine all the components to form the final formatted date-time
+  const formattedDateTime = `${day} ${monthName} ${year}, ${formattedHour}:${minute}${ampm}`;
+
+  return formattedDateTime;
+};
