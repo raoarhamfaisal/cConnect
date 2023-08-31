@@ -44,6 +44,8 @@ class ReviewController extends Controller
         $reviewsQuery = Review::with(['reviewer' => function($query) {
             $query->select([
                 'id',
+                'email',
+                'phone_cell',
                 'user_id',
                 'first_name',
                 'last_name',
@@ -293,6 +295,8 @@ class ReviewController extends Controller
             'profiles.state',
             'profiles.user_avatar',
             'profiles.company_logo',
+            'profiles.email',
+            'profiles.phone_cell',
             DB::raw('AVG(reviews.rating) as average_rating')
         ])
         ->leftJoin('reviews', 'profiles.id', '=', 'reviews.contractor_id')
@@ -331,6 +335,8 @@ class ReviewController extends Controller
             $query->select([
                 'id',
                 'user_id',
+                'email',
+                'phone_cell',
                 'first_name',
                 'last_name',
                 'company_name',
@@ -504,6 +510,8 @@ class ReviewController extends Controller
             $query->select([
                 'id',
                 'user_id',
+                'email',
+                'phone_cell',
                 'first_name',
                 'last_name',
                 'company_name',
@@ -575,6 +583,8 @@ class ReviewController extends Controller
                                     ->select([
                                         'id',
                                         'user_id',
+                                        'email',
+                                        'phone_cell',
                                         'first_name',
                                         'last_name',
                                         'company_name',
