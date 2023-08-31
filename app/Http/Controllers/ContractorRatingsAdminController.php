@@ -348,14 +348,48 @@ class ContractorRatingsAdminController extends Controller
                                     ->first();
     
     
-        // dd([
+
+        $response = [
+                'user' => $userDetails,
+                'reviewsByContractID' => $reviewsByContractID->items(),
+                'reviewsByContractIDPagination' => [
+                    'current_page' => $reviewsByContractID->currentPage(),
+                    'last_page' => $reviewsByContractID->lastPage(),
+                    'per_page' => $reviewsByContractID->perPage(),
+                    'total' => $reviewsByContractID->total(),
+                ],
+                'reviewsByReviewID' => $reviewsByReviewID->items(),
+                'reviewsByContractIDPagination' => [
+                    'current_page' => $reviewsByReviewID->currentPage(),
+                    'last_page' => $reviewsByReviewID->lastPage(),
+                    'per_page' => $reviewsByReviewID->perPage(),
+                    'total' => $reviewsByReviewID->total(),
+                ],
+                'average_rating' => $avgReview,
+                'five_stars_count' => $fiveStars,
+                'four_stars_count' => $fourStars,
+                'three_stars_count' => $threeStars,
+                'two_stars_count' => $twoStars,
+                'one_star_count' => $oneStar
+            ];
+
+        return response()->json($response);
+
+        // return Inertia::render('Admin/ContractorHistory', [
         //     'user' => $userDetails,
-        //     'reviews' => $reviews->items(),
-        //     'pagination' => [
-        //         'current_page' => $reviews->currentPage(),
-        //         'last_page' => $reviews->lastPage(),
-        //         'per_page' => $reviews->perPage(),
-        //         'total' => $reviews->total(),
+        //     'reviewsByContractID' => $reviewsByContractID->items(),
+        //     'reviewsByContractIDPagination' => [
+        //         'current_page' => $reviewsByContractID->currentPage(),
+        //         'last_page' => $reviewsByContractID->lastPage(),
+        //         'per_page' => $reviewsByContractID->perPage(),
+        //         'total' => $reviewsByContractID->total(),
+        //     ],
+        //     'reviewsByReviewID' => $reviewsByReviewID->items(),
+        //     'reviewsByContractIDPagination' => [
+        //         'current_page' => $reviewsByReviewID->currentPage(),
+        //         'last_page' => $reviewsByReviewID->lastPage(),
+        //         'per_page' => $reviewsByReviewID->perPage(),
+        //         'total' => $reviewsByReviewID->total(),
         //     ],
         //     'average_rating' => $avgReview,
         //     'five_stars_count' => $fiveStars,
@@ -364,56 +398,6 @@ class ContractorRatingsAdminController extends Controller
         //     'two_stars_count' => $twoStars,
         //     'one_star_count' => $oneStar
         // ]);
-
-        // $response = [
-        //         'user' => $userDetails,
-        //         'reviewsByContractID' => $reviewsByContractID->items(),
-        //         'reviewsByContractIDPagination' => [
-        //             'current_page' => $reviewsByContractID->currentPage(),
-        //             'last_page' => $reviewsByContractID->lastPage(),
-        //             'per_page' => $reviewsByContractID->perPage(),
-        //             'total' => $reviewsByContractID->total(),
-        //         ],
-        //         'reviewsByReviewID' => $reviewsByReviewID->items(),
-        //         'reviewsByContractIDPagination' => [
-        //             'current_page' => $reviewsByReviewID->currentPage(),
-        //             'last_page' => $reviewsByReviewID->lastPage(),
-        //             'per_page' => $reviewsByReviewID->perPage(),
-        //             'total' => $reviewsByReviewID->total(),
-        //         ],
-        //         'average_rating' => $avgReview,
-        //         'five_stars_count' => $fiveStars,
-        //         'four_stars_count' => $fourStars,
-        //         'three_stars_count' => $threeStars,
-        //         'two_stars_count' => $twoStars,
-        //         'one_star_count' => $oneStar
-        //     ];
-
-        // return response()->json($response);
-
-        return Inertia::render('Admin/ContractorHistory', [
-            'user' => $userDetails,
-            'reviewsByContractID' => $reviewsByContractID->items(),
-            'reviewsByContractIDPagination' => [
-                'current_page' => $reviewsByContractID->currentPage(),
-                'last_page' => $reviewsByContractID->lastPage(),
-                'per_page' => $reviewsByContractID->perPage(),
-                'total' => $reviewsByContractID->total(),
-            ],
-            'reviewsByReviewID' => $reviewsByReviewID->items(),
-            'reviewsByContractIDPagination' => [
-                'current_page' => $reviewsByReviewID->currentPage(),
-                'last_page' => $reviewsByReviewID->lastPage(),
-                'per_page' => $reviewsByReviewID->perPage(),
-                'total' => $reviewsByReviewID->total(),
-            ],
-            'average_rating' => $avgReview,
-            'five_stars_count' => $fiveStars,
-            'four_stars_count' => $fourStars,
-            'three_stars_count' => $threeStars,
-            'two_stars_count' => $twoStars,
-            'one_star_count' => $oneStar
-        ]);
     }
 
     /**
