@@ -133,7 +133,7 @@ class ContractorRatingsAdminController extends Controller
 
     
         // Build the review query with filtering options
-        $reviewsForContractIDQuery = Review::where('contractor_id', $id)->with(['reviewer' => function($query) {
+        $reviewsForContractIDQuery = Review::where('contractor_id', $id)->withTrashed()->with(['reviewer' => function($query) {
             $query->select([
                 'id',
                 'user_id',
@@ -207,7 +207,7 @@ class ContractorRatingsAdminController extends Controller
     
     
         // Fetch paginated reviews
-        $reviewsByContractID = $reviewsForContractIDQuery->paginate($perPage, ['*'], 'page', $page);
+        $responses = $reviewsForContractIDQuery->paginate($perPage, ['*'], 'page', $page);
 
 
 
@@ -221,7 +221,7 @@ class ContractorRatingsAdminController extends Controller
 
     
         // Build the review query with filtering options
-        $reviewsByReviewIDQuery = Review::where('reviewer_id', $id)->with(['contractor' => function($query) {
+        $reviewsByContractIDQuery = Review::where('reviewer_id', $id)->withTrashed()->with(['contractor' => function($query) {
             $query->select([
                 'id',
                 'user_id',
@@ -277,31 +277,31 @@ class ContractorRatingsAdminController extends Controller
         
         switch ($sortByRating) {
             case 'highest':
-                $reviewsByReviewIDQuery = $reviewsByReviewIDQuery->orderByDesc('rating');
+                $reviewsByContractIDQuery = $reviewsByContractIDQuery->orderByDesc('rating');
                 break;
             case 'middle':
-                $reviewsByReviewIDQuery = $reviewsByReviewIDQuery->orderBy('rating', 'asc')->whereBetween('rating', [2.5, 3.5]);
+                $reviewsByContractIDQuery = $reviewsByContractIDQuery->orderBy('rating', 'asc')->whereBetween('rating', [2.5, 3.5]);
                 break;
             case 'lowest':
-                $reviewsByReviewIDQuery = $reviewsByReviewIDQuery->orderBy('rating', 'asc');
+                $reviewsByContractIDQuery = $reviewsByContractIDQuery->orderBy('rating', 'asc');
                 break;
         }
     
         if ($sortByDate === 'oldest') {
-            $reviewsByReviewIDQuery = $reviewsByReviewIDQuery->oldest('rating_date');
+            $reviewsByContractIDQuery = $reviewsByContractIDQuery->oldest('rating_date');
         } else if($sortByDate === 'latest') {
-            $reviewsByReviewIDQuery = $reviewsByReviewIDQuery->latest('rating_date');
+            $reviewsByContractIDQuery = $reviewsByContractIDQuery->latest('rating_date');
         }
     
     
         // Fetch paginated reviews
-        $reviewsByReviewID = $reviewsByReviewIDQuery->paginate($reviewsPerPage, ['*'], 'page', $reviewsPage);
+        $reviews = $reviewsByContractIDQuery->paginate($reviewsPerPage, ['*'], 'page', $reviewsPage);
 
 
 
 
         // Retrieve the contractor details from the Profile table
-        $userDetails = Profile::where('id', $id)
+        $contractorDetails = Profile::where('id', $id)
                                     ->select([
                                         'id',
                                         'user_id',
@@ -349,55 +349,55 @@ class ContractorRatingsAdminController extends Controller
     
     
 
-        $response = [
-                'user' => $userDetails,
-                'reviewsByContractID' => $reviewsByContractID->items(),
-                'reviewsByContractIDPagination' => [
-                    'current_page' => $reviewsByContractID->currentPage(),
-                    'last_page' => $reviewsByContractID->lastPage(),
-                    'per_page' => $reviewsByContractID->perPage(),
-                    'total' => $reviewsByContractID->total(),
-                ],
-                'reviewsByReviewID' => $reviewsByReviewID->items(),
-                'reviewsByContractIDPagination' => [
-                    'current_page' => $reviewsByReviewID->currentPage(),
-                    'last_page' => $reviewsByReviewID->lastPage(),
-                    'per_page' => $reviewsByReviewID->perPage(),
-                    'total' => $reviewsByReviewID->total(),
-                ],
-                'average_rating' => $avgReview,
-                'five_stars_count' => $fiveStars,
-                'four_stars_count' => $fourStars,
-                'three_stars_count' => $threeStars,
-                'two_stars_count' => $twoStars,
-                'one_star_count' => $oneStar
-            ];
+        // $response = [
+        //         'contractor' => $contractorDetails,
+        //         'reviews' => $reviews->items(),
+        //         'reviewsPagination' => [
+        //             'current_page' => $reviews->currentPage(),
+        //             'last_page' => $reviews->lastPage(),
+        //             'per_page' => $reviews->perPage(),
+        //             'total' => $reviews->total(),
+        //         ],
+        //         'responses' => $responses->items(),
+        //         'responsesPagination' => [
+        //             'current_page' => $responses->currentPage(),
+        //             'last_page' => $responses->lastPage(),
+        //             'per_page' => $responses->perPage(),
+        //             'total' => $responses->total(),
+        //         ],
+        //         'average_rating' => $avgReview,
+        //         'five_stars_count' => $fiveStars,
+        //         'four_stars_count' => $fourStars,
+        //         'three_stars_count' => $threeStars,
+        //         'two_stars_count' => $twoStars,
+        //         'one_star_count' => $oneStar
+        //     ];
 
-        return response()->json($response);
+        // return response()->json($response);
 
-        // return Inertia::render('Admin/ContractorHistory', [
-        //     'user' => $userDetails,
-        //     'reviewsByContractID' => $reviewsByContractID->items(),
-        //     'reviewsByContractIDPagination' => [
-        //         'current_page' => $reviewsByContractID->currentPage(),
-        //         'last_page' => $reviewsByContractID->lastPage(),
-        //         'per_page' => $reviewsByContractID->perPage(),
-        //         'total' => $reviewsByContractID->total(),
-        //     ],
-        //     'reviewsByReviewID' => $reviewsByReviewID->items(),
-        //     'reviewsByContractIDPagination' => [
-        //         'current_page' => $reviewsByReviewID->currentPage(),
-        //         'last_page' => $reviewsByReviewID->lastPage(),
-        //         'per_page' => $reviewsByReviewID->perPage(),
-        //         'total' => $reviewsByReviewID->total(),
-        //     ],
-        //     'average_rating' => $avgReview,
-        //     'five_stars_count' => $fiveStars,
-        //     'four_stars_count' => $fourStars,
-        //     'three_stars_count' => $threeStars,
-        //     'two_stars_count' => $twoStars,
-        //     'one_star_count' => $oneStar
-        // ]);
+        return Inertia::render('Admin/ContractorHistory', [
+            'contractor' => $contractorDetails,
+            'reviews' => $reviews->items(),
+            'reviewsPagination' => [
+                'current_page' => $reviews->currentPage(),
+                'last_page' => $reviews->lastPage(),
+                'per_page' => $reviews->perPage(),
+                'total' => $reviews->total(),
+            ],
+            'responses' => $responses->items(),
+            'responsesPagination' => [
+                'current_page' => $responses->currentPage(),
+                'last_page' => $responses->lastPage(),
+                'per_page' => $responses->perPage(),
+                'total' => $responses->total(),
+            ],
+            'average_rating' => $avgReview,
+            'five_stars_count' => $fiveStars,
+            'four_stars_count' => $fourStars,
+            'three_stars_count' => $threeStars,
+            'two_stars_count' => $twoStars,
+            'one_star_count' => $oneStar
+        ]);
     }
 
     /**
