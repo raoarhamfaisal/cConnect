@@ -48,6 +48,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::put('/admin/reviews/{review}/deactivate', [ReviewController::class, 'deactivate']);
     Route::put('/admin/reviews/{review}/activate', [ReviewController::class, 'activate']);
 
+    Route::put('/admin/reviews/{review}/accept', [ReviewController::class, 'acceptAppeal']);
+    Route::put('/admin/reviews/{review}/reject', [ReviewController::class, 'rejectAppeal']);
+
     Route::patch('/admin/review-responses', [ReviewResponseController::class, 'updateFromAdmin']);
     Route::delete('/admin/review-responses/{reviewResponse}', [ReviewResponseController::class, 'destroyFromAdmin']);
     Route::put('/admin/review-responses/{reviewResponse}/deactivate', [ReviewResponseController::class, 'deactivate']);

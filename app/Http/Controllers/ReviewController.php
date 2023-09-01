@@ -9,6 +9,9 @@ use App\Models\RatingReason;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AppealAccepted;
+use App\Mail\AppealRejected;
 
 
 
@@ -161,6 +164,17 @@ class ReviewController extends Controller
             'give_full_payment' => 'required|boolean',
             'how_did_you_meet_this_contractor' => 'nullable|string|max:255',
         ]);
+
+        // Check if the reviewer has already created a review for this contractor within the last 48 hours
+        $lastReview = Review::where('reviewer_id', $data['reviewer_id'])
+                            ->where('contractor_id', $data['contractor_id'])
+                            ->where('rating_date', '>=', Carbon::now()->subHours(48)->toDateTimeString())
+                            ->first();
+
+        if ($lastReview) {
+            return response()->json(['message' => 'You can only submit one review for this contractor every 48 hours.'], 403);
+        }
+
     
         // Add the current datetime for the rating_date
         $data['rating_date'] = Carbon::now()->toDateTimeString();
@@ -207,7 +221,7 @@ class ReviewController extends Controller
             'give_full_payment' => 'boolean',
             'how_did_you_meet_this_contractor' => 'nullable|string|max:255',
         ]);
-    
+        $review->is_appeal_already_accepted_or_rejected = false;
         $review->update($data);
         return response()->json(['message' => 'Review updated successfully!', 'review' => $review], 200);
     }
@@ -220,6 +234,7 @@ class ReviewController extends Controller
      */
     public function destroy(Review $review)
     {
+        $review->is_appeal_already_accepted_or_rejected = false;
         $review->delete();
         return response()->json(['message' => 'Review deleted successfully!'], 200);
     }
@@ -234,6 +249,12 @@ class ReviewController extends Controller
 
     public function putOnAppeal(Request $request, Review $review)
     {
+
+        // Check if the appeal for this review is already accepted or rejected
+        if ($review->is_appeal_already_accepted_or_rejected || $review->is_under_appeal) {
+            return response()->json(['message' => 'You have already submitted an appeal!.'], 400);
+        }
+
         $data = $request->validate([
             'on_appeal_reason' => 'required|string',
         ]);
@@ -257,6 +278,18 @@ class ReviewController extends Controller
      */
      public function removeAppeal(Request $request, Review $review)
     {
+
+        // Check if the appeal for this review is already accepted or rejected
+        if ($review->is_appeal_already_accepted_or_rejected) {
+            return response()->json(['message' => 'You have already submitted an appeal!'], 400);
+        }
+
+        // Check if the appeal is submitted or not
+        if (!$review->is_under_appeal) {
+            return response()->json(['message' => 'Sorry! You have not submitted an appeal yet.'], 400);
+        }
+
+
         $data = $request->validate([
             'off_appeal_reason' => 'required|string',
         ]);
@@ -594,7 +627,7 @@ class ReviewController extends Controller
                 'trade29',
                 'trade30'
             ]);
-        }, 'review_response'])->where('contractor_id', $contractor_id);
+        }, 'review_response'])->withTrashed()->where('contractor_id', $contractor_id);
     
         // Apply sorting based on filters
         $sortByDate = $request->query('sort_by_date', '');
@@ -717,6 +750,7 @@ class ReviewController extends Controller
             'how_did_you_meet_this_contractor' => 'nullable|string|max:255',
         ]);
 
+        $review->is_appeal_already_accepted_or_rejected = true;
         $review->update($data);
 
         // Assuming 'reason' comes in from the request as well
@@ -749,6 +783,8 @@ class ReviewController extends Controller
             'reason' => 'required|string|max:1000'
         ]);
 
+        $review->is_appeal_already_accepted_or_rejected = true;
+
         // Delete the review
         $review->delete();
 
@@ -763,6 +799,93 @@ class ReviewController extends Controller
         return response()->json(['message' => 'Review deleted successfully!'], 200);
     }
 
+
+    /**
+     * Accept the appeal on review
+     *
+     * @param  \App\Models\Review  $review
+     * @return \Illuminate\Http\Response
+     */
+
+     public function acceptAppeal(Request $request, Review $review)
+     { 
+
+        // Check if the review is under appeal
+        if (!$review->is_under_appeal) {
+            return response()->json(['message' => 'This review is not under appeal.'], 400);
+        }
+
+        // Accept the appeal and turn off on appeal and off appeal
+        $review->is_under_appeal = false;
+        $review->is_appeal_already_accepted_or_rejected = true;
+        $review->on_appeal_reason_date = null;
+        $review->on_appeal_reason = '';
+        $review->off_appeal_reason_date = null;
+        $review->off_appeal_reason = '';
+
+        
+        $review->save();
+        // Send an Accept Eamil to the Contractor explaining the his request for changing the reivew is done.
+
+        // Get contractor's email address from Profile
+        $contractorProfile = Profile::find($review->contractor_id);
+
+        if ($contractorProfile) {
+            $contractorEmail = $contractorProfile->email;
+            
+            // Send the acceptance email
+            Mail::to($contractorEmail)->send(new AppealAccepted());
+        } else {
+            // Handle case where contractor profile is not found, optional
+        }
+
+        return response()->json(['message' => 'Appeal is successfully accepted!', 'review' => $review], 200);
+     }
+ 
+ 
+     /**
+      * Reject the Appeal from Admin Side
+      *
+      * @param  \App\Models\Review  $review
+      * @return \Illuminate\Http\Response
+      */
+      public function rejectAppeal(Request $request, Review $review)
+     {
+        // Check if the review is under appeal
+        if (!$review->is_under_appeal) {
+            return response()->json(['message' => 'This review is not under appeal.'], 400);
+        }
+
+
+        // Accept the appeal and turn off on appeal and off appeal
+        $review->is_under_appeal = false;
+        $review->is_appeal_already_accepted_or_rejected = true;
+        $review->on_appeal_reason_date = null;
+        $review->on_appeal_reason = '';
+        $review->off_appeal_reason_date = null;
+        $review->off_appeal_reason = '';
+
+        
+        $review->save();
+        
+        // Send an Reject Eamil to the Contractor explaining the his request for changing the reivew are rejected.
+
+        // Get contractor's email address from Profile
+        $contractorProfile = Profile::find($review->contractor_id);
+
+        if ($contractorProfile) {
+            $contractorEmail = $contractorProfile->email;
+            
+            // Send the acceptance email
+            Mail::to($contractorEmail)->send(new AppealRejected());
+        } else {
+            // Handle case where contractor profile is not found, optional
+        }
+
+
+        return response()->json(['message' => 'Appeal is successfully rejected!', 'review' => $review], 200);
+     }
+ 
 
 
 }
