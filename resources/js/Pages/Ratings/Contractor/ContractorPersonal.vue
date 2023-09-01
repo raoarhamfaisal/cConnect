@@ -10,7 +10,11 @@
     color="rgb(229 231 235 / var(--tw-bg-opacity))"
   >
     <div v-if="contractor" class="bg-gray-200 mt-10">
-      <Card :shadowLevel="2" bgColor="white" padding="20px">
+      <Card
+        :shadowLevel="2"
+        bgColor="white"
+        :padding="screenWidth < 640 ? '7px' : '20px'"
+      >
         <ContractorInfo :contractor="contractor" />
         <div v-if="!loading">
           <heading-card
@@ -174,6 +178,7 @@ onMounted(() => {
 //Computed
 
 const isFetchReviews = computed(() => store.state.ratings.isFetchReviews);
+const screenWidth = computed(() => store.getters.screenWidth);
 const isDeleted = computed(() => store.state.ratings.isDeleted);
 
 //Watch

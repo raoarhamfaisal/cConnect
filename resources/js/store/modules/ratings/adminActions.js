@@ -231,3 +231,56 @@ export const updateResponseAdmin = async ({ commit }, responseData) => {
     commit("setDisabled", false);
   }
 };
+
+export const sendAcceptRequest = async ({ commit }, payload) => {
+  commit("setLoading", true);
+  commit("setDisabled", true);
+
+  try {
+    const response = await axios.put(
+      `/api/admin/reviews/${payload.reviewId}/accept`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (response.data) {
+      changesSaved(response.message || "Appeal is successfully accepted!");
+      setTimeout(() => {
+        commit("setIsFetchReviews", true);
+      }, 2000);
+    }
+  } catch (err) {
+    somethingWentWrong();
+  } finally {
+    commit("setLoading", false);
+    commit("setDisabled", false);
+  }
+};
+export const sendRejectRequest = async ({ commit }, payload) => {
+  commit("setLoading", true);
+  commit("setDisabled", true);
+
+  try {
+    const response = await axios.put(
+      `/api/admin/reviews/${payload.reviewId}/reject`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (response.data) {
+      changesSaved(response.message || "Appeal is successfully rejected!");
+      setTimeout(() => {
+        commit("setIsFetchReviews", true);
+      }, 2000);
+    }
+  } catch (err) {
+    somethingWentWrong();
+  } finally {
+    commit("setLoading", false);
+    commit("setDisabled", false);
+  }
+};

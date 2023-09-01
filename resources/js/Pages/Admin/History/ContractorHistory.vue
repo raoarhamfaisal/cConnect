@@ -171,15 +171,7 @@ import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import Card from "@/Components/Card.vue";
 import Loader from "@/Components/Ratings/Loader.vue";
 
-import {
-  ref,
-  onMounted,
-  watch,
-  computed,
-  onUnmounted,
-  onBeforeMount,
-  nextTick,
-} from "vue";
+import { ref, onMounted, watch, computed, onBeforeMount } from "vue";
 import { somethingWentWrong } from "@/helpers/utilities";
 import { useStore } from "vuex";
 import { Inertia } from "@inertiajs/inertia";
@@ -226,7 +218,7 @@ onBeforeMount(() => {
 });
 
 //Computed
-
+const screenWidth = computed(() => store.getters.screenWidth);
 const isFetchReviews = computed(() => store.state.ratings.isFetchReviews);
 const isDeleted = computed(() => store.state.ratings.isDeleted);
 const isInactive = computed(() => store.state.ratings.isInactive);
@@ -331,20 +323,6 @@ const fetchReviews = async (per_page = perPage.value, page = 1) => {
     disabled.value = false;
   }
 };
-const screenWidth = ref(window.innerWidth);
-
-// Update the screen width whenever the window is resized
-const updateWidth = () => {
-  screenWidth.value = window.innerWidth;
-};
-
-onMounted(() => {
-  window.addEventListener("resize", updateWidth);
-});
-
-onUnmounted(() => {
-  window.removeEventListener("resize", updateWidth);
-});
 
 const onClickHandler = (page) => {
   fetchReviews(perPage.value, page);

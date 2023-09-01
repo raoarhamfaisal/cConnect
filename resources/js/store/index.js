@@ -5,8 +5,20 @@ export const store = createStore({
   modules: {
     ratings,
   },
-  state() {
-    return {};
+  state: {
+    screenWidth: window.innerWidth,
   },
-  mutations: {},
+  mutations: {
+    setScreenWidth(state, width) {
+      state.screenWidth = width;
+    },
+  },
+  actions: {
+    updateScreenWidth({ commit }) {
+      commit("setScreenWidth", window.innerWidth);
+    },
+  },
+  getters: {
+    screenWidth: (state) => state.screenWidth,
+  },
 });

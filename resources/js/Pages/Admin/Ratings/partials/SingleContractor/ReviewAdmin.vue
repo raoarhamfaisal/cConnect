@@ -5,17 +5,25 @@
         <Avatar :imageSrc="review.reviewer.user_avatar" />
       </div>
       <div class="flex flex-col justify-center">
-        <h2
-          class="text-md xs:text-xl font-medium font-bold text-gray-900 dark:text-gray-100"
-        >
-          {{ review.reviewer.first_name }} {{ review.reviewer.last_name }}
-        </h2>
-        <div class="text-sm xs:text-lg">{{ review.reviewer.company_name }}</div>
-        <span
-          class="text-xs xs:text-lg"
+        <Tooltip
+          :text="`${review.reviewer.first_name} ${review.reviewer.last_name}`"
+          :applyTooltipLength="640"
+          :textLengthToShow="20"
+          textClass="text-md xs:text-xl font-medium font-bold text-gray-900 dark:text-gray-100"
+        />
+        <Tooltip
+          :text="review.reviewer.company_name"
+          :applyTooltipLength="640"
+          :textLengthToShow="23"
+          textClass="text-sm xs:text-lg"
+        />
+        <Tooltip
           v-if="review.reviewer.city || review.reviewer.state"
-          >{{ `${review.reviewer.city} ${review.reviewer.state}` }}</span
-        >
+          :text="`${review.reviewer.city} ${review.reviewer.state}`"
+          :applyTooltipLength="640"
+          :textLengthToShow="23"
+          textClass="text-xs xs:text-lg"
+        />
       </div>
       <!-- star and date -->
       <div
@@ -99,8 +107,6 @@
     class="pl-2 mt-3 flex gap-2 sm:gap-8 flex-col xs:flex-row"
     v-if="showContactDetails"
   >
-    <!-- trades -->
-    <!-- <div class="text-sm xs:text-md font-bold mb-1">Contact Details :</div> -->
     <div class="flex gap-2 xs:gap-4">
       <Icon icon="ic:baseline-phone" color="#241e6d" />
       <div class="text-sm">
@@ -216,22 +222,26 @@
             <Avatar :imageSrc="review.contractor.user_avatar" />
           </div>
           <div class="flex flex-col justify-center">
-            <h2
-              class="text-md xs:text-xl font-medium font-bold text-gray-900 dark:text-gray-100"
-            >
-              {{ review.contractor.first_name }}
-              {{ review.contractor.last_name }}
-            </h2>
-            <div class="text-sm xs:text-lg">
-              {{ review.contractor.company_name }}
-            </div>
-            <span
-              class="text-xs xs:text-lg"
+            <Tooltip
+              :text="`${review.contractor.first_name} ${review.contractor.last_name}`"
+              :applyTooltipLength="640"
+              :textLengthToShow="20"
+              textClass="text-md xs:text-xl font-medium font-bold text-gray-900 dark:text-gray-100"
+            />
+
+            <Tooltip
+              :text="review.contractor.company_name"
+              :applyTooltipLength="640"
+              :textLengthToShow="23"
+              textClass="text-sm xs:text-lg"
+            />
+            <Tooltip
               v-if="review.contractor.city || review.contractor.state"
-              >{{
-                `${review.contractor.city} ${review.contractor.state}`
-              }}</span
-            >
+              :text="`${review.contractor.city} ${review.contractor.state}`"
+              :applyTooltipLength="640"
+              :textLengthToShow="23"
+              textClass="text-xs xs:text-lg"
+            />
           </div>
         </div>
         <div>
@@ -254,8 +264,6 @@
         class="pl-2 mt-3 flex gap-2 sm:gap-8 flex-col xs:flex-row"
         v-if="showContactDetails"
       >
-        <!-- trades -->
-        <!-- <div class="text-sm xs:text-md font-bold mb-1">Contact Details :</div> -->
         <div class="flex gap-2 xs:gap-4">
           <Icon icon="ic:baseline-phone" color="#241e6d" />
           <div class="text-sm">
@@ -282,15 +290,37 @@
         />
         <div class="flex justify-end">
           <div class="flex gap-6">
-            <!-- edit -->
-            <ButtonRatings bgColor="bg-[#364fc7]" @click="openEditDialog"
-              >Accept</ButtonRatings
+            <!-- accept -->
+            <ButtonRatings
+              bgColor="bg-[#364fc7]"
+              @click="sendAcceptRequest('acceptOnAppeal')"
+              class="flex gap-2"
+              :disabled="disabled"
             >
+              <div class="flex items-center justify-center">Accept</div>
+              <img
+                class="ml-2"
+                v-show="loading && loadingSpecific === 'acceptOnAppeal'"
+                src="/images/avatars/Spinner.gif"
+                alt="spinner"
+                width="20"
+            /></ButtonRatings>
 
-            <!-- delete -->
-            <ButtonRatings bgColor="bg-[#e03131]" @click="openDeleteDialog"
-              >Reject</ButtonRatings
+            <!-- reject -->
+            <ButtonRatings
+              bgColor="bg-[#e03131]"
+              @click="sendRejectRequest('rejectOnAppeal')"
+              class="flex gap-2"
+              :disabled="disabled"
             >
+              <div class="flex items-center justify-center">Reject</div>
+              <img
+                class="ml-2"
+                v-show="loading && loadingSpecific === 'rejectOnAppeal'"
+                src="/images/avatars/Spinner.gif"
+                alt="spinner"
+                width="20"
+            /></ButtonRatings>
           </div>
         </div>
       </div>
@@ -306,15 +336,37 @@
         />
         <div class="flex justify-end">
           <div class="flex gap-6">
-            <!-- edit -->
-            <ButtonRatings bgColor="bg-[#364fc7]" @click="openEditDialog"
-              >Accept</ButtonRatings
+            <!-- accept -->
+            <ButtonRatings
+              bgColor="bg-[#364fc7]"
+              @click="sendAcceptRequest('acceptOffAppeal')"
+              class="flex gap-2"
+              :disabled="disabled"
             >
+              <div class="flex items-center justify-center">Accept</div>
+              <img
+                class="ml-2"
+                v-show="loading && loadingSpecific === 'acceptOffAppeal'"
+                src="/images/avatars/Spinner.gif"
+                alt="spinner"
+                width="20"
+            /></ButtonRatings>
 
-            <!-- delete -->
-            <ButtonRatings bgColor="bg-[#e03131]" @click="openDeleteDialog"
-              >Reject</ButtonRatings
+            <!-- reject -->
+            <ButtonRatings
+              bgColor="bg-[#e03131]"
+              @click="sendRejectRequest('rejectOffAppeal')"
+              class="flex gap-2"
+              :disabled="disabled"
             >
+              <div class="flex items-center justify-center">Reject</div>
+              <img
+                class="ml-2"
+                v-show="loading && loadingSpecific === 'rejectOffAppeal'"
+                src="/images/avatars/Spinner.gif"
+                alt="spinner"
+                width="20"
+            /></ButtonRatings>
           </div>
         </div>
       </div>
@@ -346,10 +398,14 @@ import DeleteRatingModal from "@/Pages/Admin/Ratings/partials/SingleContractor/E
 import Badge from "@/Components/Ratings/Badge.vue";
 import QualifyingQuestions from "@/Pages/Ratings/PartialsPersonal/QualifyingQuestions.vue";
 import { convertDateFormat } from "@/helpers/utilities";
+import Tooltip from "@/Components/Ratings/Tooltip.vue";
 
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, computed } from "vue";
 import { Icon } from "@iconify/vue";
 import { Link } from "@inertiajs/inertia-vue3";
+import { useStore } from "vuex";
+
+//State
 
 const { review } = defineProps({
   review: {
@@ -395,36 +451,12 @@ const options = [
   { id: "trade23", name: "Handyman Services" },
   { id: "trade24", name: "Architectural, Engineering & Law" },
 ];
+const store = useStore();
 const editRef = ref();
 const deleteRef = ref();
-const inActiveRef = ref();
-
-const openEditDialog = () => {
-  editRef.value.openDialogEdit();
-};
-
-const openDeleteDialog = () => {
-  deleteRef.value.openDialogDelete();
-};
-const openInActiveDialog = () => {
-  inActiveRef.value.openDialogInActivate();
-};
-
 const showFullReview = ref(false);
-const screenWidth = ref(window.innerWidth);
-
-// Update the screen width whenever the window is resized
-const updateWidth = () => {
-  screenWidth.value = window.innerWidth;
-};
-
-onMounted(() => {
-  window.addEventListener("resize", updateWidth);
-});
-
-onUnmounted(() => {
-  window.removeEventListener("resize", updateWidth);
-});
+const inActiveRef = ref();
+const loadingSpecific = ref("");
 //  for quesitonSwitch
 const questionsMapping = [
   {
@@ -454,6 +486,41 @@ const questionsSwitch = questionsMapping.map((mapping) => ({
   question: mapping.question,
   questionAnswer: review[mapping.field],
 }));
+
+//computed
+const loading = computed(() => store.state.ratings.loading);
+const screenWidth = computed(() => store.getters.screenWidth);
+const disabled = computed(() => store.state.ratings.disabled);
+
+//Methods
+
+const sendAcceptRequest = async (value) => {
+  loadingSpecific.value = value;
+  const payload = {
+    reviewId: review.id,
+  };
+  await store.dispatch("ratings/sendAcceptRequest", payload);
+  loadingSpecific.value = "";
+};
+const sendRejectRequest = async (value) => {
+  loadingSpecific.value = value;
+
+  const payload = {
+    reviewId: review.id,
+  };
+  await store.dispatch("ratings/sendRejectRequest", payload);
+  loadingSpecific.value = "";
+};
+const openEditDialog = () => {
+  editRef.value.openDialogEdit();
+};
+
+const openDeleteDialog = () => {
+  deleteRef.value.openDialogDelete();
+};
+const openInActiveDialog = () => {
+  inActiveRef.value.openDialogInActivate();
+};
 </script>
 
 <style scoped>

@@ -30,3 +30,13 @@ createInertiaApp({
 });
 
 InertiaProgress.init({ color: "#4B5563" });
+
+const updateWidth = () => {
+  store.dispatch("updateScreenWidth");
+};
+
+// Initial size
+updateWidth();
+
+// Update whenever the window is resized
+window.addEventListener("resize", updateWidth);

@@ -11,7 +11,11 @@
     color="rgb(229 231 235 / var(--tw-bg-opacity))"
   >
     <div v-if="!loading" class="bg-gray-200 mt-10">
-      <Card :shadowLevel="2" bgColor="white" padding="20px">
+      <Card
+        :shadowLevel="2"
+        bgColor="white"
+        :padding="screenWidth < 640 ? '7px' : '20px'"
+      >
         <heading-card heading="All Contractors" class="mt-3 mb-6" />
         <div
           class="flex flex-col"
@@ -94,6 +98,7 @@ const perPage = ref(5);
 //Computed
 
 const loading = computed(() => store.state.ratings.loading);
+const screenWidth = computed(() => store.getters.screenWidth);
 const allContractors = computed(() => store.state.ratings.allContractors);
 const pagination = computed(() => store.state.ratings.pagination);
 //on Mounted
