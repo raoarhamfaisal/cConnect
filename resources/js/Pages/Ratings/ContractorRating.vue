@@ -115,7 +115,10 @@
               :on-click="onClickHandler"
             />
           </div>
-          <div class="py-4 border-t-2 border-b-2 border-gray-300">
+          <div
+            v-if="contractorDetails.id !== paramId"
+            class="py-4 border-t-2 border-b-2 border-gray-300"
+          >
             <Button
               ref="cardRef"
               @onSelect="handleSelect"
@@ -154,7 +157,7 @@
 <script setup>
 import Header from "@/Layouts/Header.vue";
 import ReviewResponse from "./PartialsVisiting/ReviewResponse.vue";
-import { Head } from "@inertiajs/inertia-vue3";
+import { Head, usePage } from "@inertiajs/inertia-vue3";
 import AverageRating from "./PartialsVisiting/AverageRating.vue";
 import Button from "@/Components/Ratings/Button.vue";
 import CustomPagination from "@/Components/Ratings/CustomPagination.vue";
@@ -197,9 +200,11 @@ const sortByDate = ref("latest");
 const sortByRating = ref("");
 const pagination = ref(0);
 const perPage = ref(15);
+const paramId = ref(0);
 
 // Mounted
 onMounted(() => {
+  paramId.value = usePage().props.value.contractorDetails.id;
   fetchReviews();
   contractor.value = contractorDetails;
 });
@@ -253,7 +258,7 @@ const fetchReviews = async (per_page = perPage.value, page = 1) => {
   try {
     loading.value = true;
     const response = await axios.get(
-      `/api/reviews/${contractorDetails.id}?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
+      `/api/reviews/${paramId.value}?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
       {
         headers: {
           "Content-Type": "application/json",

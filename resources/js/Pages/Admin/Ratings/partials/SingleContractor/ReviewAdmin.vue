@@ -75,7 +75,22 @@
           >Under Appeal</Badge
         >
       </div>
-      <div v-if="screenWidth >= 768" class="grid grid-cols-3 gap-2">
+      <!-- Deleted At -->
+      <div
+        v-if="screenWidth >= 768 && review.deleted_at"
+        class="font-bold inline-block"
+      >
+        Deleted At
+        <div class="font-normal inline-block text-sm">
+          : {{ formatUTCToDateTime(review.deleted_at) }}
+        </div>
+      </div>
+
+      <!-- Edit buttons -->
+      <div
+        v-if="screenWidth >= 768 && !review.deleted_at"
+        class="grid grid-cols-3 gap-2"
+      >
         <!-- edit -->
         <ButtonRatings
           bgColor="bg-lime-700"
@@ -102,6 +117,16 @@
       </div>
     </div>
   </div>
+  <!-- Delted At for Mobile -->
+  <div
+    v-if="screenWidth < 768 && review.deleted_at"
+    class="pl-2 mt-2 font-bold inline-block"
+  >
+    Deleted At
+    <div class="font-normal inline-block text-sm">
+      : {{ formatUTCToDateTime(review.deleted_at) }}
+    </div>
+  </div>
   <!-- contact details -->
   <div
     class="pl-2 mt-3 flex gap-2 sm:gap-8 flex-col xs:flex-row"
@@ -121,7 +146,10 @@
     </div>
   </div>
   <!-- for mobile view icons edit inactive delete-->
-  <div v-if="screenWidth < 768" class="grid grid-cols-3 gap-2 mt-3">
+  <div
+    v-if="screenWidth < 768 && !review.deleted_at"
+    class="grid grid-cols-3 gap-2 mt-3"
+  >
     <ButtonRatings
       bgColor="bg-lime-700"
       icon="material-symbols:edit-sharp"
@@ -288,7 +316,7 @@
           }"
           heading="Appeal Request from the Contractor"
         />
-        <div class="flex justify-end">
+        <div v-if="!review.deleted_at" class="flex justify-end">
           <div class="flex gap-6">
             <!-- accept -->
             <ButtonRatings
@@ -334,7 +362,7 @@
           }"
           heading="Appeal Turn Off Request from the Contractor"
         />
-        <div class="flex justify-end">
+        <div v-if="!review.deleted_at" class="flex justify-end">
           <div class="flex gap-6">
             <!-- accept -->
             <ButtonRatings
@@ -397,7 +425,7 @@ import EditRatingModal from "@/Pages/Admin/Ratings/partials/SingleContractor/Edi
 import DeleteRatingModal from "@/Pages/Admin/Ratings/partials/SingleContractor/Edit/DeleteRatingModal.vue";
 import Badge from "@/Components/Ratings/Badge.vue";
 import QualifyingQuestions from "@/Pages/Ratings/PartialsPersonal/QualifyingQuestions.vue";
-import { convertDateFormat } from "@/helpers/utilities";
+import { convertDateFormat, formatUTCToDateTime } from "@/helpers/utilities";
 import Tooltip from "@/Components/Ratings/Tooltip.vue";
 
 import { ref, computed } from "vue";

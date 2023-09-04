@@ -45,6 +45,7 @@ export const somethingWentWrong = (
   });
 };
 
+// convert UtC 2023-09-04T10:00:35.000000Z to DAte 23/09/2022
 export function convertDateFormat(dateString) {
   // Create a new date object from the input string
   const date = new Date(dateString);
@@ -69,7 +70,7 @@ export const filterTextFromBadWords = (textRef) => {
 
   textRef.value = filteredWords.join(" ");
 };
-
+// fromat 2004-12-07 06:34:58 to this 04 Sep 2023, 9:14AM
 export const formatDateTime = (dateTime) => {
   // Extract the date and time parts from the input string
   const [datePart, timePart] = dateTime.split(" ");
@@ -112,4 +113,44 @@ export const formatDateTime = (dateTime) => {
   const formattedDateTime = `${day} ${monthName} ${year}, ${formattedHour}:${minute}${ampm}`;
 
   return formattedDateTime;
+};
+// convert UtC 2023-09-04T10:00:35.000000Z to DAteTime  04 Sep 2023, 9:14AM
+export const formatUTCToDateTime = (dateString) => {
+  // Parse the date string into a Date object
+  const date = new Date(dateString);
+
+  // Create an array for month names
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  // Extract day, month, and year
+  const day = date.getUTCDate();
+  const month = monthNames[date.getUTCMonth()];
+  const year = date.getUTCFullYear();
+
+  // Extract time
+  const hours = date.getUTCHours();
+  const minutes = date.getUTCMinutes();
+  const ampm = hours >= 12 ? "PM" : "AM";
+
+  // Convert 24-hour time format to 12-hour format
+  const hours12 = hours % 12 || 12;
+
+  // Add leading zeros to minutes less than 10
+  const minutesStr = minutes < 10 ? "0" + minutes : minutes;
+
+  // Construct the final string
+  return `${day} ${month} ${year}, ${hours12}:${minutesStr}${ampm}`;
 };
