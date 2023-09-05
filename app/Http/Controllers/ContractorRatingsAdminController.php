@@ -441,6 +441,73 @@ class ContractorRatingsAdminController extends Controller
     }
 
 
+    // Search the Contractor
+    public function searchContractor(Request $request)
+    {
+        $query = Profile::query();
+
+        // Specify the columns to retrieve
+        $query->select([
+            'id',
+            'user_id',
+            'email',
+            'phone_cell',
+            'first_name',
+            'last_name',
+            'company_name',
+            'city',
+            'state',
+            'user_avatar',
+            'company_logo',
+            'trade1',
+            'trade2',
+            'trade3',
+            'trade4',
+            'trade5',
+            'trade6',
+            'trade7',
+            'trade8',
+            'trade9',
+            'trade10',
+            'trade11',
+            'trade12',
+            'trade13',
+            'trade14',
+            'trade15',
+            'trade16',
+            'trade17',
+            'trade18',
+            'trade19',
+            'trade20',
+            'trade21',
+            'trade22',
+            'trade23',
+            'trade24',
+            'trade25',
+            'trade26',
+            'trade27',
+            'trade28',
+            'trade29',
+            'trade30'
+        ]);
+
+        $searchTerm = $request->get('search');
+
+        if ($searchTerm) {
+            $query->where(function ($subQuery) use ($searchTerm) {
+                $subQuery->where('first_name', 'like', '%' . $searchTerm . '%')
+                         ->orWhere('last_name', 'like', '%' . $searchTerm . '%')
+                         ->orWhere('email', 'like', '%' . $searchTerm . '%')
+                         ->orWhere('company_name', 'like', '%' . $searchTerm . '%')
+                         ->orWhere('phone_cell', 'like', '%' . $searchTerm . '%')
+                         ->orWhere('phone_office', 'like', '%' . $searchTerm . '%');
+            });
+        }
+
+        $contractors = $query->get();
+
+        return response()->json($contractors);
+    }
 
 
     /**

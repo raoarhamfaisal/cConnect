@@ -9,10 +9,12 @@ use App\Http\Controllers\ContractorRatingsAdminController;
 use App\Http\Controllers\AppealedReviewsController;
 use App\Http\Controllers\AdminRatingsController;
 
+
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return Inertia::render('index', [
@@ -92,6 +94,14 @@ Route::post('/upload-post', [PostImageController::class, 'upload'])
 
 // Delete image from temp storage
 Route::post('upload-post-revert', [PostImageController::class, 'uploadRevert']);
+
+Route::post('/tokens/create', function (Request $request) {
+    $user = Auth()->user();
+    // dd($user);
+    $token = Auth()->user()->createToken('sanctum');
+    return ['token' => $token->plainTextToken];
+});
+
 
 // ->name('post.uploadImages')
 // ->middleware(['auth', 'verified']);

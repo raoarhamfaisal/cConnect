@@ -35,6 +35,9 @@ return [
 
     'guard' => ['web'],
 
+    // 'secure' => env('SESSION_SECURE_COOKIE', false),
+    // 'same_site' => 'none',
+
     /*
     |--------------------------------------------------------------------------
     | Expiration Minutes

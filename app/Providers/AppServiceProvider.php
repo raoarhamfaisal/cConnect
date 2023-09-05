@@ -7,7 +7,8 @@ use App\Observers\PostObserver;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
-
+use Laravel\Sanctum\PersonalAccessToken;
+use Laravel\Sanctum\Sanctum;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -27,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
         Inertia::share([
             'errors' => function () {
                 return Session::get(key:'errors')
