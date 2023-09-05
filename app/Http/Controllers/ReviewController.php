@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AppealAccepted;
 use App\Mail\AppealRejected;
+use Illuminate\Support\Facades\Auth;
+
 
 
 
@@ -205,6 +207,8 @@ class ReviewController extends Controller
      */
     public function update(Request $request, Review $review)
     {
+
+        // return response()->json(['user' => $user, 'review' => $review], 200);
         $data = $request->validate([
             'reviewer_id' => 'integer|exists:profiles,id',
             'contractor_id' => 'integer|exists:profiles,id',
@@ -221,10 +225,23 @@ class ReviewController extends Controller
             'give_full_payment' => 'boolean',
             'how_did_you_meet_this_contractor' => 'nullable|string|max:255',
         ]);
-        $review->is_appeal_already_accepted_or_rejected = false;
-        $review->update($data);
-        return response()->json(['message' => 'Review updated successfully!', 'review' => $review], 200);
+
+        // Get the currently authenticated user
+        $user = Auth::user();
+        // Check if the user is the original reviewer or has admin privileges
+        if ($user->id === $data['reviewer_id'] || $user->reviews_privileges) {
+        
+            $review->is_appeal_already_accepted_or_rejected = false;
+            $review->update($data);
+        
+            return response()->json(['message' => 'Review updated successfully!', 'review' => $review], 200);
+        }else {
+            return response()->json(['message' => 'You do not have permission to update this review'], 403);
+        }
+    
     }
+
+
 
     /**
      * Remove the specified resource from storage.
@@ -234,9 +251,16 @@ class ReviewController extends Controller
      */
     public function destroy(Review $review)
     {
-        $review->is_appeal_already_accepted_or_rejected = false;
-        $review->delete();
-        return response()->json(['message' => 'Review deleted successfully!'], 200);
+        // Get the currently authenticated user
+        $user = Auth::user();
+        // Check if the user is the original reviewer or has admin privileges
+        if ($user->id === $review->reviewer_id || $user->reviews_privileges) {
+            $review->is_appeal_already_accepted_or_rejected = false;
+            $review->delete();
+            return response()->json(['message' => 'Review deleted successfully!'], 200);
+        }else {
+            return response()->json(['message' => 'You do not have permission to delete this review'], 403);
+        }
     }
 
 
@@ -255,18 +279,28 @@ class ReviewController extends Controller
             return response()->json(['message' => 'You have already submitted an appeal!.'], 400);
         }
 
+
+
         $data = $request->validate([
             'on_appeal_reason' => 'required|string',
         ]);
 
-        // Set the review to be under appeal and add the current datetime
-        $review->is_under_appeal = true;
-        $review->on_appeal_reason_date = Carbon::now();
-        $review->on_appeal_reason = $data['on_appeal_reason'];
+        // Get the currently authenticated user
+        $user = Auth::user();
+        // Check if the user is the original reviewer or has admin privileges
+        if ($user->id === $review->contractor_id || $user->reviews_privileges) {
 
-        $review->save();
+            // Set the review to be under appeal and add the current datetime
+            $review->is_under_appeal = true;
+            $review->on_appeal_reason_date = Carbon::now();
+            $review->on_appeal_reason = $data['on_appeal_reason'];
 
-        return response()->json(['message' => 'Review put on appeal successfully!', 'review' => $review], 200);
+            $review->save();
+
+            return response()->json(['message' => 'Review put on appeal successfully!', 'review' => $review], 200);
+        }else {
+            return response()->json(['message' => 'You do not have permission to appeal on this review'], 403);
+        }
     }
 
 
@@ -294,13 +328,21 @@ class ReviewController extends Controller
             'off_appeal_reason' => 'required|string',
         ]);
 
-        // Set the review's appeal status to off and add the current datetime
-        $review->off_appeal_reason_date = Carbon::now();
-        $review->off_appeal_reason = $data['off_appeal_reason'];
+        // Get the currently authenticated user
+        $user = Auth::user();
+        // Check if the user is the original reviewer or has admin privileges
+        if ($user->id === $review->contractor_id || $user->reviews_privileges) {
 
-        $review->save();
+            // Set the review's appeal status to off and add the current datetime
+            $review->off_appeal_reason_date = Carbon::now();
+            $review->off_appeal_reason = $data['off_appeal_reason'];
 
-        return response()->json(['message' => 'Appeal for removal successfully submitted!', 'review' => $review], 200);
+            $review->save();
+
+            return response()->json(['message' => 'Appeal for removal successfully submitted!', 'review' => $review], 200);
+        }else {
+            return response()->json(['message' => 'You do not have permission to turn offf this appeal'], 403);
+        }
     }
 
 
