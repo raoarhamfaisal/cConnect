@@ -12,20 +12,16 @@ const showMore6 = ref(false);
 </script>
 
 <template>
-  <section class="bg-white dark:bg-gray-900">
+  <section class="bg-white">
     <div class="container px-6 py-10 mx-auto">
-      <h1
-        class="text-3xl font-semibold text-gray-800 capitalize lg:text-4xl dark:text-white"
-      >
+      <h1 class="text-3xl font-semibold text-gray-800 capitalize lg:text-4xl">
         explore our <br />
         <span class="underline underline-offset-8 decoration-blue-rgba">
           Game-Changing Tools
         </span>
       </h1>
 
-      <p
-        class="text-2xl capitalize mt-4 text-gray-600 xl:mt-6 dark:text-gray-300"
-      >
+      <p class="text-2xl capitalize mt-4 text-gray-600 xl:mt-6">
         more business - more profit - less hassles
       </p>
 
@@ -36,14 +32,14 @@ const showMore6 = ref(false);
         <div class="" id="newsFeedFeature">
           <div class="flex flex-row justify-start items-center">
             <div
-              class="inline-block p-3 text-blue-500 bg-blue-100 rounded-full dark:text-white dark:bg-blue-500"
+              class="inline-block p-3 text-blue-500 bg-blue-100 rounded-full"
             >
               <img src="/images/icons/news_view.png" width="40" height="40" />
             </div>
 
             <div class="flex w-4/5 flex-col justify-center items-start">
               <h1
-                class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase dark:text-white"
+                class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase"
               >
                 news feed
               </h1>
@@ -104,7 +100,7 @@ const showMore6 = ref(false);
               <button
                 v-if="!showMore1"
                 @click="showMore1 = !showMore1"
-                class="inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform dark:text-blue-400 hover:underline hover:text-blue-600 dark:hover:text-blue-500"
+                class="inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform hover:underline hover:text-blue-600"
               >
                 More
                 <svg
@@ -124,7 +120,7 @@ const showMore6 = ref(false);
                 href="#newsFeedFeature"
                 v-if="showMore1"
                 @click="showMore1 = !showMore1"
-                class="inline-flex items-center -mx-1 text-md text-teal-500 capitalize transition-colors duration-300 transform dark:text-teal-400 hover:underline hover:text-teal-600 dark:hover:text-teal-500"
+                class="inline-flex items-center -mx-1 text-md text-teal-500 capitalize transition-colors duration-300 transform hover:underline hover:text-teal-600"
               >
                 <svg
                   class="w-4 h-4 mx-1 rtl:-scale-x-100"
@@ -149,14 +145,14 @@ const showMore6 = ref(false);
         <div class="" id="subFinderFeature">
           <div class="flex flex-row justify-start items-center">
             <div
-              class="inline-block p-3 text-blue-500 bg-blue-100 rounded-full dark:text-white dark:bg-blue-500"
+              class="inline-block p-3 text-blue-500 bg-blue-100 rounded-full"
             >
               <img src="/images/icons/contractor.png" width="40" height="40" />
             </div>
 
             <div class="flex w-4/5 flex-col justify-center items-start">
               <h1
-                class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase dark:text-white"
+                class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase"
               >
                 sub finder
               </h1>
@@ -249,7 +245,7 @@ const showMore6 = ref(false);
               <button
                 v-if="!showMore2"
                 @click="showMore2 = !showMore2"
-                class="inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform dark:text-blue-400 hover:underline hover:text-blue-600 dark:hover:text-blue-500"
+                class="inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform hover:underline hover:text-blue-600"
               >
                 More
                 <svg
@@ -270,7 +266,7 @@ const showMore6 = ref(false);
                 href="#subFinderFeature"
                 v-if="showMore2"
                 @click="showMore2 = !showMore2"
-                class="inline-flex items-center -mx-1 text-md text-teal-500 capitalize transition-colors duration-300 transform dark:text-teal-400 hover:underline hover:text-teal-600 dark:hover:text-teal-500"
+                class="inline-flex items-center -mx-1 text-md text-teal-500 capitalize transition-colors duration-300 transform hover:underline hover:text-teal-600"
               >
                 <svg
                   class="w-4 h-4 mx-1 rtl:-scale-x-100"
@@ -295,14 +291,14 @@ const showMore6 = ref(false);
         <div class="" id="customerCheckFeature">
           <div class="flex flex-row justify-start items-center">
             <div
-              class="inline-block p-3 text-blue-500 bg-blue-100 rounded-full dark:text-white dark:bg-blue-500"
+              class="inline-block p-3 text-blue-500 bg-blue-100 rounded-full"
             >
               <img src="/images/icons/redflag.png" width="40" height="40" />
             </div>
 
             <div class="flex w-4/5 flex-col justify-center items-start">
               <h1
-                class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase dark:text-white"
+                class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase"
               >
                 Red Flag Customers
               </h1>
@@ -396,7 +392,7 @@ const showMore6 = ref(false);
               <button
                 v-if="!showMore3"
                 @click="showMore3 = !showMore3"
-                class="inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform dark:text-blue-400 hover:underline hover:text-blue-600 dark:hover:text-blue-500"
+                class="inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform hover:underline hover:text-blue-600"
               >
                 More
                 <svg
@@ -416,7 +412,7 @@ const showMore6 = ref(false);
                 href="#customerCheckFeature"
                 v-if="showMore3"
                 @click="showMore3 = !showMore3"
-                class="inline-flex items-center -mx-1 text-md text-teal-500 capitalize transition-colors duration-300 transform dark:text-teal-400 hover:underline hover:text-teal-600 dark:hover:text-teal-500"
+                class="inline-flex items-center -mx-1 text-md text-teal-500 capitalize transition-colors duration-300 transform hover:underline hover:text-teal-600"
               >
                 <svg
                   class="w-4 h-4 mx-1 rtl:-scale-x-100"
@@ -441,7 +437,7 @@ const showMore6 = ref(false);
         <div class="" id="contractorPageFeature">
           <div class="flex flex-row justify-start items-center">
             <div
-              class="inline-block p-3 text-blue-500 bg-blue-100 rounded-full dark:text-white dark:bg-blue-500"
+              class="inline-block p-3 text-blue-500 bg-blue-100 rounded-full"
             >
               <img
                 src="/images/icons/contractorpage.png"
@@ -452,7 +448,7 @@ const showMore6 = ref(false);
 
             <div class="flex w-4/5 flex-col justify-center items-start">
               <h1
-                class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase dark:text-white"
+                class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase"
               >
                 Contractor Page
               </h1>
@@ -510,7 +506,7 @@ const showMore6 = ref(false);
               <button
                 v-if="!showMore4"
                 @click="showMore4 = !showMore4"
-                class="inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform dark:text-blue-400 hover:underline hover:text-blue-600 dark:hover:text-blue-500"
+                class="inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform hover:underline hover:text-blue-600"
               >
                 More
                 <svg
@@ -530,7 +526,7 @@ const showMore6 = ref(false);
                 href="#contractorPageFeature"
                 v-if="showMore4"
                 @click="showMore4 = !showMore4"
-                class="inline-flex items-center -mx-1 text-md text-teal-500 capitalize transition-colors duration-300 transform dark:text-teal-400 hover:underline hover:text-teal-600 dark:hover:text-teal-500"
+                class="inline-flex items-center -mx-1 text-md text-teal-500 capitalize transition-colors duration-300 transform hover:underline hover:text-teal-600"
               >
                 <svg
                   class="w-4 h-4 mx-1 rtl:-scale-x-100"
@@ -555,14 +551,14 @@ const showMore6 = ref(false);
         <div class="" id="mentoringFeature">
           <div class="flex flex-row justify-start items-center">
             <div
-              class="inline-block p-3 text-blue-500 bg-blue-100 rounded-full dark:text-white dark:bg-blue-500"
+              class="inline-block p-3 text-blue-500 bg-blue-100 rounded-full"
             >
               <img src="/images/icons/mentor.png" width="40" height="40" />
             </div>
 
             <div class="flex w-4/5 flex-col justify-center items-start">
               <h1
-                class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase dark:text-white"
+                class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase"
               >
                 Mentoring
               </h1>
@@ -614,7 +610,7 @@ const showMore6 = ref(false);
               <button
                 v-if="!showMore5"
                 @click="showMore5 = !showMore5"
-                class="inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform dark:text-blue-400 hover:underline hover:text-blue-600 dark:hover:text-blue-500"
+                class="inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform hover:underline hover:text-blue-600"
               >
                 More
                 <svg
@@ -634,7 +630,7 @@ const showMore6 = ref(false);
                 href="#mentoringFeature"
                 v-if="showMore5"
                 @click="showMore5 = !showMore5"
-                class="inline-flex items-center -mx-1 text-md text-teal-500 capitalize transition-colors duration-300 transform dark:text-teal-400 hover:underline hover:text-teal-600 dark:hover:text-teal-500"
+                class="inline-flex items-center -mx-1 text-md text-teal-500 capitalize transition-colors duration-300 transform hover:underline hover:text-teal-600"
               >
                 <svg
                   class="w-4 h-4 mx-1 rtl:-scale-x-100"
@@ -659,7 +655,7 @@ const showMore6 = ref(false);
         <div class="" id="newFeatures">
           <div class="flex flex-row justify-start items-center">
             <div
-              class="inline-block p-3 text-blue-500 bg-blue-100 rounded-full dark:text-white dark:bg-blue-500"
+              class="inline-block p-3 text-blue-500 bg-blue-100 rounded-full"
             >
               <img
                 src="/images/icons/under_construc.png"
@@ -670,7 +666,7 @@ const showMore6 = ref(false);
 
             <div class="flex w-4/5 flex-col justify-center items-start">
               <h1
-                class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase dark:text-white"
+                class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase"
               >
                 NEW FEATURES<br />COMING SOON!
               </h1>
@@ -720,7 +716,7 @@ const showMore6 = ref(false);
               <button
                 v-if="!showMore6"
                 @click="showMore6 = !showMore6"
-                class="inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform dark:text-blue-400 hover:underline hover:text-blue-600 dark:hover:text-blue-500"
+                class="inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform hover:underline hover:text-blue-600"
               >
                 More
                 <svg
@@ -740,7 +736,7 @@ const showMore6 = ref(false);
                 href="#newFeatures"
                 v-if="showMore6"
                 @click="showMore6 = !showMore6"
-                class="inline-flex items-center -mx-1 text-md text-teal-500 capitalize transition-colors duration-300 transform dark:text-teal-400 hover:underline hover:text-teal-600 dark:hover:text-teal-500"
+                class="inline-flex items-center -mx-1 text-md text-teal-500 capitalize transition-colors duration-300 transform hover:underline hover:text-teal-600"
               >
                 <svg
                   class="w-4 h-4 mx-1 rtl:-scale-x-100"

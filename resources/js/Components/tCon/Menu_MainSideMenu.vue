@@ -56,7 +56,7 @@ function handleLogout() {
     class="hidden lg:flex lg:flex-col items-center justify-start transition-all duration-700 ease-in-out h-screen overflow-scroll"
   >
     <div
-      class="hidden lg:flex lg:flex-col justify-start items-center w-[32rem] px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-900 dark:border-gray-700"
+      class="hidden lg:flex lg:flex-col justify-start items-center w-[32rem] px-4 py-2 rounded-lg bg-gray-200"
     >
       <Link
         href="/"
@@ -75,7 +75,7 @@ function handleLogout() {
           alt="avatar"
         />
 
-        <h4 class="mx-2 mt-2 font-bold text-gray-800 dark:text-gray-200">
+        <h4 class="mx-2 mt-2 font-bold text-gray-800">
           {{
             (profile.first_name + " " + profile.last_name).length < 27
               ? profile.first_name + " " + profile.last_name
@@ -86,7 +86,7 @@ function handleLogout() {
           }}
         </h4>
 
-        <h4 class="mx-2 font-bold text-gray-800 dark:text-gray-200">
+        <h4 class="mx-2 font-bold text-gray-800">
           {{
             profile.company_name.length < 27
               ? profile.company_name
@@ -94,19 +94,16 @@ function handleLogout() {
           }}
         </h4>
 
-        <h4 class="mx-2 text-sm font-semibold text-gray-700 dark:text-gray-400">
+        <h4 class="mx-2 text-sm font-semibold text-gray-700">
           Cell: {{ profile.phone_cell }}
         </h4>
 
-        <h4 class="mx-2 text-sm font-medium text-gray-700 dark:text-gray-400">
+        <h4 class="mx-2 text-sm font-medium text-gray-700">
           {{ profile.email }}
         </h4>
 
         <!-- City State Zip -->
-        <h4
-          v-if="showit"
-          class="mx-2 text-sm font-medium text-gray-500 dark:text-gray-400"
-        >
+        <h4 v-if="showit" class="mx-2 text-sm font-medium text-gray-500">
           {{ profile.city + ", " + profile.state + " " + profile.zipcode }}
         </h4>
       </div>
@@ -140,7 +137,7 @@ function handleLogout() {
                     :value="modelValue"
                     @input="$emit('update:modelValue', $event.target.value)"
                     @keypress.prevent.enter="newPostSearchValue"
-                    class="relative m-0 -mr-px block w-[1%] min-w-0 flex-auto bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 outline-none rounded-l-md border border-solid border-gray-600 dark:text-gray-300 dark:placeholder:text-gray-300 placeholder:italic placeholder:text-slate-500"
+                    class="relative m-0 -mr-px block w-[1%] min-w-0 flex-auto bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 outline-none rounded-l-md border border-solid border-gray-600 placeholder:italic placeholder:text-slate-500"
                     placeholder="Search..."
                   />
 
@@ -178,7 +175,7 @@ function handleLogout() {
           <!-- all contractors -->
           <Link
             v-if="isAdminUrl"
-            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
             href="/admin/ratings"
           >
             <Icon
@@ -192,7 +189,7 @@ function handleLogout() {
           <!-- Appealed Reviews -->
           <Link
             v-if="isAdminUrl"
-            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
             href="/admin/appealed"
           >
             <Icon
@@ -205,13 +202,13 @@ function handleLogout() {
           </Link>
           <hr
             v-if="isAdminUrl"
-            class="mt-4 ml-6 mr-6 pt-4 pb-1 border-t-2 border-gray-400 dark:border-gray-600"
+            class="mt-4 ml-6 mr-6 pt-4 pb-1 border-t-2 border-gray-400"
           />
 
           <!-- MENU ITEMS -->
           <!-- Your Reviews -->
           <Link
-            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
             href="/ratings/contractor"
           >
             <Icon
@@ -223,7 +220,7 @@ function handleLogout() {
             <span class="mx-4 font-medium">Your Ratings</span>
           </Link>
           <Link
-            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
             :href="route('post')"
           >
             <img src="/images/icons/newsfeed.png" width="30" height="30" />
@@ -232,7 +229,7 @@ function handleLogout() {
 
           <!-- SUB-FINDER SEARCH -->
           <Link
-            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
             href="#"
           >
             <img src="/images/icons/contractor.png" width="30" height="30" />
@@ -241,7 +238,7 @@ function handleLogout() {
 
           <!-- RED FLAGS / SLIPPERY APPLES SEARCH -->
           <Link
-            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
             href="#"
           >
             <img src="/images/icons/redflag.png" width="30" height="30" />
@@ -250,7 +247,7 @@ function handleLogout() {
 
           <!-- Mentor SEARCH -->
           <Link
-            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
             href="#"
           >
             <img src="/images/icons/mentor.png" width="30" height="30" />
@@ -259,7 +256,7 @@ function handleLogout() {
 
           <!-- CONTRACTOR PAGE -->
           <Link
-            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
             href="#"
           >
             <img
@@ -270,13 +267,11 @@ function handleLogout() {
             <span class="mx-4 font-medium">Contractor page</span>
           </Link>
 
-          <hr
-            class="mt-4 ml-6 mr-6 pt-4 pb-1 border-t-2 border-gray-400 dark:border-gray-600"
-          />
+          <hr class="mt-4 ml-6 mr-6 pt-4 pb-1 border-t-2 border-gray-400" />
 
           <!-- VIEW SETTINGS -->
           <Link
-            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
             href="#"
           >
             <img src="/images/icons/news_view.png" width="30" height="30" />
@@ -285,7 +280,7 @@ function handleLogout() {
 
           <!-- PROFILE -->
           <Link
-            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
             href="/profile"
           >
             <img src="/images/icons/profile.png" width="30" height="30" />
@@ -294,7 +289,7 @@ function handleLogout() {
 
           <!-- SETTINGS -->
           <Link
-            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
             href="#"
           >
             <img src="/images/icons/settings_bl.png" width="30" height="30" />
@@ -303,7 +298,7 @@ function handleLogout() {
 
           <!-- CONTACT -->
           <Link
-            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
             href="#"
           >
             <img src="/images/icons/contactus.png" width="30" height="30" />
@@ -313,13 +308,13 @@ function handleLogout() {
           <!-- LOG OUT -->
           <button
             @click="handleLogout"
-            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
           >
             <img src="/images/icons/logout_bl.png" width="30" height="30" />
             <span class="mx-4 font-medium">Log Out</span>
           </button>
           <!-- <Link
-            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg  hover:bg-gray-100   hover:text-gray-700"
             :href="route('logout')"
             method="post"
             as="button"

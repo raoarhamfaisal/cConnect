@@ -9,7 +9,7 @@
           :text="`${review.reviewer.first_name} ${review.reviewer.last_name}`"
           :applyTooltipLength="640"
           :textLengthToShow="20"
-          textClass="text-md xs:text-xl font-medium font-bold text-gray-900 dark:text-gray-100"
+          textClass="text-md xs:text-xl font-medium font-bold text-gray-900 "
         />
         <Tooltip
           :text="review.reviewer.company_name"
@@ -254,7 +254,7 @@
               :text="`${review.contractor.first_name} ${review.contractor.last_name}`"
               :applyTooltipLength="640"
               :textLengthToShow="20"
-              textClass="text-md xs:text-xl font-medium font-bold text-gray-900 dark:text-gray-100"
+              textClass="text-md xs:text-xl font-medium font-bold text-gray-900 "
             />
 
             <Tooltip

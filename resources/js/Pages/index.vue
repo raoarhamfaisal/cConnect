@@ -103,7 +103,7 @@ const submit = () => {
             <div class="-mr-2 flex items-center">
               <button
                 @click="showingNavigationDropdown = !showingNavigationDropdown"
-                class="inline-flex items-center justify-center p-2 rounded-md text-black dark:text-white hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out"
+                class="inline-flex items-center justify-center p-2 rounded-md text-black hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
               >
                 <svg
                   class="h-6 w-6"
@@ -143,13 +143,11 @@ const submit = () => {
             block: showingNavigationDropdown,
             hidden: !showingNavigationDropdown,
           }"
-          class="absolute top-16 right-4 sm:right-6 lg:right-20 xl:right-32 2xl:right-80 z-30 px-3 text-left border-b border-gray-400 rounded-xl bg-gray-100 dark:border-gray-700 flex"
+          class="absolute top-16 right-4 sm:right-6 lg:right-20 xl:right-32 2xl:right-80 z-30 px-3 text-left border-b border-gray-400 rounded-xl bg-gray-100 flex"
         >
           <div class="">
-            <div
-              class="pt-4 pb-2 ml-3 border-b-2 border-gray-400 dark:border-gray-600"
-            >
-              <div class="font-bold text-base text-gray-800 dark:text-gray-200">
+            <div class="pt-4 pb-2 ml-3 border-b-2 border-gray-400">
+              <div class="font-bold text-base text-gray-800">
                 <div v-if="showit">{{ $page.props.auth.user.name }}</div>
                 <div v-if="!showit">Not Logged In</div>
               </div>
@@ -180,9 +178,7 @@ const submit = () => {
               </ResponsiveNavLink>
             </div>
             <!-- Responsive Settings Options -->
-            <div
-              class="pt-4 pb-1 border-t-2 border-gray-400 dark:border-gray-600"
-            >
+            <div class="pt-4 pb-1 border-t-2 border-gray-400">
               <div class="mt-3 space-y-1">
                 <ResponsiveNavLink v-if="showit" :href="route('profile.edit')">
                   Profile
@@ -230,7 +226,7 @@ const submit = () => {
           </div>
           <button
             @click="showingNavigationDropdown = !showingNavigationDropdown"
-            class="inline-flex items-start justify-center p-2 rounded-md text-black dark:text-white hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out"
+            class="inline-flex items-start justify-center p-2 rounded-md text-black hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
           >
             <svg
               class="h-6 w-6"
@@ -383,7 +379,7 @@ const submit = () => {
 
     <!-- FEATURES SECTION  -->
     <section
-      class="relative z-20 bg-white dark:bg-gray-900 md:mt-24 lg:mt-28 xl:mt-32 2xl:mt-40"
+      class="relative z-20 bg-white md:mt-24 lg:mt-28 xl:mt-32 2xl:mt-40"
       id="whytContractor"
     >
       <FeaturesGrid></FeaturesGrid>

@@ -182,13 +182,13 @@ Array.prototype.remove = function () {
               <div class="mb-4">
                 <label
                   for="formPostTitle"
-                  class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2"
+                  class="block text-gray-700 text-sm font-bold mb-2"
                   >Post Title:
                 </label>
                 <input
                   type="text"
                   v-model="form.title"
-                  class="w-full py-2 px-3 shadow appearance-none text-gray-900 font-semibold dark:text-gray-300 border rounded border-gray-600 leading-tight focus:outline-none focus:shadow-outline placeholder:italic placeholder:text-slate-500 dark:placeholder:text-gray-300"
+                  class="w-full py-2 px-3 shadow appearance-none text-gray-900 font-semibold border rounded border-gray-600 leading-tight focus:outline-none focus:shadow-outline placeholder:italic placeholder:text-slate-500"
                   id="formPostTitle"
                   placeholder="Post Title..."
                 />
@@ -201,13 +201,13 @@ Array.prototype.remove = function () {
               <div class="mb-4">
                 <label
                   for="formPostbody1"
-                  class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2"
+                  class="block text-gray-700 text-sm font-bold mb-2"
                   >Top text (not required):
                 </label>
                 <input
                   type="text"
                   v-model="form.body1"
-                  class="w-full py-2 px-3 shadow appearance-none text-gray-900 font-semibold dark:text-gray-300 border rounded border-gray-600 leading-tight focus:outline-none focus:shadow-outline placeholder:italic placeholder:text-slate-500 dark:placeholder:text-gray-300"
+                  class="w-full py-2 px-3 shadow appearance-none text-gray-900 font-semibold border rounded border-gray-600 leading-tight focus:outline-none focus:shadow-outline placeholder:italic placeholder:text-slate-500"
                   id="formPostbody1"
                   placeholder="Top text..."
                 />
@@ -281,13 +281,13 @@ Array.prototype.remove = function () {
               <div class="mb-4">
                 <label
                   for="formPostbody2"
-                  class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2"
+                  class="block text-gray-700 text-sm font-bold mb-2"
                   >Bottom text (not required):
                 </label>
                 <input
                   type="text"
                   v-model="form.body2"
-                  class="w-full py-2 px-3 shadow appearance-none text-gray-900 font-semibold dark:text-gray-300 border rounded border-gray-600 leading-tight focus:outline-none focus:shadow-outline placeholder:italic placeholder:text-slate-500 dark:placeholder:text-gray-300"
+                  class="w-full py-2 px-3 shadow appearance-none text-gray-900 font-semibold border rounded border-gray-600 leading-tight focus:outline-none focus:shadow-outline placeholder:italic placeholder:text-slate-500"
                   id="formPostbody2"
                   placeholder="Bottom text..."
                 />

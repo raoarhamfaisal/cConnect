@@ -75,25 +75,25 @@ const handleTabChange = (newActiveTab) => {
         </Tabs>
         <div
           v-if="active === 0"
-          class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
+          class="p-4 sm:p-8 bg-white shadow sm:rounded-lg"
         >
           <CompanyInfo :profile="profile" />
         </div>
         <div
           v-if="active === 0"
-          class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
+          class="p-4 sm:p-8 bg-white shadow sm:rounded-lg"
         >
           <AddressInfo :profile="profile" />
         </div>
         <div
           v-if="active === 0"
-          class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
+          class="p-4 sm:p-8 bg-white shadow sm:rounded-lg"
         >
           <LinksInfo :profile="profile" />
         </div>
         <div
           v-if="active === 0"
-          class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
+          class="p-4 sm:p-8 bg-white shadow sm:rounded-lg"
         >
           <DeleteUserForm class="max-w-xl" />
         </div>

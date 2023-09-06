@@ -5,9 +5,7 @@
         <Avatar :imageSrc="contractor.user_avatar" />
       </div>
       <div class="flex flex-col justify-center">
-        <h2
-          class="text-xl font-medium font-bold text-gray-900 dark:text-gray-100"
-        >
+        <h2 class="text-xl font-medium font-bold text-gray-900">
           {{ contractor.first_name + " " + contractor.last_name }}
         </h2>
         <div v-if="contractor.company">{{ contractor.company_name }}</div>

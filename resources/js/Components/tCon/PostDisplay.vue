@@ -195,7 +195,7 @@ export default {
           <div class="-mr-2 flex items-center">
             <button
               @click="NavPostingActionMenu"
-              class="inline-flex items-center justify-center p-2 rounded-md text-black dark:text-white hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out"
+              class="inline-flex items-center justify-center p-2 rounded-md text-black hover:text-gray-500 hover:bg-gray-100 dfocus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
             >
               <svg
                 class="h-6 w-6"
@@ -245,7 +245,7 @@ export default {
     <div
       v-show="post.body1"
       @click="$emit('enlarge-post', post)"
-      class="flex flex-row justify-center items-center w-full px-2 text-lg xs:text-xl md:text-2xl dark:text-gray-300"
+      class="flex flex-row justify-center items-center w-full px-2 text-lg xs:text-xl md:text-2xl"
       :class="[
         body1Colors[post.body1ColorId],
         post.body1Bold ? 'font-bold' : 'font-normal',
@@ -271,7 +271,7 @@ export default {
     <!-- Text Body2 LOWER -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <div
-      class="flex flex-row justify-center items-center w-full px-2 mt-0 mb-0 text-base xs:text-lg md:text-xl font-normal text-gray-900 dark:text-gray-300"
+      class="flex flex-row justify-center items-center w-full px-2 mt-0 mb-0 text-base xs:text-lg md:text-xl font-normal text-gray-900"
       @click="$emit('enlarge-post', post)"
     >
       {{ post.body2 }}
@@ -284,7 +284,7 @@ export default {
       <div class="">
         <Link
           href="#"
-          class="font-medium text-xs sm:text-sm text-blue-800 dark:text-blue-400 hover:underline"
+          class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
         >
           <div class="flex flex-row justify-between items-center">
             <div class="">
@@ -301,7 +301,7 @@ export default {
       <div class="">
         <Link
           href="#"
-          class="font-medium text-xs sm:text-sm text-blue-800 dark:text-blue-400 hover:underline"
+          class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
         >
           <div class="flex flex-row justify-between items-center">
             <div class="">
@@ -320,7 +320,7 @@ export default {
       <div class="">
         <Link
           href="#"
-          class="font-medium text-xs sm:text-sm text-blue-800 dark:text-blue-400 hover:underline"
+          class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
         >
           <div class="flex flex-row justify-between items-center">
             <div class="">
@@ -337,7 +337,7 @@ export default {
       <div class="">
         <Link
           href="#"
-          class="font-medium text-xs sm:text-sm text-blue-800 dark:text-blue-400 hover:underline"
+          class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
         >
           <div class="flex flex-row justify-between items-center">
             <div class="">
