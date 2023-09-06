@@ -1,14 +1,9 @@
 <script setup>
-import Checkbox from "@/Components/Checkbox.vue";
-import InputError from "@/Components/InputError.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TC_LoginForm from "@/Components/TC_LoginForm.vue";
 import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
 import tContractorWord from "@/Components/tCon/tContractorWord.vue";
 import tContractorWhite from "@/Components/tCon/tContractorWhite.vue";
-import { checkCompatEnabled } from "@vue/compiler-core";
-import { ref } from "vue";
+import { onBeforeUnmount, onMounted, ref } from "vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import ScrollToLinkVue from "@/Components/tCon/ScrollToLink.vue";
 import FeaturesGrid from "@/Components/tCon/FeaturesGrid.vue";
@@ -29,6 +24,26 @@ const form = useForm({
   email: "",
   password: "",
   remember: false,
+});
+const dropdownMenu = ref(null);
+
+const handleOutsideClick = (e) => {
+  console.log(dropdownMenu.value, "target");
+  if (dropdownMenu.value && !dropdownMenu.value.contains(e.target)) {
+    showingNavigationDropdown.value = false;
+  }
+};
+
+const toggleDropdown = () => {
+  showingNavigationDropdown.value = !showingNavigationDropdown.value;
+};
+
+onMounted(() => {
+  document.addEventListener("click", handleOutsideClick);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("click", handleOutsideClick);
 });
 
 const submit = () => {
@@ -63,7 +78,7 @@ const submit = () => {
           </div>
 
           <!-- Cross X Menu Options -->
-          <div class="flex items-baseline justify-end">
+          <div class="flex items-center justify-end">
             <ScrollToLinkVue
               href="#whytContractor"
               class="hidden md:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8"
@@ -82,7 +97,7 @@ const submit = () => {
             <div v-if="showit">
               <Link
                 :href="route('post')"
-                class="block mt-3 mr-2 p-3 px-6 pt-2 font-bold rounded-xl text-white bg-green-600 hover:bg-green-800 border-green-600"
+                class="block flex justify-center items-center mx-2 p-3 px-6 font-bold rounded-xl text-white bg-green-600 hover:bg-green-800 border-green-600"
               >
                 News Feed
               </Link>
@@ -92,7 +107,7 @@ const submit = () => {
             <div v-if="!showit">
               <ScrollToLinkVue
                 href="#loginHere"
-                class="block mt-3 mr-2 p-3 px-6 pt-2 font-bold rounded-xl text-white bg-blue-800 hover:bg-green-800 border-2 shadow-lg border-green-600"
+                class="block flex justify-center items-center p-2 mx-2 px-6 font-bold rounded-xl text-white bg-blue-800 hover:bg-green-800 border-2 shadow-lg border-green-600"
               >
                 Login
               </ScrollToLinkVue>
@@ -102,8 +117,9 @@ const submit = () => {
             <!-- Hamburger -->
             <div class="-mr-2 flex items-center">
               <button
-                @click="showingNavigationDropdown = !showingNavigationDropdown"
-                class="inline-flex items-center justify-center p-2 rounded-md text-black hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
+                ref="dropdownMenu"
+                @click="toggleDropdown"
+                class="inline-flex items-center justify-center p-2 rounded-md text-black text-gray-500 bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
               >
                 <svg
                   class="h-6 w-6"
@@ -225,8 +241,8 @@ const submit = () => {
             </div>
           </div>
           <button
-            @click="showingNavigationDropdown = !showingNavigationDropdown"
-            class="inline-flex items-start justify-center p-2 rounded-md text-black hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
+            @click="toggleDropdown"
+            class="self-start inline-flex items-start justify-center p-2 rounded-md text-black hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
           >
             <svg
               class="h-6 w-6"

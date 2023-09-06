@@ -60,7 +60,7 @@ const submit = () => {
           </div>
 
           <!-- Cross X Menu Options -->
-          <div class="flex items-baseline justify-end">
+          <div class="flex items-center justify-end">
             <Link
               href="#whytContractor"
               class="hidden md:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8"
