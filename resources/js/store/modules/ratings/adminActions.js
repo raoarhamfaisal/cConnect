@@ -1,7 +1,7 @@
+import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { somethingWentWrong, changesSaved } from "@/helpers/utilities";
-import axios from "axios"
+import axios from "axios";
 axios.defaults.withCredentials = true;
-
 
 export const getAllContractors = async ({ commit }, payload) => {
   commit("setLoading", true);
@@ -9,13 +9,7 @@ export const getAllContractors = async ({ commit }, payload) => {
   try {
     const response = await axios.get(
       `/api/admin/all-contractors?per_page=${payload.perPage}&page=${payload.page}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-          "Authorization": "Bearer 1|NxEyKmPjKsXt9dbPyt5oXXmOnW9kTQGGrxHBqLqz0dc83778"
-        },
-      }
+      getAxiosConfig()
     );
     if (response.data) {
       commit("setAllContractors", response.data.profiles);
@@ -36,7 +30,8 @@ export const deleteReviewAdmin = async ({ commit }, payload) => {
       `/api/admin/reviews/${payload.reviewId}`,
       {
         data: { reason: payload.reason },
-      }
+      },
+      getAxiosConfig()
     );
     if (response.data) {
       changesSaved(response.message || "Review Successfully Deleted");
@@ -60,7 +55,8 @@ export const deleteResponseAdmin = async ({ commit }, payload) => {
       `/api/admin/review-responses/${payload.responseId}`,
       {
         data: { reason: payload.reason },
-      }
+      },
+      getAxiosConfig()
     );
     if (response.data) {
       changesSaved(response.message || "Response Successfully Deleted");
@@ -84,7 +80,8 @@ export const deactivateReview = async ({ commit }, { reason, reviewId }) => {
       `/api/admin/reviews/${reviewId}/deactivate`,
       {
         reason: reason,
-      }
+      },
+      getAxiosConfig()
     );
     if (response.data) {
       changesSaved(response.message || "Review deactivated successfully");
@@ -111,7 +108,8 @@ export const activateReview = async ({ commit }, { reviewId, reason }) => {
       `/api/admin/reviews/${reviewId}/activate`,
       {
         reason: reason,
-      }
+      },
+      getAxiosConfig()
     );
     if (response.data) {
       changesSaved(response.message || "Review activated successfully");
@@ -138,7 +136,8 @@ export const deactivateResponse = async (
       `/api/admin/review-responses/${responseId}/deactivate`,
       {
         reason: reason,
-      }
+      },
+      getAxiosConfig()
     );
     if (response.data) {
       changesSaved(response.message || "Response deactivated successfully");
@@ -165,7 +164,8 @@ export const activateResponse = async ({ commit }, { reason, responseId }) => {
       `/api/admin/review-responses/${responseId}/activate`,
       {
         reason: reason,
-      }
+      },
+      getAxiosConfig()
     );
     if (response.data) {
       changesSaved(response.message || "Response activated successfully");
@@ -189,11 +189,7 @@ export const updateReviewAdmin = async ({ commit }, payload) => {
     const response = await axios.put(
       `/api/admin/reviews/${payload.reviewId}`,
       payload.review,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+      getAxiosConfig()
     );
     if (response.data) {
       changesSaved(response.message || "Review Successfully Upadated");
@@ -216,11 +212,7 @@ export const updateResponseAdmin = async ({ commit }, responseData) => {
     const response = await axios.patch(
       `/api/admin/review-responses`,
       responseData,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+      getAxiosConfig()
     );
     if (response.data) {
       changesSaved(response.message || "Response Successfully Upadated");
@@ -243,11 +235,7 @@ export const sendAcceptRequest = async ({ commit }, payload) => {
   try {
     const response = await axios.put(
       `/api/admin/reviews/${payload.reviewId}/accept`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+      getAxiosConfig()
     );
     if (response.data) {
       changesSaved(response.message || "Appeal is successfully accepted!");
@@ -269,11 +257,7 @@ export const sendRejectRequest = async ({ commit }, payload) => {
   try {
     const response = await axios.put(
       `/api/admin/reviews/${payload.reviewId}/reject`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+      getAxiosConfig()
     );
     if (response.data) {
       changesSaved(response.message || "Appeal is successfully rejected!");

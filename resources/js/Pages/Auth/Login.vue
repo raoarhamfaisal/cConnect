@@ -6,11 +6,13 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
+import { useStore } from 'vuex';
 
 defineProps({
     canResetPassword: Boolean,
     status: String,
 });
+const store = useStore();
 
 const form = useForm({
     email: '',
@@ -19,7 +21,12 @@ const form = useForm({
 });
 
 const submit = () => {
+    console.log('here')
     form.post(route('login'), {
+    onSuccess: async () => {
+        console.log('here2')
+            await store.dispatch("getToken");
+    },
         onFinish: () => form.reset('password'),
     });
 };

@@ -5,6 +5,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
+import { useStore } from "vuex";
 
 defineProps({
   canResetPassword: Boolean,
@@ -16,18 +17,23 @@ defineProps({
   phpVersion: String,
 });
 
+const store = useStore();
+
 const form = useForm({
-  email: "",
-  password: "",
-  remember: false,
+    email: '',
+    password: '',
+    remember: false
 });
 
 const submit = () => {
-  form.post(route("login"), {
-    onFinish: () => {
-      form.reset("password");
+    console.log('here')
+    form.post(route('login'), {
+    onSuccess: async () => {
+        console.log('here2')
+            await store.dispatch("getToken");
     },
-  });
+        onFinish: () => form.reset('password'),
+    });
 };
 </script>
 

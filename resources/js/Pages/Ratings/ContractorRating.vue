@@ -172,6 +172,7 @@ import GiveRating from "./PartialsVisiting/GiveRating.vue";
 import { ref, nextTick, onMounted, watch, computed } from "vue";
 import { somethingWentWrong } from "@/helpers/utilities";
 import { useStore } from "vuex";
+import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 
 // State
 const { contractorDetails } = defineProps({
@@ -259,11 +260,7 @@ const fetchReviews = async (per_page = perPage.value, page = 1) => {
     loading.value = true;
     const response = await axios.get(
       `/api/reviews/${paramId.value}?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+      getAxiosConfig()
     );
     contractorReviews.value = response.data.reviews;
     pagination.value = response.data.pagination;
