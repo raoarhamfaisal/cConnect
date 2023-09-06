@@ -10,7 +10,7 @@
     :show-post-buttons="true"
     color="rgb(229 231 235 / var(--tw-bg-opacity))"
   >
-    <div v-if="!loading" class="bg-gray-200 mt-10">
+    <div class="bg-gray-200 mt-10">
       <Card
         :shadowLevel="2"
         bgColor="white"
@@ -25,7 +25,7 @@
         <heading-card heading="All Contractors" class="mt-3 mb-6" />
         <div
           class="flex flex-col"
-          v-if="allContractors && allContractors.length > 0"
+          v-if="allContractors && !loading && allContractors.length > 0"
         >
           <Link
             v-for="(contractor, index) in allContractors"
@@ -101,6 +101,7 @@ const isAdminUrl = usePage().props.value.auth.user.reviews_privileges === 1;
 const store = useStore();
 const currentPage = ref(1);
 const perPage = ref(5);
+const searchTerm = ref("");
 
 //Computed
 
@@ -123,6 +124,7 @@ const fetchContractors = async (page = 1) => {
   await store.dispatch("ratings/getAllContractors", {
     perPage: perPage.value,
     page: page,
+    searchTerm: searchTerm.value,
   });
 };
 
@@ -130,7 +132,8 @@ const onClickHandler = (page) => {
   fetchContractors(page);
 };
 
-const onSearch = (searchTerm) => {
-  console.log("Search clicked with term:", searchTerm);
+const onSearch = (term) => {
+  searchTerm.value = term;
+  fetchContractors();
 };
 </script>
