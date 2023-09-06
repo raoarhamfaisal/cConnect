@@ -4,6 +4,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { useForm, usePage } from "@inertiajs/inertia-vue3";
 import UserAvatar from "../components/UserAvatar.vue";
+import InputError from "@/Components/InputError.vue";
 
 const props = defineProps({
   profile: Object,
@@ -78,6 +79,7 @@ const handleImageUpdate = (file) => {
             placeholder="Type your Company name"
             autocomplete="company-name"
           />
+          <InputError class="mt-2" :message="form.errors.company_name" />
         </div>
 
         <div>
@@ -91,9 +93,11 @@ const handleImageUpdate = (file) => {
             type="tel"
             class="mt-1 block w-full"
             v-model="form.phone_office"
-            placeholder="Type your office phone number"
+            placeholder="Type your office phone "
             autocomplete="tel"
           />
+
+          <InputError class="mt-2" :message="form.errors.phone_office" />
         </div>
       </div>
       <div class="flex items-center mt-6 gap-4 w-full">
