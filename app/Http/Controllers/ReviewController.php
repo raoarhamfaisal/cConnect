@@ -232,6 +232,11 @@ class ReviewController extends Controller
         if ($user->id === $data['reviewer_id'] || $user->reviews_privileges) {
         
             $review->is_appeal_already_accepted_or_rejected = false;
+            $review->is_under_appeal = false;
+            $review->on_appeal_reason_date = null;    
+            $review->on_appeal_reason = '';    
+            $review->off_appeal_reason_date = null;    
+            $review->off_appeal_reason = '';
             $review->update($data);
         
             return response()->json(['message' => 'Review updated successfully!', 'review' => $review], 200);
@@ -256,6 +261,11 @@ class ReviewController extends Controller
         // Check if the user is the original reviewer or has admin privileges
         if ($user->id === $review->reviewer_id || $user->reviews_privileges) {
             $review->is_appeal_already_accepted_or_rejected = false;
+            $review->is_under_appeal = false;
+            $review->on_appeal_reason_date = null;    
+            $review->on_appeal_reason = '';    
+            $review->off_appeal_reason_date = null;    
+            $review->off_appeal_reason = '';
             $review->delete();
             return response()->json(['message' => 'Review deleted successfully!'], 200);
         }else {

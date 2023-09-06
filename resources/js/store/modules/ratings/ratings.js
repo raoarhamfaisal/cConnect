@@ -62,7 +62,7 @@ export default {
           getAxiosConfig()
         );
         if (response.data) {
-          changesSaved(response.message || "Review Successfully Deleted");
+          changesSaved(response.data.message || "Review Successfully Deleted");
           setTimeout(() => {
             commit("setIsDeleted", true);
           }, 2000);
@@ -85,7 +85,7 @@ export default {
         );
         if (response.data) {
           changesSaved(
-            response.message || "Review response deleted successfully!"
+            response.data.message || "Review response deleted successfully!"
           );
           setTimeout(() => {
             commit("setIsDeleted", true);
@@ -110,7 +110,7 @@ export default {
         );
         if (response.data) {
           changesSaved(
-            response.message || "Review response deleted successfully!"
+            response.data.message || "Review response added successfully!"
           );
           setTimeout(() => {
             commit("setIsDeleted", true);
@@ -134,7 +134,7 @@ export default {
           getAxiosConfig()
         );
         if (response.data) {
-          changesSaved(response.message || "Review Successfully Upadated");
+          changesSaved(response.data.message || "Review Successfully Upadated");
           setTimeout(() => {
             commit("setIsFetchReviews", true);
           }, 2000);
@@ -157,7 +157,7 @@ export default {
           getAxiosConfig()
         );
         if (response.data) {
-          changesSaved(response.message || "Response Successfully Upadated");
+          changesSaved(response.data.message || "Response Successfully Upadated");
           setTimeout(() => {
             commit("setIsFetchReviews", true);
           }, 2000);
@@ -180,7 +180,7 @@ export default {
           getAxiosConfig()
         );
         if (response.data) {
-          changesSaved(response.message || "Appeal is Successfully Submitted");
+          changesSaved(response.data.message || "Appeal is Successfully Submitted");
           setTimeout(() => {
             commit("setIsFetchReviews", true);
           }, 2000);
@@ -204,7 +204,7 @@ export default {
         );
         if (response.data) {
           changesSaved(
-            response.message || "Turn off Appeal is Successfully Submitted"
+            response.data.message || "Turn off Appeal is Successfully Submitted"
           );
           setTimeout(() => {
             commit("setIsFetchReviews", true);
