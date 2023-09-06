@@ -49,9 +49,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         Route::patch('/review-responses', [ReviewResponseController::class, 'update']);
         Route::delete('/review-responses/{reviewResponse}', [ReviewResponseController::class, 'destroy']);
         
+        Route::get('/admin/search-contractor', [ContractorRatingsAdminController::class, 'searchContractor']);
         Route::middleware('admin')->group(function () {
             // Your admin-specific routes here
-            Route::get('/admin/search-contractor', [ContractorRatingsAdminController::class, 'searchContractor']);
             // ... other admin routes
             Route::get('/admin/all-contractors', [ReviewController::class, 'getContractorProfiles'])->name('review.allContractors');
             Route::get('/admin/reviews/{contractor_id}', [ReviewController::class, 'contractorAllReviews'])->name('review.contractorAllReviews');

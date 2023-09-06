@@ -9,6 +9,8 @@ use Inertia\Inertia;
 use App\Models\Post;
 use App\Models\Profile;
 use App\Models\Review;
+use Illuminate\Support\Facades\DB;
+
 
 class ContractorRatingsAdminController extends Controller
 {
@@ -444,71 +446,59 @@ class ContractorRatingsAdminController extends Controller
     // Search the Contractor
     public function searchContractor(Request $request)
     {
+        // Determine pagination parameters from the request's query parameters
+        $perPage = $request->query('per_page', 15); // Default to 15 if not provided
+        $page = $request->query('page', 1); // Default to page 1 if not provided
+    
         $query = Profile::query();
-
+    
         // Specify the columns to retrieve
         $query->select([
-            'id',
-            'user_id',
-            'email',
-            'phone_cell',
-            'first_name',
-            'last_name',
-            'company_name',
-            'city',
-            'state',
-            'user_avatar',
-            'company_logo',
-            'trade1',
-            'trade2',
-            'trade3',
-            'trade4',
-            'trade5',
-            'trade6',
-            'trade7',
-            'trade8',
-            'trade9',
-            'trade10',
-            'trade11',
-            'trade12',
-            'trade13',
-            'trade14',
-            'trade15',
-            'trade16',
-            'trade17',
-            'trade18',
-            'trade19',
-            'trade20',
-            'trade21',
-            'trade22',
-            'trade23',
-            'trade24',
-            'trade25',
-            'trade26',
-            'trade27',
-            'trade28',
-            'trade29',
-            'trade30'
+            'profiles.id',
+            'profiles.user_id',
+            'profiles.first_name',
+            'profiles.last_name',
+            'profiles.company_name',
+            'profiles.city',
+            'profiles.state',
+            'profiles.user_avatar',
+            'profiles.company_logo',
+            'profiles.email',
+            'profiles.phone_cell',
+            DB::raw('AVG(reviews.rating) as average_rating')
         ]);
-
+    
         $searchTerm = $request->get('search');
-
+    
         if ($searchTerm) {
             $query->where(function ($subQuery) use ($searchTerm) {
-                $subQuery->where('first_name', 'like', '%' . $searchTerm . '%')
-                         ->orWhere('last_name', 'like', '%' . $searchTerm . '%')
-                         ->orWhere('email', 'like', '%' . $searchTerm . '%')
-                         ->orWhere('company_name', 'like', '%' . $searchTerm . '%')
-                         ->orWhere('phone_cell', 'like', '%' . $searchTerm . '%')
-                         ->orWhere('phone_office', 'like', '%' . $searchTerm . '%');
+                $subQuery->where('profiles.first_name', 'like', '%' . $searchTerm . '%')
+                         ->orWhere('profiles.last_name', 'like', '%' . $searchTerm . '%')
+                         ->orWhere('profiles.email', 'like', '%' . $searchTerm . '%')
+                         ->orWhere('profiles.company_name', 'like', '%' . $searchTerm . '%')
+                         ->orWhere('profiles.phone_cell', 'like', '%' . $searchTerm . '%')
+                         ->orWhere('profiles.phone_office', 'like', '%' . $searchTerm . '%');
             });
         }
-
-        $contractors = $query->get();
-
-        return response()->json($contractors);
+    
+        $contractors = $query->leftJoin('reviews', 'profiles.id', '=', 'reviews.contractor_id')
+                              ->groupBy('profiles.id')
+                              ->paginate($perPage, ['*'], 'page', $page);
+    
+        // Construct the response
+        $response = [
+            'profiles' => $contractors->items(),
+            'pagination' => [
+                'current_page' => $contractors->currentPage(),
+                'last_page' => $contractors->lastPage(),
+                'per_page' => $contractors->perPage(),
+                'total' => $contractors->total(),
+            ]
+        ];
+    
+        return response()->json($response);
     }
-
+    
 
     /**
      * Show the form for creating a new resource.
