@@ -1,1 +1,1 @@
-export const POSTS_IMAGES_FULL_PATH = 'https://tcontractor.com/uploads/posts/'
+export const POSTS_IMAGES_FULL_PATH = "/uploads/posts/"

@@ -39,7 +39,7 @@ class ProcessImageService
                     $imageSlice = Str::afterLast($image, '/');
                     $imageOnly = $userId . $postId . $imageSlice;
 
-                    $publicPathFile = public_path('uploads/posts/' . $imageOnly);
+                    $publicPathFile = public_path(env('POSTS_UPLOAD_PATH') . $imageOnly);
 
                     //dd($image, $storagePathFile, $publicPathFile);
 
