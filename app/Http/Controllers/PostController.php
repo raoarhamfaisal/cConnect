@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -29,18 +30,11 @@ class PostController extends Controller
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public function index()
     {
-
         return Inertia::render('Postings', [
-
+    
             'showit' => Auth::check(),
-
-            // Get current user id
-            $userID = Auth()->user('')->id,
-            //var_dump($userID),
-
-            // SEND profile & posts to Postings.vue
-            // Get user info based user id
-            'profile' => Profile::where('user_id', $userID)
+            'userID' => Auth()->user() ? Auth()->user()->id : null,
+            'profile' => Auth::check() ? Profile::where('user_id', Auth()->user()->id)
                 ->first()
                 ->only(
                     'user_id',
@@ -53,24 +47,24 @@ class PostController extends Controller
                     'zipcode',
                     'phone_cell',
                     'email',
-                    'user_avatar',
-                ),
-
-            // post query explentation !!!!!!!!!!!!!!!!!
-            // order by id descending
-            // when: object orientated conditional. If true then
-            // then append to the query the $postSearch string
-            // add to query: where 'title' LIKE  '%Alice%
-            // % before and after is the $postSearch in string
-            // paginate(how many per load / page)
-            // through: when using paginate, use through instead of map
-            //'posts' => Inertia::lazy(fn() => Post::paginate(10)),
-            // withQueryString: adds the whole query string
-
+                    'user_avatar'
+                ) : null,
+    
             'posts' => Post::query()
-                ->orderBy('id', 'DESC')
+                ->select('posts.*')
+                ->addSelect([
+                    'profiles.first_name',
+                    'profiles.last_name',
+                    'profiles.company_name',
+                    'profiles.city',
+                    'profiles.state',
+                    'profiles.user_avatar',
+                    DB::raw('(SELECT AVG(reviews.rating) FROM reviews WHERE reviews.contractor_id = profiles.id) as average_rating')
+                ])
+                ->leftJoin('profiles', 'posts.user_id', '=', 'profiles.user_id')
+                ->orderBy('posts.id', 'DESC')
                 ->when(Request::input('postSearch'), function ($query, $postSearch) {
-                    $query->where('title', 'like', "%{$postSearch}%");
+                    $query->where('posts.title', 'like', "%{$postSearch}%");
                 })
                 ->paginate(5)
                 ->withQueryString()
@@ -86,24 +80,20 @@ class PostController extends Controller
                     'body1ColorId' => $post->body1ColorId,
                     'repost' => $post->repost,
                     'shares' => $post->shares,
+                    'first_name' => $post->first_name,
+                    'last_name' => $post->last_name,
+                    'company_name' => $post->company_name,
+                    'city' => $post->city,
+                    'state' => $post->state,
+                    'user_avatar' => $post->user_avatar,
+                    'average_rating' => $post->average_rating
                 ]),
-
-            // pass on any existing search filters that exist
-            // along with data
+    
             'postSearchFilters' => Request::only(['postSearch']),
-
-            // 'tempor' => Request::only(['postSearch']),
-
-            // 'postSearchFilters' => Request::only(['postSearch']) ? Request::only(['postSearch']) : 'postSearchFilters'->'postSearch' = null,
-
-            // $request->has('postSearch') {
-            //     'postSearchFilters' => Request::only(['postSearch']);
-            // } else {
-            //     'postSearchFilters' ['postSearch'] = null;
-            // }
-
         ]);
     }
+    
+
 
     /**
      * Store a newly created resource in storage.
