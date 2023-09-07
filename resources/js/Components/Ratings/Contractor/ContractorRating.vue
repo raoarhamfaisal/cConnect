@@ -183,7 +183,6 @@ const sortByDate = ref("latest");
 const sortByRating = ref("");
 const pagination = ref(0);
 const perPage = ref(15);
-const paramId = ref(0);
 
 // Mounted
 onMounted(() => {
@@ -240,7 +239,7 @@ const fetchReviews = async (per_page = perPage.value, page = 1) => {
   try {
     loading.value = true;
     const response = await axios.get(
-      `/api/reviews/${profileId}?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
+      `/api/reviews/${contractorDetails.id}?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
       getAxiosConfig()
     );
     contractorReviews.value = response.data.reviews;

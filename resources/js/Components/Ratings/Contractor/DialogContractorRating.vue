@@ -26,8 +26,9 @@ import ContractorRating from "@/Components/Ratings/Contractor/ContractorRating.v
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 // State
-const { userId } = defineProps({
+const { userId, contractorId } = defineProps({
   userId: [String, Number],
+  contractorId: [String, Number],
 });
 const store = useStore();
 
@@ -36,7 +37,8 @@ const loading = computed(() => store.state.ratings.loading);
 const contractorDetails = computed(() => store.state.ratings.contractorDetails);
 
 const openDialog = () => {
-  store.dispatch("ratings/getContractorInfo", userId);
+  console.log(userId, "userId", contractorId, "contractor");
+  store.dispatch("ratings/getContractorInfo", contractorId);
   return dialogRef.value.openDialog();
 };
 defineExpose({ openDialog });
