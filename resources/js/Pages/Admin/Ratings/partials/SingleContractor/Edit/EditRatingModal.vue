@@ -234,7 +234,8 @@ const handleConfirm = async () => {
         form.questionsSwitch.value[3].questionAnswer === 1 ? true : false,
       how_did_you_meet_this_contractor: selectedReferal.value,
       rating: form.rating.value,
-      reviewer_id: profileId,
+      reviewer_id: contractorId,
+      // reviewer_id: profileId,
       contractor_id: contractorId,
       reason: filterBadWords(form.editing_reason),
     };
