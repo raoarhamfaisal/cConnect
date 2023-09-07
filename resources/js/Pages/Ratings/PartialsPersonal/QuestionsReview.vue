@@ -137,8 +137,8 @@
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import InputError from "@/Components/InputError.vue";
 
-import Response from "../PartialsVisiting/Response.vue";
-import Review from "../PartialsVisiting/Review.vue";
+import Response from "@/Components/Ratings/Contractor/PartialsVisiting/Response.vue";
+import Review from "@/Components/Ratings/Contractor/PartialsVisiting/Review.vue";
 import Button from "@/Components/Ratings/Button.vue";
 import { ref, watch, computed } from "vue";
 import { useStore } from "vuex";

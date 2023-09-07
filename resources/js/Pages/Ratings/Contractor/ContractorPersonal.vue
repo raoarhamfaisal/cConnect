@@ -126,7 +126,7 @@
 <script setup>
 import Header from "@/Layouts/Header.vue";
 import { Head } from "@inertiajs/inertia-vue3";
-import AverageRating from "../PartialsVisiting/AverageRating.vue";
+import AverageRating from "@/Components/Ratings/Contractor/PartialsVisiting/AverageRating.vue";
 import QuestionsReview from "../PartialsPersonal/QuestionsReview.vue";
 
 import Button from "@/Components/Ratings/Button.vue";
@@ -136,7 +136,7 @@ import axios from "axios";
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import Card from "@/Components/Card.vue";
 import Loader from "@/Components/Ratings/Loader.vue";
-import ContractorInfo from "../PartialsVisiting/ContractorInfo.vue";
+import ContractorInfo from "@/Components/Ratings/Contractor/PartialsVisiting/ContractorInfo.vue";
 
 import { ref, onMounted, watch, computed } from "vue";
 import { somethingWentWrong } from "@/helpers/utilities";
