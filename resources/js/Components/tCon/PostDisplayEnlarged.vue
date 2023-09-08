@@ -1,8 +1,12 @@
 <script setup>
 import PostShowTheImage from "@/Components/tCon/tConSub/PostShowTheImage.vue";
 import tContractorWord from "@/Components/tCon/tContractorWord.vue";
-import { computed } from "vue";
+import { computed, ref } from "vue";
+import StarRounded from "@/Components/Ratings/StarRounded.vue";
+import DialogContractorRating from "@/Components/Ratings/Contractor/DialogContractorRating.vue";
+import Avatar from "@/Components/Ratings/Avatar.vue";
 import { Icon } from "@iconify/vue";
+import { useStore } from "vuex";
 
 const myProps = defineProps({
   profile: {
@@ -22,19 +26,32 @@ const myProps = defineProps({
     required: true,
   },
 });
+const store = useStore();
+const dialogRef = ref();
 
+const screenWidth = computed(() => store.getters.screenWidth);
 const imageArray = computed(() => {
   return myProps.postToEnlarge.image.split("|");
 });
-
+const openDialog = () => {
+  dialogRef.value.openDialog();
+};
 const emit = defineEmits(["close-enlarged"]);
 </script>
 
 <template>
+  <DialogContractorRating
+    ref="dialogRef"
+    :userId="profile.user_id"
+    :contractorId="postToEnlarge.user_id"
+  />
   <!-- Enlarged Post -->
   <div class="fixed z-40 inset-0 overflow-y-auto ease-out duration-400">
     <div class="relative flex items-start justify-center m-auto mt-0 mb-0 p-3">
-      <div class="fixed inset-0 transition-opacity">
+      <div
+        @click.stop="$emit('close-enlarged')"
+        class="fixed inset-0 transition-opacity"
+      >
         <div class="absolute inset-0 m-0 bg-slate-200 opacity-80"></div>
       </div>
 
@@ -66,192 +83,232 @@ const emit = defineEmits(["close-enlarged"]);
             </div>
           </button>
         </div>
-
-        <!-- TOP ROW MENUS POST ACTIONS MENU -->
-        <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-        <div class="flex flex-row justify-between items-center w-full mb-2">
-          <!-- User Avatar & User /// INDIVIDUAL POST: TOP POSTING ROW -->
-          <div class="flex flex-row justify-start items-center">
-            <!-- Avatar -->
-            <div class="flex justify-start items-start flex-none mt-2 w=16">
-              <!-- <Link :href="route('post.show')" class="block "> -->
-              <div class="block">
-                <img
-                  class="object-cover w-14 h-14 mx-2 rounded-full"
-                  src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
-                  alt="avatar"
-                />
-              </div>
-            </div>
-            <!-- User Info -->
-            <div class="flex flex-wrap ml-1">
-              <h2 class="font-bold text-xl xs:text-2xl md:text-3xl">
-                {{ postToEnlarge.id }}: {{ postToEnlarge.title }}
-              </h2>
-            </div>
-          </div>
-
-          <!-- Ratings / post action menu / posting date -->
-          <div class="flex flex-row justify-end items-center flex-none w-28">
-            <!-- User RATINGS /// INDIVIDUAL POST: TOP POSTING ROW -->
-            <div class="flex flex-row flex-none justify-end items-center px-2">
-              <!-- Premium Marking -->
-              <div class="">
-                <img
-                  src="/images/icons/pre-diamond.png"
-                  width="20"
-                  height="30"
-                />
-              </div>
-              <!-- ratings & how many -->
-              <div class="flex flex-col justify-center items-center">
-                <div class="">
-                  <img
-                    src="/images/icons/Stars4_icon.png"
-                    width="40"
-                    height="40"
+        <div class="px-4">
+          <!-- TOP ROW MENUS POST ACTIONS MENU -->
+          <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+          <div
+            class="flex flex-row justify-between items-center w-full mb-2 mt-4"
+          >
+            <!-- User Avatar & User /// INDIVIDUAL POST: TOP POSTING ROW -->
+            <div class="flex flex-row gap-2 justify-start items-center">
+              <!-- Avatar -->
+              <div
+                @click="openDialog"
+                class="cursor-pointer flex justify-start items-start flex-none w=16"
+              >
+                <!-- <Link :href="route('post.show')" class="block "> -->
+                <div class="block">
+                  <Avatar
+                    :style="{
+                      width: screenWidth >= 640 ? '4.5rem' : '3.7rem',
+                      height: screenWidth >= 640 ? '4.5rem' : '3.7rem',
+                    }"
+                    :imageSrc="postToEnlarge.user_avatar"
                   />
                 </div>
+              </div>
+              <!-- User Info -->
+              <div class="flex flex-col justify-center ml-1">
+                <h2
+                  class="font-bold text-lg sm:text-xl"
+                  style="line-height: 1.5rem"
+                >
+                  {{ postToEnlarge.id }}: {{ postToEnlarge.title }}
+                </h2>
                 <div class="">
-                  <h2
-                    class="font-light text-xs overflow-hidden tracking-tighter"
-                  >
-                    5555
+                  {{ postToEnlarge.company_name }}
+                </div>
+
+                <div class="">
+                  <h2 class="font-light text-sm overflow-hidden">
+                    {{ postToEnlarge.city }} {{ postToEnlarge.state }}
                   </h2>
                 </div>
               </div>
             </div>
 
-            <!-- RIGHT SIDE --- POST ACTION MENU
-                                    & time since posting -->
+            <!-- Ratings / post action menu / posting date -->
             <div
-              class="flex flex-col flex-initial flex-nowrap justify-center items-center mr-3"
-            ></div>
+              class="flex flex-row justify-end items-center self-start flex-none w-28"
+            >
+              <!-- User RATINGS /// INDIVIDUAL POST: TOP POSTING ROW -->
+              <div class="flex flex-row flex-none justify-end items-center">
+                <!-- Premium Marking -->
+                <div class="">
+                  <img
+                    src="/images/icons/pre-diamond.png"
+                    width="20"
+                    height="30"
+                  />
+                </div>
+                <!-- ratings & how many -->
+                <!-- <div class="flex flex-col justify-center items-center">
+            <div class="">
+              <img src="/images/icons/Stars4_icon.png" width="40" height="40" />
+            </div>
+            <div class="">
+              <h2 class="font-light text-xs overflow-hidden tracking-tighter">
+                5555
+              </h2>
+            </div>
+          </div> -->
+                <div class="flex flex-col justify-center items-center">
+                  <StarRounded
+                    @click="openDialog"
+                    :starWidth="15"
+                    class="h-4 cursor-pointer"
+                    indicatorClasses="text-small h-4"
+                    :starHeight="15"
+                    :rating="
+                      Number(
+                        parseFloat(
+                          postToEnlarge.average_rating
+                            ? postToEnlarge.average_rating
+                            : 0.0
+                        ).toFixed(1)
+                      )
+                    "
+                    :isIndicatorActive="false"
+                  />
+
+                  <div class="">
+                    <h2
+                      class="font-light text-xs overflow-hidden tracking-tighter"
+                    >
+                      {{ postToEnlarge.total_reviews }}
+                    </h2>
+                  </div>
+                </div>
+              </div>
+
+              <!-- RIGHT SIDE --- POST ACTION MENU
+                                    & time since posting -->
+            </div>
+            <!-- END Ratings / postToEnlarge action menu / posting date -->
           </div>
-          <!-- END Ratings / post action menu / posting date -->
-        </div>
-        <!-- End TOP POSTING ROW -->
+          <!-- End TOP POSTING ROW -->
 
-        <!-- Text Body1 UPPER -->
-        <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-        <div
-          v-show="postToEnlarge.body1"
-          class="flex flex-row justify-center items-center w-full px-2 text-lg xs:text-xl md:text-2xl"
-          :class="[
-            body1Colors[postToEnlarge.body1ColorId],
-            postToEnlarge.body1Bold ? 'font-bold' : 'font-normal',
-          ]"
-        >
-          {{ postToEnlarge.body1 }}
-        </div>
+          <!-- Text Body1 UPPER -->
+          <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+          <div
+            v-show="postToEnlarge.body1"
+            class="flex flex-row justify-center items-center w-full px-2 text-lg xs:text-xl md:text-2xl"
+            :class="[
+              body1Colors[postToEnlarge.body1ColorId],
+              postToEnlarge.body1Bold ? 'font-bold' : 'font-normal',
+            ]"
+          >
+            {{ postToEnlarge.body1 }}
+          </div>
 
-        <!-- INDIVIDUAL POST: MAIN IMAGES  -->
-        <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-        <div class="flex flex-row justify-center items-center w-full mb-1">
-          <div v-if="imageArray.length > 0">
-            <div v-for="image in imageArray" :key="image.id" class="pb-2">
-              <PostShowTheImage
-                :image="image"
-                :numberOfImages="1"
-                :cropImage="false"
-                :plusImages="false"
-              >
-              </PostShowTheImage>
+          <!-- INDIVIDUAL POST: MAIN IMAGES  -->
+          <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+          <div class="flex flex-row justify-center items-center w-full mb-1">
+            <div v-if="imageArray.length > 0">
+              <div v-for="image in imageArray" :key="image.id" class="pb-2">
+                <PostShowTheImage
+                  :image="image"
+                  :numberOfImages="1"
+                  :cropImage="false"
+                  :plusImages="false"
+                >
+                </PostShowTheImage>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Text Body2 LOWER -->
-        <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-        <div
-          class="flex flex-row justify-center items-center w-full px-2 mt-0 mb-0 text-base xs:text-lg md:text-xl font-normal text-gray-900"
-        >
-          {{ postToEnlarge.body2 }}
-        </div>
-
-        <!-- INDIVIDUAL POST: BOTTOM ROW MENU -->
-        <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-        <div class="flex flex-row justify-between items-center w-full mb-2">
-          <!-- Likes -->
-          <div class="">
-            <Link
-              href="#"
-              class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
-            >
-              <div class="flex flex-row justify-between items-center">
-                <div class="">
-                  <img
-                    src="/images/icons/like_green.png"
-                    width="25"
-                    height="25"
-                  />
-                </div>
-                <div class="pl-1">
-                  {{ postToEnlarge.likes }}
-                </div>
-              </div>
-            </Link>
+          <!-- Text Body2 LOWER -->
+          <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+          <div
+            class="flex flex-row justify-center items-center w-full px-2 mt-0 mb-0 text-base xs:text-lg md:text-xl font-normal text-gray-900"
+          >
+            {{ postToEnlarge.body2 }}
           </div>
 
-          <!-- Comments -->
-          <div class="">
-            <Link
-              href="#"
-              class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
-            >
-              <div class="flex flex-row justify-between items-center">
-                <div class="">
-                  <img
-                    src="/images/icons/comment_icon.png"
-                    width="25"
-                    height="25"
-                  />
+          <!-- INDIVIDUAL POST: BOTTOM ROW MENU -->
+          <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+          <div class="flex flex-row justify-between items-center w-full mb-2">
+            <!-- Likes -->
+            <div class="">
+              <Link
+                href="#"
+                class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
+              >
+                <div class="flex flex-row justify-between items-center">
+                  <div class="">
+                    <img
+                      src="/images/icons/like_green.png"
+                      width="25"
+                      height="25"
+                    />
+                  </div>
+                  <div class="pl-1">
+                    {{ postToEnlarge.likes }}
+                  </div>
                 </div>
-                <div class="pl-1">12,999</div>
-              </div>
-            </Link>
-          </div>
+              </Link>
+            </div>
 
-          <!-- Re-Posted -->
-          <div class="">
-            <Link
-              href="#"
-              class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
-            >
-              <div class="flex flex-row justify-between items-center">
-                <div class="">
-                  <img
-                    src="/images/icons/share_icon.png"
-                    width="25"
-                    height="25"
-                  />
+            <!-- Comments -->
+            <div class="">
+              <Link
+                href="#"
+                class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
+              >
+                <div class="flex flex-row justify-between items-center">
+                  <div class="">
+                    <img
+                      src="/images/icons/comment_icon.png"
+                      width="25"
+                      height="25"
+                    />
+                  </div>
+                  <div class="pl-1">12,999</div>
                 </div>
-                <div class="pl-1">
-                  {{ postToEnlarge.repost }}
-                </div>
-              </div>
-            </Link>
-          </div>
+              </Link>
+            </div>
 
-          <!-- Shares -->
-          <div class="">
-            <Link
-              href="#"
-              class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
-            >
-              <div class="flex flex-row justify-between items-center">
-                <div class="">
-                  <img
-                    src="/images/icons/share_out_icon.png"
-                    width="20"
-                    height="17"
-                  />
+            <!-- Re-Posted -->
+            <div class="">
+              <Link
+                href="#"
+                class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
+              >
+                <div class="flex flex-row justify-between items-center">
+                  <div class="">
+                    <img
+                      src="/images/icons/share_icon.png"
+                      width="25"
+                      height="25"
+                    />
+                  </div>
+                  <div class="pl-1">
+                    {{ postToEnlarge.repost }}
+                  </div>
                 </div>
-                <div class="pl-1">
-                  {{ postToEnlarge.shares }}
+              </Link>
+            </div>
+
+            <!-- Shares -->
+            <div class="">
+              <Link
+                href="#"
+                class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
+              >
+                <div class="flex flex-row justify-between items-center">
+                  <div class="">
+                    <img
+                      src="/images/icons/share_out_icon.png"
+                      width="20"
+                      height="17"
+                    />
+                  </div>
+                  <div class="pl-1">
+                    {{ postToEnlarge.shares }}
+                  </div>
                 </div>
-              </div>
-            </Link>
+              </Link>
+            </div>
           </div>
         </div>
 

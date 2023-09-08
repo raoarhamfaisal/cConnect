@@ -1,6 +1,7 @@
 <script>
 // Why is script on top? BECAUSE I LIKE AIT HERE!
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import Header from "@/Layouts/Header.vue";
 import { InertiaLink } from "@inertiajs/inertia-vue3";
 import { Inertia } from "@inertiajs/inertia";
 
@@ -36,6 +37,7 @@ export default {
     InertiaLink,
     AppSpinner,
     tContractorWord,
+    Header,
     ResponsiveNavLink,
     ButtonPost,
     ButtonRefresh,
@@ -317,215 +319,87 @@ export default {
 <template>
   <Head title="News Feed" />
 
-  <section class="bg-gray-100">
-    <!-- Section Container -->
-    <div class="relative mx-auto mt-0 lg:mt-2 pt-10 lg:pt-0 h-screen">
-      <div class="flex lg:flex-row lg:justify-center lg:items-start lg:gap-x-5">
-        <!-- MAIN SIDE MENU -->
-        <!-- ******************************************************* -->
-
-        <MainSideMenu
-          v-model="postSearch"
-          :showit="showit"
-          :profile="profile"
-          :isOpen="isFormOpen"
-          :show-post-buttons="true"
-          @postClicked="openForm"
-          @submitPostSearch="submitPostSearch"
-        >
-        </MainSideMenu>
-
-        <!-- DISPLAY NEWS FEED -->
-        <!-- ******************************************************* -->
-
+  <Header
+    :profile="profile"
+    :posts="posts"
+    :post-search-filters="postSearchFilters"
+    :showit="showit"
+    :show-post-buttons="true"
+    color="rgb(156 163 175)"
+  >
+    <!-- POSTING CONTAINER -->
+    <div
+      class="flex flex-col items-center justify-start mx-auto lg:mr-1 mt-3 sm:mt-6 lg:mt-0 shadow-md sm:rounded-3xl"
+    >
+      <!-- FULL POST WRAPPER News Feed -->
+      <div
+        class="flex flex-col items-center justify-start px-2 lg:max-h-screen lg:overflow-y-auto h-screen"
+      >
+        <!-- -------for="post in allPosts"------------- -->
+        <!-- .slice only allows 400 iterations -->
+        <!-- <div v-for="post in allPosts.slice(0, 400)" :key="post.id" -->
         <div
-          class="flex flex-col items-center justify-start mx-auto lg:mx-1 lg:mt-0 h-full overflow-x-hidden bg-gray-400"
+          v-for="post in allPosts"
+          id="scrollPost"
+          :key="post.id"
+          class="relative mx-auto w-full py-0"
         >
-          <div id="NewsFeedScroll" class="">
-            <!-- FIXED TOP HEADER -->
-            <!-- ONLY ON MOBILE       -->
-            <header
-              class="lg:hidden fixed top-0 left-0 right-0 z-10 h-14 sm:h-16 bg-gray-400"
-            >
-              <nav class="container max-w-7xl px-1 py-1 pt-2 mx-auto md:px-12">
-                <div class="flex items-center justify-between">
-                  <!-- LOGO -->
-                  <div class="flex items-center justify-start pl-1 space-x-2">
-                    <Link href="/" class="xs:hidden md:flex w-12">
-                      <img
-                        src="/images/logo/icon_blue.png"
-                        width="45"
-                        height="45"
-                      />
-                    </Link>
-
-                    <Link
-                      href="/"
-                      class="hidden xs:flex text-2xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center"
-                    >
-                      <tContractorWord />
-                    </Link>
-                  </div>
-
-                  <!-- Cross X Menu Options -->
-                  <div
-                    class="flex items-center justify-end sm:space-x-4 space-x-2"
-                  >
-                    <!-- refresh post icon only -->
-                    <ButtonRefresh
-                      @RefreshPostings="RefreshPostings"
-                    ></ButtonRefresh>
-
-                    <!-- Contractor Page -->
-                    <div
-                      class="hidden sx:flex flex-shrink-0 items-center justify-center"
-                    >
-                      <Link href="#">
-                        <img
-                          src="images/icons/contractorpage_b.png"
-                          width="45"
-                          height="45"
-                        />
-                      </Link>
-                    </div>
-
-                    <!-- New Post Button -->
-                    <ButtonPost :isOpen="isFormOpen" @postClicked="openForm">
-                    </ButtonPost>
-
-                    <!-- Hamburger menu button -->
-                    <!-- Hamburger -->
-                    <div class="-mr-2 flex items-center">
-                      <button
-                        @click="NavigationDropdown"
-                        class="inline-flex items-center justify-center p-2 rounded-md text-black hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
-                      >
-                        <svg
-                          class="h-6 w-6"
-                          stroke="currentColor"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            :class="{
-                              hidden: showingNavigationDropdown,
-                              'inline-flex': !showingNavigationDropdown,
-                            }"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16"
-                          />
-                          <path
-                            :class="{
-                              hidden: !showingNavigationDropdown,
-                              'inline-flex': showingNavigationDropdown,
-                            }"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </nav>
-            </header>
-
-            <Teleport to="body">
-              <Menu_Hamburger
-                v-model="postSearch"
-                :showit="showit"
-                :profile="profile"
-                :showingNavigationDropdown="showingNavigationDropdown"
-                @NavigationDropdown="NavigationDropdown"
-                @submitPostSearch="submitPostSearch"
-              >
-              </Menu_Hamburger>
-            </Teleport>
-
-            <!-- POSTING CONTAINER -->
-            <div
-              class="container flex flex-col items-center justify-start mx-auto lg:mx-1 max-w-3xl mt-3 sm:mt-6 lg:mt-0 shadow-md sm:rounded-3xl"
-            >
-              <!-- FULL POST WRAPPER News Feed -->
-              <div
-                class="flex flex-col items-center justify-start px-2 lg:max-h-screen lg:overflow-y-auto h-screen"
-              >
-                <!-- -------for="post in allPosts"------------- -->
-                <!-- .slice only allows 400 iterations -->
-                <!-- <div v-for="post in allPosts.slice(0, 400)" :key="post.id" -->
-                <div
-                  v-for="post in allPosts"
-                  id="scrollPost"
-                  :key="post.id"
-                  class="relative mx-auto w-full py-0"
-                >
-                  <!-- INDIVIDUAL POST DISPLAY WITH MENUS -->
-                  <PostDisplay
-                    :showit="showit"
-                    :profile="profile"
-                    :post="post"
-                    :body1Colors="body1Colors"
-                    @enlarge-post="EnlargePost"
-                  >
-                  </PostDisplay>
-                </div>
-                <!-- v-for="post in allPosts" -->
-                <!-- ------------------------------------------- -->
-
-                <!-- Makes call to load more posts calling the script
-                             observer.observe(this.$refs.loadMoreIntersect) -->
-                <span ref="loadMoreIntersect" />
-
-                <AppSpinner v-show="posts.next_page_url" :showSpinText="true">
-                  <div class="px-5 text-gray-300">LOADING MORE POSTS!</div>
-                </AppSpinner>
-
-                <div class="h-5"></div>
-
-                <!-- 'next_page_url' is set to null in script -->
-                <div v-if="posts.next_page_url === null" class="mt-12">
-                  <div class="mx-auto text-gray-300 w-60 sm:w-72 md:w-96">
-                    You're all up to date! 🥳
-                  </div>
-                </div>
-
-                <div v-if="postDisplayEnlarged">
-                  <Teleport to="body">
-                    <PostDisplayEnlarged
-                      :profile="profile"
-                      :postToEnlarge="postToEnlarge"
-                      :body1Colors="body1Colors"
-                      @close-enlarged="EnLargedPostClosed"
-                    >
-                    </PostDisplayEnlarged>
-                  </Teleport>
-                </div>
-
-                <Teleport to="body">
-                  <PostForm
-                    :isOpen="isFormOpen"
-                    :isEdit="isFormEdit"
-                    :form="postFormObject"
-                    @formsave="saveItem"
-                    @formclose="closeModal"
-                    @formEditClose="closeModalEditMode"
-                  >
-                  </PostForm>
-                </Teleport>
-              </div>
-              <!-- WRAPPER END: For News Feed -->
-            </div>
-            <!-- END POSTING CONTAINER -->
-          </div>
-          <!-- nrewsfeed scroll -->
+          <!-- INDIVIDUAL POST DISPLAY WITH MENUS -->
+          <PostDisplay
+            :showit="showit"
+            :profile="profile"
+            :post="post"
+            :body1Colors="body1Colors"
+            @enlarge-post="EnlargePost"
+          >
+          </PostDisplay>
         </div>
-        <!-- END: DISPLAY NEWS FEED -->
+        <!-- v-for="post in allPosts" -->
+        <!-- ------------------------------------------- -->
+
+        <!-- Makes call to load more posts calling the script
+                             observer.observe(this.$refs.loadMoreIntersect) -->
+        <span ref="loadMoreIntersect" />
+
+        <AppSpinner v-show="posts.next_page_url" :showSpinText="true">
+          <div class="px-5 text-gray-300">LOADING MORE POSTS!</div>
+        </AppSpinner>
+
+        <div class="h-5"></div>
+
+        <!-- 'next_page_url' is set to null in script -->
+        <div v-if="posts.next_page_url === null" class="mt-12">
+          <div class="mx-auto text-gray-300 w-60 sm:w-72 md:w-96">
+            You're all up to date! 🥳
+          </div>
+        </div>
+
+        <div v-if="postDisplayEnlarged">
+          <Teleport to="body">
+            <PostDisplayEnlarged
+              :profile="profile"
+              :postToEnlarge="postToEnlarge"
+              :body1Colors="body1Colors"
+              @close-enlarged="EnLargedPostClosed"
+            >
+            </PostDisplayEnlarged>
+          </Teleport>
+        </div>
+
+        <Teleport to="body">
+          <PostForm
+            :isOpen="isFormOpen"
+            :isEdit="isFormEdit"
+            :form="postFormObject"
+            @formsave="saveItem"
+            @formclose="closeModal"
+            @formEditClose="closeModalEditMode"
+          >
+          </PostForm>
+        </Teleport>
       </div>
+      <!-- WRAPPER END: For News Feed -->
     </div>
-    <!-- Section Container -->
-  </section>
+    <!-- END POSTING CONTAINER -->
+  </Header>
 </template>

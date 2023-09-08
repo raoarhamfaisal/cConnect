@@ -1,5 +1,6 @@
 import { createStore } from "vuex";
-import ratings from "./modules/ratings/ratings"; // Assuming rating.js is in the same directory
+import ratings from "./modules/ratings/ratings"; 
+import profile from "./modules/profile/profile"; 
 import axios from "axios";
 import { somethingWentWrong } from "@/helpers/utilities";
 import { setToken } from "@/helpers/localStorageHelper";
@@ -7,9 +8,13 @@ import { setToken } from "@/helpers/localStorageHelper";
 export const store = createStore({
   modules: {
     ratings,
+    profile,
   },
   state: {
     screenWidth: window.innerWidth,
+  },
+  getters: {
+    screenWidth: (state) => state.screenWidth,
   },
   mutations: {
     setScreenWidth(state, width) {
@@ -35,7 +40,5 @@ export const store = createStore({
       }
     },
   },
-  getters: {
-    screenWidth: (state) => state.screenWidth,
-  },
+ 
 });

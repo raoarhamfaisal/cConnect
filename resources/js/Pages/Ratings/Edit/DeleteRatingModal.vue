@@ -3,7 +3,6 @@
 
   <CustomDialog
     submitText="Delete"
-    @submit="handleSubmit"
     ref="deleteDialogRef"
     :loading="loading"
     :disabled="disabled"

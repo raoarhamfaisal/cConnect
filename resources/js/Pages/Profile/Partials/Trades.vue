@@ -1,5 +1,6 @@
 <script setup>
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import { somethingWentWrong } from "@/helpers/utilities";
 
 import { useForm } from "@inertiajs/inertia-vue3";
 
@@ -62,7 +63,13 @@ const options = [
 ];
 const toggleSwitch = (field) => {
   form[field] = form[field] === 1 ? 0 : 1;
-  console.log(form);
+  form.patch(route("profile.updateTrades"), {
+    preserveScroll: true,
+    // onSuccess: () => form.reset("password"),
+    onError: () => {
+      somethingWentWrong();
+    },
+  });
 };
 </script>
 
@@ -76,48 +83,25 @@ const toggleSwitch = (field) => {
         </p>
       </div>
     </header>
-    <form @submit.prevent="form.patch(route('profile.updateTrades'))">
-      <div class="grid mt-8 gap-3">
-        <div
-          v-for="(option, index) in options"
-          :key="index"
-          class="flex items-center justify-between sm:w-96 ml-3 mb-5"
-        >
-          <label :for="option.id" class="mr-4 font-bold">{{
-            option.name
-          }}</label>
-          <div class="switch" @click="toggleSwitch(option.id)">
+    <div class="grid mt-8 gap-3">
+      <div
+        v-for="(option, index) in options"
+        :key="index"
+        class="flex items-center justify-between sm:w-96 ml-3 mb-5"
+      >
+        <label :for="option.id" class="mr-4 font-bold">{{ option.name }}</label>
+        <div class="switch" @click="toggleSwitch(option.id)">
+          <div
+            :class="[form[option.id] === 1 ? 'switch-bg-on' : 'switch-bg-off']"
+          >
             <div
               :class="[
-                form[option.id] === 1 ? 'switch-bg-on' : 'switch-bg-off',
+                form[option.id] === 1 ? 'switch-knob-on' : 'switch-knob-off',
               ]"
-            >
-              <div
-                :class="[
-                  form[option.id] === 1 ? 'switch-knob-on' : 'switch-knob-off',
-                ]"
-              ></div>
-            </div>
+            ></div>
           </div>
         </div>
       </div>
-
-      <div class="flex items-center gap-4 mt-10">
-        <PrimaryButton
-          :disabled="form.processing"
-          class="w-full flex justify-center"
-          >Save</PrimaryButton
-        >
-        <Transition
-          enter-from-class="opacity-0"
-          leave-to-class="opacity-0"
-          class="transition ease-in-out"
-        >
-          <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">
-            Saved.
-          </p>
-        </Transition>
-      </div>
-    </form>
+    </div>
   </section>
 </template>

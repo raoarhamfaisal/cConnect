@@ -17,6 +17,12 @@
           class="flex justify-between rounded-b-none max-md:rounded-none rounded-lg text-white items-center p-4 bg-[#241e6d]"
         >
           <div class="flex items-center gap-2">
+            <Icon
+              @click="closeDialog"
+              class="w-10 h-10 cursor-pointer"
+              icon="icon-park:back"
+              color="red"
+            />
             <h3 class="text-xl font-bold">{{ title }}</h3>
             <Icon
               class="w-6 h-6"
@@ -34,7 +40,7 @@
         </div>
 
         <!-- Slot Content - Scrollable -->
-        <div class="flex-1 overflow-y-auto p-4">
+        <div :class="`flex-1 overflow-y-auto p-4 ${contentClasses}`">
           <slot></slot>
         </div>
 
@@ -77,6 +83,10 @@ const props = defineProps({
   submitText: {
     type: String,
     default: "Submit",
+  },
+  contentClasses: {
+    type: String,
+    default: "",
   },
   showFooter: {
     type: Boolean,

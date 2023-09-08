@@ -3,7 +3,9 @@ import { removeToken } from "@/helpers/localStorageHelper";
 import { Icon } from "@iconify/vue";
 import { Inertia } from "@inertiajs/inertia";
 import { Link, usePage } from "@inertiajs/inertia-vue3";
-import { computed } from "vue";
+import { computed, ref } from "vue";
+import DialogProfileTabs from "@/Pages/Profile/Partials/main/DialogProfileTabs.vue";
+import { useStore } from "vuex";
 
 defineProps({
   showit: Boolean,
@@ -20,6 +22,9 @@ defineProps({
 
   showingNavigationDropdown: Boolean,
 });
+
+const store = useStore();
+const dialogRef = ref();
 
 const emit = defineEmits([
   "NavigationDropdown",
@@ -42,9 +47,19 @@ function handleLogout() {
 
   Inertia.post("/logout");
 }
+const openProfileModal = () => {
+  store.commit("profile/setActiveTab", 3);
+  if (usePage().url.value !== "/profile") {
+    dialogRef.value.openDialog();
+  } else {
+    emit("NavigationDropdown");
+  }
+};
 </script>
 
 <template>
+  <DialogProfileTabs ref="dialogRef" :profile="profile" />
+
   <div id="hamburgerwithsticky" class="z-40">
     <div
       id="myHamburgerMenu"
@@ -230,13 +245,13 @@ function handleLogout() {
           <div class="pt-1 border-t-2 border-gray-400"></div>
 
           <!-- DropDown: VIEW SETTINGS -->
-          <Link
-            :href="route('post')"
+          <button
+            @click="openProfileModal"
             class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
           >
             <img src="/images/icons/news_view.png" width="20" height="20" />
             <span class="mx-4 font-medium">View Settings</span>
-          </Link>
+          </button>
 
           <!-- DropDown: My Profile -->
           <Link

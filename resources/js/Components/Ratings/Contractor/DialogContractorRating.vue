@@ -1,6 +1,5 @@
 <template>
   <CustomDialog
-    @submit="handleSubmit"
     ref="dialogRef"
     :showFooter="false"
     dialogWidth="width-75"

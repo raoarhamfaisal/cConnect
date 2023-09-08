@@ -1,5 +1,5 @@
 <template>
-  <Head title="Ratings" />
+  <Head title="Contractor Reviews" />
 
   <Header
     v-if="isAdminUrl"
@@ -10,14 +10,17 @@
     :show-post-buttons="true"
     color="rgb(229 231 235 / var(--tw-bg-opacity))"
   >
-    <div v-if="contractor" class="bg-gray-200 mt-10">
+    <div v-if="contractor" class="bg-gray-200 mt-10 flex flex-col gap-10">
       <Card
         :shadowLevel="2"
         bgColor="white"
         :padding="screenWidth < 640 ? '7px' : '20px'"
       >
         <!-- Filters -->
+        <PageTitle linkUrl="/admin/ratings" pageTitle="Contractor Reviews" />
+
         <ContractorInfo :contractor="contractor" />
+        <Loader :loading="loading" background="" height="60vh"></Loader>
         <div v-if="!loading">
           <heading-card heading="Average Ratings" class="mb-12" />
           <AverageRating
@@ -71,51 +74,56 @@
               </div>
             </div>
           </div>
-          <div class="xs:mb-12 mb-6 xs:mt-12 mt-7 border-t-2 border-gray-300">
-            <heading-card heading="Reviews" class="mt-6 mb-12" />
+        </div>
+      </Card>
+      <Card
+        v-if="!loading"
+        :shadowLevel="2"
+        bgColor="#fff"
+        :padding="screenWidth < 640 ? '7px' : '20px'"
+      >
+        <div class="xs:mb-12 mb-6 border-gray-300">
+          <heading-card heading="Reviews" class="mt-6 mb-12" />
 
-            <div
-              v-if="contractorReviews && contractorReviews?.length > 0"
-              class="flex gap-8 flex-col"
-            >
-              <ReviewResponseAdmin
-                v-for="(review, index) in contractorReviews"
-                :key="index"
-                :review="review"
-                :contractorId="review.contractor_id"
-                :profileId="profile.id"
-              />
-            </div>
-            <div v-if="contractorReviews && contractorReviews?.length === 0">
-              <div
-                class="p-2 text-xl text-grey-600 font-bold h-60 flex items-center justify-center"
-              >
-                No reviews Available for this Contractor
-              </div>
-            </div>
-          </div>
           <div
-            v-if="
-              pagination &&
-              Object.keys(pagination).length > 0 &&
-              pagination.last_page > 1 &&
-              contractorReviews &&
-              contractorReviews.length > 0
-            "
-            class="flex items-center justify-center mb-4"
+            v-if="contractorReviews && contractorReviews?.length > 0"
+            class="flex gap-8 flex-col"
           >
-            <CustomPagination
-              :total-items="pagination.total"
-              :current-page="pagination.current_page"
-              :items-per-page="pagination.per_page"
-              v-model="currentPage"
-              :max-pages-shown="3"
-              :on-click="onClickHandler"
+            <ReviewResponseAdmin
+              v-for="(review, index) in contractorReviews"
+              :key="index"
+              :review="review"
+              :contractorId="review.contractor_id"
+              :profileId="profile.id"
             />
           </div>
+          <div v-if="contractorReviews && contractorReviews?.length === 0">
+            <div
+              class="p-2 text-xl text-grey-600 font-bold h-60 flex items-center justify-center"
+            >
+              No reviews Available for this Contractor
+            </div>
+          </div>
         </div>
-
-        <Loader :loading="loading" background="white" height="70vh"></Loader>
+        <div
+          v-if="
+            pagination &&
+            Object.keys(pagination).length > 0 &&
+            pagination.last_page > 1 &&
+            contractorReviews &&
+            contractorReviews.length > 0
+          "
+          class="flex items-center justify-center mb-4"
+        >
+          <CustomPagination
+            :total-items="pagination.total"
+            :current-page="pagination.current_page"
+            :items-per-page="pagination.per_page"
+            v-model="currentPage"
+            :max-pages-shown="3"
+            :on-click="onClickHandler"
+          />
+        </div>
       </Card>
     </div>
   </Header>
@@ -140,6 +148,7 @@ import { somethingWentWrong } from "@/helpers/utilities";
 import { useStore } from "vuex";
 import { Inertia } from "@inertiajs/inertia";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
+import PageTitle from "@/Components/PageTitle.vue";
 
 // State
 const { contractorDetails } = defineProps({

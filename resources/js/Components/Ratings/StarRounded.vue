@@ -1,6 +1,19 @@
 <template>
-  <div class="star-rating" :aria-label="rating + ' of 5'">
-    <div v-for="(star, index) in stars" :key="index" class="star-container">
+  <div
+    class="star-rating"
+    :aria-label="rating + ' of 5'"
+    style="transform: rotate(55deg)"
+  >
+    <div
+      v-for="(star, index) in stars"
+      :key="index"
+      class="star-container"
+      :style="{
+        left: star.x + 'px',
+        top: star.y + 'px',
+        transform: `translate(-50%, -50%) rotate(${star.rotation}deg)`,
+      }"
+    >
       <svg
         class="star-svg"
         :style="[
@@ -13,8 +26,8 @@
         <polygon :points="getStarPoints" style="fill-rule: nonzero" />
         <defs>
           <!--
-                        id has to be unique to each star fullness(dynamic offset) - it indicates fullness above
-                      -->
+                          id has to be unique to each star fullness(dynamic offset) - it indicates fullness above
+                        -->
           <linearGradient :id="`gradient${star.raw}`">
             <stop
               id="stop1"
@@ -55,8 +68,8 @@
     </div>
   </div>
 </template>
-
-<script>
+  
+  <script>
 export default {
   name: "stars-rating",
   components: {},
@@ -145,10 +158,24 @@ export default {
       return points;
     },
     initStars() {
+      let radius = 13; // Adjust as needed to fit within your .star-rating dimensions
+      let centerX = 20; // Half of .star-rating width
+      let centerY = 20; // Half of .star-rating height
+      let startingRotation = 20; // This might need to be adjusted depending on the initial orientation of your star
+
       for (let i = 0; i < this.totalStars; i++) {
+        let angle = i * 72 * (Math.PI / 180); // Convert to radians
+
+        let xPosition = centerX + radius * Math.cos(angle);
+        let yPosition = centerY + radius * Math.sin(angle);
+        let rotation = i * 72 + startingRotation;
+
         this.stars.push({
           raw: this.emptyStar,
           percent: this.emptyStar + "%",
+          x: xPosition,
+          y: yPosition,
+          rotation: rotation,
         });
       }
     },
@@ -181,6 +208,7 @@ export default {
           }
           let roundedOneDecimalPoint = Math.round(surplus * 10) / 10;
           this.stars[i].raw = roundedOneDecimalPoint;
+
           return (this.stars[i].percent = this.calcStarFullness(this.stars[i]));
         }
       }
@@ -211,20 +239,25 @@ export default {
   },
 };
 </script>
-
-<style scoped>
+  
+  <style scoped>
 .star-rating {
-  display: flex;
-  align-items: center;
+  position: relative;
+  width: 40px; /* Adjust to fit your desired circle size */
+  height: 40px; /* Adjust to fit your desired circle size */
 }
+
 .star-container {
-  display: flex;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .star-container:not(:last-child) {
-  margin-right: 5px;
+  margin-right: 0px;
 }
 .text-small {
   font-size: 1rem;
-  padding-bottom: 1px;
 }
 </style>
+  

@@ -29,13 +29,17 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-
+import { computed } from "vue";
+import { useStore } from "vuex";
+const store = useStore();
 const { tabs } = defineProps(["tabs"]);
-const activeTab = ref(0);
+const activeTab = computed(() => store.getters["profile/activeProfileTab"]);
+
 const emit = defineEmits();
+
 const handleTabClick = (index) => {
-  activeTab.value = index;
-  emit("tabChanged", activeTab.value);
+  store.commit("profile/setActiveTab", index);
+
+  emit("tabChanged", index);
 };
 </script>

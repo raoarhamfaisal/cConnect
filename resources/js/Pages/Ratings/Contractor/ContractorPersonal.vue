@@ -1,5 +1,5 @@
 <template>
-  <Head title="Ratings" />
+  <Head title="Your Ratings" />
 
   <Header
     :profile="profile"
@@ -15,6 +15,7 @@
         bgColor="white"
         :padding="screenWidth < 640 ? '7px' : '20px'"
       >
+        <PageTitle linkUrl="/post" pageTitle="Your Ratings" />
         <ContractorInfo :contractor="contractor" />
         <div v-if="!loading">
           <heading-card
@@ -126,6 +127,7 @@
 <script setup>
 import Header from "@/Layouts/Header.vue";
 import { Head } from "@inertiajs/inertia-vue3";
+import PageTitle from "@/Components/PageTitle.vue";
 import AverageRating from "@/Components/Ratings/Contractor/PartialsVisiting/AverageRating.vue";
 import QuestionsReview from "../PartialsPersonal/QuestionsReview.vue";
 
@@ -142,6 +144,7 @@ import { ref, onMounted, watch, computed } from "vue";
 import { somethingWentWrong } from "@/helpers/utilities";
 import { useStore } from "vuex";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
+import { Icon } from "@iconify/vue";
 
 // State
 const { profile, contractorDetails } = defineProps({
