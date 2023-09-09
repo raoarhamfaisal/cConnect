@@ -11,6 +11,7 @@ defineProps({
   profile: Object,
   posts: Object,
   showit: Boolean,
+  regions: Array,
   postSearchFilters: {
     type: Object,
     default: () => ({

@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Profile;
+use App\Models\Region;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request as FacadeRequest;
@@ -33,7 +34,10 @@ class ProfileController extends Controller
             $profile = Profile::where('user_id', $userID)->first();
         }
 
+        $regions = Region::all();
+
         return Inertia::render('Profile/Edit', [
+            'regions' => $regions,
             'profile' => $profile,
             'showit' => Auth::check(),
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
@@ -258,6 +262,7 @@ class ProfileController extends Controller
         if($profile) {
 
             $data = $request->validate([
+                'region_id' => 'required|number',
                 'address_1' => 'nullable|string|max:30',
                 'address_2' => 'nullable|string|max:30',
                 'city' => 'nullable|string|max:30',
