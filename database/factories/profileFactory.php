@@ -18,7 +18,7 @@ class profileFactory extends Factory
     public function definition()
     {
         return [
-            'region_id' => fake()->numberBetween(1, 5),
+            'region_id' => fake()->numberBetween(1, 11),
             'active_user' => fake()->numberBetween(0, 1),
             'first_name' => fake()->name(),
             'last_name' => fake()->name(),
