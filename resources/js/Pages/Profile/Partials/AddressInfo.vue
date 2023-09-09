@@ -4,11 +4,24 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputError from "@/Components/InputError.vue";
 import { useForm } from "@inertiajs/inertia-vue3";
+import SelectProfile from "@/Components/SelectProfile.vue";
+import { ref } from "vue";
 
 const props = defineProps({
   profile: Object,
+  regions: Array,
 });
+const referenceList = props.regions.map((item) => item.name);
+const selectedObj = props.regions.find(
+  (item) => item.id === props.profile.region_id
+);
+const selectedName = selectedObj ? selectedObj.name : undefined;
+
+console.log(selectedName);
+const selectedReferal = ref(selectedName);
+
 const form = useForm({
+  region_id: props.profile.region_id.toString(),
   address_1: props.profile.address_1,
   address_2: props.profile.address_2,
   city: props.profile.city,
@@ -17,7 +30,14 @@ const form = useForm({
   county: props.profile.county,
   counrty: props.profile.counrty,
 });
-console.log("profile: " + props.profile.address_1, form.address_1);
+const changeReferal = (value) => {
+  selectedReferal.value = value;
+  props.regions.forEach((item) => {
+    if (value === item.name) {
+      form.region_id = item.id.toString();
+    }
+  });
+};
 const inputFields = [
   {
     id: "address_1",
@@ -91,6 +111,15 @@ const inputFields = [
               :placeholder="field.placeholder"
             />
             <InputError class="mt-2" :message="form.errors[field.model]" />
+          </div>
+          <div class="mb-4 sm:mb-0">
+            <InputLabel class="font-bold mb-1" value="Region" />
+            <SelectProfile
+              :options="referenceList"
+              :modelValue="selectedReferal"
+              @update:modelValue="changeReferal"
+            />
+            <InputError class="mt-2" :message="form.errors.region_id" />
           </div>
         </div>
       </div>

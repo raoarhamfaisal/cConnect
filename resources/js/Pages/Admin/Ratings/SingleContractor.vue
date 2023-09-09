@@ -17,7 +17,10 @@
         :padding="screenWidth < 640 ? '7px' : '20px'"
       >
         <!-- Filters -->
-        <PageTitle linkUrl="/admin/ratings" pageTitle="Contractor Reviews" />
+        <PageTitle
+          :linkUrl="`/admin/regions/${region_id}/contractors`"
+          pageTitle="Contractor Reviews"
+        />
 
         <ContractorInfo :contractor="contractor" />
         <Loader :loading="loading" background="" height="60vh"></Loader>
@@ -153,6 +156,7 @@ import PageTitle from "@/Components/PageTitle.vue";
 // State
 const { contractorDetails } = defineProps({
   profile: Object,
+  region_id: [String, Number],
   contractorDetails: Object,
   posts: Object,
   showit: Boolean,

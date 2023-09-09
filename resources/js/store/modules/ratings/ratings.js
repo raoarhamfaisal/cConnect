@@ -9,6 +9,7 @@ import {
   deactivateResponse,
   deleteReviewAdmin,
   deleteResponseAdmin,
+  getRegions,
   activateResponse,
   sendAcceptRequest,
   sendRejectRequest,
@@ -27,12 +28,16 @@ export default {
       isInactive: false,
       allContractors: [],
       pagination: {},
+      allRegions: [],
       contractorDetails: {},
     };
   },
   mutations: {
     setLoading(state, payload) {
       state.loading = payload;
+    },
+    setAllRegions(state, payload) {
+      state.allRegions = payload;
     },
     setDisabled(state, payload) {
       state.disabled = payload;
@@ -257,6 +262,7 @@ export default {
     activateResponse,
     deleteReviewAdmin,
     updateReviewAdmin,
+    getRegions,
     updateResponseAdmin,
     deleteResponseAdmin,
     sendAcceptRequest,

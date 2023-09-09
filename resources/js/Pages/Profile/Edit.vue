@@ -38,6 +38,7 @@ store.commit("profile/setActiveTab", 0);
       :status="status"
       :mustVerifyEmail="mustVerifyEmail"
       :profile="profile"
+      :regions="regions"
     />
   </Header>
 </template>

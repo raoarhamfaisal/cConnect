@@ -15,6 +15,7 @@ defineProps({
   mustVerifyEmail: Boolean,
   status: String,
   profile: Object,
+  regions: Array,
   showHeader: {
     default: true,
     type: Boolean,
@@ -66,7 +67,7 @@ const handleTabChange = (newActiveTab) => {
         <CompanyInfo :profile="profile" />
       </div>
       <div v-if="active === 0" class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-        <AddressInfo :profile="profile" />
+        <AddressInfo :profile="profile" :regions="regions" />
       </div>
       <div v-if="active === 0" class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
         <LinksInfo :profile="profile" />

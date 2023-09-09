@@ -1,5 +1,5 @@
 <template>
-  <Head title="Ratings" />
+  <Head title="All Contractors" />
 
   <Header
     v-if="isAdminUrl"
@@ -16,7 +16,7 @@
         bgColor="white"
         :padding="screenWidth < 640 ? '7px' : '20px'"
       >
-        <PageTitle linkUrl="/post" pageTitle="All Contractors" />
+        <PageTitle :linkUrl="`/admin/regions`" pageTitle="All Contractors" />
 
         <SearchInput
           class="mb-12"
@@ -32,7 +32,7 @@
           <Link
             v-for="(contractor, index) in allContractors"
             :key="index"
-            :href="`/admin/ratings/${contractor.id}`"
+            :href="`/admin/regions/${region_id}/contractors/${contractor.id}`"
             class="hover:bg-[#f8f9fa] hover:rounded"
           >
             <contractor
@@ -82,16 +82,16 @@ import CustomPagination from "@/Components/Ratings/CustomPagination.vue";
 import Card from "@/Components/Card.vue";
 import { Link } from "@inertiajs/inertia-vue3";
 import Contractor from "./partials/AllContractors/Contractor.vue";
-import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import { computed, ref, onMounted, onBeforeMount } from "vue";
 import { useStore } from "vuex";
 import { Inertia } from "@inertiajs/inertia";
 import SearchInput from "@/Components/Ratings/SearchInput.vue";
 import PageTitle from "@/Components/PageTitle.vue";
 // States
-defineProps({
+const { region_id } = defineProps({
   profile: Object,
   posts: Object,
+  region_id: [String, Number],
   showit: Boolean,
   postSearchFilters: {
     type: Object,
@@ -127,6 +127,7 @@ const fetchContractors = async (page = 1) => {
   await store.dispatch("ratings/getAllContractors", {
     perPage: perPage.value,
     page: page,
+    region_id: region_id,
     searchTerm: searchTerm.value,
   });
 };

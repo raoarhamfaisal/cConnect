@@ -153,7 +153,7 @@ const openProfileModal = () => {
           <!-- DropDown: All Contractors -->
           <Link
             v-if="isAdminUrl"
-            href="/admin/ratings"
+            href="/admin/regions"
             class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
           >
             <Icon

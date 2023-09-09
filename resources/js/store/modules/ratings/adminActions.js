@@ -8,12 +8,26 @@ export const getAllContractors = async ({ commit }, payload) => {
 
   try {
     const response = await axios.get(
-      `/api/admin/2/search-contractor?search=${payload.searchTerm}&per_page=${payload.perPage}&page=${payload.page}`,
+      `/api/admin/${payload.region_id}/search-contractor?search=${payload.searchTerm}&per_page=${payload.perPage}&page=${payload.page}`,
       getAxiosConfig()
     );
     if (response.data) {
       commit("setAllContractors", response.data.profiles);
       commit("setPagination", response.data.pagination);
+    }
+  } catch (err) {
+    somethingWentWrong();
+  } finally {
+    commit("setLoading", false);
+  }
+};
+export const getRegions = async ({ commit }) => {
+  commit("setLoading", true);
+
+  try {
+    const response = await axios.get(`/api/regions`, getAxiosConfig());
+    if (response.data) {
+      commit("setAllRegions", response.data.regions);
     }
   } catch (err) {
     somethingWentWrong();

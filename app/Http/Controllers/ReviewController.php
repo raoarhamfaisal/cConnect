@@ -564,7 +564,8 @@ class ReviewController extends Controller
                 'trade29',
                 'trade30'
             ]);
-        }, 'review_response'])->withTrashed()->where('is_under_appeal', 1);
+        }, 'ratingReasons',  // Attach rating reasons related to the review
+        'review_response.responseReasons','review_response'])->withTrashed()->where('is_under_appeal', 1);
     
         // Apply sorting based on filters
         $sortByDate = $request->query('sort_by_date', ''); // Default to latest
@@ -739,7 +740,8 @@ class ReviewController extends Controller
                 'trade29',
                 'trade30'
             ]);
-        }, 'review_response'])->withTrashed()->where('contractor_id', $contractor_id);
+        },  'ratingReasons',  // Attach rating reasons related to the review
+        'review_response.responseReasons','review_response'])->withTrashed()->where('contractor_id', $contractor_id);
     
         // Apply sorting based on filters
         $sortByDate = $request->query('sort_by_date', '');
