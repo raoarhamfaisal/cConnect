@@ -352,7 +352,41 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit');
 
     }
+    public function updateViewsApi(Request $request)
+    {
+        // Get current user id
+        $userID = Auth()->user('')->id;
+        $profile = null;
 
+
+
+
+        // Get the profile information if the user id exists
+        if($userID) {
+            $profile = Profile::where('user_id', $userID)->first();
+        }
+        // dd($request);
+
+
+        if($profile) {
+
+            $data = $request->validate([
+                'view_locale' => 'nullable|boolean',
+                'view_territorial'  => 'nullable|boolean',
+                'view_regional' => 'nullable|boolean',
+                'view_statewide' => 'nullable|boolean',
+                'view_nationwide'  => 'nullable|boolean',
+                'view_following'  => 'nullable|boolean',
+                'view_groups'  => 'nullable|boolean',
+            ]);
+
+
+            $profile->update($data);
+            
+        }
+
+    }
+    
     /**
         * Update the user avatar.
         *

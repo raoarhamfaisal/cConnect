@@ -4,24 +4,22 @@
     ref="dialogRef"
     :showFooter="false"
     dialogWidth="width-75"
-    title="Profile"
+    title="Views Setting"
     contentClasses="bg-gray-200 pt-6"
   >
     <Loader :loading="loading" background="white" height="70vh"></Loader>
-    <AllTabs
-      v-if="!loading"
-      :status="status"
-      :showHeader="false"
-      :mustVerifyEmail="mustVerifyEmail"
-      :profile="profile"
-    />
+    <div
+      class="border-8 p-2 border-white rounded-t-lg sm:p-8 bg-white shadow sm:rounded-lg"
+    >
+      <Views :profile="profile" :byApi="true" />
+    </div>
   </CustomDialog>
 </template>
   
   <script setup>
+import Views from "@/Pages/Profile/Partials/Views.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import Loader from "@/Components/Ratings/Loader.vue";
-import AllTabs from "@/Pages/Profile/Partials/main/AllTabs.vue";
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 // State

@@ -30,25 +30,18 @@ class PostController extends Controller
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public function index()
     {
+         // Get current user id
+      $userID = Auth()->user('')->id;
+      $profile = null;
+
+      if($userID) {
+        $profile = Profile::where('user_id', $userID)->first();
+
+    }
         return Inertia::render('Postings', [
             'showit' => Auth::check(),
             'userID' => Auth()->user() ? Auth()->user()->id : null,
-            'profile' => Auth::check() ? Profile::where('user_id', Auth()->user()->id)
-                ->first()
-                ->only(
-                    'user_id',
-                    'active_user',
-                    'first_name',
-                    'last_name',
-                    'company_name',
-                    'city',
-                    'state',
-                    'zipcode',
-                    'phone_cell',
-                    'email',
-                    'user_avatar'
-                ) : null,
-    
+            'profile' => $profile,  
             'posts' => Post::query()
                 ->select('posts.*')
                 ->addSelect([
