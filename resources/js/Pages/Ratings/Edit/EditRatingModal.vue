@@ -3,71 +3,67 @@
   <CustomDialog
     submitText="Save Changes"
     @submit="handleSubmit"
-    :loading="loading"
-    :disabled="disabled"
-    ref="dialogRef"
+    :loading="loadingSending"
+    :disabled="disabledSending"
+    ref="editDialogRef"
     title="Edit Rating"
   >
-    <form @submit.prevent="handleSubmit">
-      <div class="text-md font-bold mb-3 text-gray-600">
-        Select your Rating:
-      </div>
-      <StarRatingEditable
-        :ratingGlobal="state.rating"
-        @update:rating="handleRatingChange"
+    <div class="text-md font-bold mb-3 text-gray-600">Select your Rating:</div>
+    <StarRatingEditable
+      :ratingGlobal="state.rating"
+      @update:rating="handleRatingChange"
+    />
+    <InputError v-if="ratingError" class="mt-2" :message="ratingError" />
+    <!-- review reason -->
+    <div class="mb-4">
+      <div class="text-md font-bold text-gray-600 mt-3 mb-2">Review Text</div>
+      <textarea
+        id="rating_text"
+        type="text"
+        :rows="5"
+        class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+        required
+        v-model="state.rating_text"
+        placeholder="Type reason for your rating"
       />
-      <InputError v-if="ratingError" class="mt-2" :message="ratingError" />
-      <!-- review reason -->
-      <div class="mb-4">
-        <div class="text-md font-bold text-gray-600 mt-3 mb-2">Review Text</div>
-        <textarea
-          id="rating_text"
-          type="text"
-          :rows="5"
-          class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-          required
-          v-model="state.rating_text"
-          placeholder="Type reason for your rating"
-        />
-        <InputError
-          v-if="ratingReasonError"
-          class="mt-2"
-          :message="ratingReasonError"
-        />
+      <InputError
+        v-if="ratingReasonError"
+        class="mt-2"
+        :message="ratingReasonError"
+      />
+    </div>
+    <!-- QuestionsSwitch -->
+    <div
+      v-for="(question, index) in state.questionsSwitch"
+      :key="index"
+      class="flex items-center justify-between sm:w-96 mb-5"
+    >
+      <div class="text-md font-bold text-gray-600 mt-3 mb-2">
+        {{ question.question }}
       </div>
-      <!-- QuestionsSwitch -->
-      <div
-        v-for="(question, index) in state.questionsSwitch"
-        :key="index"
-        class="flex items-center justify-between sm:w-96 mb-5"
-      >
-        <div class="text-md font-bold text-gray-600 mt-3 mb-2">
-          {{ question.question }}
-        </div>
-        <div class="switch" @click="toggleSwitch(index)">
+      <div class="switch" @click="toggleSwitch(index)">
+        <div
+          :class="[
+            question.questionAnswer === 1 ? 'switch-bg-on' : 'switch-bg-off',
+          ]"
+        >
           <div
             :class="[
-              question.questionAnswer === 1 ? 'switch-bg-on' : 'switch-bg-off',
+              question.questionAnswer === 1
+                ? 'switch-knob-on'
+                : 'switch-knob-off',
             ]"
-          >
-            <div
-              :class="[
-                question.questionAnswer === 1
-                  ? 'switch-knob-on'
-                  : 'switch-knob-off',
-              ]"
-            ></div>
-          </div>
+          ></div>
         </div>
       </div>
+    </div>
 
-      <CustomSelect
-        :options="referenceList"
-        :modelValue="selectedReferal"
-        @update:modelValue="changeReferal"
-        label="How did you meet this contractor?"
-      />
-    </form>
+    <CustomSelect
+      :options="referenceList"
+      :modelValue="selectedReferal"
+      @update:modelValue="changeReferal"
+      label="How did you meet this contractor?"
+    />
   </CustomDialog>
 </template>
 
@@ -107,7 +103,7 @@ const state = reactive({
 });
 const form = toRefs(state);
 
-const dialogRef = ref();
+const editDialogRef = ref();
 const referenceList = [
   "tContractor Referral",
   "Friend Referral",
@@ -119,8 +115,8 @@ const referenceList = [
 const selectedReferal = ref(review.how_did_you_meet_this_contractor);
 
 //Computed
-const loading = computed(() => store.state.ratings.loading);
-const disabled = computed(() => store.state.ratings.disabled);
+const loadingSending = computed(() => store.state.ratings.loadingSending);
+const disabledSending = computed(() => store.state.ratings.disabledSending);
 
 //Watch
 
@@ -172,6 +168,7 @@ const validate = () => {
 };
 
 const handleSubmit = async () => {
+  console.log(editDialogRef.value, "value1");
   if (validate()) {
     const updateReview = {
       rating_text: filterBadWords(form.rating_text),
@@ -188,16 +185,18 @@ const handleSubmit = async () => {
       reviewer_id: profileId,
       contractor_id: contractorId,
     };
+
     await store.dispatch("ratings/updateReview", {
       reviewId: review.id,
       review: updateReview,
     });
-    console.log(updateReview);
-    dialogRef.value.closeDialog();
+
+    editDialogRef.value.closeDialog();
   }
 };
+
 const openDialogEdit = () => {
-  return dialogRef.value.openDialog();
+  return editDialogRef.value.openDialog();
 };
 
 defineExpose({ openDialogEdit });

@@ -117,6 +117,7 @@ const submit = () => {
 const isVisible = ref(false);
 
 const closeDialog = () => {
+  console.log("itsClicked");
   isVisible.value = false;
 };
 

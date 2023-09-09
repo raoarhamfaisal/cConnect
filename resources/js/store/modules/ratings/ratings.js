@@ -19,13 +19,15 @@ export default {
   state() {
     return {
       loading: false,
+      loadingSending: false,
+      disabledSending: false,
       disabled: false,
       isFetchReviews: false,
       isDeleted: false,
       isInactive: false,
       allContractors: [],
       pagination: {},
-      contractorDetails:{},
+      contractorDetails: {},
     };
   },
   mutations: {
@@ -34,6 +36,12 @@ export default {
     },
     setDisabled(state, payload) {
       state.disabled = payload;
+    },
+    setLoadingSending(state, payload) {
+      state.loadingSending = payload;
+    },
+    setDisabledSending(state, payload) {
+      state.disabledSending = payload;
     },
     setIsFetchReviews(state, payload) {
       state.isFetchReviews = payload;
@@ -74,8 +82,8 @@ export default {
       }
     },
     async deleteReview({ commit }, reviewId) {
-      commit("setLoading", true);
-      commit("setDisabled", true);
+      commit("setLoadingSending", true);
+      commit("setDisabledSending", true);
 
       try {
         const response = await axios.delete(
@@ -91,13 +99,13 @@ export default {
       } catch (err) {
         somethingWentWrong();
       } finally {
-        commit("setLoading", false);
-        commit("setDisabled", false);
+        commit("setLoadingSending", false);
+        commit("setDisabledSending", false);
       }
     },
     async deleteResponse({ commit }, responseId) {
-      commit("setLoading", true);
-      commit("setDisabled", true);
+      commit("setLoadingSending", true);
+      commit("setDisabledSending", true);
 
       try {
         const response = await axios.delete(
@@ -115,8 +123,8 @@ export default {
       } catch (err) {
         somethingWentWrong();
       } finally {
-        commit("setLoading", false);
-        commit("setDisabled", false);
+        commit("setLoadingSending", false);
+        commit("setDisabledSending", false);
       }
     },
     async createResponse({ commit }, responseData) {
@@ -145,8 +153,8 @@ export default {
       }
     },
     async updateReview({ commit }, payload) {
-      commit("setLoading", true);
-      commit("setDisabled", true);
+      commit("setLoadingSending", true);
+      commit("setDisabledSending", true);
 
       try {
         const response = await axios.put(
@@ -163,13 +171,13 @@ export default {
       } catch (err) {
         somethingWentWrong();
       } finally {
-        commit("setLoading", false);
-        commit("setDisabled", false);
+        commit("setLoadingSending", false);
+        commit("setDisabledSending", false);
       }
     },
     async updateResponse({ commit }, responseData) {
-      commit("setLoading", true);
-      commit("setDisabled", true);
+      commit("setLoadingSending", true);
+      commit("setDisabledSending", true);
 
       try {
         const response = await axios.patch(
@@ -178,7 +186,9 @@ export default {
           getAxiosConfig()
         );
         if (response.data) {
-          changesSaved(response.data.message || "Response Successfully Upadated");
+          changesSaved(
+            response.data.message || "Response Successfully Upadated"
+          );
           setTimeout(() => {
             commit("setIsFetchReviews", true);
           }, 2000);
@@ -186,8 +196,8 @@ export default {
       } catch (err) {
         somethingWentWrong();
       } finally {
-        commit("setLoading", false);
-        commit("setDisabled", false);
+        commit("setLoadingSending", false);
+        commit("setDisabledSending", false);
       }
     },
     async sendAppeal({ commit }, payload) {
@@ -201,7 +211,9 @@ export default {
           getAxiosConfig()
         );
         if (response.data) {
-          changesSaved(response.data.message || "Appeal is Successfully Submitted");
+          changesSaved(
+            response.data.message || "Appeal is Successfully Submitted"
+          );
           setTimeout(() => {
             commit("setIsFetchReviews", true);
           }, 2000);

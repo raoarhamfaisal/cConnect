@@ -3,9 +3,10 @@
 
   <CustomDialog
     submitText="Delete"
+    @submit="handleSubmit"
     ref="deleteDialogRef"
-    :loading="loading"
-    :disabled="disabled"
+    :loading="loadingSending"
+    :disabled="disabledSending"
     errorIcon
     dialogWidth="max-h-[70vh] width50"
     title="Are you sure? "
@@ -33,8 +34,8 @@ const { reviewId } = defineProps({
 });
 
 //Computed
-const loading = computed(() => store.state.ratings.loading);
-const disabled = computed(() => store.state.ratings.disabled);
+const loadingSending = computed(() => store.state.ratings.loadingSending);
+const disabledSending = computed(() => store.state.ratings.disabledSending);
 
 //Methods
 

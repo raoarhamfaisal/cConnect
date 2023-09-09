@@ -4,8 +4,8 @@
   <CustomDialog
     submitText="Delete"
     @submit="handleSubmit"
-    :loading="loading"
-    :disabled="disabled"
+    :loading="loadingSending"
+    :disabled="disabledSending"
     ref="deleteDialogRef"
     errorIcon
     dialogWidth="max-h-[70vh] width50"
@@ -32,8 +32,8 @@ const deleteDialogRef = ref();
 const store = useStore();
 
 //Computed
-const loading = computed(() => store.state.ratings.loading);
-const disabled = computed(() => store.state.ratings.disabled);
+const loadingSending = computed(() => store.state.ratings.loadingSending);
+const disabledSending = computed(() => store.state.ratings.disabledSending);
 
 //Methods
 

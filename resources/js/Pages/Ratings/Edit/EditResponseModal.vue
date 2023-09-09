@@ -4,8 +4,8 @@
     submitText="Save Changes"
     @submit="handleSubmit"
     ref="dialogRef"
-    :loading="loading"
-    :disabled="disabled"
+    :loading="loadingSending"
+    :disabled="disabledSending"
     title="Edit Response"
   >
     <form @submit.prevent="handleSubmit">
@@ -53,8 +53,8 @@ const response_text = ref(responseText);
 const dialogRef = ref();
 const responseError = ref("");
 //Computed
-const loading = computed(() => store.state.ratings.loading);
-const disabled = computed(() => store.state.ratings.disabled);
+const loadingSending = computed(() => store.state.ratings.loadingSending);
+const disabledSending = computed(() => store.state.ratings.disabledSending);
 
 //Watch
 

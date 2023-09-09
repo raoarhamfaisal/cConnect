@@ -7,7 +7,7 @@
     <div
       v-for="(star, index) in stars"
       @click="handleStarClick($event, index)"
-      @mousemove="handleStarHover($event, index)"
+      @mouseover="handleStarHover($event, index)"
       :key="index"
       class="star-container"
     >
@@ -54,9 +54,15 @@
         </defs>
       </svg>
     </div>
-    <span v-if="isIndicatorActive" class="rating-text">{{
-      displayedRating
-    }}</span>
+    <input
+      v-if="isIndicatorActive"
+      v-model.number="inputRating"
+      type="text"
+      class="indicator w-20 font-mono font-semibold flex justify-center items-center text-3xl"
+      :style="{ transform: 'translateY(3px)' }"
+      @input="handleInputChange"
+      @blur="validateInput"
+    />
   </div>
 </template>
 
@@ -90,7 +96,6 @@ export default {
       inputRating: this.ratingGlobal,
       rating: this.ratingGlobal,
       styleFullStarColor: "#ed8a19",
-      hoverText: null,
     };
   },
   directives: {},
@@ -113,9 +118,6 @@ export default {
         outerRadius
       );
     },
-    displayedRating() {
-      return this.hoverText !== null ? this.hoverText : this.rating;
-    },
   },
   watch: {
     inputRating(newVal) {
@@ -125,12 +127,10 @@ export default {
   methods: {
     handleStarClick(event, starIndex) {
       const starWidth = event.currentTarget.offsetWidth;
+      let exactStarValue = starIndex + event.offsetX / starWidth;
+      exactStarValue = Math.round(exactStarValue * 10) / 10;
 
-      if (event.offsetX <= starWidth / 2) {
-        this.rating = starIndex + 0.5;
-      } else {
-        this.rating = starIndex + 1;
-      }
+      this.rating = exactStarValue; // Now, this sets the local state
 
       // Emit the changed value
       this.$emit("update:rating", this.rating);
@@ -139,18 +139,14 @@ export default {
     },
     handleStarHover(event, starIndex) {
       const starWidth = event.currentTarget.offsetWidth;
+      let exactStarValue = starIndex + event.offsetX / starWidth;
+      exactStarValue = Math.round(exactStarValue * 10) / 10;
 
-      const threshold = 0.5; // Adjust this value as needed to decide where to switch
-
-      if (event.offsetX <= starWidth * threshold) {
-        this.hoverRating = starIndex + 0.5;
-      } else {
-        this.hoverRating = starIndex + 1;
-      }
-
+      this.hoverRating = exactStarValue;
+      this.inputRating = exactStarValue; // Add this line
       this.updateStarsTemporarily(this.hoverRating);
-      this.hoverText = this.hoverRating;
     },
+
     updateStarsTemporarily(value) {
       let fullStarsCounter = Math.floor(value);
       let surplus = Math.round((value % 1) * 10) / 10;
@@ -175,7 +171,6 @@ export default {
       this.hoverRating = null;
       this.inputRating = this.rating; // Add this line
       this.setStars();
-      this.hoverText = null;
     },
     calcStarPoints(
       centerX,
@@ -287,11 +282,6 @@ export default {
 }
 .star-container {
   display: flex;
-}
-.rating-text {
-  margin-left: 10px;
-  font-size: 25px;
-  font-weight: bold;
 }
 .star-container:not(:last-child) {
   margin-right: 5px;
