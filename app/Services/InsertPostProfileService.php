@@ -18,6 +18,7 @@ class InsertPostProfileService
         $postersProfile = Profile::where('user_id', $userID)
             ->first()
             ->only(
+                'region_id',
                 'view_locale',
                 'view_territorial',
                 'view_regional',
@@ -102,6 +103,7 @@ class InsertPostProfileService
 
         $validatedInput['longitude'] = $postersProfile['longitude'];
         $validatedInput['latitude'] = $postersProfile['latitude'];
+        $validatedInput['region_id'] = $postersProfile['region_id'];
 
         return $validatedInput;
     }

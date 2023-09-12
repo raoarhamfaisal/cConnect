@@ -38,6 +38,7 @@ class PostController extends Controller
         $profile = Profile::where('user_id', $userID)->first();
 
     }
+
         return Inertia::render('Postings', [
             'showit' => Auth::check(),
             'userID' => Auth()->user() ? Auth()->user()->id : null,
@@ -55,7 +56,7 @@ class PostController extends Controller
                     DB::raw('(SELECT COUNT(*) FROM reviews WHERE reviews.contractor_id = profiles.id) as total_reviews')
                 ])
                 ->leftJoin('profiles', 'posts.user_id', '=', 'profiles.user_id')
-                ->orderBy('posts.id', 'DESC')
+                ->where('posts.region_id', $profile['region_id'])
                 ->when(Request::input('postSearch'), function ($query, $postSearch) {
                     $query->where('posts.title', 'like', "%{$postSearch}%");
                 })
