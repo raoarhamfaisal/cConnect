@@ -3,7 +3,6 @@
 
   <Header
     :profile="profile"
-    :posts="posts"
     :post-search-filters="postSearchFilters"
     :showit="showit"
     :show-post-buttons="true"
@@ -25,7 +24,6 @@ import ContractorRating from "@/Components/Ratings/Contractor/ContractorRating.v
 const { contractorDetails } = defineProps({
   contractorDetails: Object,
   profile: Object,
-  posts: Object,
   showit: Boolean,
   postSearchFilters: {
     type: Object,

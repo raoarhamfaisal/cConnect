@@ -9,7 +9,6 @@ defineProps({
   mustVerifyEmail: Boolean,
   status: String,
   profile: Object,
-  posts: Object,
   showit: Boolean,
   regions: Array,
   postSearchFilters: {
@@ -29,7 +28,6 @@ store.commit("profile/setActiveTab", 0);
 
   <Header
     :profile="profile"
-    :posts="posts"
     :show-post-buttons="false"
     :post-search-filters="postSearchFilters"
     :showit="showit"

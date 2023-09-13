@@ -33,7 +33,9 @@
               "
               @click="openInActiveDialog"
               >{{
-                response.is_review_response_active === 1 ? "Inactive" : "Active"
+                response.is_review_response_active === 1
+                  ? "Deactivate"
+                  : "Activate"
               }}</ButtonRatings
             >
             <!-- delete -->
@@ -65,7 +67,9 @@
             "
             @click="openInActiveDialog"
             >{{
-              response.is_review_response_active === 1 ? "Inactive" : "Active"
+              response.is_review_response_active === 1
+                ? "Deactivate"
+                : "Activate"
             }}</ButtonRatings
           >
           <ButtonRatings

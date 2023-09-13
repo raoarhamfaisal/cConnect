@@ -4,7 +4,6 @@
   <Header
     v-if="isAdminUrl"
     :profile="profile"
-    :posts="posts"
     :post-search-filters="postSearchFilters"
     :showit="showit"
     :show-post-buttons="true"
@@ -90,7 +89,6 @@ import PageTitle from "@/Components/PageTitle.vue";
 // States
 const { region_id } = defineProps({
   profile: Object,
-  posts: Object,
   region_id: [String, Number],
   showit: Boolean,
   postSearchFilters: {

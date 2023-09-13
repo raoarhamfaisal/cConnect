@@ -21,7 +21,10 @@ export default {
     return {
       loading: false,
       loadingSending: false,
+      shouldFetchPostsOnClose: false,
+      shouldLoadPosts: false,
       disabledSending: false,
+      index: 0,
       disabled: false,
       isFetchReviews: false,
       isDeleted: false,
@@ -32,9 +35,21 @@ export default {
       contractorDetails: {},
     };
   },
+  getters: {
+    shouldFetchPostsOnClose: (state) => state.shouldFetchPostsOnClose,
+  },
   mutations: {
     setLoading(state, payload) {
       state.loading = payload;
+    },
+    setIndex(state, payload) {
+      state.index = payload;
+    },
+    setShouldLoadPosts(state, payload) {
+      state.shouldLoadPosts = payload;
+    },
+    setShouldFetchPostsOnClose(state, payload) {
+      state.shouldFetchPostsOnClose = payload;
     },
     setAllRegions(state, payload) {
       state.allRegions = payload;

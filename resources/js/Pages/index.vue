@@ -181,23 +181,10 @@ const submit = () => {
                 {{ $page.props.auth.user.email }}
               </div>
             </div>
-            <div
-              v-if="isAdminUrl && showit"
-              class="pt-2 pb-3 space-y-1 border-b-2 border-gray-400"
-            >
-              <ResponsiveNavLink href="/admin/regions">
-                All Contractors
-              </ResponsiveNavLink>
-              <ResponsiveNavLink href="/admin/appealed">
-                Appealed Reviews
-              </ResponsiveNavLink>
-            </div>
+
             <div class="pt-2 pb-3 space-y-1">
               <ResponsiveNavLink href="#whytContractor">
                 Why <tContractorWord></tContractorWord>
-              </ResponsiveNavLink>
-              <ResponsiveNavLink v-if="showit" href="/ratings/contractor">
-                Your Ratings
               </ResponsiveNavLink>
 
               <ResponsiveNavLink
@@ -208,17 +195,12 @@ const submit = () => {
               >
                 News Feed
               </ResponsiveNavLink>
-
-              <ResponsiveNavLink :href="route('index')">
-                Contact Us
-              </ResponsiveNavLink>
-
-              <ResponsiveNavLink :href="route('index')">
-                About Us
+              <ResponsiveNavLink v-if="showit" href="/ratings/contractor">
+                Your Ratings
               </ResponsiveNavLink>
             </div>
             <!-- Responsive Settings Options -->
-            <div class="pt-4 pb-1 border-t-2 border-gray-400">
+            <div class="pb-1 border-t-2 border-gray-400">
               <div class="mt-3 space-y-1">
                 <ResponsiveNavLink v-if="showit" :href="route('profile.edit')">
                   Profile
@@ -231,6 +213,24 @@ const submit = () => {
                 >
                   View Settings
                 </ResponsiveNavLink>
+                <ResponsiveNavLink :href="route('index')">
+                  Contact Us
+                </ResponsiveNavLink>
+
+                <ResponsiveNavLink :href="route('index')">
+                  About Us
+                </ResponsiveNavLink>
+                <div
+                  v-if="isAdminUrl && showit"
+                  class="pt-2 pb-3 space-y-1 border-b-2 border-t-2 border-gray-400"
+                >
+                  <ResponsiveNavLink href="/admin/regions">
+                    All Contractors
+                  </ResponsiveNavLink>
+                  <ResponsiveNavLink href="/admin/appealed">
+                    Appealed Reviews
+                  </ResponsiveNavLink>
+                </div>
 
                 <ResponsiveNavLink
                   v-if="showit"

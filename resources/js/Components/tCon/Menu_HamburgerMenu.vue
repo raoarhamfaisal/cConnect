@@ -150,37 +150,18 @@ const openProfileModal = () => {
               <!-- +++++++++++++++++++++++++++++++++++++++ -->
             </form>
           </div>
-          <!-- DropDown: All Contractors -->
-          <Link
-            v-if="isAdminUrl"
-            href="/admin/regions"
-            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
-          >
-            <Icon
-              icon="ion:person-sharp"
-              color="#1098ad"
-              width="20"
-              height="20"
-            />
-            <span class="mx-4 font-medium">All Contractors</span>
-          </Link>
-          <!-- DropDown: Appeal Review -->
-          <Link
-            v-if="isAdminUrl"
-            href="/admin/appealed"
-            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
-          >
-            <Icon
-              icon="fluent-mdl2:review-request-solid"
-              color="#1098ad"
-              width="20"
-              height="20"
-            />
-            <span class="mx-4 font-medium">Appealed Reviews</span>
-          </Link>
-          <div v-if="isAdminUrl" class="pt-1 border-t-2 border-gray-400"></div>
 
           <!-- DropDown: NEWS FEED -->
+
+          <Link
+            v-if="Inertia.page.component != 'Postings'"
+            :href="route('post')"
+            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
+          >
+            <img src="/images/icons/newsfeed.png" width="20" height="20" />
+            <span class="mx-4 font-medium">News Feed</span>
+          </Link>
+
           <Link
             href="/ratings/contractor"
             class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
@@ -192,14 +173,6 @@ const openProfileModal = () => {
               height="20"
             />
             <span class="mx-4 font-medium">Your Ratings</span>
-          </Link>
-          <Link
-            v-if="Inertia.page.component != 'Postings'"
-            :href="route('post')"
-            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
-          >
-            <img src="/images/icons/newsfeed.png" width="20" height="20" />
-            <span class="mx-4 font-medium">News Feed</span>
           </Link>
 
           <!-- DropDown: SUB FINDER -->
@@ -279,7 +252,37 @@ const openProfileModal = () => {
             <img src="/images/icons/contactus.png" width="20" height="20" />
             <span class="mx-4 font-medium">Contact Us</span>
           </Link>
+          <!-- DropDown: All Contractors -->
+          <div v-if="isAdminUrl" class="pt-1 border-t-2 border-gray-400"></div>
 
+          <Link
+            v-if="isAdminUrl"
+            href="/admin/regions"
+            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
+          >
+            <Icon
+              icon="ion:person-sharp"
+              color="#1098ad"
+              width="20"
+              height="20"
+            />
+            <span class="mx-4 font-medium">All Contractors</span>
+          </Link>
+          <!-- DropDown: Appeal Review -->
+          <Link
+            v-if="isAdminUrl"
+            href="/admin/appealed"
+            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
+          >
+            <Icon
+              icon="fluent-mdl2:review-request-solid"
+              color="#1098ad"
+              width="20"
+              height="20"
+            />
+            <span class="mx-4 font-medium">Appealed Reviews</span>
+          </Link>
+          <div v-if="isAdminUrl" class="pt-1 border-t-2 border-gray-400"></div>
           <!-- DropDown: LOGOUT -->
           <button
             @click="handleLogout"

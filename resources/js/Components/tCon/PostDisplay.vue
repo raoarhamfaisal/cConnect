@@ -60,7 +60,7 @@ export default {
 
   props: {
     showit: Boolean,
-
+    index: Number,
     // profile of current logged in user (postings.vue)
     profile: {
       type: Object,
@@ -128,6 +128,7 @@ export default {
     },
     openDialog() {
       this.$refs.dialogRef.openDialog();
+      this.$store.commit("ratings/setIndex", this.index);
     },
   },
 };

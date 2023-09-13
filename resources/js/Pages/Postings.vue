@@ -2,7 +2,6 @@
 // Why is script on top? BECAUSE I LIKE AIT HERE!
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import Header from "@/Layouts/Header.vue";
-import { InertiaLink } from "@inertiajs/inertia-vue3";
 import { Inertia } from "@inertiajs/inertia";
 
 import AppSpinner from "@/Shared/AppSpinner.vue";
@@ -13,10 +12,11 @@ import MainSideMenu from "@/Components/tCon/Menu_MainSideMenu.vue";
 import Menu_Hamburger from "@/Components/tCon/Menu_HamburgerMenu.vue";
 import PostDisplay from "@/Components/tCon/PostDisplay.vue";
 import PostForm from "@/Components/tCon/PostForm.vue";
-import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
+import { Head, Link } from "@inertiajs/inertia-vue3";
 import { ref } from "vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import PostDisplayEnlarged from "@/Components/tCon/PostDisplayEnlarged.vue";
+import { mapGetters, mapState } from "vuex";
 
 const defaultPostFormObject = {
   user_id: 0,
@@ -34,7 +34,6 @@ const defaultPostFormObject = {
 export default {
   components: {
     AuthenticatedLayout,
-    InertiaLink,
     AppSpinner,
     tContractorWord,
     Header,
@@ -153,12 +152,30 @@ export default {
       ],
     };
   },
-
+  computed: {
+    ...mapState({
+      index: (state) => {
+        console.log("index");
+        return state.ratings.index;
+      },
+    }),
+    ...mapGetters("ratings", ["shouldFetchPostsOnClose"]),
+  },
+  watch: {
+    shouldFetchPostsOnClose(newValue) {
+      console.log("inforLoadPosts", this.shouldFetchPostsOnClose);
+      if (this.shouldFetchPostsOnClose) {
+        console.log("info");
+        this.loadPostsOnChange();
+        this.$store.commit("ratings/setShouldLoadPosts", false);
+      }
+    },
+  },
   methods: {
     loadMorePosts() {
       // Check to see if post proerty has a next page url
       // js function hasMore
-      if (this.posts.hasMore === null) {
+      if (this.posts.next_page_url === null) {
         return;
       }
 
@@ -185,29 +202,42 @@ export default {
         }
       );
     },
+    loadPostsOnChange() {
+      const pageNumber = Math.ceil((this.index + 1) / this.posts.per_page);
+      console.log(
+        "infoLocation",
+        window.location.href,
+        window.location,
+        this.initialUrl
+      );
+      this.$inertia.get(
+        `${window.location.href}?page=${pageNumber}`,
+        {},
+        {
+          preserveState: true,
+          preserveScroll: true,
+          only: ["posts"],
+          onSuccess: () => {
+            // Calculate the starting index in the allPosts array
+            const startIndex = (pageNumber - 1) * this.posts.per_page;
+
+            console.log(pageNumber, this.index, this.allPosts, "info");
+            // Replace items in this.allPosts array
+            this.allPosts.splice(
+              startIndex,
+              this.posts.data.length,
+              ...this.posts.data
+            );
+            // 'this.initialUrl' is set in script data
+            window.history.replaceState({}, this.$page.title, this.initialUrl);
+          },
+        }
+      );
+    },
 
     NavigationDropdown(showingNavigationDropdown) {
       this.showingNavigationDropdown = !this.showingNavigationDropdown;
     },
-
-    // Input search from Menu_HamburgerMenu & Menu_MainSideMenu
-    submitPostSearch() {
-      console.log("***** postSearch submitted: " + this.postSearch);
-      this.showingNavigationDropdown = false;
-      Inertia.get(
-        "/post",
-        // include the data to go along with get request
-        // because we are using 'get' its going to the query string
-        // postSearch=inoput data { preserveState: true }
-        { postSearch: this.postSearch }
-      );
-    },
-
-    RefreshPostings() {
-      console.log("Refreshed with search: " + this.postSearch);
-      Inertia.get("/post", { postSearch: this.postSearch });
-    },
-
     // DISPLAY POST INPUT/EDIT FORM
     // no item # is create new
     openForm(formData) {
@@ -321,10 +351,10 @@ export default {
 
   <Header
     :profile="profile"
-    :posts="posts"
     :post-search-filters="postSearchFilters"
     :showit="showit"
     :show-post-buttons="true"
+    contentWidth="1202px"
     color="rgb(156 163 175)"
   >
     <!-- POSTING CONTAINER -->
@@ -339,7 +369,7 @@ export default {
         <!-- .slice only allows 400 iterations -->
         <!-- <div v-for="post in allPosts.slice(0, 400)" :key="post.id" -->
         <div
-          v-for="post in allPosts"
+          v-for="(post, index) in allPosts"
           id="scrollPost"
           :key="post.id"
           class="relative mx-auto w-full py-0"
@@ -347,6 +377,7 @@ export default {
           <!-- INDIVIDUAL POST DISPLAY WITH MENUS -->
           <PostDisplay
             :showit="showit"
+            :index="index"
             :profile="profile"
             :post="post"
             :body1Colors="body1Colors"

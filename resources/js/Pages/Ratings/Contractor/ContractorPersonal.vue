@@ -3,7 +3,6 @@
 
   <Header
     :profile="profile"
-    :posts="posts"
     :post-search-filters="postSearchFilters"
     :showit="showit"
     :show-post-buttons="true"
@@ -150,7 +149,6 @@ import { Icon } from "@iconify/vue";
 const { profile, contractorDetails } = defineProps({
   contractorDetails: Object,
   profile: Object,
-  posts: Object,
   showit: Boolean,
   postSearchFilters: {
     type: Object,

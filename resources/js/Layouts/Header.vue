@@ -35,11 +35,11 @@ export default {
     ref,
   },
   props: {
-    posts: {
-      type: Object,
-      required: true,
+    contentWidth: {
+      type: String,
+      default: "1440px",
+      required: false,
     },
-
     profile: {
       type: Object,
       required: true,
@@ -190,6 +190,9 @@ export default {
     <!-- Section Container -->
     <div class="relative mx-auto mt-0 pt-10 lg:pt-0 h-screen">
       <div
+        :style="{
+          maxWidth: contentWidth,
+        }"
         class="flex lg:flex-row lg:justify-center pageContainer lg:items-start lg:gap-x-5 bg-gray-100"
       >
         <!-- MAIN SIDE MENU -->
@@ -358,7 +361,6 @@ export default {
 
 <style scoped>
 .pageContainer {
-  max-width: 1440px;
   margin: auto;
 }
 </style>

@@ -129,6 +129,7 @@ import InputError from "@/Components/InputError.vue";
 import StarRatingEditable from "@/Components/Ratings/StarRatingEditable.vue";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
+import { useStore } from "vuex";
 //Props
 
 const { profileId, contractorId } = defineProps({
@@ -158,6 +159,7 @@ const state = reactive({
   rating: 0,
 });
 
+const store = useStore();
 const form = toRefs(state);
 const selectedReferal = ref("tContractor Referral");
 const loading = ref(false);
@@ -240,11 +242,11 @@ const handleSubmit = async () => {
         review,
         getAxiosConfig()
       );
-      console.log(response, response.data);
       if (response.data) {
         changesSaved("Review Successfully Created");
         setTimeout(() => {
           emit("addReview");
+          store.commit("ratings/setShouldFetchPostsOnClose", true);
         }, 2000);
       }
     } catch (err) {
