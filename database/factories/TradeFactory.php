@@ -17,7 +17,7 @@ class TradeFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => fake()->state()
         ];
     }
 }
