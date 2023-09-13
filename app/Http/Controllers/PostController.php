@@ -30,19 +30,21 @@ class PostController extends Controller
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public function index()
     {
-         // Get current user id
-      $userID = Auth()->user('')->id;
-      $profile = null;
+        // Get current user id
+        $userID = Auth()->user('')->id;
+        $profile = null;
+        $userTradeIds = [];
+    
+        if ($userID) {
+            $profile = Profile::where('user_id', $userID)->first();
+            $userTradeIds = $profile->trades->pluck('id')->toArray();
+        }
 
-      if($userID) {
-        $profile = Profile::where('user_id', $userID)->first();
-
-    }
-
+    
         return Inertia::render('Postings', [
             'showit' => Auth::check(),
-            'userID' => Auth()->user() ? Auth()->user()->id : null,
-            'profile' => $profile,  
+            'userID' => $userID,
+            'profile' => $profile,
             'posts' => Post::query()
                 ->select('posts.*')
                 ->addSelect([
@@ -58,9 +60,12 @@ class PostController extends Controller
                 ])
                 ->leftJoin('profiles', 'posts.user_id', '=', 'profiles.user_id')
                 ->where('posts.region_id', $profile['region_id'])
+                ->whereHas('trades', function ($query) use ($userTradeIds) {
+                    $query->whereIn('trades.id', $userTradeIds);
+                })
                 ->when(Request::input('postSearch'), function ($query, $postSearch) {
                     $query->where('posts.title', 'like', "%{$postSearch}%");
-                })
+                })                
                 ->paginate(5)
                 ->withQueryString()
                 ->through(fn($post) => [
@@ -83,13 +88,22 @@ class PostController extends Controller
                     'user_avatar' => $post->user_avatar,
                     'average_rating' => $post->average_rating,
                     'total_reviews' => $post->total_reviews
+                
                 ]),
-    
             'postSearchFilters' => Request::only(['postSearch']),
         ]);
     }
-    
 
+
+    // A helper function to convert the trades to old structure coming from proffile table in trade1, trade2 format
+    private function convertTradesToOldStructure($trades) {
+        $oldStructure = [];
+        for ($i = 1; $i <= 30; $i++) {
+            $oldStructure["trade{$i}"] = $trades->contains('id', $i) ? 1 : 0;
+        }
+        return $oldStructure;
+    }
+        
 
     /**
      * Store a newly created resource in storage.

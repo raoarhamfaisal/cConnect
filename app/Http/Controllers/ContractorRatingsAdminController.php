@@ -22,61 +22,44 @@ class ContractorRatingsAdminController extends Controller
      */
     public function getContractorReviews($region_id,$contractor_id)
     {
-          // Get current user id
-      $userID = Auth()->user('')->id;
-      $profile = null;
-       // Retrieve the contractor details from the Profile table
-      $contractorDetails = Profile::where('id', $contractor_id)
-                        ->select([
-                            'id',
-                            'user_id',
-                            'email',
-                            'phone_cell',            
-                            'first_name',
-                            'last_name',
-                            'phone_cell','email',
-                            'company_name',
-                            'city',
-                            'state',
-                            'user_avatar',
-                            'company_logo',
-                            'trade1',
-                            'trade2',
-                            'trade3',
-                            'trade4',
-                            'trade5',
-                            'trade6',
-                            'trade7',
-                            'trade8',
-                            'trade9',
-                            'trade10',
-                            'trade11',
-                            'trade12',
-                            'trade13',
-                            'trade14',
-                            'trade15',
-                            'trade16',
-                            'trade17',
-                            'trade18',
-                            'trade19',
-                            'trade20',
-                            'trade21',
-                            'trade22',
-                            'trade23',
-                            'trade24',
-                            'trade25',
-                            'trade26',
-                            'trade27',
-                            'trade28',
-                            'trade29',
-                            'trade30'
-                        ])
+        // Get current user id
+        $userID = Auth()->user('')->id;
+        $profile = null;
+    
+        // Retrieve the contractor details from the Profile table with trades
+        $contractor = Profile::where('id', $contractor_id)
+                            ->with('trades')
+                            ->select([
+                                'id',
+                                'user_id',
+                                'email',
+                                'phone_cell',
+                                'first_name',
+                                'last_name',
+                                'phone_cell',
+                                'email',
+                                'company_name',
+                                'city',
+                                'state',
+                                'user_avatar',
+                                'company_logo'
+                            ])
+                            ->first();
+    
+        // Convert trades to old structure
+        $contractorDetails = $this->convertTradesToOldStructure($contractor->trades);
+        $contractorDetails = array_merge($contractor->toArray(), $contractorDetails);
+    
+        // Get the profile information if the user id exists
+        if($userID) {
+            $profile = Profile::where('user_id', $userID)
+                        ->with('trades')
                         ->first();
-
-      // Get the profile information if the user id exists
-      if($userID) {
-          $profile = Profile::where('user_id', $userID)->first();
-      }
+    
+            $profileTrades = $this->convertTradesToOldStructure($profile->trades);
+            $profile = array_merge($profile->toArray(), $profileTrades);
+        }
+    
         return Inertia::render('Admin/Ratings/SingleContractor', [
             'profile' => $profile,
             'region_id' => $region_id,
@@ -101,69 +84,65 @@ class ContractorRatingsAdminController extends Controller
                 'repost' => $post->repost,
                 'shares' => $post->shares,
             ]),
-        // pass on any existing search filters that exist
-        // along with data
-        'postSearchFilters' => FacadeRequest::only(['postSearch']),
-        'contractorDetails' => $contractorDetails,
-    ]);
+            // pass on any existing search filters that exist
+            // along with data
+            'postSearchFilters' => FacadeRequest::only(['postSearch']),
+            'contractorDetails' => $contractorDetails,
+        ]);
     }
+    
+    private function convertTradesToOldStructure($trades) 
+    {
+        $oldStructure = [];
+        for ($i = 1; $i <= 30; $i++) {
+            $oldStructure["trade{$i}"] = $trades->contains('id', $i) ? 1 : 0;
+        }
+        return $oldStructure;
+    }
+    
+
+
+
     public function historyPage($contractor_id)
     {
-          // Get current user id
-      $userID = Auth()->user('')->id;
-      $profile = null;
-       // Retrieve the contractor details from the Profile table
-      $contractorDetails = Profile::where('id', $contractor_id)
-                        ->select([
-                            'id',
-                            'user_id',
-                            'email',
-                            'phone_cell',            
-                            'first_name',
-                            'last_name',
-                            'phone_cell','email',
-                            'company_name',
-                            'city',
-                            'state',
-                            'user_avatar',
-                            'company_logo',
-                            'trade1',
-                            'trade2',
-                            'trade3',
-                            'trade4',
-                            'trade5',
-                            'trade6',
-                            'trade7',
-                            'trade8',
-                            'trade9',
-                            'trade10',
-                            'trade11',
-                            'trade12',
-                            'trade13',
-                            'trade14',
-                            'trade15',
-                            'trade16',
-                            'trade17',
-                            'trade18',
-                            'trade19',
-                            'trade20',
-                            'trade21',
-                            'trade22',
-                            'trade23',
-                            'trade24',
-                            'trade25',
-                            'trade26',
-                            'trade27',
-                            'trade28',
-                            'trade29',
-                            'trade30'
-                        ])
+        // Get current user id
+        $userID = Auth()->user('')->id;
+        $profile = null;
+    
+        // Retrieve the contractor details from the Profile table with trades
+        $contractor = Profile::where('id', $contractor_id)
+                            ->with('trades')
+                            ->select([
+                                'id',
+                                'user_id',
+                                'email',
+                                'phone_cell',
+                                'first_name',
+                                'last_name',
+                                'phone_cell',
+                                'email',
+                                'company_name',
+                                'city',
+                                'state',
+                                'user_avatar',
+                                'company_logo'
+                            ])
+                            ->first();
+    
+        // Convert trades to old structure
+        $contractorDetails = $this->convertTradesToOldStructure($contractor->trades);
+        $contractorDetails = array_merge($contractor->toArray(), $contractorDetails);
+    
+        // Get the profile information if the user id exists
+        if($userID) {
+            $profile = Profile::where('user_id', $userID)
+                        ->with('trades')
                         ->first();
-
-      // Get the profile information if the user id exists
-      if($userID) {
-          $profile = Profile::where('user_id', $userID)->first();
-      }
+    
+            $profileTrades = $this->convertTradesToOldStructure($profile->trades);
+            $profile = array_merge($profile->toArray(), $profileTrades);
+        }
+    
         return Inertia::render('Admin/History/ContractorHistory', [
             'profile' => $profile,
             'showit' => Auth::check(),
@@ -187,13 +166,12 @@ class ContractorRatingsAdminController extends Controller
                 'repost' => $post->repost,
                 'shares' => $post->shares,
             ]),
-        // pass on any existing search filters that exist
-        // along with data
-        'postSearchFilters' => FacadeRequest::only(['postSearch']),
-        'contractorDetails' => $contractorDetails,
-    ]);
+            // pass on any existing search filters that exist
+            // along with data
+            'postSearchFilters' => FacadeRequest::only(['postSearch']),
+            'contractorDetails' => $contractorDetails,
+        ]);
     }
-
 
     /**
      * Show the history of the contractor
@@ -209,70 +187,45 @@ class ContractorRatingsAdminController extends Controller
         $reviewsPerPage = $request->query('per_page', 15);  // default to 15 if not provided
         $reviewsPage = $request->query('page', 1);          // default to page 1 if not provided
     
-  // Fetch all reviews for calculating ratings and counts
-  $allReviews = Review::where('reviewer_id', $id)->get();
-    
-  // Calculate the average rating and counts
-  $avgReview = $allReviews->avg('rating');
-  $fiveStars = $allReviews->whereBetween('rating', [4.5, 5.0])->count();
-  $fourStars = $allReviews->whereBetween('rating', [3.5, 4.4])->count();
-  $threeStars = $allReviews->whereBetween('rating', [2.5, 3.4])->count();
-  $twoStars = $allReviews->whereBetween('rating', [1.5, 2.4])->count();
-  $oneStar = $allReviews->whereBetween('rating', [0.0, 1.4])->count();
+        // Fetch all reviews for calculating ratings and counts
+        $allReviews = Review::where('reviewer_id', $id)->get();
+            
+        // Calculate the average rating and counts
+        $avgReview = $allReviews->avg('rating');
+        $fiveStars = $allReviews->whereBetween('rating', [4.5, 5.0])->count();
+        $fourStars = $allReviews->whereBetween('rating', [3.5, 4.4])->count();
+        $threeStars = $allReviews->whereBetween('rating', [2.5, 3.4])->count();
+        $twoStars = $allReviews->whereBetween('rating', [1.5, 2.4])->count();
+        $oneStar = $allReviews->whereBetween('rating', [0.0, 1.4])->count();
 
 
     
         // Build the review query with filtering options
-        $reviewsByContractIDQuery = Review::where('reviewer_id', $id)->withTrashed()->with(['reviewer' => function($query) {
-            $query->select([
-                'id',
-                'user_id',
-                'email',
-                'phone_cell',
-                'first_name',
-                'last_name',
-                'company_name',
-                'city',
-                'state',
-                'user_avatar',
-                'company_logo',
-                'trade1',
-                'trade2',
-                'trade3',
-                'trade4',
-                'trade5',
-                'trade6',
-                'trade7',
-                'trade8',
-                'trade9',
-                'trade10',
-                'trade11',
-                'trade12',
-                'trade13',
-                'trade14',
-                'trade15',
-                'trade16',
-                'trade17',
-                'trade18',
-                'trade19',
-                'trade20',
-                'trade21',
-                'trade22',
-                'trade23',
-                'trade24',
-                'trade25',
-                'trade26',
-                'trade27',
-                'trade28',
-                'trade29',
-                'trade30'
-            ]);
-        }, 
-        'ratingReasons',  // Attach rating reasons related to the review
-        'review_response.responseReasons', // Attach response reasons related to the review response        
-        'review_response', 
+        $reviewsByContractIDQuery = Review::where('reviewer_id', $id)
+        ->withTrashed()
+        ->with([
+            'reviewer' => function($query) {
+                $query->with('trades')  // Include the trades relationship
+                      ->select([
+                          'id',
+                          'user_id',
+                          'email',
+                          'phone_cell',
+                          'first_name',
+                          'last_name',
+                          'company_name',
+                          'city',
+                          'state',
+                          'user_avatar',
+                          'company_logo'
+                      ]);
+            }, 
+            'ratingReasons',  
+            'review_response.responseReasons',        
+            'review_response', 
         ]);
-    
+        
+        
         // Apply sorting based on filters
         $sortByDate = $request->query('sort_by_date', '');
         $sortByRating = $request->query('sort_by_rating', '');
@@ -299,6 +252,13 @@ class ContractorRatingsAdminController extends Controller
         // Fetch paginated reviews
         $reviews = $reviewsByContractIDQuery->paginate($reviewsPerPage, ['*'], 'page', $reviewsPage);
 
+        // Convert trades to old structure for each reviewer
+        foreach ($reviews as $review) {
+            if (isset($review->reviewer)) {
+                $reviewerTrades = $this->convertTradesToOldStructure($review->reviewer->trades);
+                $review->reviewer = array_merge($review->reviewer->toArray(), $reviewerTrades);
+            }
+        }
     
 
         $response = [
@@ -345,56 +305,31 @@ class ContractorRatingsAdminController extends Controller
 
     
         // Build the review query with filtering options
-        $reviewsForContractIDQuery = Review::where('contractor_id', $id)->withTrashed()->with(['reviewer' => function($query) {
-            $query->select([
-                'id',
-                'user_id',
-                'email',
-                'phone_cell',
-                'first_name',
-                'last_name',
-                'company_name',
-                'city',
-                'state',
-                'user_avatar',
-                'company_logo',
-                'trade1',
-                'trade2',
-                'trade3',
-                'trade4',
-                'trade5',
-                'trade6',
-                'trade7',
-                'trade8',
-                'trade9',
-                'trade10',
-                'trade11',
-                'trade12',
-                'trade13',
-                'trade14',
-                'trade15',
-                'trade16',
-                'trade17',
-                'trade18',
-                'trade19',
-                'trade20',
-                'trade21',
-                'trade22',
-                'trade23',
-                'trade24',
-                'trade25',
-                'trade26',
-                'trade27',
-                'trade28',
-                'trade29',
-                'trade30'
-            ]);
-        }, 
-        'ratingReasons',  // Attach rating reasons related to the review
-        'review_response.responseReasons', // Attach response reasons related to the review response        
-        'review_response', 
+        $reviewsForContractIDQuery = Review::where('contractor_id', $id)
+        ->withTrashed()
+        ->with([
+            'reviewer' => function($query) {
+                $query->with('trades')  // Include the trades relationship
+                      ->select([
+                          'id',
+                          'user_id',
+                          'email',
+                          'phone_cell',
+                          'first_name',
+                          'last_name',
+                          'company_name',
+                          'city',
+                          'state',
+                          'user_avatar',
+                          'company_logo'
+                      ]);
+            }, 
+            'ratingReasons',  
+            'review_response.responseReasons',        
+            'review_response', 
         ]);
-    
+        
+        
         // Apply sorting based on filters
         $sortByDate = $request->query('sort_by_date', '');
         $sortByRating = $request->query('sort_by_rating', '');
@@ -420,6 +355,14 @@ class ContractorRatingsAdminController extends Controller
     
         // Fetch paginated reviews
         $responses = $reviewsForContractIDQuery->paginate($perPage, ['*'], 'page', $page);
+
+        // Convert trades to old structure for each reviewer
+        foreach ($responses as $response) {
+            if (isset($response->reviewer)) {
+                $reviewerTrades = $this->convertTradesToOldStructure($response->reviewer->trades);
+                $response->reviewer = array_merge($response->reviewer->toArray(), $reviewerTrades);
+            }
+        }
 
 
     
