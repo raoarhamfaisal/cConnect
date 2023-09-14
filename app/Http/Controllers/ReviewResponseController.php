@@ -108,7 +108,7 @@ class ReviewResponseController extends Controller
             $reviewResponse->response_text = $data['response_text'];
             $reviewResponse->save();
         
-            return response()->json(['message' => 'Review response updated successfully!'], 200);
+            return response()->json(['message' => 'Review response updated successfully!', 'review_response' => $reviewResponse], 200);
         }else {
             return response()->json(['message' => 'You do not have permission to update this review response'], 403);
         }

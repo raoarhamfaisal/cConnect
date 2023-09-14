@@ -228,6 +228,7 @@ onMounted(async () => {
 //Computed
 
 const updatedReview = computed(() => store.state.ratings.updatedReview);
+const updatedResponse = computed(() => store.state.ratings.updatedResponse);
 const screenWidth = computed(() => store.getters.screenWidth);
 const reviewId = computed(() => store.state.ratings.reviewId);
 const responseId = computed(() => store.state.ratings.responseId);
@@ -236,11 +237,22 @@ const responseId = computed(() => store.state.ratings.responseId);
 watch(updatedReview, (newVal) => {
   if (newVal && newVal.id) {
     const reviewToUpdate = contractorReviews.value.find(
-      (review) => review.id === newVal.id
+      (review) => review.response_id === newVal.id
     );
 
     if (reviewToUpdate) {
       Object.assign(reviewToUpdate, newVal);
+    }
+  }
+});
+watch(updatedResponse, (newVal) => {
+  if (newVal && newVal.id) {
+    const reviewToUpdate = contractorReviews.value.find(
+      (review) => review.response_id === newVal.id
+    );
+    console.log(reviewToUpdate, "reviewToUpdate");
+    if (reviewToUpdate) {
+      reviewToUpdate.review_response = newVal;
     }
   }
 });

@@ -246,6 +246,7 @@ const handleSubmit = async () => {
         changesSaved("Review Successfully Created");
         setTimeout(() => {
           emit("addReview");
+          store.commit("ratings/setShouldLoadPosts", false);
           store.commit("ratings/setShouldFetchPostsOnClose", true);
         }, 2000);
       }
