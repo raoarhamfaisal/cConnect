@@ -81,7 +81,7 @@ export default {
       default: true,
     },
     indicatorClasses: {
-      type: String,
+      type: [String, Boolean],
       default: "",
     },
   },

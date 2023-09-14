@@ -6,6 +6,7 @@ import { Link, usePage } from "@inertiajs/inertia-vue3";
 import { computed, ref } from "vue";
 import DialogProfileTabs from "@/Pages/Profile/Partials/main/DialogProfileTabs.vue";
 import { useStore } from "vuex";
+import Avatar from "@/Components/Ratings/Avatar.vue";
 
 defineProps({
   showit: Boolean,
@@ -72,6 +73,7 @@ const openProfileModal = () => {
     >
       <div class="">
         <div v-if="showit" class="pt-2 pb-0 ml-3">
+          <Avatar :imageSrc="`/${profile.user_avatar}`" class="mt-2 mb-4" />
           <h4 class="mt-1 text-base font-bold text-gray-800">
             <!-- Tienary cuts off string if over 20 chrs and adds "..."
                                         the end  1st checks if combined string is over 20 chrs,

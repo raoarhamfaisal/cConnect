@@ -165,7 +165,6 @@ export default {
     shouldLoadPosts(newValue) {
       console.log("inforLoadPosts", this.shouldLoadPosts);
       if (this.shouldLoadPosts) {
-        console.log("info");
         this.loadPostsOnChange();
         this.$store.commit("ratings/setShouldLoadPosts", false);
       }

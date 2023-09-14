@@ -6,6 +6,7 @@ import ButtonRefresh from "@/Components/tCon/tConSub/ButtonRefresh.vue";
 import { computed, ref } from "vue";
 import { usePage } from "@inertiajs/inertia-vue3";
 import { Icon } from "@iconify/vue";
+import Avatar from "@/Components/Ratings/Avatar.vue";
 import { Inertia } from "@inertiajs/inertia";
 import { removeToken } from "@/helpers/localStorageHelper";
 import { useStore } from "vuex";
@@ -84,11 +85,12 @@ const openProfileModal = () => {
 
       <!-- User Image / NAME / EMAIL / CITY / STATE -->
       <div v-if="showit" class="flex flex-col items-center mt-6 -mx-2">
-        <img
+        <Avatar :imageSrc="`/${profile.user_avatar}`" class="sm:w-24 sm:h-24" />
+        <!-- <img
           class="object-cover w-24 h-24 mx-2 rounded-full"
           :src="`/${profile.user_avatar}`"
           alt="avatar"
-        />
+        /> -->
 
         <h4 class="mx-2 mt-2 font-bold text-gray-800">
           {{
