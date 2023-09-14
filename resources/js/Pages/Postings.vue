@@ -159,12 +159,12 @@ export default {
         return state.ratings.index;
       },
     }),
-    ...mapGetters("ratings", ["shouldFetchPostsOnClose"]),
+    ...mapGetters("ratings", ["shouldFetchPostsOnClose", "shouldLoadPosts"]),
   },
   watch: {
-    shouldFetchPostsOnClose(newValue) {
-      console.log("inforLoadPosts", this.shouldFetchPostsOnClose);
-      if (this.shouldFetchPostsOnClose) {
+    shouldLoadPosts(newValue) {
+      console.log("inforLoadPosts", this.shouldLoadPosts);
+      if (this.shouldLoadPosts) {
         console.log("info");
         this.loadPostsOnChange();
         this.$store.commit("ratings/setShouldLoadPosts", false);
