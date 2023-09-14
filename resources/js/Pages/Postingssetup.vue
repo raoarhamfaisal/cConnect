@@ -29,6 +29,8 @@ let props = defineProps({
   showit: Boolean,
 });
 
+
+
 // (1) intially makes allPosts = to prop posts
 let allPosts = props.posts.data;
 // (2) sets the URL to the first url - for looks

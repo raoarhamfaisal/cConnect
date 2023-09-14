@@ -46,7 +46,7 @@ class PostController extends Controller
             'userID' => $userID,
             'profile' => $profile,
             'posts' => Post::query()
-                ->select('posts.*')
+                ->select(['posts.*', 'posts.id as post_id'])
                 ->addSelect([
                     'profiles.first_name',
                     'profiles.last_name',
@@ -65,11 +65,12 @@ class PostController extends Controller
                 })
                 ->when(Request::input('postSearch'), function ($query, $postSearch) {
                     $query->where('posts.title', 'like', "%{$postSearch}%");
-                })                
+                }) 
+                ->orderBy('posts.created_at', 'desc')
                 ->paginate(5)
                 ->withQueryString()
                 ->through(fn($post) => [
-                    'id' => $post->id,
+                    'id' => $post->post_id,
                     'user_id' => $post->user_id,
                     'view' => $post->view,
                     'title' => $post->title,
@@ -132,19 +133,35 @@ class PostController extends Controller
 
         // Create the post $validatedInput STORED in DataBase
         // Except image field is null - stored in $processedimages
-        $postId = Post::create($validatedInput);
+        $postCreated = Post::create($validatedInput);
 
         // Process the images that are filepath/name
         // is stored in $processedimages as a STRING
         // call handleProcessImage from ProcessImageService Service class
         // and pass through the string of imagaes in $processedimages
         $newImageString = $processImageService
-            ->handleProcessImage($processedimages, $postId->id);
+            ->handleProcessImage($processedimages, $postCreated->id);
 
-        //dd($postId->id, $newImageString);
+        //dd($postCreated->id, $newImageString);
 
         // only then update image field
-        Post::where("id", $postId->id)->update(["image" => $newImageString]);
+        Post::where("id", $postCreated->id)->update(["image" => $newImageString]);
+
+        // Attach trades with post
+        
+        // dd($postCreated, $validatedInput);
+
+        // Attach trades with post
+        if($postCreated) {
+            // Fetch the trades associated with the logged-in user's profile
+            $userID = Auth()->user('')->id;
+
+            $profile = Profile::where('user_id', $userID)->with('trades:id')->first();
+            $trades = $profile->trades->pluck('id')->toArray();
+
+            // Sync the user trades with the postCreated
+            $postCreated->trades()->sync($trades);
+        }
 
         return redirect()->back()
             ->with('message', 'Post created');
