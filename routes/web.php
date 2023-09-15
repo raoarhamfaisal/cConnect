@@ -34,9 +34,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/ratings/contractor', [ContractorRatingController::class, 'index'])->name('ratings.contractor.index');
     Route::get('/ratings/{contractor_id}', [RatingController::class, 'index'])->name('ratings.index');
     Route::get('/admin/regions/{region_id}/contractors', [AdminRatingsController::class, 'index'])->name('admin.allContractors');
-    Route::get('/admin/regions', [AdminRatingsController::class, 'getRegions'])->name('admin.allRegions');
-    Route::get('/admin/regions/{region_id}/contractors/{id}', [ContractorRatingsAdminController::class, 'getContractorReviews'])->name('admin.contractor');
-    Route::get('/admin/appealed', [AppealedReviewsController::class, 'getAppealedReviews'])->name('admin.appealed');
+    Route::get('/admin/regions/contractors', [AdminRatingsController::class, 'getRegionsContractors'])->name('admin.allRegions');
+    Route::get('/admin/regions/{region_id}/contractors/{id}', [ContractorRatingsAdminController::class, 'getContractorGotReviews'])->name('admin.contractor');
+    Route::get('/admin/regions/{region_id}/contractors/{id}/reviews', [ContractorRatingsAdminController::class, 'getContractorGivenReviews'])->name('admin.contractorGivenReviews');
+    Route::get('/admin/regions/appealed', [AdminRatingsController::class, 'getRegionsAppealed'])->name('admin.allRegions');
+    Route::get('/admin/regions/{region_id}/appealed', [AppealedReviewsController::class, 'getAppealedReviews'])->name('admin.appealed');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/profile/general-profile', [ProfileController::class, 'updateGeneralInfo'])->name('profile.updateGeneralInfo');

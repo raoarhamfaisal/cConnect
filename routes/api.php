@@ -61,7 +61,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
             Route::get('/admin/{region}/search-contractor', [ContractorRatingsAdminController::class, 'searchContractor']);
         
         
-            Route::get('/admin/all-appealed-reviews', [ReviewController::class, 'getAppealedReviews'])->name('review.getAppealedReviews');
+            Route::get('/admin/all-appealed-reviews/{regionId}', [ReviewController::class, 'getAppealedReviews'])->name('review.getAppealedReviews');
             Route::put('/admin/reviews/{review}', [ReviewController::class, 'updateFromAdmin']);
             Route::delete('/admin/reviews/{review}', [ReviewController::class, 'destroyFromAdmin']);
             Route::put('/admin/reviews/{review}/deactivate', [ReviewController::class, 'deactivate']);

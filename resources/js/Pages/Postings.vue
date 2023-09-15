@@ -384,7 +384,7 @@ export default {
     >
       <!-- FULL POST WRAPPER News Feed -->
       <div
-        class="flex flex-col items-center justify-start px-2 lg:max-h-screen lg:overflow-y-auto h-screen"
+        class="flex flex-col items-center justify-start px-2 lg:max-h-screen lg:overflow-y-auto h-screen pb-8"
       >
         <!-- -------for="post in allPosts"------------- -->
         <!-- .slice only allows 400 iterations -->
@@ -426,7 +426,7 @@ export default {
 
         <!-- Makes call to load more posts calling the script
                              observer.observe(this.$refs.loadMoreIntersect) -->
-        <span ref="loadMoreIntersect" style="width: 5px; height: 5px;" />
+        <span ref="loadMoreIntersect" style="width: 5px; height: 5px" />
 
         <!-- {{ posts.next_page_url }} -->
 
@@ -434,7 +434,7 @@ export default {
           <div class="px-5 text-gray-300 mb-8 mt-8">LOADING MORE POSTS!</div>
         </AppSpinner> -->
 
-        <div v-show="posts.next_page_url" class="flex mb-8 mt-8">
+        <div v-show="posts.next_page_url" class="flex mt-8">
           <!-- <Loader
             classes="flex gap-2"
             :loading="loadingPosts"
@@ -454,8 +454,8 @@ export default {
         <div class="h-5"></div>
 
         <!-- 'next_page_url' is set to null in script -->
-        <div v-if="posts.next_page_url === null" class="my-6">
-          <div class="mx-auto text-gray-300 inline text-center">
+        <div v-if="posts.next_page_url === null" class="mt-6">
+          <div class="text-gray-300 inline text-center">
             You're all up to date! 🥳
           </div>
         </div>
@@ -492,23 +492,23 @@ export default {
 
 <style>
 .loader {
-    border: 3px solid #f3f3f3;
-    /* Light grey */
-    border-top: 3px solid #024673;
-    /* Blue */
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    animation: spin 1s linear infinite;
+  border: 3px solid #f3f3f3;
+  /* Light grey */
+  border-top: 3px solid #024673;
+  /* Blue */
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
+  0% {
+    transform: rotate(0deg);
+  }
 
-    100% {
-        transform: rotate(360deg);
-    }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>

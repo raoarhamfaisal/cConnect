@@ -435,7 +435,7 @@ class ReviewController extends Controller
      * @param  \App\Models\Review  $review
      * @return \Illuminate\Http\Response
      */
-    public function getAppealedReviews(Request $request)
+    public function getAppealedReviews(Request $request,$regionId)
     {
         // Determine pagination parameters from the request's query parameters
         $perPage = $request->query('per_page', 15);  // Default to 15 if not provided
@@ -476,7 +476,9 @@ class ReviewController extends Controller
             'ratingReasons',
             'review_response.responseReasons',
             'review_response'
-        ])->withTrashed()->where('is_under_appeal', 1);
+        ])->withTrashed()->whereHas('contractor', function ($query) use ($regionId) {
+            $query->where('region_id', $regionId);
+        }); 
 
         // Apply sorting based on filters
         $sortByDate = $request->query('sort_by_date', ''); // Default to latest

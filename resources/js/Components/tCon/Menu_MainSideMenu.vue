@@ -301,7 +301,7 @@ const openProfileModal = () => {
           <Link
             v-if="isAdminUrl"
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
-            href="/admin/regions"
+            href="/admin/regions/contractors"
           >
             <Icon
               icon="ion:person-sharp"
@@ -315,7 +315,7 @@ const openProfileModal = () => {
           <Link
             v-if="isAdminUrl"
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
-            href="/admin/appealed"
+            href="/admin/regions/appealed"
           >
             <Icon
               icon="fluent-mdl2:review-request-solid"

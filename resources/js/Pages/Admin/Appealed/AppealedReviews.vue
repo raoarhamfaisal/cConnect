@@ -92,7 +92,7 @@
             <div
               class="p-2 text-xl text-grey-600 font-bold h-60 flex items-center justify-center"
             >
-              No reviews Available for this Contractor
+              No reviews Available
             </div>
           </div>
         </div>
@@ -140,8 +140,9 @@ import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import PageTitle from "@/Components/PageTitle.vue";
 
 // State
-defineProps({
+const { region_id } = defineProps({
   profile: Object,
+  region_id: [String, Number],
   showit: Boolean,
   postSearchFilters: {
     type: Object,
@@ -229,7 +230,7 @@ const fetchReviews = async (per_page = perPage.value, page = 1) => {
   try {
     loading.value = true;
     const response = await axios.get(
-      `/api/admin/all-appealed-reviews?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
+      `/api/admin/all-appealed-reviews/${region_id}?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
       getAxiosConfig()
     );
     appealedReviews.value = response.data.reviews;

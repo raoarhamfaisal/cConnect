@@ -1,0 +1,320 @@
+<template>
+  <div v-if="contractor" class="bg-gray-200 mt-10 flex flex-col gap-10">
+    <Card
+      :shadowLevel="2"
+      bgColor="white"
+      :padding="screenWidth < 640 ? '7px' : '20px'"
+    >
+      <!-- Filters -->
+      <PageTitle
+        :linkUrl="`/admin/regions/${region_id}/contractors`"
+        pageTitle="Contractor Reviews"
+      />
+
+      <ContractorInfo :contractor="contractor" />
+      <Loader :loading="loading" background="" height="60vh"></Loader>
+      <div v-if="!loading">
+        <heading-card heading="Average Ratings" class="mb-12" />
+        <AverageRating
+          v-if="average_rating && starPercentages"
+          :averageRating="average_rating"
+          :starPercentages="starPercentages"
+          :length="pagination.total"
+          class="mb-12"
+        />
+        <!-- Filters -->
+        <div class="border-gray-300">
+          <heading-card class="mt-6" heading="Order Reviews By" />
+          <div class="xs:mb-12 mb-6">
+            <div class="flex gap-3">
+              <Button
+                :selected="sortByDate === 'latest'"
+                @onSelect="(selected) => handleDate(selected, 'latest')"
+                >Latest</Button
+              >
+
+              <Button
+                :selected="sortByDate === 'oldest'"
+                @onSelect="(selected) => handleDate(selected, 'oldest')"
+                >Oldest</Button
+              >
+            </div>
+          </div>
+        </div>
+        <!-- RAting -->
+        <div class="xs:mb-12 mb-6 xs:mt-12 mt-7 border-t-2 border-gray-300">
+          <heading-card heading="Ratings" class="mt-6" />
+          <div class="flex gap-3">
+            <div class="flex gap-3">
+              <Button
+                :selected="sortByRating === 'highest'"
+                @onSelect="(selected) => handleRating(selected, 'highest')"
+                >Highest rated</Button
+              >
+
+              <Button
+                :selected="sortByRating === 'middle'"
+                @onSelect="(selected) => handleRating(selected, 'middle')"
+                >Middle Rated</Button
+              >
+
+              <Button
+                :selected="sortByRating === 'lowest'"
+                @onSelect="(selected) => handleRating(selected, 'lowest')"
+                >Low Rated</Button
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </Card>
+    <Card
+      v-if="!loading"
+      :shadowLevel="2"
+      bgColor="#fff"
+      :padding="screenWidth < 640 ? '7px' : '20px'"
+    >
+      <div class="xs:mb-12 mb-6 border-gray-300">
+        <heading-card heading="Reviews" class="mt-6 mb-12" />
+
+        <div
+          v-if="contractorReviews && contractorReviews?.length > 0"
+          class="flex gap-8 flex-col"
+        >
+          <ReviewResponseAdmin
+            v-for="(review, index) in contractorReviews"
+            :key="index"
+            :review="review"
+            :contractorId="review.contractor_id"
+            :profileId="profile.id"
+          />
+        </div>
+        <div v-if="contractorReviews && contractorReviews?.length === 0">
+          <div
+            class="p-2 text-xl text-grey-600 font-bold h-60 flex items-center justify-center"
+          >
+            No reviews Available for this Contractor
+          </div>
+        </div>
+      </div>
+      <div
+        v-if="
+          pagination &&
+          Object.keys(pagination).length > 0 &&
+          pagination.last_page > 1 &&
+          contractorReviews &&
+          contractorReviews.length > 0
+        "
+        class="flex items-center justify-center mb-4"
+      >
+        <CustomPagination
+          :total-items="pagination.total"
+          :current-page="pagination.current_page"
+          :items-per-page="pagination.per_page"
+          v-model="currentPage"
+          :max-pages-shown="3"
+          :on-click="onClickHandler"
+        />
+      </div>
+    </Card>
+  </div>
+</template>
+
+<script setup>
+import { usePage } from "@inertiajs/inertia-vue3";
+import Button from "@/Components/Ratings/Button.vue";
+import CustomPagination from "@/Components/Ratings/CustomPagination.vue";
+import AverageRating from "@/Components/Ratings/Contractor/PartialsVisiting/AverageRating.vue";
+import ContractorInfo from "@/Components/Ratings/Contractor/PartialsVisiting/ContractorInfo.vue";
+import axios from "axios";
+import ReviewResponseAdmin from "@/Pages/Admin/Ratings/partials/SingleContractor/ReviewResponseAdmin.vue";
+
+import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
+import Card from "@/Components/Card.vue";
+import Loader from "@/Components/Ratings/Loader.vue";
+
+import { ref, onMounted, watch, computed } from "vue";
+import { somethingWentWrong } from "@/helpers/utilities";
+import { useStore } from "vuex";
+import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
+import PageTitle from "@/Components/PageTitle.vue";
+
+// State
+const { contractorDetails, gotReviews, givenReviews } = defineProps({
+  profile: Object,
+  region_id: [String, Number],
+  contractorDetails: Object,
+  gotReviews: {
+    type: Boolean,
+    default: false,
+  },
+  givenReviews: {
+    type: Boolean,
+    default: false,
+  },
+});
+const store = useStore();
+const currentPage = ref(1);
+const contractorId = ref(null);
+const contractorReviews = ref(null);
+const loading = ref(false);
+const starPercentages = ref([]);
+const average_rating = ref(null);
+const contractor = ref({});
+const sortByDate = ref("latest");
+const sortByRating = ref("");
+const pagination = ref(0);
+const perPage = ref(15);
+
+// Mounted
+onMounted(() => {
+  contractorId.value = contractorDetails.id;
+  contractor.value = contractorDetails;
+  fetchReviews();
+});
+
+//Computed
+
+const screenWidth = computed(() => store.getters.screenWidth);
+const isFetchReviews = computed(() => store.state.ratings.isFetchReviews);
+const isDeleted = computed(() => store.state.ratings.isDeleted);
+const isInactive = computed(() => store.state.ratings.isInactive);
+
+//Watch
+watch(isFetchReviews, (newVal) => {
+  if (newVal) {
+    fetchReviews(perPage.value, currentPage.value);
+    store.commit("ratings/setIsFetchReviews", false);
+  }
+});
+watch(isDeleted, (newVal) => {
+  if (newVal) {
+    configueCurrentPage();
+    store.commit("ratings/setIsDeleted", false);
+  }
+});
+watch(isInactive, (newVal) => {
+  if (newVal) {
+    fetchReviews(perPage.value, currentPage.value);
+    store.commit("ratings/setIsInactive", false);
+  }
+});
+
+// Methods
+const configueCurrentPage = () => {
+  if (pagination.value.total % pagination.value.per_page === 1) {
+    if (pagination.value.last_page === currentPage.value) {
+      currentPage.value = currentPage.value - 1;
+    }
+  }
+  fetchReviews(perPage.value, currentPage.value);
+};
+
+const handleDate = (selected, sortByString) => {
+  if (selected) {
+    sortByDate.value = sortByString;
+  } else if (!selected) {
+    sortByDate.value = "";
+  }
+  fetchReviews(perPage.value, currentPage.value);
+};
+const handleRating = (selected, sortByRate) => {
+  if (selected) {
+    sortByRating.value = sortByRate;
+  } else if (!selected) {
+    sortByRating.value = "";
+  }
+  fetchReviews(perPage.value, currentPage.value);
+};
+
+// Fetch REviews
+const fetchReviews = async (per_page = perPage.value, page = 1) => {
+  if (gotReviews) {
+    try {
+      loading.value = true;
+      const response = await axios.get(
+        `/api/admin/reviews/${contractorId.value}?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
+        getAxiosConfig()
+      );
+      contractorReviews.value = response.data.reviews;
+      // contractor.value = response.data.contractor;
+      pagination.value = response.data.pagination;
+      average_rating.value = response.data.average_rating;
+      // Extracting the star counts
+      const {
+        five_stars_count,
+        four_stars_count,
+        three_stars_count,
+        two_stars_count,
+        one_star_count,
+      } = response.data;
+
+      const totalRatings =
+        five_stars_count +
+        four_stars_count +
+        three_stars_count +
+        two_stars_count +
+        one_star_count;
+
+      // Calculate percentages for each star count
+      starPercentages.value = [
+        (five_stars_count / totalRatings) * 100,
+        (four_stars_count / totalRatings) * 100,
+        (three_stars_count / totalRatings) * 100,
+        (two_stars_count / totalRatings) * 100,
+        (one_star_count / totalRatings) * 100,
+      ];
+    } catch (err) {
+      somethingWentWrong();
+    } finally {
+      loading.value = false;
+    }
+  }
+  if (givenReviews) {
+    try {
+      loading.value = true;
+      const response = await axios.get(
+        `/api/admin/reviews/${contractorId.value}/history?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
+        getAxiosConfig()
+      );
+      contractorReviews.value = response.data.reviews;
+      pagination.value = response.data.pagination;
+      average_rating.value = response.data.average_rating;
+      // Extracting the star counts
+      const {
+        five_stars_count,
+        four_stars_count,
+        three_stars_count,
+        two_stars_count,
+        one_star_count,
+      } = response.data;
+
+      const totalRatings =
+        five_stars_count +
+        four_stars_count +
+        three_stars_count +
+        two_stars_count +
+        one_star_count;
+
+      // Calculate percentages for each star count
+      starPercentages.value = [
+        (five_stars_count / totalRatings) * 100,
+        (four_stars_count / totalRatings) * 100,
+        (three_stars_count / totalRatings) * 100,
+        (two_stars_count / totalRatings) * 100,
+        (one_star_count / totalRatings) * 100,
+      ];
+    } catch (err) {
+      somethingWentWrong();
+    } finally {
+      loading.value = false;
+    }
+  }
+};
+
+const onClickHandler = (page) => {
+  fetchReviews(perPage.value, page);
+};
+</script>
+
+<style scoped></style>
