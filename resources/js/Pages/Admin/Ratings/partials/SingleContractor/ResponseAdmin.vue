@@ -12,7 +12,7 @@
           Contractor's Response
         </div>
         <div
-          v-if="screenWidth >= 700 && !deletedAt"
+          v-if="screenWidth >= 700 && !deletedAt && hasPostPrevillages"
           class="flex flex-col justify-between"
         >
           <div class="flex gap-2">
@@ -50,7 +50,10 @@
       </div>
       <!-- for mobile view   edit inactive delete -->
 
-      <div v-if="screenWidth < 700 && !deletedAt" class="justify-between">
+      <div
+        v-if="screenWidth < 700 && !deletedAt && hasPostPrevillages"
+        class="justify-between"
+      >
         <div class="grid grid-cols-3 gap-3">
           <!-- edit -->
           <ButtonRatings
@@ -137,6 +140,7 @@ import InActiveResponseModal from "@/Pages/Admin/Ratings/partials/SingleContract
 import { convertDateFormat } from "@/helpers/utilities";
 
 import { onMounted, onUnmounted, ref } from "vue";
+import { usePage } from "@inertiajs/inertia-vue3";
 
 defineProps({
   response: {
@@ -153,6 +157,7 @@ defineProps({
   },
 });
 const showFullReview = ref(false);
+const hasPostPrevillages = usePage().props.value.auth.user.posts_privileges;
 const editRef = ref();
 const deleteRef = ref();
 const inActiveRef = ref();
@@ -164,6 +169,7 @@ const openEditDialog = () => {
 const openDeleteDialog = () => {
   deleteRef.value.openDialogDelete();
 };
+
 const openInActiveDialog = () => {
   inActiveRef.value.openDialogInActivate();
 };

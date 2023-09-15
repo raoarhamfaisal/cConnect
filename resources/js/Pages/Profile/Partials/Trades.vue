@@ -1,10 +1,8 @@
 <script setup>
-import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { somethingWentWrong } from "@/helpers/utilities";
 
 import { useForm } from "@inertiajs/inertia-vue3";
 
-import { defineProps } from "vue";
 const props = defineProps({
   profile: Object,
 });

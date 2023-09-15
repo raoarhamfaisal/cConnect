@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from "vue";
+import { defineEmits } from "vue";
 
 const { labelText, options, modelValue } = defineProps({
   labelText: String,
