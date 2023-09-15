@@ -60,7 +60,7 @@ class ReviewResponseController extends Controller
             $review->response_id = $reviewResponse->id;
             $review->save();
 
-            return response()->json(['message' => 'Review response saved successfully!'], 200);
+            return response()->json(['message' => 'Review response saved successfully!','review_response'=>$reviewResponse], 200);
         }else {
             return response()->json(['message' => 'You do not have permission to add the review response'], 403);
         }

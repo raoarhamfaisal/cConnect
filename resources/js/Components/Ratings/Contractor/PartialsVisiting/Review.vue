@@ -76,7 +76,7 @@
         </div>
         <Badge
           class="bg-orange-500 self-end"
-          v-if="review.is_under_appeal === 1 && screenWidth < 900"
+          v-if="review.is_under_appeal && screenWidth < 900"
           :style="{
             transform:
               screenWidth < 640 && screenWidth > 460
@@ -116,15 +116,15 @@
           >Delete</ButtonRatings
         >
       </div>
-      <Badge class="bg-orange-500" v-if="review.is_under_appeal === 1"
+      <Badge class="bg-orange-500" v-if="review.is_under_appeal"
         >Under Appeal</Badge
       >
       <!-- Submit appeal -->
       <div
         class="text-right"
         v-if="
-          review.is_under_appeal === 0 &&
-          review.is_appeal_already_accepted_or_rejected === 0 &&
+          !review.is_under_appeal &&
+          !review.is_appeal_already_accepted_or_rejected &&
           showAppeal
         "
       >
@@ -142,15 +142,14 @@
       </div>
     </div>
   </div>
-  <!--appeal text -->
+  <!--write appeal  -->
   <transition name="accordion">
-    <div v-if="showAppealArea">
+    <div v-if="showAppealArea && !review.is_under_appeal">
       <div class="mb-4 mt-3">
         <textarea
           id="appealReason"
           type="text"
           :rows="3"
-          v-if="review.is_under_appeal === 0"
           class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
           required
           v-model="appealReason"
@@ -193,7 +192,7 @@
     dialogWidth="max-h-[70vh] width50"
     title="Are you sure? "
   >
-    <div v-if="review.is_under_appeal === 0" class="mt-3 block">
+    <div v-if="!review.is_under_appeal" class="mt-3 block">
       Send any supporting document to
       <a
         class="underline text-sky-600"
@@ -412,12 +411,13 @@ const openDialog = () => {
   }
 };
 const handleAppealSubmit = async () => {
-  if (review.is_under_appeal === 0) {
+  if (!review.is_under_appeal) {
     const appealData = {
       on_appeal_reason: filterBadWords(appealReason),
       reviewId: review.id,
     };
     await store.dispatch("ratings/sendAppeal", appealData);
+    return confirmDialogRef.value.closeDialog();
   }
 };
 const handleAppeal = () => {
