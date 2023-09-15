@@ -23,7 +23,7 @@ class CheckAdminPrivileges
 
         // dd($user);
     
-        if ($user && $user->reviews_privileges && $user->posts_privileges && $user->users_privileges && $user->payments_privileges) {
+        if ($user && $user->appeals_privileges) {
             return $next($request);
         }
     

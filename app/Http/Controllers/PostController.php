@@ -55,8 +55,8 @@ class PostController extends Controller
                     'profiles.state',
                     'profiles.user_avatar',
                     'profiles.id',
-                    DB::raw('(SELECT AVG(reviews.rating) FROM reviews WHERE reviews.contractor_id = profiles.id) as average_rating'),
-                    DB::raw('(SELECT COUNT(*) FROM reviews WHERE reviews.contractor_id = profiles.id) as total_reviews')
+                    DB::raw('(SELECT AVG(reviews.rating) FROM reviews WHERE reviews.contractor_id = profiles.id AND reviews.is_review_active = 1) as average_rating'),
+                    DB::raw('(SELECT COUNT(*) FROM reviews WHERE reviews.contractor_id = profiles.id AND reviews.is_review_active = 1) as total_reviews')
                 ])
                 ->leftJoin('profiles', 'posts.user_id', '=', 'profiles.user_id')
                 ->where('posts.region_id', $profile['region_id'])

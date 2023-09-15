@@ -44,7 +44,7 @@ function postClicked(isOpen) {
   emit("postClicked", isOpen);
 }
 const isAdminUrl = computed(() => {
-  return usePage().props.value.auth.user.reviews_privileges === 1;
+  return usePage().props.value.auth.user.appeals_privileges === 1;
 });
 
 function handleLogout() {

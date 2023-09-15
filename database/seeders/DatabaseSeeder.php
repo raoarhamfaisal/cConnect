@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password            
             'remember_token' => Str::random(10),
             'posts_privileges' => 1,
-            'reviews_privileges' => 1,
+            'appeals_privileges' => 1,
             'users_privileges' => 1,
             'payments_privileges' => 1
         ]);
@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
         $profile = \App\Models\Profile::factory()->create([
             'user_id' => 11,
             'region_id' => 1,
-            'active_user' => fake()->numberBetween(0, 1),
+            'active_user' => 1,
             'first_name' => fake()->name(),
             'last_name' => fake()->name(),
             'company_name' => fake()->company(),

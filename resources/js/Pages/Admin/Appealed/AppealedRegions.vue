@@ -32,7 +32,7 @@ defineProps({
     }),
   },
 });
-const isAdminUrl = usePage().props.value.auth.user.reviews_privileges === 1;
+const isAdminUrl = usePage().props.value.auth.user.appeals_privileges === 1;
 
 onBeforeMount(() => {
   if (!isAdminUrl && window.location.pathname !== "/post") {

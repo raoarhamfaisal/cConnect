@@ -1,1 +1,0 @@
-import{a as s,c as t,i as o,k as a}from"./app.4fc4a6ae.js";const r={class:"min-h-screen flex sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100"},c={class:"w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg"},l={__name:"GuestLayout",setup(n){return(e,m)=>(s(),t("div",r,[o("div",c,[a(e.$slots,"default")])]))}};export{l as _};

@@ -153,7 +153,7 @@ const { region_id } = defineProps({
 });
 
 const store = useStore();
-const isAdminUrl = usePage().props.value.auth.user.reviews_privileges === 1;
+const isAdminUrl = usePage().props.value.auth.user.appeals_privileges === 1;
 const currentPage = ref(1);
 const appealedReviews = ref(null);
 const loading = ref(false);
