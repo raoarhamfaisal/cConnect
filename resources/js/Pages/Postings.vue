@@ -434,7 +434,7 @@ export default {
           <div class="px-5 text-gray-300 mb-8 mt-8">LOADING MORE POSTS!</div>
         </AppSpinner> -->
 
-        <div v-show="posts.next_page_url" class="flex mt-8">
+        <div v-show="posts.next_page_url" class="flex mb-8 mt-8" style="height: 250px;justify-content: center; align-items: center;">
           <!-- <Loader
             classes="flex gap-2"
             :loading="loadingPosts"
