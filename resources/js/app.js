@@ -7,6 +7,16 @@ import { InertiaProgress } from "@inertiajs/progress";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { store } from "@/store/index.js";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
+import "./main.scss";
+// import "vuetify/styles"; // Might want to reconsider this if you only want to import styles from specific components
+import { createVuetify } from "vuetify";
+import * as components from "vuetify/components"; // Import only VTabs and VTab
+import * as directives from "vuetify/directives"; // You might want to fine-tune this as well
+
+const vuetify = createVuetify({
+  components,
+  directives,
+});
 
 const appName =
   window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
@@ -24,6 +34,7 @@ createInertiaApp({
       .component("Link", Link)
       .component("Head", Head)
       .use(ZiggyVue, Ziggy)
+      .use(vuetify)
       .use(store)
       .mount(el);
   },
