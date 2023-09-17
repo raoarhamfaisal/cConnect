@@ -30,6 +30,7 @@ class ReviewFactory extends Factory
             'on_appeal_reason' => $this->faker->text(),
             'on_appeal_reason_date' => $this->faker->dateTime($max = 'now'),
             'off_appeal_reason' => $this->faker->text(),
+            'appeal_status' => $this->faker->randomElement(['open', 'on_hold', 'approved', 'denied']),
             'off_appeal_reason_date' => $this->faker->dateTime($max = 'now'),
             'is_under_appeal' => $this->faker->numberBetween(0, 1),
             'hired_by_contractor' => $this->faker->numberBetween(0, 1),

@@ -28,6 +28,10 @@ return new class extends Migration
             $table->dateTime('off_appeal_reason_date')->nullable();
             $table->boolean('is_under_appeal')->default(0);
             $table->boolean('is_appeal_already_accepted_or_rejected')->default(0);
+            $table->string('appeal_status')->nullable();
+            $table->text('appeal_judge_notes')->nullable();
+            $table->string('appeal_last_updated_by')->nullable();
+            $table->dateTime('appeal_last_updated_at')->nullable();
             $table->boolean('hired_by_contractor')->default(0);
             $table->boolean('paid_on_time')->default(0);
             $table->boolean('hired_contractor')->default(0);

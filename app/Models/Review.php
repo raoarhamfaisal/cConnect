@@ -27,7 +27,11 @@ class Review extends Model
         'paid_on_time',
         'hired_contractor',
         'give_full_payment',
-        'how_did_you_meet_this_contractor'
+        'how_did_you_meet_this_contractor',
+        'appeal_status',
+        'appeal_judge_notes',
+        'appeal_last_updated_by',
+        'appeal_last_updated_at',
 
     ];
 
