@@ -59,9 +59,17 @@
           :rating="Number(parseFloat(review.rating).toFixed(1))"
           :isIndicatorActive="true"
         />
-        <div class="flex grow flex-col justify-between translate-y-1">
-          <Badge class="bg-orange-500" v-if="review.is_under_appeal === 1"
+        <div
+          class="flex grow flex-col items-center justify-between translate-y-1"
+        >
+          <!-- <Badge class="bg-orange-500" v-if="review.is_under_appeal === 1"
             >Under Appeal</Badge
+          > -->
+          <Badge class="bg-orange-500 w-36" v-if="appealStatus"
+            >{{
+              appealStatus === "on_hold" ? "On Hold" : appealStatus
+            }}
+            Appeal</Badge
           >
           <Link
             v-if="showContactDetails"
@@ -125,7 +133,7 @@
         >
           <p
             class="text-sm font-semibold py-1 px-3 text-grey-600"
-            v-if="!editRatingText"
+            v-if="!editRatingText && rating_text && !isTyping"
           >
             {{
               showFullReview
@@ -151,12 +159,15 @@
           <textarea
             v-else
             v-model="rating_text"
-            @blur="editRatingText = false"
+            @blur="stopTyping"
             ref="ratingTextarea"
             @input="saveInput"
             class="text-sm w-full py-1 px-3 focus:shadow-none focus:ring-gray-600 focus:rounded font-semibold text-grey-600 border-none resize-none bg-transparent"
             :rows="numberOfRows"
           ></textarea>
+          <div class="text-xs text-red-600" v-if="!rating_text">
+            Review Text must not be empty
+          </div>
         </Card>
         <ButtonRatings
           v-if="hasPostPrevillages"
@@ -267,7 +278,12 @@
     />
   </div>
   <div class="mb-4 mt-3" v-if="review.on_appeal_reason">
-    <DecisionNotes :contractorId="contractorId" :profileId="profileId" />
+    <DecisionNotes
+      @changeStatus="changeStatus"
+      :appeal_status="review.appeal_status"
+      :appeal_judge_notes="review.appeal_judge_notes"
+      :reviewId="review.id"
+    />
   </div>
 </template>
 
@@ -291,7 +307,7 @@ import { useStore } from "vuex";
 
 //State
 
-const { review } = defineProps({
+const { review, contractorId } = defineProps({
   review: {
     type: Object,
   },
@@ -340,10 +356,11 @@ const hasPostPrevillages = usePage().props.value.auth.user.posts_privileges;
 
 const editRatingText = ref(false);
 const ratingTextarea = ref();
+const appealStatus = ref(review.appeal_status);
 const rating_text = ref(review.rating_text);
+const isTyping = ref(false);
 
 const showFullReview = ref(false);
-const loadingSpecific = ref("");
 //  for quesitonSwitch
 const questionsMapping = [
   {
@@ -389,47 +406,39 @@ const focusTextarea = async () => {
   ratingTextarea.value.focus();
   autoResize();
 };
+const stopTyping = () => {
+  isTyping.value = false;
+  editRatingText.value = false;
+};
+
 let saveTimeout = null;
-const saveInput = async () => {
+
+const saveInput = () => {
+  isTyping.value = true;
   if (saveTimeout) {
     clearTimeout(saveTimeout);
   }
 
   // Start a new timer
   saveTimeout = setTimeout(async () => {
+    if (!rating_text.value) {
+      return;
+    }
     const updatedReview = {
       rating_text: filterBadWords(rating_text),
+      reviewer_id: review.reviewer_id,
+      contractor_id: contractorId,
     };
     await store.dispatch("ratings/updateReview", {
       reviewId: review.id,
       review: updatedReview,
       dontShowSuccessSnack: true,
     });
-    autoResize();
   }, 1000); // 1 second delay
 };
 
-const autoResize = () => {
-  ratingTextarea.value.style.height = "auto";
-  ratingTextarea.value.style.height = ratingTextarea.value.scrollHeight + "px";
-};
-
-const sendAcceptRequest = async (value) => {
-  loadingSpecific.value = value;
-  const payload = {
-    reviewId: review.id,
-  };
-  await store.dispatch("ratings/sendAcceptRequest", payload);
-  loadingSpecific.value = "";
-};
-const sendRejectRequest = async (value) => {
-  loadingSpecific.value = value;
-
-  const payload = {
-    reviewId: review.id,
-  };
-  await store.dispatch("ratings/sendRejectRequest", payload);
-  loadingSpecific.value = "";
+const changeStatus = (appealFilter) => {
+  appealStatus.value = appealFilter;
 };
 </script>
 

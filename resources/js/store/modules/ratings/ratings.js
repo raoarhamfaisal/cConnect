@@ -9,6 +9,7 @@ import {
   deactivateResponse,
   deleteReviewAdmin,
   deleteResponseAdmin,
+  updateNotesAndAppeal,
   getRegions,
   activateResponse,
   sendAcceptRequest,
@@ -37,15 +38,20 @@ export default {
       pagination: {},
       allRegions: [],
       contractorDetails: {},
+      success: false,
     };
   },
   getters: {
     shouldFetchPostsOnClose: (state) => state.shouldFetchPostsOnClose,
     shouldLoadPosts: (state) => state.shouldLoadPosts,
+    success: (state) => state.success,
   },
   mutations: {
     setLoading(state, payload) {
       state.loading = payload;
+    },
+    setSuccess(state, payload) {
+      state.success = payload;
     },
     setReviewId(state, payload) {
       state.reviewId = payload;
@@ -210,20 +216,22 @@ export default {
         commit("setDisabledSending", false);
       }
     },
-    async updateResponse({ commit }, responseData) {
+    async updateResponse({ commit }, payload) {
       commit("setLoadingSending", true);
       commit("setDisabledSending", true);
 
       try {
         const response = await axios.patch(
           `/api/review-responses`,
-          responseData,
+          payload.responseData,
           getAxiosConfig()
         );
         if (response.data) {
-          changesSaved(
-            response.data.message || "Response Successfully Upadated"
-          );
+          if (!payload.dontShowSuccessSnack) {
+            changesSaved(
+              response.data.message || "Response Successfully Upadated"
+            );
+          }
           commit("setUpdatedResponse", response.data.review_response);
         }
       } catch (err) {
@@ -285,6 +293,7 @@ export default {
     deactivateResponse,
     activateResponse,
     deleteReviewAdmin,
+    updateNotesAndAppeal,
     updateReviewAdmin,
     getRegions,
     updateResponseAdmin,

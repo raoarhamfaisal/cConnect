@@ -40,20 +40,29 @@
               </button>
               <button
                 class="rounded px-2 py-1 xs:px-4 xs:py-2 xs:text-md text-sm flex gap-2"
-                :class="{ selected: appealFilter === 'waiting' }"
-                @click="handleTabs('waiting')"
+                :class="{ selected: appealFilter === 'on_hold' }"
+                @click="handleTabs('on_hold')"
               >
                 <div class="flex items-center justify-center">
-                  Waiting Appeals
+                  On Hold Appeals
                 </div>
               </button>
               <button
                 class="rounded px-2 py-1 xs:px-4 xs:py-2 xs:text-md text-sm flex gap-2"
-                :class="{ selected: appealFilter === 'closed' }"
-                @click="handleTabs('closed')"
+                :class="{ selected: appealFilter === 'approved' }"
+                @click="handleTabs('approved')"
               >
                 <div class="flex items-center justify-center">
-                  Closed Appeals
+                  Approved Appeals
+                </div>
+              </button>
+              <button
+                class="rounded px-2 py-1 xs:px-4 xs:py-2 xs:text-md text-sm flex gap-2"
+                :class="{ selected: appealFilter === 'denied' }"
+                @click="handleTabs('denied')"
+              >
+                <div class="flex items-center justify-center">
+                  Denied Appeals
                 </div>
               </button>
             </div>
@@ -118,9 +127,11 @@
               :heading="`View : ${
                 appealFilter === 'open'
                   ? 'Open Appeals'
-                  : appealFilter === 'waiting'
-                  ? 'Waiting Appeals'
-                  : 'Closed Appeals'
+                  : appealFilter === 'on_hold'
+                  ? 'On Hold Appeals'
+                  : appealFilter === 'approved'
+                  ? 'Approved Appeals'
+                  : 'Denied Appeals'
               }`"
               class="mt-4 mb-6"
             />
@@ -179,9 +190,11 @@
             :heading="`View : ${
               appealFilter === 'open'
                 ? 'Open Appeals'
-                : appealFilter === 'waiting'
-                ? 'Waiting Appeals'
-                : 'Closed Appeals'
+                : appealFilter === 'on_hold'
+                ? 'On Hold Appeals'
+                : appealFilter === 'approved'
+                ? 'Approved Appeals'
+                : 'Denied Appeals'
             }`"
             class="mt-4 mb-6"
           />
@@ -326,7 +339,7 @@ const fetchReviews = async (
 ) => {
   try {
     const response = await axios.get(
-      `/api/admin/all-appealed-reviews/${region_id}?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
+      `/api/admin/reviews/${region_id}/by-appeal-status?appeal_status=${appealFilter.value}&per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
       getAxiosConfig()
     );
     if (append) {
@@ -343,9 +356,12 @@ const fetchReviews = async (
   }
 };
 
-const handleTabs = (apiToCall) => {
+const handleTabs = async (apiToCall) => {
   appealFilter.value = apiToCall;
-  fetchReviews(perPage.value, currentPage.value);
+  appealedReviews.value = [];
+  loading.value = true;
+  await fetchReviews(perPage.value, currentPage.value, false);
+  loading.value = false;
 };
 </script>
 <style scoped>
