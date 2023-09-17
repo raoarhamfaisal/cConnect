@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Request as FacadeRequest;
 use Inertia\Inertia;
 use App\Models\Post;
 use App\Models\Profile;
+use App\Models\Region;
 
 class AppealedReviewsController extends Controller
 {
@@ -27,9 +28,11 @@ class AppealedReviewsController extends Controller
       if($userID) {
           $profile = Profile::where('user_id', $userID)->first();
       }
+      $region_name = Region::find($regionId)->name;
     return Inertia::render('Admin/Appealed/AppealedReviews', [
         'profile' => $profile,
         'region_id' => $regionId,
+        'region_name'=>$region_name,
         'showit' => Auth::check(),
         'posts' => Post::query()
         ->orderBy('id', 'DESC')

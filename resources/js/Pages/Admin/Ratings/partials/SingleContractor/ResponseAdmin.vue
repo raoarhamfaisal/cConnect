@@ -1,148 +1,70 @@
 <template>
-  <Card
-    :shadowLevel="1"
-    :isInside="true"
-    class="mt-3"
-    bgColor="#f8f9fa"
-    :padding="screenWidth > 460 ? '20px' : '10px'"
-  >
-    <section>
-      <div class="flex justify-between">
-        <div class="font-bold text-md xs:text-lg sm:text-2xl text-2xl mb-2">
-          Contractor's Response
-        </div>
-        <div
-          v-if="screenWidth >= 700 && !deletedAt && hasPostPrevillages"
-          class="flex flex-col justify-between"
-        >
-          <div class="flex gap-2">
-            <!-- edit -->
-            <ButtonRatings
-              bgColor="bg-lime-700"
-              icon="material-symbols:edit-sharp"
-              @click="openEditDialog"
-              >Edit</ButtonRatings
-            >
-            <!-- Hide -->
-            <ButtonRatings
-              bgColor="bg-[#f08c00]"
-              :icon="
-                response.is_review_response_active === 1
-                  ? 'mdi:hide'
-                  : 'mdi:show'
-              "
-              @click="openInActiveDialog"
-              >{{
-                response.is_review_response_active === 1
-                  ? "Deactivate"
-                  : "Activate"
-              }}</ButtonRatings
-            >
-            <!-- delete -->
-            <ButtonRatings
-              bgColor="bg-red-500"
-              icon="ic:baseline-delete"
-              @click="openDeleteDialog"
-              >Delete</ButtonRatings
-            >
-          </div>
-        </div>
-      </div>
-      <!-- for mobile view   edit inactive delete -->
-
-      <div
-        v-if="screenWidth < 700 && !deletedAt && hasPostPrevillages"
-        class="justify-between"
+  <div class="font-semibold text-[#3c3d41] ml-3 text-md mb-1 mt-2">
+    Contractor's Response: {{ convertDateFormat(response.response_date) }}
+  </div>
+  <div class="flex gap-2">
+    <Card
+      :shadowLevel="1"
+      :isInside="true"
+      :padding="'5px'"
+      class="ml-5 w-full"
+      bgColor="#f0f7e7"
+    >
+      <p
+        class="text-sm font-semibold py-1 px-3 text-grey-600"
+        v-if="!editResponseText"
       >
-        <div class="grid grid-cols-3 gap-3">
-          <!-- edit -->
-          <ButtonRatings
-            bgColor="bg-lime-700"
-            icon="material-symbols:edit-sharp"
-            @click="openEditDialog"
-            >Edit</ButtonRatings
-          >
-          <!-- Hide -->
-          <ButtonRatings
-            bgColor="bg-[#f08c00]"
-            :icon="
-              response.is_review_response_active === 1 ? 'mdi:hide' : 'mdi:show'
-            "
-            @click="openInActiveDialog"
-            >{{
-              response.is_review_response_active === 1
-                ? "Deactivate"
-                : "Activate"
-            }}</ButtonRatings
-          >
-          <ButtonRatings
-            bgColor="bg-red-500"
-            icon="ic:baseline-delete"
-            @click="openDeleteDialog"
-            >Delete</ButtonRatings
-          >
-        </div>
-      </div>
-      <div>
-        <div class="mt-2 ml-2 flex items-center space-x-4">
-          <div
-            class="font-bold flex justify-center items-center text-sm xs:text-md sm:text-xl"
-          >
-            {{ convertDateFormat(response.response_date) }}
-          </div>
-        </div>
-        <div class="">
-          <p class="p-2 text-sm xs:text-sm xs:text-lg">
-            {{
-              showFullReview
-                ? response.response_text
-                : response.response_text.substring(0, 400) +
-                  (response.response_text.length > 400 ? "..." : "")
-            }}
-            <span
-              v-if="!showFullReview && response.response_text.length > 400"
-              @click="showFullReview = true"
-              class="cursor-pointer text-sky-700"
-            >
-              See more
-            </span>
-            <span
-              v-if="showFullReview && response.response_text.length > 400"
-              @click="showFullReview = false"
-              class="cursor-pointer text-sky-700"
-            >
-              See less
-            </span>
-          </p>
-        </div>
-      </div>
-    </section>
-  </Card>
-  <EditResponseModal
-    ref="editRef"
-    :responseText="response?.response_text"
-    :responseId="response.id"
-  />
-  <DeleteResponseModal ref="deleteRef" :responseId="response.id" />
-  <InActiveResponseModal
-    ref="inActiveRef"
-    :isActive="response.is_review_response_active === 1"
-    :responseId="response.id"
-  />
+        {{
+          showFullReview
+            ? response_text
+            : response_text.substring(0, 400) +
+              (response_text.length > 400 ? "..." : "")
+        }}
+        <span
+          v-if="!showFullReview && response_text.length > 400"
+          @click="showFullReview = true"
+          class="cursor-pointer text-sky-700"
+        >
+          See more
+        </span>
+        <span
+          v-if="showFullReview && response_text.length > 400"
+          @click="showFullReview = false"
+          class="cursor-pointer text-sky-700"
+        >
+          See less
+        </span>
+      </p>
+      <textarea
+        v-else
+        v-model="response_text"
+        @blur="editResponseText = false"
+        ref="responseTextArea"
+        @input="autoResize"
+        class="text-sm w-full py-1 px-3 focus:shadow-none focus:ring-gray-600 focus:rounded font-semibold text-grey-600 border-none resize-none bg-transparent"
+        :rows="numberOfRows"
+      ></textarea>
+    </Card>
+    <ButtonRatings
+      v-if="hasPostPrevillages"
+      bgColor="bg-lime-700"
+      icon="material-symbols:edit-sharp"
+      @click="focusTextarea"
+      class="self-start"
+      >Edit</ButtonRatings
+    >
+  </div>
 </template>
 
 <script setup>
 import Card from "@/Components/Card.vue";
 import ButtonRatings from "@/Components/Ratings/ButtonRatings.vue";
-import EditResponseModal from "@/Pages/Admin/Ratings/partials/SingleContractor/Edit/EditResponseModal.vue";
-import DeleteResponseModal from "@/Pages/Admin/Ratings/partials/SingleContractor/Edit/DeleteResponseModal.vue";
-import InActiveResponseModal from "@/Pages/Admin/Ratings/partials/SingleContractor/Edit/InActiveResponseModal.vue";
 import { convertDateFormat } from "@/helpers/utilities";
 
-import { onMounted, onUnmounted, ref } from "vue";
+import { computed, nextTick, ref, watch } from "vue";
 import { usePage } from "@inertiajs/inertia-vue3";
 
-defineProps({
+const { response } = defineProps({
   response: {
     type: Object,
   },
@@ -152,41 +74,38 @@ defineProps({
   contractorId: {
     type: Number,
   },
-  deletedAt: {
-    type: String,
-  },
 });
 const showFullReview = ref(false);
 const hasPostPrevillages = usePage().props.value.auth.user.posts_privileges;
-const editRef = ref();
-const deleteRef = ref();
-const inActiveRef = ref();
 
-const openEditDialog = () => {
-  editRef.value.openDialogEdit();
-};
+const editResponseText = ref(false);
+const responseTextArea = ref();
+const response_text = ref(response.response_text);
 
-const openDeleteDialog = () => {
-  deleteRef.value.openDialogDelete();
-};
+//Computed
 
-const openInActiveDialog = () => {
-  inActiveRef.value.openDialogInActivate();
-};
-const screenWidth = ref(window.innerWidth);
-
-// Update the screen width whenever the window is resized
-const updateWidth = () => {
-  screenWidth.value = window.innerWidth;
-};
-
-onMounted(() => {
-  window.addEventListener("resize", updateWidth);
+const numberOfRows = computed(() => {
+  if (!response_text.value) return 1; // if there's no content, return a default row number
+  const charsPerLine = 90;
+  return Math.ceil(response_text.value.length / charsPerLine);
 });
-
-onUnmounted(() => {
-  window.removeEventListener("resize", updateWidth);
-});
+//Methods
+const focusTextarea = async () => {
+  editResponseText.value = true;
+  await nextTick();
+  responseTextArea.value.focus();
+  autoResize();
+};
+const autoResize = () => {
+  responseTextArea.value.style.height = "auto";
+  responseTextArea.value.style.height =
+    responseTextArea.value.scrollHeight + "px";
+};
 </script>
 
-<style scoped></style>
+<style scoped>
+textarea {
+  overflow-y: hidden; /* Hide vertical scrollbar */
+  resize: none; /* Disable textarea resizing */
+}
+</style>

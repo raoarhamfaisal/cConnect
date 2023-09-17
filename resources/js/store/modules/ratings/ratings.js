@@ -195,7 +195,11 @@ export default {
           getAxiosConfig()
         );
         if (response.data) {
-          changesSaved(response.data.message || "Review Successfully Upadated");
+          if (!payload.dontShowSuccessSnack) {
+            changesSaved(
+              response.data.message || "Review Successfully Upadated"
+            );
+          }
 
           commit("setUpdatedReview", response.data.review);
         }

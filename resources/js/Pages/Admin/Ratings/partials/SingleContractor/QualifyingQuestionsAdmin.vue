@@ -1,7 +1,7 @@
 <template>
   <!-- <div class="pl-2 text-md font-bold text-gray-600 mt-3 mb-3">
-    Feedback from Contractor
-  </div> -->
+      Feedback from Contractor
+    </div> -->
   <Card
     :shadowLevel="0"
     :isInside="true"
@@ -10,14 +10,14 @@
     class="mt-2"
   >
     <div
-      class="grid grid-cols-2 gap-x-1 items-center gap-y-2 mt-2 mb-2 xs:gap-x-2 xs:px-0 sm:px-2 xl:px-8 w-full"
+      class="grid grid-cols-2 gap-x-1 items-center gap-y-2 mt-2 mb-2 xs:gap-x-2 xs:px-0 sm:px-4 w-full"
     >
       <div
         class="flex items-center sx:gap-2 w-full xs:gap-4"
         v-for="(question, index) in questionsSwitch"
         :key="index"
       >
-        <Iconx
+        <Icon
           color="#099268"
           width="24"
           height="24"
@@ -53,8 +53,8 @@
     </div>
   </Card>
 </template>
-
-<script setup>
+  
+  <script setup>
 import Card from "@/Components/Card.vue";
 import { Icon } from "@iconify/vue";
 
@@ -71,4 +71,5 @@ defineProps({
   },
 });
 </script>
-<style scoped></style>
+  <style scoped></style>
+  
