@@ -7,7 +7,9 @@
         </div>
         <div class="flex flex-col justify-center">
           <Tooltip
-            :text="`${review.id} : ${review.reviewer.first_name} ${review.reviewer.last_name}`"
+            :text="`${review?.appeal_id ? review.appeal_id + ' : ' : ''}${
+              review.reviewer.first_name
+            } ${review.reviewer.last_name}`"
             :applyTooltipLength="640"
             :textLengthToShow="20"
             textClass="text-md xs:text-xl font-medium font-bold text-gray-900 "
@@ -62,9 +64,11 @@
         <div
           class="flex grow flex-col items-center justify-between translate-y-1"
         >
-          <!-- <Badge class="bg-orange-500" v-if="review.is_under_appeal === 1"
+          <Badge
+            class="bg-orange-500"
+            v-if="review?.is_under_appeal && !review?.appeal"
             >Under Appeal</Badge
-          > -->
+          >
           <Badge class="bg-orange-500 w-36" v-if="appealStatus"
             >{{
               appealStatus === "on_hold" ? "On Hold" : appealStatus
@@ -236,7 +240,8 @@
         class="flex flex-col translate-y-2 self-start items-center justify-center gap-2"
       >
         <div class="font-bold text-sm">
-          Appeal Date : {{ convertDateFormat(review.appeal.on_appeal_reason_date) }}
+          Appeal Date :
+          {{ convertDateFormat(review.appeal.on_appeal_reason_date) }}
         </div>
         <Link
           :href="`/admin/ratings/contractor/${review.contractor.id}/history`"
@@ -268,7 +273,10 @@
   </div>
 
   <!-- turn on appeal -->
-  <div class="mb-4 mt-3" v-if="review.appeal.on_appeal_reason">
+  <div
+    class="mb-4 mt-3"
+    v-if="review && review.appeal && review.appeal.on_appeal_reason"
+  >
     <Appeal
       :appeal="{
         reason: review.appeal.on_appeal_reason,
@@ -277,7 +285,10 @@
       heading="Contractor Appeal"
     />
   </div>
-  <div class="mb-4 mt-3" v-if="review.appeal.on_appeal_reason">
+  <div
+    class="mb-4 mt-3"
+    v-if="review && review.appeal && review.appeal.on_appeal_reason"
+  >
     <DecisionNotes
       @changeStatus="changeStatus"
       :appeal_status="review.appeal.appeal_status"
@@ -356,7 +367,9 @@ const hasPostPrevillages = usePage().props.value.auth.user.posts_privileges;
 
 const editRatingText = ref(false);
 const ratingTextarea = ref();
-const appealStatus = ref(review.appeal_status);
+const appealStatus = ref(
+  review?.appeal?.appeal_status ? review.appeal.appeal_status : null
+);
 const rating_text = ref(review.rating_text);
 const isTyping = ref(false);
 
@@ -404,7 +417,6 @@ const focusTextarea = async () => {
   editRatingText.value = true;
   await nextTick();
   ratingTextarea.value.focus();
-  autoResize();
 };
 const stopTyping = () => {
   isTyping.value = false;

@@ -16,10 +16,19 @@
         :padding="screenWidth < 640 ? '7px' : '20px'"
         class="mb-6"
       >
-        <PageTitle
-          linkUrl="/admin/regions/appealed"
-          pageTitle="Appealed Reviews"
-        />
+        <div class="flex justify-between">
+          <PageTitle
+            linkUrl="/admin/regions/appealed"
+            pageTitle="Appealed Reviews"
+          />
+          <SearchInput
+            class="mb-8 w-72"
+            :barWidth="100"
+            icon="iconamoon:search"
+            placeholder="Search by Appeal Id..."
+            @search-clicked="onSearch"
+          />
+        </div>
         <!-- Region -->
         <heading-card
           class="mt-2"
@@ -167,8 +176,13 @@
           >
             No More Reviews to Load
           </div>
+
           <Loader
             classes="flex gap-2 mt-4"
+            v-if="
+              +currentPage !== +pagination.last_page &&
+              index === appealedReviews.length - 1
+            "
             :loading="loadingNextPage"
             circleClasses="small-circle"
             textClasses="small-text"
@@ -225,7 +239,9 @@ import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import Card from "@/Components/Card.vue";
 import Loader from "@/Components/Ratings/Loader.vue";
 
-import { ref, onMounted, watch, computed, onBeforeMount } from "vue";
+import { ref, onMounted, computed, onBeforeMount } from "vue";
+import SearchInput from "@/Components/Ratings/SearchInput.vue";
+
 import { somethingWentWrong } from "@/helpers/utilities";
 import { useStore } from "vuex";
 import { Inertia } from "@inertiajs/inertia";
@@ -253,8 +269,8 @@ const appealedReviews = ref([]);
 const loading = ref(false);
 const sortByDate = ref("latest");
 const sortByRating = ref("");
-const disabled = ref(false);
 const perPage = ref(15);
+const searchTerm = ref("");
 const appealFilter = ref("open");
 const pagination = ref(0);
 const loadingNextPage = ref(false);
@@ -273,62 +289,37 @@ onBeforeMount(() => {
 
 //Computed
 
-const isFetchReviews = computed(() => store.state.ratings.isFetchReviews);
 const screenWidth = computed(() => store.getters.screenWidth);
-const isDeleted = computed(() => store.state.ratings.isDeleted);
-const isInactive = computed(() => store.state.ratings.isInactive);
 
 //Watch
-watch(isFetchReviews, (newVal) => {
-  if (newVal) {
-    fetchReviews(perPage.value, currentPage.value);
-    store.commit("ratings/setIsFetchReviews", false);
-  }
-});
-watch(isDeleted, (newVal) => {
-  if (newVal) {
-    configueCurrentPage();
-    store.commit("ratings/setIsDeleted", false);
-  }
-});
-watch(isInactive, (newVal) => {
-  if (newVal) {
-    fetchReviews(perPage.value, currentPage.value);
-    store.commit("ratings/setIsInactive", false);
-  }
-});
 
 // Methods
 const loadMoreReviews = async () => {
   loadingNextPage.value = true;
-  currentPage.value = currentPage.value + 1;
-  await fetchReviews(perPage.value, currentPage.value);
-  loadingNextPage.value = false;
-};
+  let pageToLoad = currentPage.value + 1;
+  await fetchReviews(perPage.value, pageToLoad);
 
-const configueCurrentPage = () => {
-  if (pagination.value.total % pagination.value.per_page === 1) {
-    if (pagination.value.last_page === currentPage.value) {
-      currentPage.value = currentPage.value - 1;
-    }
-  }
-  fetchReviews(perPage.value, currentPage.value);
+  loadingNextPage.value = false;
+  currentPage.value = pageToLoad;
 };
-const handleDate = (selected, sortByString) => {
+const handleDate = async (selected, sortByString) => {
   if (selected) {
     sortByDate.value = sortByString;
   } else if (!selected) {
     sortByDate.value = "";
   }
-  fetchReviews(perPage.value, currentPage.value);
+  appealedReviews.value = [];
+  await fetchAppealedReviews(false);
 };
-const handleRating = (selected, sortByRate) => {
+const handleRating = async (selected, sortByRate) => {
   if (selected) {
     sortByRating.value = sortByRate;
   } else if (!selected) {
     sortByRating.value = "";
   }
-  fetchReviews(perPage.value, currentPage.value);
+  appealedReviews.value = [];
+
+  await fetchAppealedReviews(false);
 };
 
 // Fetch REviews
@@ -339,7 +330,7 @@ const fetchReviews = async (
 ) => {
   try {
     const response = await axios.get(
-      `/api/admin/reviews/${region_id}/by-appeal-status?appeal_status=${appealFilter.value}&per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
+      `/api/admin/reviews/${region_id}/by-appeal-status?appeal_id=${searchTerm.value}&appeal_status=${appealFilter.value}&per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
       getAxiosConfig()
     );
     if (append) {
@@ -355,13 +346,21 @@ const fetchReviews = async (
     somethingWentWrong();
   }
 };
+const fetchAppealedReviews = async (append = true) => {
+  loading.value = true;
+  await fetchReviews(perPage.value, 1, append);
+  loading.value = false;
+};
 
 const handleTabs = async (apiToCall) => {
   appealFilter.value = apiToCall;
   appealedReviews.value = [];
-  loading.value = true;
-  await fetchReviews(perPage.value, currentPage.value, false);
-  loading.value = false;
+  await fetchAppealedReviews(false);
+};
+
+const onSearch = async (term) => {
+  searchTerm.value = term;
+  await fetchAppealedReviews(false);
 };
 </script>
 <style scoped>
