@@ -1,25 +1,29 @@
 <template>
-  <div>
-    <div class="selecteditems" @click.prevent="activate()">
+  <div v-click-outside.prevent="deactivate">
+    <div class="selecteditems" @click.prevent="toggle()">
       <ul class="chips">
-        <template>
-          <li v-for="item in value" :key="item.id" class="chips__item">
-            <template v-if="sortingProperty">
-              <span>{{ item[sortingProperty] }}</span>
-            </template>
-            <template v-else>
-              {{ item }}
-            </template>
-            <span class="chips--remove" @click.stop="onRemoveItem(item)"
-              ><b>x</b></span
-            >
-          </li>
-        </template>
-
         <li class="chips__itemInput">
+          <div class="chips__selectedItems">
+            <span
+              v-for="item in selectedItems"
+              :key="item.id"
+              class="chips__item"
+            >
+              <template v-if="sortingProperty">
+                <span>{{ item[sortingProperty] }}</span>
+              </template>
+              <template v-else>
+                {{ item }}
+              </template>
+              <span class="chips--remove" @click.stop="onRemoveItem(item)">
+                <b>x</b>
+              </span>
+            </span>
+          </div>
           <input
             v-model="searchedText"
             @focus.prevent="activate()"
+            v-if="showSearch"
             @keyup.esc="deactivate()"
             class="chips__input--fake"
             type="text"
@@ -36,7 +40,8 @@
           class="allitems__list"
           v-for="item in filteredAllItems"
           :key="item.id"
-          @click="onSelectItem(item)"
+          @click.stop="onSelectItem(item)"
+          :class="{ 'allitems__list--selected': isSelected(item) }"
         >
           <template v-if="sortingProperty">
             <span>{{ item[sortingProperty] }}</span>
@@ -50,158 +55,233 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, watch, computed, onMounted, onUnmounted } from "vue";
+
+const props = defineProps({
+  modelValue: {
+    type: Array,
+    default: () => [],
+  },
+  showSearch: {
+    type: Boolean,
+    default: false,
+  },
+  items: {
+    type: Array,
+    required: true,
+  },
+  sortingProperty: {
+    type: String,
+    default: null,
+  },
+});
+
 const sortBy = (key) => {
   return (a, b) => (a[key] > b[key] ? 1 : b[key] > a[key] ? -1 : 0);
 };
 
-export default {
-  mounted() {
-    this.selectedItems = [];
-  },
-  props: {
-    items: {
-      type: Array,
-      required: true,
-    },
-    value: {
-      type: Array,
-    },
-    sortingProperty: {
-      type: String,
-      default: null,
-    },
-  },
-  data() {
-    return {
-      searchedText: "",
-      selectedItems: this.value || [],
-      showList: false,
-      localValue: this.value,
-    };
-  },
-  watch: {
-    value(newVal) {
-      this.localValue = newVal;
-    },
-    localValue(newVal) {
-      this.$emit("input", newVal);
-    },
-  },
-  computed: {
-    allItems() {
-      let items = [...this.items];
-      if (!this.sortingProperty) return items.sort();
-      return items.sort(sortBy(this.sortingProperty));
-    },
-    filteredAllItems() {
-      if (this.searchedText) {
-        let filteredItems = this.allItems.filter((i) => {
-          if (this.sortingProperty) {
-            return i[this.sortingProperty]
-              .toLowerCase()
-              .includes(this.searchedText.toLowerCase());
-          } else {
-            return i.toLowerCase().includes(this.searchedText.toLowerCase());
-          }
-        });
-        return filteredItems;
+const selectedItems = ref(props.modelValue || []);
+const searchedText = ref("");
+const showList = ref(false);
+const emit = defineEmits(["input"]);
+let localValue = props.modelValue;
+
+const clickOutsideDirective = (el, binding) => {
+  const handleClickOutside = (event) => {
+    if (!(el === event.target || el.contains(event.target))) {
+      binding.value(event);
+    }
+  };
+
+  onMounted(() => {
+    document.addEventListener("click", handleClickOutside);
+  });
+
+  onUnmounted(() => {
+    document.removeEventListener("click", handleClickOutside);
+  });
+};
+
+watch(
+  () => props.modelValue,
+  (newVal) => {
+    console.log(props.modelValue, props.modelValue.value, "hello world");
+    localValue = newVal;
+    selectedItems.value = props.modelValue;
+  }
+);
+
+const allItems = computed(() => {
+  let items = [...props.items];
+  if (!props.sortingProperty) return items.sort();
+  return items.sort(sortBy(props.sortingProperty));
+});
+
+const filteredAllItems = computed(() => {
+  if (searchedText.value) {
+    let filteredItems = allItems.value.filter((i) => {
+      if (props.sortingProperty) {
+        return i[props.sortingProperty]
+          .toLowerCase()
+          .includes(searchedText.value.toLowerCase());
       } else {
-        return this.allItems;
+        return i.toLowerCase().includes(searchedText.value.toLowerCase());
       }
-    },
-  },
-  methods: {
-    onSelectItem(item) {
-      this.selectedItems.push(item);
+    });
+    return filteredItems;
+  } else {
+    return allItems.value;
+  }
+});
 
-      this.$emit("input", this.selectedItems);
+const isSelected = (item) => {
+  return selectedItems.value.some(
+    (selectedItem) => selectedItem.id === item.id
+  );
+};
 
-      let indexOfItem = this.allItems.findIndex((i) => {
-        return i.id === item.id;
-      });
-      this.allItems.splice(indexOfItem, 1);
-      this.searchedText = null;
-    },
-    onRemoveItem(item) {
-      this.allItems.push(item);
-      this.sortingProperty
-        ? this.allItems.sort(sortBy(this.sortingProperty))
-        : this.allItems.sort();
+const onSelectItem = (item) => {
+  const itemExists = selectedItems.value.some(
+    (selectedItem) => selectedItem.id === item.id
+  );
 
-      let indexOfItem = this.selectedItems.findIndex((i) => {
-        return i.id === item.id;
-      });
-      this.selectedItems.splice(indexOfItem, 1);
-      this.$emit("input", this.selectedItems);
-    },
-    activate() {
-      this.showList = true;
-    },
-    deactivate() {
-      this.showList = false;
-    },
-  },
+  if (!itemExists) {
+    selectedItems.value = [...selectedItems.value, item];
+  } else {
+    onRemoveItem(item);
+  }
+
+  emit("input", selectedItems.value);
+  searchedText.value = "";
+};
+
+const onRemoveItem = (item) => {
+  selectedItems.value = selectedItems.value.filter(
+    (selectedItem) => selectedItem.id !== item.id
+  );
+  emit("input", selectedItems.value);
+};
+
+const activate = () => {
+  showList.value = true;
+};
+const toggle = () => {
+  showList.value = !showList.value;
+};
+
+const deactivate = () => {
+  console.log("deactivate");
+  showList.value = false;
 };
 </script>
 
-<style lang="sass" scoped>
-.chips
-background-color: #ffffff
-border: 1px solid #dbdbdb
-border-radius: 4px
-color: #363636
-padding-bottom: calc(0.375em - 1px)
-padding-left: calc(0.625em - 1px)
-padding-right: calc(0.625em - 1px)
-padding-top: calc(0.375em - 1px)
-cursor: pointer
+<style scoped>
+.chips__selectedItems {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
 
-&--remove
-    margin-right: 1px
-    margin-left: 3px
-    color: #cc0029
+.chips__item {
+  background-color: rgba(50, 115, 220, 0.2);
+  margin: 4px;
+  padding: 6px;
+  border-radius: 6px;
+  transition: 0.3s;
+  display: inline-flex;
+  align-items: center;
+}
 
-&__item
-    display: inline-block
-    background-color: rgba(50, 115, 220, .2)
-    margin: 4px
-    padding: 6px
-    border-radius: 6px
-    transition: 0.3s
+.chips__itemInput {
+  display: flex;
+  align-items: center;
+}
 
-    &:hover
-    background-color: rgba(50, 115, 220, .3)
+.chips__input--fake {
+  border: none;
+  padding-left: 10px;
+  flex-grow: 1;
+  height: 36px;
+  font-size: 1rem;
+  line-height: 1.42857143;
+}
 
-&__itemInput
-    display: inline-block
+.chips--remove {
+  margin-left: 5px;
+  cursor: pointer;
+}
+.chips {
+  background-color: #ffffff;
+  border: 1px solid #dbdbdb;
+  border-radius: 4px;
+  color: #363636;
+  padding-bottom: calc(0.375em - 1px);
+  padding-left: calc(0.625em - 1px);
+  padding-right: calc(0.625em - 1px);
+  padding-top: calc(0.375em - 1px);
+  cursor: pointer;
+}
 
-&__input--fake
-    border: none
-    width: 100%
-    line-height: 1.42857143
-    font-size: 1rem
-    height: 36px
+.chips--remove {
+  margin-right: 1px;
+  margin-left: 3px;
+  color: #cc0029;
+}
 
-    &:focus,
-    &:active
-    outline: none
+.chips__item {
+  background-color: rgba(50, 115, 220, 0.2);
+  display: inline-block;
+  margin: 4px;
+  padding: 6px;
+  border-radius: 6px;
+  transition: 0.3s;
+}
 
-.allitems
-cursor: pointer
-border: 1px solid #dbdbdb
-max-height: 150px
-height: calc(100vh - 240px)
-overflow-y: scroll
+.chips__item:hover {
+  background-color: rgba(50, 115, 220, 0.3);
+}
 
-ul
-    list-style: none
+.chips__itemInput {
+  display: inline-block;
+}
 
-&__list
-    padding: 6px
-    transition: 0.3s
+.chips__input--fake {
+  border: none;
+  width: 100%;
+  line-height: 1.42857143;
+  font-size: 1rem;
+  height: 36px;
+}
 
-    &:hover
-    background: rgba(50, 115, 220, 1)
-    color: #ffffff
+.chips__input--fake:focus,
+.chips__input--fake:active {
+  outline: none;
+}
+
+.allitems {
+  cursor: pointer;
+  border: 1px solid #dbdbdb;
+  max-height: 150px;
+  height: calc(100vh - 240px);
+  overflow-y: scroll;
+}
+
+.allitems ul {
+  list-style: none;
+}
+
+.allitems__list {
+  padding: 6px;
+  transition: 0.3s;
+}
+.allitems__list--selected {
+  background-color: #241e6d;
+  color: #ffffff;
+}
+
+.allitems__list:hover {
+  background: #241e6d;
+  color: #ffffff;
+}
 </style>
