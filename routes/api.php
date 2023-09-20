@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ReviewResponseController;
 use App\Http\Controllers\ContractorRatingsAdminController;
 
@@ -27,6 +28,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::post('/profile/company-logo', [ProfileController::class, 'updateCompanyLogo'])->name('profile.updateCompanyLogo');
 
     Route::get('/regions', [ReviewController::class, 'regions'])->name('review.getRegions');
+    Route::get('/profileTrades/{user_id}', [PostController::class, 'selectedTrades'])->name('review.getProfileTrades');
 
 
     

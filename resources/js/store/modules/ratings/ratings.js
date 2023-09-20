@@ -11,6 +11,7 @@ import {
   deleteResponseAdmin,
   updateNotesAndAppeal,
   getRegions,
+  getTrades,
   activateResponse,
   sendAcceptRequest,
   sendRejectRequest,
@@ -34,6 +35,7 @@ export default {
       isFetchReviews: false,
       isDeleted: false,
       isInactive: false,
+      allTrades: [],
       allContractors: [],
       pagination: {},
       allRegions: [],
@@ -44,11 +46,17 @@ export default {
   getters: {
     shouldFetchPostsOnClose: (state) => state.shouldFetchPostsOnClose,
     shouldLoadPosts: (state) => state.shouldLoadPosts,
+    regions: (state) => state.allRegions,
+    trades: (state) => state.allTrades,
     success: (state) => state.success,
+    loading: (state) => state.loading,
   },
   mutations: {
     setLoading(state, payload) {
       state.loading = payload;
+    },
+    setAllTrades(state, payload) {
+      state.allTrades = payload;
     },
     setSuccess(state, payload) {
       state.success = payload;
@@ -296,6 +304,7 @@ export default {
     updateNotesAndAppeal,
     updateReviewAdmin,
     getRegions,
+    getTrades,
     updateResponseAdmin,
     deleteResponseAdmin,
     sendAcceptRequest,

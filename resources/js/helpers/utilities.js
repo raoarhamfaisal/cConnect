@@ -46,6 +46,9 @@ export const somethingWentWrong = (
 
 // convert UtC 2023-09-04T10:00:35.000000Z to DAte 09/23/2022
 export function convertDateFormat(dateString) {
+  if (!dateString) {
+    return "";
+  }
   // Create a new date object from the input string
   const date = new Date(dateString);
 

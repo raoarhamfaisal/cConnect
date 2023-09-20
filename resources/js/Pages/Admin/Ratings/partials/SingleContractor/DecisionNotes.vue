@@ -13,7 +13,7 @@
       <p
         class="text-sm font-semibold py-1 px-3 text-grey-600"
         v-if="!editAdmitNoteText && adminNote && !isTyping"
-        style="height: 11.3rem"
+        style="height: 10.4rem"
       >
         {{
           showFullText
@@ -41,7 +41,7 @@
         v-model="adminNote"
         @blur="stopTyping"
         ref="adminTextAreaRef"
-        style="height: 11.3rem"
+        style="height: 10.4rem"
         @keydown="saveNotes"
         placeholder="Type your Notes"
         class="text-sm w-full py-1 px-3 focus:shadow-none focus:ring-gray-600 focus:rounded font-semibold text-grey-600 border-none resize-none bg-transparent"
@@ -86,8 +86,8 @@
     </div>
   </div>
 </template>
-  
-  <script setup>
+
+<script setup>
 import Card from "@/Components/Card.vue";
 import { filterBadWords } from "@/helpers/utilities";
 
@@ -176,8 +176,8 @@ const handleTabs = async (apiToCall) => {
   });
 };
 </script>
-  
-  <style scoped>
+
+<style scoped>
 textarea {
   overflow-y: hidden; /* Hide vertical scrollbar */
   resize: none; /* Disable textarea resizing */
@@ -195,4 +195,3 @@ button {
   position: relative;
 }
 </style>
-  

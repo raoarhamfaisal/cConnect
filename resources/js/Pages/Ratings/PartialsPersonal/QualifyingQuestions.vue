@@ -14,21 +14,29 @@
     >
       <div
         class="flex items-center sx:gap-2 w-full xs:gap-4"
-        v-for="(question, index) in questionsSwitch"
-        :key="index"
+        v-for="question in questionsSwitch"
+        :key="question.id"
       >
-        <Iconx
+        <Icon
           color="#099268"
           width="24"
           height="24"
-          v-if="question.questionAnswer === 1"
+          v-if="
+            question.questionAnswer === true ||
+            question.questionAnswer === 'true' ||
+            question.questionAnswer === 1
+          "
           icon="mdi:tick-circle"
         />
         <Icon
           color="#e03131"
           width="24"
           height="24"
-          v-if="question.questionAnswer !== 1"
+          v-if="
+            question.questionAnswer === false ||
+            question.questionAnswer === 'false' ||
+            question.questionAnswer === 0
+          "
           icon="clarity:remove-solid"
         />
         <div
@@ -60,7 +68,7 @@ import { Icon } from "@iconify/vue";
 
 defineProps({
   questionsSwitch: {
-    type: Object,
+    type: Array,
   },
   selectedReferal: {
     type: [String],

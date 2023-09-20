@@ -40,7 +40,7 @@ const newPostSearchValue = () => {
 };
 
 function postClicked(isOpen) {
-  isOpen = true;
+  isOpen = false;
   emit("postClicked", isOpen);
 }
 const isAdminUrl = computed(() => {

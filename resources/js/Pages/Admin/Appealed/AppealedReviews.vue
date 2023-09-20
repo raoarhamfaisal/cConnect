@@ -81,41 +81,35 @@
         <div class="border-gray-300 border-t-2">
           <heading-card class="mt-3" heading="Order Reviews By" />
           <div class="mb-4 mt-2">
-            <div class="flex gap-3">
+            <div class="flex gap-3 flex-wrap">
               <Button
-                :selected="sortByDate === 'latest'"
-                @onSelect="(selected) => handleDate(selected, 'latest')"
+                :selected="sortBy === 'latest'"
+                @onSelect="(selected) => handleFilterSelect(selected, 'latest')"
                 >Latest</Button
               >
 
               <Button
-                :selected="sortByDate === 'oldest'"
-                @onSelect="(selected) => handleDate(selected, 'oldest')"
+                :selected="sortBy === 'oldest'"
+                @onSelect="(selected) => handleFilterSelect(selected, 'oldest')"
                 >Oldest</Button
               >
-            </div>
-          </div>
-        </div>
-        <!-- RAting -->
-        <div class="border-t-2 border-gray-300">
-          <heading-card heading="Ratings" class="mt-3" />
-          <div class="flex gap-3">
-            <div class="flex gap-3">
               <Button
-                :selected="sortByRating === 'highest'"
-                @onSelect="(selected) => handleRating(selected, 'highest')"
+                :selected="sortBy === 'highest'"
+                @onSelect="
+                  (selected) => handleFilterSelect(selected, 'highest')
+                "
                 >Highest rated</Button
               >
 
               <Button
-                :selected="sortByRating === 'middle'"
-                @onSelect="(selected) => handleRating(selected, 'middle')"
+                :selected="sortBy === 'middle'"
+                @onSelect="(selected) => handleFilterSelect(selected, 'middle')"
                 >Middle Rated</Button
               >
 
               <Button
-                :selected="sortByRating === 'lowest'"
-                @onSelect="(selected) => handleRating(selected, 'lowest')"
+                :selected="sortBy === 'lowest'"
+                @onSelect="(selected) => handleFilterSelect(selected, 'lowest')"
                 >Low Rated</Button
               >
             </div>
@@ -151,6 +145,7 @@
                 :review="review"
                 :contractorId="review.contractor_id"
                 :profileId="profile.id"
+                :showNotes="true"
                 :showContactDetails="true"
               />
             </div>
@@ -239,7 +234,7 @@ import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import Card from "@/Components/Card.vue";
 import Loader from "@/Components/Ratings/Loader.vue";
 
-import { ref, onMounted, computed, onBeforeMount } from "vue";
+import { ref, onMounted, computed, onBeforeMount, watch } from "vue";
 import SearchInput from "@/Components/Ratings/SearchInput.vue";
 
 import { somethingWentWrong } from "@/helpers/utilities";
@@ -267,8 +262,7 @@ const isAdminUrl = usePage().props.value.auth.user.appeals_privileges === 1;
 const currentPage = ref(1);
 const appealedReviews = ref([]);
 const loading = ref(false);
-const sortByDate = ref("latest");
-const sortByRating = ref("");
+const sortBy = ref("latest");
 const perPage = ref(15);
 const searchTerm = ref("");
 const appealFilter = ref("open");
@@ -289,10 +283,23 @@ onBeforeMount(() => {
 
 //Computed
 
+const updatedReview = computed(() => store.state.ratings.updatedReview);
 const screenWidth = computed(() => store.getters.screenWidth);
 
 //Watch
+watch(updatedReview, (newVal) => {
+  if (newVal && newVal.id) {
+    const reviewIndex = appealedReviews.value.findIndex(
+      (review) => review.id === newVal.id
+    );
 
+    if (reviewIndex !== -1) {
+      // Update the existing review with the new data
+      Object.assign(appealedReviews.value[reviewIndex], newVal);
+    }
+    console.log(newVal, newVal.id, reviewIndex, "updated");
+  }
+});
 // Methods
 const loadMoreReviews = async () => {
   loadingNextPage.value = true;
@@ -302,20 +309,10 @@ const loadMoreReviews = async () => {
   loadingNextPage.value = false;
   currentPage.value = pageToLoad;
 };
-const handleDate = async (selected, sortByString) => {
+
+const handleFilterSelect = async (selected, sortByRate) => {
   if (selected) {
-    sortByDate.value = sortByString;
-  } else if (!selected) {
-    sortByDate.value = "";
-  }
-  appealedReviews.value = [];
-  await fetchAppealedReviews(false);
-};
-const handleRating = async (selected, sortByRate) => {
-  if (selected) {
-    sortByRating.value = sortByRate;
-  } else if (!selected) {
-    sortByRating.value = "";
+    sortBy.value = sortByRate;
   }
   appealedReviews.value = [];
 
@@ -328,9 +325,16 @@ const fetchReviews = async (
   page = 1,
   append = true
 ) => {
+  let sortByDate = "";
+  let sortByRating = "";
+  if (sortBy.value === "latest" || sortBy.value === "oldest") {
+    sortByDate = sortBy.value;
+  } else {
+    sortByRating = sortBy.value;
+  }
   try {
     const response = await axios.get(
-      `/api/admin/reviews/${region_id}/by-appeal-status?appeal_id=${searchTerm.value}&appeal_status=${appealFilter.value}&per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
+      `/api/admin/reviews/${region_id}/by-appeal-status?appeal_id=${searchTerm.value}&appeal_status=${appealFilter.value}&per_page=${per_page}&page=${page}&sort_by_date=${sortByDate}&sort_by_rating=${sortByRating}`,
       getAxiosConfig()
     );
     if (append) {

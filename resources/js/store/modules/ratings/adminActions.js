@@ -52,6 +52,23 @@ export const getRegions = async ({ commit }) => {
     commit("setLoading", false);
   }
 };
+export const getTrades = async ({ commit }, id) => {
+  commit("setLoading", true);
+
+  try {
+    const response = await axios.get(
+      `/api/profileTrades/${id}`,
+      getAxiosConfig()
+    );
+    if (response.data) {
+      commit("setAllTrades", response.data.trades);
+    }
+  } catch (err) {
+    somethingWentWrong();
+  } finally {
+    commit("setLoading", false);
+  }
+};
 export const deleteReviewAdmin = async ({ commit }, payload) => {
   commit("setLoading", true);
   commit("setDisabled", true);

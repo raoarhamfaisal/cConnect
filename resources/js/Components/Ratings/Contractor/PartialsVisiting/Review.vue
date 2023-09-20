@@ -246,22 +246,6 @@
         >{{ option.name }}</Badge
       >
     </template>
-    <!-- mobile veiw stars -->
-    <!-- <div
-      v-if="screenWidth < 1260"
-      class="mt-3 mb-2 ml-1 flex items-center space-x-4"
-    >
-      <StarRating
-        :rating="Number(parseFloat(review.rating).toFixed(1))"
-        :isIndicatorActive="true"
-      />
-      <div
-        class="font-bold flex justify-center items-center text-md xs:text-xl"
-      >
-        {{ convertDateFormat(review.rating_date) }}
-      </div>
-    </div> -->
-    <!-- qulifying questions -->
 
     <QualifyingQuestions
       v-if="questionsSwitch.length && review?.how_did_you_meet_this_contractor"
@@ -379,6 +363,7 @@ const appealReasonError = ref("");
 //computed
 
 const loading = computed(() => store.state.ratings.loading);
+const screenWidth = computed(() => store.getters.screenWidth);
 const disabled = computed(() => store.state.ratings.disabled);
 //watch
 
@@ -433,20 +418,7 @@ const openDeleteDialog = () => {
 };
 
 const showFullReview = ref(false);
-const screenWidth = ref(window.innerWidth);
 
-// Update the screen width whenever the window is resized
-const updateWidth = () => {
-  screenWidth.value = window.innerWidth;
-};
-
-onMounted(() => {
-  window.addEventListener("resize", updateWidth);
-});
-
-onUnmounted(() => {
-  window.removeEventListener("resize", updateWidth);
-});
 //  for quesitonSwitch
 const questionsMapping = [
   {
@@ -471,11 +443,16 @@ const questionsMapping = [
   },
 ];
 
-const questionsSwitch = questionsMapping.map((mapping) => ({
-  id: mapping.id,
-  question: mapping.question,
-  questionAnswer: review[mapping.field],
-}));
+const questionsSwitch = computed(() => {
+  return questionsMapping.map((mapping) => {
+    return {
+      id: mapping.id,
+      question: mapping.question,
+      questionAnswer:
+        review[mapping.field] === true ? 1 : review[mapping.field],
+    };
+  });
+});
 </script>
 
 <style scoped>

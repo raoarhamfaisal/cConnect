@@ -73,42 +73,44 @@
             <!-- Filters -->
             <div class="border-gray-300">
               <heading-card class="mt-6" heading="Order Reviews By" />
-              <div class="mb-6">
-                <div class="flex gap-3">
+              <div>
+                <div class="flex gap-3 flex-wrap">
                   <Button
-                    :selected="sortByDate === 'latest'"
-                    @onSelect="(selected) => handleDate(selected, 'latest')"
+                    :selected="sortBy === 'latest'"
+                    @onSelect="
+                      (selected) => handleFilterSelect(selected, 'latest')
+                    "
                     >Latest</Button
                   >
 
                   <Button
-                    :selected="sortByDate === 'oldest'"
-                    @onSelect="(selected) => handleDate(selected, 'oldest')"
+                    :selected="sortBy === 'oldest'"
+                    @onSelect="
+                      (selected) => handleFilterSelect(selected, 'oldest')
+                    "
                     >Oldest</Button
                   >
-                </div>
-              </div>
-            </div>
-            <!-- RAting -->
-            <div class="mb-6 xs:mt-12 mt-7 border-t-2 border-gray-300">
-              <heading-card heading="Ratings" class="mt-6" />
-              <div class="flex gap-3">
-                <div class="flex gap-3">
                   <Button
-                    :selected="sortByRating === 'highest'"
-                    @onSelect="(selected) => handleRating(selected, 'highest')"
+                    :selected="sortBy === 'highest'"
+                    @onSelect="
+                      (selected) => handleFilterSelect(selected, 'highest')
+                    "
                     >Highest rated</Button
                   >
 
                   <Button
-                    :selected="sortByRating === 'middle'"
-                    @onSelect="(selected) => handleRating(selected, 'middle')"
+                    :selected="sortBy === 'middle'"
+                    @onSelect="
+                      (selected) => handleFilterSelect(selected, 'middle')
+                    "
                     >Middle Rated</Button
                   >
 
                   <Button
-                    :selected="sortByRating === 'lowest'"
-                    @onSelect="(selected) => handleRating(selected, 'lowest')"
+                    :selected="sortBy === 'lowest'"
+                    @onSelect="
+                      (selected) => handleFilterSelect(selected, 'lowest')
+                    "
                     >Low Rated</Button
                   >
                 </div>
@@ -216,7 +218,7 @@ import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import Card from "@/Components/Card.vue";
 import Loader from "@/Components/Ratings/Loader.vue";
 
-import { ref, onMounted, computed, onBeforeMount } from "vue";
+import { ref, onMounted, computed, onBeforeMount, watch } from "vue";
 import { somethingWentWrong } from "@/helpers/utilities";
 import { useStore } from "vuex";
 import { Inertia } from "@inertiajs/inertia";
@@ -247,8 +249,7 @@ const starPercentages = ref([]);
 const average_rating = ref(null);
 const contractor = ref({});
 const reviewResponseFilter = ref("reviews");
-const sortByDate = ref("latest");
-const sortByRating = ref("");
+const sortBy = ref("latest");
 const pagination = ref(0);
 const perPage = ref(15);
 const loadingNextPage = ref(false);
@@ -266,27 +267,29 @@ onBeforeMount(() => {
 });
 
 //Computed
+
+const updatedReview = computed(() => store.state.ratings.updatedReview);
 const screenWidth = computed(() => store.getters.screenWidth);
 
 //Watch
+watch(updatedReview, (newVal) => {
+  if (newVal && newVal.id) {
+    const reviewIndex = appealedReviews.value.findIndex(
+      (review) => review.id === newVal.id
+    );
 
+    if (reviewIndex !== -1) {
+      // Update the existing review with the new data
+      Object.assign(appealedReviews.value[reviewIndex], newVal);
+    }
+    console.log(newVal, newVal.id, reviewIndex, "updated");
+  }
+});
 // Methods
 
-const handleDate = async (selected, sortByString) => {
+const handleFilterSelect = async (selected, sortByRate) => {
   if (selected) {
-    sortByDate.value = sortByString;
-  } else if (!selected) {
-    sortByDate.value = "";
-  }
-  contractorReviews.value = [];
-
-  await fetchContractorReviews(false);
-};
-const handleRating = async (selected, sortByRate) => {
-  if (selected) {
-    sortByRating.value = sortByRate;
-  } else if (!selected) {
-    sortByRating.value = "";
+    sortBy.value = sortByRate;
   }
   contractorReviews.value = [];
 
@@ -316,10 +319,17 @@ const fetchReviews = async (
   page = 1,
   append = true
 ) => {
+  let sortByDate = "";
+  let sortByRating = "";
+  if (sortBy.value === "latest" || sortBy.value === "oldest") {
+    sortByDate = sortBy.value;
+  } else {
+    sortByRating = sortBy.value;
+  }
   try {
     disabled.value = true;
     const response = await axios.get(
-      `/api/admin/${reviewResponseFilter.value}/${contractorId.value}/history?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
+      `/api/admin/${reviewResponseFilter.value}/${contractorId.value}/history?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate}&sort_by_rating=${sortByRating}`,
       getAxiosConfig()
     );
     if (append) {

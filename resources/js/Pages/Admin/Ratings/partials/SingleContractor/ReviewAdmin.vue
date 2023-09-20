@@ -120,6 +120,7 @@
           questionsSwitch.length && review?.how_did_you_meet_this_contractor
         "
         :questionsSwitch="questionsSwitch"
+        :key="questionsSwitch[0].questionAnswer"
         questionsBgColor="#eaf3fa"
         :selectedReferal="review.how_did_you_meet_this_contractor"
       />
@@ -137,47 +138,35 @@
         >
           <p
             class="text-sm font-semibold py-1 px-3 text-grey-600"
-            v-if="!editRatingText && rating_text && !isTyping"
+            v-if="review.rating_text"
           >
             {{
               showFullReview
-                ? rating_text
-                : rating_text.substring(0, 400) +
-                  (rating_text.length > 400 ? "..." : "")
+                ? review.rating_text
+                : review.rating_text.substring(0, 400) +
+                  (review.rating_text.length > 400 ? "..." : "")
             }}
             <span
-              v-if="!showFullReview && rating_text.length > 400"
+              v-if="!showFullReview && review.rating_text.length > 400"
               @click="showFullReview = true"
               class="cursor-pointer text-sky-700"
             >
               See more
             </span>
             <span
-              v-if="showFullReview && rating_text.length > 400"
+              v-if="showFullReview && review.rating_text.length > 400"
               @click="showFullReview = false"
               class="cursor-pointer text-sky-700"
             >
               See less
             </span>
           </p>
-          <textarea
-            v-else
-            v-model="rating_text"
-            @blur="stopTyping"
-            ref="ratingTextarea"
-            @keydown="saveInput"
-            class="text-sm w-full py-1 px-3 focus:shadow-none focus:ring-gray-600 focus:rounded font-semibold text-grey-600 border-none resize-none bg-transparent"
-            :rows="numberOfRows"
-          ></textarea>
-          <div class="text-xs text-red-600" v-if="!rating_text">
-            Review Text must not be empty
-          </div>
         </Card>
         <ButtonRatings
           v-if="hasPostPrevillages"
           bgColor="bg-lime-700"
           icon="material-symbols:edit-sharp"
-          @click="focusTextarea"
+          @click="openEditDialog"
           class="self-start"
           >Edit</ButtonRatings
         >
@@ -260,17 +249,11 @@
     </div>
   </div>
   <!-- Response -->
-  <div
-    v-if="
-      review.review_response && Object.keys(review.review_response).length > 1
-    "
-  >
-    <ResponseAdmin
-      :response="review.review_response"
-      :contractorId="contractorId"
-      :profileId="profileId"
-    />
-  </div>
+  <ResponseAdmin
+    :response="review.review_response"
+    :contractorId="contractorId"
+    :profileId="profileId"
+  />
 
   <!-- turn on appeal -->
   <div
@@ -287,7 +270,9 @@
   </div>
   <div
     class="mb-4 mt-3"
-    v-if="review && review.appeal && review.appeal.on_appeal_reason"
+    v-if="
+      showNotes && review && review.appeal && review.appeal.on_appeal_reason
+    "
   >
     <DecisionNotes
       @changeStatus="changeStatus"
@@ -296,9 +281,17 @@
       :reviewId="review.id"
     />
   </div>
+  <EditRatingModal
+    ref="editRef"
+    :review="review"
+    :profileId="profileId"
+    :questionsSwitch="questionsSwitch"
+    :contractorId="contractorId"
+  />
 </template>
 
 <script setup>
+import EditRatingModal from "@/Pages/Ratings/Edit/EditRatingModal.vue";
 import Avatar from "@/Components/Ratings/Avatar.vue";
 import Appeal from "@/Pages/Admin/Ratings/partials/SingleContractor/Appeal.vue";
 import DecisionNotes from "@/Pages/Admin/Ratings/partials/SingleContractor/DecisionNotes.vue";
@@ -308,17 +301,20 @@ import Badge from "@/Components/Ratings/Badge.vue";
 import QualifyingQuestionsAdmin from "@/Pages/Admin/Ratings/partials/SingleContractor/QualifyingQuestionsAdmin.vue";
 import Tooltip from "@/Components/Ratings/Tooltip.vue";
 import Card from "@/Components/Card.vue";
-import { convertDateFormat, filterBadWords } from "@/helpers/utilities";
+import { convertDateFormat } from "@/helpers/utilities";
 import ResponseAdmin from "@/Pages/Admin/Ratings/partials/SingleContractor/ResponseAdmin.vue";
 
-import { ref, computed, nextTick } from "vue";
+import { computed, ref } from "vue";
 import { Icon } from "@iconify/vue";
 import { Link, usePage } from "@inertiajs/inertia-vue3";
-import { useStore } from "vuex";
 
 //State
 
 const { review, contractorId } = defineProps({
+  showNotes: {
+    type: Boolean,
+    default: false,
+  },
   review: {
     type: Object,
   },
@@ -362,16 +358,12 @@ const options = [
   { id: "trade23", name: "Handyman Services" },
   { id: "trade24", name: "Architectural, Engineering & Law" },
 ];
-const store = useStore();
-const hasPostPrevillages = usePage().props.value.auth.user.posts_privileges;
+const editRef = ref();
 
-const editRatingText = ref(false);
-const ratingTextarea = ref();
+const hasPostPrevillages = usePage().props.value.auth.user.posts_privileges;
 const appealStatus = ref(
   review?.appeal?.appeal_status ? review.appeal.appeal_status : null
 );
-const rating_text = ref(review.rating_text);
-const isTyping = ref(false);
 
 const showFullReview = ref(false);
 //  for quesitonSwitch
@@ -398,55 +390,21 @@ const questionsMapping = [
   },
 ];
 
-const questionsSwitch = questionsMapping.map((mapping) => ({
-  id: mapping.id,
-  question: mapping.question,
-  questionAnswer: review[mapping.field],
-}));
-
 //computed
-
-const numberOfRows = computed(() => {
-  if (!rating_text.value) return 1; // if there's no content, return a default row number
-  const charsPerLine = 97;
-
-  return Math.ceil(rating_text.value.length / charsPerLine);
+const questionsSwitch = computed(() => {
+  return questionsMapping.map((mapping) => {
+    return {
+      id: mapping.id,
+      question: mapping.question,
+      questionAnswer:
+        review[mapping.field] === true ? 1 : review[mapping.field],
+    };
+  });
 });
 //Methods
-const focusTextarea = async () => {
-  editRatingText.value = true;
-  await nextTick();
-  ratingTextarea.value.focus();
-};
-const stopTyping = () => {
-  isTyping.value = false;
-  editRatingText.value = false;
-};
 
-let saveTimeout = null;
-
-const saveInput = () => {
-  isTyping.value = true;
-  if (saveTimeout) {
-    clearTimeout(saveTimeout);
-  }
-
-  // Start a new timer
-  saveTimeout = setTimeout(async () => {
-    if (!rating_text.value) {
-      return;
-    }
-    const updatedReview = {
-      rating_text: filterBadWords(rating_text),
-      reviewer_id: review.reviewer_id,
-      contractor_id: contractorId,
-    };
-    await store.dispatch("ratings/updateReview", {
-      reviewId: review.id,
-      review: updatedReview,
-      dontShowSuccessSnack: true,
-    });
-  }, 1000); // 1 second delay
+const openEditDialog = () => {
+  editRef.value.openDialogEdit();
 };
 
 const changeStatus = (appealFilter) => {

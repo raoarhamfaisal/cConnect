@@ -2,6 +2,11 @@
 import axios from "axios";
 import VueFilePond from "vue-filepond";
 import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
+import InputLabel from "@/Components/InputLabel.vue";
+import MultiSelect from "@/Components/MultiSelect.vue";
+import InputError from "@/Components/InputError.vue";
+import SelectProfile from "@/Components/SelectProfile.vue";
+import Loader from "@/Components/Ratings/Loader.vue";
 
 // additional required plugins
 import FilePondPluginFilePoster from "filepond-plugin-file-poster";
@@ -17,6 +22,34 @@ import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
 import "filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css";
+import { mapGetters } from "vuex";
+import { ref } from "vue";
+const options = [
+  { id: "trade1", name: "Supplier & Advertiser (all trades)" },
+  { id: "trade2", name: "Construction & Remodeling" },
+  { id: "trade3", name: "Tile Works, Kitchen & Bathrooms" },
+  { id: "trade4", name: "Concrete, Masonry & Foundations" },
+  { id: "trade5", name: "Landscape" },
+  { id: "trade6", name: "Earthworks, Drives & Parking Lots" },
+  { id: "trade7", name: "Roofing & Solar" },
+  { id: "trade8", name: "Gutters, Siding & Fencing" },
+  { id: "trade9", name: "Water/Fire & Mold Remediation" },
+  { id: "trade10", name: "Electrical & Low Voltage" },
+  { id: "trade11", name: "Plumbing (all Facets)" },
+  { id: "trade12", name: "HVAC" },
+  { id: "trade13", name: "Carpentry & Finish Carpentry" },
+  { id: "trade14", name: "Cabinets, Countertops & Furniture" },
+  { id: "trade15", name: "Decks, Pergolas & Gazzebo" },
+  { id: "trade16", name: "Flooring - All Types" },
+  { id: "trade17", name: "Painting & Staining" },
+  { id: "trade18", name: "Drywall Install & Repair Mud Texture" },
+  { id: "trade19", name: "Garage & Garage Doors" },
+  { id: "trade20", name: "Cleaning Services & Junk Haul Off" },
+  { id: "trade21", name: "Glass, Mirrors, Windows & Doors" },
+  { id: "trade22", name: "Metal Fab, Fireplaces" },
+  { id: "trade23", name: "Handyman Services" },
+  { id: "trade24", name: "Architectural, Engineering & Law" },
+];
 
 const FilePond = VueFilePond(
   FilePondPluginImageExifOrientation,
@@ -31,9 +64,14 @@ const FilePond = VueFilePond(
 export default {
   components: {
     FilePond,
+    Loader,
+    InputLabel,
+    InputError,
+    SelectProfile,
+    MultiSelect,
   },
 
-  props: ["form", "isOpen", "isEdit"],
+  props: ["form", "isOpen", "isEdit", "id"],
   // props: {
   //     form: {
   //         type: Object,
@@ -47,12 +85,70 @@ export default {
     return {
       // the image array parameter
       myFiles: [],
-
+      referenceList: ref([]),
+      selectedReferal: ref(""),
+      selectedItems: ref(null),
+      items: [
+        {
+          id: 1,
+          name: "Javascript",
+        },
+        {
+          id: 2,
+          name: "PHP",
+        },
+        {
+          id: 3,
+          name: "Node",
+        },
+        {
+          id: 4,
+          name: "Python",
+        },
+        {
+          id: 5,
+          name: "Rust",
+        },
+        {
+          id: 6,
+          name: "Java",
+        },
+      ],
       // csrfToken: document.querySelector('meta[name="csrf-token"]').content
     };
   },
+  mounted() {
+    this.$store.dispatch("ratings/getRegions");
+    console.log(this.props, "rops");
+    this.$store.dispatch("ratings/getTrades", this.id);
+  },
+  computed: {
+    ...mapGetters("ratings", ["regions", "loading", "trades"]),
+  },
+  watch: {
+    regions(newValue) {
+      if (newValue.length > 0) {
+        this.referenceList = this.regions.map((item) => item.name);
+        const selectedObj = this.regions.find(
+          (item) => item.id === +this.form.region_id
+        );
+        console.log(selectedObj, "selectedObj", this.regions);
+        const selectedName = selectedObj ? selectedObj.name : undefined;
 
+        console.log(selectedName);
+        this.selectedReferal = selectedName;
+      }
+    },
+  },
   methods: {
+    changeReferal(value) {
+      this.selectedReferal = value;
+      this.regions.forEach((item) => {
+        if (value === item.name) {
+          this.form.region_id = item.id.toString();
+        }
+      });
+    },
     // called when plugin is initialized
     handleFilePondInit() {
       this.myFiles = [];
@@ -144,14 +240,15 @@ Array.prototype.remove = function () {
 </script>
 
 <template>
+  <Loader :loading="loading" background="" height="30vh"></Loader>
   <div
-    v-if="isOpen"
+    v-if="isOpen && !loading"
     class="fixed z-40 inset-0 overflow-y-auto ease-out duration-400 overscroll-contain"
   >
     <div
       class="flex items-start justify-start min-h-screen mt-5 pt-4 px-1 pb-20 text-center sm:block sm:p-0"
     >
-      <div class="fixed inset-0 transition-opacity">
+      <div class="fixed inset-0 transition-opacity" @click="$emit('formclose')">
         <div class="absolute inset-0 bg-gray-500 opacity-70"></div>
       </div>
 
@@ -294,6 +391,27 @@ Array.prototype.remove = function () {
                 <div v-if="$page.props.errors.body2" class="text-red-500">
                   {{ $page.props.errors.body2 }}
                 </div>
+              </div>
+              <div class="mb-4 sm:mb-0">
+                <InputLabel class="font-bold mb-1" value="Region" />
+                <SelectProfile
+                  :options="referenceList"
+                  :modelValue="selectedReferal"
+                  @update:modelValue="changeReferal"
+                />
+                <InputError
+                  class="mt-2"
+                  :message="$page.props.errors.region_id"
+                />
+              </div>
+              <div class="mb-4 sm:mb-0">
+                <InputLabel class="font-bold mb-1" value="Trades" />
+                <multi-select
+                  v-model="selectedItems"
+                  :items="items"
+                  :sorting-property="'name'"
+                />
+                <InputError class="mt-2" :message="$page.props.errors.trades" />
               </div>
             </div>
           </div>
