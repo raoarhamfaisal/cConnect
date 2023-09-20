@@ -22,9 +22,6 @@ class Post extends Model
         'likes',
         'repost',
         'shares',
-        'longitude',
-        'latitude',
-
     ];
 
 

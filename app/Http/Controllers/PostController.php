@@ -157,10 +157,11 @@ class PostController extends Controller
                 'region_id'
             );
 
-        if(!$validatedInput['region_id']) {
+
+        if(!array_key_exists('region_id', $validatedInput) || !$validatedInput['region_id']) {
             $validatedInput['region_id'] = $postersProfile['region_id'];
         }
-
+        
         // $validatedInput = $InsertPostProfileService->insertPostersProfile($validatedInput);
         //dd($validatedInput);
 

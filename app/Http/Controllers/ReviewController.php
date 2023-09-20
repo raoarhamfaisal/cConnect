@@ -1088,9 +1088,11 @@ class ReviewController extends Controller
         ])->withTrashed()
         ->select('reviews.*', 'appeals.id as appeal_id') // Select appeal_id
         ->join('appeals', 'reviews.id', '=', 'appeals.review_id') // Join with appeals table
-        ->where('appeals.appeal_status', $appealStatus)
         ->whereHas('contractor', function ($query) use ($regionId) {
             $query->where('region_id', $regionId);
+        })
+        ->whereHas('appeal', function ($query) use ($appealStatus) {
+            $query->where('appeal_status', $appealStatus);
         }); 
 
 
