@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Review;
 use App\Models\Profile;
+use App\Models\Appeal;
 use App\Models\Region;
 use App\Models\RatingReason;
 use Illuminate\Http\Request;
@@ -105,7 +106,11 @@ class ReviewController extends Controller
                 'user_avatar',
                 'company_logo'
             ])->with('trades:id');
-        },'reviewer.trades', 'review_response'])->where('contractor_id', $contractor_id)->where('is_review_active', 1);
+        },'reviewer.trades', 'review_response', 
+        'appeal'
+        
+        ])
+        ->where('contractor_id', $contractor_id)->where('is_review_active', 1);
     
         // Apply sorting based on filters
         $sortByDate = $request->query('sort_by_date', '');
@@ -142,10 +147,15 @@ class ReviewController extends Controller
                 $transformedTrades = $this->convertTradesToOldStructure(collect($trades));
                 $review['reviewer'] = array_merge($review['reviewer'], $transformedTrades);
             }
+
+            // Check if appeal data exists, and if it does, flatten it
+            if (isset($review['appeal']) && !is_null($review['appeal'])) {
+                $review = array_merge($review, $review['appeal']);
+                unset($review['appeal']);
+            }
         }
 
-        
-        
+
         // Construct the response
         $response = [
             'reviews' => $reviewsArray['data'],
@@ -181,11 +191,6 @@ class ReviewController extends Controller
             'contractor_id' => 'required|integer|exists:profiles,id',
             'rating' => 'required|numeric|between:0,999999.99',
             'rating_text' => 'required|string',
-            'on_appeal_reason' => 'nullable|string',
-            'on_appeal_reason_date' => 'nullable|date_format:Y-m-d H:i:s',
-            'off_appeal_reason' => 'nullable|string',
-            'off_appeal_reason_date' => 'nullable|date_format:Y-m-d H:i:s',
-            'is_under_appeal' => 'required|boolean',
             'hired_by_contractor' => 'required|boolean',
             'paid_on_time' => 'required|boolean',
             'hired_contractor' => 'required|boolean',
@@ -240,11 +245,6 @@ class ReviewController extends Controller
             'contractor_id' => 'integer|exists:profiles,id',
             'rating' => 'numeric|between:0,999999.99',
             'rating_text' => 'string',
-            'on_appeal_reason' => 'nullable|string',
-            'on_appeal_reason_date' => 'nullable|date_format:Y-m-d H:i:s',
-            'off_appeal_reason' => 'nullable|string',
-            'off_appeal_reason_date' => 'nullable|date_format:Y-m-d H:i:s',
-            'is_under_appeal' => 'boolean',
             'hired_by_contractor' => 'boolean',
             'paid_on_time' => 'boolean',
             'hired_contractor' => 'boolean',
@@ -256,13 +256,16 @@ class ReviewController extends Controller
         $user = Auth::user();
         // Check if the user is the original reviewer or has admin privileges
         if ($user->id === $data['reviewer_id'] || $user->posts_privileges) {
+
+            $appeal = Appeal::where('review_id', $review->id)->first();
         
-            $review->is_appeal_already_accepted_or_rejected = false;
-            $review->is_under_appeal = false;
-            $review->on_appeal_reason_date = null;    
-            $review->on_appeal_reason = '';    
-            $review->off_appeal_reason_date = null;    
-            $review->off_appeal_reason = '';
+            $appeal->is_appeal_already_accepted_or_rejected = false;
+            $appeal->is_under_appeal = false;
+            $appeal->on_appeal_reason_date = null;    
+            $appeal->on_appeal_reason = '';    
+            $appeal->off_appeal_reason_date = null;    
+            $appeal->off_appeal_reason = '';
+            $appeal->save();
             $review->update($data);
         
             return response()->json(['message' => 'Review updated successfully!', 'review' => $review], 200);
@@ -286,12 +289,14 @@ class ReviewController extends Controller
         $user = Auth::user();
         // Check if the user is the original reviewer or has admin privileges
         if ($user->id === $review->reviewer_id || $user->appeals_privileges || $user->posts_privileges) {
-            $review->is_appeal_already_accepted_or_rejected = false;
-            $review->is_under_appeal = false;
-            $review->on_appeal_reason_date = null;    
-            $review->on_appeal_reason = '';    
-            $review->off_appeal_reason_date = null;    
-            $review->off_appeal_reason = '';
+            $appeal = Appeal::where('review_id', $review->id)->first();
+            $appeal->is_appeal_already_accepted_or_rejected = false;
+            $appeal->is_under_appeal = false;
+            $appeal->on_appeal_reason_date = null;    
+            $appeal->on_appeal_reason = '';    
+            $appeal->off_appeal_reason_date = null;    
+            $appeal->off_appeal_reason = '';
+            $appeal->save();
             $review->delete();
             return response()->json(['message' => 'Review deleted successfully!'], 200);
         }else {
@@ -310,8 +315,10 @@ class ReviewController extends Controller
     public function putOnAppeal(Request $request, Review $review)
     {
 
+        $appeal = Appeal::where('review_id', $review->id)->first();
+
         // Check if the appeal for this review is already accepted or rejected
-        if ($review->is_appeal_already_accepted_or_rejected || $review->is_under_appeal) {
+        if ($appeal->is_appeal_already_accepted_or_rejected || $appeal->is_under_appeal) {
             return response()->json(['message' => 'You have already submitted an appeal!.'], 400);
         }
 
@@ -327,11 +334,12 @@ class ReviewController extends Controller
         if ($user->id === $review->contractor_id || $user->appeals_privileges) {
 
             // Set the review to be under appeal and add the current datetime
-            $review->is_under_appeal = true;
-            $review->on_appeal_reason_date = Carbon::now();
-            $review->on_appeal_reason = $data['on_appeal_reason'];
-            $review->appeal_status = "open";
+            $appeal->is_under_appeal = true;
+            $appeal->on_appeal_reason_date = Carbon::now();
+            $appeal->on_appeal_reason = $data['on_appeal_reason'];
+            $appeal->appeal_status = "open";
 
+            $appeal->save();
             $review->save();
 
             return response()->json(['message' => 'Review put on appeal successfully!', 'review' => $review], 200);
@@ -350,13 +358,14 @@ class ReviewController extends Controller
      public function removeAppeal(Request $request, Review $review)
     {
 
+        $appeal = Appeal::where('review_id', $review->id)->first();
         // Check if the appeal for this review is already accepted or rejected
-        if ($review->is_appeal_already_accepted_or_rejected) {
+        if ($appeal->is_appeal_already_accepted_or_rejected) {
             return response()->json(['message' => 'You have already submitted an appeal!'], 400);
         }
 
         // Check if the appeal is submitted or not
-        if (!$review->is_under_appeal) {
+        if (!$appeal->is_under_appeal) {
             return response()->json(['message' => 'Sorry! You have not submitted an appeal yet.'], 400);
         }
 
@@ -371,9 +380,10 @@ class ReviewController extends Controller
         if ($user->id === $review->contractor_id || $user->appeals_privileges) {
 
             // Set the review's appeal status to off and add the current datetime
-            $review->off_appeal_reason_date = Carbon::now();
-            $review->off_appeal_reason = $data['off_appeal_reason'];
+            $appeal->off_appeal_reason_date = Carbon::now();
+            $appeal->off_appeal_reason = $data['off_appeal_reason'];
 
+            $appeal->save();
             $review->save();
 
             return response()->json(['message' => 'Appeal for removal successfully submitted!', 'review' => $review], 200);
@@ -641,7 +651,9 @@ class ReviewController extends Controller
                 'company_logo'
             ])->with('trades:id');
         },  'ratingReasons',  // Attach rating reasons related to the review
-        'review_response.responseReasons','review_response'])->withTrashed()->where('contractor_id', $contractor_id);
+        'review_response.responseReasons','review_response', 'appeal'])
+        ->withTrashed()
+        ->where('contractor_id', $contractor_id);
     
         // Apply sorting based on filters
         $sortByDate = $request->query('sort_by_date', '');
@@ -678,6 +690,13 @@ class ReviewController extends Controller
                 $transformedTrades = $this->convertTradesToOldStructure(collect($trades));
                 $review['reviewer'] = array_merge($review['reviewer'], $transformedTrades);
             }
+
+            // Check if appeal data exists, and if it does, flatten it
+            if (isset($review['appeal']) && !is_null($review['appeal'])) {
+                $review = array_merge($review, $review['appeal']);
+                unset($review['appeal']);
+            }
+            
         }
     
         // Retrieve the contractor details from the Profile table
@@ -737,17 +756,14 @@ class ReviewController extends Controller
             'contractor_id' => 'integer|exists:profiles,id',
             'rating' => 'numeric|between:0,999999.99',
             'rating_text' => 'string',
-            'on_appeal_reason' => 'nullable|string',
-            'on_appeal_reason_date' => 'nullable|date_format:Y-m-d H:i:s',
-            'off_appeal_reason' => 'nullable|string',
-            'off_appeal_reason_date' => 'nullable|date_format:Y-m-d H:i:s',
-            'is_under_appeal' => 'boolean',
             'hired_by_contractor' => 'boolean',
             'paid_on_time' => 'boolean',
             'hired_contractor' => 'boolean',
             'give_full_payment' => 'boolean',
             'how_did_you_meet_this_contractor' => 'nullable|string|max:255',
         ]);
+
+        $appeal = Appeal::where('review_id', $reviewId)->first();
 
 
         // Get the old values
@@ -759,12 +775,12 @@ class ReviewController extends Controller
             'old_rating' => $review->rating,
             'old_rating_text' => $review->rating_text,
             'old_rating_date' => $review->rating_date,
-            'old_on_appeal_reason' => $review->on_appeal_reason,
-            'old_on_appeal_reason_date' => $review->on_appeal_reason_date,
-            'old_off_appeal_reason' => $review->off_appeal_reason,
-            'old_off_appeal_reason_date' => $review->off_appeal_reason_date,
-            'old_is_under_appeal' => $review->is_under_appeal,
-            'old_is_appeal_already_accepted_or_rejected' => $review->is_appeal_already_accepted_or_rejected,
+            'old_on_appeal_reason' => $appeal->on_appeal_reason,
+            'old_on_appeal_reason_date' => $appeal->on_appeal_reason_date,
+            'old_off_appeal_reason' => $appeal->off_appeal_reason,
+            'old_off_appeal_reason_date' => $appeal->off_appeal_reason_date,
+            'old_is_under_appeal' => $appeal->is_under_appeal,
+            'old_is_appeal_already_accepted_or_rejected' => $appeal->is_appeal_already_accepted_or_rejected,
             'old_hired_by_contractor' => $review->hired_by_contractor,
             'old_paid_on_time' => $review->paid_on_time,
             'old_hired_contractor' => $review->hired_contractor,
@@ -774,9 +790,8 @@ class ReviewController extends Controller
 
 
 
-
-
-        $review->is_appeal_already_accepted_or_rejected = true;
+        $appeal->is_appeal_already_accepted_or_rejected = true;
+        $appeal->save();
         $review->update($data);
 
 
@@ -797,12 +812,12 @@ class ReviewController extends Controller
             'new_rating' => $review->rating,
             'new_rating_text' => $review->rating_text,
             'new_rating_date' => $review->rating_date,
-            'new_on_appeal_reason' => $review->on_appeal_reason,
-            'new_on_appeal_reason_date' => $review->on_appeal_reason_date,
-            'new_off_appeal_reason' => $review->off_appeal_reason,
-            'new_off_appeal_reason_date' => $review->off_appeal_reason_date,
-            'new_is_under_appeal' => $review->is_under_appeal,
-            'new_is_appeal_already_accepted_or_rejected' => $review->is_appeal_already_accepted_or_rejected,
+            'new_on_appeal_reason' => $appeal->on_appeal_reason,
+            'new_on_appeal_reason_date' => $appeal->on_appeal_reason_date,
+            'new_off_appeal_reason' => $appeal->off_appeal_reason,
+            'new_off_appeal_reason_date' => $appeal->off_appeal_reason_date,
+            'new_is_under_appeal' => $appeal->is_under_appeal,
+            'new_is_appeal_already_accepted_or_rejected' => $appeal->is_appeal_already_accepted_or_rejected,
             'new_hired_by_contractor' => $review->hired_by_contractor,
             'new_paid_on_time' => $review->paid_on_time,
             'new_hired_contractor' => $review->hired_contractor,
@@ -870,20 +885,23 @@ class ReviewController extends Controller
      public function acceptAppeal(Request $request, Review $review)
      { 
 
+        $appeal = Appeal::where('review_id', $reviewId)->first();
+
+
         // Check if the review is under appeal
-        if (!$review->is_under_appeal) {
+        if (!$appeal->is_under_appeal) {
             return response()->json(['message' => 'This review is not under appeal.'], 400);
         }
 
         // Accept the appeal and turn off on appeal and off appeal
-        $review->is_under_appeal = false;
-        $review->is_appeal_already_accepted_or_rejected = true;
-        $review->on_appeal_reason_date = null;
-        $review->on_appeal_reason = '';
-        $review->off_appeal_reason_date = null;
-        $review->off_appeal_reason = '';
+        $appeal->is_under_appeal = false;
+        $appeal->is_appeal_already_accepted_or_rejected = true;
+        $appeal->on_appeal_reason_date = null;
+        $appeal->on_appeal_reason = '';
+        $appeal->off_appeal_reason_date = null;
+        $appeal->off_appeal_reason = '';
 
-        
+        $appeal->save();
         $review->save();
         // Send an Accept Eamil to the Contractor explaining the his request for changing the reivew is done.
 
@@ -911,22 +929,24 @@ class ReviewController extends Controller
       */
       public function rejectAppeal(Request $request, Review $review)
      {
-        // Check if the review is under appeal
-        if (!$review->is_under_appeal) {
+         $appeal = Appeal::where('review_id', $reviewId)->first();
+        // Check if the appeal is under appeal
+        if (!$appeal->is_under_appeal) {
             return response()->json(['message' => 'This review is not under appeal.'], 400);
         }
 
 
+
         // Accept the appeal and turn off on appeal and off appeal
-        $review->is_under_appeal = false;
-        $review->is_appeal_already_accepted_or_rejected = true;
-        $review->on_appeal_reason_date = null;
-        $review->on_appeal_reason = '';
-        $review->off_appeal_reason_date = null;
-        $review->off_appeal_reason = '';
+        $appeal->is_under_appeal = false;
+        $appeal->is_appeal_already_accepted_or_rejected = true;
+        $appeal->on_appeal_reason_date = null;
+        $appeal->on_appeal_reason = '';
+        $appeal->off_appeal_reason_date = null;
+        $appeal->off_appeal_reason = '';
 
         
-        $review->save();
+        $appeal->save();
         
         // Send an Reject Eamil to the Contractor explaining the his request for changing the reivew are rejected.
 
@@ -964,11 +984,12 @@ class ReviewController extends Controller
      public function updateAppeal(Request $request, $reviewId)
      {
         $review = Review::findOrFail($reviewId);
-
-
+        
+        
         if(!$review) {
             return response()->json(['message' => 'A reivew with this Id does not exist']);
         }
+        $appeal = Appeal::where('review_id', $reviewId)->first();
 
         // Get the currently authenticated user
         $user = Auth::user();
@@ -976,10 +997,10 @@ class ReviewController extends Controller
         if ($user->appeals_privileges) {
 
             $appeal_status = $request->input('appeal_status');
-            $review->appeal_status = $appeal_status;
-            $review->appeal_judge_notes = $request->input('appeal_judge_notes');
-            $review->appeal_last_updated_by = $user->name; // assuming you have auth
-            $review->appeal_last_updated_at = now();
+            $appeal->appeal_status = $appeal_status;
+            $appeal->appeal_judge_notes = $request->input('appeal_judge_notes');
+            $appeal->appeal_last_updated_by = $user->name; // assuming you have auth
+            $appeal->appeal_last_updated_at = now();
 
             if (!in_array($appeal_status, ['open', 'on_hold', 'approved', 'denied'])) {
                 return response()->json(['error' => 'Invalid appeal status'], 400);
@@ -987,19 +1008,20 @@ class ReviewController extends Controller
 
             if($appeal_status === "open") {
                 $review->is_review_active = 1;
-                $review->is_under_appeal = 1;
+                $appeal->is_under_appeal = 1;
             }else if($appeal_status === "on_hold") {
                 $review->is_review_active = 1;
-                $review->is_under_appeal = 1;
+                $appeal->is_under_appeal = 1;
             }else if($appeal_status === "approved") {
                 $review->is_review_active = 0;
-                $review->is_under_appeal = 0;
+                $appeal->is_under_appeal = 0;
             }else if($appeal_status === "denied") {
                 $review->is_review_active = 1;
-                $review->is_under_appeal = 0;
+                $appeal->is_under_appeal = 0;
             }
 
             $review->save();
+            $appeal->save();
 
             return response()->json(['message' => 'Appeal updated successfully']);
         }else {
@@ -1017,6 +1039,7 @@ class ReviewController extends Controller
      public function getReviewsByAppealStatus(Request $request, $regionId)
      {
         $appealStatus = $request->input('appeal_status');
+        $appealId = $request->query('appeal_id'); // Get the appeal_id from the query parameters
 
         if (!in_array($appealStatus, ['open', 'on_hold', 'approved', 'denied'])) {
             return response()->json(['error' => 'Invalid appeal status'], 400);
@@ -1060,30 +1083,41 @@ class ReviewController extends Controller
             },
             'ratingReasons',
             'review_response.responseReasons',
-            'review_response'
-        ])->withTrashed()->where('appeal_status', $appealStatus)->whereHas('contractor', function ($query) use ($regionId) {
+            'review_response',
+            'appeal'
+        ])->withTrashed()
+        ->select('reviews.*', 'appeals.id as appeal_id') // Select appeal_id
+        ->join('appeals', 'reviews.id', '=', 'appeals.review_id') // Join with appeals table
+        ->where('appeals.appeal_status', $appealStatus)
+        ->whereHas('contractor', function ($query) use ($regionId) {
             $query->where('region_id', $regionId);
         }); 
+
+
+
+        if ($appealId) {
+            $query = $query->where('appeals.id', $appealId); // Filter by appeal_id if it is provided
+        }
 
         // Apply sorting based on filters
         $sortByDate = $request->query('sort_by_date', ''); // Default to latest
         $sortByRating = $request->query('sort_by_rating', ''); // Default to highest
     
         if ($sortByDate === 'oldest') {
-            $query = $query->oldest('created_at');
+            $query = $query->oldest('reviews.rating_date');
         } else if ($sortByDate === 'latest') {
-            $query = $query->latest('created_at');
+            $query = $query->latest('reviews.rating_date');
         }
     
         switch ($sortByRating) {
             case 'highest':
-                $query = $query->orderByDesc('rating');
+                $query = $query->orderByDesc('reviews.rating');
                 break;
             case 'middle':
-                $query = $query->orderBy('rating', 'asc')->whereBetween('rating', [2.5, 3.5]);
+                $query = $query->orderBy('reviews.rating', 'asc')->whereBetween('reviews.rating', [2.5, 3.5]);
                 break;
             case 'lowest':
-                $query = $query->orderBy('rating', 'asc');
+                $query = $query->orderBy('reviews.rating', 'asc');
                 break;
         }
     

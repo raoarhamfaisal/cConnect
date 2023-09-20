@@ -25,6 +25,8 @@ class DatabaseSeeder extends Seeder
             ReviewResponseSeeder::class,
             ReviewSeeder::class,
             RatingReasonSeeder::class,
+            AppealSeeder::class,
+
         ]);
 
         \App\Models\User::factory()->create([

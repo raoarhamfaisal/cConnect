@@ -275,6 +275,7 @@ class ContractorRatingsAdminController extends Controller
             'ratingReasons',  
             'review_response.responseReasons',        
             'review_response', 
+            'appeal'
         ]);
         
         
@@ -313,6 +314,12 @@ class ContractorRatingsAdminController extends Controller
                 $trades = $review['reviewer']['trades'];
                 $transformedTrades = $this->convertTradesToOldStructure(collect($trades));
                 $review['reviewer'] = array_merge($review['reviewer'], $transformedTrades);
+            }
+
+            // Check if appeal data exists, and if it does, flatten it
+            if (isset($review['appeal']) && !is_null($review['appeal'])) {
+                $review = array_merge($review, $review['appeal']);
+                unset($review['appeal']);
             }
         }
 

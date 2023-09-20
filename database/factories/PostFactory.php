@@ -31,9 +31,6 @@ class PostFactory extends Factory
             'likes' => $this->faker->numberBetween(0, 100),
             'repost' => $this->faker->numberBetween(0, 100),
             'shares' => $this->faker->numberBetween(0, 100),
-
-            'longitude' => $this->faker->numberBetween(0, 1),
-            'latitude' => $this->faker->numberBetween(0, 1),
         ];
     }
 }

@@ -123,7 +123,22 @@ class PostController extends Controller
     ) {
         $validatedInput = $request->validated();
 
-        $validatedInput = $InsertPostProfileService->insertPostersProfile($validatedInput);
+        // Set user_id for post
+        $userID = Auth()->user('')->id;
+        $validatedInput['user_id'] = $userID;
+    
+        // Get user info based on user id
+        $postersProfile = Profile::where('user_id', $userID)
+            ->first()
+            ->only(
+                'region_id'
+            );
+
+        if(!$validatedInput['region_id']) {
+            $validatedInput['region_id'] = $postersProfile['region_id'];
+        }
+
+        // $validatedInput = $InsertPostProfileService->insertPostersProfile($validatedInput);
         //dd($validatedInput);
 
         // Place the image into it's own string
@@ -154,11 +169,16 @@ class PostController extends Controller
 
         // Attach trades with post
         if($postCreated) {
-            // Fetch the trades associated with the logged-in user's profile
-            $userID = Auth()->user('')->id;
 
-            $profile = Profile::where('user_id', $userID)->with('trades:id')->first();
-            $trades = $profile->trades->pluck('id')->toArray();
+            $trades = $request->input('trades');
+
+            if(!$trades) {
+                // Fetch the trades associated with the logged-in user's profile    
+                $profile = Profile::where('user_id', $userID)->with('trades:id')->first();
+                $trades = $profile->trades->pluck('id')->toArray();
+            }
+
+
 
             // Sync the user trades with the postCreated
             $postCreated->trades()->sync($trades);
