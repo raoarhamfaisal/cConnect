@@ -65,9 +65,12 @@ import { computed, nextTick, ref, watch } from "vue";
 import { usePage } from "@inertiajs/inertia-vue3";
 import { useStore } from "vuex";
 
-const { response } = defineProps({
+const { response, reviewId } = defineProps({
   response: {
     type: Object,
+  },
+  reviewId: {
+    type: [String, Number],
   },
   profileId: {
     type: Number,
@@ -92,6 +95,9 @@ const numberOfRows = computed(() => {
   const charsPerLine = 90;
   return Math.ceil(response_text.value.length / charsPerLine);
 });
+watch(response, () => {
+  console.log("response changed to: " + response);
+});
 //Methods
 
 const stopTyping = () => {
@@ -103,24 +109,39 @@ let saveTimeout = null;
 
 const saveInput = async () => {
   isTyping.value = true;
-
+  console.log(response_text.value, "response_text", response);
   if (saveTimeout) {
     clearTimeout(saveTimeout);
   }
 
   // Start a new timer
   saveTimeout = setTimeout(async () => {
+    console.log("here");
     if (!response_text.value) {
       return;
     }
-    const updatedResponse = {
-      response_text: filterBadWords(response_text),
-      response_id: response.id,
-    };
-    await store.dispatch("ratings/updateResponse", {
-      responseData: updatedResponse,
-      dontShowSuccessSnack: true,
-    });
+    console.log("here2");
+
+    // if no text is there
+    if (!response) {
+      const responseData = {
+        response_text: filterBadWords(response_text),
+        review_id: reviewId,
+      };
+      await store.dispatch("ratings/createResponse", {
+        responseData: responseData,
+        dontShowSuccessSnack: true,
+      });
+    } else {
+      const updatedResponse = {
+        response_text: filterBadWords(response_text),
+        response_id: response && response?.id,
+      };
+      await store.dispatch("ratings/updateResponse", {
+        responseData: updatedResponse,
+        dontShowSuccessSnack: true,
+      });
+    }
   }, 1000); // 1 second delay
 };
 

@@ -175,21 +175,23 @@ export default {
         commit("setDisabledSending", false);
       }
     },
-    async createResponse({ commit }, responseData) {
+    async createResponse({ commit }, payload) {
       commit("setLoading", true);
       commit("setDisabled", true);
 
       try {
         const response = await axios.post(
           `/api/review-responses`,
-          responseData,
+          payload.responseData,
           getAxiosConfig()
         );
         if (response.data) {
-          changesSaved(
-            response.data.message || "Review response added successfully!"
-          );
           commit("setUpdatedResponse", response.data.review_response);
+          if (!payload.dontShowSuccessSnack) {
+            changesSaved(
+              response.data.message || "Review response added successfully!"
+            );
+          }
         }
       } catch (err) {
         somethingWentWrong();
@@ -240,7 +242,9 @@ export default {
               response.data.message || "Response Successfully Upadated"
             );
           }
-          commit("setUpdatedResponse", response.data.review_response);
+          if (!payload.dontShowSuccessSnack) {
+            commit("setUpdatedResponse", response.data.review_response);
+          }
         }
       } catch (err) {
         somethingWentWrong();

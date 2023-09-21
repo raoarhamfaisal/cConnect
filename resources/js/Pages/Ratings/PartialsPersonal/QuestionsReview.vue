@@ -65,7 +65,7 @@
     </div>
 
     <!-- Turn off appeal -->
-    <div
+    <!-- <div
       v-if="review.is_under_appeal && !review.off_appeal_reason"
       class="py-4 border-y-2 border-gray-300"
     >
@@ -118,7 +118,7 @@
           </div>
         </div>
       </transition>
-    </div>
+    </div> -->
     <div
       v-if="
         review.review_response && Object.keys(review.review_response).length > 1

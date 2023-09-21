@@ -251,7 +251,8 @@ const handleSubmit = async () => {
         }, 2000);
       }
     } catch (err) {
-      somethingWentWrong();
+      console.log(err);
+      somethingWentWrong(err.response.data.message, 500);
     } finally {
       loading.value = false;
       disabled.value = false;

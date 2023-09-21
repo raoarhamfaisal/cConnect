@@ -31,7 +31,8 @@ export const changesSaved = (
 };
 
 export const somethingWentWrong = (
-  notificationMessage = "Sorry Something Went wrong"
+  notificationMessage = "Sorry Something Went wrong",
+  changeWidth = 300
 ) => {
   Swal.fire({
     background: "#fe5151",
@@ -40,7 +41,7 @@ export const somethingWentWrong = (
     showConfirmButton: false,
     timer: 2000,
     padding: 10,
-    width: 300,
+    width: changeWidth,
   });
 };
 

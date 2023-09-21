@@ -68,8 +68,8 @@
     </div>
   </div>
 </template>
-  
-  <script>
+
+<script>
 export default {
   name: "stars-rating",
   components: {},
@@ -135,6 +135,13 @@ export default {
       );
     },
   },
+  watch: {
+    rating(newRating) {
+      // Recompute the stars when the rating prop changes
+      this.initStars();
+      this.setStars();
+    },
+  },
   methods: {
     calcStarPoints(
       centerX,
@@ -158,6 +165,7 @@ export default {
       return points;
     },
     initStars() {
+      this.stars = []; // Reset the stars array
       let radius = 13; // Adjust as needed to fit within your .star-rating dimensions
       let centerX = 20; // Half of .star-rating width
       let centerY = 20; // Half of .star-rating height
@@ -239,8 +247,8 @@ export default {
   },
 };
 </script>
-  
-  <style scoped>
+
+<style scoped>
 .star-rating {
   position: relative;
   width: 40px; /* Adjust to fit your desired circle size */
@@ -260,4 +268,3 @@ export default {
   font-size: 1rem;
 }
 </style>
-  

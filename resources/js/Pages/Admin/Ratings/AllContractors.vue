@@ -64,35 +64,50 @@
               class="border-b-2 py-2 border-gray-200 cursor-pointer"
               :contractor="contractor"
             />
+            <v-lazy
+              :min-height="5"
+              :options="{ threshold: 0.5 }"
+              v-if="
+                +currentPage !== +pagination.last_page &&
+                index === allContractors.length - 1
+              "
+              @update:model-value="loadMoreContractors"
+              transition="fade-transition"
+            ></v-lazy>
           </Link>
+          <div
+            v-if="
+              currentPage > 1 &&
+              !loading &&
+              !loadingNextPage &&
+              +currentPage === +pagination.last_page
+            "
+            class="text-center font-bold mt-4"
+          >
+            No More Contractors to Load
+          </div>
+          <Loader
+            classes="flex gap-2 mt-4"
+            :loading="loadingNextPage"
+            circleClasses="small-circle"
+            textClasses="small-text"
+            background=""
+            height="70px"
+          ></Loader>
         </div>
-        <div v-if="allContractors.length === 0">
+        <div v-if="allContractors.length === 0 && !loading">
           <div
             class="p-2 text-xl text-grey-600 font-bold h-60 flex items-center justify-center"
           >
             No Contractors Available
           </div>
         </div>
-        <div
-          v-if="
-            pagination &&
-            Object.keys(pagination).length > 0 &&
-            allContractors &&
-            allContractors.length > 0 &&
-            pagination.last_page > 1
-          "
-          class="flex items-center justify-center mb-4 mt-5"
-        >
-          <CustomPagination
-            :total-items="pagination.total"
-            :current-page="pagination.current_page"
-            :items-per-page="pagination.per_page"
-            v-model="currentPage"
-            :max-pages-shown="3"
-            :on-click="onClickHandler"
-          />
-        </div>
-        <Loader :loading="loading" background="white" height="60vh"></Loader>
+
+        <Loader
+          :loading="loading && !loadingNextPage"
+          background="white"
+          height="60vh"
+        ></Loader>
       </Card>
     </div>
   </Header>
@@ -102,8 +117,6 @@
 import Header from "@/Layouts/Header.vue";
 import { Head, usePage } from "@inertiajs/inertia-vue3";
 import Loader from "@/Components/Ratings/Loader.vue";
-import CustomPagination from "@/Components/Ratings/CustomPagination.vue";
-
 import Card from "@/Components/Card.vue";
 import { Link } from "@inertiajs/inertia-vue3";
 import Contractor from "./partials/AllContractors/Contractor.vue";
@@ -112,6 +125,7 @@ import { useStore } from "vuex";
 import { Inertia } from "@inertiajs/inertia";
 import SearchInput from "@/Components/Ratings/SearchInput.vue";
 import PageTitle from "@/Components/PageTitle.vue";
+import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 // States
 const { region_id } = defineProps({
   profile: Object,
@@ -131,16 +145,19 @@ const perPage = ref(5);
 const disabled = ref(false);
 const searchTerm = ref("");
 const isReviewers = ref(false);
+const loadingNextPage = ref(false);
+const loading = ref(false);
+const pagination = ref({});
+const allContractors = ref([]);
 
 //Computed
 
-const loading = computed(() => store.state.ratings.loading);
 const screenWidth = computed(() => store.getters.screenWidth);
-const allContractors = computed(() => store.state.ratings.allContractors);
-const pagination = computed(() => store.state.ratings.pagination);
 //on Mounted
-onMounted(() => {
-  fetchContractors();
+onMounted(async () => {
+  loading.value = true;
+  await fetchContractors();
+  loading.value = false;
 });
 
 onBeforeMount(() => {
@@ -149,22 +166,44 @@ onBeforeMount(() => {
   }
 });
 //Methods
-const fetchContractors = async (page = 1) => {
-  await store.dispatch("ratings/getAllContractors", {
-    perPage: perPage.value,
-    page: page,
-    region_id: region_id,
-    searchTerm: searchTerm.value,
-  });
+const loadMoreContractors = async () => {
+  console.log("Loading more");
+  loadingNextPage.value = true;
+  let pageToLoad = currentPage.value + 1;
+  await fetchContractors(pageToLoad);
+
+  loadingNextPage.value = false;
+  currentPage.value = pageToLoad;
+};
+const fetchContractors = async (page = 1, append = true) => {
+  try {
+    const response = await axios.get(
+      `/api/admin/${region_id}/search-contractor?search=${searchTerm.value}&per_page=${perPage.value}&page=${page}`,
+      getAxiosConfig()
+    );
+    if (response.data) {
+      if (append) {
+        allContractors.value = [
+          ...allContractors.value, // Accessing allContractors from the state
+          ...response.data.profiles,
+        ];
+      } else {
+        allContractors.value = [...response.data.profiles];
+      }
+      pagination.value = response.data.pagination;
+    }
+  } catch (err) {
+    somethingWentWrong();
+  }
 };
 
-const onClickHandler = (page) => {
-  fetchContractors(page);
-};
-
-const onSearch = (term) => {
+const onSearch = async (term) => {
   searchTerm.value = term;
-  fetchContractors();
+  currentPage.value = 1;
+  loading.value = true;
+
+  await fetchContractors(1, false);
+  loading.value = false;
 };
 
 const handleTabs = (isReviewer) => {
