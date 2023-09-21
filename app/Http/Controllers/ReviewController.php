@@ -258,14 +258,17 @@ class ReviewController extends Controller
         if ($user->id === $data['reviewer_id'] || $user->posts_privileges) {
 
             $appeal = Appeal::where('review_id', $review->id)->first();
+
+            if($appeal) {
+                $appeal->is_appeal_already_accepted_or_rejected = false;
+                $appeal->is_under_appeal = false;
+                $appeal->on_appeal_reason_date = null;    
+                $appeal->on_appeal_reason = '';    
+                $appeal->off_appeal_reason_date = null;    
+                $appeal->off_appeal_reason = '';
+                $appeal->save();
+            }
         
-            $appeal->is_appeal_already_accepted_or_rejected = false;
-            $appeal->is_under_appeal = false;
-            $appeal->on_appeal_reason_date = null;    
-            $appeal->on_appeal_reason = '';    
-            $appeal->off_appeal_reason_date = null;    
-            $appeal->off_appeal_reason = '';
-            $appeal->save();
             $review->update($data);
         
             return response()->json(['message' => 'Review updated successfully!', 'review' => $review], 200);
@@ -290,13 +293,19 @@ class ReviewController extends Controller
         // Check if the user is the original reviewer or has admin privileges
         if ($user->id === $review->reviewer_id || $user->appeals_privileges || $user->posts_privileges) {
             $appeal = Appeal::where('review_id', $review->id)->first();
-            $appeal->is_appeal_already_accepted_or_rejected = false;
-            $appeal->is_under_appeal = false;
-            $appeal->on_appeal_reason_date = null;    
-            $appeal->on_appeal_reason = '';    
-            $appeal->off_appeal_reason_date = null;    
-            $appeal->off_appeal_reason = '';
-            $appeal->save();
+            if($appeal) {
+                $appeal->is_appeal_already_accepted_or_rejected = false;
+                $appeal->is_under_appeal = false;
+                $appeal->on_appeal_reason_date = null;    
+                $appeal->on_appeal_reason = '';    
+                $appeal->off_appeal_reason_date = null;    
+                $appeal->off_appeal_reason = '';
+                $appeal->save();
+            }
+
+            $review->is_review_active = false;
+            $review->save();
+
             $review->delete();
             return response()->json(['message' => 'Review deleted successfully!'], 200);
         }else {
@@ -318,7 +327,7 @@ class ReviewController extends Controller
         $appeal = Appeal::where('review_id', $review->id)->first();
 
         // Check if the appeal for this review is already accepted or rejected
-        if ($appeal->is_appeal_already_accepted_or_rejected || $appeal->is_under_appeal) {
+        if ($appeal && ($appeal->is_appeal_already_accepted_or_rejected || $appeal->is_under_appeal)) {
             return response()->json(['message' => 'You have already submitted an appeal!.'], 400);
         }
 
@@ -333,13 +342,17 @@ class ReviewController extends Controller
         // Check if the user is the original reviewer or has admin privileges
         if ($user->id === $review->contractor_id || $user->appeals_privileges) {
 
-            // Set the review to be under appeal and add the current datetime
-            $appeal->is_under_appeal = true;
-            $appeal->on_appeal_reason_date = Carbon::now();
-            $appeal->on_appeal_reason = $data['on_appeal_reason'];
-            $appeal->appeal_status = "open";
+            $appealData = [
+                'review_id' => $review->id,
+                'is_under_appeal' => true,
+                'on_appeal_reason_date' => Carbon::now(),
+                'on_appeal_reason' => $data['on_appeal_reason'],
+                'appeal_status' => "open",
+            ];
 
-            $appeal->save();
+            // Set the review to be under appeal and add the current datetime
+            Appeal::create($appealData);
+
             $review->save();
 
             return response()->json(['message' => 'Review put on appeal successfully!', 'review' => $review], 200);

@@ -235,7 +235,7 @@ const responseId = computed(() => store.state.ratings.responseId);
 const updatedReview = computed(() => store.state.ratings.updatedReview);
 
 //Watch
-watch(updatedReview, (newVal) => {
+watch(updatedResponse, (newVal) => {
   if (newVal && newVal.id) {
     const reviewToUpdate = contractorReviews.value.find(
       (review) => review.id === newVal.review_id
@@ -247,34 +247,28 @@ watch(updatedReview, (newVal) => {
       );
 
       if (indexToUpdate !== -1) {
-        contractorReviews.value = contractorReviews.value.map(
-          (review, index) => {
-            if (index === indexToUpdate) {
-              return reviewToUpdate; // Replace the object at the specified index
-            }
-            return review; // Keep other objects unchanged
+        contractorReviews.value = contractorReviews.value.map((review, index) => {
+          if (index === indexToUpdate) {
+            return reviewToUpdate; // Replace the object at the specified index
           }
-        );
+          return review; // Keep other objects unchanged
+        });
       }
     }
   }
 });
-watch(updatedResponse, (newVal) => {
+watch(updatedReview, (newVal) => {
   if (newVal && newVal.id) {
-    const reviewToUpdate = contractorReviews.value.find(
-      (review) => review.response_id === newVal.id
+    const reviewIndex = contractorReviews.value.findIndex(
+      (review) => review.id === newVal.id
     );
-    if (reviewToUpdate) {
-      reviewToUpdate.review_response = newVal;
-      const indexToUpdate = contractorReviews.value.findIndex(
-        (review) => review.response_id === newVal.id
-      );
 
-      if (indexToUpdate !== -1) {
-        // Replace the old review with the updated one
-        contractorReviews.value.splice(indexToUpdate, 1, reviewToUpdate);
-      }
+    if (reviewIndex !== -1) {
+      // Update the existing review with the new data
+      Object.assign(contractorReviews.value[reviewIndex], newVal);
     }
+    console.log(newVal, newVal.id, reviewIndex, "updated");
+    fetchReveiwsWithLoading(true);
   }
 });
 watch(reviewId, (newVal) => {
@@ -286,12 +280,14 @@ watch(reviewId, (newVal) => {
     if (index !== -1) {
       contractorReviews.value.splice(index, 1);
     }
+    fetchReveiwsWithLoading(true);
+
   }
 });
 watch(responseId, (newVal) => {
   if (newVal) {
     const index = contractorReviews.value.findIndex(
-      (review) => review.response_id === newVal
+      (review) => review.review_response.id === newVal
     );
 
     if (index !== -1) {
@@ -314,9 +310,9 @@ const handleFilterSelect = (selected, sortByRate) => {
   }
   fetchReveiwsWithLoading();
 };
-const fetchReveiwsWithLoading = async () => {
+const fetchReveiwsWithLoading = async (noReviewsChanges = false) => {
   loading.value = true;
-  await fetchReviews(perPage.value, currentPage.value, false);
+  await fetchReviews(perPage.value, currentPage.value, false,noReviewsChanges);
   loading.value = false;
 };
 
@@ -324,7 +320,8 @@ const fetchReveiwsWithLoading = async () => {
 const fetchReviews = async (
   per_page = perPage.value,
   page = 1,
-  append = true
+  append = true,
+  noReviewsChanges= false,
 ) => {
   let sortByDate = "";
   let sortByRating = "";
@@ -344,7 +341,10 @@ const fetchReviews = async (
         ...response.data.reviews,
       ];
     } else {
-      contractorReviews.value = [...response.data.reviews];
+      if(!noReviewsChanges){
+
+        contractorReviews.value = [...response.data.reviews];
+      }
     }
     pagination.value = response.data.pagination;
     average_rating.value = response.data.average_rating;
