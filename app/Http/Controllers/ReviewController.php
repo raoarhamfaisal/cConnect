@@ -354,8 +354,15 @@ class ReviewController extends Controller
             Appeal::create($appealData);
 
             $review->save();
+            $reviewData = [
+                'id' => $review->id,
+                'is_under_appeal' => true,
+                'on_appeal_reason_date' => Carbon::now(),
+                'on_appeal_reason' => $data['on_appeal_reason'],
+                'appeal_status' => "open",
+            ];
 
-            return response()->json(['message' => 'Review put on appeal successfully!', 'review' => $review], 200);
+            return response()->json(['message' => 'Review put on appeal successfully!', 'review' => $reviewData], 200);
         }else {
             return response()->json(['message' => 'You do not have permission to appeal on this review'], 403);
         }
