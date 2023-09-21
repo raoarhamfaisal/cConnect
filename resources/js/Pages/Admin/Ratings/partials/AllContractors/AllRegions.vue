@@ -5,7 +5,14 @@
       bgColor="white"
       :padding="screenWidth < 640 ? '7px' : '20px'"
     >
-      <PageTitle linkUrl="/post" pageTitle="All Regions" />
+      <PageTitle
+        linkUrl="/post"
+        :pageTitle="
+          !isAllContractorPage
+            ? 'Appealed Reviews -> All Regions'
+            : 'All Contractors -> All Regions'
+        "
+      />
       <heading-card
         heading="Select Your Region"
         class="ml-4 mb-12"
