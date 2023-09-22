@@ -1,0 +1,1 @@
+import{a as e,c as a,x as n}from"./app.ae2e3232.js";const o={class:"font-bold text-xl text-blue-rgba leading-tight mb-2"},i={__name:"HeadingCard",props:["heading"],setup(t){return(s,r)=>(e(),a("div",o,n(t.heading),1))}};export{i as _};
