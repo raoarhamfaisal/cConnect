@@ -91,9 +91,9 @@ const openProfileModal = () => {
 
           <h4 class="text-base font-semibold text-gray-800">
             {{
-              profile.company_name.length < 27
+              profile.company_name && (profile.company_name.length < 27
                 ? profile.company_name
-                : profile.company_name.substring(0, 23) + "..."
+                : profile.company_name.substring(0, 23) + "...")
             }}
           </h4>
 

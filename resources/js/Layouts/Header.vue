@@ -92,7 +92,7 @@ export default {
         body1ColorId: 0,
         likes: 0,
         repost: 0,
-        region_id: this.profile.region_id.toString(),
+        region_id: this.profile && this.profile.region_id && this.profile.region_id.toString(),
         trades: [],
         shares: 0,
       },

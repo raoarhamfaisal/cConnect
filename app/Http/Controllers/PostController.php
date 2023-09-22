@@ -37,7 +37,7 @@ class PostController extends Controller
     
         if ($userID) {
             $profile = Profile::where('user_id', $userID)->first();
-            $userTradeIds = $profile->trades->pluck('id')->toArray();
+            $userTradeIds = $profile && $profile->trades ? $profile->trades->pluck('id')->toArray() : [];
         }
 
     

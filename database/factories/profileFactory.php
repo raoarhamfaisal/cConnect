@@ -20,6 +20,7 @@ class profileFactory extends Factory
         return [
             'region_id' => fake()->numberBetween(1, 11),
             'active_user' => fake()->numberBetween(0, 1),
+            'is_payment_verified' => 1,
             'first_name' => fake()->name(),
             'last_name' => fake()->name(),
             'company_name' => fake()->company(),
@@ -48,8 +49,6 @@ class profileFactory extends Factory
             'view_nationwide' => fake()->numberBetween(0, 1),
             'view_following' => fake()->numberBetween(0, 1),
             'view_groups' => fake()->numberBetween(0, 1),
-            'longitude' => fake()->longitude(),
-            'latitude' => fake()->latitude()
         ];
     }
 }
