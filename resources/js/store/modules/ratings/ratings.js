@@ -207,11 +207,21 @@ export default {
       commit("setDisabledSending", true);
 
       try {
-        const response = await axios.put(
-          `/api/reviews/${payload.reviewId}`,
-          payload.review,
-          getAxiosConfig()
-        );
+        let response = null
+        if(!payload.fromAdmin){
+
+          response = await axios.put(
+            `/api/reviews/${payload.reviewId}`,
+            payload.review,
+            getAxiosConfig()
+          );
+        } else {
+          response = await axios.put(
+            `/api/admin/reviews/${payload.reviewId}`,
+            payload.review,
+            getAxiosConfig()
+            );
+        }
         if (response.data) {
           if (!payload.dontShowSuccessSnack) {
             changesSaved(

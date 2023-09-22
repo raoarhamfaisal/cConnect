@@ -77,9 +77,13 @@ import { useStore } from "vuex";
 import { filterBadWords } from "@/helpers/utilities";
 
 // States
-const { review, questionsSwitch, profileId, contractorId } = defineProps({
+const { review, questionsSwitch, profileId,fromAdmin, contractorId } = defineProps({
   review: {
     type: Object,
+  },
+  fromAdmin:{
+    type: Boolean,
+    default: false,
   },
   questionsSwitch: {
     type: Array,
@@ -188,6 +192,7 @@ const handleSubmit = async () => {
 
     await store.dispatch("ratings/updateReview", {
       reviewId: review.id,
+      fromAdmin,
       review: updateReview,
     });
     editDialogRef.value.closeDialog();
