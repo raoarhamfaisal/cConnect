@@ -8,7 +8,7 @@ import DialogProfileTabs from "@/Pages/Profile/Partials/main/DialogProfileTabs.v
 import { useStore } from "vuex";
 import Avatar from "@/Components/Ratings/Avatar.vue";
 
-defineProps({
+const props = defineProps({
   showit: Boolean,
 
   profile: {
@@ -56,11 +56,18 @@ const openProfileModal = () => {
     emit("NavigationDropdown");
   }
 };
+// Create a computed property for the truncated name
+const truncatedName = computed(() => {
+  const fullName =
+    props.profile.first_name +
+    " " +
+    (props.profile.last_name ? props.profile.last_name : "");
+  return fullName.length < 27 ? fullName : fullName.substring(0, 23) + "...";
+});
 </script>
 
 <template>
   <DialogProfileTabs ref="dialogRef" :profile="profile" />
-
   <div id="hamburgerwithsticky" class="z-40">
     <div
       id="myHamburgerMenu"
@@ -73,25 +80,19 @@ const openProfileModal = () => {
     >
       <div class="">
         <div v-if="showit" class="pt-2 pb-0 ml-3">
-          <Avatar :imageSrc="`/${profile.user_avatar}`" class="mt-2 mb-4" />
+          <Avatar :imageSrc="`/${profile.user_avatar}`" class="mt-2" />
           <h4 class="mt-1 text-base font-bold text-gray-800">
             <!-- Tienary cuts off string if over 20 chrs and adds "..."
                                         the end  1st checks if combined string is over 20 chrs,
                                         if not display as normal '?' , if over do the else ':'
                                         and cut oof string at 20th chr -->
-            {{
-              (profile.first_name + " " + profile.last_name).length < 27
-                ? profile.first_name + " " + profile.last_name
-                : (profile.first_name + " " + profile.last_name).substring(
-                    0,
-                    23
-                  ) + "..."
-            }}
+            {{ truncatedName }}
           </h4>
 
           <h4 class="text-base font-semibold text-gray-800">
             {{
-              profile.company_name && (profile.company_name.length < 27
+              profile.company_name &&
+              (profile.company_name.length < 27
                 ? profile.company_name
                 : profile.company_name.substring(0, 23) + "...")
             }}

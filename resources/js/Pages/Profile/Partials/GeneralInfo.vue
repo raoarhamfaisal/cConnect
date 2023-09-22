@@ -8,6 +8,7 @@ import UserAvatar from "../components/UserAvatar.vue";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 
 import axios from "axios";
+import { Inertia } from "@inertiajs/inertia";
 
 const props = defineProps({
   mustVerifyEmail: Boolean,
@@ -44,6 +45,8 @@ const handleImageUpdate = (file) => {
     .then((response) => {
       changesSaved("Avatar uploaded successfully");
       form.file = response.data.user_avatar; // Update the local state with the new avatar path
+
+      Inertia.visit(route("profile.edit"), { only: ["profile"] });
     })
     .catch((error) => {
       somethingWentWrong("Error uploading avatar");

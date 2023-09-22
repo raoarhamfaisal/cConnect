@@ -3,14 +3,14 @@ import tContractorWord from "@/Components/tCon/tContractorWord.vue";
 import ButtonPost from "@/Components/tCon/tConSub/ButtonPost.vue";
 import DialogProfileTabs from "@/Pages/Profile/Partials/main/DialogProfileTabs.vue";
 import ButtonRefresh from "@/Components/tCon/tConSub/ButtonRefresh.vue";
-import { computed, ref } from "vue";
+import { computed, reactive, ref, watch, watchEffect } from "vue";
 import { usePage } from "@inertiajs/inertia-vue3";
 import { Icon } from "@iconify/vue";
 import Avatar from "@/Components/Ratings/Avatar.vue";
 import { Inertia } from "@inertiajs/inertia";
 import { removeToken } from "@/helpers/localStorageHelper";
 import { useStore } from "vuex";
-defineProps({
+const props = defineProps({
   showit: Boolean,
 
   profile: {
@@ -22,11 +22,11 @@ defineProps({
   showPostButtons: Boolean,
 
   // modelValue is the prop from
+
   //   <Menu_Hamburger v-model=postSearch></Menu_Hamburger>
   modelValue: String,
   postSearchFilters: Object,
 });
-
 const emit = defineEmits([
   "update:modelValue",
   "submitPostSearch",
@@ -59,6 +59,32 @@ const openProfileModal = () => {
     dialogRef.value.openDialog();
   }
 };
+
+// Create a computed property to check if at least one property is not null
+const shouldShowAddress = computed(() => {
+  return (
+    props.profile.city !== null ||
+    props.profile.state !== null ||
+    props.profile.zipcode !== null
+  );
+});
+
+// Create a computed property for the formatted address
+const address = computed(() => {
+  const parts = [];
+  if (props.profile.city !== null) parts.push(props.profile.city);
+  if (props.profile.state !== null) parts.push(props.profile.state);
+  if (props.profile.zipcode !== null) parts.push(props.profile.zipcode);
+  return parts.join(" ");
+});
+// Create a computed property for the truncated name
+const truncatedName = computed(() => {
+  const fullName =
+    props.profile.first_name +
+    " " +
+    (props.profile.last_name ? props.profile.last_name : "");
+  return fullName.length < 27 ? fullName : fullName.substring(0, 23) + "...";
+});
 </script>
 
 <template>
@@ -93,35 +119,38 @@ const openProfileModal = () => {
         /> -->
 
         <h4 class="mx-2 mt-2 font-bold text-gray-800">
-          {{
-            (profile.first_name + " " + profile.last_name).length < 27
-              ? profile.first_name + " " + profile.last_name
-              : (profile.first_name + " " + profile.last_name).substring(
-                  0,
-                  23
-                ) + "..."
-          }}
+          {{ truncatedName }}
         </h4>
 
         <h4 class="mx-2 font-bold text-gray-800">
           {{
-            profile.company_name && (profile.company_name.length < 27
+            profile.company_name &&
+            (profile.company_name.length < 27
               ? profile.company_name
               : profile.company_name.substring(0, 23) + "...")
           }}
         </h4>
 
-        <h4 class="mx-2 text-sm font-semibold text-gray-700">
+        <h4
+          v-if="profile && profile.phone_cell"
+          class="mx-2 text-sm font-semibold text-gray-700"
+        >
           Cell: {{ profile.phone_cell }}
         </h4>
 
-        <h4 class="mx-2 text-sm font-medium text-gray-700">
+        <h4
+          v-if="profile && profile.email"
+          class="mx-2 text-sm font-medium text-gray-700"
+        >
           {{ profile.email }}
         </h4>
 
         <!-- City State Zip -->
-        <h4 v-if="showit" class="mx-2 text-sm font-medium text-gray-500">
-          {{ profile.city + ", " + profile.state + " " + profile.zipcode }}
+        <h4
+          v-if="showit && shouldShowAddress"
+          class="mx-2 text-sm font-medium text-gray-500"
+        >
+          {{ address }}
         </h4>
       </div>
 

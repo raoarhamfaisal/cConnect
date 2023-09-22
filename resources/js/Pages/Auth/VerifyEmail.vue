@@ -2,10 +2,13 @@
 import { computed } from "vue";
 import GuestLayout from "@/Layouts/GuestLayout.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import WelcomeHeader from "@/Components/Welcome/WelcomeHeader.vue";
+import WelcomeFooter from "@/Components/Welcome/WelcomeFooter.vue";
 import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
 
 const props = defineProps({
   status: String,
+  showit: Boolean,
 });
 
 const form = useForm();
@@ -20,8 +23,9 @@ const verificationLinkSent = computed(
 </script>
 
 <template>
-  <GuestLayout>
+  <GuestLayout verifyEmailPage>
     <Head title="Email Verification" />
+    <WelcomeHeader :showit="showit" :showSignUp="false" />
 
     <div class="mb-4 text-sm text-gray-600">
       Thanks for signing up! Before getting started, could you verify your email
@@ -56,4 +60,5 @@ const verificationLinkSent = computed(
       </div>
     </form>
   </GuestLayout>
+  <WelcomeFooter :showit="showit" />
 </template>
