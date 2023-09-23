@@ -38,7 +38,6 @@ onUnmounted(() => {
 const handleScroll = () => {
   // Show the scroll button when scrolling down inside the container
   const container = document.getElementById("scrollableContainer");
-  console.log(container, "container");
   const scrollButton = document.querySelector(".scroll-to-top");
 
   if (container && scrollButton) {
@@ -59,6 +58,7 @@ const handleScroll = () => {
   border: 1px solid #241e6d;
   border-radius: 50%;
   padding: 10px;
+  display: none;
   cursor: pointer;
 
   transition: opacity 0.3s;
