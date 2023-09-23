@@ -92,7 +92,10 @@ export default {
         body1ColorId: 0,
         likes: 0,
         repost: 0,
-        region_id: this.profile && this.profile.region_id && this.profile.region_id.toString(),
+        region_id:
+          this.profile &&
+          this.profile.region_id &&
+          this.profile.region_id.toString(),
         trades: [],
         shares: 0,
       },
@@ -229,6 +232,7 @@ export default {
 
         <div
           class="flex flex-col items-center justify-start mx-auto lg:mt-0 h-full overflow-x-hidden bg-gray-200"
+          id="scrollableContainer"
           :style="{
             backgroundColor: `${color}`,
             width: '100%',

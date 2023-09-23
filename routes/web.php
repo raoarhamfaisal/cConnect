@@ -5,6 +5,7 @@ use App\Http\Controllers\PostImageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\ContractorRatingController;
+use App\Http\Controllers\ContractorPageController;
 use App\Http\Controllers\ContractorRatingsAdminController;
 use App\Http\Controllers\AppealedReviewsController;
 use App\Http\Controllers\AdminRatingsController;
@@ -55,6 +56,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::middleware('verifyPayment')->group(function () {
         Route::get('/ratings/contractor', [ContractorRatingController::class, 'index'])->name('ratings.contractor.index');
+        Route::get('/contractor/{contractor_id}', [ContractorPageController::class, 'index'])->name('ratings.contractor.index');
         Route::get('/ratings/{contractor_id}', [RatingController::class, 'index'])->name('ratings.index');
         Route::get('/admin/regions/{region_id}/contractors', [AdminRatingsController::class, 'index'])->name('admin.allContractors');
         Route::get('/admin/regions/contractors', [AdminRatingsController::class, 'getRegionsContractors'])->name('admin.allRegions');

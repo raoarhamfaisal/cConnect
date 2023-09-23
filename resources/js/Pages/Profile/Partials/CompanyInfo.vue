@@ -30,11 +30,11 @@ const handleImageUpdate = (file) => {
       },
     })
     .then((response) => {
-      console.log("Avatar uploaded successfully", response.data);
+      changesSaved("Avatar uploaded successfully");
       form.company_logo = response.data.company_logo; // Update the local state with the new avatar path
     })
     .catch((error) => {
-      console.log("Error uploading avatar:", error.response.data);
+      somethingWentWrong("Error uploading avatar");
       // Handle the error appropriately here
     });
 };
