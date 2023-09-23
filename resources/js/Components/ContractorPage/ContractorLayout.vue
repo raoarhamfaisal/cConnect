@@ -176,12 +176,12 @@
         <!-- <Loader :loading="loading" background="" height="60vh"></Loader> -->
       </Card>
       <Card
+        v-if="average_rating && starPercentages"
         :shadowLevel="2"
         bgColor="white"
         :padding="screenWidth < 640 ? '7px' : '20px'"
       >
         <AverageRating
-          v-if="average_rating && starPercentages"
           :averageRating="average_rating"
           :starPercentages="starPercentages"
           :length="total_reviews"
