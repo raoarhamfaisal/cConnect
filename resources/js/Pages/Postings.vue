@@ -97,6 +97,10 @@ export default {
       type: Object,
       required: true,
     },
+    contractor_id: {
+      type: [String, Number],
+      required: false,
+    },
 
     showit: Boolean,
 

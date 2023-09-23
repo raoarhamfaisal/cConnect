@@ -23,14 +23,27 @@
         </div>
       </div>
     </div>
-    <div class="flex flex-col justify-center space-y-2">
-      <div>
-        <StarRating
-          :rating="Number(averageRating.toFixed(1))"
-          :isIndicatorActive="false"
-        />
+    <div>
+      <div class="flex justify-between">
+        <div class="flex flex-col justify-center space-y-2">
+          <div>
+            <StarRating
+              :rating="Number(averageRating.toFixed(1))"
+              :isIndicatorActive="false"
+            />
+          </div>
+          <span class="ml-6">{{ length }} reviews</span>
+        </div>
+        <div v-if="contractorId" class="self-end">
+          <Link :href="`/ratings/${contractorId}`">
+            <button
+              class="bg-white px-3 py-1 font-bold rounded-full uppercase border-blue-rgba border-2 bg-white text-blue-rgba border-2 cursor-pointer hover:shadow-lg active:scale-95"
+            >
+              See Ratings
+            </button>
+          </Link>
+        </div>
       </div>
-      <span class="ml-6">{{ length }} reviews</span>
     </div>
   </section>
 </template>
@@ -38,6 +51,7 @@
 <script setup>
 import ProgressBar from "@/Components/Ratings/ProgressBar.vue";
 import StarRating from "@/Components/Ratings/StarRating.vue";
+import { Link } from "@inertiajs/inertia-vue3";
 defineProps({
   averageRating: {
     type: Number,
@@ -50,6 +64,10 @@ defineProps({
   starPercentages: {
     type: Array,
     default: [],
+  },
+  contractorId: {
+    type: [String, Number],
+    default: "",
   },
 });
 </script>

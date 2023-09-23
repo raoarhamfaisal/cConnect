@@ -95,6 +95,75 @@ class PostController extends Controller
             'postSearchFilters' => Request::only(['postSearch']),
         ]);
     }
+
+    public function indexContractor($contractor_id)
+    {
+
+        $profile = null;
+        $userTradeIds = [];
+    
+        if ($contractor_id) {
+            $profile = Profile::where('user_id', $contractor_id)->first();
+            $userTradeIds = $profile && $profile->trades ? $profile->trades->pluck('id')->toArray() : [];
+        }
+
+    
+            return Inertia::render('Postings', [
+                'showit' => Auth::check(),
+                'contractor_id' => $contractor_id,
+              
+                'profile' => $profile,
+                'posts' => Post::query()
+                    ->select(['posts.*', 'posts.id as post_id'])
+                    ->addSelect([
+                        'profiles.first_name',
+                        'profiles.last_name',
+                        'profiles.company_name',
+                        'profiles.city',
+                        'profiles.state',
+                        'profiles.user_avatar',
+                        'profiles.id',
+                        DB::raw('(SELECT AVG(reviews.rating) FROM reviews WHERE reviews.contractor_id = profiles.id AND reviews.is_review_active = 1) as average_rating'),
+                        DB::raw('(SELECT COUNT(*) FROM reviews WHERE reviews.contractor_id = profiles.id AND reviews.is_review_active = 1) as total_reviews')
+                    ])
+                    ->leftJoin('profiles', 'posts.user_id', '=', 'profiles.user_id')
+                    ->where('posts.region_id', $profile['region_id'])
+                    ->where('posts.user_id', $contractor_id)
+                    ->whereHas('trades', function ($query) use ($userTradeIds) {
+                        $query->whereIn('trades.id', $userTradeIds);
+                    })
+                    ->when(Request::input('postSearch'), function ($query, $postSearch) {
+                        $query->where('posts.title', 'like', "%{$postSearch}%");
+                    }) 
+                    ->orderBy('posts.created_at', 'desc')
+                    ->orderBy('posts.id', 'desc')
+                    ->paginate(5)
+                    ->withQueryString()
+                    ->through(fn($post) => [
+                        'id' => $post->post_id,
+                        'user_id' => $post->user_id,
+                        'view' => $post->view,
+                        'title' => $post->title,
+                        'image' => $post->image,
+                        'body1' => $post->body1,
+                        'body2' => $post->body2,
+                        'body1Bold' => $post->body1Bold,
+                        'body1ColorId' => $post->body1ColorId,
+                        'repost' => $post->repost,
+                        'shares' => $post->shares,
+                        'first_name' => $post->first_name,
+                        'last_name' => $post->last_name,
+                        'company_name' => $post->company_name,
+                        'city' => $post->city,
+                        'state' => $post->state,
+                        'user_avatar' => $post->user_avatar,
+                        'average_rating' => $post->average_rating,
+                        'total_reviews' => $post->total_reviews
+                    
+                    ]),
+                'postSearchFilters' => Request::only(['postSearch']),
+            ]);
+    }
     public function selectedTrades($user_id)
     {
         // Get current user

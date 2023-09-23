@@ -56,7 +56,7 @@ const emit = defineEmits(["close-enlarged"]);
       </div>
 
       <div
-        class="inline-block align-bottom bg-white rounded-lg text-left shadow-xl transform transition-all w-full mx-0 my-0 md:max-w-4xl"
+        class="inline-block align-bottom bg-white rounded-lg text-left shadow-xl transform transition-all w-full mx-0 my-0 md:max-w-4xl overflow-y-scroll"
         role="dialog"
       >
         <!-- TOP BACK TO NEWS FEED -->

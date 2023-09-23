@@ -154,8 +154,8 @@ export default {
       <!-- User Avatar & User /// INDIVIDUAL POST: TOP POSTING ROW -->
       <div class="flex flex-row gap-2 justify-start items-center">
         <!-- Avatar -->
-        <div
-          @click="openDialog"
+        <Link
+          :href="`/contractor/${post.user_id}`"
           class="cursor-pointer flex justify-start items-start flex-none w=16"
         >
           <!-- <Link :href="route('post.show')" class="block "> -->
@@ -168,7 +168,7 @@ export default {
               :imageSrc="post.user_avatar"
             />
           </div>
-        </div>
+        </Link>
         <!-- User Info -->
         <div class="flex flex-col justify-center ml-1">
           <h2
@@ -176,12 +176,12 @@ export default {
             style="line-height: 1.5rem"
             @click="$emit('enlarge-post', post)"
           >
-          <!-- {{  post }} -->
+            <!-- {{  post }} -->
             {{ post.id }}: {{ post.title }}
           </h2>
-          <div class="">
+          <Link :href="`/contractor/${post.user_id}`" class="">
             {{ post.company_name }}
-          </div>
+          </Link>
 
           <div class="">
             <h2 class="font-light text-sm overflow-hidden">
@@ -425,5 +425,3 @@ export default {
     </PostingActionMenu>
   </div>
 </template>
-
-

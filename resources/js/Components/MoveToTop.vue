@@ -1,7 +1,11 @@
 <template>
   <!-- Scroll to Top Button -->
   <button @click="scrollToTop" class="scroll-to-top">
-    <Icon icon="icon-park-solid:up-two" color="#3a357c" class="w-8 h-8" />
+    <Icon
+      icon="icon-park-solid:up-two"
+      color="#3a357c"
+      class="w-6 h-6 sm:w-8 sm:h-8"
+    />
   </button>
 </template>
 
@@ -62,6 +66,12 @@ const handleScroll = () => {
   cursor: pointer;
 
   transition: opacity 0.3s;
+}
+@media (max-width: 640px) {
+  .scroll-to-top {
+    bottom: 20px;
+    right: 20px;
+  }
 }
 
 /* Style for the scroll to top button icon */
