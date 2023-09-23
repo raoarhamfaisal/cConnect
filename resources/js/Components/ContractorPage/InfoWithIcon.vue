@@ -2,10 +2,15 @@
   <div v-if="text" class="flex items-center w-full xs:w-1/2 gap-2 xs:gap-4">
     <v-tooltip :text="tooltipText" location="top">
       <template v-slot:activator="{ props }">
-        <Icon v-bind="props" :icon="icon" color="#241e6d" />
+        <Icon
+          v-bind="props"
+          :icon="icon"
+          :color="iconColor"
+          :class="`${iconClasses}`"
+        />
       </template>
     </v-tooltip>
-    <div class="text-sm">
+    <div :class="`text-sm ${textClasses}`">
       {{ text }}
     </div>
   </div>
@@ -19,6 +24,18 @@ const props = defineProps({
   icon: {
     type: String,
     required: true,
+  },
+  iconColor: {
+    type: String,
+    default: "#241e6d",
+  },
+  iconClasses: {
+    type: String,
+    default: "",
+  },
+  textClasses: {
+    type: String,
+    default: "",
   },
   tooltipText: {
     type: String,

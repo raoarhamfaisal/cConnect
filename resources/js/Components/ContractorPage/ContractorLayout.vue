@@ -188,6 +188,67 @@
           class="mb-6"
         />
       </Card>
+      <Card
+        v-if="
+          profile.website_url ||
+          profile.facebook ||
+          profile.twitter ||
+          profile.tiktok ||
+          profile.instagram
+        "
+        :shadowLevel="2"
+        bgColor="white"
+        :padding="screenWidth < 640 ? '7px' : '20px'"
+      >
+        <heading-card
+          class="mb-2"
+          style="font-weight: 800; margin-bottom: 8px; font-size: 24px"
+          :heading="`Social Links`"
+        />
+        <div class="flex flex-col sm:flex-row flex-wrap gap-y-3 mt-4">
+          <InfoWithIcon
+            v-if="profile.website_url"
+            icon="fluent-mdl2:website"
+            iconClasses="w-6 h-6"
+            textClasses="text-md"
+            tooltipText="Website"
+            :text="profile.website_url"
+          />
+          <InfoWithIcon
+            v-if="profile.facebook"
+            icon="logos:facebook"
+            iconClasses="w-6 h-6"
+            textClasses="text-md"
+            tooltipText="Facebook"
+            :text="profile.facebook"
+          />
+          <InfoWithIcon
+            v-if="profile.twitter"
+            icon="fa6-brands:square-x-twitter"
+            iconColor="black"
+            iconClasses="w-6 h-6"
+            textClasses="text-md"
+            tooltipText="Twitter"
+            :text="profile.twitter"
+          />
+          <InfoWithIcon
+            v-if="profile.tiktok"
+            icon="logos:tiktok-icon"
+            iconClasses="w-6 h-6"
+            textClasses="text-md"
+            tooltipText="TikTok"
+            :text="profile.tiktok"
+          />
+          <InfoWithIcon
+            v-if="profile.instagram"
+            icon="skill-icons:instagram"
+            iconClasses="w-6 h-6"
+            textClasses="text-md"
+            tooltipText="Instagram"
+            :text="profile.instagram"
+          />
+        </div>
+      </Card>
     </div>
   </div>
   <MoveToTop />
