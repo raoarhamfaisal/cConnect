@@ -37,7 +37,7 @@
         <div v-if="contractorId" class="self-end">
           <Link :href="`/ratings/${contractorId}`">
             <button
-              class="bg-white px-3 py-1 font-bold rounded-full uppercase border-blue-rgba border-2 bg-white text-blue-rgba border-2 cursor-pointer hover:shadow-lg active:scale-95"
+              class="bg-white px-4 py-1 text-sm uppercase font-bold rounded-full border-[#1864ab] border-[3px] bg-white text-[#1864ab] cursor-pointer hover:shadow-lg active:scale-95"
             >
               See Ratings
             </button>

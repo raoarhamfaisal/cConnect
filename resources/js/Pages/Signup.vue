@@ -11,8 +11,7 @@ import { ref, watch, onMounted } from "vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import TC_SignupForm from "@/Components/TC_SignupForm.vue";
 
-
-const {showit} = defineProps({
+const { showit } = defineProps({
   canResetPassword: Boolean,
   status: String,
   canLogin: Boolean,
@@ -36,26 +35,18 @@ const submit = () => {
   });
 };
 
-
 // watch()
 
 watch(
   () => showit,
   () => {
-    console.log("showit")
+    console.log("showit");
     if (showit) {
-    } 
+    }
   }
 );
 
-
-
-
-onMounted(() => {
-  
-});
-
-
+onMounted(() => {});
 </script>
 
 <template>
@@ -274,14 +265,7 @@ onMounted(() => {
     <section class="relative">
       <div
         class="container lg:max-w-4xl xl:max-w-7xl z-20 mx-auto mt-4 md:px-12 py-10 sm:px-20 lg:px-8 bg-slate-30-rgba text-gray-700 rounded-xl"
-      >
-
-
-      </div>
-
+      ></div>
     </section>
-
-
-
   </div>
 </template>

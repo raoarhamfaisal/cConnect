@@ -65,16 +65,18 @@ const fullText = computed(() => props.text);
   padding: 4px 8px;
   border-radius: 3px;
   font-size: 12px;
+  z-index: 66666;
   top: -100%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
 .triangle {
   border-width: 0 12px 12px;
   border-color: transparent;
   border-bottom-color: black;
   position: absolute;
-  z-index: -1;
+  z-index: 99999;
   right: 50%;
   top: 100%;
   transform: rotate(180deg) translateY(50%);

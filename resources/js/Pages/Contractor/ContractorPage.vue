@@ -9,9 +9,10 @@
     color="rgb(229 231 235 / var(--tw-bg-opacity))"
   >
     <ContractorLayout
-      :profile="profile"
+      :profile="contractorProfile"
       :average_rating="average_rating"
       :starPercentages="starPercentages"
+      :mode="mode"
       :total_reviews="total_reviews"
       :region_name="region_name"
     />
@@ -42,6 +43,11 @@ const {
   three_stars_count: [Number, String],
   two_stars_count: [Number, String],
   one_star_count: [Number, String],
+  contractorProfile: Object,
+  mode: {
+    type: String,
+    default: "",
+  },
   postSearchFilters: {
     type: Object,
     default: () => ({
