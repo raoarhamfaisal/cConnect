@@ -26,24 +26,18 @@
     <div class="flex space-x-2 justify-between">
       <div class="flex justify-center items-center space-x-2">
         <div>
-          <Avatar
-            :imageSrc="`/${
-              profile.company_logo ? profile.company_logo : profile.user_avatar
-            }`"
-          />
+          <Avatar :imageSrc="`/${company_logo}`" />
         </div>
         <div class="flex flex-col justify-center">
           <h2
             class="text-md xs:text-xl font-medium font-bold text-gray-900"
-            v-if="profile.company_name"
+            v-if="company_name"
           >
-            {{ profile.company_name }}
+            {{ company_name }}
           </h2>
-          <span
-            class="text-xs xs:text-lg"
-            v-if="profile.city || profile.state"
-            >{{ profile.city + " " + profile.state }}</span
-          >
+          <span class="text-xs xs:text-lg" v-if="city || state">{{
+            city + " " + state
+          }}</span>
         </div>
       </div>
     </div>
@@ -53,48 +47,44 @@
       <InfoWithIcon
         icon="ic:baseline-phone"
         tooltipText="Phone Cell"
-        :text="profile.phone_cell"
+        :text="phone_cell"
       />
       <InfoWithIcon
         icon="wpf:phone-office"
         tooltipText="Phone Office"
-        :text="profile.phone_office"
+        :text="phone_office"
       />
       <InfoWithIcon
         icon="clarity:email-solid"
         tooltipText="Email"
-        :text="profile.email"
+        :text="email"
       />
       <InfoWithIcon
         icon="entypo:address"
         tooltipText="Address 1"
-        :text="profile.address_1"
+        :text="address_1"
       />
       <InfoWithIcon
         icon="entypo:address"
         tooltipText="Address 2"
-        :text="profile.address_2"
+        :text="address_2"
       />
-      <InfoWithIcon icon="mdi:city" tooltipText="City" :text="profile.city" />
-      <InfoWithIcon
-        icon="entypo:location"
-        tooltipText="State"
-        :text="profile.state"
-      />
+      <InfoWithIcon icon="mdi:city" tooltipText="City" :text="city" />
+      <InfoWithIcon icon="entypo:location" tooltipText="State" :text="state" />
       <InfoWithIcon
         icon="tabler:location-filled"
         tooltipText="County"
-        :text="profile.county"
+        :text="county"
       />
       <InfoWithIcon
         icon="material-symbols:flag"
         tooltipText="Country"
-        :text="profile.counrty"
+        :text="counrty"
       />
       <InfoWithIcon
         icon="map:post-box"
         tooltipText="Zip Code"
-        :text="profile.zipcode"
+        :text="zipcode"
       />
     </div>
   </Card>
@@ -102,14 +92,14 @@
     v-if="mode === 'edit'"
     submitText="Save"
     @submit="handleSubmit"
+    :loading="loading"
+    :disabled="disabled"
     ref="dialogRef"
     title="Edit Your Additional Information"
   >
     <div class="flex justify-center">
       <UserAvatar
-        :imageSrc="
-          profile.company_logo ? profile.company_logo : profile.user_avatar
-        "
+        :imageSrc="`/${company_logo ? company_logo : profile.user_avatar}`"
         @update-image="handleImageUpdate"
       />
     </div>
@@ -123,7 +113,7 @@
           type="text"
           class="mt-1 block w-full"
           placeholder="Type your Company name"
-          v-model="company_name"
+          v-model="tempCompanyProfile.company_name"
           required
           autocomplete="company_name"
         />
@@ -135,7 +125,7 @@
           id="phone_cell"
           type="tel"
           class="mt-1 block w-full"
-          v-model="phone_cell"
+          v-model="tempCompanyProfile.phone_cell"
           placeholder="Type your phone cell"
           autocomplete="tel"
         />
@@ -147,7 +137,7 @@
           id="phone_office"
           type="tel"
           class="mt-1 block w-full"
-          v-model="phone_office"
+          v-model="tempCompanyProfile.phone_office"
           placeholder="Type your phone office"
         />
         <!-- <InputError class="mt-2" :message="form.errors.phone_office" /> -->
@@ -159,7 +149,7 @@
           id="email"
           type="email"
           class="mt-1 block w-full"
-          v-model="email"
+          v-model="tempCompanyProfile.email"
           placeholder="Type your email"
           autocomplete="email"
         />
@@ -172,7 +162,7 @@
           id="address_1"
           type="text"
           class="mt-1 block w-full"
-          v-model="address_1"
+          v-model="tempCompanyProfile.address_1"
           placeholder="Type your Address 1"
         />
         <!-- <InputError class="mt-2" :message="form.errors.address_1" /> -->
@@ -184,7 +174,7 @@
           id="address_2"
           type="text"
           class="mt-1 block w-full"
-          v-model="address_2"
+          v-model="tempCompanyProfile.address_2"
           placeholder="Type your Address 2"
         />
         <!-- <InputError class="mt-2" :message="form.errors.address_2" /> -->
@@ -196,7 +186,7 @@
           id="city"
           type="text"
           class="mt-1 block w-full"
-          v-model="city"
+          v-model="tempCompanyProfile.city"
           placeholder="Type your city"
           autocomplete="city"
         />
@@ -208,7 +198,7 @@
           id="state"
           type="text"
           class="mt-1 block w-full"
-          v-model="state"
+          v-model="tempCompanyProfile.state"
           placeholder="Type your State"
           autocomplete="state"
         />
@@ -220,7 +210,7 @@
           id="county"
           type="text"
           class="mt-1 block w-full"
-          v-model="county"
+          v-model="tempCompanyProfile.county"
           placeholder="Type your County"
         />
         <!-- <InputError class="mt-2" :message="form.errors.address_2" /> -->
@@ -231,7 +221,7 @@
           id="counrty"
           type="text"
           class="mt-1 block w-full"
-          v-model="counrty"
+          v-model="tempCompanyProfile.country"
           placeholder="Type your Country"
         />
         <!-- <InputError class="mt-2" :message="form.errors.address_2" /> -->
@@ -243,7 +233,7 @@
           id="zipcode"
           type="text"
           class="mt-1 block w-full"
-          v-model="zipcode"
+          v-model="tempCompanyProfile.zipcode"
           placeholder="Type your Zip Code"
         />
         <!-- <InputError class="mt-2" :message="form.errors.zipcode" /> -->
@@ -263,7 +253,12 @@ import TextInput from "@/Components/TextInput.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import Avatar from "@/Components/Ratings/Avatar.vue";
-import { ref } from "vue";
+import { reactive, ref } from "vue";
+import {
+  getAxiosConfigFormData,
+  getAxiosConfig,
+} from "@/helpers/axiosConfigHelpers";
+import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 
 // State
 const props = defineProps({
@@ -277,6 +272,7 @@ const props = defineProps({
 });
 
 const company_name = ref(props.profile.company_name);
+const company_logo = ref(props.profile.company_logo);
 const phone_cell = ref(props.profile.phone_cell);
 const phone_office = ref(props.profile.phone_office);
 const email = ref(props.profile.email);
@@ -287,6 +283,22 @@ const state = ref(props.profile.state);
 const county = ref(props.profile.county);
 const counrty = ref(props.profile.counrty);
 const zipcode = ref(props.profile.zipcode);
+const loading = ref(false);
+const disabled = ref(false);
+const tempCompanyProfile = reactive({
+  company_name: company_name.value,
+  company_logo: company_logo.value,
+  phone_cell: phone_cell.value,
+  phone_office: phone_office.value,
+  email: email.value,
+  address_1: address_1.value,
+  address_2: address_2.value,
+  city: city.value,
+  state: state.value,
+  county: county.value,
+  country: counrty.value, // typo in your ref name, make sure to correct it
+  zipcode: zipcode.value,
+});
 
 const dialogRef = ref();
 
@@ -296,28 +308,61 @@ const openDialog = () => {
   dialogRef.value.openDialog();
 };
 
-const handleSubmit = () => {};
+const handleSubmit = async () => {
+  loading.value = true;
+  disabled.value = true;
+
+  try {
+    const response = await axios.patch(
+      `/api/contractor/additional-information`, // assuming this endpoint
+      tempCompanyProfile,
+      getAxiosConfig()
+    );
+
+    if (response.data) {
+      changesSaved(
+        response.data.message || "Additional information successfully saved"
+      );
+
+      // Updating the refs with the new values
+      company_name.value = tempCompanyProfile.company_name;
+      company_logo.value = tempCompanyProfile.company_logo;
+      phone_cell.value = tempCompanyProfile.phone_cell;
+      phone_office.value = tempCompanyProfile.phone_office;
+      email.value = tempCompanyProfile.email;
+      address_1.value = tempCompanyProfile.address_1;
+      address_2.value = tempCompanyProfile.address_2;
+      city.value = tempCompanyProfile.city;
+      state.value = tempCompanyProfile.state;
+      county.value = tempCompanyProfile.county;
+      counrty.value = tempCompanyProfile.country; // again, there's a typo in your ref name
+      zipcode.value = tempCompanyProfile.zipcode;
+
+      dialogRef.value.closeDialog();
+    }
+  } catch (err) {
+    somethingWentWrong();
+  } finally {
+    loading.value = false;
+    disabled.value = false;
+  }
+};
 
 // Upload User Avatar on image change
-const handleImageUpdate = (file) => {
-  // const formData = new FormData();
-  // formData.append("user_avatar", file);
+const handleImageUpdate = async (file) => {
+  const formData = new FormData();
+  formData.append("company_logo", file);
+
   // formData.append("user_id", user.id);
-  // axios
-  //   .post("/api/profile/user-avatar", formData, {
-  //     headers: {
-  //       "Content-Type": "multipart/form-data",
-  //       "X-CSRF-TOKEN": usePage().props.value.csrf_token,
-  //     },
-  //   })
-  //   .then((response) => {
-  //     changesSaved("Avatar uploaded successfully");
-  //     form.file = response.data.user_avatar; // Update the local state with the new avatar path
-  //     Inertia.visit(route("profile.edit"), { only: ["profile"] });
-  //   })
-  //   .catch((error) => {
-  //     somethingWentWrong("Error uploading avatar");
-  //     // Handle the error appropriately here
-  //   });
+  axios
+    .post("/api/contractor/company-logo", formData, getAxiosConfigFormData())
+    .then((response) => {
+      changesSaved("Avatar uploaded successfully");
+      company_logo.value = response.data.company_logo; // Update the local state with
+    })
+    .catch((error) => {
+      somethingWentWrong("Error uploading avatar");
+      // Handle the error appropriately here
+    });
 };
 </script>

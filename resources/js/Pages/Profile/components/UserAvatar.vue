@@ -6,6 +6,11 @@ const { imageSrc } = defineProps(["imageSrc"]);
 const emit = defineEmits();
 const file = ref(null);
 const updatedImage = ref(null);
+const imageFailed = ref(false);
+
+const handleImageError = () => {
+  imageFailed.value = true;
+};
 
 const updateImage = () => {
   const input = document.createElement("input");
@@ -32,15 +37,17 @@ const updateImage = () => {
 <template>
   <div class="relative w-36 h-36 inline-block mb-4 mt-8">
     <img
-      v-if="imageSrc"
+      v-if="imageSrc && !imageFailed"
       class="object-cover w-full h-full rounded-full"
       :src="imageSrc"
+      @error="handleImageError"
       alt="avatar"
     />
     <img
-      v-else-if="updatedImage"
+      v-else-if="updatedImage && !imageFailed"
       class="object-cover w-full h-full rounded-full"
       :src="updatedImage"
+      @error="handleImageError"
       alt="avatar"
     />
     <div

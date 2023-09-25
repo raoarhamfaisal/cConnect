@@ -35,11 +35,13 @@
           />
           <Icon
             icon="fa-solid:expand"
-            class="absolute top-0 right-0 m-2 text-white cursor-pointer bg-[#000000b3] p-1 rounded w-8 h-8"
+            class="absolute top-0 right-0 m-2 section_text-white cursor-pointer bg-[#000000b3] p-1 rounded w-8 h-8"
             @click="openImage(section.displayImageSrc)"
           />
         </div>
-        <div class="flex-1 flex sm:items-center">{{ section.text }}</div>
+        <div class="flex-1 flex sm:items-center">
+          {{ section.section_text }}
+        </div>
       </div>
     </div>
   </div>
@@ -48,7 +50,7 @@
   <button
     v-if="mode === 'edit'"
     @click="openDialogEdit"
-    class="w-full flex gap-2 items-center justify-center h-[42px] rounded bg-[#087f5b] text-white active:scale-[0.99] transition transform duration-300 hover:shadow-lg"
+    class="w-full flex gap-2 items-center justify-center h-[42px] rounded bg-[#087f5b] section_text-white active:scale-[0.99] transition transform duration-300 hover:shadow-lg"
   >
     <Icon icon="mdi:plus-thick" /> Add Image/Text Section
   </button>
@@ -57,6 +59,8 @@
   <CustomDialog
     v-if="mode === 'edit'"
     submitText="Save"
+    :loading="loading"
+    :disabled="disabled"
     @submit="handleSubmit"
     ref="dialogRef"
     title="Add Image/Text Section"
@@ -64,32 +68,34 @@
     <!-- Image Upload -->
     <div class="flex items-center mb-3 gap-2">
       <button
-        class="px-3 py-2 flex gap-2 items-center justify-center h-[42px] rounded bg-[#087f5b] text-white active:scale-[0.99] transition transform duration-300 hover:shadow-lg"
+        class="px-3 py-2 flex gap-2 items-center justify-center h-[42px] rounded bg-[#087f5b] section_text-white active:scale-[0.99] transition transform duration-300 hover:shadow-lg"
         @click="onImageUploadClick"
       >
         Choose an Image
       </button>
       <input
         ref="fileInput"
-        type="file"
+        type="section_image"
         accept="image/jpeg,image/png,image/gif,image/webp"
         @change="onImageSelected"
         style="display: none"
       />
-      <div v-if="imageError" class="text-red-500">{{ imageError }}</div>
+      <div v-if="imageError" class="section_text-red-500">{{ imageError }}</div>
       <div v-if="tempSection.imageTitle">
         {{ tempSection.imageTitle }}
       </div>
     </div>
     <!-- Textarea -->
     <textarea
-      v-model="tempSection.text"
-      type="text"
+      v-model="tempSection.section_text"
+      type="section_text"
       :rows="5"
       class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
       placeholder="Type your description..."
     ></textarea>
-    <div v-if="textError" class="text-red-500 mt-2">{{ textError }}</div>
+    <div v-if="textError" class="section_text-red-500 mt-2">
+      {{ textError }}
+    </div>
   </CustomDialog>
   <!-- Zoom image dialog -->
   <CustomDialog :showFooter="false" ref="imageIncDialogRef" title="Your Image">
@@ -100,12 +106,16 @@
     submitText="Delete"
     @submit="handleSubmitDelete"
     ref="deleteDialogRef"
+    :loading="loading"
+    :disabled="disabled"
     errorIcon
     dialogWidth="max-h-[70vh] width50"
     title="Are you sure? "
   >
     <div class="mb-4">
-      <div class="text-lg font-bold pl-6 text-gray-800 mt-3 mb-2">
+      <div
+        class="section_text-lg font-bold pl-6 section_text-gray-800 mt-3 mb-2"
+      >
         Do you want to Delete this Section?
       </div>
     </div>
@@ -118,22 +128,30 @@ import { Icon } from "@iconify/vue";
 import IconButton from "@/Components/IconButton.vue";
 
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
+import { getAxiosConfigFormData } from "@/helpers/axiosConfigHelpers";
+import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 
 // State
-defineProps({
+const props = defineProps({
   screenWidth: {
     type: [String, Number],
+  },
+  image_sections: {
+    type: Array,
+  },
+  contractorId: {
+    type: Number,
   },
   mode: {
     type: String,
     default: "",
   },
 });
-const sections = ref([]);
+const sections = ref(props.image_sections);
 const tempSection = ref({
-  text: "",
+  section_text: "",
   imageTitle: null,
-  file: null,
+  section_image: null,
   displayImageSrc: null,
 });
 
@@ -146,13 +164,15 @@ const imageIncDialogRef = ref();
 const editingSectionId = ref(null);
 const imageError = ref("");
 const textError = ref("");
+const loading = ref(false);
+const disabled = ref(false);
 
 //Watch
 watchEffect(() => {
-  if (tempSection.value.file) {
+  if (tempSection.value.section_image) {
     imageError.value = "";
   }
-  if (tempSection.value.text.trim()) {
+  if (tempSection.value.section_text.trim()) {
     textError.value = "";
   }
 });
@@ -168,9 +188,9 @@ const openDialogEdit = (sectionId = null) => {
   } else {
     // Clear any existing data
     tempSection.value = {
-      text: "",
+      section_text: "",
       imageTitle: null,
-      file: null,
+      section_image: null,
       displayImageSrc: null,
     };
     editingSectionId.value = null;
@@ -189,51 +209,101 @@ const onImageUploadClick = () => {
 };
 
 const onImageSelected = (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    tempSection.value.file = file;
-    tempSection.value.imageTitle = file.name;
+  const section_image = event.target.files[0];
+  if (section_image) {
+    tempSection.value.section_image = section_image;
+    tempSection.value.imageTitle = section_image.name;
     const reader = new FileReader();
     reader.onload = (e) => {
       tempSection.value.displayImageSrc = e.target.result;
     };
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(section_image);
   }
 };
 
-const handleSubmit = () => {
-  if (!tempSection.value.file) {
-    imageError.value = "Please select an image!";
-    return;
-  }
+const handleSubmit = async () => {
+  if (editingSectionId.value) {
+    if (!tempSection.value.section_image) {
+      imageError.value = "Please select an image!";
+      return;
+    }
 
-  if (!tempSection.value.text.trim()) {
-    textError.value = "Please enter the text!";
-    return;
+    if (!tempSection.value.section_text.trim()) {
+      textError.value = "Please enter the section_text!";
+      return;
+    }
   }
-
-  if (tempSection.value.file && tempSection.value.text) {
+  loading.value = true;
+  disabled.value = true;
+  const formData = new FormData();
+  if (tempSection.value.section_image && tempSection.value.section_text) {
     if (editingSectionId.value) {
-      const index = sections.value.findIndex(
-        (s) => s.id === editingSectionId.value
-      );
-      if (index !== -1) {
-        sections.value[index] = {
-          id: editingSectionId.value,
-          ...tempSection.value,
-        };
+      // edit case
+      formData.append("section_image", tempSection.value.section_image);
+      formData.append("section_text", tempSection.value.section_text);
+      for (const [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`, "key value");
+      }
+      try {
+        const response = await axios.patch(
+          `/api/contractor/bottom-closing-section_text`,
+          formData,
+          getAxiosConfigFormData()
+        );
+        if (response.data) {
+          changesSaved(
+            response.data.message || "Image/Text section successfully saved"
+          );
+
+          const index = sections.value.findIndex(
+            (s) => s.id === editingSectionId.value
+          );
+          if (index !== -1) {
+            sections.value[index] = {
+              id: editingSectionId.value,
+              ...tempSection.value,
+            };
+          }
+        }
+      } catch (err) {
+        console.log(err);
+        somethingWentWrong();
       }
     } else {
-      sections.value.push({
-        id: Date.now(),
-        ...tempSection.value,
-      });
+      // add case
+      formData.append("section_image", tempSection.value.section_image);
+      formData.append("section_text", tempSection.value.section_text);
+      console.log("inelse", tempSection.value, formData);
+      for (const [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`, "key value");
+      }
+      try {
+        const response = await axios.post(
+          `/api/contractor/${props.contractorId}/image-section`,
+          formData,
+          getAxiosConfigFormData()
+        );
+        if (response.data) {
+          changesSaved(
+            response.data.message || "Image/Text section successfully saved"
+          );
+          sections.value.push({
+            id: Date.now(),
+            ...tempSection.value,
+          });
+        }
+      } catch (err) {
+        console.log(err);
+        somethingWentWrong();
+      }
     }
+    loading.value = false;
+    disabled.value = false;
     // Clear temp data
     tempSection.value = {
-      text: "",
+      section_text: "",
       imageTitle: null,
-      file: null,
+      section_image: null,
       displayImageSrc: null,
     };
     editingSectionId.value = null;

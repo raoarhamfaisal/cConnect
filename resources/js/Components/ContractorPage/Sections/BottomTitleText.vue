@@ -27,6 +27,8 @@
   <CustomDialog
     v-if="mode === 'edit'"
     submitText="Save"
+    :loading="loading"
+    :disabled="disabled"
     @submit="handleSubmit"
     @closed="handleClosed"
     ref="dialogRef"
@@ -51,10 +53,15 @@ import { ref } from "vue";
 import IconButton from "@/Components/IconButton.vue";
 import { Icon } from "@iconify/vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
+import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
+import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 
-defineProps({
+const props = defineProps({
   screenWidth: {
     type: [String, Number],
+  },
+  bottom_text: {
+    type: String,
   },
   mode: {
     type: String,
@@ -63,20 +70,41 @@ defineProps({
 });
 
 const dialogRef = ref();
-const bottomText = ref("");
-const bottomTextTemp = ref("");
+const bottomText = ref(props.bottom_text);
+const loading = ref(false);
+const disabled = ref(false);
+const bottomTextTemp = ref(bottomText.value);
 const isChecked = ref(false);
 
 const openDialogEdit = () => {
   dialogRef.value.openDialog();
 };
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
   isChecked.value = true;
-  bottomText.value = bottomTextTemp.value;
-
-  dialogRef.value.closeDialog();
+  loading.value = true;
+  disabled.value = true;
+  try {
+    const response = await axios.patch(
+      `/api/contractor/bottom-closing-text`,
+      {
+        bottom_text: bottomTextTemp.value,
+      },
+      getAxiosConfig()
+    );
+    if (response.data) {
+      changesSaved("Bottom Text successfully saved");
+      bottomText.value = bottomTextTemp.value;
+      dialogRef.value.closeDialog();
+    }
+  } catch (err) {
+    somethingWentWrong();
+  } finally {
+    loading.value = false;
+    disabled.value = false;
+  }
 };
+
 const handleClosed = () => {
   console.log("here");
   isChecked.value = false;
