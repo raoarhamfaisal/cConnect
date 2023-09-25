@@ -50,7 +50,7 @@
   <button
     v-if="mode === 'edit'"
     @click="openDialogEdit"
-    class="w-full flex gap-2 items-center justify-center h-[42px] rounded bg-[#087f5b] section_text-white active:scale-[0.99] transition transform duration-300 hover:shadow-lg"
+    class="w-full flex gap-2 items-center justify-center h-[42px] rounded bg-[#087f5b] text-white active:scale-[0.99] transition transform duration-300 hover:shadow-lg"
   >
     <Icon icon="mdi:plus-thick" /> Add Image/Text Section
   </button>
