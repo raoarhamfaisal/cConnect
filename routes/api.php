@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ContractorProfileController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ImageSectionController;
 use App\Http\Controllers\ReviewResponseController;
 use App\Http\Controllers\ContractorRatingsAdminController;
 
@@ -49,7 +50,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         Route::patch('/contractor/region-trades', [ContractorProfileController::class, 'updateRegionTrades'])->name('contractorProfile.updateRegionTrades');
         Route::patch('/contractor/additional-information', [ContractorProfileController::class, 'updateAdditionalInformation'])->name('contractorProfile.updateAdditionalInformation');
         Route::patch('/contractor/social-links', [ContractorProfileController::class, 'updateSocialLinks'])->name('contractorProfile.updateSocialLinks');
+        Route::post('/contractor/user-avatar', [ContractorProfileController::class, 'updateUserAvatar'])->name('contractorProfile.updateUserAvatar');
+        Route::post('/contractor/company-logo', [ContractorProfileController::class, 'updateCompanyLogo'])->name('contractorProfile.updateCompanyLogo');
+        Route::patch('/contractor/bottom-closing-text', [ContractorProfileController::class, 'updateBottomAndClosingText'])->name('contractorProfile.updateBottomAndClosingText');
 
+        Route::post('/contractor/{contractorProfileId}/image-section', [ImageSectionController::class, 'store']);
+        Route::patch('/contractor/image-section/{sectionId}', [ImageSectionController::class, 'update']);
+        Route::delete('/contractor/image-section/{sectionId}', [ImageSectionController::class, 'destroy']);
+    
 
 
 

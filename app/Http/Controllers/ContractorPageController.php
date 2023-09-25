@@ -9,6 +9,7 @@ use App\Models\Review;
 
 
 use App\Models\Profile;
+use App\Models\ContractorProfile;
 use App\Models\Region;
 
 use Illuminate\Support\Facades\Request as FacadeRequest;
@@ -29,32 +30,50 @@ class ContractorPageController extends Controller
         $contractorProfile = null;
         $profile = null;
     
+        $mode = FacadeRequest::input('mode');
+
+        if($contractor_id) {
+            $contractorProfile = ContractorProfile::where('user_id', $contractor_id)->with('trades')->first();
+
+            if (!$contractorProfile) {
+                $profile = Profile::where('user_id', $contractor_id)->with('trades')->first();
     
+                // If profile is found in the Profile model, save it to the ContractorProfile model
+                if ($profile) {
+                    $contractorProfile = new ContractorProfile();
+                    $contractorProfile->fill($profile->toArray()); // This copies all attributes from the profile to contractor profile
 
-    
-    $mode = FacadeRequest::input('mode');
+                    $contractorProfile->save();  
+                    $contractorProfile->trades()->sync($profile->trades);   
+                    
+                    $contractorProfile->trades = $profile->trades;
+                    $contractorProfile = ContractorProfile::where('user_id', $contractor_id)->with('imageSections')->with('trades')->first();
+                }
+            }
 
-    if($contractor_id) {
-        $contractorProfile = Profile::where('user_id', $contractor_id)->with('trades')->first();
-
-        // Convert the trades to the old structure for contractor profile
-        if ($contractorProfile) {
-            $profileTrades = $this->convertTradesToOldStructure($contractorProfile->trades);
-            $regionName = Region::where('id', $contractorProfile->region_id)->value('name');
-            $contractorProfile = array_merge($contractorProfile->toArray(), $profileTrades);
+            // Convert the trades to the old structure for contractor profile
+            if ($contractorProfile) {
+                $profileImageSections = $contractorProfile->imageSections;
+                $profileTrades = $this->convertTradesToOldStructure($contractorProfile->trades);
+                $regionName = Region::where('id', $contractorProfile->region_id)->value('name');
+                $contractorProfile = array_merge($contractorProfile->toArray(), $profileTrades);
+                // $contractorProfile['imageSections'] = $profileImageSections;
+                
+            }
+            
         }
-        
-    }
 
-    if ($userID) {
-        $profile = Profile::where('user_id', $userID)->first();
-        $profileTrades = $this->convertTradesToOldStructure($profile->trades);
-        $profile = array_merge($profile->toArray(), $profileTrades);
-    }
+
+        if ($userID) {
+            $profile = Profile::where('user_id', $userID)->first();
+            $profileTrades = $this->convertTradesToOldStructure($profile->trades);
+            $profile = array_merge($profile->toArray(), $profileTrades);
+        }
+
         $allReviews = Review::where('contractor_id', $contractor_id)->where('is_review_active', 1)->get();
         $totalReviews = Review::where('contractor_id', $contractor_id)
-    ->where('is_review_active', 1)
-    ->paginate(10)->total(); // Paginate the results with 10 items per page
+            ->where('is_review_active', 1)
+            ->paginate(10)->total(); // Paginate the results with 10 items per page
 
         // Calculate the average rating and counts
         $avgReview = $allReviews->avg('rating');
@@ -63,6 +82,8 @@ class ContractorPageController extends Controller
         $threeStars = $allReviews->whereBetween('rating', [2.5, 3.4])->count();
         $twoStars = $allReviews->whereBetween('rating', [1.5, 2.4])->count();
         $oneStar = $allReviews->whereBetween('rating', [0.0, 1.4])->count();
+
+        // dd($contractorProfile);
 
         return Inertia::render('Contractor/ContractorPage', [
             'profile' => $profile,
