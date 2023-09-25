@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ContractorProfileController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ReviewResponseController;
@@ -42,6 +43,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     
     // Your authenticated routes here
     Route::middleware('auth:sanctum')->group(function () {
+        // Contractor Profile
+
+        Route::patch('/contractor/general-profile', [ContractorProfileController::class, 'updateGeneralInfo'])->name('contractorProfile.updateGeneralInfo');
+        Route::patch('/contractor/region-trades', [ContractorProfileController::class, 'updateRegionTrades'])->name('contractorProfile.updateRegionTrades');
+        Route::patch('/contractor/additional-information', [ContractorProfileController::class, 'updateAdditionalInformation'])->name('contractorProfile.updateAdditionalInformation');
+        Route::patch('/contractor/social-links', [ContractorProfileController::class, 'updateSocialLinks'])->name('contractorProfile.updateSocialLinks');
+
+
+
+
         // Review APIs
         Route::post('/reviews', [ReviewController::class, 'store'])->name('review.store');
         Route::get('/profileInfo', [ProfileController::class, 'getProfileInfo'])->name('profile.getDetails');
@@ -58,7 +69,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         
         Route::middleware('admin')->group(function () {
             // Your admin-specific routes here
-            // ... other admin routes
             Route::get('/admin/all-contractors', [ReviewController::class, 'getContractorProfiles'])->name('review.allContractors');
             Route::get('/admin/reviews/{contractor_id}', [ReviewController::class, 'contractorAllReviews'])->name('review.contractorAllReviews');
             Route::get('/admin/{region}/search-contractor', [ContractorRatingsAdminController::class, 'searchContractor']);
