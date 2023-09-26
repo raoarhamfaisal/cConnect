@@ -129,7 +129,9 @@
           placeholder="Type your phone cell"
           autocomplete="tel"
         />
-        <!-- <InputError class="mt-2" :message="form.errors.phone_cell" /> -->
+        <div v-if="errors.phoneCellError" class="text-red-500">
+          {{ errors.phoneCellError }}
+        </div>
       </div>
       <div>
         <InputLabel class="font-bold" for="phone_office" value="Phone Office" />
@@ -153,7 +155,9 @@
           placeholder="Type your email"
           autocomplete="email"
         />
-        <!-- <InputError class="mt-2" :message="form.errors.email" /> -->
+        <div v-if="errors.emailError" class="text-red-500">
+          {{ errors.emailError }}
+        </div>
       </div>
 
       <div>
@@ -253,7 +257,7 @@ import TextInput from "@/Components/TextInput.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import Avatar from "@/Components/Ratings/Avatar.vue";
-import { reactive, ref } from "vue";
+import { reactive, ref, watchEffect } from "vue";
 import {
   getAxiosConfigFormData,
   getAxiosConfig,
@@ -299,8 +303,22 @@ const tempCompanyProfile = reactive({
   country: counrty.value, // typo in your ref name, make sure to correct it
   zipcode: zipcode.value,
 });
+const errors = reactive({
+  emailError: "",
+  phoneCellError: "",
+});
 
 const dialogRef = ref();
+
+//Watch
+watchEffect(() => {
+  if (tempCompanyProfile.email.trim()) {
+    errors.emailError = "";
+  }
+  if (tempCompanyProfile.phone_cell.trim()) {
+    errors.phoneCellError = "";
+  }
+});
 
 //Methods
 
@@ -309,9 +327,17 @@ const openDialog = () => {
 };
 
 const handleSubmit = async () => {
+  if (!tempCompanyProfile.email.trim()) {
+    errors.emailError = "Please enter your email address";
+    return;
+  }
+  if (!tempCompanyProfile.phone_cell.trim()) {
+    errors.phoneCellError = "Please enter your Phone number";
+    return;
+  }
+
   loading.value = true;
   disabled.value = true;
-
   try {
     const response = await axios.patch(
       `/api/contractor/additional-information`, // assuming this endpoint
