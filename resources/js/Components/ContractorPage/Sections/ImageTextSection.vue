@@ -8,7 +8,7 @@
     >
       <div
         v-if="mode === 'edit'"
-        class="z-50 flex gap-2 justify-end items-end sm:absolute top-2 right-2 mb-2"
+        class="z-10 flex gap-2 justify-end items-end sm:absolute top-2 right-2 mb-2"
       >
         <IconButton
           @click="() => openDialogEdit(section.id)"
@@ -29,14 +29,14 @@
           class="relative w-full object-cover sm:w-[280px] sm:h-[190px] md:w-[350px] md:h-[215px]"
         >
           <img
-            :src="section.displayImageSrc"
+            :src="section.section_image"
             alt="Section Image"
             class="object-cover h-full"
           />
           <Icon
             icon="fa-solid:expand"
             class="absolute top-0 right-0 m-2 section_text-white cursor-pointer bg-[#000000b3] p-1 rounded w-8 h-8"
-            @click="openImage(section.displayImageSrc)"
+            @click="openImage(section.section_image)"
           />
         </div>
         <div class="flex-1 flex sm:items-center">
@@ -68,19 +68,19 @@
     <!-- Image Upload -->
     <div class="flex items-center mb-3 gap-2">
       <button
-        class="px-3 py-2 flex gap-2 items-center justify-center h-[42px] rounded bg-[#087f5b] section_text-white active:scale-[0.99] transition transform duration-300 hover:shadow-lg"
+        class="px-3 py-2 flex gap-2 items-center justify-center h-[42px] rounded bg-[#087f5b] text-white active:scale-[0.99] transition transform duration-300 hover:shadow-lg"
         @click="onImageUploadClick"
       >
         Choose an Image
       </button>
       <input
         ref="fileInput"
-        type="section_image"
+        type="file"
         accept="image/jpeg,image/png,image/gif,image/webp"
         @change="onImageSelected"
         style="display: none"
       />
-      <div v-if="imageError" class="section_text-red-500">{{ imageError }}</div>
+      <div v-if="imageError" class="text-red-500">{{ imageError }}</div>
       <div v-if="tempSection.imageTitle">
         {{ tempSection.imageTitle }}
       </div>
@@ -152,7 +152,6 @@ const tempSection = ref({
   section_text: "",
   imageTitle: null,
   section_image: null,
-  displayImageSrc: null,
 });
 
 const dialogRef = ref();
@@ -191,7 +190,6 @@ const openDialogEdit = (sectionId = null) => {
       section_text: "",
       imageTitle: null,
       section_image: null,
-      displayImageSrc: null,
     };
     editingSectionId.value = null;
   }
@@ -213,10 +211,6 @@ const onImageSelected = (event) => {
   if (section_image) {
     tempSection.value.section_image = section_image;
     tempSection.value.imageTitle = section_image.name;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      tempSection.value.displayImageSrc = e.target.result;
-    };
     reader.readAsDataURL(section_image);
   }
 };
@@ -239,14 +233,16 @@ const handleSubmit = async () => {
   if (tempSection.value.section_image && tempSection.value.section_text) {
     if (editingSectionId.value) {
       // edit case
-      formData.append("section_image", tempSection.value.section_image);
+      if (tempSection.value.section_image instanceof File) {
+        formData.append("section_image", tempSection.value.section_image);
+      }
       formData.append("section_text", tempSection.value.section_text);
       for (const [key, value] of formData.entries()) {
         console.log(`${key}: ${value}`, "key value");
       }
       try {
         const response = await axios.patch(
-          `/api/contractor/bottom-closing-section_text`,
+          `/api/contractor/image-section/${editingSectionId.value}`,
           formData,
           getAxiosConfigFormData()
         );
@@ -261,7 +257,7 @@ const handleSubmit = async () => {
           if (index !== -1) {
             sections.value[index] = {
               id: editingSectionId.value,
-              ...tempSection.value,
+              ...response.data.imageSection,
             };
           }
         }
@@ -287,9 +283,10 @@ const handleSubmit = async () => {
           changesSaved(
             response.data.message || "Image/Text section successfully saved"
           );
+
           sections.value.push({
             id: Date.now(),
-            ...tempSection.value,
+            ...response.data.imageSection,
           });
         }
       } catch (err) {
@@ -304,21 +301,38 @@ const handleSubmit = async () => {
       section_text: "",
       imageTitle: null,
       section_image: null,
-      displayImageSrc: null,
     };
     editingSectionId.value = null;
   }
   dialogRef.value.closeDialog();
 };
-const handleSubmitDelete = () => {
+const handleSubmitDelete = async () => {
   if (sectionIdToDelete.value !== null) {
-    const index = sections.value.findIndex(
-      (s) => s.id === sectionIdToDelete.value
-    );
-    if (index !== -1) {
-      sections.value.splice(index, 1);
+    loading.value = true;
+    disabled.value = true;
+    try {
+      const response = await axios.delete(
+        `/api/contractor/image-section/${sectionIdToDelete.value}`,
+        getAxiosConfigFormData()
+      );
+      if (response.data) {
+        changesSaved(
+          response.data.message || "Image/Text section successfully deleted"
+        );
+        const index = sections.value.findIndex(
+          (s) => s.id === sectionIdToDelete.value
+        );
+        if (index !== -1) {
+          sections.value.splice(index, 1);
+        }
+        sectionIdToDelete.value = null;
+      }
+    } catch (err) {
+      console.log(err);
+      somethingWentWrong();
     }
-    sectionIdToDelete.value = null;
+    loading.value = false;
+    disabled.value = false;
     deleteDialogRef.value.closeDialog();
   }
 };

@@ -56,7 +56,7 @@ const handleScroll = () => {
   position: fixed;
   bottom: 40px;
   right: 100px;
-
+  z-index: 20;
   background-color: white;
   color: white;
   border: 1px solid #241e6d;

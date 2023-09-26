@@ -203,7 +203,7 @@ class ContractorProfileController extends Controller
                 $profile->update([
                     'user_avatar' => $path,
                 ]);
-                $url = asset($path);
+                $url = $path;
 
 
                 // After saving delete the old profile => user Avatar
@@ -262,7 +262,7 @@ class ContractorProfileController extends Controller
                 $file = $request->file('company_logo');
                 $path = $file->store('images/company-logos', 'public-storage');
 
-                $url = asset($path);
+                $url = $path;
 
                 // Update the user's profile with the new avatar path
                 $profile->update([
