@@ -1,11 +1,11 @@
 <script setup>
 import { computed } from "vue";
-const { type, class: customClass } = defineProps({
+const { type, customClass } = defineProps({
   type: {
     type: String,
     default: "submit",
   },
-  class: {
+  customClass: {
     type: String,
     default: "",
   },

@@ -46,8 +46,24 @@ const verificationLinkSent = computed(
         <PrimaryButton
           :class="{ 'opacity-25': form.processing }"
           :disabled="form.processing"
+          style="
+            background-image: linear-gradient(
+              111.4deg,
+              rgba(7, 7, 9, 1) 6.5%,
+              rgba(27, 24, 113, 1) 93.2%
+            );
+          "
+          customClass="text-xs sx:text-sm sm:text-base"
         >
-          Resend Verification Email
+          <div class="flex items-center justify-center">
+            Resend Verification Email
+          </div>
+          <img
+            v-show="form.processing"
+            src="/images/avatars/Spinner.gif"
+            alt="spinner"
+            width="30"
+          />
         </PrimaryButton>
 
         <Link
