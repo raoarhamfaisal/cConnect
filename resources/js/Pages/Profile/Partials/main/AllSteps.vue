@@ -1,15 +1,15 @@
 <script setup>
 // import DeleteUserForm from "./Partials/DeleteUserForm.vue";
 import GeneralInfo from "@/Pages/Profile/Partials/GeneralInfo.vue";
-import CompanyInfo from "@/Pages/Profile/Partials/CompanyInfo.vue";
-import AddressInfo from "@/Pages/Profile/Partials/AddressInfo.vue";
+import CompanyAddressInfo from "@/Pages/Profile/Partials/CompanyAddressInfo.vue";
 import Trades from "@/Pages/Profile/Partials/Trades.vue";
 import Views from "@/Pages/Profile/Partials/Views.vue";
 import LinksInfo from "@/Pages/Profile/Partials/LinksInfo.vue";
-import { computed, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import { useStore } from "vuex";
+import { Inertia } from "@inertiajs/inertia";
 
-defineProps({
+const props = defineProps({
   mustVerifyEmail: Boolean,
   status: String,
   profile: Object,
@@ -20,27 +20,222 @@ defineProps({
   },
 });
 const store = useStore();
-const e1 = ref(1);
+const form = reactive({
+  first_name: props.profile.first_name,
+  last_name: props.profile.last_name,
+  phone_cell: props.profile.phone_cell,
+  company_name: props.profile.company_name,
+  phone_office: props.profile.phone_office,
+  region_id:
+    props.profile &&
+    props.profile.region_id &&
+    props.profile.region_id.toString(),
+  address_1: props.profile.address_1,
+  address_2: props.profile.address_2,
+  city: props.profile.city,
+  state: props.profile.state,
+  zipcode: props.profile.zipcode,
+  county: props.profile.county,
+  website_url: props.profile.website_url,
+  facebook: props.profile.facebook,
+  twitter: props.profile.twitter,
+  tiktok: props.profile.tiktok,
+  instagram: props.profile.instagram,
+});
+const errors = reactive({
+  first_name: "",
+  last_name: "",
+  phone_cell: "",
+  company_name: "",
+  phone_office: "",
+  address_1: "",
+  city: "",
+  state: "",
+  zipcode: "",
+  county: "",
+  region: "",
+  website_url: "",
+  facebook: "",
+  twitter: "",
+  tiktok: "",
+  instagram: "",
+});
+const currentStep = ref(1);
+const editableAllowed = ref(1);
 const steps = ref(4);
 const stepTitles = ["General Info", "Trades", "Views", "Billing"];
 
 const disable = computed(() => {
-  return e1.value === 1
+  return currentStep.value === 1
     ? "prev"
-    : e1.value === steps.value
+    : currentStep.value > steps.value
     ? "next"
-    : undefined;
+    : false;
 });
 const screenWidth = computed(() => store.getters.screenWidth);
+
+// Methods
+//Methods
+const validateForm = () => {
+  let isValid = true;
+
+  // Reset errors
+  for (let field in errors) {
+    errors[field] = "";
+  }
+  console.log(form, "form");
+  // Validate first_name
+  if (!form.first_name.trim()) {
+    errors.first_name = "First name is required";
+    isValid = false;
+  }
+  if (!form.last_name.trim()) {
+    errors.last_name = "Last name is required";
+    isValid = false;
+  }
+  if (!form.phone_cell.trim()) {
+    errors.phone_cell = "Phone number is required";
+    isValid = false;
+  }
+  if (form.phone_cell.trim().length > 13) {
+    errors.phone_cell = "Phone number must not be greater than 13 numbers";
+    isValid = false;
+  }
+  if (form.phone_office.trim().length > 13) {
+    errors.phone_office = "Phone Office must not be greater than 13 numbers";
+    isValid = false;
+  }
+  // Validate address_1
+  if (!form.address_1.trim()) {
+    errors.address_1 = "Address 1 is required";
+    isValid = false;
+  }
+  // Validate company_name
+  if (!form.company_name.trim()) {
+    errors.company_name = "Company name is required";
+    isValid = false;
+  }
+
+  // Validate city
+  if (!form.city.trim()) {
+    errors.city = "City is required";
+    isValid = false;
+  }
+
+  // Validate state
+  if (!form.state.trim()) {
+    errors.state = "State is required";
+    isValid = false;
+  }
+
+  // Validate zipcode
+  if (!form.zipcode.trim()) {
+    errors.zipcode = "Zipcode is required";
+    isValid = false;
+  }
+
+  // Validate county
+  if (!form.county.trim()) {
+    errors.county = "County is required";
+    isValid = false;
+  }
+
+  // Validate region
+  if (!form.region_id.trim()) {
+    errors.region = "Region is required";
+    isValid = false;
+  }
+  // Validate website_url
+  if (form.website_url && !isValidUrl(form.website_url)) {
+    errors.website_url = "Invalid website URL";
+    isValid = false;
+  }
+
+  // Validate facebook
+  if (form.facebook && !isValidUrl(form.facebook)) {
+    errors.facebook = "Invalid Facebook URL";
+    isValid = false;
+  }
+
+  // Validate twitter
+  if (form.twitter && !isValidUrl(form.twitter)) {
+    errors.twitter = "Invalid Twitter URL";
+    isValid = false;
+  }
+
+  // Validate tiktok
+  if (form.tiktok && !isValidUrl(form.tiktok)) {
+    errors.tiktok = "Invalid TikTok URL";
+    isValid = false;
+  }
+
+  // Validate instagram
+  if (form.instagram && !isValidUrl(form.instagram)) {
+    errors.instagram = "Invalid Instagram URL";
+    isValid = false;
+  }
+
+  return isValid;
+};
+
+const isValidUrl = (urlString) => {
+  var urlPattern = new RegExp(
+    "^(https?:\\/\\/)?" + // validate protocol
+      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,6}|" + // validate domain name and tld
+      "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // validate port and path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // validate query string
+      "(\\#[-a-z\\d_]*)?$",
+    "i"
+  );
+  return !!urlPattern.test(urlString);
+};
+
+const clearErrors = (field) => {
+  console.log("Clear errors", field);
+  //for phone_cell only
+  if (field === "phone_cell" || field === "phone_office") {
+    if (form[field].trim().length <= 13) {
+      errors[field] = "";
+    }
+    return;
+  }
+  if (form[field].trim()) {
+    errors[field] = "";
+  }
+};
+
+const nextClick = () => {
+  //for last step
+  if (currentStep.value === steps.value) {
+    Inertia.visit(route("post"));
+  }
+  //for step 1 complted
+  if (currentStep.value === 1) {
+    if (validateForm()) {
+    } else {
+      return;
+    }
+  }
+  currentStep.value = currentStep.value + 1;
+  editableAllowed.value = editableAllowed.value + 1;
+};
 </script>
 
 <template>
-  <v-stepper alt-labels v-model="e1">
-    <template v-slot:default="{ prev, next }">
+  <v-stepper
+    prev-text="back"
+    :next-text="currentStep >= steps ? 'News Feed' : 'Continue'"
+    alt-labels
+    v-model="currentStep"
+  >
+    <template v-slot:default="{ prev }">
       <v-stepper-header class="flex-col">
         <header v-if="showHeader" class="w-full">
           <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 max-lg:pt-10">
-            <h2 class="font-bold text-2xl text-blue-rgba leading-tight">
+            <h2
+              class="font-bold text-2xl sm:text-3xl text-blue-rgba leading-tight"
+            >
               Profile Setup
             </h2>
             <p class="mt-0.5 text-sm text-gray-600">
@@ -53,23 +248,24 @@ const screenWidth = computed(() => store.getters.screenWidth);
         >
           <template v-for="(n, index) in steps" :key="`${n}-step`">
             <v-stepper-item
-              :complete="e1 > n"
+              :complete="currentStep > n"
               class="step"
-              :step="`Step {{ n }}`"
+              :step="`Step ${n}`"
               :value="n"
               :style="{
-                color: e1 > n - 1 ? '#2b8a3e' : 'inherit',
+                color: currentStep > n - 1 ? '#2b8a3e' : 'inherit',
                 opacity: 1,
                 padding: screenWidth > 700 ? '1.5rem' : '1.5rem 0rem',
               }"
-              :editable="e1 > n ? true : false"
+              :editable="editableAllowed > n ? true : false"
               >{{ stepTitles[index] }}</v-stepper-item
             >
             <v-divider
               v-if="n !== steps"
               :style="{
                 opacity: 1,
-                border: e1 > n ? '4px solid #2b8a3e' : '4px solid grey',
+                border:
+                  currentStep > n ? '4px solid #2b8a3e' : '4px solid grey',
                 margin:
                   screenWidth > 700
                     ? '35px -55px 0'
@@ -88,16 +284,36 @@ const screenWidth = computed(() => store.getters.screenWidth);
         <div class="sm:p-[1rem] bg-white shadow sm:rounded-lg">
           <v-stepper-window-item :value="1">
             <GeneralInfo
-              :must-verify-email="mustVerifyEmail"
-              :status="status"
-              :profile="profile"
+              v-model:form="form"
+              :user_avatar="profile.user_avatar"
+              :errors="errors"
+              @clearErrors="clearErrors"
               class="flex flex-col justify-center m-auto"
             />
-            <CompanyInfo :profile="profile" class="mt-10" />
+            <v-divider
+              class="mt-8 mb-6"
+              style="opacity: 1"
+              :thickness="3"
+            ></v-divider>
+            <CompanyAddressInfo
+              :region_id="profile.region_id"
+              :company_logo="profile.company_logo"
+              :regions="regions"
+              v-model:form="form"
+              :errors="errors"
+              @clearErrors="clearErrors"
+            />
 
-            <AddressInfo :profile="profile" class="mt-10" :regions="regions" />
-
-            <LinksInfo :profile="profile" class="mt-10" />
+            <v-divider
+              class="mt-8 mb-6"
+              style="opacity: 1"
+              :thickness="3"
+            ></v-divider>
+            <LinksInfo
+              v-model:form="form"
+              :errors="errors"
+              @clearErrors="clearErrors"
+            />
           </v-stepper-window-item>
           <v-stepper-window-item :value="2">
             <Trades :profile="profile" />
@@ -110,9 +326,10 @@ const screenWidth = computed(() => store.getters.screenWidth);
       </v-stepper-window>
 
       <v-stepper-actions
-        :disable="disable"
+        :class="`buttonClass ${currentStep >= steps ? 'nextNewFeedColor' : ''}`"
+        :disabled="disable"
         @click:prev="prev"
-        @click:next="next"
+        @click:next="nextClick"
       ></v-stepper-actions>
     </template>
   </v-stepper>
@@ -131,5 +348,30 @@ const screenWidth = computed(() => store.getters.screenWidth);
   .v-stepper--alt-labels .v-stepper-item {
     flex-basis: 77px;
   }
+}
+.buttonClass button:last-child {
+  background-image: linear-gradient(
+    111.4deg,
+    rgba(27, 24, 113, 1) 6.5%,
+    rgba(7, 7, 9, 1) 97.2%
+  );
+
+  color: #fff;
+}
+.nextNewFeedColor.buttonClass button:last-child {
+  background: #2b8a3e;
+  color: #fff;
+}
+.buttonClass button:first-child {
+  background: #ccc;
+}
+.buttonClass button:first-child:hover {
+  background-image: linear-gradient(
+    111.4deg,
+    rgba(27, 24, 113, 1) 6.5%,
+    rgba(7, 7, 9, 1) 97.2%
+  );
+
+  color: #fff;
 }
 </style>

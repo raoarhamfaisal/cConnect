@@ -9,6 +9,7 @@ import { Link } from "@inertiajs/inertia-vue3";
 import PostForm from "@/Components/tCon/PostForm.vue";
 
 import { ref } from "vue";
+import { mapActions, mapGetters } from "vuex";
 
 const defaultPostFormObject = {
   user_id: 0,
@@ -40,15 +41,14 @@ export default {
       default: "1440px",
       required: false,
     },
-    profile: {
-      type: Object,
-      required: true,
-    },
-
     showit: Boolean,
     showPostButtons: Boolean,
     color: {
       type: String,
+      required: false,
+    },
+    profile: {
+      type: Object,
       required: false,
     },
 
@@ -80,10 +80,11 @@ export default {
       // used for PostForm
       playvideo: false,
       isFormOpen: false,
+      user_profile: this.profile,
       isFormEdit: false,
-      id: this.profile.id,
+      id: null,
       postFormObject: {
-        user_id: 0,
+        user_id: (this.profile && this.profile.user_id) || null,
         title: null,
         image: null,
         body1: null,
@@ -92,14 +93,11 @@ export default {
         body1ColorId: 0,
         likes: 0,
         repost: 0,
-        region_id:
-          this.profile &&
-          this.profile.region_id &&
-          this.profile.region_id.toString(),
+        region_id: (this.profile && this.profile.region_id) || null,
         trades: [],
         shares: 0,
       },
-      userID: this.profile.user_id,
+      userID: null,
 
       form: defaultPostFormObject,
 
@@ -109,8 +107,27 @@ export default {
       postSearch: ref(this.postSearchFilters.postSearch),
     };
   },
+  computed: {
+    ...mapGetters("profile", ["getProfile"]),
+  },
+  watch: {
+    getProfile(newVal) {
+      if (newVal) {
+        console.log("user_profile", newVal, this.user_profile);
+        this.user_profile = newVal;
+        this.setInitialData();
+      }
+    },
+  },
+
+  mounted() {
+    if (!this.profile) {
+      this.fetchProfile();
+    }
+  },
 
   methods: {
+    ...mapActions("profile", ["fetchProfile"]),
     saveItem(formData) {
       // Same method for update & create
       // if we have an item id then update
@@ -139,7 +156,12 @@ export default {
     closeModal() {
       this.isFormOpen = false;
     },
-
+    setInitialData() {
+      this.id = this.user_profile.id;
+      this.postFormObject.region_id =
+        this.user_profile.region_id && this.user_profile.region_id.toString();
+      this.userID = this.user_profile.user_id;
+    },
     closeModalEditMode() {
       // edit was cancelled
       // this make sure any left over temp uploaded
@@ -204,7 +226,7 @@ export default {
 </script>
 
 <template>
-  <section class="bg-gray-100">
+  <section v-if="user_profile" class="bg-gray-100">
     <!-- Section Container -->
     <div class="relative mx-auto mt-0 pt-10 lg:pt-0 h-screen">
       <div
@@ -220,7 +242,7 @@ export default {
           :showPostButtons="showPostButtons"
           v-model="postSearch"
           :showit="showit"
-          :profile="profile"
+          :profile="user_profile"
           :isOpen="isFormOpen"
           @postClicked="openForm"
           @submitPostSearch="submitPostSearch"
@@ -347,7 +369,7 @@ export default {
               <Menu_Hamburger
                 v-model="postSearch"
                 :showit="showit"
-                :profile="profile"
+                :profile="user_profile"
                 :showingNavigationDropdown="showingNavigationDropdown"
                 @NavigationDropdown="NavigationDropdown"
                 @submitPostSearch="submitPostSearch"
@@ -359,7 +381,7 @@ export default {
               <PostForm
                 v-if="isFormOpen"
                 :isOpen="isFormOpen"
-                :id="profile.id"
+                :id="user_profile.id"
                 :isEdit="isFormEdit"
                 :form="postFormObject"
                 @formsave="saveItem"

@@ -44,26 +44,7 @@ class ProfileController extends Controller
             'showit' => Auth::check(),
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
-            'posts' => Post::query()
-            ->orderBy('id', 'DESC')
-            ->when(FacadeRequest::input('postSearch'), function ($query, $postSearch) {
-                $query->where('title', 'like', "%{$postSearch}%");
-            })
-            ->paginate(5)
-            ->withQueryString() 
-            ->through(fn($post) => [
-                'id' => $post->id,
-                'user_id' => $post->user_id,
-                'view' => $post->view,
-                'title' => $post->title,
-                'image' => $post->image,
-                'body1' => $post->body1,
-                'body2' => $post->body2,
-                'body1Bold' => $post->body1Bold,
-                'body1ColorId' => $post->body1ColorId,
-                'repost' => $post->repost,
-                'shares' => $post->shares,
-            ]),
+       
 
         // pass on any existing search filters that exist
         // along with data
@@ -92,32 +73,61 @@ class ProfileController extends Controller
             'showit' => Auth::check(),
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
-            'posts' => Post::query()
-            ->orderBy('id', 'DESC')
-            ->when(FacadeRequest::input('postSearch'), function ($query, $postSearch) {
-                $query->where('title', 'like', "%{$postSearch}%");
-            })
-            ->paginate(5)
-            ->withQueryString() 
-            ->through(fn($post) => [
-                'id' => $post->id,
-                'user_id' => $post->user_id,
-                'view' => $post->view,
-                'title' => $post->title,
-                'image' => $post->image,
-                'body1' => $post->body1,
-                'body2' => $post->body2,
-                'body1Bold' => $post->body1Bold,
-                'body1ColorId' => $post->body1ColorId,
-                'repost' => $post->repost,
-                'shares' => $post->shares,
-            ]),
-
         // pass on any existing search filters that exist
         // along with data
         'postSearchFilters' => FacadeRequest::only(['postSearch']),
         ]);
     }
+    public function settings(Request $request)
+    {
+        // Get current user id
+        $userID = Auth()->user('')->id;
+        $profile = null;
+
+
+        // Get the profile information if the user id exists
+        if($userID) {
+            $profile = Profile::where('user_id', $userID)->with('trades')->first();
+        }
+
+        $regions = Region::all();
+
+        $tradesOldStructure = $this->convertTradesToOldStructure($profile->trades);
+
+        return Inertia::render('Profile/Settings', [
+            'regions' => $regions,
+            'profile' => array_merge($profile->toArray(), $tradesOldStructure),
+            'showit' => Auth::check(),
+            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+            'status' => session('status'),
+        // pass on any existing search filters that exist
+        // along with data
+        'postSearchFilters' => FacadeRequest::only(['postSearch']),
+        ]);
+    }
+    public function getProfile(Request $request)
+    {
+        // Get current user id
+        $userID = Auth()->user('')->id;
+        $profile = null;
+
+
+        // Get the profile information if the user id exists
+        if($userID) {
+            $profile = Profile::where('user_id', $userID)->with('trades')->first();
+        }
+
+
+        $tradesOldStructure = $this->convertTradesToOldStructure($profile->trades);
+
+        // Construct the response for profile
+        $response = [
+            'profile' => array_merge($profile->toArray(), $tradesOldStructure),
+        ];
+
+
+        return response()->json($response);
+     }
 
 
 
@@ -360,8 +370,8 @@ class ProfileController extends Controller
             // Sync the selected trades with the profile
             $profile->trades()->sync($selectedTrades);
         }
+        return ['message' =>"Trades successfully updated"];
     
-        return Redirect::route('profile.edit');
     }
     
     /**
@@ -390,19 +400,17 @@ class ProfileController extends Controller
 
             $data = $request->validate([
                 'view_locale' => 'nullable|boolean',
-                'view_territorial'  => 'nullable|boolean',
                 'view_regional' => 'nullable|boolean',
                 'view_statewide' => 'nullable|boolean',
                 'view_nationwide'  => 'nullable|boolean',
-                'view_following'  => 'nullable|boolean',
-                'view_groups'  => 'nullable|boolean',
+                'view_following'  => 'nullable|boolean'
             ]);
 
 
             $profile->update($data);
             
         }
-        return Redirect::route('profile.edit');
+        return ['message' =>"Views successfully updated"];
 
     }
     public function updateViewsApi(Request $request)
@@ -437,6 +445,7 @@ class ProfileController extends Controller
             $profile->update($data);
             
         }
+        return false;
 
     }
     

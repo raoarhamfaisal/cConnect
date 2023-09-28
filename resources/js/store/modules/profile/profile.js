@@ -7,6 +7,8 @@ export default {
     return {
       loading: false,
       status: "",
+      profile: {},
+
       mustVerifyEmail: false,
       activeProfileTab: 0,
     };
@@ -15,11 +17,15 @@ export default {
     status: (state) => state.status,
     activeProfileTab: (state) => state.activeProfileTab,
     loading: (state) => state.loading,
+    getProfile: (state) => state.profile,
     mustVerifyEmail: (state) => state.mustVerifyEmail,
   },
   mutations: {
     setStatus(state, payload) {
       state.status = payload;
+    },
+    setProfile(state, payload) {
+      state.profile = payload;
     },
     setActiveTab(state, payload) {
       state.activeProfileTab = payload;
@@ -40,6 +46,50 @@ export default {
           commit("setStatus", response.data.status);
           commit("setMustVerifyEmail", response.data.mustVerifyEmail);
         }
+      } catch (err) {
+        somethingWentWrong();
+      } finally {
+        commit("setLoading", false);
+      }
+    },
+    async fetchProfile({ commit }) {
+      commit("setLoading", true);
+
+      try {
+        const response = await axios.get(`/api/profile`, getAxiosConfig());
+        if (response.data) {
+          commit("setProfile", response.data.profile);
+        }
+      } catch (err) {
+        somethingWentWrong();
+      } finally {
+        commit("setLoading", false);
+      }
+    },
+    async updateTrades({ commit }, form) {
+      commit("setLoading", true);
+
+      try {
+        const response = await axios.patch(
+          `/api/profile/trades`,
+          form,
+          getAxiosConfig()
+        );
+      } catch (err) {
+        somethingWentWrong();
+      } finally {
+        commit("setLoading", false);
+      }
+    },
+    async updateViews({ commit }, form) {
+      commit("setLoading", true);
+
+      try {
+        const response = await axios.patch(
+          `/api/profile/views`,
+          form,
+          getAxiosConfig()
+        );
       } catch (err) {
         somethingWentWrong();
       } finally {

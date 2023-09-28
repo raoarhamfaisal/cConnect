@@ -1,62 +1,41 @@
 <script setup>
-import { somethingWentWrong } from "@/helpers/utilities";
-import { useForm } from "@inertiajs/inertia-vue3";
+import { reactive } from "vue";
+import { useStore } from "vuex";
 const props = defineProps({
   profile: Object,
   byApi: {
     type: Boolean,
-    default: false,
+    default: true,
   },
 });
 
-const form = useForm({
+const form = reactive({
   view_locale: props.profile.view_locale,
-  view_territorial: props.profile.view_territorial,
   view_regional: props.profile.view_regional,
   view_statewide: props.profile.view_statewide,
   view_nationwide: props.profile.view_nationwide,
   view_following: props.profile.view_following,
-  view_groups: props.profile.view_groups,
 });
-
+const store = useStore();
 const switchFields = [
   "view_locale",
-  "view_territorial",
   "view_regional",
   "view_statewide",
   "view_nationwide",
   "view_following",
-  "view_groups",
 ];
 const labels = [
   "View Locale",
-  "View Territorial",
+
   "View Regional",
   "View Statewide",
   "View Nationwide",
   "View Following",
-  "View Groups",
 ];
 
 const toggleSwitch = (field) => {
   form[field] = form[field] === 1 ? 0 : 1;
-  if (props.byApi) {
-    form.patch(route("profile.updateViewsApi"), {
-      preserveScroll: true,
-      // onSuccess: () => form.reset("password"),
-      onError: () => {
-        somethingWentWrong();
-      },
-    });
-  } else {
-    form.patch(route("profile.updateViews"), {
-      preserveScroll: true,
-      // onSuccess: () => form.reset("password"),
-      onError: () => {
-        somethingWentWrong();
-      },
-    });
-  }
+  store.dispatch("profile/updateViews", form);
 };
 </script>
 

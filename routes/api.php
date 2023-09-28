@@ -58,12 +58,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         Route::post('/contractor/image-section/{sectionId}', [ImageSectionController::class, 'update']);
         Route::delete('/contractor/image-section/{sectionId}', [ImageSectionController::class, 'destroy']);
     
+      // Profile Api
 
-
+        Route::get('/profileInfo', [ProfileController::class, 'getProfileInfo'])->name('profile.getDetails');
+        Route::get('/profile', [ProfileController::class, 'getProfile'])->name('profile.getProfile');
+        Route::patch('/profile/trades', [ProfileController::class, 'updateTrades'])->name('profile.updateTrades');
+        Route::patch('/profile/views', [ProfileController::class, 'updateViews'])->name('profile.updateViews');
 
         // Review APIs
         Route::post('/reviews', [ReviewController::class, 'store'])->name('review.store');
-        Route::get('/profileInfo', [ProfileController::class, 'getProfileInfo'])->name('profile.getDetails');
         Route::get('/reviews/{contractor_id}', [ReviewController::class, 'index'])->name('review.all');
         Route::get('/contractor/{contractor_id}', [ReviewController::class, 'getContractorInfo'])->name('review.contractor');
         Route::put('reviews/{review}', [ReviewController::class, 'update']);
