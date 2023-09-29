@@ -625,5 +625,24 @@ class ProfileController extends Controller
         return ['message' =>"Views successfully updated", 'profile' => $profile];
 
     }
+
+
+    public function verifyPayment(Request $request)
+    {
+        // Get current user id
+        $userID = Auth()->user('')->id;
+        $profile = null;
+
+        // Get the profile information if the user id exists
+        if($userID) {
+            $profile = Profile::where('user_id', $userID)->first();
+        }
+        if($profile) {
+            $profile->is_payment_verified = 1;
+            $profile->update($data);
+        }
+        return ['message' =>"Views successfully updated", 'profile' => $profile];
+
+    }
             
 }
