@@ -194,7 +194,7 @@ const perPage = ref(15);
 
 // Mounted
 onMounted(async () => {
-  contractorId.value = contractorDetails.id;
+  contractorId.value = contractorDetails.user_id;
   contractor.value = contractorDetails;
   await fetchContractorReviews();
 });

@@ -309,7 +309,7 @@ const fetchReviews = async (
   }
   try {
     const response = await axios.get(
-      `/api/reviews/${contractorDetails.id}?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate}&sort_by_rating=${sortByRating}`,
+      `/api/reviews/${contractorDetails.user_id}?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate}&sort_by_rating=${sortByRating}`,
       getAxiosConfig()
     );
     if (append) {
