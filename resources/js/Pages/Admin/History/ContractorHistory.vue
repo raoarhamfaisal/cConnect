@@ -140,7 +140,7 @@
               <HistoryReviewResponse
                 :review="review"
                 :contractorId="review.contractor_id"
-                :profileId="profile.user_id"
+                :profileId="profile.id"
               />
             </div>
           </div>
@@ -256,7 +256,7 @@ const loadingNextPage = ref(false);
 
 // Mounted
 onMounted(async () => {
-  contractorId.value = contractorDetails.user_id;
+  contractorId.value = contractorDetails.id;
   contractor.value = contractorDetails;
   await fetchContractorReviews(false);
 });

@@ -46,7 +46,7 @@
         v-if="mode === 'edit'"
         class="self-start flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3"
       >
-        <Link class="rounded-full" :href="`/contractor/${profile.user_id}`">
+        <Link class="rounded-full" :href="`/contractor/${profile.id}`">
           <button
             class="bg-white px-4 py-1 uppercase text-xs hover:bg-[#f8f9fa] sm:text-sm font-bold rounded-full border-[#1864ab] border-2 sm:border-[3px] bg-white text-[#1864ab] cursor-pointer hover:shadow-lg active:scale-95"
           >

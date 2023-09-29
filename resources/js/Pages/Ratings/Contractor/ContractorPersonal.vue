@@ -91,8 +91,8 @@
                 v-for="(review, index) in contractorReviews"
                 :key="index"
                 :review="review"
-                :contractorId="contractor.user_id"
-                :profileId="profile.user_id"
+                :contractorId="contractor.id"
+                :profileId="profile.id"
               />
             </div>
             <div v-if="contractorReviews.length === 0">
@@ -309,7 +309,7 @@ const fetchReviews = async (
   }
   try {
     const response = await axios.get(
-      `/api/reviews/${contractorDetails.user_id}?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate}&sort_by_rating=${sortByRating}`,
+      `/api/reviews/${contractorDetails.id}?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate}&sort_by_rating=${sortByRating}`,
       getAxiosConfig()
     );
     if (append) {

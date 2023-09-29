@@ -144,7 +144,7 @@
               <ReviewResponseAdmin
                 :review="review"
                 :contractorId="review.contractor_id"
-                :profileId="profile.user_id"
+                :profileId="profile.id"
                 :showNotes="true"
                 :showContactDetails="true"
               />
