@@ -163,7 +163,7 @@ class PostController extends Controller
     
         if ($user_id) {
             // Get profile of the current user
-            $profile = Profile::where('user_id', $user_id)->first();
+            $profile = Profile::where('id', $user_id)->first();
     
             // Get trades of the profile
             if ($profile) {
