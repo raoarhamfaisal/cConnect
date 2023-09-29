@@ -92,7 +92,7 @@
                 :key="index"
                 :review="review"
                 :contractorId="contractor.id"
-                :profileId="profile.id"
+                :profileId="profile.user_id"
               />
             </div>
             <div v-if="contractorReviews.length === 0">

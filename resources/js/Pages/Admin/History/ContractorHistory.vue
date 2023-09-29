@@ -140,7 +140,7 @@
               <HistoryReviewResponse
                 :review="review"
                 :contractorId="review.contractor_id"
-                :profileId="profile.id"
+                :profileId="profile.user_id"
               />
             </div>
           </div>

@@ -34,7 +34,7 @@
           <template v-slot:activator="{ props }">
             <Link
               class="active:scale-95 hover:bg-[#f8f9fa] rounded-full"
-              :href="`/contractor/posts/${profile.id}`"
+              :href="`/contractor/posts/${profile.user_id}`"
             >
               <button
                 class="xs:text-md shadow-lg w-[28px] h-[28px] xs:w-[35px] xs:h-[35px] font-semibold rounded-full border-2 flex items-center justify-center"
