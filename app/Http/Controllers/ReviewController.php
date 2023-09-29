@@ -30,7 +30,7 @@ class ReviewController extends Controller
      */
     public function getContractorInfo(Request $request, $contractor_id)
     {
-        $contractorDetails = Profile::where('id', $contractor_id)
+        $contractorDetails = Profile::where('user_id', $contractor_id)
             ->select([
                 'id',
                 'user_id',
@@ -201,8 +201,8 @@ class ReviewController extends Controller
     {
 
         $data = $request->validate([
-            'reviewer_id' => 'required|integer|exists:profiles,id',
-            'contractor_id' => 'required|integer|exists:profiles,id',
+            'reviewer_id' => 'required|integer|exists:users,id',
+            'contractor_id' => 'required|integer|exists:users,id',
             'rating' => 'required|numeric|between:0,999999.99',
             'rating_text' => 'required|string',
             'hired_by_contractor' => 'required|boolean',
@@ -255,8 +255,8 @@ class ReviewController extends Controller
 
         // return response()->json(['user' => $user, 'review' => $review], 200);
         $data = $request->validate([
-            'reviewer_id' => 'integer|exists:profiles,id',
-            'contractor_id' => 'integer|exists:profiles,id',
+            'reviewer_id' => 'integer|exists:users,id',
+            'contractor_id' => 'integer|exists:users,id',
             'rating' => 'numeric|between:0,999999.99',
             'rating_text' => 'string',
             'hired_by_contractor' => 'boolean',
@@ -447,7 +447,7 @@ class ReviewController extends Controller
             'profiles.phone_cell',
             DB::raw('AVG(reviews.rating) as average_rating')
         ])
-        ->leftJoin('reviews', 'profiles.id', '=', 'reviews.contractor_id')
+        ->leftJoin('reviews', 'profiles.user_id', '=', 'reviews.contractor_id')
         ->groupBy('profiles.id')
         ->paginate($perPage, ['*'], 'page', $page);
 
@@ -795,8 +795,8 @@ class ReviewController extends Controller
     public function updateFromAdmin(Request $request, Review $review)
     {
         $data = $request->validate([
-            'reviewer_id' => 'integer|exists:profiles,id',
-            'contractor_id' => 'integer|exists:profiles,id',
+            'reviewer_id' => 'integer|exists:users,id',
+            'contractor_id' => 'integer|exists:users,id',
             'rating' => 'numeric|between:0,999999.99',
             'rating_text' => 'string',
             'hired_by_contractor' => 'boolean',
