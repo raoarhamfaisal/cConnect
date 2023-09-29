@@ -4,7 +4,7 @@ import { Head } from "@inertiajs/inertia-vue3";
 
 import AllSteps from "@/Pages/Profile/Partials/main/AllSteps.vue";
 import { useStore } from "vuex";
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 
 defineProps({
   mustVerifyEmail: Boolean,
@@ -22,6 +22,9 @@ defineProps({
 const store = useStore();
 
 store.commit("profile/setActiveTab", 0);
+onMounted(async () => {
+  await store.dispatch("getToken");
+});
 </script>
 
 <template>

@@ -5,6 +5,7 @@ import CompanyAddressInfo from "@/Pages/Profile/Partials/CompanyAddressInfo.vue"
 import Trades from "@/Pages/Profile/Partials/Trades.vue";
 import Views from "@/Pages/Profile/Partials/Views.vue";
 import LinksInfo from "@/Pages/Profile/Partials/LinksInfo.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { computed, reactive, ref } from "vue";
 import { useStore } from "vuex";
 import { Inertia } from "@inertiajs/inertia";
@@ -20,28 +21,28 @@ const props = defineProps({
   },
 });
 const store = useStore();
+const profile = props?.profile ?? {};
+
 const form = reactive({
-  first_name: props.profile.first_name,
-  last_name: props.profile.last_name,
-  phone_cell: props.profile.phone_cell,
-  company_name: props.profile.company_name,
-  phone_office: props.profile.phone_office,
-  region_id:
-    props.profile &&
-    props.profile.region_id &&
-    props.profile.region_id.toString(),
-  address_1: props.profile.address_1,
-  address_2: props.profile.address_2,
-  city: props.profile.city,
-  state: props.profile.state,
-  zipcode: props.profile.zipcode,
-  county: props.profile.county,
-  website_url: props.profile.website_url,
-  facebook: props.profile.facebook,
-  twitter: props.profile.twitter,
-  tiktok: props.profile.tiktok,
-  instagram: props.profile.instagram,
+  first_name: profile.first_name ?? "",
+  last_name: profile.last_name ?? "",
+  phone_cell: profile.phone_cell ?? "",
+  company_name: profile.company_name ?? "",
+  phone_office: profile.phone_office ?? "",
+  region_id: profile.region_id?.toString() ?? "",
+  address_1: profile.address_1 ?? "",
+  address_2: profile.address_2 ?? "",
+  city: profile.city ?? "",
+  state: profile.state ?? "",
+  zipcode: profile.zipcode ?? "",
+  county: profile.county ?? "",
+  website_url: profile.website_url ?? "",
+  facebook: profile.facebook ?? "",
+  twitter: profile.twitter ?? "",
+  tiktok: profile.tiktok ?? "",
+  instagram: profile.instagram ?? "",
 });
+
 const errors = reactive({
   first_name: "",
   last_name: "",
@@ -53,7 +54,7 @@ const errors = reactive({
   state: "",
   zipcode: "",
   county: "",
-  region: "",
+  region_id: "",
   website_url: "",
   facebook: "",
   twitter: "",
@@ -73,6 +74,7 @@ const disable = computed(() => {
     : false;
 });
 const screenWidth = computed(() => store.getters.screenWidth);
+const loading = computed(() => store.state.profile.loading);
 
 // Methods
 //Methods
@@ -142,7 +144,7 @@ const validateForm = () => {
 
   // Validate region
   if (!form.region_id.trim()) {
-    errors.region = "Region is required";
+    errors.region_id = "Region is required";
     isValid = false;
   }
   // Validate website_url
@@ -205,7 +207,7 @@ const clearErrors = (field) => {
   }
 };
 
-const nextClick = () => {
+const nextClick = async () => {
   //for last step
   if (currentStep.value === steps.value) {
     Inertia.visit(route("post"));
@@ -213,12 +215,19 @@ const nextClick = () => {
   //for step 1 complted
   if (currentStep.value === 1) {
     if (validateForm()) {
+      await store.dispatch("profile/updateProfileGeneralInfo", {
+        form: form,
+        showSuccess: false,
+      });
     } else {
       return;
     }
   }
   currentStep.value = currentStep.value + 1;
   editableAllowed.value = editableAllowed.value + 1;
+};
+const completePayment = async () => {
+  await store.dispatch("profile/verifyPayment");
 };
 </script>
 
@@ -321,7 +330,29 @@ const nextClick = () => {
           <v-stepper-window-item :value="3">
             <Views :profile="profile" />
           </v-stepper-window-item>
-          <v-stepper-window-item :value="4"> </v-stepper-window-item>
+          <v-stepper-window-item :value="4">
+            <PrimaryButton
+              @click="completePayment"
+              :disabled="loading"
+              style="
+                background-image: linear-gradient(
+                  111.4deg,
+                  rgba(7, 7, 9, 1) 6.5%,
+                  rgba(27, 24, 113, 1) 93.2%
+                );
+              "
+              class="w-full flex justify-center"
+            >
+              <div class="flex items-center justify-center">
+                Complete Payment
+              </div>
+              <img
+                v-show="loading"
+                src="/images/avatars/Spinner.gif"
+                alt="spinner"
+                width="30"
+            /></PrimaryButton>
+          </v-stepper-window-item>
         </div>
       </v-stepper-window>
 

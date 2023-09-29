@@ -25,7 +25,7 @@ const referenceList = props.regions.map((item) => item.name);
 const selectedObj = props.regions.find((item) => item.id === props.region_id);
 const selectedName = selectedObj ? selectedObj.name : undefined;
 
-const selectedReferal = ref(selectedName);
+const selectedReferal = ref(selectedName ?? "");
 
 //Emits
 const emit = defineEmits(["update:form", "clearErrors"]);
@@ -47,6 +47,7 @@ const changeReferal = (value) => {
       props.form.region_id = item.id.toString();
     }
   });
+  clearError("region_id");
 };
 
 // Upload Company Logo on image change
@@ -173,7 +174,16 @@ const clearError = (field) => {
         </div>
         <div class="mb-4 sm:mb-0">
           <InputLabel class="font-bold mb-1" value="State*" />
-          <SelectProfile :options="stateList" v-model="form.state" />
+          <SelectProfile
+            :options="stateList"
+            :modelValue="form.state"
+            @update:modelValue="
+              (value) => {
+                form.state = value;
+                clearError('state');
+              }
+            "
+          />
           <InputError class="mt-2" :message="errors.state" />
         </div>
 
@@ -207,11 +217,10 @@ const clearError = (field) => {
           <InputLabel class="font-bold mb-1" value="Region*" />
           <SelectProfile
             :options="referenceList"
-            @input="clearError('region')"
             :modelValue="selectedReferal"
             @update:modelValue="changeReferal"
           />
-          <InputError class="mt-2" :message="errors.region" />
+          <InputError class="mt-2" :message="errors.region_id" />
         </div>
       </div>
       <!-- <div class="flex items-center w-full mt-6 gap-4">
