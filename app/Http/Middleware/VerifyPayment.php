@@ -22,7 +22,7 @@ class VerifyPayment
         // Check if the user is authenticated and has a profile with is_payment_verified
         if ($user && !$user->profile->is_payment_verified) {
             // You can customize the response or redirection here
-            return redirect('/payment-verification');
+            return redirect('/profile-setup');
         }
 
         return $next($request);

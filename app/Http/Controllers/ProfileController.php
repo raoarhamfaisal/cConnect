@@ -559,7 +559,7 @@ class ProfileController extends Controller
             }else {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'Avatar not updated successfully',
+                    'message' => 'Company Logo not updated successfully',
                     'company_logo' => '',
                 ]);    
         
@@ -568,7 +568,7 @@ class ProfileController extends Controller
         // Return json response because this is an api axios call
         return response()->json([
             'status' => 'success',
-            'message' => 'Avatar updated successfully',
+            'message' => 'Company Logo updated successfully',
             'company_logo' => $url,
         ]);    
     }
@@ -580,6 +580,50 @@ class ProfileController extends Controller
             $oldStructure["trade{$i}"] = $trades->contains('id', $i) ? 1 : 0;
         }
         return $oldStructure;
+    }
+
+
+
+    public function updateBasicInfo(Request $request)
+    {
+        // Get current user id
+        $userID = Auth()->user('')->id;
+        $profile = null;
+
+        // Get the profile information if the user id exists
+        if($userID) {
+            $profile = Profile::where('user_id', $userID)->first();
+        }
+
+        if($profile) {
+
+            $data = $request->validate([
+                'first_name' => 'required|string|max:256',
+                'last_name' => 'required|string|max:256',
+                'phone_cell' => 'required|string',
+                'company_name' => 'required|string',
+                'phone_office' => 'nullable|string',
+                'region_id' => 'required|string',
+                'address_1' => 'required|string',
+                'address_2' => 'nullable|string',
+                'city' => 'required|string',
+                'state' => 'required|string',
+                'zipcode' => 'required|string',
+                'county' => 'required|string',
+
+                'website_url' => 'nullable|string',
+                'facebook' => 'nullable|string',
+                'twitter' => 'nullable|string',
+                'tiktok' => 'nullable|string',
+                'instagram' => 'nullable|string'
+            ]);
+
+
+            $profile->update($data);
+            
+        }
+        return ['message' =>"Views successfully updated", 'profile' => $profile];
+
     }
             
 }

@@ -11,6 +11,7 @@ import { computed, reactive, ref } from "vue";
 
 const form = useForm({
   first_name: "",
+  last_name: "",
   email: "",
   company_name: "",
   email: "",
@@ -216,6 +217,7 @@ const submit = () => {
             rgba(7, 7, 9, 0.5) 97.2%
           );
         "
+        @click.prevent="submit"
       >
         <div class="flex items-center justify-center">Signup</div>
         <img

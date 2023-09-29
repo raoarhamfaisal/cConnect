@@ -16,7 +16,7 @@ class TradeSeeder extends Seeder
     public function run()
     {
         $trades = [
-            "trade1", //  Supplier & Advertiser (all trades)
+            "trade1", //  Archtectural, Engineering & law
             "trade2", //  Construction & Remodeling
             "trade3", //  Tile Works, kitchen & Bathrooms
             "trade4", //  Concrete, Masonry & Foundations
@@ -39,7 +39,7 @@ class TradeSeeder extends Seeder
             "trade21", //  Glass, Mirrors, Windows & Doors
             "trade22", //  Metal Fab, Fireplaces
             "trade23", //  Handyman Services
-            "trade24", //  Archtectural, Engineering & law
+            "trade24", //  Supplier & Advertiser (all trades)
             "trade25", //  open
             "trade26", //  open
             "trade27", //  open

@@ -21,8 +21,8 @@ class profileFactory extends Factory
             'region_id' => fake()->numberBetween(1, 11),
             'active_user' => fake()->numberBetween(0, 1),
             'is_payment_verified' => 1,
-            'first_name' => fake()->name(),
-            'last_name' => fake()->name(),
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
             'company_name' => fake()->company(),
             'website_url' => "https://website_url.com",
             'facebook' => "https://facebook.com",
@@ -43,12 +43,10 @@ class profileFactory extends Factory
             'company_logo' => fake()->imageUrl(640, 480),
             'business_start' => fake()->date(),
             'view_locale' => fake()->numberBetween(0, 1),
-            'view_territorial' => fake()->numberBetween(0, 1),
             'view_regional' => fake()->numberBetween(0, 1),
             'view_statewide' => fake()->numberBetween(0, 1),
             'view_nationwide' => fake()->numberBetween(0, 1),
             'view_following' => fake()->numberBetween(0, 1),
-            'view_groups' => fake()->numberBetween(0, 1),
         ];
     }
 }
