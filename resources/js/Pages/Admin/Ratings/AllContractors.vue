@@ -55,9 +55,9 @@
           <Link
             v-for="(contractor, index) in allContractors"
             :key="index"
-            :href="`/admin/regions/${region_id}/contractors/${contractor.id}${
-              isReviewers ? '/reviews' : ''
-            }`"
+            :href="`/admin/regions/${region_id}/contractors/${
+              contractor.user_id
+            }${isReviewers ? '/reviews' : ''}`"
             class="hover:bg-[#f8f9fa] hover:rounded"
           >
             <contractor
