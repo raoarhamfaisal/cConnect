@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Models\User;
+use App\Models\Profile;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -43,6 +45,16 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
         // $request->user()->createToken($request->token_name)->plainTextToken;
+
+        $user = User::where('email', $request->email)->first();
+
+        if($user) {
+            $profile = Profile::where('user_id', $user->id)->first();
+            if(!$profile->is_payment_verified) {
+                return redirect(RouteServiceProvider::PROFILE);
+            }
+        }
+        
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }
