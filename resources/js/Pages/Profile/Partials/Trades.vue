@@ -1,7 +1,7 @@
 <script setup>
 import { somethingWentWrong } from "@/helpers/utilities";
 
-import { options } from "@/helpers/dataHelpters.js";
+import { options } from "@/helpers/selectListsHelpters.js";
 import { reactive } from "vue";
 import { useStore } from "vuex";
 
@@ -74,3 +74,4 @@ const toggleSwitch = async (field) => {
     </div>
   </section>
 </template>
+@/helpers/selectListsHelpters.js

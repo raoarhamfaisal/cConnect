@@ -85,3 +85,15 @@ export const stateList = [
   "Wisconsin",
   "Wyoming",
 ];
+export const templateList = [
+  "Template 1",
+  "Template 2",
+  "Template 3",
+  "Template 4",
+  "Template 5",
+];
+export const colorSchemeList = [
+  { text: "Color 1", color: "#fff" },
+  { text: "Color 1", color: "red" },
+  { text: "Color 3", color: "blue" },
+];

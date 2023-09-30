@@ -3,6 +3,13 @@
     <div class="flex flex-col gap-3 sm:gap-4 mt-5 pb-40">
       <ProfileHeader
         :screenWidth="screenWidth"
+        :averageRating="average_rating"
+        :mode="mode"
+        :profile="profile"
+      />
+      <Templates
+        v-if="mode === 'edit'"
+        :screenWidth="screenWidth"
         :mode="mode"
         :profile="profile"
       />
@@ -82,6 +89,7 @@ import Card from "@/Components/Card.vue";
 
 import ProfileHeader from "@/Components/ContractorPage/Sections/ProfileHeader.vue";
 import RegionTradeSection from "@/Components/ContractorPage/Sections/RegionTradeSection.vue";
+import Templates from "@/Components/ContractorPage/Sections/Templates.vue";
 import SocialLinksSection from "@/Components/ContractorPage/Sections/SocialLinksSection.vue";
 import AdditionalInfoSection from "@/Components/ContractorPage/Sections/AdditionalInfoSection.vue";
 import BottomTitleText from "@/Components/ContractorPage/Sections/BottomTitleText.vue";

@@ -13,12 +13,12 @@
           fontWeight: 800,
           fontSize: screenWidth > 640 ? '24px' : '20px',
         }"
-        :heading="`Additional Info`"
+        :heading="`Contact Info`"
       />
       <IconButton
         v-if="mode === 'edit'"
         @click="openDialog"
-        icon="mdi:edit"
+        icon="nimbus:edit"
         color="#1864ab"
       />
     </div>
@@ -72,19 +72,14 @@
       <InfoWithIcon icon="mdi:city" tooltipText="City" :text="city" />
       <InfoWithIcon icon="entypo:location" tooltipText="State" :text="state" />
       <InfoWithIcon
-        icon="tabler:location-filled"
-        tooltipText="County"
-        :text="county"
-      />
-      <InfoWithIcon
-        icon="material-symbols:flag"
-        tooltipText="Country"
-        :text="counrty"
-      />
-      <InfoWithIcon
         icon="map:post-box"
         tooltipText="Zip Code"
         :text="zipcode"
+      />
+      <InfoWithIcon
+        icon="tabler:location-filled"
+        tooltipText="County"
+        :text="county"
       />
     </div>
   </Card>
@@ -197,38 +192,17 @@
         <!-- <InputError class="mt-2" :message="form.errors.phone_cell" /> -->
       </div>
       <div>
-        <InputLabel class="font-bold" for="state" value="State" />
-        <TextInput
-          id="state"
-          type="text"
-          class="mt-1 block w-full"
-          v-model="tempCompanyProfile.state"
-          placeholder="Type your State"
-          autocomplete="state"
+        <InputLabel class="font-bold mb-1" for="state" value="State" />
+        <SelectProfile
+          :options="stateList"
+          :modelValue="tempCompanyProfile.state"
+          @update:modelValue="
+            (value) => {
+              tempCompanyProfile.state = value;
+            }
+          "
         />
         <!-- <InputError class="mt-2" :message="form.errors.phone_cell" /> -->
-      </div>
-      <div>
-        <InputLabel class="font-bold" for="county" value="County" />
-        <TextInput
-          id="county"
-          type="text"
-          class="mt-1 block w-full"
-          v-model="tempCompanyProfile.county"
-          placeholder="Type your County"
-        />
-        <!-- <InputError class="mt-2" :message="form.errors.address_2" /> -->
-      </div>
-      <div>
-        <InputLabel class="font-bold" for="counrty" value="Country" />
-        <TextInput
-          id="counrty"
-          type="text"
-          class="mt-1 block w-full"
-          v-model="tempCompanyProfile.country"
-          placeholder="Type your Country"
-        />
-        <!-- <InputError class="mt-2" :message="form.errors.address_2" /> -->
       </div>
 
       <div>
@@ -242,14 +216,28 @@
         />
         <!-- <InputError class="mt-2" :message="form.errors.zipcode" /> -->
       </div>
+      <div>
+        <InputLabel class="font-bold" for="county" value="County" />
+        <TextInput
+          id="county"
+          type="text"
+          class="mt-1 block w-full"
+          v-model="tempCompanyProfile.county"
+          placeholder="Type your County"
+        />
+        <!-- <InputError class="mt-2" :message="form.errors.address_2" /> -->
+      </div>
     </div>
   </CustomDialog>
 </template>
 <script setup>
 import IconButton from "@/Components/IconButton.vue";
 import InfoWithIcon from "@/Components/ContractorPage/InfoWithIcon.vue";
+import { stateList } from "@/helpers/selectListsHelpters.js";
 
 import Card from "@/Components/Card.vue";
+import SelectProfile from "@/Components/SelectProfile.vue";
+
 import UserAvatar from "@/Pages/Profile/components/UserAvatar.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
@@ -391,3 +379,4 @@ const handleImageUpdate = async (file) => {
     });
 };
 </script>
+@/helpers/selectListsHelpters.js

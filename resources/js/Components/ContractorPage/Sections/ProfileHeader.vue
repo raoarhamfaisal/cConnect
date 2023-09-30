@@ -42,21 +42,22 @@
         </div>
       </div>
       <!-- See Live view and edit -->
+
       <div
-        v-if="mode === 'edit'"
         class="self-start flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3"
       >
-        <Link class="rounded-full" :href="`/contractor/${profile.id}`">
-          <button
-            class="bg-white px-4 py-1 uppercase text-xs hover:bg-[#f8f9fa] sm:text-sm font-bold rounded-full border-[#1864ab] border-2 sm:border-[3px] bg-white text-[#1864ab] cursor-pointer hover:shadow-lg active:scale-95"
-          >
-            See Live View
-          </button>
-        </Link>
+        <div>
+          <StarRating
+            v-if="averageRating"
+            :rating="Number(averageRating.toFixed(1))"
+            :isIndicatorActive="false"
+          />
+        </div>
         <IconButton
+          v-if="mode === 'edit'"
           class="self-end sm:self-center"
           @click="openDialog"
-          icon="mdi:edit"
+          icon="nimbus:edit"
           color="#1864ab"
         />
       </div>
@@ -154,6 +155,8 @@ import IconButton from "@/Components/IconButton.vue";
 import UserAvatar from "@/Pages/Profile/components/UserAvatar.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
+import StarRating from "@/Components/Ratings/StarRating.vue";
+
 import TextInput from "@/Components/TextInput.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 
@@ -172,6 +175,10 @@ import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 const props = defineProps({
   profile: Object,
   screenWidth: Number,
+  averageRating: {
+    type: Number,
+    default: 0,
+  },
   mode: {
     type: String,
     default: "",

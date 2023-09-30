@@ -1,8 +1,8 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { Icon } from "@iconify/vue";
 
-const { imageSrc } = defineProps(["imageSrc"]);
+const props = defineProps(["imageSrc"]);
 const emit = defineEmits();
 const file = ref(null);
 const updatedImage = ref(null);
@@ -32,6 +32,14 @@ const updateImage = () => {
 
   input.click();
 };
+watch(
+  () => props.imageSrc,
+  (newVal) => {
+    if (newVal) {
+      imageFailed.value = false;
+    }
+  }
+);
 </script>
 
 <template>

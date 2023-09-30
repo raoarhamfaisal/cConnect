@@ -22,6 +22,13 @@ const props = defineProps({
 });
 const store = useStore();
 const profile = props?.profile ?? {};
+const propertiesToProcess = [
+  "website_url",
+  "facebook",
+  "twitter",
+  "tiktok",
+  "instagram",
+];
 
 const form = reactive({
   first_name: profile.first_name ?? "",
@@ -215,6 +222,11 @@ const nextClick = async () => {
   //for step 1 complted
   if (currentStep.value === 1) {
     if (validateForm()) {
+      propertiesToProcess.forEach((prop) => {
+        if (form[prop] && typeof form[prop] === "string") {
+          form[prop] = form[prop].replace(/^https?:\/\//, "");
+        }
+      });
       await store.dispatch("profile/updateProfileGeneralInfo", {
         form: form,
         showSuccess: false,

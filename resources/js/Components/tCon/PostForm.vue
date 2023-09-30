@@ -28,7 +28,7 @@ import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css
 import "filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css";
 import { mapGetters } from "vuex";
 import { ref } from "vue";
-import { options } from "@/helpers/dataHelpters.js";
+import { options } from "@/helpers/selectListsHelpters.js";
 
 const FilePond = VueFilePond(
   FilePondPluginImageExifOrientation,
@@ -638,3 +638,4 @@ Array.prototype.remove = function () {
   left: 1px;
 } */
 </style>
+@/helpers/selectListsHelpters.js
