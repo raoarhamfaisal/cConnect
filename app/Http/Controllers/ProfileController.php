@@ -540,7 +540,7 @@ class ProfileController extends Controller
 
                 $companyLogoPath = $profile->company_logo;
                 $file = $request->file('company_logo');
-                $path = $file->store('images/company-logos', 'public-storage');
+                $path = $file->store('uploads/company-logos', 'public-storage');
 
                 $url = asset($path);
 
