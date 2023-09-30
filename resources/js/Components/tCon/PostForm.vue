@@ -52,7 +52,7 @@ export default {
     MultiSelect,
   },
 
-  props: ["form", "isOpen", "isEdit", "id"],
+  props: ["form", "isOpen", "isEdit", "id", "success"],
   // props: {
   //     form: {
   //         type: Object,
@@ -120,11 +120,16 @@ export default {
         this.selectedReferal = selectedName;
       }
     },
-    // trades(newVal) {
-    //   this.selectedItems = this.options.filter((option) => {
-    //     return newVal.some((trade) => trade.name === option.id);
-    //   });
-    // },
+    success(newVal) {
+      if (newVal) {
+        this.form.title = "";
+        this.form.body1 = "";
+        this.form.body2 = "";
+        this.myFiles = [];
+        this.form.image = "";
+        this.$store.dispatch("ratings/getTrades", this.id);
+      }
+    },
     trades(newVal) {
       // Resetting tradesPost object to all false
       for (let key in this.tradesPost) {
@@ -160,13 +165,11 @@ export default {
       this.tradesPost[field] = !this.tradesPost[field];
     },
     handleFilePondProcessStart(file) {
-      console.log("stared");
+      console.log("started file");
       this.isUploading = true;
     },
     handleFilePondProcessEnd(file, error) {
       console.log("ended1");
-
-      // this.isUploading = false;
     },
     handleFilePondError(error) {
       console.log("ended2");
@@ -183,6 +186,8 @@ export default {
     },
     // called when plugin is initialized
     handleFilePondInit() {
+      console.log("Plugin initialized");
+
       this.myFiles = [];
       // Create the array of images using seperator |
       let arr = this.form.image ? this.form.image.split("|") : [];
@@ -213,7 +218,6 @@ export default {
       this.form.image = arr.join("|");
       console.log("addForm: ", this.form.image);
       console.log("ended3");
-      this.isUploading = false;
     },
 
     removeFormImage(image) {
@@ -280,12 +284,46 @@ Array.prototype.remove = function () {
 </script>
 
 <template>
-  <Loader :loading="loading" background="" height="30vh"></Loader>
+  <CustomDialog
+    submitText="Okay"
+    @submit="handleSubmit"
+    :showCancel="false"
+    ref="tradeDialogRef"
+    title="Edit Trades"
+  >
+    <div class="mb-4 sm:mb-0 mt-4">
+      <div class="grid mt-8 gap-3">
+        <div
+          v-for="(option, index) in options"
+          :key="index"
+          class="flex items-center justify-between sm:w-96 ml-3 mb-5"
+        >
+          <label :for="option.id" class="mr-4 font-bold">{{
+            option.name
+          }}</label>
+          <div class="switch" @click="toggleSwitch(option.id)">
+            <div
+              :class="[
+                tradesPost[option.id] ? 'switch-bg-on' : 'switch-bg-off',
+              ]"
+            >
+              <div
+                :class="[
+                  tradesPost[option.id] ? 'switch-knob-on' : 'switch-knob-off',
+                ]"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <InputError class="mt-2" :message="$page.props.errors.trades" />
+    </div>
+  </CustomDialog>
   <div
-    v-if="isOpen && !loading"
     class="fixed z-40 inset-0 overflow-y-auto ease-out duration-400 overscroll-contain"
   >
     <div
+      v-if="isOpen"
       class="flex items-start justify-start min-h-screen mt-5 pt-4 px-1 pb-20 text-center sm:block sm:p-0"
     >
       <div class="fixed inset-0 transition-opacity" @click="$emit('formclose')">
@@ -306,12 +344,14 @@ Array.prototype.remove = function () {
       >
         <form>
           <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-            <div class="">
+            <Loader :loading="loading" background="" height="30vh"></Loader>
+
+            <div v-if="!loading" class="">
               <!-- POST TITLE -->
               <div
                 class="flex justify-start items-center pb-2 space-x-2 text-blue-rgba font-bold text-xl md:text-3xl"
               >
-                <img src="/icons/post_b.png" width="25" height="25" />
+                <img src="/images/icons/post_b.png" width="25" height="25" />
                 <p class="">Create Post</p>
               </div>
 
@@ -339,7 +379,7 @@ Array.prototype.remove = function () {
                 <label
                   for="formPostbody1"
                   class="block text-gray-700 text-sm font-bold mb-2"
-                  >Top text (not required):
+                  >Top text (required):
                 </label>
                 <input
                   type="text"
@@ -402,7 +442,19 @@ Array.prototype.remove = function () {
                   }"
                   v-bind:files="myFiles"
                   v-on:init="handleFilePondInit"
+                  v-on:processfiles="
+                    () => {
+                      console.log('myFiles uploaded successfully');
+                      isUploading = false;
+                    }
+                  "
+                  v-on:error="isUploading = false"
                   v-on:addfilestart="handleFilePondProcessStart"
+                  @processfilestart="
+                    () => {
+                      console.log('myFiles started successfully');
+                    }
+                  "
                   v-on:addfile="handleFilePondProcessEnd"
                   v-on:processfileabort="handleFilePondError"
                   v-on:removefile="handleFilePondProcessEnd"
@@ -476,50 +528,6 @@ Array.prototype.remove = function () {
                     >{{ option.name }}</Badge
                   >
                 </template>
-                <CustomDialog
-                  submitText="Okay"
-                  @submit="handleSubmit"
-                  :loading="loadingSending"
-                  :showCancel="false"
-                  :disabled="disabledSending"
-                  ref="tradeDialogRef"
-                  title="Edit Trades"
-                >
-                  <div class="mb-4 sm:mb-0 mt-4">
-                    <div class="grid mt-8 gap-3">
-                      <div
-                        v-for="(option, index) in options"
-                        :key="index"
-                        class="flex items-center justify-between sm:w-96 ml-3 mb-5"
-                      >
-                        <label :for="option.id" class="mr-4 font-bold">{{
-                          option.name
-                        }}</label>
-                        <div class="switch" @click="toggleSwitch(option.id)">
-                          <div
-                            :class="[
-                              tradesPost[option.id]
-                                ? 'switch-bg-on'
-                                : 'switch-bg-off',
-                            ]"
-                          >
-                            <div
-                              :class="[
-                                tradesPost[option.id]
-                                  ? 'switch-knob-on'
-                                  : 'switch-knob-off',
-                              ]"
-                            ></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <InputError
-                      class="mt-2"
-                      :message="$page.props.errors.trades"
-                    />
-                  </div>
-                </CustomDialog>
               </div>
             </div>
           </div>
@@ -533,7 +541,9 @@ Array.prototype.remove = function () {
                 v-show="!isEdit"
                 @click="$emit('formsave', form)"
                 :disabled="isUploading"
-                class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-green-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                :class="`inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-green-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5 ${
+                  isUploading ? 'disabled' : ''
+                }`"
               >
                 Save Post
               </button>
@@ -587,6 +597,9 @@ Array.prototype.remove = function () {
   </div>
 </template>
 <style scoped>
+.disabled {
+  opacity: 0.2;
+}
 /* .switch-post {
   cursor: pointer;
   width: 30px;

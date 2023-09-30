@@ -181,7 +181,11 @@ export default {
         return state.ratings.index;
       },
     }),
-    ...mapGetters("ratings", ["shouldFetchPostsOnClose", "shouldLoadPosts"]),
+    ...mapGetters("ratings", [
+      "shouldFetchPostsOnClose",
+      "shouldLoadPosts",
+      "shouldFetchFirstPagePosts",
+    ]),
   },
   watch: {
     shouldLoadPosts(newValue) {
@@ -189,6 +193,34 @@ export default {
       if (this.shouldLoadPosts) {
         this.loadPostsOnChange();
         this.$store.commit("ratings/setShouldLoadPosts", false);
+      }
+    },
+    shouldFetchFirstPagePosts(newVal) {
+      if (newVal) {
+        this.$inertia.get(
+          this.posts.first_page_url,
+          {},
+          {
+            // these preserve state keeps our position in the scroll
+            preserveState: true,
+            preserveScroll: true,
+            // 'only' makes sure that inertia only loads current post property
+            // not the whole payload. Make sure lazy load is used in controller
+            only: ["posts"],
+            onSuccess: () => {
+              // takes the object posts and appends it to allpost
+              this.allPosts = [...this.posts.data];
+              this.loadingPosts = false;
+              // 'this.initialUrl' is set in script data
+              window.history.replaceState(
+                {},
+                this.$page.title,
+                this.initialUrl
+              );
+              this.$store.commit("ratings/setShouldFetchFirstPagePosts", false);
+            },
+          }
+        );
       }
     },
   },
@@ -258,86 +290,8 @@ export default {
       );
     },
 
-    NavigationDropdown(showingNavigationDropdown) {
-      this.showingNavigationDropdown = !this.showingNavigationDropdown;
-    },
     // DISPLAY POST INPUT/EDIT FORM
     // no item # is create new
-    openForm(formData) {
-      // console.log(('Post button clicked'))
-      this.showingNavigationDropdown = false;
-      this.isFormOpen = true;
-      this.isFormEdit = !!formData; // !! conversts a "truthy" or "falsey" to
-      // boolean true or false
-      // So if e=tiem is null or "0" then
-      // make isFormEdit false or Create Mode
-      // If a value there its "truthy" and make
-      // isFormEdit true or edit mode.
-
-      // if formData is "truthy" (has data) then assign postFormObject with the
-      // object associated with form# else assign it the defaultPostFormObject
-      // and set user_id to the current user
-
-      // btw, we need to explicitly make a copy of the form object when
-      // we assign it to the postFormObject... do it by calling Object.assign()
-
-      if (this.isFormEdit) {
-        // existing Post
-        this.form = Object.assign({}, formData);
-      } else {
-        // New Post
-        formData = defaultPostFormObject;
-        this.postFormObject.user_id = this.userID;
-      }
-
-      // And, reset error messages everytime we open the form
-      this.$page.props.errors = {};
-    },
-
-    saveItem(formData) {
-      // Same method for update & create
-      // if we have an item id then update
-
-      let url = "/post";
-      if (formData.id) {
-        url = "/post/" + formData.id;
-        formData._method = "PUT";
-      }
-
-      console.log("saveItem: " + url);
-
-      // see results - chrome: inpect/network/headers & payload
-      // 1) goes to web.php router
-      // 2) router listens for Route::post('/post')
-      //    to PostController store method
-      this.$inertia.post(url, formData, {
-        onError: () => {},
-        onSuccess: () => {
-          this.closeModal();
-        },
-      });
-    },
-
-    closeModal() {
-      this.isFormOpen = false;
-    },
-
-    closeModalEditMode() {
-      // edit was cancelled
-      // this make sure any left over temp uploaded
-      // file are deleted
-
-      // ****** NOT COMPLETED - WORK ON LATER *******
-      this.isFormOpen = false;
-    },
-
-    deleteItem(formData) {
-      if (window.confirm("are you sure?")) {
-        this.$inertia.post("/posts/" + formData.id, {
-          _method: "DELETE",
-        });
-      }
-    },
 
     EnlargePost(clickedPost) {
       // Toggles display of indiviual post

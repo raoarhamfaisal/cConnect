@@ -5,11 +5,13 @@ import Menu_Hamburger from "@/Components/tCon/Menu_HamburgerMenu.vue";
 import tContractorWord from "@/Components/tCon/tContractorWord.vue";
 import ButtonPost from "@/Components/tCon/tConSub/ButtonPost.vue";
 import { Inertia } from "@inertiajs/inertia";
-import { Link } from "@inertiajs/inertia-vue3";
+import { Link, usePage } from "@inertiajs/inertia-vue3";
 import PostForm from "@/Components/tCon/PostForm.vue";
+import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 
 import { ref } from "vue";
 import { mapActions, mapGetters } from "vuex";
+import { changesSaved } from "@/helpers/utilities";
 
 const defaultPostFormObject = {
   user_id: 0,
@@ -27,6 +29,7 @@ const defaultPostFormObject = {
 export default {
   components: {
     tContractorWord,
+    CustomDialog,
     ButtonPost,
     ButtonRefresh,
     PostForm,
@@ -70,6 +73,7 @@ export default {
 
       previousY: 0,
       previousRatio: 0,
+      success: false,
       showSpinText: false,
       showingNavigationDropdown: ref(false),
 
@@ -98,8 +102,10 @@ export default {
         shares: 0,
       },
       userID: null,
+      url: usePage().url.value,
 
       form: defaultPostFormObject,
+      paymentCompleted: false,
 
       // Load postSearch input with current search
       // Object postSearchFilters.postSearch = null or value of serch text
@@ -119,24 +125,38 @@ export default {
       }
     },
     profile(newVal, oldVal) {
-      console.log("newVAl", this.profile)
-      this.postFormObject.user_id = (this.profile && this.profile.user_id) || null
-    }
+      console.log("newVAl", this.profile);
+      this.postFormObject.user_id =
+        (this.profile && this.profile.user_id) || null;
+    },
   },
 
-  mounted() {
+  async mounted() {
     if (!this.profile) {
-      this.fetchProfile();
-    }else {
-      this.postFormObject.user_id = (this.profile && this.profile.user_id) || null
+      await this.fetchProfile();
+    } else {
+      this.postFormObject.user_id =
+        (this.profile && this.profile.user_id) || null;
+    }
+    this.paymentCompleted = this.user_profile.is_payment_verified;
+    const user = usePage().props.value;
+    console.log(user, "user", this.url);
+    if (
+      this.user_profile &&
+      !this.user_profile.is_payment_verified &&
+      this.url !== "/profile-setup"
+    ) {
+      this.$refs.paymentDialogRef.openDialog();
+      console.log("herein dialog", this.user_profile);
     }
   },
 
   methods: {
     ...mapActions("profile", ["fetchProfile"]),
     saveItem(formData) {
+      this.success = false;
 
-      formData.user_id = (this.profile && this.profile.user_id) || null
+      formData.user_id = (this.profile && this.profile.user_id) || null;
 
       // Same method for update & create
       // if we have an item id then update
@@ -157,6 +177,9 @@ export default {
         onError: () => {},
         onSuccess: () => {
           this.closeModal();
+          this.success = true;
+          this.$store.commit("ratings/setShouldFetchFirstPagePosts", true);
+          changesSaved("Post Successfully Added");
         },
       });
     },
@@ -229,12 +252,31 @@ export default {
     NavigationDropdown(showingNavigationDropdown) {
       this.showingNavigationDropdown = !this.showingNavigationDropdown;
     },
+    handleSubmit() {
+      Inertia.visit("/");
+    },
   },
 };
 </script>
 
 <template>
-  <section v-if="user_profile" class="bg-gray-100">
+  <CustomDialog
+    submitText="Okay"
+    @submit="handleSubmit"
+    :showCancel="false"
+    dontAllowCancel
+    ref="paymentDialogRef"
+    errorIcon
+    title="Payment not verified"
+  >
+    <div class="mb-4 sm:mb-0 mt-4">
+      Please complete your payment to access this page
+    </div>
+  </CustomDialog>
+  <section
+    v-if="(user_profile && paymentCompleted) || url === '/profile-setup'"
+    class="bg-gray-100"
+  >
     <!-- Section Container -->
     <div class="relative mx-auto mt-0 pt-10 lg:pt-0 h-screen">
       <div
@@ -386,17 +428,20 @@ export default {
             </Teleport>
 
             <Teleport to="body">
-              <PostForm
-                v-if="isFormOpen"
-                :isOpen="isFormOpen"
-                :id="user_profile.id"
-                :isEdit="isFormEdit"
-                :form="postFormObject"
-                @formsave="saveItem"
-                @formclose="closeModal"
-                @formEditClose="closeModalEditMode"
-              >
-              </PostForm>
+              <keep-alive>
+                <PostForm
+                  v-if="isFormOpen"
+                  :isOpen="isFormOpen"
+                  :id="user_profile.id"
+                  :isEdit="isFormEdit"
+                  :form="postFormObject"
+                  :success="success"
+                  @formsave="saveItem"
+                  @formclose="closeModal"
+                  @formEditClose="closeModalEditMode"
+                >
+                </PostForm>
+              </keep-alive>
             </Teleport>
             <!-- WRAPPER END: For News Feed -->
             <slot></slot>
