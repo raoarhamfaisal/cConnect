@@ -7,6 +7,8 @@ use App\Models\ContractorProfile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
+use Illuminate\Support\Facades\Storage;
+
 
 class ContractorProfileController extends Controller
 {
@@ -190,13 +192,25 @@ class ContractorProfileController extends Controller
 
         if($profile) {
             $request->validate([
-                'user_avatar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'user_avatar' => 'required|image|mimes:jpeg,png,jpg,gif',
             ]);
 
             if ($request->hasFile('user_avatar')) {
 
                 $file = $request->file('user_avatar');
-                $path = $file->store('images/avatars', 'public-storage');
+
+
+                // Generate new filename
+                $filename = sprintf("%06d", $userID) . '_' . $file->hashName();
+
+                // Check if a file with the new filename already exists and delete it
+                $existingFilePath = 'uploads/avatars/contractor/' . $filename;
+                if (Storage::disk('public-storage')->exists($existingFilePath)) {
+                    Storage::disk('public-storage')->delete($existingFilePath);
+                }
+
+                // Store the file with the new filename
+                $path = $file->storeAs('uploads/avatars/contractor', $filename, 'public-storage');
 
                 $userPath = $profile->user_avatar;
                 // Update the user's profile with the new avatar path
@@ -253,17 +267,28 @@ class ContractorProfileController extends Controller
 
         if($profile) {
             $request->validate([
-                'company_logo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'company_logo' => 'required|image|mimes:jpeg,png,jpg,gif',
             ]);
 
             if ($request->hasFile('company_logo')) {
 
-                $companyLogoPath = $profile->company_logo;
                 $file = $request->file('company_logo');
-                $path = $file->store('images/company-logos', 'public-storage');
 
+                // Generate new filename
+                $filename = sprintf("%06d", $userID) . '_' . $file->hashName();
+
+                // Check if a file with the new filename already exists and delete it
+                $existingFilePath = 'uploads/company_logos/contractor/' . $filename;
+                if (Storage::disk('public-storage')->exists($existingFilePath)) {
+                    Storage::disk('public-storage')->delete($existingFilePath);
+                }
+
+                // Store the file with the new filename
+                $path = $file->storeAs('uploads/company_logos/contractor', $filename, 'public-storage');
+                
+                
                 $url = $path;
-
+                $companyLogoPath = $profile->company_logo;
                 // Update the user's profile with the new avatar path
                 $profile->update([
                     'company_logo' => $path,
@@ -327,9 +352,6 @@ class ContractorProfileController extends Controller
         ]);    
 
     }
-    
-
-
 
 }
 

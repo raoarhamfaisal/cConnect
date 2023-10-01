@@ -302,7 +302,7 @@ watchEffect(() => {
   if (tempCompanyProfile.email.trim()) {
     errors.emailError = "";
   }
-  if (tempCompanyProfile.phone_cell.trim()) {
+  if (tempCompanyProfile.phone_cell && tempCompanyProfile.phone_cell.trim()) {
     errors.phoneCellError = "";
   }
 });
@@ -314,11 +314,11 @@ const openDialog = () => {
 };
 
 const handleSubmit = async () => {
-  if (!tempCompanyProfile.email.trim()) {
+  if (!tempCompanyProfile.email || !tempCompanyProfile.email.trim()) {
     errors.emailError = "Please enter your email address";
     return;
   }
-  if (!tempCompanyProfile.phone_cell.trim()) {
+  if (!tempCompanyProfile.phone_cell || !tempCompanyProfile.phone_cell.trim()) {
     errors.phoneCellError = "Please enter your Phone number";
     return;
   }
