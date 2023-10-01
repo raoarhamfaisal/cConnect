@@ -110,14 +110,14 @@ class ContractorProfileController extends Controller
 
             $data = $request->validate([
                 'company_name' => 'nullable|string',
-                'email' => 'required|string|email|unique:profiles,email,'.$userID,
+             
                 'phone_cell' => 'required|string|unique:profiles,phone_cell,'.$userID,
                 'phone_office' => 'nullable|string|unique:profiles,phone_cell,'.$userID,
                 'address_1' => 'nullable|string',
                 'address_2' => 'nullable|string',
                 'city' => 'nullable|string',
                 'state' => 'nullable|string',
-                'counrty' => 'nullable|string',
+             
                 'county' => 'nullable|string',
                 'zipcode' => 'nullable|string'
             ]);
@@ -126,7 +126,7 @@ class ContractorProfileController extends Controller
         // Return json response because this is an api axios call
         return response()->json([
             'status' => 'success',
-            'message' => 'Additional Information Updated Successfully',
+            'message' => 'Contact Info Updated Successfully',
             'profile' => $profile,
         ]);    
 

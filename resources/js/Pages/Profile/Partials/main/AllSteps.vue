@@ -84,7 +84,7 @@ const screenWidth = computed(() => store.getters.screenWidth);
 const loading = computed(() => store.state.profile.loading);
 
 // Methods
-//Methods
+
 const validateForm = () => {
   let isValid = true;
 

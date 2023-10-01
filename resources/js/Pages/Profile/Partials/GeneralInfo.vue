@@ -1,14 +1,12 @@
 <script setup>
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { usePage } from "@inertiajs/inertia-vue3";
 import UserAvatar from "../components/UserAvatar.vue";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 
 import axios from "axios";
-import { Inertia } from "@inertiajs/inertia";
 import { ref, watch } from "vue";
 import { useStore } from "vuex";
 

@@ -280,7 +280,7 @@ const submitDetails = async () => {
                 "
                 class="w-full flex justify-center"
               >
-                <div class="flex items-center justify-center">Signup</div>
+                <div class="flex items-center justify-center">Save</div>
                 <img
                   v-show="loading"
                   src="/images/avatars/Spinner.gif"

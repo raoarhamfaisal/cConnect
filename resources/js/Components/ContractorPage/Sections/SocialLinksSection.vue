@@ -92,9 +92,11 @@
           type="url"
           icon="fluent-mdl2:website"
           color="#241e6d"
+          @input="clearError('website_url')"
           v-model="tempSocialProfiles.website_url"
           placeholder="Type your Website URL"
         />
+        <InputError class="mt-2" :message="errors.website_url" />
       </div>
       <div>
         <InputLabel class="font-bold" for="facebook" value="Facebook" />
@@ -102,9 +104,11 @@
           id="facebook"
           type="url"
           icon="logos:facebook"
+          @input="clearError('facebook')"
           v-model="tempSocialProfiles.facebook"
           placeholder="Type your Facebook link"
         />
+        <InputError class="mt-2" :message="errors.facebook" />
       </div>
 
       <div>
@@ -116,8 +120,10 @@
           icon="fa6-brands:square-x-twitter"
           class="mt-1 block w-full"
           v-model="tempSocialProfiles.twitter"
+          @input="clearError('twitter')"
           placeholder="Type your Twitter link"
         />
+        <InputError class="mt-2" :message="errors.twitter" />
       </div>
 
       <div>
@@ -128,8 +134,10 @@
           class="mt-1 block w-full"
           icon="logos:tiktok-icon"
           v-model="tempSocialProfiles.tiktok"
+          @input="clearError('tiktok')"
           placeholder="Type your TikTok link"
         />
+        <InputError class="mt-2" :message="errors.tiktok" />
       </div>
 
       <div>
@@ -139,9 +147,11 @@
           type="url"
           icon="skill-icons:instagram"
           class="mt-1 block w-full"
+          @input="clearError('instagram')"
           v-model="tempSocialProfiles.instagram"
           placeholder="Type your Instagram link"
         />
+        <InputError class="mt-2" :message="errors.instagram" />
       </div>
     </div>
   </CustomDialog>
@@ -188,59 +198,132 @@ const tiktok = ref(props.profile.tiktok);
 const instagram = ref(props.profile.instagram);
 const loading = ref(false);
 const disabled = ref(false);
+const errors = reactive({
+  website_url: "",
+  facebook: "",
+  twitter: "",
+  tiktok: "",
+  instagram: "",
+});
 
 const tempSocialProfiles = reactive({
-  website_url: website_url.value,
-  facebook: facebook.value,
-  twitter: twitter.value,
-  tiktok: tiktok.value,
-  instagram: instagram.value,
+  website_url: website_url.value ?? "",
+  facebook: facebook.value ?? "",
+  twitter: twitter.value ?? "",
+  tiktok: tiktok.value ?? "",
+  instagram: instagram.value ?? "",
 });
 
 //Methods
+const validateForm = () => {
+  let isValid = true;
+
+  // Reset errors
+  for (let field in errors) {
+    errors[field] = "";
+  }
+
+  // Validate website_url
+  if (
+    tempSocialProfiles.website_url &&
+    !isValidUrl(tempSocialProfiles.website_url)
+  ) {
+    errors.website_url = "Invalid website URL";
+    isValid = false;
+  }
+
+  // Validate facebook
+  if (tempSocialProfiles.facebook && !isValidUrl(tempSocialProfiles.facebook)) {
+    errors.facebook = "Invalid Facebook URL";
+    isValid = false;
+  }
+
+  // Validate twitter
+  if (tempSocialProfiles.twitter && !isValidUrl(tempSocialProfiles.twitter)) {
+    errors.twitter = "Invalid Twitter URL";
+    isValid = false;
+  }
+
+  // Validate tiktok
+  if (tempSocialProfiles.tiktok && !isValidUrl(tempSocialProfiles.tiktok)) {
+    errors.tiktok = "Invalid TikTok URL";
+    isValid = false;
+  }
+
+  // Validate instagram
+  if (
+    tempSocialProfiles.instagram &&
+    !isValidUrl(tempSocialProfiles.instagram)
+  ) {
+    errors.instagram = "Invalid Instagram URL";
+    isValid = false;
+  }
+
+  return isValid;
+};
+
+const isValidUrl = (urlString) => {
+  var urlPattern = new RegExp(
+    "^(https?:\\/\\/)?" + // validate protocol
+      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,6}|" + // validate domain name and tld
+      "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // validate port and path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // validate query string
+      "(\\#[-a-z\\d_]*)?$",
+    "i"
+  );
+  return !!urlPattern.test(urlString);
+};
+const clearError = (field) => {
+  if (tempSocialProfiles[field].trim()) {
+    errors[field] = "";
+  }
+};
 
 // Creating the handleSocialSubmit function
 const handleSubmit = async () => {
-  propertiesToProcess.forEach((prop) => {
-    if (
-      tempSocialProfiles[prop] &&
-      typeof tempSocialProfiles[prop] === "string"
-    ) {
-      tempSocialProfiles[prop] = tempSocialProfiles[prop].replace(
-        /^https?:\/\//,
-        ""
-      );
-    }
-  });
-  loading.value = true;
-  disabled.value = true;
+  if (validateForm()) {
+    propertiesToProcess.forEach((prop) => {
+      if (
+        tempSocialProfiles[prop] &&
+        typeof tempSocialProfiles[prop] === "string"
+      ) {
+        tempSocialProfiles[prop] = tempSocialProfiles[prop].replace(
+          /^https?:\/\//,
+          ""
+        );
+      }
+    });
+    loading.value = true;
+    disabled.value = true;
 
-  try {
-    const response = await axios.patch(
-      `/api/contractor/social-links`, // Replace with your endpoint
-      tempSocialProfiles,
-      getAxiosConfig()
-    );
-
-    if (response.data) {
-      changesSaved(
-        response.data.message || "Social profiles successfully saved"
+    try {
+      const response = await axios.patch(
+        `/api/contractor/social-links`, // Replace with your endpoint
+        tempSocialProfiles,
+        getAxiosConfig()
       );
 
-      // Updating the refs with the new values
-      website_url.value = tempSocialProfiles.website_url;
-      facebook.value = tempSocialProfiles.facebook;
-      twitter.value = tempSocialProfiles.twitter;
-      tiktok.value = tempSocialProfiles.tiktok;
-      instagram.value = tempSocialProfiles.instagram;
+      if (response.data) {
+        changesSaved(
+          response.data.message || "Social profiles successfully saved"
+        );
 
-      dialogRef.value.closeDialog();
+        // Updating the refs with the new values
+        website_url.value = tempSocialProfiles.website_url;
+        facebook.value = tempSocialProfiles.facebook;
+        twitter.value = tempSocialProfiles.twitter;
+        tiktok.value = tempSocialProfiles.tiktok;
+        instagram.value = tempSocialProfiles.instagram;
+
+        dialogRef.value.closeDialog();
+      }
+    } catch (err) {
+      somethingWentWrong();
+    } finally {
+      loading.value = false;
+      disabled.value = false;
     }
-  } catch (err) {
-    somethingWentWrong();
-  } finally {
-    loading.value = false;
-    disabled.value = false;
   }
 };
 const openDialog = () => {

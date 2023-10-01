@@ -82,69 +82,79 @@
       class="mt-6 space-y-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-4"
     >
       <div>
-        <InputLabel class="font-bold" for="first_name" value="First Name" />
+        <InputLabel class="font-bold" for="first_name" value="First Name*" />
         <TextInput
           id="first_name"
           type="text"
+          @input="clearError('first_name')"
           class="mt-1 block w-full"
           required
           v-model="tempProfile.first_name"
           placeholder="Type your first name"
           autocomplete="given-name"
         />
-        <!-- <InputError class="mt-2" :message="form.errors.first_name" /> -->
+        <InputError class="mt-2" :message="errors.first_name" />
       </div>
 
       <div>
-        <InputLabel class="font-bold" for="last_name" value="Last Name" />
+        <InputLabel class="font-bold" for="last_name" value="Last Name*" />
         <TextInput
           id="last_name"
           type="text"
           class="mt-1 block w-full"
+          @input="clearError('last_name')"
           v-model="tempProfile.last_name"
           required
           placeholder="Type your last name"
           autocomplete="family-name"
         />
-        <!-- <InputError class="mt-2" :message="form.errors.last_name" /> -->
+        <InputError class="mt-2" :message="errors.last_name" />
       </div>
       <div>
-        <InputLabel class="font-bold" for="company_name" value="Company Name" />
+        <InputLabel
+          class="font-bold"
+          for="company_name"
+          value="Company Name*"
+        />
         <TextInput
           id="company_name"
           type="text"
           class="mt-1 block w-full"
           placeholder="Type your Company name"
+          @input="clearError('company_name')"
           v-model="tempProfile.company_name"
           required
           autocomplete="company_name"
         />
-        <!-- <InputError class="mt-2" :message="form.errors.email" /> -->
+        <InputError class="mt-2" :message="errors.company_name" />
       </div>
 
       <div>
-        <InputLabel class="font-bold" for="city" value="City" />
+        <InputLabel class="font-bold" for="city" value="City*" />
         <TextInput
           id="city"
           type="text"
           class="mt-1 block w-full"
           v-model="tempProfile.city"
+          @input="clearError('city')"
           placeholder="Type your city"
           autocomplete="city"
         />
-        <!-- <InputError class="mt-2" :message="form.errors.phone_cell" /> -->
+        <InputError class="mt-2" :message="errors.city" />
       </div>
       <div>
-        <InputLabel class="font-bold" for="state" value="State" />
-        <TextInput
-          id="state"
-          type="text"
-          class="mt-1 block w-full"
-          v-model="tempProfile.state"
-          placeholder="Type your State"
-          autocomplete="state"
+        <InputLabel class="font-bold mb-1" for="state" value="State*" />
+        <SelectProfile
+          :options="stateList"
+          :modelValue="tempProfile.state"
+          @update:modelValue="
+            (value) => {
+              tempProfile.state = value;
+              clearError('state');
+            }
+          "
         />
-        <!-- <InputError class="mt-2" :message="form.errors.phone_cell" /> -->
+        <InputError class="mt-2" :message="errors.state" />
       </div>
     </div>
   </CustomDialog>
@@ -152,6 +162,8 @@
 
 <script setup>
 import IconButton from "@/Components/IconButton.vue";
+import SelectProfile from "@/Components/SelectProfile.vue";
+
 import UserAvatar from "@/Pages/Profile/components/UserAvatar.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
@@ -165,7 +177,6 @@ import Card from "@/Components/Card.vue";
 import Avatar from "@/Components/Ratings/Avatar.vue";
 
 import { computed, reactive, ref } from "vue";
-import { Link } from "@inertiajs/inertia-vue3";
 import {
   getAxiosConfig,
   getAxiosConfigFormData,
@@ -192,16 +203,24 @@ const company_name = ref(props.profile.company_name);
 const city = ref(props.profile.city);
 const state = ref(props.profile.state);
 const tempProfile = reactive({
-  first_name: first_name.value,
-  last_name: last_name.value,
-  city: city.value,
-  state: state.value,
-  company_name: company_name.value,
+  first_name: first_name.value ?? "",
+  last_name: last_name.value ?? "",
+  city: city.value ?? "",
+  state: state.value ?? "",
+  company_name: company_name.value ?? "",
 });
 const loading = ref(false);
 const disabled = ref(false);
 
 const dialogRef = ref();
+const errors = reactive({
+  first_name: "",
+  last_name: "",
+  company_name: "",
+
+  city: "",
+  state: "",
+});
 
 //Computed
 const fullName = computed(() => first_name.value + " " + last_name.value);
@@ -222,32 +241,71 @@ const truncatedName = computed(() => {
 const openDialog = () => {
   dialogRef.value.openDialog();
 };
+const validateForm = () => {
+  let isValid = true;
+
+  // Reset errors
+  for (let field in errors) {
+    errors[field] = "";
+  }
+  console.log(tempProfile, "form");
+  // Validate first_name
+  if (!tempProfile.first_name.trim()) {
+    errors.first_name = "First name is required";
+    isValid = false;
+  }
+  if (!tempProfile.last_name.trim()) {
+    errors.last_name = "Last name is required";
+    isValid = false;
+  }
+  // Validate company_name
+  if (!tempProfile.company_name.trim()) {
+    errors.company_name = "Company name is required";
+    isValid = false;
+  }
+
+  // Validate city
+  if (!tempProfile.city.trim()) {
+    errors.city = "City is required";
+    isValid = false;
+  }
+
+  // Validate state
+  if (!tempProfile.state.trim()) {
+    errors.state = "State is required";
+    isValid = false;
+  }
+
+  return isValid;
+};
 
 const handleSubmit = async () => {
-  loading.value = true;
-  disabled.value = true;
-  try {
-    const response = await axios.patch(
-      `/api/contractor/general-profile`,
-      tempProfile,
-      getAxiosConfig()
-    );
-    if (response.data) {
-      changesSaved(
-        response.data.message || "Genral information successfully saved"
+  if (validateForm()) {
+    loading.value = true;
+    disabled.value = true;
+    try {
+      const response = await axios.patch(
+        `/api/contractor/general-profile`,
+        tempProfile,
+        getAxiosConfig()
       );
-      first_name.value = tempProfile.first_name;
-      last_name.value = tempProfile.last_name;
-      city.value = tempProfile.city;
-      state.value = tempProfile.state;
-      company_name.value = tempProfile.company_name;
-      dialogRef.value.closeDialog();
+      if (response.data) {
+        changesSaved(
+          response.data.message || "Genral information successfully saved"
+        );
+        first_name.value = tempProfile.first_name;
+        last_name.value = tempProfile.last_name;
+        city.value = tempProfile.city;
+        state.value = tempProfile.state;
+        company_name.value = tempProfile.company_name;
+        dialogRef.value.closeDialog();
+      }
+    } catch (err) {
+      somethingWentWrong();
+    } finally {
+      loading.value = false;
+      disabled.value = false;
     }
-  } catch (err) {
-    somethingWentWrong();
-  } finally {
-    loading.value = false;
-    disabled.value = false;
   }
 };
 
@@ -266,5 +324,10 @@ const handleImageUpdate = async (file) => {
     .catch((error) => {
       somethingWentWrong("Error uploading avatar");
     });
+};
+const clearError = (field) => {
+  if (tempProfile[field].trim()) {
+    errors[field] = "";
+  }
 };
 </script>

@@ -242,4 +242,3 @@ const clearError = (field) => {
     </form>
   </section>
 </template>
-@/helpers/selectListsHelpters.js

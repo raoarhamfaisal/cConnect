@@ -6,10 +6,14 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
-
-import { reactive } from "vue";
+import Card from "@/Components/Card.vue";
+import { reactive, ref } from "vue";
 import { useStore } from "vuex";
-import { usePage } from "@inertiajs/inertia-vue3";
+import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
+import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
+import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
+import { Inertia } from "@inertiajs/inertia";
+import { removeToken } from "@/helpers/localStorageHelper";
 
 const props = defineProps({
   mustVerifyEmail: Boolean,
@@ -22,25 +26,22 @@ const props = defineProps({
   },
 });
 const store = useStore();
-const user = usePage().props.value.auth.user;
 
 const tabNames = ["Update Email", "Change Password", "Billing"];
+const verifyDialogRef = ref();
+const loading = ref(false);
+const loadingVerifyCode = ref(false);
 const form = reactive({
   email: props.profile.email,
+  verifyCode: "",
 });
 const errors = reactive({
   email: "",
+  verifyCode: "",
 });
 
 const clearErrors = (field) => {
   console.log("Clear errors", field);
-  //for phone_cell only
-  if (field === "phone_cell" || field === "phone_office") {
-    if (form[field].trim().length <= 13) {
-      errors[field] = "";
-    }
-    return;
-  }
   if (form[field].trim()) {
     errors[field] = "";
   }
@@ -72,14 +73,128 @@ const validateForm = () => {
   return isValid;
 };
 
-const submitDetails = () => {
+const submitDetails = async (openDialog = true) => {
   if (validateForm()) {
-    console.log("submit");
+    const formData = {
+      new_email: form.email,
+    };
+
+    loading.value = true;
+    try {
+      const response = await axios.post(
+        `/api/settings/change-email`,
+        formData,
+        getAxiosConfig()
+      );
+      if (response.data && openDialog) {
+        verifyDialogRef.value.openDialog();
+      }
+    } catch (err) {
+      console.log(err.response);
+      somethingWentWrong(err.response.data.message);
+    } finally {
+      loading.value = false;
+    }
+  }
+};
+
+const submitVerificationCode = async () => {
+  const formData = {
+    token: form.verifyCode,
+  };
+
+  loadingVerifyCode.value = true;
+  try {
+    const response = await axios.post(
+      `/api/settings/verify-email`,
+      formData,
+      getAxiosConfig()
+    );
+    if (response.data) {
+      changesSaved(
+        "Your email addess has been successfully changed.Please login again",
+        500,
+        3000
+      );
+      setTimeout(() => {
+        removeToken();
+
+        Inertia.post("/logout");
+      }, 2000);
+    }
+  } catch (err) {
+    somethingWentWrong();
+  } finally {
+    loadingVerifyCode.value = false;
   }
 };
 </script>
 
 <template>
+  <CustomDialog
+    submitText="Okay"
+    :showFooter="false"
+    ref="verifyDialogRef"
+    title="Verify Email"
+  >
+    <!-- <Card
+      :shadowLevel="2"
+      :isInside="true"
+      bgColor="#eee"
+      padding="2px"
+      class="mt-2"
+    > -->
+    <div class="mb-4 sm:mb-0">
+      <div class="text-xl sm:text-2xl mb-2 font-semibold">
+        Please enter the code sent to your email address to verify your email.
+      </div>
+      <div class="mt-3">
+        <InputLabel class="font-bold" for="email" value="Enter Code" />
+        <TextInput
+          id="email"
+          type="text"
+          class="mt-1 block w-full md:"
+          v-model="form.verifyCode"
+          required
+          autocomplete="email"
+        />
+      </div>
+      <PrimaryButton
+        @click="submitVerificationCode(true)"
+        :disabled="loadingSending"
+        style="
+          background-image: linear-gradient(
+            111.4deg,
+            rgba(7, 7, 9, 1) 6.5%,
+            rgba(27, 24, 113, 1) 93.2%
+          );
+        "
+        class="mt-3 w-full flex justify-center"
+      >
+        <div class="flex items-center justify-center">Send</div>
+        <img
+          v-show="loadingSending"
+          src="/images/avatars/Spinner.gif"
+          alt="spinner"
+          width="30"
+      /></PrimaryButton>
+      <PrimaryButton
+        @click="submitDetails"
+        :disabled="loading"
+        :style="{
+          backgroundColor: '#099268',
+          opacity: loading ? '0.4' : '1.0',
+        }"
+        class="w-full mt-1 flex justify-center"
+      >
+        <div v-show="!loading" class="flex items-center justify-center">
+          Resend Verification Code
+        </div>
+        <div v-show="loading">Sending...</div></PrimaryButton
+      >
+    </div>
+    <!-- </Card> -->
+  </CustomDialog>
   <header v-if="showHeader" class="bg-gray-200">
     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 max-lg:pt-10">
       <h2 class="font-bold text-xl text-blue-rgba leading-tight">Profile</h2>
@@ -94,39 +209,20 @@ const submitDetails = () => {
               <InputLabel class="font-bold" for="email" value="Email" />
               <TextInput
                 id="email"
-                type="email"
+                type="tel"
                 class="mt-1 block w-full"
                 v-model="form.email"
+                @input="clearErrors('email')"
                 required
                 autocomplete="email"
               />
               <InputError class="mt-2" :message="errors.email" />
             </div>
 
-            <div
-              v-if="props.mustVerifyEmail && user.email_verified_at === null"
-            >
-              <p class="text-sm mt-2 text-gray-800">
-                Your email address is unverified.
-                <Link
-                  :href="route('verification.send')"
-                  method="post"
-                  as="button"
-                  class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  Click here to re-send the verification email.
-                </Link>
-              </p>
-              <div
-                v-show="props.status === 'verification-link-sent'"
-                class="mt-2 font-medium text-sm text-green-600"
-              >
-                A new verification link has been sent to your email address.
-              </div>
-            </div>
             <div class="flex items-center gap-4 mt-6 w-full">
               <PrimaryButton
                 @click="submitDetails"
+                :disabled="loading"
                 style="
                   background-image: linear-gradient(
                     111.4deg,
@@ -135,8 +231,14 @@ const submitDetails = () => {
                   );
                 "
                 class="w-full flex justify-center"
-                >Save</PrimaryButton
               >
+                <div class="flex items-center justify-center">Save</div>
+                <img
+                  v-show="loading"
+                  src="/images/avatars/Spinner.gif"
+                  alt="spinner"
+                  width="30"
+              /></PrimaryButton>
             </div>
           </div>
           <div v-if="activeTab === 1">
