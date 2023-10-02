@@ -344,12 +344,13 @@ const submit = () => {
             Want access to the most powerful tool in construction?
           </h1>
 
+          <!-- {{  profile }} -->
           <Link
             class="group flex items-center justify-between rounded-xl border border-red-500 bg-red-500 px-5 py-3 mt-8 transition-colors hover:bg-red-800 focus:outline-none focus:ring"
             :href="
-              profile && profile.is_payment_verified
-                ? route('signup')
-                : '/profile-setup'
+              (showit && profile && profile.is_payment_verified === 0)
+                ? '/profile-setup'
+                : route('signup')
             "
           >
             <span
@@ -524,10 +525,10 @@ const submit = () => {
             <div class="flex justify-center items-end">
               <Link
                 :href="
-                  profile && profile.is_payment_verified
-                    ? route('signup')
-                    : '/profile-setup'
-                "
+                    (showit && profile && profile.is_payment_verified === 0)
+                      ? '/profile-setup'
+                      : route('signup')
+                  "
                 class="p-3 px-6 pt-2 text-red bg-white rounded-lg border-white border-spacing-3 shadow-2xl shadow-black align-baseline hover:text-white hover:bg-blue-30-rgba"
                 >Get Started
               </Link>
@@ -607,10 +608,10 @@ const submit = () => {
             <Link
               class="group flex items-center justify-between rounded-xl border border-red-500 bg-red-500 px-5 py-3 mt-8 transition-colors hover:bg-red-800 focus:outline-none focus:ring"
               :href="
-                  profile && profile.is_payment_verified
-                    ? route('signup')
-                    : '/profile-setup'
-                "
+                    (showit && profile && profile.is_payment_verified === 0)
+                      ? '/profile-setup'
+                      : route('signup')
+                  "
             >
               <span
                 class="text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500"
