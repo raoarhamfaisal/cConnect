@@ -2,6 +2,7 @@ import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 import axios from "axios";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { Inertia } from "@inertiajs/inertia";
+import { removeToken } from "@/helpers/localStorageHelper";
 export default {
   namespaced: true,
   state() {
@@ -62,7 +63,8 @@ export default {
           commit("setProfile", response.data.profile);
         }
       } catch (err) {
-        somethingWentWrong();
+        removeToken();
+        // somethingWentWrong();
       } finally {
         commit("setLoading", false);
       }
@@ -116,8 +118,6 @@ export default {
       }
     },
 
-
-    
     async updateProfileGeneralInfoForProfileSetup({ commit }, payload) {
       commit("setLoading", true);
 
@@ -136,7 +136,6 @@ export default {
         commit("setLoading", false);
       }
     },
-
 
     async verifyPayment({ commit }) {
       commit("setLoading", true);

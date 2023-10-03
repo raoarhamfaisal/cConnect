@@ -5,12 +5,11 @@
     :style="{
       '--tw-space-x-reverse': 'inherit',
     }"
-    @click="closeDialog"
   >
     <transition name="fade">
       <div
         :class="[dialogWidth]"
-        class="bg-white md:w-2/3 w-full max-h-[90vh] max-md:max-h-full rounded-xl max-sm:rounded-none shadow-xl flex flex-col z-10"
+        class="bg-white lg:w-2/3 w-full max-h-[90vh] max-lg:max-h-full rounded-xl max-sm:rounded-none shadow-xl flex flex-col z-10"
         @click.stop
       >
         <div
@@ -24,25 +23,23 @@
               icon="icon-park:back"
               color="red"
             />
-            <h3 class="text-xl font-bold">{{ title }}</h3>
-            <Icon
-              class="w-6 h-6"
-              v-if="errorIcon"
-              icon="ic:baseline-error"
-              color="red"
-            />
+            <h3 class="text-xl font-bold">Close</h3>
           </div>
-          <button
-            v-if="!dontAllowCancel"
-            @click="closeDialog"
-            class="p-2 hover:bg-[#6741d9] rounded-full w-12"
-          >
-            X
-          </button>
+          <div class="text-xl font-bold tracking-wide text-center">
+            <span
+              class="text-green-rgba font-extrabold italic font-serif text-2xl normal-case"
+              >t</span
+            >
+            <span class="text-white font-extrabold font-sans uppercase">C</span>
+            <span class="text-white font-bold font-sans">ontractor</span>
+          </div>
         </div>
 
         <!-- Slot Content - Scrollable -->
-        <div :class="`flex-1 overflow-y-auto p-2 sm:p-4 ${contentClasses}`">
+        <div
+          :class="`flex-1 overflow-y-auto relative p-2 sm:p-4 ${contentClasses}`"
+          id="dialogContainer"
+        >
           <slot></slot>
         </div>
 
@@ -83,7 +80,6 @@
 <script setup>
 import { Icon } from "@iconify/vue";
 import { computed, ref } from "vue";
-import { useStore } from "vuex";
 
 const props = defineProps({
   title: String,
@@ -128,7 +124,6 @@ const emit = defineEmits(["submit", "closed"]);
 const submit = () => {
   emit("submit");
 };
-const store = useStore();
 const isVisible = ref(false);
 
 //Computed
@@ -143,10 +138,6 @@ const closeDialog = () => {
   }
   isVisible.value = false;
   emit("closed");
-  if (shouldFetchPostsOnClose) {
-    store.commit("ratings/setShouldLoadPosts", true);
-    store.commit("ratings/setShouldFetchPostsOnClose", false);
-  }
 };
 
 const openDialog = () => {
@@ -179,8 +170,8 @@ defineExpose({ openDialog, closeDialog });
 .width-75 {
   width: 80%;
 }
-@media (max-width: 750px) {
-  .width-75.contractorDialog {
+@media (max-width: 1024px) {
+  .width-75 {
     width: 100%;
   }
 }
@@ -188,8 +179,5 @@ defineExpose({ openDialog, closeDialog });
   .width-75 {
     width: 100%;
   }
-}
-.widthAuto {
-  width: auto;
 }
 </style>

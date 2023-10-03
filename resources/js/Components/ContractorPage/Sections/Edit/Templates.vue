@@ -16,17 +16,13 @@
         :heading="`Template`"
       />
       <!-- see live view-->
-      <Link
-        v-if="mode === 'edit'"
-        class="rounded-full"
-        :href="`/contractor/${profile.id}`"
-      >
+      <div class="rounded-full" @click="changeMode">
         <button
           class="bg-white px-4 py-1 uppercase text-xs hover:bg-[#f8f9fa] sm:text-sm font-bold rounded-full border-[#1864ab] border-2 sm:border-[3px] bg-white text-[#1864ab] cursor-pointer hover:shadow-lg active:scale-95"
         >
           See Live View
         </button>
-      </Link>
+      </div>
     </div>
     <div
       class="mt-6 space-y-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-4"
@@ -62,7 +58,6 @@
 </template>
 
 <script setup>
-import IconButton from "@/Components/IconButton.vue";
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 
 // import InputError from "@/Components/InputError.vue";
@@ -76,22 +71,19 @@ import { templateList, colorSchemeList } from "@/helpers/selectListsHelpters";
 
 import Card from "@/Components/Card.vue";
 
-import Avatar from "@/Components/Ratings/Avatar.vue";
-
-import { computed, reactive, ref } from "vue";
-import { Link } from "@inertiajs/inertia-vue3";
+import { reactive } from "vue";
 
 // State
 const props = defineProps({
   profile: Object,
   screenWidth: Number,
-  mode: {
-    type: String,
-    default: "",
-  },
 });
+const emit = defineEmits(["changeMode"]);
 const form = reactive({
   selectedTemplate: "",
   selectedColorScheme: "",
 });
+const changeMode = () => {
+  emit("changeMode");
+};
 </script>
