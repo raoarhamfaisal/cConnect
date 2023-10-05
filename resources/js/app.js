@@ -18,6 +18,8 @@ import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { store } from "@/store/index.js";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
 import "./main.scss";
+import CKEditor from "@ckeditor/ckeditor5-vue";
+
 // import "vuetify/styles"; // Might want to reconsider this if you only want to import styles from specific components
 import { createVuetify } from "vuetify"; // Import only VTabs and VTab
 import * as directives from "vuetify/directives"; // You might want to fine-tune this as well
@@ -55,6 +57,7 @@ createInertiaApp({
       .use(ZiggyVue, Ziggy)
       .use(vuetify)
       .use(store)
+      .use(CKEditor)
       .mount(el);
   },
 });

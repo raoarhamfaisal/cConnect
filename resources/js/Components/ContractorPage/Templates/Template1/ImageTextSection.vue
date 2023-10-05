@@ -2,28 +2,40 @@
   <!-- Display Saved Sections -->
   <div v-if="sections && sections.length > 0" class="flex gap-4 flex-col">
     <div
-      v-for="section in sections"
+      v-for="(section, index) in sections"
       :key="section.id"
       class="rounded-md border relative border-gray-300 p-2"
     >
-      <div class="flex gap-4 relative flex-col items-center sm:flex-row">
+      <!-- For even items -->
+      <div v-if="index % 2 !== 0" class="flex gap-4 items-center">
+        <div class="w-2/5 text-3xl font-extrabold uppercase text-center">
+          {{ section.section_text }}
+        </div>
         <div
-          class="relative w-full flex justify-center object-cover sm:w-[280px] sm:h-[190px] md:w-[350px] md:h-[215px] p-1 rounded-md border-2 border-gray-300"
+          class="relative w-3/5 h-3/5 p-1 rounded-md border-2 border-gray-300"
         >
           <img
+            @click="openImage(section.section_image)"
             :src="section.section_image"
             alt="Section Image"
-            class="object-cover h-full"
-          />
-          <Icon
-            icon="fa-solid:expand"
-            class="absolute top-0 right-0 m-2 section_text-white cursor-pointer bg-[#000000b3] p-1 rounded w-8 h-8"
-            color="white"
-            @click="openImage(section.section_image)"
+            class="object-cover h-full w-full"
           />
         </div>
-        <div class="flex-1 flex sm:items-center">
-          {{ section.section_text }}
+      </div>
+
+      <!-- For odd items -->
+      <div v-else class="relative" @click="openImage(section.section_image)">
+        <img
+          :src="section.section_image"
+          alt="Section Image"
+          class="object-cover h-[400px] w-full"
+        />
+        <div class="absolute inset-0 flex justify-center items-center">
+          <span
+            class="text-white text-center bg-black text-3xl font-extrabold uppercase bg-opacity-50 p-2 rounded"
+          >
+            {{ section.section_text }}
+          </span>
         </div>
       </div>
     </div>
@@ -31,7 +43,7 @@
 
   <!-- Zoom image dialog -->
   <CustomDialog
-    dialogWidth="w-auto"
+    dialogWidth="widthAuto"
     :showFooter="false"
     ref="imageIncDialogRef"
     title="Your Image"
@@ -68,6 +80,7 @@ const imageIncDialogRef = ref();
 
 const openImage = (imageSrc) => {
   selectedImage.value = imageSrc;
+  console.log("infunction call");
   imageIncDialogRef.value.openDialog();
 };
 </script>

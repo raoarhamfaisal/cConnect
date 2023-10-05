@@ -152,10 +152,12 @@ export default {
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <div class="flex flex-row justify-between items-center w-full mb-2 mt-2">
       <!-- User Avatar & User /// INDIVIDUAL POST: TOP POSTING ROW -->
-      <div class="flex flex-row gap-2 justify-start items-center">
+      <Link
+        :href="`/contractor/${post.user_id}`"
+        class="flex flex-row gap-2 justify-start items-center"
+      >
         <!-- Avatar -->
-        <Link
-          :href="`/contractor/${post.id}`"
+        <div
           class="cursor-pointer flex justify-start items-start flex-none w=16"
         >
           <!-- <Link :href="route('post.show')" class="block "> -->
@@ -168,7 +170,7 @@ export default {
               :imageSrc="post.user_avatar"
             />
           </div>
-        </Link>
+        </div>
         <!-- User Info -->
         <div class="flex flex-col justify-center ml-1">
           <h2
@@ -179,9 +181,9 @@ export default {
             <!-- {{  post }} -->
             {{ post.id }}: {{ post.title }}
           </h2>
-          <Link :href="`/contractor/${post.id}`" class="">
+          <div class="">
             {{ post.company_name }}
-          </Link>
+          </div>
 
           <div class="">
             <h2 class="font-light text-sm overflow-hidden">
@@ -189,7 +191,7 @@ export default {
             </h2>
           </div>
         </div>
-      </div>
+      </Link>
 
       <!-- Ratings / post action menu / posting date -->
       <div

@@ -25,7 +25,7 @@
 
       <div class="flex gap-4 relative flex-col items-center sm:flex-row">
         <div
-          class="relative w-full flex justify-center object-cover sm:w-[280px] sm:h-[190px] md:w-[350px] md:h-[215px] p-1 rounded-md border-2 border-gray-300"
+          class="relative w-full flex justify-center object-cover sm:w-[280px] sm:h-[190px] md:w-[350px] md:h-[215px] rounded-md border-2 border-gray-300 bg-[#222]"
         >
           <img
             :src="section.section_image"
@@ -34,12 +34,12 @@
           />
           <Icon
             icon="fa-solid:expand"
-            class="absolute top-0 right-0 m-2 section_text-white cursor-pointer bg-[#000000b3] p-1 rounded w-8 h-8"
+            class="absolute top-0 right-0 m-2 section_text-white cursor-pointer bg-[#555] p-1 rounded w-8 h-8"
             color="white"
             @click="openImage(section.section_image)"
           />
         </div>
-        <div class="flex-1 flex sm:items-center">
+        <div class="flex-1 flex text-md sm:text-xl font-bold sm:items-center">
           {{ section.section_text }}
         </div>
       </div>
@@ -48,23 +48,57 @@
 
   <!-- Add Section Button -->
   <button
-    @click="openDialogEdit"
+    v-if="sections.length < 30"
+    @click="() => openDialogEdit()"
     class="w-full flex gap-2 items-center justify-center h-[42px] rounded bg-[#087f5b] text-white active:scale-[0.99] transition transform duration-300 hover:shadow-lg"
   >
-    <Icon icon="mdi:plus-thick" /> Add Image/Text Section
+    <Icon icon="mdi:plus-thick" /> Add Title/Image Section
   </button>
 
   <!-- CustomDialog for adding -->
+
   <CustomDialog
     submitText="Save"
     :loading="loading"
     :disabled="disabled"
     @submit="handleSubmit"
     ref="dialogRef"
-    title="Add Image/Text Section"
+    :title="`${editMode ? 'Edit' : 'Add'} Title/Image Section`"
   >
+    <div v-if="isNotFile" class="bg-[#222]">
+      <img
+        :src="tempSection.section_image"
+        alt="Section Image"
+        onerror=""
+        class="object-cover h-40 mb-2 mx-auto"
+      />
+    </div>
     <!-- Image Upload -->
-    <div class="flex items-center mb-3 gap-2">
+    <FilePond
+      name="section_image"
+      accepted-file-types="image/jpeg, image/png, image/gif, image/webp"
+      :files="files"
+      allowFileSizeValidation="true"
+      maxFileSize="5MB"
+      labelMaxTotalFileSizeExceeded="Maximum Size Is 5MB"
+      allowImageResize="true"
+      credits="false"
+      imageResizeMode="contain"
+      imageResizeTargetWidth="1000"
+      imageResizeTargetHeight="2000"
+      imageResizeUpscale="true"
+      :allow-multiple="false"
+      @init="handlePondInit"
+      @updatefiles="updateFiles"
+      @addfilestart="handleProcessStart"
+      @addfile="handleProcessEnd"
+      @error="handleProcessEnd"
+      :labelIdle="`Drag & Drop ${
+        editMode ? 'to replace ' : ''
+      }your image or <span class='filepond--label-action'> Browse </span>`"
+    />
+
+    <!-- <div class="flex items-center mb-3 gap-2">
       <button
         class="px-3 py-2 flex gap-2 items-center justify-center h-[42px] rounded bg-[#087f5b] text-white active:scale-[0.99] transition transform duration-300 hover:shadow-lg"
         @click="onImageUploadClick"
@@ -82,16 +116,19 @@
       <div v-if="tempSection.imageTitle">
         {{ tempSection.imageTitle }}
       </div>
-    </div>
+    </div> -->
     <!-- Textarea -->
+    <label for="text_section" class="font-bold">Title(max 70char)</label>
     <textarea
       v-model="tempSection.section_text"
-      type="section_text"
-      :rows="5"
+      id="text_section"
+      maxlength="70"
+      type="text"
+      :rows="screenWidth > 760 ? 1 : 2"
       class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
       placeholder="Type your description..."
     ></textarea>
-    <div v-if="textError" class="section_text-red-500 mt-2">
+    <div v-if="textError" class="text-red-500 mt-2">
       {{ textError }}
     </div>
   </CustomDialog>
@@ -126,14 +163,34 @@
 </template>
 
 <script setup>
-import { ref, watchEffect } from "vue";
+import { computed, ref, watchEffect } from "vue";
 import { Icon } from "@iconify/vue";
 import IconButton from "@/Components/IconButton.vue";
 
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import { getAxiosConfigFormData } from "@/helpers/axiosConfigHelpers";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
-
+import VueFilePond from "vue-filepond";
+import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
+import FilePondPluginFilePoster from "filepond-plugin-file-poster";
+import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
+import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+import FilePondPluginImageTransform from "filepond-plugin-image-transform";
+import FilePondPluginImageResize from "filepond-plugin-image-resize";
+import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
+// import filepond css
+import "filepond/dist/filepond.min.css";
+import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
+import "filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css";
+const FilePond = VueFilePond(
+  FilePondPluginImageExifOrientation,
+  FilePondPluginFileValidateType,
+  FilePondPluginImagePreview,
+  FilePondPluginImageTransform,
+  FilePondPluginImageResize,
+  FilePondPluginFilePoster,
+  FilePondPluginFileValidateSize
+);
 // State
 const props = defineProps({
   screenWidth: {
@@ -155,7 +212,8 @@ const tempSection = ref({
 
 const dialogRef = ref();
 const deleteDialogRef = ref();
-const fileInput = ref();
+// const fileInput = ref();
+const editMode = ref(false);
 const selectedImage = ref("");
 const sectionIdToDelete = ref(null);
 const imageIncDialogRef = ref();
@@ -164,6 +222,16 @@ const imageError = ref("");
 const textError = ref("");
 const loading = ref(false);
 const disabled = ref(false);
+const files = ref([]);
+const pond = ref();
+
+//Computed
+
+const isNotFile = computed(
+  () =>
+    !(tempSection.value.section_image instanceof File) &&
+    tempSection.value.section_image
+);
 
 //Watch
 watchEffect(() => {
@@ -178,12 +246,17 @@ watchEffect(() => {
 // Methods
 const openDialogEdit = (sectionId = null) => {
   if (sectionId) {
+    if (files.value.length > 0) {
+      files.value = [];
+    }
+    editMode.value = true;
     const sectionToEdit = sections.value.find((s) => s.id === sectionId);
     if (sectionToEdit) {
       tempSection.value = { ...sectionToEdit };
       editingSectionId.value = sectionId;
     }
   } else {
+    editMode.value = false;
     // Clear any existing data
     tempSection.value = {
       section_text: "",
@@ -199,37 +272,35 @@ const openDeleteDialog = (sectionId) => {
   deleteDialogRef.value.openDialog();
 };
 
-const onImageUploadClick = () => {
-  if (fileInput.value) {
-    fileInput.value.click();
-  }
-};
+// const onImageUploadClick = () => {
+//   if (fileInput.value) {
+//     fileInput.value.click();
+//   }
+// };
 
-const onImageSelected = (event) => {
-  const section_image = event.target.files[0];
-  if (section_image) {
-    tempSection.value.section_image = section_image;
-    tempSection.value.imageTitle = section_image.name;
-    reader.readAsDataURL(section_image);
-  }
-};
+// const onImageSelected = (event) => {
+//   const section_image = event.target.files[0];
+//   if (section_image) {
+//     tempSection.value.section_image = section_image;
+//     tempSection.value.imageTitle = section_image.name;
+//     reader.readAsDataURL(section_image);
+//   }
+// };
 
 const handleSubmit = async () => {
-  if (editingSectionId.value) {
-    if (!tempSection.value.section_image) {
-      imageError.value = "Please select an image!";
-      return;
-    }
-
-    if (!tempSection.value.section_text.trim()) {
-      textError.value = "Please enter the section_text!";
-      return;
-    }
+  // if (editingSectionId.value) {
+  // }
+  if (
+    !tempSection.value.section_text.trim() &&
+    !tempSection.value.section_image
+  ) {
+    textError.value = "Please enter the title text or  image!";
+    return;
   }
-  loading.value = true;
-  disabled.value = true;
-  const formData = new FormData();
-  if (tempSection.value.section_image && tempSection.value.section_text) {
+  if (tempSection.value.section_image || tempSection.value.section_text) {
+    loading.value = true;
+    disabled.value = true;
+    const formData = new FormData();
     if (editingSectionId.value) {
       // edit case
       if (tempSection.value.section_image instanceof File) {
@@ -247,7 +318,7 @@ const handleSubmit = async () => {
         );
         if (response.data) {
           changesSaved(
-            response.data.message || "Image/Text section successfully saved"
+            response.data.message || "Title/Image section successfully saved"
           );
 
           const index = sections.value.findIndex(
@@ -280,7 +351,7 @@ const handleSubmit = async () => {
         );
         if (response.data) {
           changesSaved(
-            response.data.message || "Image/Text section successfully saved"
+            response.data.message || "Title/Image section successfully saved"
           );
 
           sections.value.push({
@@ -303,6 +374,9 @@ const handleSubmit = async () => {
     };
     editingSectionId.value = null;
   }
+  if (files.value.length > 0) {
+    files.value = [];
+  }
   dialogRef.value.closeDialog();
 };
 const handleSubmitDelete = async () => {
@@ -316,7 +390,7 @@ const handleSubmitDelete = async () => {
       );
       if (response.data) {
         changesSaved(
-          response.data.message || "Image/Text section successfully deleted"
+          response.data.message || "Title/Image section successfully deleted"
         );
         const index = sections.value.findIndex(
           (s) => s.id === sectionIdToDelete.value
@@ -339,5 +413,25 @@ const handleSubmitDelete = async () => {
 const openImage = (imageSrc) => {
   selectedImage.value = imageSrc;
   imageIncDialogRef.value.openDialog();
+};
+
+//FilePond Methods
+const handlePondInit = (filePondInstance) => {
+  pond.value = filePondInstance;
+};
+
+const updateFiles = (fileItems) => {
+  files.value = fileItems.map((fileItem) => fileItem.file);
+  if (files.value[0]) {
+    tempSection.value.imageTitle = files.value[0].name;
+    tempSection.value.section_image = files.value[0];
+  }
+};
+const handleProcessStart = () => {
+  disabled.value = true;
+};
+
+const handleProcessEnd = () => {
+  disabled.value = false;
 };
 </script>

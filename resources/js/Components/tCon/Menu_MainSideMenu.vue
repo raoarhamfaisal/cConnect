@@ -95,7 +95,7 @@ const openContractorPageModal = () => {
 
 <template>
   <DialogProfileTabs ref="dialogRef" :profile="profile" />
-  <DialogContractorPage ref="contractorPageRef" :profile="profile" />
+  <!-- <DialogContractorPage ref="contractorPageRef" :profile="profile" /> -->
 
   <!-- MAIN SIDE MENU  SELECTION CHOICES ONLY -->
   <!-- ******************************************************* -->
@@ -279,9 +279,9 @@ const openContractorPageModal = () => {
           </Link>
 
           <!-- CONTRACTOR PAGE -->
-          <button
+          <Link
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
-            @click="openContractorPageModal"
+            :href="`/contractor/${profile.id}`"
           >
             <img
               src="/images/icons/contractorpage_b.png"
@@ -289,7 +289,7 @@ const openContractorPageModal = () => {
               height="30"
             />
             <span class="mx-4 font-medium">Contractor page</span>
-          </button>
+          </Link>
 
           <hr class="mt-4 ml-6 mr-6 pt-4 pb-1 border-t-2 border-gray-400" />
 
