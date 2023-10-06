@@ -2,15 +2,17 @@
   <!-- Header -->
   <Card
     :shadowLevel="2"
-    bgColor="white"
+    :bgColor="selectedColorScheme[1]"
     :padding="screenWidth < 640 ? '7px' : '15px'"
   >
-    <div class="flex gap-2">
-      <div :class="`${screenWidth > 768 ? 'w-3/4' : ''}`">
+    <div class="flex gap-2" :style="{ color: selectedColorScheme[2] }">
+      <div :class="`${screenWidth > 768 ? 'w-3/4' : 'w-4/5'}`">
         <!-- company name -->
         <div
           class="text-2xl text-center xs:text-3xl font-bold uppercase"
-          :style="{ color: blueRgba }"
+          :style="{
+            color: selectedColorScheme[1] === '#212529' ? '#364fc7' : blueRgba,
+          }"
           v-if="company_name"
         >
           {{ company_name }}
@@ -25,7 +27,7 @@
           >
             <template v-slot:activator="{ props }">
               <h2
-                class="text-xl xs:text-2xl font-medium font-bold text-gray-900"
+                class="text-xl xs:text-2xl font-medium font-bold"
                 v-bind="props"
               >
                 {{ truncatedName }}
@@ -34,17 +36,18 @@
           </v-tooltip>
         </div>
         <!-- phoneOffice -->
-        <div class="flex text-xl font-semibold mt-1 flex-col justify-center t">
-          <div class="flex justify-center">
+        <div class="flex text-xl font-semibold mt-1 flex-col justify-center">
+          <div class="flex max-md:flex-col items-center justify-center">
             <div>{{ profile.phone_office || profile.phone_cell }}</div>
             <div
               class="mx-2 flex justify-center items-center translate-y-[-1px]"
+              v-if="screenWidth > 768"
             >
               |
             </div>
             <div>{{ profile.email }}</div>
           </div>
-          <div class="self-center" v-if="city || state">
+          <div class="self-center text-base md:text-xl" v-if="city || state">
             {{ city + ", " + state }}
           </div>
         </div>
@@ -102,6 +105,9 @@ import Card from "@/Components/Card.vue";
 import Avatar from "@/Components/Ratings/Avatar.vue";
 
 import { computed, ref } from "vue";
+import { template1Default } from "@/helpers/templateDefaults";
+
+import { useStore } from "vuex";
 
 // State
 const props = defineProps({
@@ -116,6 +122,7 @@ const props = defineProps({
     default: 0,
   },
 });
+const store = useStore();
 const blueRgba = ref("#241e6d");
 const first_name = ref(props.profile.first_name);
 const last_name = ref(props.profile.last_name);
@@ -128,6 +135,10 @@ const state = ref(props.profile.state);
 const emit = defineEmits(["changeMode"]);
 
 //Computed
+const selectedColorScheme = computed(
+  () => store.state.contractor.selectedColorScheme?.colors || template1Default
+);
+
 const fullName = computed(() => first_name.value + " " + last_name.value);
 const truncatedName = computed(() => {
   console.log("here in teh trunctated", props.screenWidth);

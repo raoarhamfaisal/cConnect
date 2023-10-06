@@ -98,25 +98,6 @@
       }your image or <span class='filepond--label-action'> Browse </span>`"
     />
 
-    <!-- <div class="flex items-center mb-3 gap-2">
-      <button
-        class="px-3 py-2 flex gap-2 items-center justify-center h-[42px] rounded bg-[#087f5b] text-white active:scale-[0.99] transition transform duration-300 hover:shadow-lg"
-        @click="onImageUploadClick"
-      >
-        Choose an Image
-      </button>
-      <input
-        ref="fileInput"
-        type="file"
-        accept="image/jpeg,image/png,image/gif,image/webp"
-        @change="onImageSelected"
-        style="display: none"
-      />
-      <div v-if="imageError" class="text-red-500">{{ imageError }}</div>
-      <div v-if="tempSection.imageTitle">
-        {{ tempSection.imageTitle }}
-      </div>
-    </div> -->
     <!-- Textarea -->
     <label for="text_section" class="font-bold">Title(max 150char)</label>
     <textarea

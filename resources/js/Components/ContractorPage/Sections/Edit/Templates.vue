@@ -32,11 +32,7 @@
         <SelectProfile
           :options="templateList"
           :modelValue="form.selectedTemplate"
-          @update:modelValue="
-            (value) => {
-              form.selectedTemplate = value;
-            }
-          "
+          @update:modelValue="updateSelectedTemplate"
         />
         <!-- <InputError class="mt-2" :message="form.errors.phone_cell" /> -->
       </div>
@@ -45,11 +41,7 @@
         <ColorSelect
           :options="colorSchemeList"
           :modelValue="form.selectedColorScheme"
-          @update:modelValue="
-            (value) => {
-              form.selectedColorScheme = value;
-            }
-          "
+          @update:modelValue="updateSelectedColorScheme"
         />
         <!-- <InputError class="mt-2" :message="form.errors.phone_cell" /> -->
       </div>
@@ -72,8 +64,10 @@ import { templateList, colorSchemeList } from "@/helpers/selectListsHelpters";
 import Card from "@/Components/Card.vue";
 
 import { reactive } from "vue";
+import { useStore } from "vuex";
 
 // State
+const store = useStore();
 const props = defineProps({
   profile: Object,
   screenWidth: Number,
@@ -85,5 +79,16 @@ const form = reactive({
 });
 const changeMode = () => {
   emit("changeMode");
+};
+
+const updateSelectedTemplate = (value) => {
+  form.selectedTemplate = value;
+  store.commit("contractor/setSelectedTemplate", value);
+};
+
+const updateSelectedColorScheme = (value) => {
+  form.selectedColorScheme = value.text;
+  store.commit("contractor/setSelectedColorScheme", value);
+  console.log(value, "value");
 };
 </script>

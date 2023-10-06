@@ -93,7 +93,9 @@ export const templateList = [
   "Template 5",
 ];
 export const colorSchemeList = [
-  { text: "Color 1", color: "#fff" },
-  { text: "Color 1", color: "red" },
-  { text: "Color 3", color: "blue" },
+  // pagebg,bg,text
+  { text: "Color Scheme 1", colors: ["#e5e7eb", "#ffffff", "#000000"] },
+  { text: "Color Scheme 1", colors: ["#fff", "#212529", "#ffffff"] },
+  { text: "Color Scheme 3", colors: ["#34495E", "#ebedef", "#333"] },
+  { text: "Color Scheme 3", colors: ["#4B77BE", "#f2f4f6", "#4d4d4d"] },
 ];

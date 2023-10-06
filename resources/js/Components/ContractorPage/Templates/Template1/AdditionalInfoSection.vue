@@ -3,20 +3,25 @@
   <Card
     :shadowLevel="2"
     cardInnerClasses="h-full"
-    bgColor="white"
+    :bgColor="selectedColorScheme[1]"
     :isInside="true"
     class="sm:pl-6 md:pl-6 sm:pl-2 lg:pl-8 h-auto"
     :padding="screenWidth < 640 ? '7px' : '20px'"
   >
-    <div class="flex flex-col justify-center text-center">
+    <div
+      :style="{
+        color: selectedColorScheme[2],
+      }"
+      class="flex flex-col justify-center text-center"
+    >
       <h2
-        class="text-xl sm:text-2xl font-medium font-extrabold text-gray-900"
+        class="text-xl sm:text-2xl font-medium font-extrabold"
         v-if="company_name"
       >
         {{ company_name }}
       </h2>
       <div
-        class="text-lg sm:text-xl font-medium font-bold text-gray-900"
+        class="text-lg sm:text-xl font-medium font-bold"
         v-if="address_1 || address_2"
       >
         {{ address_1 || address_2 }}
@@ -28,7 +33,10 @@
       >
     </div>
     <div
-      class="flex flex-col justify-start mt-6 text-base sm:text-lg font-semibold emailPhoneSection"
+      class="flex flex-col justify-start mt-3 md:mt-6 text-base md:text-lg max-md:items-center font-semibold emailPhoneSection"
+      :style="{
+        color: selectedColorScheme[2],
+      }"
     >
       <!-- For Phone Office -->
       <div v-if="phone_office">
@@ -36,7 +44,9 @@
           <template v-slot:activator="{ props }">
             <Icon
               v-bind="props"
-              :color="iconColor"
+              :color="
+                selectedColorScheme[1] === '#212529' ? '#364fc7' : iconColor
+              "
               icon="wpf:phone-office"
               class="w-5 h-5"
             />
@@ -51,7 +61,9 @@
           <template v-slot:activator="{ props }">
             <Icon
               v-bind="props"
-              :color="iconColor"
+              :color="
+                selectedColorScheme[1] === '#212529' ? '#364fc7' : iconColor
+              "
               icon="ic:baseline-phone"
               class="w-5 h-5"
             />
@@ -65,7 +77,9 @@
           <template v-slot:activator="{ props }">
             <Icon
               v-bind="props"
-              :color="iconColor"
+              :color="
+                selectedColorScheme[1] === '#212529' ? '#364fc7' : iconColor
+              "
               icon="bi:envelope-fill"
               class="w-5 h-5"
             />
@@ -80,7 +94,9 @@
           <template v-slot:activator="{ props }">
             <Icon
               v-bind="props"
-              :color="iconColor"
+              :color="
+                selectedColorScheme[1] === '#212529' ? '#364fc7' : iconColor
+              "
               icon="tabler:location-filled"
               class="w-5 h-5"
             />
@@ -89,14 +105,18 @@
         <div>County: {{ profile.county }}</div>
       </div>
 
-      <div class="flex flex-col gap-1 mt-6 text-sm sm:text-base">
+      <div
+        class="flex flex-col gap-1 mt-3 md:mt-6 max-md:items-center text-sm md:text-base"
+      >
         <a v-if="profile.website_url" :href="absoluteUrl(profile.website_url)">
           <v-tooltip text="Website" location="top">
             <template v-slot:activator="{ props }">
               <Icon
                 v-bind="props"
                 icon="fluent-mdl2:website"
-                :color="iconColor"
+                :color="
+                  selectedColorScheme[1] === '#212529' ? '#364fc7' : iconColor
+                "
                 class="``"
               />
             </template>
@@ -159,7 +179,10 @@ import Card from "@/Components/Card.vue";
 
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import Avatar from "@/Components/Ratings/Avatar.vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import { template1Default } from "@/helpers/templateDefaults";
+
+import { useStore } from "vuex";
 
 // State
 const props = defineProps({
@@ -169,6 +192,7 @@ const props = defineProps({
 });
 
 const iconColor = ref("#241e6d");
+const store = useStore();
 const company_name = ref(props.profile.company_name);
 const company_logo = ref(props.profile.company_logo);
 const phone_cell = ref(props.profile.phone_cell);
@@ -180,6 +204,10 @@ const state = ref(props.profile.state);
 const county = ref(props.profile.county);
 const zipcode = ref(props.profile.zipcode);
 
+//Computed
+const selectedColorScheme = computed(
+  () => store.state.contractor.selectedColorScheme?.colors || template1Default
+);
 const absoluteUrl = (url) => {
   if (!url) return "";
   if (url.startsWith("http://") || url.startsWith("https://")) {

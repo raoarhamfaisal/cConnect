@@ -8,10 +8,20 @@
     :show-post-buttons="true"
     color="rgb(229 231 235 / var(--tw-bg-opacity))"
   >
-    <div class="mt-8 sm:mt-8">
+    <div
+      class="pt-8 sm:pt-8"
+      :style="{
+        backgroundColor:
+          mode === '' && selectedColorScheme[0]
+            ? selectedColorScheme[0]
+            : '#e5e7eb',
+      }"
+      v-if="!loading"
+    >
       <ContractorLayout
-        v-if="!loading"
         :profile="contractorProfile"
+        @change-mode="changeMode"
+        :mode="mode"
         :average_rating="average_rating"
         :starPercentages="starPercentages"
         :total_reviews="total_reviews"
@@ -26,9 +36,13 @@
 import Header from "@/Layouts/Header.vue";
 import Loader from "@/Components/Ratings/Loader.vue";
 import ContractorLayout from "@/Components/ContractorPage/ContractorLayout.vue";
-import { onMounted, ref } from "vue";
+import { onMounted, computed, ref } from "vue";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { somethingWentWrong } from "@/helpers/utilities";
+
+import { template1Default } from "@/helpers/templateDefaults";
+
+import { useStore } from "vuex";
 
 // State
 const { profile } = defineProps({
@@ -43,14 +57,27 @@ const { profile } = defineProps({
   },
 });
 const loading = ref(false);
+const store = useStore();
+const mode = ref("edit");
 const starPercentages = ref([]);
 const average_rating = ref(null);
 const contractorProfile = ref({});
 const total_reviews = ref(0);
 
+const changeMode = () => {
+  mode.value = mode.value === "edit" ? "" : "edit";
+  // fetchContractorDetails();
+};
+
 onMounted(() => {
   fetchContractorDetails();
 });
+
+//Computed
+const selectedColorScheme = computed(
+  () => store.state.contractor.selectedColorScheme?.colors || template1Default
+);
+
 const fetchContractorDetails = async () => {
   loading.value = true;
   try {

@@ -1,6 +1,6 @@
 <template>
   <Template1
-    v-if="mode !== 'edit' && !loading"
+    v-if="mode !== 'edit'"
     @change-mode="changeMode"
     :profile="profile"
     :screenWidth="screenWidth"
@@ -11,7 +11,7 @@
   />
 
   <EditMode
-    v-if="mode === 'edit' && !loading"
+    v-if="mode === 'edit'"
     @change-mode="changeMode"
     :screenWidth="screenWidth"
     :profile="profile"
@@ -20,7 +20,6 @@
     :total_reviews="total_reviews"
     :region_name="region_name"
   />
-  <Loader :loading="loading" background="transparent" height="70vh"></Loader>
 
   <MoveToTop />
 </template>
@@ -38,6 +37,7 @@ import { useStore } from "vuex";
 // State
 const props = defineProps({
   profile: Object,
+  mode: String,
   region_name: String,
   total_reviews: [Number, String],
   average_rating: [Number, String],
@@ -47,20 +47,12 @@ const props = defineProps({
   },
 });
 const store = useStore();
-const mode = ref("edit");
-const loading = ref(false);
+const emit = defineEmits(["changeMode"]);
 
 const screenWidth = computed(() => store.getters.screenWidth);
 
 const changeMode = () => {
-  mode.value = mode.value === "edit" ? "" : "edit";
-  modeChanged();
-};
-const modeChanged = () => {
-  loading.value = true;
-  setTimeout(() => {
-    loading.value = false;
-  }, 500);
+  emit("changeMode");
 };
 </script>
 

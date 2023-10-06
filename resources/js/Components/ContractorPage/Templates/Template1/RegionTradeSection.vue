@@ -2,19 +2,22 @@
   <!-- Trades and Region  -->
   <Card
     :shadowLevel="2"
-    bgColor="white"
+    :bgColor="selectedColorScheme[1]"
     cardInnerClasses="h-full"
     :isInside="true"
     class="sm:pr-6 md:pr-6 sm:pr-2 lg:pr-8 h-auto"
     :padding="screenWidth < 640 ? '7px' : '20px'"
   >
-    <div class="flex justify-between">
+    <div
+      class="flex justify-center items-center md:justify-between max-md:gap-4 max-md:mb-2"
+    >
       <heading-card
-        class="mb-2"
+        class="text"
         :style="{
-          marginBottom: '8px',
+          marginBottom: screenWidth > 768 ? '0px' : '0',
           fontWeight: 800,
           fontSize: screenWidth > 640 ? '24px' : '20px',
+          color: selectedColorScheme[1] === '#212529' ? '#364fc7' : iconColor,
         }"
         :heading="`Trade Groups`"
       />
@@ -30,12 +33,6 @@
               <button
                 class="xs:text-md w-[28px] h-[28px] xs:w-[35px] xs:h-[35px] font-semibold flex items-center justify-center"
               >
-                <!-- <Icon
-                  v-bind="props"
-                  class="w-[16px] h-[16px] xs:w-[18px] xs:h-[18px] focus:outline-none"
-                  icon="mdi:post"
-                  color="#1864ab"
-                /> -->
                 <img
                   src="/images/icons/post_b.png"
                   v-bind="props"
@@ -49,7 +46,7 @@
       </div>
     </div>
     <!-- trades -->
-    <div class="mb-3">
+    <div class="mb-3 max-md:text-center">
       <!-- <div class="pl-2 text-sm xs:text-md font-bold mt-2 mb-1">
         {{ profile.first_name + " " + profile.last_name }}
         {{ "'s Trades :" }}
@@ -70,7 +67,10 @@
     </div>
     <div
       v-if="region_name"
-      class="flex items-center justify-between w-full gap-2 xs:gap-4 mt-2 sm:mt-0"
+      class="flex items-center justify-center md:justify-between w-full gap-2 xs:gap-4 mt-2 sm:mt-0"
+      :style="{
+        color: selectedColorScheme[2],
+      }"
     >
       <div class="flex items-center">
         <v-tooltip text="Region" location="top">
@@ -79,7 +79,9 @@
               v-bind="props"
               class="w-6 h-6 sm:w-8 sm:h-8"
               icon="mdi:location"
-              color="#241e6d"
+              :color="
+                selectedColorScheme[1] === '#212529' ? '#364fc7' : iconColor
+              "
             />
           </template>
         </v-tooltip>
@@ -103,7 +105,9 @@ import { Icon } from "@iconify/vue";
 import { options } from "@/helpers/selectListsHelpters.js";
 import { Link } from "@inertiajs/inertia-vue3";
 import { useStore } from "vuex";
-import { computed, ref, watch, onMounted, reactive } from "vue";
+import { computed, ref, reactive } from "vue";
+import { template1Default } from "@/helpers/templateDefaults";
+
 // State
 const props = defineProps({
   profile: Object,
@@ -112,9 +116,8 @@ const props = defineProps({
   screenWidth: Number,
 });
 const store = useStore();
-const referenceList = ref([]);
 const region_name = ref(props.region_name ?? "");
-
+const iconColor = ref("#241e6d");
 const tradesPost = reactive({
   trade1: props.profile.trade1,
   trade2: props.profile.trade2,
@@ -144,21 +147,9 @@ const tradesPost = reactive({
 
 // Computed
 
-const regions = computed(() => store.state.ratings.allRegions);
-
-//Watch
-watch(regions, (newVal) => {
-  if (newVal.length > 0) {
-    console.log(regions, "regions");
-    referenceList.value = regions.value.map((item) => item.name);
-  }
-});
-
-// Hooks
-
-onMounted(() => {
-  store.dispatch("ratings/getRegions");
-});
+const selectedColorScheme = computed(
+  () => store.state.contractor.selectedColorScheme?.colors || template1Default
+);
 
 //Methods
 </script>
