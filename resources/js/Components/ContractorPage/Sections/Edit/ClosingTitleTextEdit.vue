@@ -6,7 +6,7 @@
       :class="`flex gap-1 flex-col border-gray-300 border-2 p-3  rounded-lg`"
     >
       <div class="flex justify-between">
-        <div class="flex text-blue-rgba items-center font-bold text-xl">
+        <div class="flex text-blue-rgba items-center font-extrabold text-2xl">
           Closing Text
         </div>
         <IconButton

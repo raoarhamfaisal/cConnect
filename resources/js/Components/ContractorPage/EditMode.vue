@@ -68,7 +68,30 @@
         "
       >
         <div class="flex gap-2 flex-col">
+          <heading-card
+            class="mb-2"
+            :style="{
+              marginBottom: '8px',
+              fontWeight: 800,
+              fontSize: screenWidth > 640 ? '24px' : '20px',
+            }"
+            :heading="`Title/Image Sections`"
+          />
           <ImageTextSectionEdit
+            :image_sections="profile.image_sections"
+            :contractor-id="profile.id"
+            :screen-width="screenWidth"
+          />
+          <heading-card
+            class="mb-2 mt-4"
+            :style="{
+              marginBottom: '8px',
+              fontWeight: 800,
+              fontSize: screenWidth > 640 ? '24px' : '20px',
+            }"
+            :heading="`Brag Sections`"
+          />
+          <BragSectionEdit
             :image_sections="profile.image_sections"
             :contractor-id="profile.id"
             :screen-width="screenWidth"
@@ -80,7 +103,9 @@
             :class="`mt-1 flex gap-1 flex-col border-gray-300 border-2 p-3   rounded-lg`"
           >
             <div class="flex justify-between">
-              <div class="flex text-blue-rgba items-center font-bold text-xl">
+              <div
+                class="flex text-blue-rgba items-center font-extrabold text-2xl"
+              >
                 About Us - Why You Should Work For or Hire Us
               </div>
               <IconButton
@@ -122,6 +147,7 @@
 <script setup>
 import AverageRating from "@/Components/Ratings/Contractor/PartialsVisiting/AverageRating.vue";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 
 import Card from "@/Components/Card.vue";
 
@@ -134,6 +160,7 @@ import SocialLinksSectionEdit from "@/Components/ContractorPage/Sections/Edit/So
 import AdditionalInfoSectionEdit from "@/Components/ContractorPage/Sections/Edit/AdditionalInfoSectionEdit.vue";
 import ClosingTitleTextEdit from "@/Components/ContractorPage/Sections/Edit/ClosingTitleTextEdit.vue";
 import ImageTextSectionEdit from "@/Components/ContractorPage/Sections/Edit/ImageTextSectionEdit.vue";
+import BragSectionEdit from "@/Components/ContractorPage/Sections/Edit/BragSectionEdit.vue";
 import { ref } from "vue";
 import IconButton from "@/Components/IconButton.vue";
 import { Icon } from "@iconify/vue";

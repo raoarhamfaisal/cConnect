@@ -6,7 +6,7 @@
       'w-full mx-auto sm:px-6 md:px-6 sm:px-2 lg:px-8 space-y-6': !isInside,
     }"
   >
-    <div class="card p-3 xs:p-5" :style="cardStyles">
+    <div :class="`card p-3 xs:p-5 ${cardInnerClasses}`" :style="cardStyles">
       <slot></slot>
     </div>
   </div>
@@ -17,6 +17,10 @@ import { computed } from "vue";
 
 export default {
   props: {
+    cardInnerClasses: {
+      type: String,
+      default: "",
+    },
     shadowLevel: {
       type: [Number, String],
       default: 5,

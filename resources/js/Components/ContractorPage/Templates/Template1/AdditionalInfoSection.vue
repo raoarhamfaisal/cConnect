@@ -2,79 +2,158 @@
   <!-- Company ,contact address  -->
   <Card
     :shadowLevel="2"
+    cardInnerClasses="h-full"
     bgColor="white"
+    :isInside="true"
+    class="sm:pl-6 md:pl-6 sm:pl-2 lg:pl-8 h-auto"
     :padding="screenWidth < 640 ? '7px' : '20px'"
   >
-    <div class="flex justify-between">
-      <heading-card
-        class="mb-2"
-        :style="{
-          marginBottom: '8px',
-          fontWeight: 800,
-          fontSize: screenWidth > 640 ? '24px' : '20px',
-        }"
-        :heading="`Contact Info`"
-      />
-    </div>
-
-    <div class="flex space-x-2 justify-between">
-      <div class="flex justify-center items-center space-x-2">
-        <div>
-          <Avatar :imageSrc="`/${company_logo}`" />
-        </div>
-        <div class="flex flex-col justify-center">
-          <h2
-            class="text-md xs:text-xl font-medium font-bold text-gray-900"
-            v-if="company_name"
-          >
-            {{ company_name }}
-          </h2>
-          <span class="text-xs xs:text-lg" v-if="city || state">{{
-            city + " " + state
-          }}</span>
-        </div>
+    <div class="flex flex-col justify-center text-center">
+      <h2
+        class="text-xl sm:text-2xl font-medium font-extrabold text-gray-900"
+        v-if="company_name"
+      >
+        {{ company_name }}
+      </h2>
+      <div
+        class="text-lg sm:text-xl font-medium font-bold text-gray-900"
+        v-if="address_1 || address_2"
+      >
+        {{ address_1 || address_2 }}
       </div>
+      <span
+        class="text-base sm:text-lg font-semibold"
+        v-if="city || state || zipcode"
+        >{{ city + ", " + state + " " + zipcode }}</span
+      >
     </div>
     <div
-      class="flex flex-col sm:flex-row flex-wrap gap-y-2 mt-2 sm:mt-4 ml-1 mb-1 sm:mb-0 sm:ml-0"
+      class="flex flex-col justify-start mt-6 text-base sm:text-lg font-semibold emailPhoneSection"
     >
-      <InfoWithIcon
-        icon="ic:baseline-phone"
-        tooltipText="Phone Cell"
-        :text="phone_cell"
-      />
-      <InfoWithIcon
-        icon="wpf:phone-office"
-        tooltipText="Phone Office"
-        :text="phone_office"
-      />
-      <InfoWithIcon
-        icon="entypo:address"
-        tooltipText="Address 1"
-        :text="address_1"
-      />
-      <InfoWithIcon
-        icon="entypo:address"
-        tooltipText="Address 2"
-        :text="address_2"
-      />
-      <InfoWithIcon icon="mdi:city" tooltipText="City" :text="city" />
-      <InfoWithIcon icon="entypo:location" tooltipText="State" :text="state" />
-      <InfoWithIcon
-        icon="map:post-box"
-        tooltipText="Zip Code"
-        :text="zipcode"
-      />
-      <InfoWithIcon
-        icon="tabler:location-filled"
-        tooltipText="County"
-        :text="county"
-      />
+      <!-- For Phone Office -->
+      <div v-if="phone_office">
+        <v-tooltip text="Phone Office" location="top">
+          <template v-slot:activator="{ props }">
+            <Icon
+              v-bind="props"
+              :color="iconColor"
+              icon="wpf:phone-office"
+              class="w-5 h-5"
+            />
+          </template>
+        </v-tooltip>
+        <div>{{ phone_office }}</div>
+      </div>
+
+      <!-- For Phone Cell -->
+      <div v-else-if="phone_cell">
+        <v-tooltip text="Phone Cell" location="top">
+          <template v-slot:activator="{ props }">
+            <Icon
+              v-bind="props"
+              :color="iconColor"
+              icon="ic:baseline-phone"
+              class="w-5 h-5"
+            />
+          </template>
+        </v-tooltip>
+        <div>{{ phone_cell }}</div>
+      </div>
+      <!-- For Email -->
+      <div v-if="profile.email">
+        <v-tooltip text="Email" location="top">
+          <template v-slot:activator="{ props }">
+            <Icon
+              v-bind="props"
+              :color="iconColor"
+              icon="bi:envelope-fill"
+              class="w-5 h-5"
+            />
+          </template>
+        </v-tooltip>
+        <div>{{ profile.email }}</div>
+      </div>
+
+      <!-- For County -->
+      <div v-if="profile.county">
+        <v-tooltip text="County" location="top">
+          <template v-slot:activator="{ props }">
+            <Icon
+              v-bind="props"
+              :color="iconColor"
+              icon="tabler:location-filled"
+              class="w-5 h-5"
+            />
+          </template>
+        </v-tooltip>
+        <div>County: {{ profile.county }}</div>
+      </div>
+
+      <div class="flex flex-col gap-1 mt-6 text-sm sm:text-base">
+        <a v-if="profile.website_url" :href="absoluteUrl(profile.website_url)">
+          <v-tooltip text="Website" location="top">
+            <template v-slot:activator="{ props }">
+              <Icon
+                v-bind="props"
+                icon="fluent-mdl2:website"
+                :color="iconColor"
+                class="``"
+              />
+            </template>
+          </v-tooltip>
+          <div>{{ profile.website_url }}</div>
+        </a>
+        <!-- For Facebook -->
+        <a v-if="profile.facebook" :href="absoluteUrl(profile.facebook)">
+          <v-tooltip text="Facebook" location="top">
+            <template v-slot:activator="{ props }">
+              <Icon v-bind="props" icon="logos:facebook" class="" />
+            </template>
+          </v-tooltip>
+          <div>Facebook</div>
+        </a>
+
+        <!-- For Twitter -->
+        <a v-if="profile.twitter" :href="absoluteUrl(profile.twitter)">
+          <v-tooltip text="Twitter" location="top">
+            <template v-slot:activator="{ props }">
+              <Icon
+                v-bind="props"
+                icon="fa6-brands:square-x-twitter"
+                color="black"
+                class=""
+              />
+            </template>
+          </v-tooltip>
+          <div>Twitter</div>
+        </a>
+
+        <!-- For TikTok -->
+        <a v-if="profile.tiktok" :href="absoluteUrl(profile.tiktok)">
+          <v-tooltip text="TikTok" location="top">
+            <template v-slot:activator="{ props }">
+              <Icon v-bind="props" icon="logos:tiktok-icon" class="" />
+            </template>
+          </v-tooltip>
+          <div>Tiktok</div>
+        </a>
+
+        <!-- For Instagram -->
+        <a v-if="profile.instagram" :href="absoluteUrl(profile.instagram)">
+          <v-tooltip text="Instagram" location="top">
+            <template v-slot:activator="{ props }">
+              <Icon v-bind="props" icon="skill-icons:instagram" class="" />
+            </template>
+          </v-tooltip>
+          <div>Instagram</div>
+        </a>
+      </div>
     </div>
   </Card>
 </template>
 <script setup>
 import InfoWithIcon from "@/Components/ContractorPage/InfoWithIcon.vue";
+import { Icon } from "@iconify/vue";
 
 import Card from "@/Components/Card.vue";
 
@@ -89,6 +168,7 @@ const props = defineProps({
   screenWidth: Number,
 });
 
+const iconColor = ref("#241e6d");
 const company_name = ref(props.profile.company_name);
 const company_logo = ref(props.profile.company_logo);
 const phone_cell = ref(props.profile.phone_cell);
@@ -99,4 +179,29 @@ const city = ref(props.profile.city);
 const state = ref(props.profile.state);
 const county = ref(props.profile.county);
 const zipcode = ref(props.profile.zipcode);
+
+const absoluteUrl = (url) => {
+  if (!url) return "";
+  if (url.startsWith("http://") || url.startsWith("https://")) {
+    return url;
+  } else {
+    // Here you can decide on a default protocol. Assuming "http://" for simplicity
+    return `http://${url}`;
+  }
+};
 </script>
+<style scoped>
+a {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+a:hover {
+  text-decoration: underline;
+}
+.emailPhoneSection > div:not(:last-child) {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+</style>
