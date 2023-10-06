@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Review;
+use App\Models\Profile;
 use App\Models\ReviewResponse;
 use App\Models\RatingReason;
 use Illuminate\Support\Facades\Auth;
@@ -36,34 +37,50 @@ class ReviewResponseController extends Controller
             'review_id' => 'required|exists:reviews,id'
         ]);
 
+        // dd($data['review_id']);
+
         // Get the associated review
         $review = Review::find($data['review_id']);
-        
-        // Get the currently authenticated user
-        $user = Auth::user();
-        // Check if the user is the original contractor or has admin privileges
-        if ($user->id === $review->contractor_id || $user->posts_privileges) {
+        // $review = Review::find('1002');
 
-            if ($review->response_id) {
-                return response()->json(['message' => 'Sorry a response is already given to this review'], 403);
+
+        // dd($data['review_id']);
+        // dd($review);
+
+        if($review) {
+            // Get the currently authenticated user
+            $user = Auth::user();
+    
+            $profile = Profile::where('user_id', '=', $user->id)->first();
+            // Check if the user is the original contractor or has admin privileges
+            if ($profile->id === $review->contractor_id || $user->posts_privileges) {
+    
+                if ($review->response_id) {
+                    return response()->json(['message' => 'Sorry a response is already given to this review'], 403);
+                }
+    
+                // Store the Review Response
+                $reviewResponse = new ReviewResponse;
+                $reviewResponse->response_text = $data['response_text'];
+                $reviewResponse->review_id = $data['review_id'];
+                $reviewResponse->response_date = now();  // Laravel's helper to get current date-time
+                $reviewResponse->save();
+    
+                // Update the Review model with the response_id
+                $review = Review::find($data['review_id']);
+                $review->response_id = $reviewResponse->id;
+                $review->save();
+    
+                return response()->json(['message' => 'Review response saved successfully!','review_response'=>$reviewResponse], 200);
+            }else {
+                return response()->json(['message' => 'You do not have permission to add the review response'], 403);
             }
 
-            // Store the Review Response
-            $reviewResponse = new ReviewResponse;
-            $reviewResponse->response_text = $data['response_text'];
-            $reviewResponse->review_id = $data['review_id'];
-            $reviewResponse->response_date = now();  // Laravel's helper to get current date-time
-            $reviewResponse->save();
-
-            // Update the Review model with the response_id
-            $review = Review::find($data['review_id']);
-            $review->response_id = $reviewResponse->id;
-            $review->save();
-
-            return response()->json(['message' => 'Review response saved successfully!','review_response'=>$reviewResponse], 200);
         }else {
-            return response()->json(['message' => 'You do not have permission to add the review response'], 403);
+            return response()->json(['message' => 'Review Not Found Or this review have been deleted'], 200);
         }
+
+        
 
     }
 
@@ -99,11 +116,15 @@ class ReviewResponseController extends Controller
         
         // Get the associated review
         $review = Review::find($reviewResponse->review_id);
+
         
         // Get the currently authenticated user
         $user = Auth::user();
+
+
+        $profile = Profile::where('user_id', '=', $user->id)->first();
         // Check if the user is the original contractor or has admin privileges
-        if ($user->id === $review->contractor_id || $user->posts_privileges) {
+        if ($profile->id === $review->contractor_id || $user->posts_privileges) {
             // Update the response_text
             $reviewResponse->response_text = $data['response_text'];
             $reviewResponse->save();
@@ -127,8 +148,11 @@ class ReviewResponseController extends Controller
 
         // Get the currently authenticated user
         $user = Auth::user();
+
+        $profile = Profile::where('user_id', '=', $user->id)->first();
+
         // Check if the user is the original contractor or has admin privileges
-        if ($user->id === $review->contractor_id || $user->appeals_privileges || $user->posts_privileges) {
+        if ($profile->id === $review->contractor_id || $user->appeals_privileges || $user->posts_privileges) {
     
             // If the review exists, set its response_id to null
             if ($review) {

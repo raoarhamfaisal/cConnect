@@ -84,6 +84,7 @@
               class="w-full text-2xl text-left rounded-lg"
               >Write a review</Button
             >
+            <!-- {{ profileId }} -->
             <transition name="accordion">
               <Card
                 v-if="showCard"
