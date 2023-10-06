@@ -38,6 +38,7 @@
       title="Add Closing Text"
     >
       <ckeditor
+        @ready="onReady"
         :editor="editor"
         v-model="editorData"
         :config="editorConfig"
@@ -58,10 +59,10 @@
 import { ref } from "vue";
 import { Icon } from "@iconify/vue";
 import IconButton from "@/Components/IconButton.vue";
+import DecoupledEditor from "@ckeditor/ckeditor5-build-decoupled-document";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 const props = defineProps({
   screenWidth: {
@@ -79,13 +80,22 @@ const loading = ref(false);
 const disabled = ref(false);
 const isChecked = ref(false);
 // Use the Classic Editor build.
-const editor = ClassicEditor;
+const editor = DecoupledEditor;
 
 // Editor content.
 const editorData = ref(closingTextTemp.value);
 
 // Editor configuration.
 const editorConfig = ref({});
+const onReady = (editor) => {
+  // Insert the toolbar before the editable area.
+  editor.ui
+    .getEditableElement()
+    .parentElement.insertBefore(
+      editor.ui.view.toolbar.element,
+      editor.ui.getEditableElement()
+    );
+};
 
 const openDialogEdit = () => {
   dialogRef.value.openDialog();
