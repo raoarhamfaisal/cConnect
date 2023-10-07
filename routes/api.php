@@ -8,6 +8,7 @@ use App\Http\Controllers\ContractorPageController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ImageSectionController;
+use App\Http\Controllers\BragSectionController;
 use App\Http\Controllers\ReviewResponseController;
 use App\Http\Controllers\ContractorRatingsAdminController;
 
@@ -41,7 +42,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     
     
     // });
-    
+
+
     
     // Your authenticated routes here
     Route::middleware('auth:sanctum')->group(function () {
@@ -54,10 +56,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         Route::post('/contractor/user-avatar', [ContractorProfileController::class, 'updateUserAvatar'])->name('contractorProfile.updateUserAvatar');
         Route::post('/contractor/company-logo', [ContractorProfileController::class, 'updateCompanyLogo'])->name('contractorProfile.updateCompanyLogo');
         Route::patch('/contractor/bottom-closing-text', [ContractorProfileController::class, 'updateBottomAndClosingText'])->name('contractorProfile.updateBottomAndClosingText');
-
+        Route::get('/contractor/all-templates', [ContractorProfileController::class, 'getAllTemplates'])->name('contractorProfile.getAllTemplates');
+        Route::patch('/contractor/update-template', [ContractorProfileController::class, 'updateTemplate'])->name('contractorProfile.updateTemplate');
+        Route::get('/contractor/all-color-schemes', [ContractorProfileController::class, 'getAllColorSchemes'])->name('contractorProfile.getAllColorSchemes');
+        Route::patch('/contractor/update-color-scheme', [ContractorProfileController::class, 'updateColorScheme'])->name('contractorProfile.updateColorScheme');
+            
         Route::post('/contractor/{contractorProfileId}/image-section', [ImageSectionController::class, 'store']);
         Route::post('/contractor/image-section/{sectionId}', [ImageSectionController::class, 'update']);
         Route::delete('/contractor/image-section/{sectionId}', [ImageSectionController::class, 'destroy']);
+        
+        Route::post('/contractor/{contractorProfileId}/brag-section', [BragSectionController::class, 'store']);
+        Route::post('/contractor/brag-section/{sectionId}', [BragSectionController::class, 'update']);
+        Route::delete('/contractor/brag-section/{sectionId}', [BragSectionController::class, 'destroy']);
 
         // Settings APIs
         Route::post('/settings/change-email', [ProfileController::class, 'changeEmail'])->name('profile.changeEmail');

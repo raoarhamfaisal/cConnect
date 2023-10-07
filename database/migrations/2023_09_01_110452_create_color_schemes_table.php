@@ -16,8 +16,9 @@ return new class extends Migration
         Schema::create('color_schemes', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->string('primary_color')->nullable();
-            $table->string('secondary_color')->nullable();
+            $table->string('color1')->nullable();
+            $table->string('color2')->nullable();
+            $table->string('color3')->nullable();
             $table->timestamps();
         });
     }

@@ -4,15 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ColorScheme extends Model
+class BragSection extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'name',
-        'color1',
-        'color2',
-        'color3',
-    ];
+    use SoftDeletes;
 
+    protected $fillable = [
+        'section_image',
+        'section_text',
+        'contractor_profile_id'
+    ];
 }

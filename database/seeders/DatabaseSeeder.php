@@ -51,31 +51,36 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\ColorScheme::create([
             'name' => 'Color Scheme 1',
-            'primary_color' => '#000',
-            'secondary_color' => '#fff'
+            'color1' => '#e5e7eb',
+            'color2' => '#ffffff',
+            'color3' => '#000000',
         ]);
 
         \App\Models\ColorScheme::create([
             'name' => 'Color Scheme 2',
-            'primary_color' => '#000',
-            'secondary_color' => '#fff'
+            'color1' => '#fff',
+            'color2' => '#212529',
+            'color3' => '#ffffff',
         ]);
 
         \App\Models\ColorScheme::create([
             'name' => 'Color Scheme 3',
-            'primary_color' => '#000',
-            'secondary_color' => '#fff'
+            'color1' => '#34495E',
+            'color2' => '#ebedef',
+            'color3' => '#333',
         ]);
 
         \App\Models\ColorScheme::create([
             'name' => 'Color Scheme 4',
-            'primary_color' => '#000',
-            'secondary_color' => '#fff'
+            'color1' => '#4B77BE',
+            'color2' => '#f2f4f6',
+            'color3' => '#4d4d4d',
         ]);
         \App\Models\ColorScheme::create([
             'name' => 'Color Scheme 5',
-            'primary_color' => '#000',
-            'secondary_color' => '#fff'
+            'color1' => '#fff',
+            'color2' => '#212529',
+            'color3' => '#ffffff',
         ]);
 
 
