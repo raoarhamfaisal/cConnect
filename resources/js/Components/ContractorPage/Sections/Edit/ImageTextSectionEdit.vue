@@ -23,8 +23,11 @@
         />
       </div>
 
-      <div class="flex gap-4 relative flex-col items-center sm:flex-row">
+      <div
+        class="flex gap-4 relative flex-col justify-center items-center sm:flex-row"
+      >
         <div
+          v-if="section.section_image"
           class="relative w-full flex justify-center object-cover sm:w-[280px] sm:h-[190px] md:w-[350px] md:h-[215px] rounded-md border-2 border-gray-300 bg-[#222]"
         >
           <img
@@ -32,6 +35,7 @@
             alt="Section Image"
             class="object-cover h-full"
           />
+
           <Icon
             icon="fa-solid:expand"
             class="absolute top-0 right-0 m-2 section_text-white cursor-pointer bg-[#555] p-1 rounded w-8 h-8"
@@ -39,7 +43,12 @@
             @click="openImage(section.section_image)"
           />
         </div>
-        <div class="flex-1 flex text-md sm:text-xl font-bold sm:items-center">
+        <div
+          v-if="section.section_text"
+          :class="`flex-1 flex text-md sm:text-xl font-bold sm:items-center ${
+            !section.section_image ? 'sm:p-4 justify-center' : ''
+          }`"
+        >
           {{ section.section_text }}
         </div>
       </div>
@@ -98,25 +107,6 @@
       }your image or <span class='filepond--label-action'> Browse </span>`"
     />
 
-    <!-- <div class="flex items-center mb-3 gap-2">
-      <button
-        class="px-3 py-2 flex gap-2 items-center justify-center h-[42px] rounded bg-[#087f5b] text-white active:scale-[0.99] transition transform duration-300 hover:shadow-lg"
-        @click="onImageUploadClick"
-      >
-        Choose an Image
-      </button>
-      <input
-        ref="fileInput"
-        type="file"
-        accept="image/jpeg,image/png,image/gif,image/webp"
-        @change="onImageSelected"
-        style="display: none"
-      />
-      <div v-if="imageError" class="text-red-500">{{ imageError }}</div>
-      <div v-if="tempSection.imageTitle">
-        {{ tempSection.imageTitle }}
-      </div>
-    </div> -->
     <!-- Textarea -->
     <label for="text_section" class="font-bold">Title(max 70char)</label>
     <textarea
@@ -161,7 +151,6 @@
     </div>
   </CustomDialog>
 </template>
-
 <script setup>
 import { computed, ref, watchEffect } from "vue";
 import { Icon } from "@iconify/vue";
@@ -238,7 +227,7 @@ watchEffect(() => {
   if (tempSection.value.section_image) {
     imageError.value = "";
   }
-  if (tempSection.value.section_text.trim()) {
+  if (tempSection.value?.section_text?.trim()) {
     textError.value = "";
   }
 });
@@ -272,41 +261,30 @@ const openDeleteDialog = (sectionId) => {
   deleteDialogRef.value.openDialog();
 };
 
-// const onImageUploadClick = () => {
-//   if (fileInput.value) {
-//     fileInput.value.click();
-//   }
-// };
-
-// const onImageSelected = (event) => {
-//   const section_image = event.target.files[0];
-//   if (section_image) {
-//     tempSection.value.section_image = section_image;
-//     tempSection.value.imageTitle = section_image.name;
-//     reader.readAsDataURL(section_image);
-//   }
-// };
-
 const handleSubmit = async () => {
-  // if (editingSectionId.value) {
-  // }
   if (
-    !tempSection.value.section_text.trim() &&
+    !tempSection?.value?.section_text?.trim() &&
     !tempSection.value.section_image
   ) {
     textError.value = "Please enter the title text or  image!";
     return;
   }
+
   if (tempSection.value.section_image || tempSection.value.section_text) {
     loading.value = true;
     disabled.value = true;
     const formData = new FormData();
     if (editingSectionId.value) {
       // edit case
-      if (tempSection.value.section_image instanceof File) {
+      if (
+        tempSection.value.section_image &&
+        tempSection.value.section_image instanceof File
+      ) {
         formData.append("section_image", tempSection.value.section_image);
       }
-      formData.append("section_text", tempSection.value.section_text);
+      if (tempSection.value.section_text) {
+        formData.append("section_text", tempSection.value.section_text);
+      }
       for (const [key, value] of formData.entries()) {
         console.log(`${key}: ${value}`, "key value");
       }
@@ -337,9 +315,16 @@ const handleSubmit = async () => {
       }
     } else {
       // add case
-      formData.append("section_image", tempSection.value.section_image);
-      formData.append("section_text", tempSection.value.section_text);
-      console.log("inelse", tempSection.value, formData);
+      if (
+        tempSection.value.section_image &&
+        tempSection.value.section_image instanceof File
+      ) {
+        formData.append("section_image", tempSection.value.section_image);
+      }
+      if (tempSection.value.section_text) {
+        formData.append("section_text", tempSection.value.section_text);
+      }
+
       for (const [key, value] of formData.entries()) {
         console.log(`${key}: ${value}`, "key value");
       }

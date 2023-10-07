@@ -18,6 +18,10 @@ const props = defineProps({
     type: String,
   },
 });
-
-const bottomText = ref(props.bottom_text);
+const decodeHtml = (html) => {
+  const txt = document.createElement("textarea");
+  txt.innerHTML = html;
+  return txt.value;
+};
+const bottomText = ref(decodeHtml(props.bottom_text));
 </script>

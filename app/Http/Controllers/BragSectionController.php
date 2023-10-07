@@ -20,14 +20,17 @@ class BragSectionController extends Controller
     
         // $data['section_image'] = $request->file('section_image')->store('uploads/brag_section', 'public-storage');
     
-        // $imageSection = $contractorProfile->imageSections()->create($data);
-        $relativePath = $request->file('section_image')->store('uploads/brag_section', 'public-storage');
-    
-        // Convert the relative path to a full URL
-        $fullURL = asset($relativePath);
+        if( $request->file('section_image')) {
+
+            // $imageSection = $contractorProfile->imageSections()->create($data);
+            $relativePath = $request->file('section_image')->store('uploads/brag_section', 'public-storage');
         
-        // Save the full URL in the array
-        $data['section_image'] = $fullURL;
+            // Convert the relative path to a full URL
+            $fullURL = asset($relativePath);
+            
+            // Save the full URL in the array
+            $data['section_image'] = $fullURL;
+        }
 
         // Use the data to create the image section for the contractor profile
         $imageSection = $contractorProfile->imageSections()->create($data);

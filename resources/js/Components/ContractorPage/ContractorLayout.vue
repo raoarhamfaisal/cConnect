@@ -1,6 +1,6 @@
 <template>
   <Template1
-    v-if="mode !== 'edit'"
+    v-if="mode !== 'edit' && selectedTemplate === 1"
     @change-mode="changeMode"
     :profile="profile"
     :screenWidth="screenWidth"
@@ -14,6 +14,7 @@
     v-if="mode === 'edit'"
     @change-mode="changeMode"
     :screenWidth="screenWidth"
+    :templateList="templateList"
     :profile="profile"
     :average_rating="average_rating"
     :starPercentages="starPercentages"
@@ -38,6 +39,7 @@ import { useStore } from "vuex";
 const props = defineProps({
   profile: Object,
   mode: String,
+  templateList: Array,
   region_name: String,
   total_reviews: [Number, String],
   average_rating: [Number, String],
@@ -50,6 +52,9 @@ const store = useStore();
 const emit = defineEmits(["changeMode"]);
 
 const screenWidth = computed(() => store.getters.screenWidth);
+const selectedTemplate = computed(
+  () => store.state.contractor.selectedTemplate
+);
 
 const changeMode = () => {
   emit("changeMode");

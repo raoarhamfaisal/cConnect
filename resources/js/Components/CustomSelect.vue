@@ -17,7 +17,7 @@
         v-if="showDropdown"
         ref="dropdownMenu"
         :class="dropdownPositionClass"
-        class="absolute left-0 w-full mt-2 border border-gray-300 rounded-md bg-white shadow-lg z-10"
+        class="absolute left-0 w-full mt-2 border border-gray-300 rounded-md bg-white shadow-lg z-10 p-0"
       >
         <li
           v-for="option in options"

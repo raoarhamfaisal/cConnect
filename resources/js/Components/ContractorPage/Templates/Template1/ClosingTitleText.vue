@@ -18,6 +18,12 @@ const props = defineProps({
     type: String,
   },
 });
+const decodeHtml = (html) => {
+  const txt = document.createElement("textarea");
+  txt.innerHTML = html;
+  console.log("here");
+  return txt.value;
+};
 
-const closingText = ref(props.closing_text);
+const closingText = ref(decodeHtml(props.closing_text));
 </script>

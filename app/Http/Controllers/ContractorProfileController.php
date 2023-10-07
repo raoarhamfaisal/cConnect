@@ -397,7 +397,7 @@ class ContractorProfileController extends Controller
         if($profile) {
 
             $data = $request->validate([
-                'template_id' => 'required|number',
+                'template_id' => 'required',
             ]);
 
             $profile->update($data);            
@@ -436,7 +436,7 @@ class ContractorProfileController extends Controller
         if($profile) {
 
             $data = $request->validate([
-                'color_scheme_id' => 'required|number',
+                'color_scheme_id' => 'required',
             ]);
 
             $profile->update($data);            
