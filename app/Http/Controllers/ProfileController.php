@@ -20,6 +20,8 @@ use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\EmailVerificationCode;
+use App\Models\SessionViewSetting;
+use App\Models\SessionTrade;
 
 
 class ProfileController extends Controller
@@ -421,6 +423,183 @@ class ProfileController extends Controller
         return ['message' =>"Views successfully updated"];
 
     }
+
+
+
+    /**
+     * Update the user's Trades information.
+     *
+     * @param  \App\Http\Requests\ProfileTradesUpdateRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateTradesProfileSetup(Request $request)
+    {
+        // Get current user id
+        $userID = Auth()->user('')->id;
+        $profile = null;
+    
+        // Get the profile information if the user id exists
+        if($userID) {
+            $profile = Profile::where('user_id', $userID)->first();
+        }
+    
+        if($profile) {
+            $selectedTrades = [];
+    
+            for ($i = 1; $i <= 30; $i++) {
+                if ($request->input("trade{$i}")) {
+                    $selectedTrades[] = $i;  // Assuming trade IDs are sequential from 1 to 30
+                }
+            }
+            
+            // Sync the selected trades with the profile
+            $profile->trades()->sync($selectedTrades);
+
+
+            foreach ($selectedTrades as $trade) {
+                SessionTrade::updateOrCreate(
+                    ['profile_id' => $profile->id, 'trade_id' => $trade->id]
+                );
+            }
+
+        }
+        return ['message' =>"Trades successfully updated"];
+    
+    }
+
+
+    
+    /**
+     * Update the user's Trades information for views Settings
+     *
+     * @param  \App\Http\Requests\ProfileTradesUpdateRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateTradesViewsSettings(Request $request)
+    {
+        // Get current user id
+        $userID = Auth()->user('')->id;
+        $profile = null;
+    
+        // Get the profile information if the user id exists
+        if($userID) {
+            $profile = Profile::where('user_id', $userID)->first();
+        }
+    
+        if($profile) {
+            $selectedTrades = [];
+    
+            for ($i = 1; $i <= 30; $i++) {
+                if ($request->input("trade{$i}")) {
+                    $selectedTrades[] = $i;  // Assuming trade IDs are sequential from 1 to 30
+                }
+            }
+            
+
+            foreach ($selectedTrades as $trade) {
+                SessionTrade::updateOrCreate(
+                    ['profile_id' => $profile->id, 'trade_id' => $trade->id]
+                );
+            }
+
+        }
+        return ['message' =>"Trades successfully updated"];
+    
+    }
+    
+    /**
+     * Update the user's Veiws information.
+     *
+     * @param  \App\Http\Requests\ProfileCompanyInformationUpdateRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateViewsProfileSetup(Request $request)
+    {
+        // Get current user id
+        $userID = Auth()->user('')->id;
+        $profile = null;
+
+
+
+
+        // Get the profile information if the user id exists
+        if($userID) {
+            $profile = Profile::where('user_id', $userID)->first();
+        }
+        // dd($request);
+
+
+        if($profile) {
+
+            $data = $request->validate([
+                'view_locale' => 'nullable|boolean',
+                'view_regional' => 'nullable|boolean',
+                'view_statewide' => 'nullable|boolean',
+                'view_nationwide'  => 'nullable|boolean',
+                'view_following'  => 'nullable|boolean'
+            ]);
+
+
+            $profile->update($data);
+
+            SessionViewSetting::updateOrCreate(
+                ['profile_id' => $profile->id],
+                $data
+            );
+
+            
+        }
+        return ['message' =>"Views successfully updated"];
+
+    }
+
+
+    /**
+     * Update the user's Veiws information for views Settings
+     *
+     * @param  \App\Http\Requests\ProfileCompanyInformationUpdateRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateViewsViewsSettings(Request $request)
+    {
+        // Get current user id
+        $userID = Auth()->user('')->id;
+        $profile = null;
+
+
+
+
+        // Get the profile information if the user id exists
+        if($userID) {
+            $profile = Profile::where('user_id', $userID)->first();
+        }
+        // dd($request);
+
+
+        if($profile) {
+
+            $data = $request->validate([
+                'view_locale' => 'nullable|boolean',
+                'view_regional' => 'nullable|boolean',
+                'view_statewide' => 'nullable|boolean',
+                'view_nationwide'  => 'nullable|boolean',
+                'view_following'  => 'nullable|boolean'
+            ]);
+
+
+            SessionViewSetting::updateOrCreate(
+                ['profile_id' => $profile->id],
+                $data
+            );
+
+        }
+        return ['message' =>"Views successfully updated"];
+
+    }
+
+
+
+
     public function updateViewsApi(Request $request)
     {
         // Get current user id
