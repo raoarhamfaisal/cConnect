@@ -30,4 +30,9 @@ class Post extends Model
         return $this->belongsToMany(Trade::class, 'post_trade');
     }
 
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

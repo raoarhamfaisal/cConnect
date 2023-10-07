@@ -9,6 +9,9 @@ use App\Models\Review;
 
 use App\Models\Profile;
 use App\Models\ContractorProfile;
+use App\Models\ContractorImageSectionsDefault;
+use App\Models\ImageSection;
+use App\Models\BragSection;
 use App\Models\Region;
 
 use Illuminate\Support\Facades\Request as FacadeRequest;
@@ -23,6 +26,8 @@ class ContractorPageController extends Controller
      */
     public function index($contractor_id)
     {
+
+        // dd('here');
         // Get current user id
         $userID = Auth::id();
 
@@ -40,14 +45,48 @@ class ContractorPageController extends Controller
                 // If profile is found in the Profile model, save it to the ContractorProfile model
                 if ($profile) {
                     $contractorProfile = new ContractorProfile();
+                    $profile->bottom_text = "Default Bottom Text";
+                    $profile->closing_text = "Default Closing Text";
+                    $profile->template_id = 1;
+                    $profile->color_scheme_id = 1;
                     $contractorProfile->fill($profile->toArray()); // This copies all attributes from the profile to contractor profile
-
+        
                     $contractorProfile->save();  
                     $contractorProfile->trades()->sync($profile->trades);   
+        
+                    // Fetch the default values
+                    $defaults = ContractorImageSectionsDefault::first();
+        
+                    if ($defaults) {
+                        $imageSections = [
+                            ['text' => $defaults->first_title_text, 'image' => $defaults->first_title_image],
+                            ['text' => $defaults->second_title_text, 'image' => $defaults->second_title_image],
+                        ];
+        
+                        foreach ($imageSections as $section) {
+                            $imageSection = new ImageSection();
+                            $imageSection->section_image = $section['image'];
+                            $imageSection->section_text = $section['text'];
+                            $imageSection->contractor_profile_id = $contractorProfile->id;
+                            $imageSection->save();
+                        }
+        
+                        $bragSections = [
+                            ['text' => $defaults->brag1_text, 'image' => $defaults->brag1_image],
+                            ['text' => $defaults->brag2_text, 'image' => $defaults->brag2_image],
+                        ];
+        
+                        foreach ($bragSections as $theBragSection) {
+                            $bragSection = new BragSection();
+                            $bragSection->section_image = $theBragSection['image'];
+                            $bragSection->section_text = $theBragSection['text'];
+                            $bragSection->contractor_profile_id = $contractorProfile->id;
+                            $bragSection->save();
+                        }
+                    }            
                     
-                    $contractorProfile->trades = $profile->trades;
-                    $contractorProfile = ContractorProfile::where('user_id', $contractor_id)->with('imageSections')->with('bragSections')->with('trades')->first();
-                }
+                }        
+            
             }
 
             $regionName = '';
@@ -135,14 +174,48 @@ class ContractorPageController extends Controller
                 // If profile is found in the Profile model, save it to the ContractorProfile model
                 if ($profile) {
                     $contractorProfile = new ContractorProfile();
+                    $profile->bottom_text = "Default Bottom Text";
+                    $profile->closing_text = "Default Closing Text";
+                    $profile->template_id = 1;
+                    $profile->color_scheme_id = 1;
                     $contractorProfile->fill($profile->toArray()); // This copies all attributes from the profile to contractor profile
-
+        
                     $contractorProfile->save();  
                     $contractorProfile->trades()->sync($profile->trades);   
+        
+                    // Fetch the default values
+                    $defaults = ContractorImageSectionsDefault::first();
+        
+                    if ($defaults) {
+                        $imageSections = [
+                            ['text' => $defaults->first_title_text, 'image' => $defaults->first_title_image],
+                            ['text' => $defaults->second_title_text, 'image' => $defaults->second_title_image],
+                        ];
+        
+                        foreach ($imageSections as $section) {
+                            $imageSection = new ImageSection();
+                            $imageSection->section_image = $section['image'];
+                            $imageSection->section_text = $section['text'];
+                            $imageSection->contractor_profile_id = $contractorProfile->id;
+                            $imageSection->save();
+                        }
+        
+                        $bragSections = [
+                            ['text' => $defaults->brag1_text, 'image' => $defaults->brag1_image],
+                            ['text' => $defaults->brag2_text, 'image' => $defaults->brag2_image],
+                        ];
+        
+                        foreach ($bragSections as $theBragSection) {
+                            $bragSection = new BragSection();
+                            $bragSection->section_image = $theBragSection['image'];
+                            $bragSection->section_text = $theBragSection['text'];
+                            $bragSection->contractor_profile_id = $contractorProfile->id;
+                            $bragSection->save();
+                        }
+                    }            
                     
-                    $contractorProfile->trades = $profile->trades;
-                    $contractorProfile = ContractorProfile::where('user_id', $contractor_id)->with('imageSections')->with('trades')->first();
-                }
+                }        
+            
             }
 
             // Convert the trades to the old structure for contractor profile
