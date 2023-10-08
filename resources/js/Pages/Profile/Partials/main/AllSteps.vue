@@ -337,10 +337,10 @@ const completePayment = async () => {
             />
           </v-stepper-window-item>
           <v-stepper-window-item :value="2">
-            <Trades :profile="profile" />
+            <Trades :profile="profile" apiChoice="2" />
           </v-stepper-window-item>
           <v-stepper-window-item :value="3">
-            <Views :profile="profile" />
+            <Views :profile="profile" apiChoice="2" />
           </v-stepper-window-item>
           <v-stepper-window-item :value="4">
             <PrimaryButton

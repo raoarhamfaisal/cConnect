@@ -323,7 +323,11 @@ export default {
     <div class="flex flex-row justify-center w-full mb-1">
       <!-- justify-center  -->
 
-      <div v-if="post.image" @click="$emit('enlarge-post', post)">
+      <div
+        class="w-full"
+        v-if="post.image"
+        @click="$emit('enlarge-post', post)"
+      >
         <PostImageDisplay
           :imageArray="imageArray"
           :numberOfImages="numberOfImages"

@@ -49,12 +49,7 @@ function handleLogout() {
   Inertia.post("/logout");
 }
 const openProfileModal = () => {
-  store.commit("profile/setActiveTab", 3);
-  if (usePage().url.value !== "/profile") {
-    dialogRef.value.openDialog();
-  } else {
-    emit("NavigationDropdown");
-  }
+  dialogRef.value.openDialog();
 };
 // Create a computed property for the truncated name
 const truncatedName = computed(() => {
@@ -207,7 +202,7 @@ const truncatedName = computed(() => {
 
           <!-- DropDown: CONTRACTOR PAGE -->
           <Link
-            :href="`/contractor/${profile.id}?mode=edit`"
+            :href="`/contractor/${profile.user_id}`"
             class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
           >
             <img

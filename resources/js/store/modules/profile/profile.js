@@ -8,9 +8,10 @@ export default {
   state() {
     return {
       loading: false,
+      loadingProfile: false,
       status: "",
       profile: {},
-
+      loadFirstPageWithNoPreserve: false,
       mustVerifyEmail: false,
       activeProfileTab: 0,
     };
@@ -18,7 +19,9 @@ export default {
   getters: {
     status: (state) => state.status,
     activeProfileTab: (state) => state.activeProfileTab,
+    loadFirstPageWithNoPreserve: (state) => state.loadFirstPageWithNoPreserve,
     loading: (state) => state.loading,
+    loadingProfile: (state) => state.loadingProfile,
     getProfile: (state) => state.profile,
     mustVerifyEmail: (state) => state.mustVerifyEmail,
   },
@@ -38,10 +41,16 @@ export default {
     setLoading(state, payload) {
       state.loading = payload;
     },
+    setLoadFirstPageWithNoPreserve(state, payload) {
+      state.loadFirstPageWithNoPreserve = payload;
+    },
+    setLoadingProfile(state, payload) {
+      state.loadingProfile = payload;
+    },
   },
   actions: {
     async getProfileInfo({ commit }) {
-      commit("setLoading", true);
+      commit("setLoadingProfile", true);
       try {
         const response = await axios.get(`/api/profileInfo`, getAxiosConfig());
         if (response.data) {
@@ -51,7 +60,7 @@ export default {
       } catch (err) {
         somethingWentWrong();
       } finally {
-        commit("setLoading", false);
+        commit("setLoadingProfile", false);
       }
     },
     async fetchProfile({ commit }) {
@@ -84,6 +93,39 @@ export default {
         commit("setLoading", false);
       }
     },
+    async updateProfileSetupTrades({ commit }, form) {
+      commit("setLoading", true);
+
+      try {
+        const response = await axios.patch(
+          `/api/profile/trades-profile-setup`,
+          form,
+          getAxiosConfig()
+        );
+      } catch (err) {
+        somethingWentWrong();
+      } finally {
+        commit("setLoading", false);
+      }
+    },
+    async updateViewSettingsTrades({ commit }, form) {
+      commit("setLoading", true);
+
+      try {
+        const response = await axios.patch(
+          `/api/profile/trades-views-settings`,
+          form,
+          getAxiosConfig()
+        );
+        if (response.data) {
+          commit("setLoadFirstPageWithNoPreserve", true);
+        }
+      } catch (err) {
+        somethingWentWrong();
+      } finally {
+        commit("setLoading", false);
+      }
+    },
     async updateViews({ commit }, form) {
       commit("setLoading", true);
 
@@ -93,6 +135,39 @@ export default {
           form,
           getAxiosConfig()
         );
+      } catch (err) {
+        somethingWentWrong();
+      } finally {
+        commit("setLoading", false);
+      }
+    },
+    async updateProfileSetupViews({ commit }, form) {
+      commit("setLoading", true);
+
+      try {
+        const response = await axios.patch(
+          `/api/profile/views-profile-setup`,
+          form,
+          getAxiosConfig()
+        );
+      } catch (err) {
+        somethingWentWrong();
+      } finally {
+        commit("setLoading", false);
+      }
+    },
+    async updateViewSettingsViews({ commit }, form) {
+      commit("setLoading", true);
+
+      try {
+        const response = await axios.patch(
+          `/api/profile/views-views-settings`,
+          form,
+          getAxiosConfig()
+        );
+        if (response.data) {
+          commit("setLoadFirstPageWithNoPreserve", true);
+        }
       } catch (err) {
         somethingWentWrong();
       } finally {

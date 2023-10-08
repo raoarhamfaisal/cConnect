@@ -3,8 +3,8 @@
     <div class="flex flex-col gap-3 sm:gap-4">
       <ProfileHeader
         :screenWidth="screenWidth"
+        :loggedInUserId="loggedInUserId"
         :averageRating="average_rating"
-        @change-mode="changeMode"
         :total_reviews="total_reviews"
         :profile="profile"
       />
@@ -103,6 +103,8 @@ import { useStore } from "vuex";
 // State
 const props = defineProps({
   profile: Object,
+  loggedInUserId: [String, Boolean],
+
   region_name: String,
   total_reviews: [Number, String],
   average_rating: [Number, String],
@@ -116,15 +118,8 @@ const store = useStore();
 
 //Computed
 const selectedColorScheme = computed(
-  () => store.state.contractor.selectedColorScheme?.colors || template1Default
+  () => store.state.contractor.selectedColorScheme || template1Default
 );
-
-//  Emits
-const emit = defineEmits(["changeMode"]);
-
-const changeMode = () => {
-  emit("changeMode");
-};
 </script>
 
 <style></style>

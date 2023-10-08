@@ -57,7 +57,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
         Route::get('/ratings/contractor', [ContractorRatingController::class, 'index'])->name('ratings.contractor.index');
-        Route::get('/contractor/{contractor_id}', [ContractorPageController::class, 'index'])->name('ratings.contractor.index');
+        Route::get('/contractor/{contractor_id}', [ContractorPageController::class, 'live'])->name('ratings.contractor.index');
+        Route::get('/contractor/{contractor_id}/edit', [ContractorPageController::class, 'index'])->name('ratings.contractor.index');
         Route::get('/ratings/{contractor_id}', [RatingController::class, 'index'])->name('ratings.index');
         Route::get('/admin/regions/{region_id}/contractors', [AdminRatingsController::class, 'index'])->name('admin.allContractors');
         Route::get('/admin/regions/contractors', [AdminRatingsController::class, 'getRegionsContractors'])->name('admin.allRegions');

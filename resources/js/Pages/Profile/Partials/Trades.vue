@@ -7,7 +7,14 @@ import { useStore } from "vuex";
 
 const props = defineProps({
   profile: Object,
+  apiChoice: {
+    type: String,
+    default: "1",
+  },
 });
+// 1 => profile
+// 2 => profile-setup
+// 3 => model-view-settings
 const store = useStore();
 const form = reactive({
   trade1: props.profile.trade1,
@@ -38,7 +45,13 @@ const form = reactive({
 
 const toggleSwitch = async (field) => {
   form[field] = form[field] === 1 ? 0 : 1;
-  await store.dispatch("profile/updateTrades", form);
+  if (props.apiChoice === "1") {
+    await store.dispatch("profile/updateTrades", form);
+  } else if (props.apiChoice === "2") {
+    await store.dispatch("profile/updateProfileSetupTrades", form);
+  } else if (props.apiChoice === "3") {
+    await store.dispatch("profile/updateViewSettingsTrades", form);
+  }
 };
 </script>
 
@@ -46,7 +59,15 @@ const toggleSwitch = async (field) => {
   <section>
     <header class="flex space-x-2">
       <div>
-        <h2 class="text-lg font-medium font-bold text-gray-900">Trades</h2>
+        <h2
+          :class="` font-medium font-bold ${
+            apiChoice === '3'
+              ? 'text-blue-rgba text-xl'
+              : 'text-gray-900 text-lg'
+          }`"
+        >
+          Trades
+        </h2>
         <p class="mt-1 text-sm text-gray-600">
           Update your Trades Information.
         </p>

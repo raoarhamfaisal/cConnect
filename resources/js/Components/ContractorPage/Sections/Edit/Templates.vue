@@ -16,13 +16,13 @@
         :heading="`Template`"
       />
       <!-- see live view-->
-      <div class="rounded-full" @click="changeMode">
+      <Link class="rounded-full" :href="`/contractor/${profile.user_id}`">
         <button
           class="bg-white px-4 py-1 uppercase text-xs hover:bg-[#f8f9fa] sm:text-sm font-bold rounded-full border-[#1864ab] border-2 sm:border-[3px] bg-white text-[#1864ab] cursor-pointer hover:shadow-lg active:scale-95"
         >
           See Live View
         </button>
-      </div>
+      </Link>
     </div>
     <div
       class="mt-6 space-y-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-4"
@@ -51,6 +51,7 @@
 
 <script setup>
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
+import { Link } from "@inertiajs/inertia-vue3";
 
 // import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
@@ -74,7 +75,6 @@ const props = defineProps({
   profile: Object,
   screenWidth: Number,
 });
-const emit = defineEmits(["changeMode"]);
 
 const form = reactive({
   selectedTemplate: props.templateList.find(
@@ -82,9 +82,6 @@ const form = reactive({
   ).name,
   selectedColorScheme: "",
 });
-const changeMode = () => {
-  emit("changeMode");
-};
 
 const colorSchemeList = computed(() => store.state.contractor.colorSchemeList);
 

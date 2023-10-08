@@ -5,7 +5,10 @@ import InputLabel from "@/Components/InputLabel.vue";
 import WelcomeHeader from "@/Components/Welcome/WelcomeHeader.vue";
 import WelcomeFooter from "@/Components/Welcome/WelcomeFooter.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import { Icon } from "@iconify/vue";
 import TextInput from "@/Components/TextInput.vue";
+import InputIcon from "@/Components/InputIcon.vue";
+
 import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
 import { computed, reactive, ref } from "vue";
 
@@ -18,13 +21,15 @@ const form = useForm({
   password: "",
   password_confirmation: "",
 });
-
+const isPasswordConfirmationShown = ref(false);
+const isPasswordShown = ref(false);
 const errors = reactive({
   first_name: "",
   last_name: "",
   company_name: "",
   email: "",
   password: "",
+  passwordValidationMessage: "",
   password_confirmation: "",
 });
 defineProps({
@@ -70,10 +75,21 @@ const validateForm = () => {
   if (!form.password.trim()) {
     errors.password = "Password is required";
     isValid = false;
-  }
-  if (form.password.trim().length < 8) {
-    errors.password = "The password must be at least 8 characters.";
-    isValid = false;
+  } else {
+    if (form.password.trim().length < 8) {
+      errors.password = "The password must be at least 8 characters.";
+      isValid = false;
+    }
+    if (!/[A-Z]/.test(form.password)) {
+      errors.password =
+        "The password must contain at least one uppercase letter.";
+      isValid = false;
+    }
+    if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(form.password)) {
+      errors.password =
+        "The password must contain at least one special character.";
+      isValid = false;
+    }
   }
 
   if (form.password.trim() !== form.password_confirmation.trim()) {
@@ -90,12 +106,38 @@ const clearError = (field) => {
     errors[field] = "";
   }
 };
+const clearPasswordValidation = (field) => {
+  errors[field] = "";
+};
 const submit = () => {
   if (validateForm()) {
     console.log(form);
     form.post(route("signup"), {
       onFinish: () => form.reset("password", "password_confirmation"),
     });
+  }
+};
+const togglePasswordVisibility = () => {
+  isPasswordShown.value = !isPasswordShown.value;
+};
+
+const togglePasswordConfirmationVisibility = () => {
+  isPasswordConfirmationShown.value = !isPasswordConfirmationShown.value;
+};
+
+const validatePassword = () => {
+  // Reset password validation message
+  errors.passwordValidationMessage = "";
+
+  if (form.password.trim().length < 8) {
+    errors.passwordValidationMessage =
+      "The password must be at least 8 characters.";
+  } else if (!/[A-Z]/.test(form.password)) {
+    errors.passwordValidationMessage =
+      "The password must contain at least one uppercase letter.";
+  } else if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(form.password)) {
+    errors.passwordValidationMessage =
+      "The password must contain at least one special character.";
   }
 };
 </script>
@@ -108,7 +150,7 @@ const submit = () => {
 
     <form
       @submit.prevent="submit"
-      class="mt-6 space-y-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-6"
+      class="mt-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-6"
     >
       <div>
         <InputLabel for="name" class="font-bold" value="First Name*" />
@@ -122,7 +164,7 @@ const submit = () => {
           @input="clearError('first_name')"
           autocomplete="first_name"
         />
-        <InputError class="mt-2" :message="errors.first_name" />
+        <InputError class="mt-1" :message="errors.first_name" />
       </div>
       <div class="mt-4">
         <InputLabel for="last_name" class="font-bold" value="Last Name*" />
@@ -135,7 +177,7 @@ const submit = () => {
           required
           autocomplete="name"
         />
-        <InputError class="mt-2" :message="errors.last_name" />
+        <InputError class="mt-1" :message="errors.last_name" />
       </div>
       <div class="mt-4">
         <InputLabel
@@ -152,7 +194,7 @@ const submit = () => {
           required
           autocomplete="name"
         />
-        <InputError class="mt-2" :message="errors.company_name" />
+        <InputError class="mt-1" :message="errors.company_name" />
       </div>
 
       <div class="mt-4">
@@ -166,13 +208,38 @@ const submit = () => {
           required
           autocomplete="username"
         />
-        <InputError class="mt-2" :message="errors.email" />
-        <InputError class="mt-2" :message="form.errors.email" />
+        <InputError class="mt-1" :message="errors.email" />
+        <InputError class="mt-1" :message="form.errors.email" />
       </div>
 
       <div class="mt-4">
         <InputLabel for="password" class="font-bold" value="Password*" />
-        <TextInput
+        <input-icon
+          :icon="isPasswordShown ? 'mdi:hide' : 'mdi:show'"
+          color="#241e6d"
+          id="password"
+          :type="isPasswordShown ? 'text' : 'password'"
+          @iconClick="togglePasswordVisibility"
+          class="mt-1 block w-full"
+          v-model="form.password"
+          @input="clearError('password')"
+          @keyup="clearPasswordValidation('passwordValidationMessage')"
+          @blur="validatePassword"
+          required
+          autocomplete="new-password"
+        />
+        <div
+          class="text-red-500 text-sm mt-1"
+          v-if="errors.passwordValidationMessage"
+        >
+          {{ errors.passwordValidationMessage }}
+        </div>
+        <InputError class="mt-1" :message="errors.password" />
+        <div class="text-xs text-gray-500 mt-1">
+          Password must contain one uppercase, one special character and be at
+          least 8 characters long.
+        </div>
+        <!-- <TextInput
           id="password"
           type="password"
           class="mt-1 block w-full"
@@ -180,8 +247,7 @@ const submit = () => {
           @input="clearError('password')"
           required
           autocomplete="new-password"
-        />
-        <InputError class="mt-2" :message="errors.password" />
+        /> -->
       </div>
 
       <div class="mt-4">
@@ -190,7 +256,20 @@ const submit = () => {
           class="font-bold"
           value="Confirm Password*"
         />
-        <TextInput
+        <input-icon
+          :icon="isPasswordConfirmationShown ? 'mdi:hide' : 'mdi:show'"
+          color="#241e6d"
+          id="password_confirmation"
+          :type="isPasswordConfirmationShown ? 'text' : 'password'"
+          @iconClick="togglePasswordConfirmationVisibility"
+          class="mt-1 block w-full"
+          v-model="form.password_confirmation"
+          @input="clearError('password_confirmation')"
+          required
+          autocomplete="new-password"
+        />
+
+        <!-- <TextInput
           id="password_confirmation"
           type="password"
           class="mt-1 block w-full"
@@ -198,7 +277,24 @@ const submit = () => {
           @input="clearError('password_confirmation')"
           required
           autocomplete="new-password"
-        />
+        /> -->
+        <!-- Display Matched/Unmatched message with icon -->
+        <div
+          v-if="
+            form.password.length >= 8 &&
+            form.password_confirmation.length >= form.password.length
+          "
+        >
+          <span
+            v-if="form.password_confirmation === form.password"
+            class="text-green-500"
+          >
+            <i class="mdi mdi-check-circle-outline"></i> Matched
+          </span>
+          <span v-else class="text-red-500">
+            <i class="mdi mdi-close-circle-outline"></i> Unmatched
+          </span>
+        </div>
         <InputError class="mt-2" :message="errors.password_confirmation" />
       </div>
     </form>

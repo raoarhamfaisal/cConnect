@@ -11,7 +11,6 @@
         :templateList="templateList"
         :colorSchemeList="colorSchemeList"
         :screenWidth="screenWidth"
-        @change-mode="changeMode"
         :profile="profile"
       />
 
@@ -192,11 +191,6 @@ const decodeHtml = (html) => {
 };
 
 //  Emits
-const emit = defineEmits(["changeMode"]);
-
-const changeMode = () => {
-  emit("changeMode");
-};
 
 const dialogRef = ref();
 const bottomText = ref(decodeHtml(props.profile.bottom_text));

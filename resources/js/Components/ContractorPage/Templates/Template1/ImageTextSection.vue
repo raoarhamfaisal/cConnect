@@ -120,7 +120,7 @@ const imageIncDialogRef = ref();
 
 //Computed
 const selectedColorScheme = computed(
-  () => store.state.contractor.selectedColorScheme?.colors || template1Default
+  () => store.state.contractor.selectedColorScheme || template1Default
 );
 
 // Methods

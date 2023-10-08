@@ -129,9 +129,10 @@ class ContractorPageController extends Controller
 
         // dd($contractorProfile);
 
-        return Inertia::render('Contractor/ContractorPage', [
+        return Inertia::render('Contractor/ContractorPageEdit', [
             'profile' => $profile,
             'contractorProfile' => $contractorProfile,
+            'contractor_id' => $contractor_id,
             'showit' => Auth::check(),
             'postSearchFilters' => FacadeRequest::only(['postSearch']),
             'region_name' => $regionName,
@@ -147,6 +148,120 @@ class ContractorPageController extends Controller
 
         ]);
     }
+    public function live($contractor_id)
+    {
+
+        // dd('here');
+        // Get current user id
+        $userID = Auth::id();
+
+        $contractorProfile = null;
+        $profile = null;
+    
+        $mode = FacadeRequest::input('mode');
+
+        if($contractor_id) {
+            $contractorProfile = ContractorProfile::where('user_id', $contractor_id)->with('trades')->first();
+
+            if (!$contractorProfile) {
+                $profile = Profile::where('user_id', $contractor_id)->with('trades')->first();
+    
+                // If profile is found in the Profile model, save it to the ContractorProfile model
+                if ($profile) {
+                    $contractorProfile = new ContractorProfile();
+                    $profile->bottom_text = "Default Bottom Text";
+                    $profile->closing_text = "Default Closing Text";
+                    $profile->template_id = 1;
+                    $profile->color_scheme_id = 1;
+                    $contractorProfile->fill($profile->toArray()); // This copies all attributes from the profile to contractor profile
+        
+                    $contractorProfile->save();  
+                    $contractorProfile->trades()->sync($profile->trades);   
+        
+                    // Fetch the default values
+                    $defaults = ContractorImageSectionsDefault::first();
+        
+                    if ($defaults) {
+                        $imageSections = [
+                            ['text' => $defaults->first_title_text, 'image' => $defaults->first_title_image],
+                            ['text' => $defaults->second_title_text, 'image' => $defaults->second_title_image],
+                        ];
+        
+                        foreach ($imageSections as $section) {
+                            $imageSection = new ImageSection();
+                            $imageSection->section_image = $section['image'];
+                            $imageSection->section_text = $section['text'];
+                            $imageSection->contractor_profile_id = $contractorProfile->id;
+                            $imageSection->save();
+                        }
+        
+                        $bragSections = [
+                            ['text' => $defaults->brag1_text, 'image' => $defaults->brag1_image],
+                            ['text' => $defaults->brag2_text, 'image' => $defaults->brag2_image],
+                        ];
+        
+                        foreach ($bragSections as $theBragSection) {
+                            $bragSection = new BragSection();
+                            $bragSection->section_image = $theBragSection['image'];
+                            $bragSection->section_text = $theBragSection['text'];
+                            $bragSection->contractor_profile_id = $contractorProfile->id;
+                            $bragSection->save();
+                        }
+                    }            
+                    
+                }        
+            
+            }
+
+            $regionName = '';
+
+            // Convert the trades to the old structure for contractor profile
+            if ($contractorProfile) {
+                $profileImageSections = $contractorProfile->imageSections;
+                $profileBragSections = $contractorProfile->bragSections;
+                $profileTrades = $this->convertTradesToOldStructure($contractorProfile->trades);
+                $regionName = Region::where('id', $contractorProfile->region_id)->value('name');
+                $contractorProfile = array_merge($contractorProfile->toArray(), $profileTrades);
+                $contractorProfile['imageSections'] = $profileImageSections;
+                $contractorProfile['bragSections'] = $profileBragSections;
+                
+            }
+            
+            // dd($contractorProfile);
+        }
+
+
+
+        if ($userID) {
+            $profile = Profile::where('user_id', $userID)->first();
+            $profileTrades = $this->convertTradesToOldStructure($profile->trades);
+            $profile = array_merge($profile->toArray(), $profileTrades);
+        }
+
+        $allReviews = Review::where('contractor_id', $contractor_id)->where('is_review_active', 1)->get();
+        $totalReviews = Review::where('contractor_id', $contractor_id)
+            ->where('is_review_active', 1)
+            ->paginate(10)->total(); // Paginate the results with 10 items per page
+
+        // Calculate the average rating and counts
+        $avgReview = $allReviews->avg('rating');
+        $fiveStars = $allReviews->whereBetween('rating', [4.5, 5.0])->count();
+        $fourStars = $allReviews->whereBetween('rating', [3.5, 4.4])->count();
+        $threeStars = $allReviews->whereBetween('rating', [2.5, 3.4])->count();
+        $twoStars = $allReviews->whereBetween('rating', [1.5, 2.4])->count();
+        $oneStar = $allReviews->whereBetween('rating', [0.0, 1.4])->count();
+
+        // dd($contractorProfile);
+
+        return Inertia::render('Contractor/ContractorPage', [
+            'profile' => $profile,
+            'region_name' => $regionName,
+            'contractor_id' => $contractor_id,
+
+        ]);
+    }
+
+
 
 
 

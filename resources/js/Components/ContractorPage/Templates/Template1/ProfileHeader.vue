@@ -57,13 +57,17 @@
           screenWidth > 768 ? 'w-1/4' : ''
         } flex-grow flex flex-col gap-2  flex justify-center  items-center px-2`"
       >
-        <div class="rounded-full" v-if="true" @click="changeMode">
+        <Link
+          class="rounded-full"
+          v-if="profile.user_id === loggedInUserId"
+          :href="`/contractor/${profile.user_id}/edit`"
+        >
           <button
             class="bg-white px-4 py-1 uppercase text-xs hover:bg-[#f8f9fa] sm:text-sm font-bold rounded-full border-[#1864ab] border-2 sm:border-[3px] bg-white text-[#1864ab] cursor-pointer hover:shadow-lg active:scale-95"
           >
             Edit
           </button>
-        </div>
+        </Link>
         <div class="flex items-center">
           <div class="">
             <img src="/images/icons/pre-diamond.png" width="20" height="30" />
@@ -76,9 +80,7 @@
               :starHeight="screenWidth > 768 ? 18 : 15"
               :rating="
                 Number(
-                  parseFloat(
-                    profile.average_rating ? profile.average_rating : 0.0
-                  ).toFixed(1)
+                  parseFloat(averageRating ? averageRating : 0.0).toFixed(1)
                 )
               "
               :isIndicatorActive="false"
@@ -112,6 +114,7 @@ import { useStore } from "vuex";
 // State
 const props = defineProps({
   profile: Object,
+  loggedInUserId: [String, Boolean],
   screenWidth: Number,
   averageRating: {
     type: Number,
@@ -132,11 +135,10 @@ const city = ref(props.profile.city);
 const state = ref(props.profile.state);
 
 //  Emits
-const emit = defineEmits(["changeMode"]);
 
 //Computed
 const selectedColorScheme = computed(
-  () => store.state.contractor.selectedColorScheme?.colors || template1Default
+  () => store.state.contractor.selectedColorScheme || template1Default
 );
 
 const fullName = computed(() => first_name.value + " " + last_name.value);
@@ -151,10 +153,4 @@ const truncatedName = computed(() => {
     return first_name.value + " " + last_name.value;
   }
 });
-
-//Methods
-
-const changeMode = () => {
-  emit("changeMode");
-};
 </script>
