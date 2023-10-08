@@ -147,7 +147,7 @@ const fetchTemplates = async () => {
 };
 //watchEffect
 watchEffect(async () => {
-  if (mode.value === "edit" && firstTime.value) {
+  if (firstTime.value) {
     console.log("watchEffect");
     loading.value = true;
 
