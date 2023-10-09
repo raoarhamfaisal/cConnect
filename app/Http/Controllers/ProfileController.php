@@ -458,7 +458,7 @@ class ProfileController extends Controller
 
             foreach ($selectedTrades as $trade) {
                 SessionTrade::updateOrCreate(
-                    ['profile_id' => $profile->id, 'trade_id' => $trade->id]
+                    ['profile_id' => $profile->id, 'trade_id' => $trade]
                 );
             }
 
