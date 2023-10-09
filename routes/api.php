@@ -79,6 +79,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         Route::get('/profile', [ProfileController::class, 'getProfile'])->name('profile.getProfile');
         Route::patch('/profile/trades', [ProfileController::class, 'updateTrades'])->name('profile.updateTrades');
         Route::patch('/profile/views', [ProfileController::class, 'updateViews'])->name('profile.updateViews');
+
+        Route::get('/profile/trades-views-settings', [ProfileController::class, 'getTradeViewsSettings'])->name('profile.getTradeViewsSettings');
         Route::patch('/profile/trades-views-settings', [ProfileController::class, 'updateTradesViewsSettings'])->name('profile.updateTradesViewsSettings');
         Route::patch('/profile/views-views-settings', [ProfileController::class, 'updateViewsViewsSettings'])->name('profile.updateViewsViewsSettings');
         Route::patch('/profile/trades-profile-setup', [ProfileController::class, 'updateTradesProfileSetup'])->name('profile.updateTradesProfileSetup');

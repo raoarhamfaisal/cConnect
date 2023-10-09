@@ -478,7 +478,7 @@ class ProfileController extends Controller
     public function updateTradesViewsSettings(Request $request)
     {
         // Get current user id
-        $userID = Auth()->user('')->id;
+        $userID = Auth()->user()->id;
         $profile = null;
     
         // Get the profile information if the user id exists
@@ -489,23 +489,102 @@ class ProfileController extends Controller
         if($profile) {
             $selectedTrades = [];
     
+            // Iterate through possible trades
             for ($i = 1; $i <= 30; $i++) {
-                if ($request->input("trade{$i}")) {
+                // Check whether the trade is selected (value is 1)
+                if ($request->input("trade{$i}") == 1) {
                     $selectedTrades[] = $i;  // Assuming trade IDs are sequential from 1 to 30
                 }
             }
-            
-
+    
+            // Delete or deactivate unselected trades
+            SessionTrade::where('profile_id', $profile->id)
+                ->whereNotIn('trade_id', $selectedTrades)
+                ->delete();
+    
+            // Update or create selected trades
             foreach ($selectedTrades as $trade) {
                 SessionTrade::updateOrCreate(
-                    ['profile_id' => $profile->id, 'trade_id' => $trade->id]
+                    ['profile_id' => $profile->id, 'trade_id' => $trade]
                 );
             }
-
-        }
-        return ['message' =>"Trades successfully updated"];
     
+            return ['message' =>"Trades successfully updated"];
+        }
+    
+        return ['message' =>"User not found or an error occurred"];
     }
+    
+
+
+
+    /**
+     * Get the user's trade & views Settings
+     *
+     * @param  \App\Http\Requests\ProfileTradesUpdateRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function getTradeViewsSettings(Request $request)
+    {
+        // Get current user id
+        $userID = Auth()->user()->id;
+    
+        // Initialize response data
+        $contractorProfile = [
+            'view_locale' => null,
+            'view_regional' => null,
+            'view_statewide' => null,
+            'view_nationwide' => null,
+            'view_following' => null,
+        ];
+    
+        // Pre-fill trades in contractorProfile with default value (0)
+        for ($i = 1; $i <= 30; $i++) {
+            $contractorProfile["trade{$i}"] = 0;
+        }
+    
+        $message = 'User not found or no settings available.';
+    
+        // Get the profile information if the user id exists
+        if($userID) {
+            $profile = Profile::where('user_id', $userID)
+                ->with(['sessionTrades', 'sessionViewSettings'])
+                ->first();
+    
+            if($profile) {
+                // Update response data
+                $message = "Settings retrieved successfully.";
+                
+                // Update view settings in contractorProfile
+                if($profile->sessionViewSettings) {
+                    $contractorProfile['view_locale'] = $profile->sessionViewSettings->view_locale;
+                    $contractorProfile['view_regional'] = $profile->sessionViewSettings->view_regional;
+                    $contractorProfile['view_statewide'] = $profile->sessionViewSettings->view_statewide;
+                    $contractorProfile['view_nationwide'] = $profile->sessionViewSettings->view_nationwide;
+                    $contractorProfile['view_following'] = $profile->sessionViewSettings->view_following;
+                }
+    
+                // Update trades in contractorProfile
+                foreach ($profile->sessionTrades as $trade) {
+                    // Assuming trade_id is between 1 and 30
+                    $contractorProfile["trade{$trade->trade_id}"] = 1;
+                }
+            }
+        }
+    
+        return response()->json([
+            'profile' => $contractorProfile,
+            'message' => $message,
+        ]);
+    }
+    
+
+
+
+
+
+
+
     
     /**
      * Update the user's Veiws information.

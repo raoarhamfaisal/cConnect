@@ -77,13 +77,21 @@ const props = defineProps({
 });
 
 const form = reactive({
-  selectedTemplate: props.templateList.find(
+  selectedTemplate: props.templateList && props.templateList.length > 0 ? props.templateList.find(
     (item) => props.profile.template_id === item.id
-  ).name,
+  ).name : "",
   selectedColorScheme: "",
 });
 
 const colorSchemeList = computed(() => store.state.contractor.colorSchemeList);
+
+watch(props.templateList, () => {
+  if (props.profile && props.templateList.value.length > 0) {
+    form.selectedTemplate = props.templateList.value.find(
+      (item) => props.profile.template_id === item.id
+    ).name;
+  }
+});
 
 watch(colorSchemeList, () => {
   if (props.profile && colorSchemeList.value.length > 0) {
@@ -116,5 +124,6 @@ onMounted(() => {
       (item) => props.profile.color_scheme_id === item.id
     ).name;
   }
+
 });
 </script>

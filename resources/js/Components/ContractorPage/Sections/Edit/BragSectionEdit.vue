@@ -263,7 +263,7 @@ const openDeleteDialog = (sectionId) => {
 
 const handleSubmit = async () => {
   if (
-    !tempSection.value.section_text.trim() &&
+    (!tempSection.value.section_text || (tempSection.value.section_text && !tempSection.value.section_text.trim())) &&
     !tempSection.value.section_image
   ) {
     textError.value = "Please enter the title text or  image!";
@@ -281,9 +281,9 @@ const handleSubmit = async () => {
       ) {
         formData.append("section_image", tempSection.value.section_image);
       }
-      if (tempSection.value.section_text) {
+      // if (tempSection.value.section_text) {
         formData.append("section_text", tempSection.value.section_text);
-      }
+      // }
       try {
         const response = await axios.post(
           `/api/contractor/brag-section/${editingSectionId.value}`,
