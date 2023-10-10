@@ -8,9 +8,15 @@ import SelectProfile from "@/Components/SelectProfile.vue";
 import { stateList } from "@/helpers/selectListsHelpters.js";
 
 import InputError from "@/Components/InputError.vue";
+
 import { watch, ref } from "vue";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
+// import GoogleAddressAutocomplete from "vue3-google-address-autocomplete";
 
+// const address = ref('');
+// const callbackFunction = (place) => {
+//   console.log(place);
+// };
 const props = defineProps({
   company_logo: [String, Object],
   region_id: [String, Number],
@@ -90,6 +96,13 @@ const clearError = (field) => {
         </p>
       </div>
     </header>
+    <!-- <GoogleAddressAutocomplete
+      apiKey="AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg"
+      v-model="address"
+      @callback="callbackFunction"
+      class="css-class-here"
+      placeholder="placeholder if you wish"
+    /> -->
 
     <form
       @submit.prevent="form.patch(route('profile.updateCompanyInfo'))"
@@ -130,6 +143,7 @@ const clearError = (field) => {
             class="mt-1 block w-full"
             @input="clearError('phone_office')"
             v-model="form.phone_office"
+            v-mask="'###-###-#####'"
             placeholder="Type your office phone "
             autocomplete="tel"
           />
@@ -223,22 +237,6 @@ const clearError = (field) => {
           <InputError class="mt-2" :message="errors.region_id" />
         </div>
       </div>
-      <!-- <div class="flex items-center w-full mt-6 gap-4">
-        <PrimaryButton
-          :disabled="form.processing"
-          class="w-full flex justify-center"
-          >Save</PrimaryButton
-        >
-        <Transition
-          enter-from-class="opacity-0"
-          leave-to-class="opacity-0"
-          class="transition ease-in-out"
-        >
-          <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">
-            Saved.
-          </p>
-        </Transition>
-      </div> -->
     </form>
   </section>
 </template>

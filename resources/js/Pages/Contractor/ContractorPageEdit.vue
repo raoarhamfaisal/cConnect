@@ -61,6 +61,7 @@ const total_reviews = ref(0);
 
 onMounted(() => {
   console.log("onMounted");
+  localStorage.setItem("prevUrl", "/edit");
   fetchContractorDetails();
 });
 

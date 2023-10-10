@@ -116,6 +116,7 @@
           class="mt-1 block w-full"
           v-model="tempCompanyProfile.phone_cell"
           placeholder="Type your phone cell"
+          v-mask="'###-###-#####'"
           @input="clearError('phone_cell')"
           autocomplete="tel"
         />
@@ -128,6 +129,7 @@
           type="tel"
           class="mt-1 block w-full"
           @input="clearError('phone_office')"
+          v-mask="'###-###-#####'"
           v-model="tempCompanyProfile.phone_office"
           placeholder="Type your phone office"
         />
@@ -293,49 +295,53 @@ const validateForm = () => {
   for (let field in errors) {
     errors[field] = "";
   }
-  if (!tempCompanyProfile.phone_cell.trim()) {
+  if (!tempCompanyProfile.phone_cell?.trim()) {
     errors.phone_cell = "Phone number is required";
     isValid = false;
   }
-  if (tempCompanyProfile.phone_cell.trim().length > 13) {
+  if (tempCompanyProfile.phone_cell?.trim().length > 13) {
     errors.phone_cell = "Phone number must not be greater than 13 numbers";
     isValid = false;
   }
-  if (tempCompanyProfile.phone_office.trim().length > 13) {
+  if (tempCompanyProfile.phone_office?.trim().length > 13) {
     errors.phone_office = "Phone Office must not be greater than 13 numbers";
     isValid = false;
   }
   // Validate address_1
-  if (!tempCompanyProfile.address_1.trim()) {
+  if (!tempCompanyProfile.address_1?.trim()) {
     errors.address_1 = "Address 1 is required";
     isValid = false;
   }
   // Validate company_name
-  if (!tempCompanyProfile.company_name.trim()) {
+  if (!tempCompanyProfile.company_name?.trim()) {
     errors.company_name = "Company name is required";
     isValid = false;
   }
 
   // Validate city
-  if (!tempCompanyProfile.city.trim()) {
+  if (!tempCompanyProfile.city?.trim()) {
     errors.city = "City is required";
     isValid = false;
   }
 
   // Validate state
-  if (!tempCompanyProfile.state.trim()) {
+  if (!tempCompanyProfile.state?.trim()) {
     errors.state = "State is required";
     isValid = false;
   }
 
   // Validate zipcode
-  if (!tempCompanyProfile.zipcode.trim()) {
+  if (!tempCompanyProfile.zipcode?.trim()) {
     errors.zipcode = "Zipcode is required";
     isValid = false;
   }
 
+  if (!tempCompanyProfile.zipcode?.trim()) {
+    errors.zipcode = "Zipcode is required";
+    isValid = false;
+  }
   // Validate county
-  if (!tempCompanyProfile.county.trim()) {
+  if (!tempCompanyProfile.county?.trim()) {
     errors.county = "County is required";
     isValid = false;
   }
@@ -404,12 +410,12 @@ const clearError = (field) => {
   console.log("Clear errors", field);
   //for phone_cell only
   if (field === "phone_cell" || field === "phone_office") {
-    if (tempCompanyProfile[field].trim().length <= 13) {
+    if (tempCompanyProfile[field]?.trim().length <= 13) {
       errors[field] = "";
     }
     return;
   }
-  if (tempCompanyProfile[field].trim()) {
+  if (tempCompanyProfile[field]?.trim()) {
     errors[field] = "";
   }
 };

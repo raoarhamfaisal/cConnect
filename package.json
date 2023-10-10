@@ -40,6 +40,7 @@
     "sass": "^1.67.0",
     "sweetalert2": "^11.7.27",
     "vue-filepond": "^7.0.3",
+    "vue-the-mask": "^0.11.1",
     "vuetify": "^3.3.16",
     "vuex": "^4.0.2"
   }

@@ -16,7 +16,7 @@ const props = defineProps({
   scrollableContainer: {
     type: String,
     required: false,
-    default: "body",
+    default: "scrollable",
   },
 });
 const scrollToTop = () => {
@@ -30,47 +30,30 @@ const scrollToTop = () => {
 };
 
 onMounted(() => {
-  if (props.scrollableContainer === "scrollableContainer") {
-    // Listening to the window's scroll event if it's the default viewport
-    window.addEventListener("scroll", handleScroll);
-  } else {
-    // Listen for scroll events on the specified scrollable container
-    const container = document.getElementById(props.scrollableContainer);
-    if (container) {
-      container.addEventListener("scroll", handleScroll);
-    }
+  // Listen for scroll events on the scrollable container
+  const container = document.getElementById(props.scrollableContainer);
+  console.log(container, container.scrollTop, "scroll");
+  if (container) {
+    container.addEventListener("scroll", handleScroll);
   }
 });
 
 onUnmounted(() => {
-  if (props.scrollableContainer === "scrollableContainer") {
-    // Removing the listener from the window
-    window.removeEventListener("scroll", handleScroll);
-  } else {
-    // Remove the scroll event listener from the container
-    const container = document.getElementById(props.scrollableContainer);
-    if (container) {
-      container.removeEventListener("scroll", handleScroll);
-    }
+  // Remove the scroll event listener to avoid memory leaks
+  const container = document.getElementById(props.scrollableContainer);
+  if (container) {
+    container.removeEventListener("scroll", handleScroll);
   }
 });
 
 const handleScroll = () => {
-  let scrollTop;
-  if (props.scrollableContainer === "scrollableContainer") {
-    // Getting scroll position from the window
-    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  } else {
-    // Getting scroll position from the specified container
-    const container = document.getElementById(props.scrollableContainer);
-    if (container) {
-      scrollTop = container.scrollTop;
-    }
-  }
-
+  // Show the scroll button when scrolling down inside the container
+  const container = document.getElementById(props.scrollableContainer);
+  console.log(container, container.scrollTop, "scroll2");
   const scrollButton = document.querySelector(".scroll-to-top");
-  if (scrollButton) {
-    scrollButton.style.display = scrollTop > 100 ? "block" : "none";
+
+  if (container && scrollButton) {
+    scrollButton.style.display = container.scrollTop > 100 ? "block" : "none";
   }
 };
 </script>

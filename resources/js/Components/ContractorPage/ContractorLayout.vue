@@ -10,7 +10,7 @@
     :region_name="region_name"
   />
 
-  <MoveToTop />
+  <MoveToTop scrollableContainer="scrollableContainer" />
 </template>
 
 <script setup>
@@ -26,7 +26,7 @@ import { useStore } from "vuex";
 // State
 const props = defineProps({
   profile: Object,
-  loggedInUserId: [String, Boolean],
+  loggedInUserId: [String, Number],
   templateList: Array,
   region_name: String,
   total_reviews: [Number, String],

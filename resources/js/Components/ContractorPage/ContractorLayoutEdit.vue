@@ -9,11 +9,11 @@
     :region_name="region_name"
   />
 
-  <MoveToTop />
+  <MoveToTopEdit />
 </template>
 
 <script setup>
-import MoveToTop from "@/Components/MoveToTop.vue";
+import MoveToTopEdit from "@/Components/MoveToTopEdit.vue";
 import EditMode from "@/Components/ContractorPage/EditMode.vue";
 import Template1 from "@/Components/ContractorPage/Templates/Template1.vue";
 

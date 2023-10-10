@@ -26,7 +26,7 @@
           @click="openImage(section.section_image)"
           :src="section.section_image"
           alt="Section Image"
-          class="object-cover w-full max-h-[350px] rounded-md"
+          class="object-cover w-full rounded-md"
         />
       </div>
       <!-- For even items -->
@@ -46,7 +46,7 @@
             @click="openImage(section.section_image)"
             :src="section.section_image"
             alt="Section Image"
-            class="object-contain max-h-[350px] w-full rounded-md"
+            class="object-cover w-full rounded-md"
           />
         </div>
       </div>
@@ -61,7 +61,7 @@
             @click="openImage(section.section_image)"
             :src="section.section_image"
             alt="Section Image"
-            class="object-contain max-h-[350px] rounded-md w-full"
+            class="object-cover rounded-md w-full"
           />
         </div>
         <div
