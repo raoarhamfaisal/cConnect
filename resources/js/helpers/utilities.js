@@ -191,3 +191,53 @@ export const startOptionToArray = (option) => {
   }
   return newOption;
 };
+
+function hexToRgb(hex) {
+  console.log(hex, "hexToRgb");
+  // Ensure the hex code is in the 6-digit format
+  if (hex.charAt(0) === "#") {
+    hex = hex.substr(1);
+  }
+
+  if (hex.length === 3) {
+    hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+  }
+
+  const bigint = parseInt(hex, 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+
+  return [r, g, b];
+}
+
+function rgbToHex(r, g, b) {
+  return (
+    "#" +
+    ((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1).toUpperCase()
+  );
+}
+
+function lighten(hex, percent) {
+  const [r, g, b] = hexToRgb(hex);
+  const amount = (percent / 100) * 255;
+
+  return rgbToHex(
+    Math.min(255, r + amount),
+    Math.min(255, g + amount),
+    Math.min(255, b + amount)
+  );
+}
+
+function darken(hex, percent) {
+  const [r, g, b] = hexToRgb(hex);
+  const amount = (percent / 100) * 255;
+
+  return rgbToHex(
+    Math.max(0, r - amount),
+    Math.max(0, g - amount),
+    Math.max(0, b - amount)
+  );
+}
+
+export { lighten, darken, hexToRgb };

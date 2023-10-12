@@ -1,6 +1,5 @@
 <template>
   <!-- Company ,contact address  -->
-
   <div
     :style="{
       color: selectedColorScheme[2],

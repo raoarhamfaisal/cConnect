@@ -54,42 +54,45 @@ class DatabaseSeeder extends Seeder
             'color1' => '#e5e7eb',
             'color2' => '#ffffff',
             'color3' => '#000000',
-            'color4' => '#ffffff',
-            'color5' => '#000000',
+            'color4' => '#241e6d',
+            'color5' => '#364fc7',
         ]);
 
         \App\Models\ColorScheme::create([
             'name' => 'Color Scheme 2',
-            'color1' => '#fff',
+            'color1' => '#e5e7eb',
             'color2' => '#212529',
             'color3' => '#ffffff',
-            'color4' => '#ffffff',
-            'color5' => '#000000',
+            'color4' => '#364fc7',
+            'color5' => '#1864ab',
         ]);
 
         \App\Models\ColorScheme::create([
             'name' => 'Color Scheme 3',
             'color1' => '#34495E',
             'color2' => '#ebedef',
-            'color3' => '#333',
-            'color4' => '#ffffff',
-            'color5' => '#000000',
+            'color3' => '#333333',
+            'color4' => '#241e6d',
+            'color5' => '#364fc7',
+  
         ]);
         \App\Models\ColorScheme::create([
             'name' => 'Color Scheme 4',
             'color1' => '#4B77BE',
             'color2' => '#f2f4f6',
             'color3' => '#4d4d4d',
-            'color4' => '#ffffff',
-            'color5' => '#000000',
+            'color4' => '#241e6d',
+            'color5' => '#364fc7',
+  
         ]);
         \App\Models\ColorScheme::create([
             'name' => 'Color Scheme 5',
-            'color1' => '#fff',
+            'color1' => '#ffffff',
             'color2' => '#212529',
             'color3' => '#ffffff',
-            'color4' => '#ffffff',
-            'color5' => '#000000',
+              'color4' => '#241e6d',
+            'color5' => '#364fc7',
+  
         ]);
 
 

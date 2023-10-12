@@ -1,9 +1,15 @@
 <template>
   <!-- Scroll to Top Button -->
-  <button @click="scrollToTop" class="scroll-to-top">
+  <button
+    @click="scrollToTop"
+    class="scroll-to-top"
+    :style="{
+      border: `2px solid ${selectedColor}`,
+    }"
+  >
     <Icon
       icon="icon-park-solid:up-two"
-      color="#3a357c"
+      :color="selectedColor"
       class="w-6 h-6 sm:w-8 sm:h-8"
     />
   </button>
@@ -17,6 +23,10 @@ const props = defineProps({
     type: String,
     required: false,
     default: "body",
+  },
+  selectedColor: {
+    type: String,
+    default: "#3a357c",
   },
 });
 const scrollToTop = () => {
@@ -84,7 +94,6 @@ const handleScroll = () => {
   z-index: 20;
   background-color: white;
   color: white;
-  border: 1px solid #241e6d;
   border-radius: 50%;
   padding: 10px;
   display: none;

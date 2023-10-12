@@ -1,13 +1,20 @@
 <template>
   <div v-if="profile">
     <div class="flex flex-col gap-3 sm:gap-4">
-      <ProfileHeader
-        :screenWidth="screenWidth"
-        :loggedInUserId="loggedInUserId"
-        :averageRating="average_rating"
-        :total_reviews="total_reviews"
-        :profile="profile"
-      />
+      <Card
+        :shadowLevel="2"
+        :bgColor="selectedColorScheme[1]"
+        :padding="screenWidth < 640 ? '7px' : '15px'"
+      >
+        <ProfileHeader
+          :screenWidth="screenWidth"
+          :loggedInUserId="loggedInUserId"
+          :averageRating="average_rating"
+          :total_reviews="total_reviews"
+          :profile="profile"
+        />
+      </Card>
+
       <Card
         :shadowLevel="2"
         :bgColor="selectedColorScheme[1]"
@@ -38,17 +45,34 @@
         </div>
       </Card>
       <div class="flex flex-col md:flex-row gap-2 items-stretch">
-        <AdditionalInfoSection
-          class="md:w-3/5"
-          :screenWidth="screenWidth"
-          :profile="profile"
-        />
-        <RegionTradeSection
-          class="md:w-2/5"
-          :screenWidth="screenWidth"
-          :region_name="region_name"
-          :profile="profile"
-        />
+        <Card
+          :shadowLevel="2"
+          cardInnerClasses="h-full"
+          :bgColor="selectedColorScheme[1]"
+          :isInside="true"
+          class="sm:pl-6 md:pl-6 sm:pl-2 lg:pl-8 h-auto md:w-3/5"
+          :padding="screenWidth < 640 ? '7px' : '20px'"
+        >
+          <AdditionalInfoSection
+            class=""
+            :screenWidth="screenWidth"
+            :profile="profile"
+          />
+        </Card>
+        <Card
+          :shadowLevel="2"
+          :bgColor="selectedColorScheme[1]"
+          cardInnerClasses="h-full"
+          :isInside="true"
+          class="sm:pr-6 md:pr-6 sm:pr-2 lg:pr-8 h-auto md:w-2/5"
+          :padding="screenWidth < 640 ? '7px' : '20px'"
+        >
+          <RegionTradeSection
+            :screenWidth="screenWidth"
+            :region_name="region_name"
+            :profile="profile"
+          />
+        </Card>
       </div>
 
       <Card
