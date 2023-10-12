@@ -456,6 +456,12 @@ class ProfileController extends Controller
             $profile->trades()->sync($selectedTrades);
 
 
+            // Delete or deactivate unselected trades
+            SessionTrade::where('profile_id', $profile->id)
+                ->whereNotIn('trade_id', $selectedTrades)
+                ->delete();
+
+
             foreach ($selectedTrades as $trade) {
                 SessionTrade::updateOrCreate(
                     ['profile_id' => $profile->id, 'trade_id' => $trade]

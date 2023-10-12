@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Profile;
+use App\Models\SessionTrade;
 use App\Models\ContractorProfile;
 use App\Models\ContractorImageSectionsDefault;
 use App\Models\ImageSection;
@@ -18,6 +19,7 @@ use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Models\SessionViewSetting;
 
 class RegisteredUserController extends Controller
 {
@@ -74,11 +76,38 @@ class RegisteredUserController extends Controller
         $profile->trades()->attach($randomTrades);  
         
         $profile = Profile::where('user_id', $user->id)->with('trades')->first();
+
+
+
         // If profile is found in the Profile model, save it to the ContractorProfile model
         if ($profile) {
+
+            foreach ($randomTrades as $trade) {
+                SessionTrade::updateOrCreate(
+                    ['profile_id' => $profile->id, 'trade_id' => $trade]
+                );
+            }
+
+            SessionViewSetting::updateOrCreate(
+                ['profile_id' => $profile->id],
+                [
+                    'view_locale' => 1,
+                    'view_regional' => 1,
+                    'view_statewide' => 0,
+                    'view_nationwide' => 0,
+                    'view_following' => 0,
+                    
+                ]
+            );
+
+
+            // Fetch the default values
+            $defaults = ContractorImageSectionsDefault::first();
+
+
             $contractorProfile = new ContractorProfile();
-            $profile->bottom_text = "Default Bottom Text";
-            $profile->closing_text = "Default Closing Text";
+            $profile->bottom_text = $defaults->bottom_text;
+            $profile->closing_text = $defaults->closing_text;    
             $profile->template_id = 1;
             $profile->color_scheme_id = 1;
             $contractorProfile->fill($profile->toArray()); // This copies all attributes from the profile to contractor profile
@@ -86,8 +115,6 @@ class RegisteredUserController extends Controller
             $contractorProfile->save();  
             $contractorProfile->trades()->sync($profile->trades);   
 
-            // Fetch the default values
-            $defaults = ContractorImageSectionsDefault::first();
 
             if ($defaults) {
                 $imageSections = [
