@@ -19,6 +19,16 @@
     :total_reviews="total_reviews"
     :region_name="region_name"
   />
+  <Template3
+    v-if="selectedTemplate === 3"
+    :profile="profile"
+    :screenWidth="screenWidth"
+    :loggedInUserId="loggedInUserId"
+    :average_rating="average_rating"
+    :starPercentages="starPercentages"
+    :total_reviews="total_reviews"
+    :region_name="region_name"
+  />
 
   <MoveToTop
     scrollableContainer="scrollableContainer"
@@ -31,6 +41,7 @@ import MoveToTop from "@/Components/MoveToTop.vue";
 import EditMode from "@/Components/ContractorPage/EditMode.vue";
 import Template1 from "@/Components/ContractorPage/Templates/Template1.vue";
 import Template2 from "@/Components/ContractorPage/Templates/Template2.vue";
+import Template3 from "@/Components/ContractorPage/Templates/Template3.vue";
 
 import Loader from "@/Components/Ratings/Loader.vue";
 
