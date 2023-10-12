@@ -28,7 +28,7 @@ import { Head } from "@inertiajs/inertia-vue3";
 
 import Loader from "@/Components/Ratings/Loader.vue";
 import ContractorLayout from "@/Components/ContractorPage/ContractorLayout.vue";
-import { onMounted, computed, ref, watchEffect } from "vue";
+import { onMounted, computed, ref, watchEffect, watch } from "vue";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { somethingWentWrong, startOptionToArray } from "@/helpers/utilities";
 
@@ -61,6 +61,24 @@ onMounted(() => {
 const selectedColorScheme = computed(
   () => store.state.contractor.selectedColorScheme || template1Default
 );
+const shouldLoad = computed(() => store.state.ratings.shouldFetchPostsOnClose);
+watch(shouldLoad, async () => {
+  if (shouldLoad) {
+    try {
+      const response = await axios.get(
+        `/api/contractor/get-contractor-info/${contractor_id}`,
+        getAxiosConfig()
+      );
+      if (response.data) {
+        average_rating.value = response.data.average_rating;
+
+        total_reviews.value = response.data.total_reviews;
+      }
+    } catch (err) {
+      somethingWentWrong();
+    }
+  }
+});
 
 const fetchContractorDetails = async () => {
   loading.value = true;

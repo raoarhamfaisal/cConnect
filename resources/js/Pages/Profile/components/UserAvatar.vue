@@ -7,12 +7,14 @@ const emit = defineEmits();
 const file = ref(null);
 const updatedImage = ref(null);
 const imageFailed = ref(false);
+const disabled = ref(false);
 
 const handleImageError = () => {
   imageFailed.value = true;
 };
 
 const updateImage = () => {
+  disabled.value = true;
   const input = document.createElement("input");
   input.type = "file";
   input.accept = "image/*";
@@ -31,6 +33,9 @@ const updateImage = () => {
   });
 
   input.click();
+  setTimeout(function () {
+    disabled.value = false;
+  }, 1000);
 };
 watch(
   () => props.imageSrc,
@@ -70,6 +75,7 @@ watch(
       <Icon
         icon="material-symbols:edit-sharp"
         color="white"
+        :class="`${disabled ? 'pointer-events-none' : ''}`"
         width="36"
         @click="updateImage"
       />

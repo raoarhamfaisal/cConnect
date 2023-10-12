@@ -293,12 +293,7 @@ export default {
     },
     loadPostsOnChange() {
       const pageNumber = Math.ceil((this.index + 1) / this.posts.per_page);
-      console.log(
-        "infoLocation",
-        window.location.href,
-        window.location,
-        this.initialUrl
-      );
+
       this.$inertia.get(
         `${window.location.href}?page=${pageNumber}`,
         {},

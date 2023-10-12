@@ -49,6 +49,7 @@ function postClicked(isOpen) {
 const isAdminUrl = computed(() => {
   return usePage().props.value.auth.user.appeals_privileges === 1;
 });
+const loadingImage = computed(() => store.state.profile.loadingImage);
 
 function handleLogout() {
   removeToken();
@@ -118,7 +119,18 @@ const openContractorPageModal = () => {
 
       <!-- User Image / NAME / EMAIL / CITY / STATE -->
       <div v-if="showit" class="flex flex-col items-center mt-6 -mx-2">
-        <Avatar :imageSrc="`/${profile.user_avatar}`" class="sm:w-24 sm:h-24" />
+        <v-skeleton-loader
+          v-if="loadingImage"
+          style="border-radius: 9999px"
+          class="overflow-hidden w-14 h-14 sm:w-24 sm:h-24"
+          type="image"
+        >
+        </v-skeleton-loader>
+        <Avatar
+          v-if="!loadingImage"
+          :imageSrc="`/${profile.user_avatar}`"
+          class="sm:w-24 sm:h-24"
+        />
         <!-- <img
           class="object-cover w-24 h-24 mx-2 rounded-full"
           :src="`/${profile.user_avatar}`"

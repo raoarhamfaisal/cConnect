@@ -45,7 +45,7 @@
         <div
           :class="`flex-1 ${
             overflowAllowed ? 'overflow-y-auto' : ''
-          } p-2 sm:p-4 ${contentClasses}`"
+          } p-2 sm:p-4 padding-none ${contentClasses}`"
         >
           <slot></slot>
         </div>
@@ -187,6 +187,12 @@ defineExpose({ openDialog, closeDialog });
 
 .width-75 {
   width: 80%;
+}
+.width780px {
+  max-width: 800px;
+}
+.width780px .padding-none {
+  padding: 0;
 }
 @media (max-width: 750px) {
   .width-75.contractorDialog {

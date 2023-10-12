@@ -8,7 +8,14 @@
     <div class="flex space-x-2 justify-between">
       <div class="flex justify-center items-center space-x-2">
         <div>
-          <Avatar :imageSrc="`/${user_avatar}`" />
+          <v-skeleton-loader
+            v-if="loadingImage"
+            style="border-radius: 9999px"
+            class="overflow-hidden w-14 h-14 sm:h-20 sm:w-20"
+            type="image"
+          >
+          </v-skeleton-loader>
+          <Avatar v-if="!loadingImage" :imageSrc="`/${user_avatar}`" />
         </div>
         <div class="flex flex-col justify-center">
           <!-- <h2
@@ -73,7 +80,15 @@
     title="Edit Your General Information"
   >
     <div class="flex justify-center">
+      <v-skeleton-loader
+        v-if="loadingImage"
+        style="border-radius: 9999px"
+        class="overflow-hidden w-36 h-36"
+        type="image"
+      >
+      </v-skeleton-loader>
       <UserAvatar
+        v-if="!loadingImage"
         :imageSrc="`/${user_avatar}`"
         @update-image="handleImageUpdate"
       />
@@ -158,9 +173,15 @@
       </div>
     </div>
   </CustomDialog>
+  <!-- <Loader
+    :loading="loadingImage"
+    background="transparent"
+    height="100vh"
+  ></Loader> -->
 </template>
 
 <script setup>
+import Loader from "@/Components/Ratings/Loader.vue";
 import IconButton from "@/Components/IconButton.vue";
 import SelectProfile from "@/Components/SelectProfile.vue";
 
@@ -168,6 +189,7 @@ import UserAvatar from "@/Pages/Profile/components/UserAvatar.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import StarRating from "@/Components/Ratings/StarRating.vue";
+import { stateList } from "@/helpers/selectListsHelpters";
 
 import TextInput from "@/Components/TextInput.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
@@ -196,6 +218,7 @@ const first_name = ref(props.profile.first_name);
 const last_name = ref(props.profile.last_name);
 const user_avatar = ref(props.profile.user_avatar);
 const company_name = ref(props.profile.company_name);
+const loadingImage = ref(false);
 const city = ref(props.profile.city);
 const state = ref(props.profile.state);
 const tempProfile = reactive({
@@ -307,6 +330,7 @@ const handleSubmit = async () => {
 
 // Upload User Avatar on image change
 const handleImageUpdate = async (file) => {
+  loadingImage.value = true;
   const formData = new FormData();
   formData.append("user_avatar", file);
 
@@ -314,11 +338,13 @@ const handleImageUpdate = async (file) => {
   axios
     .post("/api/contractor/user-avatar", formData, getAxiosConfigFormData())
     .then((response) => {
-      changesSaved("Avatar uploaded successfully");
       user_avatar.value = response.data.user_avatar; // Update the local state with
+      // changesSaved("Avatar uploaded successfully");
+      loadingImage.value = false;
     })
     .catch((error) => {
       somethingWentWrong("Error uploading avatar");
+      loadingImage.value = false;
     });
 };
 const clearError = (field) => {

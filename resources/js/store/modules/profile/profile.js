@@ -10,6 +10,7 @@ export default {
       loading: false,
       loadingProfile: false,
       loadingViewSettingsProfile: false,
+      loadingImage: false,
       viewsSettingsProfile: {},
       status: "",
       profile: {},
@@ -51,7 +52,9 @@ export default {
     setLoadingProfile(state, payload) {
       state.loadingProfile = payload;
     },
-
+    setLoadingImage(state, payload) {
+      state.loadingImage = payload;
+    },
     setLoadingViewSettingsProfile(state, payload) {
       state.loadingViewSettingsProfile = payload;
     },
@@ -76,11 +79,13 @@ export default {
       }
     },
 
-
     async getViewSettingsProfile({ commit }) {
       commit("setLoadingViewSettingsProfile", true);
       try {
-        const response = await axios.get(`/api/profile/trades-views-settings`, getAxiosConfig());
+        const response = await axios.get(
+          `/api/profile/trades-views-settings`,
+          getAxiosConfig()
+        );
         if (response.data) {
           commit("setViewsSettingsProfile", response.data.profile);
         }
@@ -91,9 +96,7 @@ export default {
       }
     },
 
-
-
-    async fetchProfile({ commit }) {
+    async fetchProfile({ commit }, forLoadingImage = false) {
       commit("setLoading", true);
 
       try {
@@ -106,6 +109,9 @@ export default {
         // somethingWentWrong();
       } finally {
         commit("setLoading", false);
+        if (forLoadingImage) {
+          commit("setLoadingImage", false);
+        }
       }
     },
     async updateTrades({ commit }, form) {

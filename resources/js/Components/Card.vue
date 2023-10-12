@@ -3,7 +3,8 @@
 <template>
   <div
     :class="{
-      'w-full mx-auto sm:px-6 md:px-6 sm:px-2 lg:px-8 space-y-6': !isInside,
+      'w-full mx-auto px-1 sm:px-6 md:px-6 sm:px-2 lg:px-8 space-y-6':
+        !isInside,
     }"
   >
     <div :class="`card p-3 xs:p-5 ${cardInnerClasses}`" :style="cardStyles">

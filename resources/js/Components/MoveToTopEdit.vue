@@ -49,7 +49,6 @@ onUnmounted(() => {
 const handleScroll = () => {
   // Show the scroll button when scrolling down inside the container
   const container = document.getElementById(props.scrollableContainer);
-  console.log(container, container.scrollTop, "scroll2");
   const scrollButton = document.querySelector(".scroll-to-top");
 
   if (container && scrollButton) {

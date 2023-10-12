@@ -13,6 +13,7 @@ import {
   VStepperActions,
   VStepperHeader,
 } from "vuetify/labs/VStepper";
+import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 import { VDivider, VLazy, VSnackbar, VTooltip } from "vuetify/components";
 import VueTheMask from "vue-the-mask";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
@@ -29,6 +30,7 @@ import * as directives from "vuetify/directives"; // You might want to fine-tune
 const vuetify = createVuetify({
   components: {
     VStepper,
+    VSkeletonLoader,
     VStepperWindow,
     VTooltip,
     VLazy,

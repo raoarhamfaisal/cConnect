@@ -1,29 +1,7 @@
 <template>
   <!-- Social Links -->
+
   <Card
-    v-if="!website_url && !facebook && !twitter && !tiktok && !instagram"
-    :shadowLevel="2"
-    bgColor="white"
-    :padding="screenWidth < 640 ? '7px' : '20px'"
-  >
-    <heading-card
-      class="mb-2"
-      :style="{
-        fontWeight: 800,
-        marginBottom: '8px',
-        fontSize: screenWidth > 640 ? '24px' : '20px',
-      }"
-      :heading="`Social Links`"
-    />
-    <button
-      @click="openDialog"
-      class="w-full flex gap-2 mt-3 items-center justify-center h-[42px] rounded bg-[#087f5b] text-white active:scale-[0.99] transition transform duration-300 hover:shadow-lg"
-    >
-      <Icon icon="mdi:plus-thick" /> Add Your Social Links
-    </button>
-  </Card>
-  <Card
-    v-if="website_url || facebook || twitter || tiktok || instagram"
     :shadowLevel="2"
     bgColor="white"
     :padding="screenWidth < 640 ? '7px' : '20px'"
@@ -84,6 +62,31 @@
         tooltipText="Instagram"
         :text="instagram"
       />
+      <div
+        :class="`flex justify-center gap-2 w-full ${
+          website_url || facebook || twitter || tiktok || instagram
+            ? 'mt-3'
+            : ''
+        }`"
+      >
+        <Icon
+          v-if="!website_url"
+          icon="fluent-mdl2:website"
+          :class="`w-8 h-8`"
+        />
+        <Icon v-if="!facebook" icon="logos:facebook" :class="`w-8 h-8`" />
+        <Icon
+          v-if="!twitter"
+          icon="fa6-brands:square-x-twitter"
+          :class="`w-8 h-8`"
+        />
+        <Icon v-if="!tiktok" icon="logos:tiktok-icon" :class="`w-8 h-8`" />
+        <Icon
+          v-if="!instagram"
+          icon="skill-icons:instagram"
+          :class="`w-8 h-8`"
+        />
+      </div>
     </div>
   </Card>
   <CustomDialog

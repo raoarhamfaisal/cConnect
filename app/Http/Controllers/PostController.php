@@ -204,6 +204,44 @@ class PostController extends Controller
                 'postSearchFilters' => Request::only(['postSearch']),
             ]);
     }
+
+    public function getContractorPosts(Request $request, $contractor_id)
+    {
+        $profile = null;
+        $userTradeIds = [];
+    
+        if ($contractor_id) {
+            $profile = Profile::where('user_id', $contractor_id)->first();
+            $userTradeIds = $profile && $profile->trades ? $profile->trades->pluck('id')->toArray() : [];
+        }
+    
+        $posts = Post::query()
+            ->select(['posts.*', 'posts.id as post_id'])
+            ->addSelect([
+                'profiles.first_name',
+                'profiles.last_name',
+                'profiles.company_name',
+                'profiles.city',
+                'profiles.state',
+                'profiles.user_avatar',
+                'profiles.id',
+                DB::raw('(SELECT AVG(reviews.rating) FROM reviews WHERE reviews.contractor_id = profiles.id AND reviews.is_review_active = 1) as average_rating'),
+                DB::raw('(SELECT COUNT(*) FROM reviews WHERE reviews.contractor_id = profiles.id AND reviews.is_review_active = 1) as total_reviews')
+            ])
+            ->leftJoin('profiles', 'posts.user_id', '=', 'profiles.user_id')
+            ->where('posts.user_id', $contractor_id)
+            ->orderBy('posts.created_at', 'desc')
+            ->orderBy('posts.id', 'desc')
+            ->paginate(5)
+            ->withQueryString()
+            ->toArray();
+    
+        return response()->json([
+            'showit' => Auth::check(),
+            'profile' => $profile,
+            'posts' => $posts
+        ]);
+    }
     public function selectedTrades($user_id)
     {
         // Get current user

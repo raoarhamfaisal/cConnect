@@ -15,7 +15,7 @@
           color="#1864ab"
         />
       </div>
-      <div v-html="closingText"></div>
+      <div class="default" v-html="closingText"></div>
     </div>
 
     <!-- Add Bottom Text Button -->
@@ -39,6 +39,7 @@
       title="Add Closing Text"
     >
       <ckeditor
+        class="default"
         @ready="onReady"
         :editor="editor"
         v-model="editorData"

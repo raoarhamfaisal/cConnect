@@ -14,6 +14,10 @@
       }"
       class="flex flex-col justify-center text-center"
     >
+      <!-- Company Logo -->
+      <div v-if="profile.user_avatar" class="flex justify-center mb-3">
+        <Avatar :imageSrc="`/${profile.user_avatar}`" />
+      </div>
       <h2
         class="text-xl sm:text-2xl font-medium font-extrabold"
         v-if="company_name"
@@ -38,6 +42,22 @@
         color: selectedColorScheme[2],
       }"
     >
+      <!-- For Phone Office -->
+      <div v-if="address_2">
+        <v-tooltip text="Alternative Address" location="top">
+          <template v-slot:activator="{ props }">
+            <Icon
+              v-bind="props"
+              :color="
+                selectedColorScheme[1] === '#212529' ? '#364fc7' : iconColor
+              "
+              icon="entypo:address"
+              class="w-5 h-5"
+            />
+          </template>
+        </v-tooltip>
+        <div>{{ address_2 }}</div>
+      </div>
       <!-- For Phone Office -->
       <div v-if="phone_office">
         <v-tooltip text="Phone Office" location="top">

@@ -1,6 +1,6 @@
 <script>
 // SCRIPT UP TOP BECAUSE I LIKE IT HERE!
-import { InertiaLink } from "@inertiajs/inertia-vue3";
+import { InertiaLink, usePage } from "@inertiajs/inertia-vue3";
 import Avatar from "@/Components/Ratings/Avatar.vue";
 import StarRounded from "@/Components/Ratings/StarRounded.vue";
 
@@ -84,6 +84,7 @@ export default {
     return {
       showingPostingActionMenu: ref(false),
       dialogRef: ref(),
+      user: usePage().props.value.auth.user,
     };
   },
 
@@ -137,9 +138,8 @@ export default {
 <template>
   <DialogContractorRating
     ref="dialogRef"
-    :loggedInUserId="profile.id"
+    :loggedInUserId="user.id"
     :userId="post.user_id"
-    :contractorId="post.id"
   />
   <!-- {{ profile }} -->
   <div
@@ -220,7 +220,9 @@ export default {
             <StarRounded
               @click="openDialog"
               :starWidth="15"
-              class="h-4 cursor-pointer"
+              :class="`h-4 cursor-pointer ${
+                user.id === post.user_id ? 'pointer-events-none' : ''
+              }`"
               indicatorClasses="text-small h-4"
               :starHeight="15"
               :rating="

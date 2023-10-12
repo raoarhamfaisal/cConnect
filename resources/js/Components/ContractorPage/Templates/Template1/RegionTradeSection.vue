@@ -21,29 +21,6 @@
         }"
         :heading="`Trade Groups`"
       />
-      <!-- User Posting and Edit Button -->
-      <div class="flex gap-2 sm:gap-3">
-        <!-- User Postings -->
-        <v-tooltip text="See User Posts" location="left">
-          <template v-slot:activator="{ props }">
-            <Link
-              class="active:scale-95 hover:bg-[#f8f9fa] hover:rounded-md"
-              :href="`/contractor/posts/${profile.id}`"
-            >
-              <button
-                class="xs:text-md w-[28px] h-[28px] xs:w-[35px] xs:h-[35px] font-semibold flex items-center justify-center"
-              >
-                <img
-                  src="/images/icons/post_b.png"
-                  v-bind="props"
-                  width="28"
-                  height="28"
-                />
-              </button>
-            </Link>
-          </template>
-        </v-tooltip>
-      </div>
     </div>
     <!-- trades -->
     <div class="mb-3 max-md:text-center">
@@ -142,7 +119,7 @@ const tradesPost = reactive({
   trade21: props.profile.trade21,
   trade22: props.profile.trade22,
   trade23: props.profile.trade23,
-  trade24: props.profile.trade24,
+  // trade24: props.profile.trade24,
 });
 
 // Computed
