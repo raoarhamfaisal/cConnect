@@ -7,11 +7,18 @@
   >
     <div class="flex gap-2 mb-1 items-center">
       <div @click="goBack" class="cursor-pointer">
-        <Icon class="w-6 h-6" icon="ion:arrow-back" color="#241e6d" />
+        <Icon
+          class="w-6 h-6"
+          icon="ion:arrow-back"
+          :color="selectedColorScheme[2]"
+        />
       </div>
       <div
         @click="goBack"
-        class="font-bold cursor-pointer translate-y-[1px] flex justify-center items-center text-xl text-blue-rgba leading-tight"
+        class="font-bold cursor-pointer translate-y-[1px] flex justify-center items-center text-xl leading-tight"
+        :style="{
+          color: selectedColorScheme[2],
+        }"
       >
         Go Back
       </div>
@@ -26,7 +33,7 @@
         <div
           class="text-2xl text-center xs:text-3xl font-bold uppercase"
           :style="{
-            color: selectedColorScheme[1] === '#212529' ? '#364fc7' : blueRgba,
+            color: selectedColorScheme[2],
           }"
           v-if="company_name"
         >
@@ -131,7 +138,10 @@
             :href="`/contractor/${profile.user_id}/edit`"
           >
             <button
-              class="bg-white px-4 py-1 text-xs hover:bg-[#114678] sm:text-sm font-bold rounded-full border-[#1864ab] border-[1px] text-white bg-[#1864ab] cursor-pointer hover:shadow-lg active:scale-95 w-full"
+              :class="` px-4 py-1 text-xs hover:bg-[#114678] sm:text-sm font-bold rounded-full border-[${selectedColorScheme[2]}] border-[1px] text-white cursor-pointer hover:shadow-lg active:scale-95 w-full`"
+              :style="{
+                background: selectedColorScheme[2],
+              }"
             >
               Edit
             </button>
@@ -139,7 +149,7 @@
           <button
             v-bind="props"
             @click="shareLink"
-            class="bg-white px-4 py-1 text-xs hover:bg-[#f8f9fa] sm:text-sm font-bold rounded-full border-[#1864ab] border-[1px] bg-white text-[#1864ab] cursor-pointer hover:shadow-lg active:scale-95"
+            :class="`bg-white px-4 py-1 text-xs hover:bg-[#f8f9fa] sm:text-sm font-bold rounded-full border-[${selectedColorScheme[2]}] border-[1px] bg-white text-[${selectedColorScheme[2]}] cursor-pointer hover:shadow-lg active:scale-95`"
           >
             Share
           </button>

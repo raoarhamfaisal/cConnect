@@ -20,12 +20,6 @@
             <button
               class="xs:text-md w-[28px] h-[28px] xs:w-[35px] xs:h-[35px] font-semibold flex items-center justify-center"
             >
-              <!-- <Icon
-                  v-bind="props"
-                  class="w-[16px] h-[16px] xs:w-[18px] xs:h-[18px] focus:outline-none"
-                  icon="mdi:post"
-                  color="#1864ab"
-                /> -->
               <img
                 src="/images/icons/post_b.png"
                 v-bind="props"

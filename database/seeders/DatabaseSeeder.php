@@ -69,7 +69,6 @@ class DatabaseSeeder extends Seeder
             'color2' => '#ebedef',
             'color3' => '#333',
         ]);
-
         \App\Models\ColorScheme::create([
             'name' => 'Color Scheme 4',
             'color1' => '#4B77BE',
