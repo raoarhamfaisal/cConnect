@@ -12,14 +12,19 @@ import InputIcon from "@/Components/InputIcon.vue";
 import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
 import { computed, reactive, ref, watch } from "vue";
 
+const { user, profile } = defineProps({
+  showit: Boolean,
+  user: Object,
+  profile: Object,
+});
 const form = useForm({
-  first_name: "",
-  last_name: "",
-  email: "",
-  company_name: "",
-  email: "",
+  first_name: user?.first_name ?? "",
+  last_name: user?.last_name ?? "",
+  email: user?.email ?? "",
+  company_name: profile?.company_name ?? "",
   password: "",
   password_confirmation: "",
+  id: user?.id ?? "",
 });
 const isPasswordConfirmationShown = ref(false);
 const isPasswordShown = ref(false);
@@ -32,22 +37,6 @@ const errors = reactive({
   passwordValidationMessage: "",
   password_confirmation: "",
 });
-const {user} = defineProps({
-  showit: Boolean,
-  user: Object,
-});
-
-
-watch(user, (newVal) => {
-  console.log("newVal", newVal)
-  if (newVal && newVal.id) {
-    form.email = newVal.email;
-    form.first_name = newVal.first_name;
-    form.last_name = newVal.last_name;
-  }
-});
-
-
 //Methods
 const validateForm = () => {
   let isValid = true;
@@ -122,8 +111,13 @@ const clearPasswordValidation = (field) => {
   errors[field] = "";
 };
 const submit = () => {
+  console.log(form, "before");
+
   if (validateForm()) {
-    console.log(form);
+    if (!form.id) {
+      delete form.id;
+    }
+    console.log(form, "after");
     form.post(route("signup"), {
       onFinish: () => form.reset("password", "password_confirmation"),
     });
