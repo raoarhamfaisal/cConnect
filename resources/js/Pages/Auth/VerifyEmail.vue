@@ -71,16 +71,7 @@ const submitVerificationCode = async () => {
       getAxiosConfig()
     );
     if (response.data) {
-      changesSaved(
-        "Your email addess has been successfully changed.Please login again",
-        500,
-        3000
-      );
-      setTimeout(() => {
-        removeToken();
-
-        Inertia.post("/logout");
-      }, 2000);
+      Inertia.visit("/profile-setup");
     }
   } catch (err) {
     somethingWentWrong();
