@@ -59,6 +59,9 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
+
+        $userID = $request->get('id');
+
         $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -75,6 +78,43 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        if($userID) {
+            // Retrieve the user
+            $user = User::find($userID);
+        
+            // Perform deletion logic if the user exists
+            if ($user) {
+        
+                // Retrieve the related profile
+                $profile = Profile::where('user_id', $user->id)->first();
+
+                $contractorProfile = ContractorProfile::where('user_id', $user->id)->first();
+        
+                // Perform deletion logic if the profile exists
+                if ($profile) {
+        
+                    // Delete related data in other models
+                    SessionTrade::where('profile_id', $profile->id)->delete();
+                    SessionViewSetting::where('profile_id', $profile->id)->delete();
+                    ContractorProfile::where('user_id', $user->id)->delete();
+                    ImageSection::where('contractor_profile_id', $contractorProfile->id)->delete();
+                    BragSection::where('contractor_profile_id', $contractorProfile->id)->delete();
+        
+                    // Delete the profile itself
+                    $profile->delete();
+                }
+        
+                // Delete the user
+                $user->delete();
+        
+            }
+        }
+        
+        
+        
+        
+        
+        
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
