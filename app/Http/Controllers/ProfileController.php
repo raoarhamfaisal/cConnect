@@ -1023,7 +1023,7 @@ class ProfileController extends Controller
             'user_id' => $user->id,
             'new_email' => $request->new_email,
             'token' => $token,
-            'expires_at' => Carbon::now()->addMinutes(2),
+            'expires_at' => Carbon::now()->addMinutes(5),
         ]);
     
         // Send the token to the new email

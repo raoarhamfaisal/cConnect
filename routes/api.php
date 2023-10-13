@@ -11,6 +11,8 @@ use App\Http\Controllers\ImageSectionController;
 use App\Http\Controllers\BragSectionController;
 use App\Http\Controllers\ReviewResponseController;
 use App\Http\Controllers\ContractorRatingsAdminController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +49,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     
     // Your authenticated routes here
     Route::middleware('auth:sanctum')->group(function () {
+
+
+        // Settings APIs
+        Route::post('/user/resend-code', [RegisteredUserController::class, 'resendVerificationCode'])->name('user.resendVerificationCode');
+        Route::post('/user/verify-email', [RegisteredUserController::class, 'verifyEmail'])->name('user.verifyEmail');
+        
+
         // Contractor Profile
         Route::get('/contractor/get-contractor-info/{contractor_id}', [ContractorPageController::class, 'getContractorInfo'])->name('contractorProfile.getContractorInfo');
         Route::patch('/contractor/general-profile', [ContractorProfileController::class, 'updateGeneralInfo'])->name('contractorProfile.updateGeneralInfo');
