@@ -111,13 +111,10 @@ const clearPasswordValidation = (field) => {
   errors[field] = "";
 };
 const submit = () => {
-  console.log(form, "before");
-
   if (validateForm()) {
     if (!form.id) {
       delete form.id;
     }
-    console.log(form, "after");
     form.post(route("signup"), {
       onFinish: () => form.reset("password", "password_confirmation"),
     });

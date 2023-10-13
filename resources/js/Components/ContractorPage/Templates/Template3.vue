@@ -41,7 +41,7 @@
             cardInnerClasses="h-full"
             :bgColor="selectedColorScheme[1]"
             :isInside="true"
-            class="h-auto md:w-3/5"
+            class="h-auto h-full"
             :padding="screenWidth < 640 ? '7px' : '20px'"
           >
             <AdditionalInfoSection3
@@ -49,8 +49,13 @@
               :screenWidth="screenWidth"
               :profile="profile"
             />
+            <RegionTradeSection3
+              :screenWidth="screenWidth"
+              :region_name="region_name"
+              :profile="profile"
+            />
           </Card>
-          <Card
+          <!-- <Card
             :shadowLevel="2"
             :bgColor="selectedColorScheme[1]"
             cardInnerClasses="h-full"
@@ -58,12 +63,7 @@
             class="h-auto md:w-2/5"
             :padding="screenWidth < 640 ? '7px' : '20px'"
           >
-            <RegionTradeSection3
-              :screenWidth="screenWidth"
-              :region_name="region_name"
-              :profile="profile"
-            />
-          </Card>
+          </Card> -->
         </div>
 
         <BragSection3
@@ -75,7 +75,7 @@
         <!-- Image Selection -->
         <div
           v-if="profile.bottom_text || profile.closing_text"
-          class="flex gap-2 flex-col my-6"
+          class="flex gap-2 flex-col mt-6"
           :style="{
             color: selectedColorScheme[2],
           }"
@@ -87,6 +87,7 @@
             :screen-width="screenWidth"
           />
         </div>
+        <Footer3 :screenWidth="screenWidth" :profile="profile" />
       </Card>
     </div>
   </div>
@@ -102,6 +103,7 @@ import BottomTitleText3 from "@/Components/ContractorPage/Templates/Template3/Bo
 import ClosingTitleText3 from "@/Components/ContractorPage/Templates/Template3/ClosingTitleText3.vue";
 import BragSection3 from "@/Components/ContractorPage/Templates/Template3/BragSection3.vue";
 import ImageTextSection3 from "@/Components/ContractorPage/Templates/Template3/ImageTextSection3.vue";
+import Footer3 from "@/Components/ContractorPage/Templates/Template3/Footer3.vue";
 import { computed } from "vue";
 import { template1Default } from "@/helpers/templateDefaults";
 import { useStore } from "vuex";
