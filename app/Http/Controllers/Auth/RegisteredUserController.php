@@ -29,11 +29,23 @@ class RegisteredUserController extends Controller
      *
      * @return \Inertia\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+
+        // dd($request->user());
+        $user = $request->user();
+        $profile = null;
+
+        if($user) {
+            $profile = $user->profile;
+        }
+
+        // dd($profile);
+
         return Inertia::render('Auth/Register',[
             'showit' => Auth::check(),
-            
+            'user' => $request->user(),
+            'profile' => $profile
         ]);
     }
 

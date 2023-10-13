@@ -10,7 +10,7 @@ import TextInput from "@/Components/TextInput.vue";
 import InputIcon from "@/Components/InputIcon.vue";
 
 import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
-import { computed, reactive, ref } from "vue";
+import { computed, reactive, ref, watch } from "vue";
 
 const form = useForm({
   first_name: "",
@@ -32,9 +32,21 @@ const errors = reactive({
   passwordValidationMessage: "",
   password_confirmation: "",
 });
-defineProps({
+const {user} = defineProps({
   showit: Boolean,
+  user: Object,
 });
+
+
+watch(user, (newVal) => {
+  console.log("newVal", newVal)
+  if (newVal && newVal.id) {
+    form.email = newVal.email;
+    form.first_name = newVal.first_name;
+    form.last_name = newVal.last_name;
+  }
+});
+
 
 //Methods
 const validateForm = () => {
