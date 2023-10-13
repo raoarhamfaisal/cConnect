@@ -7,7 +7,11 @@
       color: selectedColorScheme[2],
     }"
   >
-    <div v-for="(section, index) in sections" :key="section.id" class="">
+    <div
+      v-for="section in sections"
+      :key="section.id"
+      class="rounded-md border relative border-gray-300 p-2 sm:p-2"
+    >
       <!-- class="rounded-md border relative border-gray-300 p-6" -->
       <!-- Only Text -->
       <div
@@ -30,8 +34,8 @@
         />
       </div>
       <!-- For even items -->
-      <div
-        v-if="section.section_image && section.section_text && index % 2 !== 0"
+      <!-- <div
+        v-if="section.section_image && section.section_text"
         class="flex max-md:flex-col gap-2 md:gap-4 items-center"
       >
         <div
@@ -47,11 +51,11 @@
             class="object-cover w-full rounded-md"
           />
         </div>
-      </div>
+      </div> -->
 
       <!-- For odd items -->
       <div
-        v-if="section.section_image && section.section_text && index % 2 === 0"
+        v-if="section.section_image && section.section_text"
         class="flex max-md:flex-col gap-2 md:gap-4 items-center max-md:flex-col-reverse"
       >
         <div class="relative w-full md:w-3/5 h-3/5 bg-[#222] rounded-md">
@@ -63,7 +67,7 @@
           />
         </div>
         <div
-          class="w-2/5 md:w-2/5 text-xl md:text-3xl font-bold md:font-extrabold text-center"
+          class="w-2/4 md:w-2/4 text-xl md:text-3xl font-bold md:font-extrabold text-center"
         >
           {{ section.section_text }}
         </div>

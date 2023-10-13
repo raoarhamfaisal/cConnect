@@ -35,7 +35,7 @@
       </div>
       <!-- For even items -->
       <!-- <div
-        v-if="section.section_image && section.section_text"
+        v-if="section.section_image && section.section_text && index % 2 !== 0"
         class="flex max-md:flex-col gap-2 md:gap-4 items-center"
       >
         <div
@@ -56,9 +56,9 @@
       <!-- For odd items -->
       <div
         v-if="section.section_image && section.section_text"
-        class="flex max-md:flex-col gap-2 md:gap-4 items-center max-md:flex-col-reverse"
+        class="flex flex-col gap-2 md:gap-4 items-center flex-col-reverse"
       >
-        <div class="relative w-full md:w-2/4 h-2/4 bg-[#222] rounded-md">
+        <div class="relative w-full bg-[#222] rounded-md">
           <img
             @click="openImage(section.section_image)"
             :src="section.section_image"
@@ -67,33 +67,11 @@
           />
         </div>
         <div
-          class="w-2/5 md:w-2/5 text-xl md:text-3xl font-bold md:font-extrabold text-center"
+          class="sm:w-3/5 text-xl md:text-3xl pt-2 font-bold md:font-extrabold text-center"
         >
           {{ section.section_text }}
         </div>
       </div>
-      <!-- <div
-        v-if="section.section_image && section.section_text && index % 2 === 0"
-        class="relative"
-        @click="openImage(section.section_image)"
-      >
-        <img
-          :src="section.section_image"
-          alt="Section Image"
-          class="object-cover w-full rounded-md"
-        />
-        <div class="absolute inset-0 flex justify-center items-center">
-          <span
-            :style="{
-              color: '#fff',
-              backgroundColor: '#000000' + '80',
-            }"
-            class="text-center text-xl md:text-3xl font-bold md:font-extrabold text-xl md:text-3xl font-bold md:font-extrabold bg-opacity-50 p-2 rounded"
-          >
-            {{ section.section_text }}
-          </span>
-        </div>
-      </div> -->
     </div>
   </div>
 
