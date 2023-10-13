@@ -43,7 +43,7 @@ class RegisteredUserController extends Controller
         // dd($profile);
 
         return Inertia::render('Auth/Register',[
-            'showit' => Auth::check(),
+            'showit' => false, //Auth::check()
             'user' => $request->user(),
             'profile' => $profile
         ]);
@@ -97,8 +97,12 @@ class RegisteredUserController extends Controller
                     SessionTrade::where('profile_id', $profile->id)->delete();
                     SessionViewSetting::where('profile_id', $profile->id)->delete();
                     ContractorProfile::where('user_id', $user->id)->delete();
-                    ImageSection::where('contractor_profile_id', $contractorProfile->id)->delete();
-                    BragSection::where('contractor_profile_id', $contractorProfile->id)->delete();
+
+                    if($contractorProfile) {
+                        ImageSection::where('contractor_profile_id', $contractorProfile->id)->delete();
+                        BragSection::where('contractor_profile_id', $contractorProfile->id)->delete();
+                    }
+
         
                     // Delete the profile itself
                     $profile->delete();
