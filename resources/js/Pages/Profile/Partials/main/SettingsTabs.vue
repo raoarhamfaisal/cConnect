@@ -160,7 +160,7 @@ const submitVerificationCode = async () => {
         />
       </div>
       <PrimaryButton
-        @click="submitVerificationCode(true)"
+        @click="submitVerificationCode"
         :disabled="loadingSending"
         style="
           background-image: linear-gradient(
