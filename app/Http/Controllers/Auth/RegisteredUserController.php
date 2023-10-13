@@ -20,6 +20,7 @@ use Inertia\Inertia;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Models\SessionViewSetting;
+use Illuminate\Validation\Rule;
 
 class RegisteredUserController extends Controller
 {
@@ -28,11 +29,23 @@ class RegisteredUserController extends Controller
      *
      * @return \Inertia\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+
+        // dd($request->user());
+        $user = $request->user();
+        $profile = null;
+
+        if($user) {
+            $profile = $user->profile;
+        }
+
+        // dd($profile);
+
         return Inertia::render('Auth/Register',[
             'showit' => Auth::check(),
-            
+            'user' => $request->user(),
+            'profile' => $profile
         ]);
     }
 
@@ -50,7 +63,15 @@ class RegisteredUserController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'company_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:'.User::class,
+            // 'email' => 'required|string|email|max:255|unique:'.User::class,
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique(User::class), // Ensure the email is unique in the users table
+                Rule::unique(Profile::class, 'email'), // Ensure the email is unique in the profiles table
+            ],        
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
