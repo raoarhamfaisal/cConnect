@@ -108,7 +108,7 @@ const submit = () => {
     {{ status }}
   </div>
 
-  <form @submit.prevent="submit">
+  <form @submit.prevent="submit" autocomplete="off">
     <div>
       <InputLabel for="email" value="Email" />
       <TextInput
@@ -116,9 +116,11 @@ const submit = () => {
         type="email"
         class="mt-1 block w-full"
         v-model="form.email"
+        readonly
+        onfocus="this.removeAttribute('readonly');"
+        autocomplete="off"
         required
         autofocus
-        autocomplete="username"
       />
       <InputError class="mt-2" :message="form.errors.email" />
     </div>
@@ -128,10 +130,12 @@ const submit = () => {
       <TextInput
         id="password"
         type="password"
+        readonly
+        onfocus="this.removeAttribute('readonly');"
+        autocomplete="off"
         class="mt-1 block w-full"
         v-model="form.password"
         required
-        autocomplete="current-password"
       />
       <InputError class="mt-2" :message="form.errors.password" />
     </div>

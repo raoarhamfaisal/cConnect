@@ -150,6 +150,7 @@ const validatePassword = () => {
 
     <form
       @submit.prevent="submit"
+      autocomplete="off"
       class="mt-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-6"
     >
       <div>
@@ -206,7 +207,9 @@ const validatePassword = () => {
           v-model="form.email"
           @input="clearError('email')"
           required
-          autocomplete="username"
+          readonly
+          onfocus="this.removeAttribute('readonly');"
+          autocomplete="off"
         />
         <InputError class="mt-1" :message="errors.email" />
         <InputError class="mt-1" :message="form.errors.email" />
@@ -217,16 +220,19 @@ const validatePassword = () => {
         <input-icon
           :icon="isPasswordShown ? 'mdi:hide' : 'mdi:show'"
           color="#241e6d"
+          :cursor="true"
           id="password"
           :type="isPasswordShown ? 'text' : 'password'"
           @iconClick="togglePasswordVisibility"
           class="mt-1 block w-full"
+          readonly
+          onfocus="this.removeAttribute('readonly');"
+          autocomplete="off"
           v-model="form.password"
           @input="clearError('password')"
           @keyup="clearPasswordValidation('passwordValidationMessage')"
           @blur="validatePassword"
           required
-          autocomplete="new-password"
         />
         <div
           class="text-red-500 text-sm mt-1"
@@ -258,6 +264,7 @@ const validatePassword = () => {
         />
         <input-icon
           :icon="isPasswordConfirmationShown ? 'mdi:hide' : 'mdi:show'"
+          :cursor="true"
           color="#241e6d"
           id="password_confirmation"
           :type="isPasswordConfirmationShown ? 'text' : 'password'"
