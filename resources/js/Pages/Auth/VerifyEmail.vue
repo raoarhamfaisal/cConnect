@@ -9,7 +9,7 @@ import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
-import { changesSaved } from "@/helpers/utilities";
+import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 import { removeToken } from "@/helpers/localStorageHelper";
 import { Inertia } from "@inertiajs/inertia";
 
@@ -56,8 +56,9 @@ const resendVerificationCode = async (openDialog = true) => {
 };
 
 const submitVerificationCode = async () => {
-  if (!form.verifyCode?.trim()) {
-    errors.verifyCode = "Please enter a verification code";
+  if (form.verifyCode?.trim().length < 6) {
+    errors.verifyCode = "The token must be of 6 characters.";
+    return;
   }
   const formData = {
     token: form.verifyCode,
@@ -74,7 +75,7 @@ const submitVerificationCode = async () => {
       Inertia.visit("/profile-setup");
     }
   } catch (err) {
-    somethingWentWrong();
+    errors.verifyCode = err.response.data.message;
   } finally {
     loadingVerifyCode.value = false;
   }
@@ -101,31 +102,35 @@ const submitVerificationCode = async () => {
         id="email"
         type="text"
         class="mt-1 block w-full md:"
+        maxLength="6"
         v-model="form.verifyCode"
         required
         autocomplete="email"
       />
       <InputError class="mt-2" :message="errors.verifyCode" />
     </div>
+
+    <div
+      class="mt-2 font-medium text-base text-green-600"
+      v-if="verificationCodeSent"
+    >
+      A new verification code has been sent to your email address.
+    </div>
     <PrimaryButton
       @click="submitVerificationCode"
-      :disabled="loadingSending"
-      style="
-        background-image: linear-gradient(
-          111.4deg,
-          rgba(7, 7, 9, 1) 6.5%,
-          rgba(27, 24, 113, 1) 93.2%
-        );
-      "
+      :disabled="loadingVerifyCode"
+      :style="{
+        backgroundImage:
+          'linear-gradient( 111.4deg,rgba(7, 7, 9, 1) 6.5%, rgba(27, 24, 113, 1) 93.2% )',
+        opacity: loadingVerifyCode ? '0.4' : '1.0',
+      }"
       class="mt-3 w-full flex justify-center"
     >
-      <div class="flex items-center justify-center">Send</div>
-      <img
-        v-show="loadingSending"
-        src="/images/avatars/Spinner.gif"
-        alt="spinner"
-        width="30"
-    /></PrimaryButton>
+      <div v-show="!loadingVerifyCode" class="flex items-center justify-center">
+        Send
+      </div>
+      <div v-show="loadingVerifyCode">Sending...</div>
+    </PrimaryButton>
     <PrimaryButton
       @click="resendVerificationCode"
       :disabled="loading"
@@ -140,13 +145,6 @@ const submitVerificationCode = async () => {
       </div>
       <div v-show="loading">Sending...</div></PrimaryButton
     >
-
-    <div
-      class="mb-4 font-medium text-sm text-green-600"
-      v-if="verificationCodeSent"
-    >
-      A new verification code has been sent to your email address.
-    </div>
   </GuestLayout>
   <WelcomeFooter :showit="showit" />
 </template>
