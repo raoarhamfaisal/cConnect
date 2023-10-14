@@ -78,6 +78,7 @@ class RegisteredUserController extends Controller
                 'max:255',
                 Rule::unique(User::class), // Ensure the email is unique in the users table
                 Rule::unique(Profile::class, 'email'), // Ensure the email is unique in the profiles table
+                Rule::unique(ContractorProfile::class, 'email'), // Ensure the email is unique in the contractor_profiles table
             ],        
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
