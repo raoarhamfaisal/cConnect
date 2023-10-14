@@ -241,7 +241,7 @@ class RegisteredUserController extends Controller
     public function resendVerificationCode(Request $request)
     {
         $request->validate([
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email',
         ]);
     
         $user = $request->user();

@@ -12,6 +12,8 @@ import InputIcon from "@/Components/InputIcon.vue";
 import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
 import { computed, reactive, ref, watch } from "vue";
 import { useStore } from "vuex";
+import { somethingWentWrong } from "@/helpers/utilities";
+import { setToken } from "@/helpers/localStorageHelper";
 
 const { user, profile } = defineProps({
   showit: Boolean,
@@ -119,9 +121,18 @@ const submit = () => {
     }
     form.post(route("signup"), {
       onSuccess: async () => {
-        console.log("here2");
-        await store.dispatch("getToken");
-        form.reset("password", "password_confirmation");
+        try {
+          const response = await axios.post(`/tokens/create`);
+          if (response.data) {
+            console.log("here to store");
+            localStorage.setItem("token", response.data.token);
+            form.reset("password", "password_confirmation");
+          }
+        } catch (err) {
+          console.log("here to store2");
+
+          somethingWentWrong("wrong intoken");
+        }
       },
     });
   }
