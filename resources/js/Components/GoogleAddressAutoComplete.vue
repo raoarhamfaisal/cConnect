@@ -15,6 +15,7 @@ const props = defineProps({
     type: String,
     default: "",
   },
+
   placeholder: {
     type: String,
     default: "",
@@ -22,16 +23,20 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["update:modelValue", "callback"]);
+
 const autocompleteInput = ref(null);
+let scriptLoaded = false;
 let internalModelValue = ref(props.modelValue);
 
 const setupAutocomplete = () => {
   const options = {
+    //   bounds: defaultBounds,
     componentRestrictions: { country: "us" },
     fields: ["address_components", "formatted_address"],
+    //   strictBounds: false,
   };
-
   if (autocompleteInput.value) {
+    console.log("google");
     const autocomplete = new google.maps.places.Autocomplete(
       autocompleteInput.value,
       options

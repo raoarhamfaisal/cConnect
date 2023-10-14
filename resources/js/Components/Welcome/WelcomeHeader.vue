@@ -53,7 +53,7 @@
           </div>
 
           <!-- Login Button -->
-          <div v-if="!showit">
+          <div v-if="!showit && !token">
             <Link
               @click="$inertia.visit('/#loginHere')"
               class="block flex justify-center items-center p-1 px-3 sm:p-2 mx-2 sm:px-6 font-bold rounded-xl text-xs sm:text-base text-white bg-blue-800 hover:bg-green-800 border-2 shadow-lg border-green-600"
@@ -232,9 +232,10 @@
 <script setup>
 import { Link, usePage } from "@inertiajs/inertia-vue3";
 import tContractorWord from "@/Components/tCon/tContractorWord.vue";
-import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import { Inertia } from "@inertiajs/inertia";
+import { getToken } from "@/helpers/localStorageHelper";
 
 defineProps({
   showit: Boolean,
@@ -247,6 +248,7 @@ defineProps({
 const showingNavigationDropdown = ref(false);
 
 const dropdownMenu = ref(null);
+const token = ref(false);
 
 //Computed
 
@@ -270,7 +272,11 @@ const toggleDropdown = () => {
 };
 
 onMounted(() => {
-  console.log(Inertia, "inertia", Inertia.page);
+  if (getToken()) {
+    console.log(getToken(), token.value, "token");
+    token.value = true;
+  }
+
   document.addEventListener("click", handleOutsideClick);
 });
 
