@@ -47,6 +47,7 @@
           :class="`flex-1 flex text-md sm:text-xl font-bold sm:items-center ${
             !section.section_image ? 'sm:p-4 justify-center' : ''
           }`"
+          style="word-break: break-word"
         >
           {{ section.section_text }}
         </div>

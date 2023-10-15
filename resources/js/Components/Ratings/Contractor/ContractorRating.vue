@@ -180,8 +180,6 @@ import { somethingWentWrong } from "@/helpers/utilities";
 import { useStore } from "vuex";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 
-const user = usePage().props.value.auth.user;
-
 // State
 const { contractorDetails, profileId } = defineProps({
   contractorDetails: Object,
@@ -202,6 +200,9 @@ const pagination = ref(0);
 const perPage = ref(15);
 const loadingNextPage = ref(false);
 const loadMoreIntersect = ref();
+let usePageDeatails = usePage().props.value;
+const user = usePageDeatails.auth.user;
+// const profile = usePageDeatails?.profile;
 
 // Mounted
 onMounted(async () => {

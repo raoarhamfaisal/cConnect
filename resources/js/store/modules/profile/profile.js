@@ -12,6 +12,7 @@ export default {
       loadingViewSettingsProfile: false,
       loadingImage: false,
       viewsSettingsProfile: {},
+      contractorId: 0,
       status: "",
       profile: {},
       loadFirstPageWithNoPreserve: false,
@@ -33,6 +34,9 @@ export default {
   mutations: {
     setStatus(state, payload) {
       state.status = payload;
+    },
+    setContractorId(state, payload) {
+      state.contractorId = payload;
     },
     setProfile(state, payload) {
       state.profile = payload;

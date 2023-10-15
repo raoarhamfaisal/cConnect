@@ -31,6 +31,8 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/contractor/{contractor_id}', [ContractorPageController::class, 'live'])->name('ratings.contractor.index');
+
 Route::middleware(['auth', 'verified'])->group(function () {
 
     // Route::get('/payment-verification', function () {
@@ -57,7 +59,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
         Route::get('/ratings/contractor', [ContractorRatingController::class, 'index'])->name('ratings.contractor.index');
-        Route::get('/contractor/{contractor_id}', [ContractorPageController::class, 'live'])->name('ratings.contractor.index');
         Route::get('/contractor/{contractor_id}/edit', [ContractorPageController::class, 'index'])->name('ratings.contractor.index');
         Route::get('/ratings/{contractor_id}', [RatingController::class, 'index'])->name('ratings.index');
         Route::get('/admin/regions/{region_id}/contractors', [AdminRatingsController::class, 'index'])->name('admin.allContractors');

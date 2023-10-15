@@ -166,6 +166,9 @@ class ContractorPageController extends Controller
         if($contractor_id) {
             $contractorProfile = ContractorProfile::where('user_id', $contractor_id)->with('trades')->first();
 
+            // $contractorOriginalProfile = Profile::where('user_id', $contractor_id)->with('trades')->first();
+
+
             if (!$contractorProfile) {
                 $profile = Profile::where('user_id', $contractor_id)->with('trades')->first();
     
@@ -359,9 +362,9 @@ class ContractorPageController extends Controller
         //     $profileTrades = $this->convertTradesToOldStructure($profile->trades);
         //     $profile = array_merge($profile->toArray(), $profileTrades);
         // }
-
-        $allReviews = Review::where('contractor_id', $contractor_id)->where('is_review_active', 1)->get();
-        $totalReviews = Review::where('contractor_id', $contractor_id)
+        $profile = Profile::where('user_id', $contractor_id)->with('trades')->first();
+        $allReviews = Review::where('contractor_id', $profile->id)->where('is_review_active', 1)->get();
+        $totalReviews = Review::where('contractor_id', $profile->id)
             ->where('is_review_active', 1)
             ->paginate(10)->total(); // Paginate the results with 10 items per page
 

@@ -12,7 +12,7 @@
   >
     <ContractorLayout
       :profile="contractorProfile"
-      :loggedInUserId="profile.user_id"
+      :loggedInUserId="profile?.user_id"
       :templateList="templateList"
       :average_rating="average_rating"
       :starPercentages="starPercentages"
@@ -40,7 +40,7 @@ import { useStore } from "vuex";
 const { profile, contractor_id } = defineProps({
   profile: Object,
   contractor_id: [String, Number],
-
+  contractorOriginalProfile: Object,
   region_name: String,
 });
 const loading = ref(false);
