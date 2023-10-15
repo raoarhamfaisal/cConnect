@@ -23,7 +23,10 @@
     <div :class="`${screenWidth > 768 ? 'w-3/4' : 'w-4/5'}`">
       <!-- Company Logo -->
       <div v-if="profile.company_logo" class="flex justify-center mb-3">
-        <Avatar class="companyLogo" :imageSrc="`/${profile.company_logo}`" />
+        <Avatar
+          imageClass="companyLogo"
+          :imageSrc="`/${profile.company_logo}`"
+        />
       </div>
       <!-- company name -->
       <div

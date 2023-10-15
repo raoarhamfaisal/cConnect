@@ -1,6 +1,6 @@
 <template>
   <Template1
-    v-if="selectedTemplate === 1"
+    v-if="selectedTemplate === 2"
     :profile="profile"
     :screenWidth="screenWidth"
     :loggedInUserId="loggedInUserId"
@@ -10,7 +10,7 @@
     :region_name="region_name"
   />
   <Template2
-    v-if="selectedTemplate === 2"
+    v-if="selectedTemplate === 1"
     :profile="profile"
     :screenWidth="screenWidth"
     :loggedInUserId="loggedInUserId"

@@ -26,7 +26,10 @@
       class="flex items-start"
     >
       <div v-if="profile.company_logo" class="mr-4 flex-none">
-        <Avatar class="companyLogo" :imageSrc="`/${profile.company_logo}`" />
+        <Avatar
+          imageClass="companyLogo"
+          :imageSrc="`/${profile.company_logo}`"
+        />
       </div>
 
       <div class="flex-grow">

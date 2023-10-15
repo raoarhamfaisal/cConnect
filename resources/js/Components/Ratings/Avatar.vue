@@ -6,6 +6,10 @@ const props = defineProps({
   imageSrc: {
     type: String,
   },
+  imageClass: {
+    type: String,
+    default: "",
+  },
 });
 const imageFailed = ref(false);
 
@@ -24,11 +28,13 @@ watch(
 
 <template>
   <div
-    :class="`w-14 h-14 flex justify-center items-center sm:h-20 sm:w-20 inline-block  `"
+    :class="` flex justify-center items-center ${
+      imageClass ? '' : 'w-14 h-14 sm:h-20 sm:w-20'
+    } inline-block  `"
   >
     <img
       v-if="imageSrc && !imageFailed"
-      class="object-contain w-full h-full rounded-full"
+      :class="`object-contain w-full ${imageClass} h-full rounded-full`"
       :src="imageSrc"
       alt="avatar"
       @error="handleImageError"
@@ -44,6 +50,6 @@ watch(
 <style scoped>
 .companyLogo {
   width: 7rem;
-  height: 7rem;
+  height: 4rem;
 }
 </style>

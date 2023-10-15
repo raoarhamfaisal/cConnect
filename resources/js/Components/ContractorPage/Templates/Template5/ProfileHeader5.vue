@@ -26,7 +26,10 @@
     >
       <!-- Company Logo -->
       <div v-if="profile.company_logo" class="mr-4 flex-none">
-        <Avatar class="companyLogo" :imageSrc="`/${profile.company_logo}`" />
+        <Avatar
+          imageClass="companyLogo"
+          :imageSrc="`/${profile.company_logo}`"
+        />
       </div>
 
       <!-- Content on the right -->
