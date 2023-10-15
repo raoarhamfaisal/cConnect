@@ -32,7 +32,7 @@ const setupAutocomplete = () => {
   const options = {
     //   bounds: defaultBounds,
     componentRestrictions: { country: "us" },
-    fields: ["address_components", "formatted_address"],
+    fields: ["address_components"],
     //   strictBounds: false,
   };
   if (autocompleteInput.value) {
@@ -44,7 +44,16 @@ const setupAutocomplete = () => {
 
     autocomplete.addListener("place_changed", () => {
       const place = autocomplete.getPlace();
-      internalModelValue.value = place.formatted_address;
+      for (const component of place.address_components) {
+        const componentType = component.types[0];
+
+        if (componentType == "street_number") {
+          internalModelValue.value = component.long_name + " ";
+        }
+        if (componentType == "route") {
+          internalModelValue.value += component.long_name;
+        }
+      }
 
       emit("update:modelValue", internalModelValue.value);
       emit("callback", place);
