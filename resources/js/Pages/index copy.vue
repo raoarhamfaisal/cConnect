@@ -71,20 +71,11 @@ const submit = () => {
     <!-- bg-gray-200 -->
     <img
       src="/images/pages/bg_a_xl_white.jpg"
-      class="absolute object-cover w-full h-full mt-14"
+      class="absolute object-cover w-full h-full"
     />
     <!-- <div class="absolute inset-0 bg-black opacity-10"></div> -->
 
-    <header
-      class="absolute top-0 left-0 right-0 z-20 bg-blue-30-rgba"
-      style="
-        background-image: linear-gradient(
-          111.4deg,
-          rgba(27, 24, 113, 1) 6.5%,
-          rgba(7, 7, 9, 1) 100.2%
-        );
-      "
-    >
+    <header class="absolute top-0 left-0 right-0 z-20 bg-blue-30-rgba">
       <nav class="container max-w-7xl px-6 py-2 mx-auto md:px-12">
         <div class="flex items-center justify-between">
           <!-- LOGO -->
@@ -93,7 +84,7 @@ const submit = () => {
               href="/"
               class="text-2xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center"
             >
-              <tContractorWhite />
+              <tContractorWord />
             </Link>
           </div>
 
@@ -327,31 +318,22 @@ const submit = () => {
     <!-- Annoucement  -->
     <section>
       <div
-        class="container relative max-w-7xl z-10 flex items-center px-4 xs:px-6 pt-40 pb-5 mx-auto md:px-10 xl:py-30"
+        class="container relative max-w-7xl z-10 flex items-center px-4 xs:px-6 pt-32 pb-5 mx-auto md:px-10 xl:py-30"
       >
         <!-- Bow YOU Too **********************     -->
         <div
-          class="relative z-10 flex flex-col items-start min-[500px]:w-3/5 md:w-3/5 xl:w-2/5 bg-[#ccb19c] rounded-xl text-[#29231f] shadow-lg p-2 py-4 px-4"
-          style="
-            background: rgb(215, 150, 81);
-            background: linear-gradient(
-              90deg,
-              rgba(215, 150, 81, 1) 0%,
-              rgba(227, 218, 211, 1) 63%,
-              rgba(204, 177, 156, 1) 100%
-            );
-          "
+          class="relative z-10 flex flex-col items-start min-[500px]:w-3/5 md:w-3/5 xl:w-2/5 bg-blue-30-rgba rounded-xl border border-blue-rgba shadow-lg p-2 py-4 px-4"
         >
           <!-- LOGO -->
           <h2 class="sm:hidden text-4xl font-bold tracking-wide text-center">
             <tContractorWord></tContractorWord>
           </h2>
 
-          <span class="font-bold uppercase text-white">
+          <span class="font-bold text-slate-300 uppercase">
             Better Construction!
           </span>
           <h1
-            class="mt-4 text-4xl sm:text-5xl font-bold tracking-tighter capitalize"
+            class="mt-4 text-4xl sm:text-5xl font-bold text-white tracking-tighter capitalize"
           >
             Want access to the most powerful tool in construction?
           </h1>
@@ -398,24 +380,7 @@ const submit = () => {
     <!-- LOGIN & FEATURES SECTION  -->
     <section class="relative">
       <div
-        class="sm:container max-sm:w-full px-2 lg:max-w-4xl xl:max-w-7xl z-20 mx-auto mt-4 md:px-12 py-10 lg:px-8 bg-[#e5e7eb] text-gray-700 rounded-xl"
-        style="
-          background: #ada996; /* fallback for old browsers */
-          background: -webkit-linear-gradient(
-            to right,
-            #dbdbdb,
-            #eaeaea,
-            #f2f2f2,
-            #ada996
-          ); /* Chrome 10-25, Safari 5.1-6 */
-          background: linear-gradient(
-            to right,
-            #dbdbdb,
-            #eaeaea,
-            #f2f2f2,
-            #ada996
-          ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-        "
+        class="container lg:max-w-4xl xl:max-w-7xl z-20 mx-auto mt-4 md:px-12 py-10 sm:px-20 lg:px-8 bg-slate-30-rgba text-gray-700 rounded-xl"
       >
         <!-- WITHOUT LOG IN OPTION /  showit = true -->
         <div v-if="showit" class="max-w-lg">
@@ -428,11 +393,11 @@ const submit = () => {
           </h2>
 
           <p
-            class="mt-4 text-center text-3xl sm:text-4xl text-[#241e6d] font-extrabold"
+            class="mt-4 text-center text-3xl sm:text-4xl font-extrabold text-slate-900"
           >
             To Increase Your Bottom Line & Peace of Mind!
           </p>
-          <p class="mt-4 text-center text-2xl font-semibold">
+          <p class="mt-4 text-center text-2xl font-semibold text-gray-800">
             From Searching for Locally Vetted Sub-Contractors, to Finding Jobs,
             Getting Bids... <br />to Free Advertising.
           </p>
@@ -454,11 +419,11 @@ const submit = () => {
               </span>
             </h2>
             <p
-              class="mt-4 text-center text-3xl sm:text-4xl font-extrabold text-[#241e6d]"
+              class="mt-4 text-center text-3xl sm:text-4xl font-extrabold text-slate-900"
             >
               To Increase Your Bottom Line & Peace of Mind!
             </p>
-            <p class="mt-4 text-center text-2xl font-semibold">
+            <p class="mt-4 text-center text-2xl font-semibold text-gray-800">
               From Searching for Locally Vetted Sub-Contractors, to Finding
               Jobs, Getting Bids... <br />to Free Advertising.
             </p>
@@ -483,7 +448,6 @@ const submit = () => {
     </section>
 
     <!-- FEATURES SECTION  -->
-
     <section
       class="relative z-20 bg-white md:mt-24 lg:mt-28 xl:mt-32 2xl:mt-40"
       id="whytContractor"
@@ -492,7 +456,7 @@ const submit = () => {
     </section>
 
     <!-- CALL TO ACTION SECTION -->
-    <section id="cta" class="relative bg-[#073e53]">
+    <section id="cta" class="relative bg-red-600">
       <!-- CTA CONTAINER -->
       <div class="">
         <div
@@ -510,9 +474,8 @@ const submit = () => {
             </div>
             <div>
               <ul
-                class="capitalize text-xl font-semibold tracking-tighter text-[#b5c5cb] list-disc"
+                class="capitalize text-xl font-semibold tracking-tighter list-disc"
               >
-                <!-- a6b9b9 -->
                 <li>Locate subs to hire</li>
                 <li>Find local work & job bids</li>
                 <li>Be aware of whats up in your area!</li>
@@ -535,9 +498,7 @@ const submit = () => {
           <!-- right side or top -->
           <div class="flex flex-col justify-center">
             <div class="text-3xl text-black font-bold">
-              <p class="tracking-tight text-[#b5c5cb]">
-                Your Top Tool For Only
-              </p>
+              <p class="tracking-tight">Your Top Tool For Only</p>
             </div>
             <div class="flex flex-row justify-center">
               <div
@@ -545,13 +506,13 @@ const submit = () => {
               >
                 <span class="pt-10">$</span>
               </div>
-              <div class="price text-white">
+              <div class="price">
                 <span>29</span>
               </div>
               <div
                 class="flex text-xl justify-end items-end italic text-blue-rgba pb-10"
               >
-                <span class="text-[#b5c5cb]">/month</span>
+                <span>/month</span>
               </div>
             </div>
             <!-- Button Flex Item -->

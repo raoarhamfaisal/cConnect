@@ -34,6 +34,19 @@
           >
             Why tContractor
           </Link>
+          <!-- News Feed Button -->
+          <div v-if="showit && showNewsFeed">
+            <Link
+              :href="
+                profile && profile.is_payment_verified
+                  ? route('post')
+                  : '/profile-setup'
+              "
+              class="block flex justify-center items-center mx-2 p-3 px-6 font-bold rounded-xl text-white bg-green-600 hover:bg-green-800 border-green-600"
+            >
+              News Feed
+            </Link>
+          </div>
 
           <Link
             href="#"
@@ -224,6 +237,10 @@ defineProps({
   showSignUp: {
     type: Boolean,
     default: true,
+  },
+  showNewsFeed: {
+    type: Boolean,
+    default: false,
   },
 });
 

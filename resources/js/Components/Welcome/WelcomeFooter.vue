@@ -55,9 +55,13 @@
         </div>
         <!-- Second Menu List -->
         <div class="flex flex-col space-y-3 text-white">
-          <a href="#" class="hover:text-blue-400"> Careers</a>
-          <a href="#" class="hover:text-blue-400"> Terms of Service</a>
-          <a href="#" class="hover:text-blue-400"> Privacy Policy</a>
+          <a href="/careers" class="hover:text-blue-400"> Careers</a>
+          <a href="/terms-of-service" class="hover:text-blue-400">
+            Terms of Service</a
+          >
+          <a href="/privacy-policy" class="hover:text-blue-400">
+            Privacy Policy</a
+          >
         </div>
       </div>
 

@@ -94,9 +94,7 @@
           <StarRounded
             @click="openContractorRatingDialog"
             :starWidth="screenWidth > 768 ? 18 : 15"
-            :class="`h-6 cursor-pointer ${
-              user?.id === profile?.user_id ? 'pointer-events-none' : ''
-            }`"
+            :class="`h-6 cursor-pointer`"
             :indicatorClasses="`text-small h-6 `"
             :starHeight="screenWidth > 768 ? 18 : 15"
             :rating="

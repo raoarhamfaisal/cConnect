@@ -32,6 +32,23 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/contractor/{contractor_id}', [ContractorPageController::class, 'live'])->name('ratings.contractor.index');
+Route::get('/careers', function () {
+    return Inertia::render('Careers', [
+        'showit' => Auth::check(),
+    ]);
+});
+Route::get('/terms-of-service', function () {
+    return Inertia::render('TermsAndServices', [
+        'showit' => Auth::check(),
+    ]);
+});
+
+Route::get('/privacy-policy', function () {
+    return Inertia::render('PrivacyPolicy', [
+        'showit' => Auth::check(),
+    ]);
+});
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
 

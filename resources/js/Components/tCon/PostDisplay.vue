@@ -206,25 +206,16 @@ export default {
           <div class="">
             <img src="/images/icons/pre-diamond.png" width="20" height="30" />
           </div>
-          <!-- ratings & how many -->
-          <!-- <div class="flex flex-col justify-center items-center">
-            <div class="">
-              <img src="/images/icons/Stars4_icon.png" width="40" height="40" />
-            </div>
-            <div class="">
-              <h2 class="font-light text-xs overflow-hidden tracking-tighter">
-                5555
-              </h2>
-            </div>
-          </div> -->
+
+          <!-- ${
+              user.id === post.user_id ? 'pointer-events-none' : ''
+            } -->
           <div class="flex flex-col justify-center items-center">
             <StarRounded
               @click="openDialog"
               :starWidth="15"
-              :class="`h-4 cursor-pointer ${
-                user.id === post.user_id ? 'pointer-events-none' : ''
-              }`"
               indicatorClasses="text-small h-4"
+              :class="`h-4 cursor-pointer `"
               :starHeight="15"
               :rating="
                 Number(
