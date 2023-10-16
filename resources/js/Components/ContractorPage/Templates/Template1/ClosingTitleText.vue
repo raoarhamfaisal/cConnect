@@ -1,11 +1,14 @@
 <template>
   <!-- Display Saved Text -->
-  <div v-if="closingText" :class="` flex gap-1 flex-col rounded-lg closing `">
+  <div
+    v-if="closingText"
+    :class="`mt-1 flex gap-1 flex-col rounded-lg closing w-full max-w-[1400px] mx-auto`"
+  >
     <!-- :class="`mt-1 flex gap-1 flex-col border-gray-300 border-2 p-3 rounded-lg closing`" -->
 
     <div class="default" v-html="closingText"></div>
   </div>
-  <div class="flex justify-end gap-1">
+  <!-- <div class="flex justify-end gap-1">
     <Link
       class="rounded-full"
       v-if="userId === loggedInUserId"
@@ -40,7 +43,7 @@
     >
       Link Copied to Clipboard
     </v-snackbar>
-  </div>
+  </div> -->
 </template>
 
 <script setup>

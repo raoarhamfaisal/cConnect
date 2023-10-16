@@ -5,66 +5,119 @@
     :style="{
       color: selectedColorScheme[2],
     }"
-    class="flex gap-4 flex-col"
+    class="flex flex-col text-[#2d2c2b]"
   >
     <div v-for="(section, index) in sections" :key="section.id">
       <!-- class="rounded-md border relative border-gray-300 p-2 sm:p-2" -->
       <!-- Only Text -->
       <div
+        class="bg-[#f8f8f8] py-20"
         v-if="!section.section_image && section.section_text"
-        class="w-full p-4 md:p-6 text-xl md:text-2xl font-bold md:font-extrabold text-xl md:text-3xl font-bold md:font-extrabold text-center"
       >
-        {{ section.section_text }}
+        <div
+          class="w-full p-4 md:p-6 font-bold md:font-extrabold text-xl md:text-3xl font-bold md:font-extrabold text-center w-full max-w-[1400px] mx-auto"
+        >
+          {{ section.section_text }}
+        </div>
       </div>
-
       <!-- Only Image -->
       <div
         v-if="section.section_image && !section.section_text"
-        class="w-full h-full bg-[#222] rounded-md"
+        class="w-full h-full bg-[#2d2c2b] py-20 rounded-md"
       >
         <img
           @click="openImage(section.section_image)"
           :src="section.section_image"
           alt="Section Image"
-          class="object-cover w-full rounded-md"
+          class="object-cover w-full max-w-[1400px] mx-auto"
         />
       </div>
       <!-- For even items -->
+
       <div
+        class="bg-[#f8f8f8] py-20 overflow-hidden"
+        v-intersect="{
+          handler: () => showAnimcation(index),
+          options: {
+            threshold: [0, 0.5, 1.0],
+          },
+        }"
         v-if="section.section_image && section.section_text && index % 2 !== 0"
-        class="flex max-md:flex-col gap-2 md:gap-4 items-center"
       >
         <div
-          class="w-full md:w-2/5 text-xl md:text-3xl font-bold md:font-extrabold md:w-2/5 text-xl md:text-3xl font-bold md:font-extrabold text-center"
+          class="flex max-md:flex-col gap-2 md:gap-4 items-center max-w-[1400px] mx-auto w-full"
         >
-          {{ section.section_text }}
-        </div>
-        <div class="relative w-full md:w-3/5 h-3/5 bg-[#222] rounded-md">
-          <img
-            @click="openImage(section.section_image)"
-            :src="section.section_image"
-            alt="Section Image"
-            class="object-cover w-full rounded-md"
-          />
+          <!-- Text coming from the bottom -->
+          <div
+            class="w-full md:w-2/5 text-xl md:text-3xl font-bold md:font-extrabold md:w-2/5 text-xl md:text-3xl font-bold md:font-extrabold text-left text-[#2d2c2b] duration-700 transition-all"
+            :class="{
+              'translate-y-0': isSectionVisible[index],
+              'translate-y-[600px]': !isSectionVisible[index],
+            }"
+          >
+            {{ section.section_text }}
+          </div>
+          <!-- Image filling from right to left -->
+          <div
+            class="relative w-full md:w-3/5 h-3/5 bg-[#222] rounded-md overflow-hidden transition-all duration-1000 transitioning"
+            :class="{
+              reveal: isSectionVisible[index],
+            }"
+          >
+            <img
+              @click="openImage(section.section_image)"
+              :src="section.section_image"
+              alt="Section Image"
+              class="object-cover w-full rounded-md"
+            />
+          </div>
         </div>
       </div>
 
-      <!-- For odd items -->
+      <!-- <div
+        class="bg-[#f8f8f8] py-20"
+        v-if="section.section_image && section.section_text && index % 2 !== 0"
+      >
+        <div
+          class="flex max-md:flex-col gap-2 md:gap-4 items-center max-w-[1400px] mx-auto w-full"
+        >
+ 
+            <div
+              class="w-full md:w-2/5 text-xl md:text-3xl font-bold md:font-extrabold md:w-2/5 text-xl md:text-3xl font-bold md:font-extrabold text-left text-[#2d2c2b]"
+            >
+              {{ section.section_text }}
+            </div>
+    
+
+          <div class="relative w-full md:w-3/5 h-3/5 bg-[#222] rounded-md">
+            <img
+              @click="openImage(section.section_image)"
+              :src="section.section_image"
+              alt="Section Image"
+              class="object-cover w-full rounded-md"
+            />
+          </div>
+        </div>
+      </div> -->
+      <!-- For odd items overlayed -->
       <div
         v-if="section.section_image && section.section_text && index % 2 === 0"
-        class="relative"
         @click="openImage(section.section_image)"
+        class="bg-[#2d2c2b] py-20 relative"
       >
         <img
+          class="max-w-[1400px] mx-auto w-full object-cover w-full rounded-md"
           :src="section.section_image"
           alt="Section Image"
-          class="object-cover w-full rounded-md"
         />
         <div class="absolute inset-0 flex justify-center items-center">
           <span
             :style="{
               color: '#fff',
               backgroundColor: '#000000' + '80',
+
+              // textShadow:
+              //   '0px 0px 15px #000000, -1px -1px 15px #000000, 1px -1px 15px #000000, -1px 1px 15px #000000, 1px 1px 15px #000000',
             }"
             class="text-center text-xl md:text-3xl font-bold md:font-extrabold text-xl md:text-3xl font-bold md:font-extrabold bg-opacity-50 p-2 rounded"
           >
@@ -95,7 +148,7 @@ import { Icon } from "@iconify/vue";
 
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 
-import { computed, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { template1Default } from "@/helpers/templateDefaults";
 
 import { useStore } from "vuex";
@@ -123,6 +176,15 @@ const selectedColorScheme = computed(
   () => store.state.contractor.selectedColorScheme || template1Default
 );
 
+const isSectionVisible = ref(Array(sections.value.length).fill(false));
+const observeTarget = ref();
+
+const showAnimcation = (index) => {
+  if (window.scrollY > 100) {
+    console.log("in animation for section:", index);
+    isSectionVisible.value[index] = true;
+  }
+};
 // Methods
 
 const openImage = (imageSrc) => {
@@ -131,3 +193,21 @@ const openImage = (imageSrc) => {
   imageIncDialogRef.value.openDialog();
 };
 </script>
+<style scoped>
+@keyframes revealAnimation {
+  from {
+    clip-path: inset(0 0 0 100%);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.reveal {
+  animation: revealAnimation 1s forwards;
+}
+
+.transitioning {
+  transition: all 1.5s;
+}
+</style>

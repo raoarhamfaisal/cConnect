@@ -1,11 +1,10 @@
 <template>
   <div v-if="profile">
-    <div class="flex flex-col gap-3 sm:gap-4">
-      <Card
-        :shadowLevel="2"
-        :bgColor="selectedColorScheme[1]"
-        :padding="screenWidth < 640 ? '7px' : '15px'"
-      >
+    <!-- '#f8f8f8'  -->
+    <!-- "'#c78b22'" -->
+    <!-- #2d2c2b text color -->
+    <div class="flex flex-col">
+      <div class="max-w-[1400px] mx-auto w-full pb-8">
         <ProfileHeader
           :screenWidth="screenWidth"
           :loggedInUserId="loggedInUserId"
@@ -13,44 +12,37 @@
           :total_reviews="total_reviews"
           :profile="profile"
         />
-      </Card>
+      </div>
 
-      <Card
-        :shadowLevel="2"
-        :bgColor="selectedColorScheme[1]"
-        :padding="screenWidth < 640 ? '7px' : '20px'"
-        v-if="profile.image_sections && profile.image_sections.length > 0"
-      >
+      <div v-if="profile.image_sections && profile.image_sections.length > 0">
         <ImageTextSection
           :image_sections="profile.image_sections"
           :contractor-id="profile.id"
           :screen-width="screenWidth"
         />
-      </Card>
-      <Card
-        :shadowLevel="2"
-        :bgColor="selectedColorScheme[1]"
-        :padding="screenWidth < 640 ? '7px' : '20px'"
+      </div>
+
+      <div
         v-if="profile.bottom_text"
+        class="bg-[#f8f2e8] py-20"
+        :style="{
+          color: '#2d2c2b',
+        }"
       >
-        <div
-          :style="{
-            color: selectedColorScheme[2],
-          }"
-        >
-          <BottomTitleText
-            :bottom_text="profile.bottom_text"
-            :screen-width="screenWidth"
-          />
-        </div>
-      </Card>
-      <div class="flex flex-col md:flex-row gap-2 items-stretch">
+        <BottomTitleText
+          :bottom_text="profile.bottom_text"
+          :screen-width="screenWidth"
+        />
+      </div>
+      <div
+        class="flex flex-col md:flex-row gap-2 items-stretch max-w-[1400px] mx-auto w-full py-20"
+      >
         <Card
           :shadowLevel="2"
           cardInnerClasses="h-full"
           :bgColor="selectedColorScheme[1]"
           :isInside="true"
-          class="sm:pl-6 md:pl-6 sm:pl-2 lg:pl-8 h-auto md:w-3/5"
+          class="h-auto md:w-3/5"
           :padding="screenWidth < 640 ? '7px' : '20px'"
         >
           <AdditionalInfoSection
@@ -64,7 +56,7 @@
           :bgColor="selectedColorScheme[1]"
           cardInnerClasses="h-full"
           :isInside="true"
-          class="sm:pr-6 md:pr-6 sm:pr-2 lg:pr-8 h-auto md:w-2/5"
+          class="h-auto md:w-2/5"
           :padding="screenWidth < 640 ? '7px' : '20px'"
         >
           <RegionTradeSection
@@ -75,29 +67,19 @@
         </Card>
       </div>
 
-      <Card
-        :shadowLevel="2"
-        :bgColor="selectedColorScheme[1]"
-        :padding="screenWidth < 640 ? '7px' : '20px'"
-        v-if="profile.brag_sections && profile.brag_sections.length > 0"
-      >
+      <div v-if="profile.brag_sections && profile.brag_sections.length > 0">
         <BragSection
           :brag_sections="profile.brag_sections"
           :contractor-id="profile.id"
           :screen-width="screenWidth"
         />
-      </Card>
+      </div>
       <!-- Image Selection -->
-      <Card
-        :shadowLevel="2"
-        :bgColor="selectedColorScheme[1]"
-        :padding="screenWidth < 640 ? '7px' : '20px'"
-        v-if="profile.bottom_text || profile.closing_text"
-      >
+      <div v-if="profile.bottom_text || profile.closing_text">
         <div
-          class="flex gap-2 flex-col"
+          class="flex gap-2 flex-col bg-[#f8f2e8] py-20"
           :style="{
-            color: selectedColorScheme[2],
+            color: '#2d2c2b',
           }"
         >
           <ClosingTitleText
@@ -107,7 +89,7 @@
             :screen-width="screenWidth"
           />
         </div>
-      </Card>
+      </div>
     </div>
   </div>
 </template>

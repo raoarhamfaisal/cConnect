@@ -31,6 +31,7 @@ const vuetify = createVuetify({
   components: {
     VStepper,
     VSkeletonLoader,
+
     VStepperWindow,
     VTooltip,
     VLazy,
