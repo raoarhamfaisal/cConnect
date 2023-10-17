@@ -2,9 +2,10 @@
   <div v-if="profile">
     <!-- '#f8f8f8'  -->
     <!-- "'#c78b22'" -->
+    <!-- #4169E1 -->
     <!-- #2d2c2b text color -->
-    <div class="flex flex-col">
-      <div class="max-w-[1400px] mx-auto w-full pb-8">
+    <div class="flex flex-col" v-if="profile">
+      <div class="">
         <ProfileHeader
           :screenWidth="screenWidth"
           :loggedInUserId="loggedInUserId"
@@ -24,7 +25,7 @@
 
       <div
         v-if="profile.bottom_text"
-        class="bg-[#f8f2e8] py-20"
+        class="bg-[#f8f2e8] py-10 sm:py-20 overflow-hidden"
         :style="{
           color: '#2d2c2b',
         }"
@@ -35,7 +36,7 @@
         />
       </div>
       <div
-        class="flex flex-col md:flex-row gap-2 items-stretch max-w-[1400px] mx-auto w-full py-20"
+        class="flex flex-col md:flex-row gap-2 items-stretch max-w-[1400px] px-3 sm:px-10 mx-auto w-full py-10 sm:py-20"
       >
         <Card
           :shadowLevel="2"
@@ -77,7 +78,7 @@
       <!-- Image Selection -->
       <div v-if="profile.bottom_text || profile.closing_text">
         <div
-          class="flex gap-2 flex-col bg-[#f8f2e8] py-20"
+          class="flex gap-2 overflow-hidden flex-col bg-[#f8f2e8] py-10 sm:py-20"
           :style="{
             color: '#2d2c2b',
           }"

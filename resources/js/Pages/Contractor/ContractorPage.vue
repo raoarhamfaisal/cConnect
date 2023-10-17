@@ -2,17 +2,36 @@
   <Head title="Contractor Page" />
 
   <div
-    class="pt-2 sm:pt-8 sm:pt-8"
+    class=""
+    v-if="!loading && selectedTemplate === 1"
     :style="{
       backgroundColor: selectedColorScheme[0] ? '#fff' : '#e5e7eb',
     }"
-    v-if="!loading"
   >
     <!-- :style="{
       backgroundColor: selectedColorScheme[0]
         ? selectedColorScheme[0]
         : '#e5e7eb',
     }" -->
+    <ContractorLayout
+      :profile="contractorProfile"
+      :loggedInUserId="profile?.user_id"
+      :templateList="templateList"
+      :average_rating="average_rating"
+      :starPercentages="starPercentages"
+      :total_reviews="total_reviews"
+      :region_name="region_name"
+    />
+  </div>
+  <div
+    class="pt-2 sm:pt-8 sm:pt-8 max-w-[1400px] mx-auto w-full"
+    v-if="!loading && selectedTemplate !== 1"
+    :style="{
+      backgroundColor: selectedColorScheme[0]
+        ? selectedColorScheme[0]
+        : '#e5e7eb',
+    }"
+  >
     <ContractorLayout
       :profile="contractorProfile"
       :loggedInUserId="profile?.user_id"
@@ -61,6 +80,9 @@ onMounted(() => {
 });
 
 //Computed
+const selectedTemplate = computed(
+  () => store.state.contractor.selectedTemplate
+);
 const selectedColorScheme = computed(
   () => store.state.contractor.selectedColorScheme || template1Default
 );
