@@ -502,7 +502,7 @@ onMounted(() => {
     </section>
 
     <!-- CALL TO ACTION SECTION -->
-    <section id="cta" class="relative bg-[#073e53]">
+    <section id="cta" class="relative bg-[#16a34a] text-[#073116]">
       <!-- CTA CONTAINER -->
       <div class="">
         <div
@@ -520,7 +520,7 @@ onMounted(() => {
             </div>
             <div>
               <ul
-                class="capitalize text-xl font-semibold tracking-tighter text-[#b5c5cb] list-disc"
+                class="capitalize text-xl font-semibold tracking-tighter text-[#] list-disc"
               >
                 <!-- a6b9b9 -->
                 <li>Locate subs to hire</li>
@@ -544,10 +544,8 @@ onMounted(() => {
 
           <!-- right side or top -->
           <div class="flex flex-col justify-center">
-            <div class="text-3xl text-black font-bold">
-              <p class="tracking-tight text-[#b5c5cb]">
-                Your Top Tool For Only
-              </p>
+            <div class="text-3xl text-[#073116] font-bold">
+              <p class="tracking-tight">Your Top Tool For Only</p>
             </div>
             <div class="flex flex-row justify-center">
               <div
@@ -561,7 +559,7 @@ onMounted(() => {
               <div
                 class="flex text-xl justify-end items-end italic text-blue-rgba pb-10"
               >
-                <span class="text-[#b5c5cb]">/month</span>
+                <span class="text-[#073116]">/month</span>
               </div>
             </div>
             <!-- Button Flex Item -->
