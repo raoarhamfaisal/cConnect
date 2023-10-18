@@ -255,31 +255,18 @@ const truncatedName = computed(() => {
 
           <Link
             v-if="isAdminUrl"
-            href="/admin/regions/contractors"
+            href="/admin"
             class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
           >
             <Icon
-              icon="ion:person-sharp"
+              icon="clarity:administrator-solid"
               color="#1098ad"
               width="20"
               height="20"
             />
-            <span class="mx-4 font-medium">All Contractors</span>
+            <span class="mx-4 font-medium">Admin</span>
           </Link>
-          <!-- DropDown: Appeal Review -->
-          <Link
-            v-if="isAdminUrl"
-            href="/admin/regions/appealed"
-            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
-          >
-            <Icon
-              icon="fluent-mdl2:review-request-solid"
-              color="#1098ad"
-              width="20"
-              height="20"
-            />
-            <span class="mx-4 font-medium">Appealed Reviews</span>
-          </Link>
+
           <div v-if="isAdminUrl" class="pt-1 border-t-2 border-gray-400"></div>
           <!-- DropDown: LOGOUT -->
           <button
