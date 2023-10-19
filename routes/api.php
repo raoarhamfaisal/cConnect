@@ -7,11 +7,13 @@ use App\Http\Controllers\ContractorProfileController;
 use App\Http\Controllers\ContractorPageController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\AdminUsersController;
 use App\Http\Controllers\ImageSectionController;
 use App\Http\Controllers\BragSectionController;
 use App\Http\Controllers\ReviewResponseController;
 use App\Http\Controllers\ContractorRatingsAdminController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+
 
 
 /*
@@ -115,8 +117,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         Route::patch('/review-responses', [ReviewResponseController::class, 'update']);
         Route::delete('/review-responses/{reviewResponse}', [ReviewResponseController::class, 'destroy']);
         
+        // Your admin-specific routes here
         Route::middleware('admin')->group(function () {
-            // Your admin-specific routes here
             Route::get('/admin/all-contractors', [ReviewController::class, 'getContractorProfiles'])->name('review.allContractors');
             Route::get('/admin/reviews/{contractor_id}', [ReviewController::class, 'contractorAllReviews'])->name('review.contractorAllReviews');
             Route::get('/admin/{region}/search-contractor', [ContractorRatingsAdminController::class, 'searchContractor']);
@@ -142,8 +144,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
             Route::get('/admin/reviews/{id}/history', [ContractorRatingsAdminController::class, 'reviewsHistory']);
         
             Route::get('/admin/responses/{id}/history', [ContractorRatingsAdminController::class, 'responsesHistory']);
+
+
+        });
+
+
+        // User Functions
+        // Only Users having users_privileges are allowed
+        Route::middleware('admin-with-users-privileges')->group(function () {
+            
+        });
     });
-});
+    
+    Route::get('/admin/users/{regionId}/all', [AdminUsersController::class, 'getAllUsersOfARegion']);
+    Route::post('/admin/users/{userId}', [AdminUsersController::class, 'updateProfile']);
 
 
     
