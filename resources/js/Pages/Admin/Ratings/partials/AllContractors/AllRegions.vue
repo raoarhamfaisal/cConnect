@@ -5,20 +5,12 @@
       bgColor="white"
       :padding="screenWidth < 640 ? '7px' : '20px'"
     >
-      <PageTitle
-        linkUrl="/post"
-        :pageTitle="
-          !isAllContractorPage
-            ? 'Appealed Reviews -> All Regions'
-            : 'All Contractors -> All Regions'
-        "
-      />
+      <PageTitle linkUrl="/admin" :pageTitle="pageTitle" />
       <heading-card
         heading="Select Your Region"
-        class="ml-4 mb-12"
+        class="ml-4 mb-8"
         style="color: #555"
       />
-
       <div
         class="flex flex-col pl-4"
         v-if="allRegions && !loading && allRegions.length > 0"
@@ -26,16 +18,14 @@
         <Link
           v-for="(region, index) in allRegions"
           :key="index"
-          :href="`/admin/regions/${region.id}/${
-            isAllContractorPage ? 'contractors' : 'appealed'
-          }`"
+          :href="`/admin/regions/${region.id}/${link}`"
           class="hover:bg-[#f8f9fa] hover:rounded flex gap-2 items-center px-2 py-4"
         >
           <Icon icon="mdi:location" color="#241e6d" class="w-8 h-8" />
           {{ region.name }}
         </Link>
       </div>
-      <div v-if="allRegions.length === 0">
+      <div v-if="allRegions.length === 0 && !loading">
         <div
           class="p-2 text-xl text-grey-600 font-bold h-60 flex items-center justify-center"
         >
@@ -59,24 +49,30 @@ import PageTitle from "@/Components/PageTitle.vue";
 import { Icon } from "@iconify/vue";
 
 defineProps({
-  isAllContractorPage: {
-    type: Boolean,
-    default: false,
+  pageTitle: {
+    type: String,
+    required: true,
+  },
+  link: {
+    type: String,
+    required: true,
   },
 });
+
 // States
 const store = useStore();
 
-//Computed
-
+// Computed
 const loading = computed(() => store.state.ratings.loading);
 const screenWidth = computed(() => store.getters.screenWidth);
 const allRegions = computed(() => store.state.ratings.allRegions);
-//on Mounted
+
+// onMounted
 onMounted(() => {
   fetchContractors();
 });
-//Methods
+
+// Methods
 const fetchContractors = async (page = 1) => {
   await store.dispatch("ratings/getRegions");
 };

@@ -6,10 +6,10 @@
     :profile="profile"
     :post-search-filters="postSearchFilters"
     :showit="showit"
-    :show-post-buttons="true"
+    :show-post-buttons="false"
     color="rgb(229 231 235 / var(--tw-bg-opacity))"
   >
-    <AllRegions pageTitle="All Contractors -> All Regions" link="contractors" />
+    <AllRegions pageTitle="User Functions -> All Regions" link="users" />
   </Header>
 </template>
 

@@ -66,13 +66,18 @@
         v-if="user.users_privileges"
       >
         <summary class="accordion-heading flex items-center">
-          <Icon
-            icon="ion:person-sharp"
-            color="#364fc7"
-            width="30"
-            height="30"
-          />
-          <span class="mx-4">User Functions</span>
+          <Link
+            class="flex items-center text-gray-600 transition-colors duration-300 transform rounded-lg"
+            href="/admin/regions/users"
+          >
+            <Icon
+              icon="ion:person-sharp"
+              color="#364fc7"
+              width="30"
+              height="30"
+            />
+            <span class="mx-4">User Functions</span>
+          </Link>
         </summary>
 
         <!-- Links for User Functions go here... -->
@@ -85,8 +90,18 @@
         :open="isOpen"
       >
         <summary class="accordion-heading flex items-center">
-          <Icon icon="ion:card-sharp" color="#364fc7" width="30" height="30" />
-          <span class="mx-4">Payment Info</span>
+          <Link
+            class="flex items-center text-gray-600 transition-colors duration-300 transform rounded-lg"
+            href="/admin/regions/appealed"
+          >
+            <Icon
+              icon="ion:card-sharp"
+              color="#364fc7"
+              width="30"
+              height="30"
+            />
+            <span class="mx-4">Payment Info</span>
+          </Link>
         </summary>
 
         <!-- Links for Payment Info go here... -->

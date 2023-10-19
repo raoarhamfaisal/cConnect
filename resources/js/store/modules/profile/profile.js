@@ -133,6 +133,7 @@ export default {
         commit("setLoading", false);
       }
     },
+
     async updateProfileSetupTrades({ commit }, form) {
       commit("setLoading", true);
 

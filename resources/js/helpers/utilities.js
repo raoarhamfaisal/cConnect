@@ -15,6 +15,18 @@ export const filterBadWords = (textRef) => {
   return (textRef.value = filteredWords.join(" "));
 };
 
+export const filterBadWordsWithoutValue = (textRef) => {
+  const words = textRef.split(" ");
+  const filteredWords = words.map((word) => {
+    if (badWords.has(word.toLowerCase())) {
+      return "*".repeat(word.length);
+    }
+    return word;
+  });
+
+  return (textRef = filteredWords.join(" "));
+};
+
 export const changesSaved = (
   notificationMessage = "Changes Successfully Saved!",
   changeWidth = 300,
@@ -34,14 +46,15 @@ export const changesSaved = (
 
 export const somethingWentWrong = (
   notificationMessage = "Sorry Something Went wrong",
-  changeWidth = 300
+  changeWidth = 300,
+  timer = 2000
 ) => {
   Swal.fire({
     background: "#fe5151",
     html: ` <div class="flex items-center flex-col justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"><path fill="#fff" d="M11.001 10h2v5h-2zM11 16h2v2h-2z"/><path fill="#fff" d="M13.768 4.2C13.42 3.545 12.742 3.138 12 3.138s-1.42.407-1.768 1.063L2.894 18.064a1.986 1.986 0 0 0 .054 1.968A1.984 1.984 0 0 0 4.661 21h14.678c.708 0 1.349-.362 1.714-.968a1.989 1.989 0 0 0 .054-1.968L13.768 4.2zM4.661 19L12 5.137L19.344 19H4.661z"/></svg><div style="color:#fff; font-family: Inter, sans-serif; font-weight:normal;white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" class="text-sm pb-2">${notificationMessage}</div></div>`,
     position: "top-end",
     showConfirmButton: false,
-    timer: 2000,
+    timer: timer,
     padding: 10,
     width: changeWidth,
   });

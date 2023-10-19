@@ -188,10 +188,10 @@ import SelectProfile from "@/Components/SelectProfile.vue";
 import UserAvatar from "@/Pages/Profile/components/UserAvatar.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
+import TextInput from "@/Components/TextInput.vue";
 import StarRating from "@/Components/Ratings/StarRating.vue";
 import { stateList } from "@/helpers/selectListsHelpters";
 
-import TextInput from "@/Components/TextInput.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 
 import Card from "@/Components/Card.vue";

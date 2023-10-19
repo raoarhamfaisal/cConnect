@@ -126,7 +126,6 @@ export default {
       }
     },
     profile(newVal, oldVal) {
-      console.log("newVAl", this.profile);
       this.postFormObject.user_id =
         (this.profile && this.profile.user_id) || null;
     },
@@ -141,7 +140,7 @@ export default {
     }
     this.paymentCompleted = this.user_profile.is_payment_verified;
     const user = usePage().props.value;
-    console.log(user, "user", this.url);
+
     if (
       this.user_profile &&
       !this.user_profile.is_payment_verified &&

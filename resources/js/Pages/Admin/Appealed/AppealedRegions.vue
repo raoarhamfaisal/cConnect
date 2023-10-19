@@ -9,11 +9,11 @@
     :show-post-buttons="true"
     color="rgb(229 231 235 / var(--tw-bg-opacity))"
   >
-    <AllRegions />
+    <AllRegions pageTitle="Appealed Reviews -> All Regions" link="appealed" />
   </Header>
 </template>
-  
-  <script setup>
+
+<script setup>
 import Header from "@/Layouts/Header.vue";
 import AllRegions from "@/Pages/Admin/Ratings/partials/AllContractors/AllRegions.vue";
 
