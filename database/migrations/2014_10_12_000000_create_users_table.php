@@ -24,6 +24,10 @@ return new class extends Migration
             $table->boolean('appeals_privileges')->default(0);
             $table->boolean('users_privileges')->default(0);
             $table->boolean('payments_privileges')->default(0);
+            $table->string('authorize_id')->nullable();
+            $table->string('authorize_payment_id')->nullable();
+            $table->string('card_brand')->nullable();
+            $table->string('card_last_four')->nullable();            
             $table->rememberToken();
             $table->timestamps();
         });

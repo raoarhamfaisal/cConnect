@@ -49,6 +49,15 @@ class PostController extends Controller
             $userTradeIds = SessionTrade::where('profile_id', $profile->id)->pluck('trade_id')->toArray();        
         }
 
+        if(!$sessionViewSettings) {
+            $sessionViewSettings = $sessionViewSettings ?: new \stdClass();
+            $sessionViewSettings->view_locale = 1;
+            $sessionViewSettings->view_regional = 0;
+            $sessionViewSettings->view_statewide = 0;
+            $sessionViewSettings->view_nationwide = 0;
+            $sessionViewSettings->view_following = 0;
+        }
+
         // $posts = Post::query()
         // ->with(['trades'])
         // ->whereHas('trades', function ($query) use ($userTradeIds) {
