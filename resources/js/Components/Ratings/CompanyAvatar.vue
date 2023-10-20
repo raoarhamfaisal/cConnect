@@ -34,14 +34,14 @@ watch(
   >
     <img
       v-if="imageSrc && !imageFailed"
-      :class="`object-cover w-full ${imageClass} h-full rounded-full`"
+      :class="`object-cover w-full ${imageClass} h-full rounded `"
       :src="imageSrc"
       alt="avatar"
       @error="handleImageError"
     />
     <div
       v-else
-      class="object-cover w-full h-full rounded-full flex items-center justify-center bg-gray-400"
+      :class="`object-cover w-full ${imageClass} h-full rounded flex items-center justify-center bg-gray-400`"
     >
       <Icon icon="fluent-mdl2:contact" color="white" width="24" />
     </div>
@@ -49,7 +49,7 @@ watch(
 </template>
 <style scoped>
 .companyLogo {
-  width: 7rem;
+  width: 8rem;
   height: 4rem;
 }
 </style>

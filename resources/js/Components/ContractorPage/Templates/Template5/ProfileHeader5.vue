@@ -26,7 +26,7 @@
     >
       <!-- Company Logo -->
       <div v-if="profile.company_logo" class="mr-4 flex-none">
-        <Avatar
+        <CompanyAvatar
           imageClass="companyLogo"
           :imageSrc="`/${profile.company_logo}`"
         />
@@ -203,7 +203,7 @@ import StarRounded from "@/Components/Ratings/StarRounded.vue";
 import DialogContractorRating from "@/Components/Ratings/Contractor/DialogContractorRating.vue";
 import DialogContractorPosts from "@/Components/Postings/DialogContractorPosts.vue";
 
-import Avatar from "@/Components/Ratings/Avatar.vue";
+import CompanyAvatar from "@/Components/Ratings/CompanyAvatar.vue";
 import { Icon } from "@iconify/vue";
 
 import { computed, ref } from "vue";

@@ -9,7 +9,7 @@ import SelectProfile from "@/Components/SelectProfile.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 
 import Badge from "@/Components/Ratings/Badge.vue";
-
+import DecoupledEditor from "@ckeditor/ckeditor5-build-decoupled-document";
 import Loader from "@/Components/Ratings/Loader.vue";
 
 // additional required plugins
@@ -29,6 +29,7 @@ import "filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css";
 import { mapGetters } from "vuex";
 import { ref } from "vue";
 import { options } from "@/helpers/selectListsHelpters.js";
+import { toolbarConfigPost } from "@/helpers/utilities";
 
 const FilePond = VueFilePond(
   FilePondPluginImageExifOrientation,
@@ -45,6 +46,7 @@ export default {
     FilePond,
     Loader,
     InputLabel,
+    DecoupledEditor,
     InputError,
     SelectProfile,
     CustomDialog,
@@ -70,6 +72,9 @@ export default {
       isUploading: false,
       referenceList: ref([]),
       selectedReferal: ref(""),
+      editor: DecoupledEditor,
+      editorData: "<p>Enter your top text</p>",
+      editorConfig: toolbarConfigPost,
       selectedItems: null,
       tradesPost: {
         trade1: false,
@@ -123,7 +128,7 @@ export default {
     success(newVal) {
       if (newVal) {
         this.form.title = "";
-        this.form.body1 = "";
+        this.form.body1 = "<p>Enter your top text</p>";
         this.form.body2 = "";
         this.myFiles = [];
         this.form.image = "";
@@ -263,6 +268,15 @@ export default {
     handleSubmit() {
       this.$refs.tradeDialogRef.closeDialog();
     },
+    onReady(editor) {
+      // Insert the toolbar before the editable area.
+      editor.ui
+        .getEditableElement()
+        .parentElement.insertBefore(
+          editor.ui.view.toolbar.element,
+          editor.ui.getEditableElement()
+        );
+    },
   },
 };
 
@@ -375,19 +389,26 @@ Array.prototype.remove = function () {
               </div>
 
               <!-- TOP TEXT -->
-              <div class="mb-4">
+              <div class="mb-4 closing">
                 <label
                   for="formPostbody1"
                   class="block text-gray-700 text-sm font-bold mb-2"
                   >Top text (required):
                 </label>
-                <input
+                <ckeditor
+                  class="default"
+                  @ready="onReady"
+                  :editor="editor"
+                  v-model="form.body1"
+                  :config="editorConfig"
+                ></ckeditor>
+                <!-- <input
                   type="text"
                   v-model="form.body1"
                   class="w-full py-2 px-3 shadow appearance-none text-gray-900 font-semibold border rounded border-gray-600 leading-tight focus:outline-none focus:shadow-outline placeholder:italic placeholder:text-slate-500"
                   id="formPostbody1"
                   placeholder="Top text..."
-                />
+                /> -->
                 <div v-if="$page.props.errors.body1" class="text-red-500">
                   {{ $page.props.errors.body1 }}
                 </div>
@@ -398,7 +419,7 @@ Array.prototype.remove = function () {
                 <label
                   for="formPostImage"
                   class="block text-gray-700 text-sm font-bold mb-2"
-                  >Image (max 6):
+                  >Image (max 10):
                 </label>
 
                 <file-pond

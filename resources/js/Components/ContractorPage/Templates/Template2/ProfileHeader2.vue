@@ -23,7 +23,7 @@
     <div :class="`${screenWidth > 768 ? 'w-3/4' : 'w-4/5'}`">
       <!-- Company Logo -->
       <div v-if="profile.company_logo" class="flex justify-center mb-3">
-        <Avatar
+        <CompanyAvatar
           imageClass="companyLogo"
           :imageSrc="`/${profile.company_logo}`"
         />
@@ -194,7 +194,7 @@ import DialogContractorRating from "@/Components/Ratings/Contractor/DialogContra
 import DialogContractorPosts from "@/Components/Postings/DialogContractorPosts.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 
-import Avatar from "@/Components/Ratings/Avatar.vue";
+import CompanyAvatar from "@/Components/Ratings/CompanyAvatar.vue";
 import { Icon } from "@iconify/vue";
 
 import { computed, ref } from "vue";

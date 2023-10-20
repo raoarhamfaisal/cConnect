@@ -29,7 +29,7 @@
             type="image"
           >
           </v-skeleton-loader>
-          <Avatar
+          <CompanyAvatar
             imageClass="companyLogo"
             v-if="!loadingImage"
             :imageSrc="`/${company_logo}`"
@@ -248,7 +248,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
-import Avatar from "@/Components/Ratings/Avatar.vue";
+import CompanyAvatar from "@/Components/Ratings/CompanyAvatar.vue";
 import {
   reactive,
   ref,

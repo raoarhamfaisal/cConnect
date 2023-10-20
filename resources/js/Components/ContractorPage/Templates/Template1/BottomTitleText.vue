@@ -1,7 +1,7 @@
 <template>
   <!-- Display Saved Text -->
   <div
-    v-if="bottomText"
+    v-if="processedBottomText"
     v-intersect="{
       handler: showAnimcation,
       options: {
@@ -10,11 +10,9 @@
     }"
     :class="`mt-1 flex gap-1  flex-col rounded-lg closing w-full max-w-[1400px] px-3 sm:px-10 mx-auto`"
   >
-    <!-- :class="`mt-1 flex gap-1 flex-col md:border-gray-300 md:border-2 p-3 rounded-lg closing`" -->
-
     <div
-      class="default duration-1000 transition-all"
-      v-html="bottomText"
+      class="default ck-content duration-1000 transition-all"
+      v-html="processedBottomText"
       :class="{
         'translate-y-0': screenWidth > 768 && isSectionVisible,
         'translate-y-[200px]': screenWidth > 768 && !isSectionVisible,
@@ -24,7 +22,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 const props = defineProps({
   screenWidth: {
@@ -42,6 +40,20 @@ const decodeHtml = (html) => {
 };
 const bottomText = ref(decodeHtml(props.bottom_text));
 
+const processedBottomText = computed(() => {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(bottomText.value, "text/html");
+
+  doc.querySelectorAll("a").forEach((anchor) => {
+    const hrefValue = anchor.getAttribute("href");
+    if (!hrefValue.startsWith("http://") && !hrefValue.startsWith("https://")) {
+      anchor.setAttribute("href", "http://" + hrefValue);
+    }
+    anchor.target = "_blank";
+  });
+
+  return doc.body.innerHTML;
+});
 const isSectionVisible = ref(false);
 const showAnimcation = () => {
   if (window.scrollY > 100) {

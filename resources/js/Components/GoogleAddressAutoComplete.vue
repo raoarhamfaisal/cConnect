@@ -36,7 +36,6 @@ const setupAutocomplete = () => {
     //   strictBounds: false,
   };
   if (autocompleteInput.value) {
-    console.log("google");
     const autocomplete = new google.maps.places.Autocomplete(
       autocompleteInput.value,
       options
@@ -44,6 +43,7 @@ const setupAutocomplete = () => {
 
     autocomplete.addListener("place_changed", () => {
       const place = autocomplete.getPlace();
+
       for (const component of place.address_components) {
         const componentType = component.types[0];
 
@@ -52,6 +52,10 @@ const setupAutocomplete = () => {
         }
         if (componentType == "route") {
           internalModelValue.value += component.long_name;
+        }
+        if (componentType !== "street_number" && componentType !== "route") {
+          // internalModelValue.value = place.formatted_address;
+          internalModelValue.value = autocompleteInput.value.value;
         }
       }
 

@@ -53,7 +53,11 @@ import IconButton from "@/Components/IconButton.vue";
 import { Icon } from "@iconify/vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
-import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
+import {
+  changesSaved,
+  somethingWentWrong,
+  toolbarConfig,
+} from "@/helpers/utilities";
 
 const props = defineProps({
   screenWidth: {

@@ -102,6 +102,23 @@ export default {
         }
       },
     },
+    processedTopText() {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(this.post.body1, "text/html");
+
+      doc.querySelectorAll("a").forEach((anchor) => {
+        const hrefValue = anchor.getAttribute("href");
+        if (
+          !hrefValue.startsWith("http://") &&
+          !hrefValue.startsWith("https://")
+        ) {
+          anchor.setAttribute("href", "http://" + hrefValue);
+        }
+        anchor.target = "_blank";
+      });
+
+      return doc.body.innerHTML;
+    },
 
     // Places the post.image string into an array to be
     // passed as prop to PostImageDisplay.vue
@@ -303,6 +320,12 @@ export default {
     <div
       v-show="post.body1"
       @click="$emit('enlarge-post', post)"
+      class="default ck-content"
+      v-html="processedTopText"
+    ></div>
+    <!-- <div
+      v-show="post.body1"
+      @click="$emit('enlarge-post', post)"
       class="flex flex-row justify-center items-center w-full px-2 text-lg xs:text-xl md:text-2xl"
       :class="[
         body1Colors[post.body1ColorId],
@@ -310,7 +333,7 @@ export default {
       ]"
     >
       {{ post.body1 }}
-    </div>
+    </div> -->
 
     <!-- INDIVIDUAL POST: MAIN IMAGES  -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
