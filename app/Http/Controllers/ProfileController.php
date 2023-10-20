@@ -220,7 +220,7 @@ class ProfileController extends Controller
                 'first_name' => 'nullable|string|max:30',
                 'last_name' => 'nullable|string|max:30',
                 'email' => 'required|string|email|max:50|unique:profiles,email,'.$userID,
-                'phone_cell' => 'required|string|max:13|unique:profiles,phone_cell,'.$userID,
+                'phone_cell' => 'required|string|max:13',
             ]);
 
             $profile->update($data);
@@ -293,7 +293,7 @@ class ProfileController extends Controller
 
             $data = $request->validate([
                 'company_name' => 'nullable|string',
-                'phone_office' => 'nullable|string|max:13|unique:profiles,phone_cell,'.$userID,
+                'phone_office' => 'nullable|string|max:13',
             ]);
 
             $profile->update($data);

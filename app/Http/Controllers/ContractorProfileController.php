@@ -114,8 +114,8 @@ class ContractorProfileController extends Controller
             $data = $request->validate([
                 'company_name' => 'nullable|string',
              
-                'phone_cell' => 'required|string|unique:profiles,phone_cell,'.$userID,
-                'phone_office' => 'nullable|string|unique:profiles,phone_cell,'.$userID,
+                'phone_cell' => 'required|string',
+                'phone_office' => 'nullable|string',
                 'address_1' => 'nullable|string',
                 'address_2' => 'nullable|string',
                 'city' => 'nullable|string',
