@@ -37,7 +37,7 @@ return new class extends Migration
 
             $table->string('email', 50)->unique();
 
-            $table->string('phone_cell', 40)->unique()->nullable();
+            $table->string('phone_cell', 40)->nullable();
             $table->string('phone_office', 40)->nullable();
 
             $table->string('user_avatar')->nullable();

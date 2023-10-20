@@ -35,7 +35,7 @@ return new class extends Migration
             $table->string('county')->nullable();
             $table->string('counrty')->nullable();
             $table->string('email')->unique();
-            $table->string('phone_cell')->unique()->nullable();
+            $table->string('phone_cell')->nullable();
             $table->string('phone_office')->nullable();
             $table->string('user_avatar')->nullable();
             $table->string('company_logo')->nullable();
