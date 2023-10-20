@@ -55,11 +55,11 @@ const fetchPosts = async () => {
     loading.value = false;
   }
 };
-const openDialog = () => {
+const openPostDialog = () => {
   fetchPosts();
   dialogRef.value.openDialog();
 };
-defineExpose({ openDialog });
+defineExpose({ openPostDialog });
 </script>
 
 <style></style>
