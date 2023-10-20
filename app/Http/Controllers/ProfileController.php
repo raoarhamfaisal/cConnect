@@ -743,7 +743,7 @@ class ProfileController extends Controller
 
         if($profile) {
             $request->validate([
-                'user_avatar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'user_avatar' => 'required|image|mimes:jpeg,png,jpg,gif',
             ]);
 
             if ($request->hasFile('user_avatar')) {
@@ -819,7 +819,7 @@ class ProfileController extends Controller
 
         if($profile) {
             $request->validate([
-                'company_logo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'company_logo' => 'required|image|mimes:jpeg,png,jpg,gif',
             ]);
 
             if ($request->hasFile('company_logo')) {
