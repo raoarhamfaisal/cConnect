@@ -37,15 +37,10 @@ class DiscountCouponController extends Controller
         $perPage = $request->query('per_page', 15);  // Default to 15 if not provided
         $page = $request->query('page', 1);          // Default to page 1 if not provided
 
-        // dd($regionId);
-        // return response()->json(['region' => $regionId]);
-
-
         // Query
         $query = null;
         
         if($regionId === "0" || $regionId === 0) {
-            // return response()->json(['region' => $regionId]);
             $query = DiscountCoupon::latest();
         }else {
             $query = DiscountCoupon::where('region_id', $regionId);
