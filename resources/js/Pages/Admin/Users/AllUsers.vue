@@ -360,7 +360,7 @@
           <InputError class="mt-2" :message="errors.is_payment_verified" />
         </div>
         <div>
-          <InputLabel class="font-bold mb-2" for="email" value="Email*" />
+          <InputLabel class="font-bold mb-2" for="email" value="User Notes" />
           <textarea
             v-model="userToEdit.profile.notes_on_user"
             @blur="stopTyping"
