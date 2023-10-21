@@ -799,10 +799,9 @@ const openCreateDialog = () => {
   for (let key in errors) {
     errors[key] = "";
   }
-  console.log(errors, "errors");
   mode.value = "create";
   selectedReferal.value = "";
-  singleCoupon.value = {};
+  singleCoupon.value = { is_valid: 1 };
   range.value = {};
   editDialogRef.value.openDialog();
 };
