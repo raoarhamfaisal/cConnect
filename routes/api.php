@@ -155,14 +155,21 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         // User Functions
         // Only Users having users_privileges are allowed
         Route::middleware('admin-with-users-privileges')->group(function () {
-            Route::get('/admin/users/{regionId}/all', [AdminUsersController::class, 'getAllUsersOfARegion']);
             Route::post('/admin/users/{userId}', [AdminUsersController::class, 'updateProfile']);
+            Route::get('/admin/users/{regionId}/all', [AdminUsersController::class, 'getAllUsersOfARegion']);
         });
+
+        // Only Users having payments-privileges are allowed
+        Route::middleware('admin-with-payments-privileges')->group(function () {
+            Route::resource('/admin/payment-info', PaymentInfoController::class);
+            Route::resource('/admin/discount-coupon', DiscountCouponController::class);
+            Route::get('/admin/discount-coupon/{regionId}/all', [DiscountCouponController::class, 'getAllDiscountCouponsForARegion']);
+        });
+
+
     });
-
-
-    Route::resource('/admin/payment-info', PaymentInfoController::class);
-    Route::resource('/admin/discount-coupon', DiscountCouponController::class);
+    
+    
 
 
     

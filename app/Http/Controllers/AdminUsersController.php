@@ -25,9 +25,15 @@ class AdminUsersController extends Controller
         $page = $request->query('page', 1);          // Default to page 1 if not provided
         
         // Query
-        $query = User::whereHas('profile', function($q) use ($regionId) {
-            $q->where('region_id', $regionId);
-        });
+        $query = null;
+        
+        if($regionId === "0" || $regionId === 0) {
+            $query = User::latest();
+        }else {
+            $query = User::whereHas('profile', function($q) use ($regionId) {
+                $q->where('region_id', $regionId);
+            });
+        }
     
         // Add search criteria if provided
         if ($search) {

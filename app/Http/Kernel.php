@@ -74,6 +74,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'admin' => \App\Http\Middleware\CheckAdminPrivileges::class,
         'admin-with-users-privileges' => \App\Http\Middleware\AdminWithUsersPrivileges::class,
+        'admin-with-payments-privileges' => \App\Http\Middleware\AdminWithPaymentsPrivileges::class,
         'verifyPayment' => \App\Http\Middleware\VerifyPayment::class,
     ];
 }

@@ -25,9 +25,60 @@ class DiscountCouponController extends Controller
         return response()->json(['message' => 'Coupon created successfully', 'data' => $coupon]);
     }
 
-    // Read (Index)
     public function index() {
         return DiscountCoupon::all();
+    }
+
+    public function getAllDiscountCouponsForARegion(Request $request, $regionId) {
+        $search = $request->query('search'); // Get the search from the query parameters
+        $sortByDate = $request->query('sort_by_date', 'latest'); // Default to latest
+    
+        // Determine pagination parameters from the request's query parameters
+        $perPage = $request->query('per_page', 15);  // Default to 15 if not provided
+        $page = $request->query('page', 1);          // Default to page 1 if not provided
+
+        // Query
+        $query = null;
+        
+        if($regionId === "0" || $regionId === 0) {
+            $query = DiscountCoupon::latest();
+        }else {
+            $query = DiscountCoupon::where('region_id', $regionId);
+        }
+    
+        // Add search criteria if provided
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('coupon_code', 'like', '%'.$search.'%');
+            });
+        }
+    
+        // Sort by date
+        if ($sortByDate === 'latest') {
+            $query->latest();
+        } else {
+            $query->oldest();
+        }
+    
+        // Fetch with profile (only specified fields) and paginate
+        $couponCodes = $query->paginate($perPage, ['*'], 'page', $page);
+    
+        // Convert the paginated results to arrays
+        $couponCodesArray = $couponCodes->toArray();
+    
+        // Construct the response
+        $response = [
+            'couponCodes' => $couponCodesArray['data'],
+            'pagination' => [
+                'current_page' => $couponCodes->currentPage(),
+                'last_page' => $couponCodes->lastPage(),
+                'per_page' => $couponCodes->perPage(),
+                'total' => $couponCodes->total(),
+            ]
+        ];
+    
+        return response()->json($response);
+        
     }
 
     // Read (Show specific record)
