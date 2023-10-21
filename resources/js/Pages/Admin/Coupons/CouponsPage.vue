@@ -615,7 +615,7 @@ const handleFilterSelect = async (selected, sortByRate) => {
   if (selected) {
     sortBy.value = sortByRate;
   }
-  users.value = [];
+  coupons.value = [];
 
   await fetchDiscountCouponsWithLoading(false);
 };
