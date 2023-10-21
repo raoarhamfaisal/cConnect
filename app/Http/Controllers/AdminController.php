@@ -75,7 +75,56 @@ class AdminController extends Controller
     ]);
             
         }
-
+        public function getCouponsPage()
+        {
+            // Get current user id
+            $userID = Auth()->user('')->id;
+            $profile = null;
+    
+    
+            // Get the profile information if the user id exists
+            if($userID) {
+                $profile = Profile::where('user_id', $userID)->with('trades')->first();
+            }
+    
+         
+    
+            $tradesOldStructure = $this->convertTradesToOldStructure($profile->trades);
+    
+            return Inertia::render('Admin/Coupons/CouponsPage', [
+         
+                'profile' => array_merge($profile->toArray(), $tradesOldStructure),
+                'showit' => Auth::check(),
+            'postSearchFilters' => FacadeRequest::only(['postSearch']),
+            ]);
+    
+            //
+        }
+        public function getPaymentsPage()
+        {
+            // Get current user id
+            $userID = Auth()->user('')->id;
+            $profile = null;
+    
+    
+            // Get the profile information if the user id exists
+            if($userID) {
+                $profile = Profile::where('user_id', $userID)->with('trades')->first();
+            }
+    
+         
+    
+            $tradesOldStructure = $this->convertTradesToOldStructure($profile->trades);
+    
+            return Inertia::render('Admin/Payments/PaymentsPage', [
+         
+                'profile' => array_merge($profile->toArray(), $tradesOldStructure),
+                'showit' => Auth::check(),
+            'postSearchFilters' => FacadeRequest::only(['postSearch']),
+            ]);
+    
+            //
+        }
     /**
      * Show the form for creating a new resource.
      *
