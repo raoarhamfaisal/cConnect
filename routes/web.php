@@ -87,7 +87,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/admin/regions/{region_id}/appealed', [AppealedReviewsController::class, 'getAppealedReviews'])->name('admin.appealed');
         // users
         Route::get('/admin/regions/users', [AdminRatingsController::class, 'getRegionsForUsers'])->name('admin.allRegions');
-        Route::get('/admin/regions/{region_id}/users', [AdminController::class, 'getAllUsersPage'])->name('admin.appealed');
+        Route::get('/admin/users', [AdminController::class, 'getAllUsersPage'])->name('admin.appealed');
 
         Route::get('/admin/ratings/contractor/{id}/history', [ContractorRatingsAdminController::class, 'historyPage'])->name('admin.history');
         Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');

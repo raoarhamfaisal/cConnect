@@ -77,6 +77,19 @@ export function convertDateFormat(dateString) {
   return `${month}/${day}/${year}`;
 }
 
+// convert teh Date Tue Oct 10 2023 00:00:00 GMT+0500 (Pakistan Standard to 2023-01-01
+export const formatDateToDashDate = (date) => {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // pad with 0 if month is a single digit
+  const day = date.getDate().toString().padStart(2, "0"); // pad with 0 if day is a single digit
+
+  return `${year}-${month}-${day}`;
+};
+
+// convert teh Date Tue Oct 10 2023 00:00:00 GMT+0500 (Pakistan Standard to 2023-01-01
+export const convertDashDateToDateObjectFormat = (date) => {
+  return new Date(date);
+};
 // convert UtC 2023-09-04T10:00:35.000000Z to DAte 23/09/2022
 export function convertDateFormatToDMY(dateString) {
   // Create a new date object from the input string
