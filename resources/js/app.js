@@ -14,6 +14,7 @@ import {
   VStepperHeader,
 } from "vuetify/labs/VStepper";
 import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
+import { setupCalendar } from "v-calendar";
 import {
   VDivider,
   VLazy,
@@ -73,6 +74,7 @@ createInertiaApp({
       .use(vuetify)
       .use(store)
       .use(CKEditor)
+      .use(setupCalendar, {})
       .use(VueTheMask)
       .mount(el);
   },

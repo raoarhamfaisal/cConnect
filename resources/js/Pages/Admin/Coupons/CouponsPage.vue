@@ -21,6 +21,7 @@
         <div class="flex justify-between">
           <PageTitle linkUrl="/admin" pageTitle="Discount Coupons" />
         </div>
+
         <!-- Filters -->
         <div class="border-gray-300 border-b-2">
           <heading-card class="mt-3" heading="Sort by" />
@@ -213,85 +214,105 @@
           <div>
             <InputLabel
               class="font-bold"
-              for="billed_monthly_price"
-              value="Monthly Price*"
+              for="coupon_code"
+              value="Coupon Code*"
             />
             <TextInput
-              id="billed_monthly_price"
-              type="number"
+              id="coupon_code"
+              type="text"
               class="mt-1 block w-full"
               required
-              v-model.trim="singleCoupon.billed_monthly_price"
-              placeholder="Type your Monthly Price"
-              @input="clearErrors('billed_monthly_price')"
+              v-model.trim="singleCoupon.coupon_code"
+              placeholder="Type your Coupon Code"
+              @input="clearErrors('coupon_code')"
             />
-            <InputError class="mt-2" :message="errors.billed_monthly_price" />
+            <InputError class="mt-2" :message="errors.coupon_code" />
           </div>
           <div>
             <InputLabel
               class="font-bold"
-              for="billed_annual_price"
-              value="Annual Price*"
+              for="off_price"
+              value="Discount (%)*"
             />
             <TextInput
-              id="billed_annual_price"
+              id="off_price"
               type="number"
               class="mt-1 block w-full"
               required
-              v-model.trim="singleCoupon.billed_annual_price"
-              placeholder="Type your Annual Price"
-              @input="clearErrors('billed_annual_price')"
+              v-model.trim="singleCoupon['%_off_regular_price']"
+              placeholder="Type your Discount (%)"
+              @input="clearErrors('off_price')"
             />
-            <InputError class="mt-2" :message="errors.billed_annual_price" />
+            <InputError class="mt-2" :message="errors.off_price" />
           </div>
           <div>
             <InputLabel
               class="font-bold"
-              for="advertised_price"
-              value="Advertised Tax*"
+              for="months"
+              value="Duration (Months)*"
             />
             <TextInput
-              id="advertised_price"
+              id="months"
               type="number"
               class="mt-1 block w-full"
               required
-              v-model.trim="singleCoupon.advertised_price"
-              placeholder="Type your Advertised Price"
-              @input="clearErrors('advertised_price')"
+              v-model.trim="singleCoupon.months"
+              placeholder="Type your coupon Duration (Months)"
+              @input="clearErrors('months')"
             />
-            <InputError class="mt-2" :message="errors.advertised_price" />
+            <InputError class="mt-2" :message="errors.months" />
           </div>
-          <div>
+          <div v-click-outside="handleOutsideClick">
             <InputLabel
               class="font-bold"
-              for="sales_tax"
-              value="Sales Price*"
+              for="months"
+              value="Select Coupon Start and End date"
             />
-            <TextInput
-              id="sales_tax"
-              type="number"
-              class="mt-1 block w-full"
-              required
-              v-model.trim="singleCoupon.sales_tax"
-              placeholder="Type your Sales Tax"
-              @input="clearErrors('sales_tax')"
+
+            <input-icon
+              icon="mdi:calendar"
+              color="#241e6d"
+              placeholder="MM/DD/YYYY - MM/DD/YYYY"
+              :cursor="true"
+              readonly
+              onfocus="this.removeAttribute('readonly');"
+              v-model="displayDateRange"
+              inputClasses="border-gray-300 focus:ring-indigo-500 py-2 px-3 border-2"
+              @click="toggleDatePicker"
+              class="mt-1 block w-full cursor-pointer"
             />
-            <InputError class="mt-2" :message="errors.sales_tax" />
+            <div>
+              <DatePicker
+                v-if="isDatePickerShown"
+                v-model.range="range"
+                :mode="dateMode"
+                style="width: 100%"
+                :rules="rules"
+                @update:modelValue="updateDateRange"
+              />
+            </div>
+            <InputError class="mt-2" :message="errors.start_end_date" />
           </div>
-          <div class="flex gap-4 mt-2">
+          <div class="flex gap-4 mt-2 self-start h-24">
             <v-switch
               class="admin-user-fuction-switch"
-              v-model="userToEdit.profile.active_user"
+              v-model="singleCoupon.is_valid"
               hide-details
               :true-value="true"
               :false-value="false"
               label="Is Valid"
               color="success"
             ></v-switch>
-            <InputError class="mt-2" :message="errors.active_user" />
           </div>
         </div>
       </div>
+      <InputLabel class="font-bold" for="months" value="Notes" />
+      <textarea
+        v-model="singleCoupon.notes"
+        style="height: 10.4rem; border: 1px solid grey"
+        placeholder="Type your Notes"
+        class="text-sm w-full py-1 px-3 focus:shadow-none focus:ring-gray-600 focus:rounded font-semibold text-grey-600 border-none resize-none bg-transparent rounded"
+      ></textarea>
     </CustomDialog>
     <!-- for delete -->
     <CustomDialog
@@ -329,6 +350,7 @@ import SelectProfile from "@/Components/SelectProfile.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
+import InputIcon from "@/Components/InputIcon.vue";
 
 import { Icon } from "@iconify/vue";
 
@@ -354,6 +376,8 @@ import { useStore } from "vuex";
 import { Inertia } from "@inertiajs/inertia";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import PageTitle from "@/Components/PageTitle.vue";
+import { DatePicker } from "v-calendar";
+import "v-calendar/style.css";
 
 // State
 const props = defineProps({
@@ -375,7 +399,7 @@ const loading = ref(false);
 const referenceList = ref([]);
 const mode = ref("");
 const selectedReferal = ref("");
-
+const regionId = ref(0);
 const singleCoupon = ref({});
 const loadingEdit = ref(false);
 const loadingDelete = ref(false);
@@ -384,9 +408,9 @@ const editDialogRef = ref();
 const deleteDialogRef = ref();
 const errors = reactive({
   region_id: "",
-  billed_monthly_price: "",
-  billed_annual_price: "",
-  advertised_price: "",
+  coupon_code: "",
+  off_price: "",
+  months: "",
   sales_tax: "",
 });
 const sortBy = ref("latest");
@@ -399,9 +423,53 @@ const loadingNextPage = ref(false);
 const notesDialogRef = ref();
 const note = ref("");
 const user_id = ref("");
+const isDatePickerShown = ref(false);
 const editAdmitNoteText = ref(false);
 const adminTextAreaRef = ref();
 const isTyping = ref(false);
+
+// const range = ref({
+//   start: new Date(2023, 10, 6),
+//   end: new Date(2023, 11, 10),
+// });
+
+// range picker
+const range = ref(null);
+const dateMode = ref("date");
+const rules = ref([
+  {
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+    milliseconds: 0,
+  },
+  {
+    hours: 23,
+    minutes: 59,
+    seconds: 59,
+    milliseconds: 999,
+  },
+]);
+const toggleDatePicker = () => {
+  isDatePickerShown.value = !isDatePickerShown.value;
+};
+
+const displayDateRange = computed(() => {
+  if (!range.value || !range.value.start || !range.value.end) {
+    return "";
+  }
+  return `${range.value.start.toLocaleDateString()} - ${range.value.end.toLocaleDateString()}`;
+});
+
+const updateDateRange = () => {
+  toggleDatePicker();
+};
+const handleOutsideClick = () => {
+  console.log("handleOutsideClick");
+  if (isDatePickerShown.value) {
+    toggleDatePicker();
+  }
+};
 
 // Mounted
 onMounted(async () => {
@@ -519,14 +587,14 @@ const fetchDiscountCoupons = async (
   }
   try {
     const response = await axios.get(
-      `/api/admin/discount-coupon?search=${searchTerm.value}&per_page=${per_page}&page=${page}&sort_by_date=${sortByDate}`,
+      `/api/admin/discount-coupon/${regionId.value}/all?search=${searchTerm.value}&per_page=${per_page}&page=${page}&sort_by_date=${sortByDate}`,
       getAxiosConfig()
     );
     console.log(response.data, "response");
     if (append) {
-      coupons.value = [...coupons.value, ...response.data];
+      coupons.value = [...coupons.value, ...response.data.couponCodes];
     } else {
-      coupons.value = [...response.data];
+      coupons.value = [...response.data.couponCodes];
     }
     pagination.value = response.data?.pagination;
   } catch (err) {
@@ -636,18 +704,6 @@ const handleEditSubmit = async () => {
         return; // Exit the forEach loop once a match is found
       }
     });
-    const isRegionUsed = coupons.value.some((plan) => {
-      return plan.region_id === region_id && plan.id !== singleCoupon.value.id;
-    });
-    if (isRegionUsed) {
-      // Handle the error here. You might want to show an error message to the coupon.
-      somethingWentWrong(
-        "This region already has a pricing plan.",
-        "inherit",
-        3000
-      );
-      return; // Exit the function early
-    }
 
     const updatedPlan = {
       region_id: region_id,
@@ -722,18 +778,6 @@ const handleCreateSubmit = async () => {
         return; // Exit the forEach loop once a match is found
       }
     });
-    const isRegionUsed = coupons.value.some((plan) => {
-      return plan.region_id === region_id && plan.id !== singleCoupon.value.id;
-    });
-    if (isRegionUsed) {
-      // Handle the error here. You might want to show an error message to the coupon.
-      somethingWentWrong(
-        "This region already has a pricing plan.",
-        "inherit",
-        3000
-      );
-      return; // Exit the function early
-    }
 
     const planToCreate = {
       region_id: region_id,
