@@ -17,7 +17,7 @@ class DiscountCoupon extends Model
     protected $fillable = [
         'is_valid',
         'region_id',
-        '%_off_regular_price',
+        'percentage_off_regular_price',
         'months',
         'coupon_code',
         'start_date',

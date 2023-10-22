@@ -12,7 +12,7 @@ class DiscountCouponController extends Controller
         $data = $request->validate([
             'is_valid' => 'required|boolean',
             'region_id' => 'required|integer|exists:regions,id',
-            '%_off_regular_price' => 'required|numeric',
+            'percentage_off_regular_price' => 'required|numeric',
             'months' => 'required|integer',
             'coupon_code' => 'required|string|unique:discount_coupons,coupon_code',
             'start_date' => 'required|date',
@@ -97,7 +97,7 @@ class DiscountCouponController extends Controller
         $data = $request->validate([
             'is_valid' => 'boolean',
             'region_id' => 'integer|exists:regions,id',
-            '%_off_regular_price' => 'numeric',
+            'percentage_off_regular_price' => 'numeric',
             'months' => 'integer',
             'coupon_code' => 'string|unique:discount_coupons,coupon_code,'.$id,
             'start_date' => 'date',

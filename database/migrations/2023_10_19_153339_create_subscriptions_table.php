@@ -15,14 +15,12 @@ return new class extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
+            $table->boolean('is_subscription_successfull')->default(0);
+            $table->boolean('is_subscription_active')->default(0);
             $table->integer('user_id');
-            $table->string('name');
-            $table->string('authorize_id');
-            $table->string('authorize_payment_id');
+            $table->string('subscription_id')->nullable();
             $table->text('metadata');
-            $table->string('authorize_plan');
-            $table->integer('quantity');
-            $table->timestamp('trial_ends_at')->nullable();
+            $table->string('subscription_plan');
             $table->timestamp('ends_at')->nullable();
             $table->timestamps();
         });
