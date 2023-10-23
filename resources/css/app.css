@@ -108,3 +108,7 @@ div.default,.default div,.default p , p.default{
   line-height: 1.25rem;
   opacity: 1;
 }
+.card .v-skeleton-loader__image{
+  height: 100%;
+  border-radius : 10px;
+}
