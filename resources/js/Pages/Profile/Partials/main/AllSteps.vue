@@ -69,7 +69,7 @@ const errors = reactive({
   tiktok: "",
   instagram: "",
 });
-const currentStep = ref(4);
+const currentStep = ref(1);
 const editableAllowed = ref(1);
 const steps = ref(4);
 const stepTitles = ["General Info", "Trades", "Views", "Billing"];
