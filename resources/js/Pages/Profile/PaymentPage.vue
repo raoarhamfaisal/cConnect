@@ -92,6 +92,7 @@
           >
             Have a coupon code?
             <div
+              @click="openCouponDialog"
               class="text-sm ml-1 text-green-600 hover:underline cursor-pointer"
             >
               Click here to enter your code
@@ -165,7 +166,7 @@
 
           <!-- payment details -->
           <transition name="accordion">
-            <div class="mt-4" v-if="!paymentMethod">
+            <div class="mt-4" v-if="paymentMethod">
               <div class="font-bold text-2xl text-blue-rgba leading-tight">
                 Payment Details
               </div>
@@ -418,6 +419,51 @@
           background=""
           height="80vh"
         ></Loader>
+
+        <CustomDialog
+          submitText="Okay"
+          :showFooter="false"
+          dialogWidth="width-40"
+          ref="verifyCouponDialogRef"
+          title="Verify Coupon"
+        >
+          <div class="mb-4 sm:mb-0">
+            <div class="mt-3">
+              <InputLabel
+                class="font-bold"
+                for="Coupon_code"
+                value="Enter Coupon Code"
+              />
+              <TextInput
+                id="Coupon_code"
+                type="text"
+                class="mt-1 block w-full md:"
+                v-model="form.coupon_code"
+                required
+              />
+              <InputError class="mt-2" :message="errors.coupon_code" />
+            </div>
+            <InputError class="mt-2" :message="apiError" />
+            <PrimaryButton
+              @click="verifyCouponCode"
+              :disabled="loading"
+              :style="{
+                backgroundColor: '#099268',
+                opacity: loadingCoupon ? '0.4' : '1.0',
+              }"
+              class="w-full mt-3 flex justify-center"
+            >
+              <div
+                v-show="!loadingCoupon"
+                class="flex items-center justify-center"
+              >
+                Verify Coupon Code
+              </div>
+              <div v-show="loadingCoupon">Verifying...</div></PrimaryButton
+            >
+          </div>
+          <!-- </Card> -->
+        </CustomDialog>
       </Card>
     </div>
   </Header>
@@ -495,6 +541,7 @@ const form = reactive({
   zipcode: "",
   county: "",
   country: "",
+  coupon_code: "",
 });
 
 const errors = reactive({
@@ -509,8 +556,12 @@ const errors = reactive({
   zipcode: "",
   county: "",
   country: "",
+  coupon_code: "",
 });
 const loadingSubscribing = ref(false);
+const loadingCoupon = ref(false);
+const verifyCouponDialogRef = ref();
+const apiError = ref("");
 
 onMounted(async () => {
   const selectedPlan = localStorage.getItem("selectedPlan");
@@ -743,6 +794,32 @@ const validateForm = () => {
 const startSubscription = () => {
   if (validateForm()) {
     console.log("form", form);
+  }
+};
+
+const openCouponDialog = () => {
+  verifyCouponDialogRef.value.openDialog();
+};
+const verifyCouponCode = async () => {
+  apiError.value = "";
+  if (!form.coupon_code?.trim()) {
+    errors.coupon_code = "Coupon code  is Required";
+    return;
+  }
+  loadingCoupon.value = true;
+  try {
+    const response = await axios.post(
+      `/api/discount-coupon/verify`,
+      { coupon_code: form.coupon_code },
+      getAxiosConfig()
+    );
+    if (response.data) {
+      console.log(response.data, "response");
+    }
+  } catch (err) {
+    apiError.value = err.response.data.message;
+  } finally {
+    loadingCoupon.value = false;
   }
 };
 </script>
