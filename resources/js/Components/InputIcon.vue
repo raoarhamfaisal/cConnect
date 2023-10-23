@@ -8,6 +8,7 @@ defineProps([
   "placeholder",
   "icon",
   "type",
+  "mask",
   "id",
   "color",
   "disabled",
@@ -36,6 +37,7 @@ defineExpose({ focus: () => input.value.focus() });
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
       ref="input"
+      v-mask="mask"
       @blur="$emit('blur')"
       :disabled="disabled"
       @keyup="$emit('keyup')"

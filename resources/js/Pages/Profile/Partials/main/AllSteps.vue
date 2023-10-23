@@ -8,7 +8,7 @@ import LinksInfo from "@/Pages/Profile/Partials/LinksInfo.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { computed, reactive, ref } from "vue";
 import { useStore } from "vuex";
-import Payment from "@/Pages/Profile/Partials/main/Payment.vue";
+import PaymentStep from "@/Pages/Profile/Partials/main/PaymentStep.vue";
 import { Inertia } from "@inertiajs/inertia";
 
 const props = defineProps({
@@ -348,7 +348,7 @@ const completePayment = async () => {
             <Views :profile="profile" apiChoice="2" />
           </v-stepper-window-item>
           <v-stepper-window-item :value="4">
-            <Payment />
+            <PaymentStep :region_id="form.region_id" />
             <PrimaryButton
               @click="completePayment"
               :disabled="loading"

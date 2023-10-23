@@ -67,10 +67,10 @@
                 :key="plan.id"
               >
                 <td>{{ getRegionName(plan.region_id) }}</td>
-                <td>{{ plan?.billed_monthly_price }}</td>
-                <td>{{ plan?.billed_annual_price }}</td>
-                <td>{{ plan?.advertised_price }}</td>
-                <td>{{ plan?.sales_tax }}</td>
+                <td>${{ plan?.billed_monthly_price }}</td>
+                <td>${{ plan?.billed_annual_price }}</td>
+                <td>${{ plan?.advertised_price }}</td>
+                <td>${{ plan?.sales_tax }}</td>
                 <td class="flex gap-2 justify-center items-center">
                   <Icon
                     icon="mdi:edit"
@@ -194,11 +194,7 @@
             <InputError class="mt-2" :message="errors.advertised_price" />
           </div>
           <div>
-            <InputLabel
-              class="font-bold"
-              for="sales_tax"
-              value="Sales Price*"
-            />
+            <InputLabel class="font-bold" for="sales_tax" value="Sales Tax*" />
             <TextInput
               id="sales_tax"
               type="number"

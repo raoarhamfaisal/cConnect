@@ -17,6 +17,7 @@ import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 import { setupCalendar } from "v-calendar";
 import {
   VDivider,
+  VCheckbox,
   VLazy,
   VTable,
   VSnackbar,
@@ -43,6 +44,7 @@ import * as directives from "vuetify/directives"; // You might want to fine-tune
 const vuetify = createVuetify({
   components: {
     VStepper,
+    VCheckbox,
     VSkeletonLoader,
     VTable,
     VSwitch,

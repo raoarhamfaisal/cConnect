@@ -131,7 +131,7 @@
                 <td>{{ getRegionName(coupon.region_id) }}</td>
                 <td>{{ coupon.coupon_code }}</td>
                 <td>{{ coupon.is_valid ? "Yes" : "No" }}</td>
-                <td>{{ coupon["%_off_regular_price"] }}%</td>
+                <td>{{ coupon["percentage_off_regular_price"] }}%</td>
                 <td>{{ coupon.months }}</td>
                 <td>{{ coupon.start_date }}</td>
                 <td>{{ coupon.end_date }}</td>
@@ -266,7 +266,7 @@
               max="100"
               class="mt-1 block w-full"
               required
-              v-model.trim="singleCoupon['%_off_regular_price']"
+              v-model.trim="singleCoupon['percentage_off_regular_price']"
               placeholder="Type your Discount (%)"
               @input="clearErrors('off_price')"
             />
@@ -511,7 +511,6 @@ const loadingNextPage = ref(false);
 const notesDialogRef = ref();
 const note = ref("");
 const coupon_id = ref("");
-const isDatePickerShown = ref(false);
 const editAdmitNoteText = ref(false);
 const adminTextAreaRef = ref();
 const isTyping = ref(false);
@@ -522,6 +521,7 @@ const isTyping = ref(false);
 // });
 
 // range picker
+const isDatePickerShown = ref(false);
 const range = ref({});
 const dateMode = ref("date");
 const rules = ref([
@@ -637,15 +637,15 @@ const validateForm = () => {
     isValid = false;
   }
   if (
-    !singleCoupon.value["%_off_regular_price"] ||
-    isNaN(singleCoupon.value["%_off_regular_price"])
+    !singleCoupon.value["percentage_off_regular_price"] ||
+    isNaN(singleCoupon.value["percentage_off_regular_price"])
   ) {
     errors.off_price = "Discount Percentage is Required";
     isValid = false;
   }
   if (
-    +singleCoupon.value["%_off_regular_price"] < 0 ||
-    +singleCoupon.value["%_off_regular_price"] > 100
+    +singleCoupon.value["percentage_off_regular_price"] < 0 ||
+    +singleCoupon.value["percentage_off_regular_price"] > 100
   ) {
     errors.off_price = "Please enter a value between 0 and 100.";
   }
@@ -828,7 +828,8 @@ const handleEditSubmit = async () => {
       region_id: region_id,
       is_valid: singleCoupon.value.is_valid,
 
-      "%_off_regular_price": +singleCoupon.value["%_off_regular_price"],
+      percentage_off_regular_price:
+        +singleCoupon.value["percentage_off_regular_price"],
       months: +singleCoupon.value.months,
       coupon_code: singleCoupon.value.coupon_code,
       start_date: formatDateToDashDate(range.value.start),
@@ -907,7 +908,8 @@ const handleCreateSubmit = async () => {
       region_id: region_id,
       is_valid: singleCoupon.value.is_valid,
 
-      "%_off_regular_price": +singleCoupon.value["%_off_regular_price"],
+      percentage_off_regular_price:
+        +singleCoupon.value["percentage_off_regular_price"],
       months: +singleCoupon.value.months,
       coupon_code: singleCoupon.value.coupon_code,
       start_date: formatDateToDashDate(range.value.start),

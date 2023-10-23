@@ -76,9 +76,6 @@ const callbackFunction = (place) => {
   }
 };
 
-const inputResult = () => {
-  console.log(address.value, "address");
-};
 // Upload Company Logo on image change
 const handleImageUpdate = (file) => {
   loadingImage.value = true;
