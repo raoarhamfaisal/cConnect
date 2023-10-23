@@ -118,5 +118,29 @@ class DiscountCouponController extends Controller
 
         return response()->json(['message' => 'Coupon deleted successfully']);
     }
+
+
+    
+    // Update
+    public function verifyDiscountCoupon(Request $request,) {
+        // Validation for input data
+        $data = $request->validate([
+            'coupon_code' => 'required|string'
+        ]);
+
+        $coupon = DiscountCoupon::where('coupon_code', $data['coupon_code'])->first();
+
+        if (!$coupon) {
+            return response()->json(['message' => 'Coupon not found.'], 404);
+        }
+
+        $currentDate = now();
+        if ($coupon->is_valid && $currentDate->between($coupon->start_date, $coupon->end_date)) {
+            return response()->json(['message' => 'Coupon is valid.', 'coupon' => $coupon], 200);
+        } else {
+            return response()->json(['message' => 'Coupon is invalid or expired.'], 400);
+        }
+    }
+    
 }
 
