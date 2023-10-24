@@ -65,7 +65,7 @@
             v-show="showCancel"
             class="px-4 py-2 rounded text-white bg-[#364fc7]"
           >
-            Cancel
+            {{ cancelText }}
           </button>
           <button
             @click="submit"
@@ -82,7 +82,7 @@
               v-show="loading"
               src="/images/avatars/Spinner.gif"
               alt="spinner"
-              width="30"
+              width="25"
             />
           </button>
         </div>
@@ -141,6 +141,10 @@ const props = defineProps({
   disabled: {
     type: Boolean,
     default: false,
+  },
+  cancelText: {
+    type: String,
+    default: "Cancel",
   },
 });
 const emit = defineEmits(["submit", "closed"]);

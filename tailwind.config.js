@@ -30,6 +30,7 @@ module.exports = {
         "blue-rgba": "rgba(36, 30, 109,  1.00)", //#241e6d
         "blue-30-rgba": "rgba(36, 30, 109,  0.33)", // #0d0c22
         "green-rgba": "#00cc00", // #087f5b
+        "teal-green": "#16a34a",
         "slate-30-rgba": "rgba(226, 232, 240,  0.40)",
         "gray-30-rgba": "rgba(209, 213, 219,  0.50)",
       },
@@ -54,5 +55,6 @@ module.exports = {
 //template 2 color
 // color 4 =>#364fc7
 // #e2e8f0
+// #16a34a
 // pricing
 // 073e53 b5c5cb
