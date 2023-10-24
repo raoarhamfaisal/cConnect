@@ -22,10 +22,10 @@
 
         <div class="" v-if="!loading && !loadingScript && pricingPlan">
           <!-- selected card -->
-          <div class="flex sm:gap-10 gap-2 lg:gap-10 w-full">
+          <div class="flex gap-4 lg:gap-10 w-full">
             <div
               :class="[
-                'shadow-md w-1/2 border-2 cursor-pointer  active:scale-100  p-5 rounded',
+                'shadow-md w-1/2 border-2 cursor-pointer relative  active:scale-100  p-5 rounded',
                 planType === 'MONTHLY'
                   ? 'border-[#4169E1]'
                   : 'border-black hover:scale-[1.02]',
@@ -33,6 +33,12 @@
               @click="selectPlan('MONTHLY')"
               style="transition: all 0.3s ease-in-out"
             >
+              <div
+                v-if="coupon && coupon.percentage_off_regular_price"
+                class="absolute translate-x-[10%] sm:translate-x-1/4 -translate-y-[30%] sm:-translate-y-1/4 top-0 right-0 bg-green-500 text-white rounded-full h-16 sm:h-20 w-16 text-xs sm:text-sm sm:w-20 font-bold flex-wrap flex flex-col items-center justify-center transform"
+              >
+                <div>-{{ coupon.percentage_off_regular_price }}%</div>
+              </div>
               <div
                 class="h-4 w-4 border-2 rounded-full mx-auto mb-2"
                 :style="{
@@ -57,13 +63,19 @@
             </div>
             <div
               :class="[
-                'shadow-md w-1/2 border-2 cursor-pointer transition-all duration-300 active:scale-100 p-5 rounded',
+                'shadow-md w-1/2 border-2 cursor-pointer transition-all duration-300 active:scale-100 p-5 relative rounded',
                 planType === 'ANNUAL'
                   ? 'border-[#4169E1]'
                   : 'border-black hover:scale-[1.02]',
               ]"
               @click="selectPlan('ANNUAL')"
             >
+              <div
+                v-if="coupon && coupon.percentage_off_regular_price"
+                class="absolute translate-x-[10%] sm:translate-x-1/4 -translate-y-[30%] sm:-translate-y-1/4 top-0 right-0 bg-green-500 text-white rounded-full h-16 sm:h-20 w-16 text-xs sm:text-sm sm:w-20 font-bold flex-wrap flex flex-col items-center justify-center transform"
+              >
+                <div>-{{ coupon.percentage_off_regular_price }}%</div>
+              </div>
               <div
                 class="h-4 w-4 rounded-full border-2 mx-auto mb-2"
                 :style="{
@@ -111,6 +123,7 @@
                     ? 'border-[#4169E1] border-[2px]'
                     : 'border-black hover:scale-[1.02]',
                 ]"
+                ref="paymentDetailsRef"
                 @click="selectPayment('AUTHORIZE.NET')"
                 style="transition: all 0.3s ease-in-out"
               >
@@ -358,7 +371,7 @@
                       <InputError class="mt-2" :message="errors.zipcode" />
                     </div>
 
-                    <div class="mb-4 sm:mb-0">
+                    <!-- <div class="mb-4 sm:mb-0">
                       <InputLabel
                         class="font-bold"
                         for="county"
@@ -373,7 +386,7 @@
                         placeholder="Type your county"
                       />
                       <InputError class="mt-2" :message="errors.county" />
-                    </div>
+                    </div> -->
                     <div class="mb-4 sm:mb-0">
                       <InputLabel
                         class="font-bold"
@@ -391,6 +404,8 @@
                       <InputError class="mt-2" :message="errors.country" />
                     </div>
                   </div>
+                  <InputError class="mt-2" :message="subscriptionApiError" />
+
                   <PrimaryButton
                     @click="startSubscription"
                     :disabled="loadingSubscribing"
@@ -415,7 +430,7 @@
           </transition>
         </div>
         <Loader
-          :loading="loading && loadingScript && !pricingPlan"
+          :loading="loading || loadingScript || !pricingPlan"
           background=""
           height="80vh"
         ></Loader>
@@ -443,7 +458,7 @@
               />
               <InputError class="mt-2" :message="errors.coupon_code" />
             </div>
-            <InputError class="mt-2" :message="apiError" />
+            <InputError class="mt-2" :message="couponApiError" />
             <PrimaryButton
               @click="verifyCouponCode"
               :disabled="loading"
@@ -464,6 +479,56 @@
           </div>
           <!-- </Card> -->
         </CustomDialog>
+
+        <CustomDialog
+          :dontAllowCancel="true"
+          submitText="Okay"
+          :showFooter="false"
+          dialogWidth="width-40"
+          ref="confirmPaymentDialogRef"
+          title="Thank you"
+        >
+          <div class="flex items-center justify-center flex-col">
+            <div class="">
+              Your payment has been processed successfully. We truly appreciate
+              your trust in <strong>tContractor</strong>. With your subscription
+              now active, you have unlocked a world of exclusive services and
+              benefits. Dive into our news feed to stay updated and make the
+              most of what we have to offer. Welcome to the
+              <strong>tContractor</strong> community!
+            </div>
+            <Link
+              class="group flex items-center self-start justify-between rounded-xl border border-teal-500 bg-[#16a34a] px-5 py-3 mt-4 transition-colors hover:bg-[#16a34a] focus:outline-none focus:ring"
+              href="/post"
+            >
+              <span
+                class="text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500"
+              >
+                News Feed
+              </span>
+
+              <!-- Arrow -->
+              <span
+                class="ml-4 flex-shrink-0 rounded-full border border-current bg-white p-2 text-indigo-600 group-active:text-indigo-500"
+              >
+                <svg
+                  class="h-5 w-5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </span>
+            </Link>
+          </div>
+        </CustomDialog>
       </Card>
     </div>
   </Header>
@@ -471,7 +536,7 @@
 
 <script setup>
 import Header from "@/Layouts/Header.vue";
-import { Head, usePage } from "@inertiajs/inertia-vue3";
+import { Head, Link } from "@inertiajs/inertia-vue3";
 import Button from "@/Components/Ratings/Button.vue";
 import axios from "axios";
 import InputError from "@/Components/InputError.vue";
@@ -496,13 +561,14 @@ import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import PageTitle from "@/Components/PageTitle.vue";
 import {
   computed,
+  nextTick,
   onBeforeUnmount,
   onMounted,
   reactive,
   ref,
   watch,
 } from "vue";
-import { somethingWentWrong } from "@/helpers/utilities";
+import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 import { stateList } from "@/helpers/selectListsHelpters.js";
 import InputIcon from "@/Components/InputIcon.vue";
 
@@ -537,9 +603,10 @@ const form = reactive({
   expiration_date: "",
   address: "",
   city: "",
+  duration: "",
   state: "",
   zipcode: "",
-  county: "",
+  // county: "",
   country: "",
   coupon_code: "",
 });
@@ -554,14 +621,20 @@ const errors = reactive({
   city: "",
   state: "",
   zipcode: "",
-  county: "",
+  // county: "",
   country: "",
   coupon_code: "",
 });
 const loadingSubscribing = ref(false);
 const loadingCoupon = ref(false);
 const verifyCouponDialogRef = ref();
-const apiError = ref("");
+const couponApiError = ref("");
+const subscriptionApiError = ref("");
+const coupon = ref({});
+const paymentDetailsRef = ref();
+const confirmPaymentDialogRef = ref();
+
+//onMounted
 
 onMounted(async () => {
   const selectedPlan = localStorage.getItem("selectedPlan");
@@ -582,13 +655,41 @@ onMounted(async () => {
 //Computed
 const screenWidth = computed(() => store.getters.screenWidth);
 const monthlyTotal = computed(() => {
-  return +pricingPlan.value.billed_monthly_price + +pricingPlan.value.sales_tax;
+  // Calculate the original monthly price with tax
+  const originalMonthlyTotal =
+    +pricingPlan.value.billed_monthly_price + +pricingPlan.value.sales_tax;
+
+  // If there's a coupon
+  if (coupon.value && coupon.value.percentage_off_regular_price) {
+    // Calculate the discount for the monthly price
+    const monthlyDiscount =
+      (originalMonthlyTotal * coupon.value.percentage_off_regular_price) / 100;
+
+    // Return the discounted monthly total
+    return originalMonthlyTotal - monthlyDiscount;
+  }
+
+  // Return the original monthly total if there's no coupon.value
+  return originalMonthlyTotal;
 });
 
 const annualTotal = computed(() => {
-  return (
-    +pricingPlan.value.billed_annual_price + +pricingPlan.value.sales_tax * 12
-  );
+  // Calculate the original annual price with tax for 12 months
+  const originalAnnualTotal =
+    +pricingPlan.value.billed_annual_price + +pricingPlan.value.sales_tax * 12;
+
+  // If there's a coupon.value
+  if (coupon.value && coupon.value.percentage_off_regular_price) {
+    // Calculate the discount for the annual price
+    const annualDiscount =
+      (originalAnnualTotal * coupon.value.percentage_off_regular_price) / 100;
+
+    // Return the discounted annual total
+    return originalAnnualTotal - annualDiscount;
+  }
+
+  // Return the original annual total if there's no coupon
+  return originalAnnualTotal;
 });
 
 watch(
@@ -602,7 +703,7 @@ watch(
       form.city = props.profile.city;
       form.state = props.profile.state;
       form.zipcode = props.profile.zipcode;
-      form.county = props.profile.county;
+      // form.county = props.profile.county;
       form.country = "US";
     } else {
       form.first_name = "";
@@ -612,7 +713,7 @@ watch(
       form.city = "";
       form.state = "";
       form.zipcode = "";
-      form.county = "";
+      // form.county = "";
       form.country = "";
     }
   }
@@ -639,8 +740,27 @@ const fetchPricingCardDetails = async () => {
 const selectPlan = (type) => {
   planType.value = type;
 };
-const selectPayment = (method) => {
+const selectPayment = async (method) => {
   paymentMethod.value = method;
+
+  if (paymentMethod.value) {
+    // Wait for the DOM update
+    await nextTick();
+    console.log(paymentDetailsRef.value.$el);
+    setTimeout(() => {
+      if (paymentDetailsRef.value) {
+        const elementToScroll =
+          paymentDetailsRef.value.$el || paymentDetailsRef.value;
+        elementToScroll.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+          inline: "start",
+        });
+      } else {
+        console.error("Unexpected issue with the ref");
+      }
+    }, 250);
+  }
 };
 
 const clearError = (field) => {
@@ -681,9 +801,9 @@ const callbackFunction = (place) => {
     if (componentType == "locality") {
       form.city = component.long_name;
     }
-    if (componentType == "administrative_area_level_2") {
-      form.county = component.long_name;
-    }
+    // if (componentType == "administrative_area_level_2") {
+    //   form.county = component.long_name;
+    // }
     if (componentType == "administrative_area_level_1") {
       form.state = component.long_name;
     }
@@ -744,10 +864,10 @@ const validateForm = () => {
   }
 
   // Validate county
-  if (!form.county?.trim()) {
-    errors.county = "County is required";
-    isValid = false;
-  }
+  // if (!form.county?.trim()) {
+  //   errors.county = "County is required";
+  //   isValid = false;
+  // }
   if (!form.country?.trim()) {
     errors.country = "Country is required";
     isValid = false;
@@ -791,17 +911,12 @@ const validateForm = () => {
 
   return isValid;
 };
-const startSubscription = () => {
-  if (validateForm()) {
-    console.log("form", form);
-  }
-};
 
 const openCouponDialog = () => {
   verifyCouponDialogRef.value.openDialog();
 };
 const verifyCouponCode = async () => {
-  apiError.value = "";
+  couponApiError.value = "";
   if (!form.coupon_code?.trim()) {
     errors.coupon_code = "Coupon code  is Required";
     return;
@@ -815,11 +930,52 @@ const verifyCouponCode = async () => {
     );
     if (response.data) {
       console.log(response.data, "response");
+      changesSaved(response.data.message);
+      coupon.value = response.data.coupon;
     }
   } catch (err) {
-    apiError.value = err.response.data.message;
+    couponApiError.value = err.response.data.message;
   } finally {
     loadingCoupon.value = false;
+    verifyCouponDialogRef.value.closeDialog();
+  }
+};
+const startSubscription = async () => {
+  if (validateForm()) {
+    console.log("form", form);
+    subscriptionApiError.value = "";
+
+    loadingSubscribing.value = true;
+    if (coupon.value && coupon.value.coupon_code) {
+      form.coupon_code = coupon.value.coupon_code;
+    } else {
+      delete form.coupon_code;
+    }
+    const processedForm = { ...form };
+
+    // Remove '-' from card_number
+    processedForm.card_number = form.card_number.replace(/-/g, "");
+
+    // Replace '/' with '-' in expiration_date
+    processedForm.expiration_date = form.expiration_date.replace(/\//g, "-");
+    processedForm.duration =
+      planType.value === "MONTHLY" ? "monthly" : "annual";
+    try {
+      const response = await axios.post(
+        `/api/payment/start-subscription`,
+        processedForm,
+        getAxiosConfig()
+      );
+      if (response.data) {
+        console.log(response.data, "response");
+        confirmPaymentDialogRef.value.openDialog();
+      }
+    } catch (err) {
+      console.log(err);
+      subscriptionApiError.value = err.response.data.message;
+    } finally {
+      loadingSubscribing.value = false;
+    }
   }
 };
 </script>
