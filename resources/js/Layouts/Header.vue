@@ -144,7 +144,8 @@ export default {
     if (
       this.user_profile &&
       !this.user_profile.is_payment_verified &&
-      this.url !== "/profile-setup"
+      this.url !== "/profile-setup" &&
+      this.url !== "/payment"
     ) {
       this.$refs.paymentDialogRef.openDialog();
       console.log("herein dialog", this.user_profile);
@@ -279,7 +280,11 @@ export default {
   </CustomDialog>
   <DialogProfileTabs ref="dialogRef" :profile="profile" />
   <section
-    v-if="(user_profile && paymentCompleted) || url === '/profile-setup'"
+    v-if="
+      (user_profile && paymentCompleted) ||
+      url === '/profile-setup' ||
+      url === '/payment'
+    "
     class="bg-gray-100"
   >
     <!-- Section Container -->

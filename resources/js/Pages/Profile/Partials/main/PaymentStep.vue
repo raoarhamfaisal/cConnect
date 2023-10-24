@@ -87,12 +87,12 @@ const fetchPricingCardDetails = async () => {
   loading.value = true;
   try {
     const response = await axios.get(
-      `/api/admin/payment-info/${props.region_id}`,
+      `/api/payment-info-of-a-region/${props.region_id}`,
       getAxiosConfig()
     );
     console.log(response, "response");
     if (response.data) {
-      pricingPlan.value = { ...response.data };
+      pricingPlan.value = { ...response.data.paymentInfo };
     }
   } catch (err) {
     somethingWentWrong();
