@@ -33,8 +33,6 @@
 import InfoWithIcon from "@/Components/ContractorPage/InfoWithIcon.vue";
 import { Icon } from "@iconify/vue";
 
-import Card from "@/Components/Card.vue";
-
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import Avatar from "@/Components/Ratings/Avatar.vue";
 import { computed, ref } from "vue";

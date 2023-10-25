@@ -10,11 +10,6 @@
         <Avatar :imageSrc="`/${review.reviewer.user_avatar}`" />
       </div>
       <div class="flex flex-col justify-center">
-        <!-- <h2
-          class="text-md xs:text-xl font-medium font-bold text-gray-900 "
-        >
-          {{ review.reviewer.first_name }} {{ review.reviewer.last_name }}
-        </h2> -->
         <Tooltip
           :text="`${review.reviewer.first_name} ${review.reviewer.last_name}`"
           :applyTooltipLength="1260"
@@ -34,12 +29,6 @@
           :textLengthToShow="screenWidth < 380 ? 20 : 23"
           textClass="text-xs xs:text-lg"
         />
-        <!-- <div class="text-sm xs:text-lg">{{ review.reviewer.company_name }}</div>
-        <span
-          class="text-xs xs:text-lg"
-          v-if="review.reviewer.city || review.reviewer.state"
-          >{{ `${review.reviewer.city} ${review.reviewer.state}` }}</span
-        > -->
       </div>
       <div
         class="flex flex-col self-start"

@@ -1,29 +1,87 @@
 <template>
-  <div class="flex space-x-2 justify-between">
-    <div class="flex justify-center items-center space-x-2">
-      <div>
-        <Avatar :imageSrc="`/${contractor.user_avatar}`" />
+  <Card
+    :shadowLevel="2"
+    bgColor="#e6e7eb"
+    :isInside="true"
+    :padding="screenWidth < 640 ? '0px' : '20px'"
+  >
+    <div class="flex space-x-2 justify-between">
+      <div class="flex justify-center items-center space-x-2">
+        <div class="self-center">
+          <Avatar
+            imageClass="w-16 h-16 sm:h-24 sm:w-24"
+            :imageSrc="`/${contractor.user_avatar || contractor.company_logo}`"
+          />
+        </div>
+        <div class="flex flex-col justify-center">
+          <Tooltip
+            :text="`${contractor.first_name} ${contractor.last_name}`"
+            :applyTooltipLength="1260"
+            :textLengthToShow="screenWidth < 380 ? 18 : 20"
+            textClass="text-md max-sm:translate-y-[4px]  xs:text-lg font-medium font-bold text-gray-900 "
+          />
+          <Tooltip
+            :text="contractor.company_name"
+            :applyTooltipLength="1260"
+            :textLengthToShow="screenWidth < 380 ? 20 : 23"
+            textClass="leading-4 text-sm  xs:text-base "
+          />
+          <Tooltip
+            v-if="contractor.city || contractor.state"
+            :text="`${contractor.city} ${contractor.state}`"
+            :applyTooltipLength="1260"
+            :textLengthToShow="screenWidth < 380 ? 20 : 23"
+            textClass="leading-4 text-xs  xs:text-base "
+          />
+          <div class="max-sm:text-xs">{{ contractor.phone_cell }}</div>
+        </div>
       </div>
-      <div class="flex flex-col justify-center">
-        <h2 class="text-xl font-medium font-bold text-gray-900">
-          {{ contractor.first_name + " " + contractor.last_name }}
-        </h2>
-        <div v-if="contractor.company">{{ contractor.company_name }}</div>
-        <StarRating
-          v-if="contractor?.average_rating"
-          :rating="Number(parseFloat(contractor.average_rating).toFixed(1))"
-          :isIndicatorActive="true"
-        />
+      <div class="flex items-center gap-1">
+        <div class="flex flex-col justify-center items-center">
+          <!-- @click="openContractorRatingDialog" -->
+          <StarRounded
+            :innerStarRadius="screenWidth > 768 ? 17 : 13"
+            :starWidth="screenWidth > 768 ? 24 : 15"
+            :class="`h-4 sm:h-6 cursor-pointer`"
+            :indicatorClasses="`text-small h-4 sm:h-6 `"
+            :starHeight="screenWidth > 768 ? 24 : 15"
+            :rating="
+              Number(parseFloat(averageRating ? averageRating : 0.0).toFixed(1))
+            "
+            :isIndicatorActive="false"
+          />
+
+          <div class="">
+            <h2
+              class="font-light sm:mt-2 text-xs sm:text-sm overflow-hidden tracking-tighter"
+            >
+              {{ total_reviews }}
+            </h2>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+  </Card>
 </template>
 
 <script setup>
 import Avatar from "@/Components/Ratings/Avatar.vue";
-import StarRating from "@/Components/Ratings/StarRating.vue";
+import StarRounded from "@/Components/Ratings/StarRounded.vue";
+import { computed, ref } from "vue";
+import { useStore } from "vuex";
+import Card from "@/Components/Card.vue";
+import Tooltip from "@/Components/Ratings/Tooltip.vue";
 
-defineProps(["contractor"]);
+const props = defineProps(["contractor"]);
+console.log("contractor", props.contractor);
+const store = useStore();
+
+const total_reviews = ref(0);
+const averageRating = ref(4);
+
+//Computed
+
+const screenWidth = computed(() => store.getters.screenWidth);
 </script>
 
 <style setup>

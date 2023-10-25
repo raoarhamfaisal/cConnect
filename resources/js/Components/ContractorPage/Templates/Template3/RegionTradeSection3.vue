@@ -63,7 +63,6 @@
 import Badge from "@/Components/Ratings/Badge.vue";
 
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
-import Card from "@/Components/Card.vue";
 import { Icon } from "@iconify/vue";
 
 import { options } from "@/helpers/selectListsHelpters.js";
