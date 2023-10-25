@@ -18,7 +18,9 @@ class Subscription extends Model
         'metadata',
         'subscription_plan',
         'ends_at',
+        'started_at',
         'original_amount',
+        'discount_amount',
         'discount_end_date'
     ];
 
