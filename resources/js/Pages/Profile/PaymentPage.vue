@@ -656,8 +656,7 @@ onMounted(async () => {
 const screenWidth = computed(() => store.getters.screenWidth);
 const monthlyTotal = computed(() => {
   // Calculate the original monthly price with tax
-  const originalMonthlyTotal =
-    +pricingPlan.value.billed_monthly_price + +pricingPlan.value.sales_tax;
+  const originalMonthlyTotal = +pricingPlan.value.billed_monthly_price;
 
   // If there's a coupon
   if (coupon.value && coupon.value.percentage_off_regular_price) {
@@ -666,17 +665,18 @@ const monthlyTotal = computed(() => {
       (originalMonthlyTotal * coupon.value.percentage_off_regular_price) / 100;
 
     // Return the discounted monthly total
-    return originalMonthlyTotal - monthlyDiscount;
+    return (
+      originalMonthlyTotal - monthlyDiscount + +(+pricingPlan.value.sales_tax)
+    );
   }
 
   // Return the original monthly total if there's no coupon.value
-  return originalMonthlyTotal;
+  return originalMonthlyTotal + +(+pricingPlan.value.sales_tax);
 });
 
 const annualTotal = computed(() => {
   // Calculate the original annual price with tax for 12 months
-  const originalAnnualTotal =
-    +pricingPlan.value.billed_annual_price + +pricingPlan.value.sales_tax * 12;
+  const originalAnnualTotal = +pricingPlan.value.billed_annual_price;
 
   // If there's a coupon.value
   if (coupon.value && coupon.value.percentage_off_regular_price) {
@@ -685,11 +685,13 @@ const annualTotal = computed(() => {
       (originalAnnualTotal * coupon.value.percentage_off_regular_price) / 100;
 
     // Return the discounted annual total
-    return originalAnnualTotal - annualDiscount;
+    return (
+      originalAnnualTotal - annualDiscount + +pricingPlan.value.sales_tax * 12
+    );
   }
 
   // Return the original annual total if there's no coupon
-  return originalAnnualTotal;
+  return originalAnnualTotal + +pricingPlan.value.sales_tax * 12;
 });
 
 watch(
@@ -968,7 +970,11 @@ const startSubscription = async () => {
       );
       if (response.data) {
         console.log(response.data, "response");
-        confirmPaymentDialogRef.value.openDialog();
+        if (response.data?.messages?.resultCode === "Error") {
+          subscriptionApiError.value = response.data?.messages?.message?.text;
+        } else {
+          confirmPaymentDialogRef.value.openDialog();
+        }
       }
     } catch (err) {
       console.log(err);
