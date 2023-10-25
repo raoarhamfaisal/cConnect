@@ -22,7 +22,7 @@ const props = defineProps({
   scrollableContainer: {
     type: String,
     required: false,
-    default: "body",
+    default: "scrollable",
   },
   selectedColor: {
     type: String,
@@ -46,6 +46,7 @@ onMounted(() => {
   } else {
     // Listen for scroll events on the specified scrollable container
     const container = document.getElementById(props.scrollableContainer);
+
     if (container) {
       container.addEventListener("scroll", handleScroll);
     }

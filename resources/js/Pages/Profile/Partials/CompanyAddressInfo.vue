@@ -1,13 +1,12 @@
 <script setup>
 import InputLabel from "@/Components/InputLabel.vue";
+import SelectProfile from "@/Components/SelectProfile.vue";
+import InputError from "@/Components/InputError.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { usePage } from "@inertiajs/inertia-vue3";
 import UserAvatar from "../components/UserAvatar.vue";
-import SelectProfile from "@/Components/SelectProfile.vue";
 import { stateList } from "@/helpers/selectListsHelpters.js";
-
-import InputError from "@/Components/InputError.vue";
 
 import { watch, ref, onMounted, onBeforeUnmount } from "vue";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";

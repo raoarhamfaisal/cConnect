@@ -18,6 +18,7 @@
       >
         <li
           v-for="option in options"
+          ref="optionRefs"
           :key="option"
           :class="[
             'p-2 cursor-pointer',
@@ -34,7 +35,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watchEffect } from "vue";
+import { ref, onMounted, onUnmounted, watchEffect, nextTick } from "vue";
 import { Icon } from "@iconify/vue";
 
 const props = defineProps({
@@ -53,10 +54,6 @@ const showDropdown = ref(false);
 const dropdownContainer = ref(null);
 const dropdownMenu = ref(null);
 const dropdownPositionClass = ref("");
-
-const toggleDropdown = () => {
-  showDropdown.value = !showDropdown.value;
-};
 
 const selectOption = (option) => {
   emit("update:modelValue", option);
@@ -98,6 +95,25 @@ watchEffect(() => {
     }
   }
 });
+const optionRefs = ref([]);
+
+watchEffect(() => {
+  optionRefs.value = optionRefs.value.slice(0, props.options.length);
+});
+
+const toggleDropdown = () => {
+  showDropdown.value = !showDropdown.value;
+  if (showDropdown.value) {
+    nextTick(() => {
+      const selectedIndex = props.options.indexOf(props.modelValue);
+      const selectedEl = optionRefs.value[selectedIndex];
+
+      if (selectedEl && dropdownMenu.value) {
+        dropdownMenu.value.scrollTop = selectedEl.offsetTop;
+      }
+    });
+  }
+};
 </script>
 
 <style scoped>
