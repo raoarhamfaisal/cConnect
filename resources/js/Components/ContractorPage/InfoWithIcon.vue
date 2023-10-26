@@ -10,7 +10,7 @@
         />
       </template>
     </v-tooltip>
-    <div :class="`text-sm ${textClasses}`">
+    <div :class="` ${textClasses}`">
       {{ text }}
     </div>
   </div>
