@@ -113,8 +113,9 @@ const handleCancelSubscription = async () => {
   loading.value = true;
 
   try {
-    const response = await axios.get(
+    const response = await axios.post(
       `/api/payment/cancel-subscription/${props.user_id}`,
+      {},
       getAxiosConfig()
     );
     if (response.data) {
