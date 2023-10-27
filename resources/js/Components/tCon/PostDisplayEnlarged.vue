@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 import PostShowTheImage from "@/Components/tCon/tConSub/PostShowTheImage.vue";
 import tContractorWord from "@/Components/tCon/tContractorWord.vue";
 import { computed, ref } from "vue";
@@ -14,7 +14,7 @@ const myProps = defineProps({
     required: true,
   },
 
-  // Individual post from v-for posts (postings.vue)
+  // Individual postToEnlarge from v-for posts (postings.vue)
   postToEnlarge: {
     type: Object,
     required: true,
@@ -37,6 +37,127 @@ const openDialog = () => {
   dialogRef.value.openDialog();
 };
 const emit = defineEmits(["close-enlarged"]);
+</script> -->
+<script>
+import PostShowTheImage from "@/Components/tCon/tConSub/PostShowTheImage.vue";
+import tContractorWord from "@/Components/tCon/tContractorWord.vue";
+import StarRounded from "@/Components/Ratings/StarRounded.vue";
+import DialogContractorRating from "@/Components/Ratings/Contractor/DialogContractorRating.vue";
+import Avatar from "@/Components/Ratings/Avatar.vue";
+import { Icon } from "@iconify/vue";
+import { mapGetters } from "vuex";
+
+export default {
+  components: {
+    PostShowTheImage,
+    tContractorWord,
+    StarRounded,
+    DialogContractorRating,
+    Avatar,
+    Icon,
+  },
+  props: {
+    profile: {
+      type: Object,
+      required: true,
+    },
+    postToEnlarge: {
+      type: Object,
+      required: true,
+    },
+    body1Colors: {
+      type: Array,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      dialogRef: null,
+      showFullTextBody1: false,
+      showFullTextBody2: false,
+      truncatedLength: this.$store.state.screenWidth > 769 ? 400 : 260,
+      truncatedLengthBody2: this.$store.state.screenWidth > 769 ? 300 : 200,
+    };
+  },
+  computed: {
+    ...mapGetters(["screenWidth"]),
+    // imageArray() {
+    //   return this.postToEnlarge.image.split("|");
+    // },
+    imageArray: {
+      get: function () {
+        if (
+          this.postToEnlarge &&
+          this.postToEnlarge.image &&
+          this.postToEnlarge.image.length > 0
+        ) {
+          // split string into an array
+          let videoArray = [];
+
+          let newImageArray = this.postToEnlarge.image.split("|");
+          return newImageArray;
+        } else {
+          return [];
+        }
+      },
+    },
+    processedBody2() {
+      return this.processUrls(this.postToEnlarge.body2);
+    },
+    displayedBody1() {
+      if (this.showFullTextBody1) {
+        return this.processedBody1;
+      } else {
+        // Truncate the text after a certain length
+        let truncated = this.postToEnlarge.body1.substring(
+          0,
+          this.truncatedLength
+        );
+        // Ensure it doesn't cut off in the middle of a word
+        truncated = truncated.substring(0, truncated.lastIndexOf(" "));
+        return this.processUrls(truncated);
+      }
+    },
+    displayedBody2() {
+      if (this.showFullTextBody2) {
+        return this.processedBody2;
+      } else {
+        // Truncate the text after a certain length
+        let truncated = this.postToEnlarge.body2.substring(
+          0,
+          this.truncatedLengthBody2
+        );
+        // Ensure it doesn't cut off in the middle of a word
+        truncated = truncated.substring(0, truncated.lastIndexOf(" "));
+        return this.processUrls(truncated);
+      }
+    },
+    processedBody1() {
+      return this.processUrls(this.postToEnlarge.body1);
+    },
+  },
+  methods: {
+    openDialog() {
+      this.$refs.dialogRef.openDialog();
+    },
+    processUrls(body) {
+      const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/g;
+      return body.replace(urlRegex, function (url) {
+        let actualUrl = url.startsWith("http") ? url : "http://" + url;
+        return `<a href="${actualUrl}" target="_blank">${url}</a>`;
+      });
+    },
+    toggleText() {
+      this.showFullTextBody1 = !this.showFullTextBody1;
+    },
+    toggleTextBody2() {
+      this.showFullTextBody2 = !this.showFullTextBody2;
+    },
+    emit() {
+      this.$emit("close-enlarged");
+    },
+  },
+};
 </script>
 
 <template>
@@ -96,7 +217,7 @@ const emit = defineEmits(["close-enlarged"]);
                 @click="openDialog"
                 class="cursor-pointer flex justify-start items-start flex-none w=16"
               >
-                <!-- <Link :href="route('post.show')" class="block "> -->
+                <!-- <Link :href="route('postToEnlarge.show')" class="block "> -->
                 <div class="block">
                   <Avatar
                     :style="{
@@ -127,7 +248,7 @@ const emit = defineEmits(["close-enlarged"]);
               </div>
             </div>
 
-            <!-- Ratings / post action menu / posting date -->
+            <!-- Ratings / postToEnlarge action menu / posting date -->
             <div
               class="flex flex-row justify-end items-center self-start flex-none w-28"
             >
@@ -190,7 +311,7 @@ const emit = defineEmits(["close-enlarged"]);
 
           <!-- Text Body1 UPPER -->
           <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-          <div
+          <!-- <div
             v-show="postToEnlarge.body1"
             class="flex flex-row justify-center items-center w-full px-2 text-lg xs:text-xl md:text-2xl"
             :class="[
@@ -199,6 +320,34 @@ const emit = defineEmits(["close-enlarged"]);
             ]"
           >
             {{ postToEnlarge.body1 }}
+          </div> -->
+
+          <div class="">
+            <span
+              v-show="postToEnlarge.body1"
+              v-html="displayedBody1"
+              class="processed-body inline"
+            ></span>
+            <span
+              v-if="
+                !showFullTextBody1 &&
+                postToEnlarge.body1.length > truncatedLength
+              "
+              @click="toggleText"
+              class="cursor-pointer text-sky-700"
+            >
+              ...more
+            </span>
+            <span
+              v-if="
+                showFullTextBody1 &&
+                postToEnlarge.body1.length > truncatedLength
+              "
+              @click="toggleText"
+              class="cursor-pointer text-sky-700"
+            >
+              ...less
+            </span>
           </div>
 
           <!-- INDIVIDUAL POST: MAIN IMAGES  -->
@@ -219,10 +368,37 @@ const emit = defineEmits(["close-enlarged"]);
 
           <!-- Text Body2 LOWER -->
           <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-          <div
+          <!-- <div
             class="flex flex-row justify-center items-center w-full px-2 mt-0 mb-0 text-base xs:text-lg md:text-xl font-normal text-gray-900"
           >
             {{ postToEnlarge.body2 }}
+          </div> -->
+          <div class="">
+            <div
+              v-show="postToEnlarge.body2"
+              v-html="displayedBody2"
+              class="processed-body inline justify-center items-center w-full mt-0 mb-0 text-base xs:text-lg md:text-xl font-normal text-gray-900"
+            ></div>
+            <span
+              v-if="
+                !showFullTextBody2 &&
+                postToEnlarge.body2.length > truncatedLengthBody2
+              "
+              @click="toggleTextBody2"
+              class="cursor-pointer text-sky-700"
+            >
+              ...more
+            </span>
+            <span
+              v-if="
+                showFullTextBody2 &&
+                postToEnlarge.body2.length > truncatedLengthBody2
+              "
+              @click="toggleTextBody2"
+              class="cursor-pointer text-sky-700"
+            >
+              ...less
+            </span>
           </div>
 
           <!-- INDIVIDUAL POST: BOTTOM ROW MENU -->

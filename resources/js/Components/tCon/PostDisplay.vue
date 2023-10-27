@@ -185,7 +185,7 @@ export default {
       const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/g;
       return body.replace(urlRegex, function (url) {
         let actualUrl = url.startsWith("http") ? url : "http://" + url;
-        return `<a href="${actualUrl}" target="_blank">${url}</a>`;
+        return `<a @click.self="()=>{}" href="${actualUrl}" target="_blank">${url}</a>`;
       });
     },
     toggleText() {
@@ -365,6 +365,7 @@ export default {
     <div class="">
       <span
         v-show="post.body1"
+        @click="$emit('enlarge-post', post)"
         v-html="displayedBody1"
         class="processed-body inline"
       ></span>
@@ -425,7 +426,7 @@ export default {
       <div
         v-show="post.body2"
         v-html="displayedBody2"
-        @click.prevent="$emit('enlarge-post', post)"
+        @click.self="$emit('enlarge-post', post)"
         class="processed-body inline justify-center items-center w-full mt-0 mb-0 text-base xs:text-lg md:text-xl font-normal text-gray-900"
       ></div>
       <span
