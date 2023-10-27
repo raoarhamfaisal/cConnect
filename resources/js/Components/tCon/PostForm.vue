@@ -5,11 +5,13 @@ import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orien
 import InputLabel from "@/Components/InputLabel.vue";
 import MultiSelect from "@/Components/MultiSelect.vue";
 import InputError from "@/Components/InputError.vue";
+import TextEditor from "@/Components/TextEditor.vue";
 import SelectProfile from "@/Components/SelectProfile.vue";
+
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 
 import Badge from "@/Components/Ratings/Badge.vue";
-import DecoupledEditor from "@ckeditor/ckeditor5-build-decoupled-document";
+// import DecoupledEditor from "@ckeditor/ckeditor5-build-decoupled-document";
 import Loader from "@/Components/Ratings/Loader.vue";
 
 // additional required plugins
@@ -29,7 +31,7 @@ import "filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css";
 import { mapGetters } from "vuex";
 import { ref } from "vue";
 import { options } from "@/helpers/selectListsHelpters.js";
-import { toolbarConfigPost } from "@/helpers/utilities";
+// import { toolbarConfigPost } from "@/helpers/utilities";
 
 const FilePond = VueFilePond(
   FilePondPluginImageExifOrientation,
@@ -46,8 +48,9 @@ export default {
     FilePond,
     Loader,
     InputLabel,
-    DecoupledEditor,
+    // DecoupledEditor,
     InputError,
+    TextEditor,
     SelectProfile,
     CustomDialog,
     Badge,
@@ -72,9 +75,9 @@ export default {
       isUploading: false,
       referenceList: ref([]),
       selectedReferal: ref(""),
-      editor: DecoupledEditor,
-      editorData: "<p>Enter your top text</p>",
-      editorConfig: toolbarConfigPost,
+      // editor: DecoupledEditor,
+      // editorData: "<p>Enter your top text</p>",
+      // editorConfig: toolbarConfigPost,
       selectedItems: null,
       tradesPost: {
         trade1: false,
@@ -128,7 +131,7 @@ export default {
     success(newVal) {
       if (newVal) {
         this.form.title = "";
-        this.form.body1 = "<p>Enter your top text</p>";
+        this.form.body1 = "Top Text...";
         this.form.body2 = "";
         this.myFiles = [];
         this.form.image = "";
@@ -395,13 +398,13 @@ Array.prototype.remove = function () {
                   class="block text-gray-700 text-sm font-bold mb-2"
                   >Top text (required):
                 </label>
-                <ckeditor
+                <!-- <ckeditor
                   class="default"
                   @ready="onReady"
                   :editor="editor"
                   v-model="form.body1"
                   :config="editorConfig"
-                ></ckeditor>
+                ></ckeditor> -->
                 <!-- <input
                   type="text"
                   v-model="form.body1"
@@ -409,6 +412,7 @@ Array.prototype.remove = function () {
                   id="formPostbody1"
                   placeholder="Top text..."
                 /> -->
+                <TextEditor v-model="form.body1" />
                 <div v-if="$page.props.errors.body1" class="text-red-500">
                   {{ $page.props.errors.body1 }}
                 </div>
