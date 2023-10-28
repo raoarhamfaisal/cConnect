@@ -126,32 +126,36 @@ export default {
       return className + " " + className2;
     },
     displayedBody1() {
-      if (this.showFullTextBody1) {
+      if (
+        this.showFullTextBody1 ||
+        this.post.body1?.length <= this.truncatedLength
+      ) {
         return this.processedBody1;
       } else {
-        // Truncate the text after a certain length
         let truncated = this.post.body1?.substring(0, this.truncatedLength);
-        // Ensure it doesn't cut off in the middle of a word
-        truncated = truncated.substring(0, truncated.lastIndexOf(" "));
+        // Ensure it doesn't cut off in the middle of a word if and only if it's actually being truncated
+        if (truncated?.length >= this.truncatedLength) {
+          truncated = truncated.substring(0, truncated.lastIndexOf(" "));
+        }
         return this.processUrls(truncated);
       }
     },
     displayedBody2() {
-      if (this.showFullTextBody2) {
+      if (
+        this.showFullTextBody2 ||
+        this.post.body2?.length <= this.truncatedLengthBody2
+      ) {
         return this.processedBody2;
       } else {
-        // Truncate the text after a certain length
-        if (this.post && this.post.body2) {
-          let truncated = this.post.body2.substring(
-            0,
-            this.truncatedLengthBody2
-          );
-          // Ensure it doesn't cut off in the middle of a word
+        let truncated = this.post.body2?.substring(
+          0,
+          this.truncatedLengthBody2
+        );
+        // Ensure it doesn't cut off in the middle of a word if and only if it's actually being truncated
+        if (truncated?.length >= this.truncatedLengthBody2) {
           truncated = truncated.substring(0, truncated.lastIndexOf(" "));
-          return this.processUrls(truncated);
-        } else {
-          return "";
         }
+        return this.processUrls(truncated);
       }
     },
     processedBody1() {
@@ -209,7 +213,7 @@ export default {
     },
     processUrls(body) {
       const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/g;
-      return body.replace(urlRegex, function (url) {
+      return body?.replace(urlRegex, function (url) {
         let actualUrl = url.startsWith("http") ? url : "http://" + url;
         return `<a @click.self="()=>{}" href="${actualUrl}" target="_blank">${url}</a>`;
       });
@@ -391,7 +395,7 @@ export default {
     <div
       :class="`${body1Class} ${
         customBgColor.startsWith('#')
-          ? ' flex-col items-center  px-2 py-32 rounded-md shadow-lg border-2'
+          ? ' flex-col w-full items-center  px-2 py-32 rounded-md shadow-lg border-2'
           : ''
       } `"
       class=""
