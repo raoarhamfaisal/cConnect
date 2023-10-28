@@ -196,7 +196,7 @@ const submit = () => {
                 News Feed
               </ResponsiveNavLink>
               <ResponsiveNavLink v-if="showit" href="/ratings/contractor">
-                Your Ratings
+                My Ratings
               </ResponsiveNavLink>
             </div>
             <!-- Responsive Settings Options -->
@@ -292,8 +292,8 @@ const submit = () => {
 
     <!-- Payment Verification  -->
     <section>
-        <h1>Verify Payments</h1>
-      </section>
+      <h1>Verify Payments</h1>
+    </section>
 
     <!-- FOOTER -->
     <footer class="bg-blue-rgba">

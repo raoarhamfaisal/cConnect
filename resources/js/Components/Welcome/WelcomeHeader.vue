@@ -130,7 +130,7 @@
             </ResponsiveNavLink>
 
             <ResponsiveNavLink v-if="showit" href="/ratings/contractor">
-              Your Ratings
+              My Ratings
             </ResponsiveNavLink>
           </div>
           <!-- Responsive Settings Options -->

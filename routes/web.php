@@ -146,6 +146,9 @@ Route::get('/post', [PostController::class, 'index'])
 Route::get('/contractor/posts/{contractor_id}', [PostController::class, 'indexContractor'])
     ->name('post.contractor')
     ->middleware(['auth', 'verified']);
+    Route::get('/posts/{contractor_id}', [PostController::class, 'indexContractor'])
+    ->name('post.contractor')
+    ->middleware(['auth', 'verified']);
 
 Route::post('/post', [PostController::class, 'store'])
     ->name('post.store')

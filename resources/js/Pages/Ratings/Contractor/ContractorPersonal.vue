@@ -1,5 +1,5 @@
 <template>
-  <Head title="Your Ratings" />
+  <Head title="My  Ratings" />
 
   <Header
     :profile="profile"
@@ -14,7 +14,7 @@
         bgColor="white"
         :padding="screenWidth < 640 ? '7px' : '20px'"
       >
-        <PageTitle linkUrl="/post" pageTitle="Your Ratings" />
+        <PageTitle linkUrl="/post" pageTitle="My  Ratings" />
         <ContractorInfo
           v-if="Object.keys(contractor).length > 0"
           :contractor="contractor"

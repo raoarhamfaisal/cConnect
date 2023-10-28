@@ -182,19 +182,20 @@ const openContractorPageModal = () => {
       </div>
 
       <!-- POST BUTTON & SEARCH -->
-      <div class="flex flex-col items-center mt-6 -mx-2">
-        <!-- New Post Button -->
-        <ButtonPost
-          v-if="showPostButtons"
-          :isOpen="isOpen"
-          @postClicked="postClicked"
-        >
-        </ButtonPost>
+      <div class="flex flex-col items-center mt-4 -mx-2">
+        <div class="flex items-center justify-center gap-2">
+          <!-- New Post Button -->
+          <ButtonPost
+            v-if="showPostButtons"
+            :isOpen="isOpen"
+            @postClicked="postClicked"
+          >
+          </ButtonPost>
 
-        <div class="mt-4" v-if="showPostButtons">
-          <ButtonRefresh></ButtonRefresh>
+          <div class="" v-if="showPostButtons">
+            <ButtonRefresh></ButtonRefresh>
+          </div>
         </div>
-
         <!-- SEARCH POSTINGS -->
         <div class="relative mt-6">
           <form>
@@ -268,7 +269,7 @@ const openContractorPageModal = () => {
               width="30"
               height="30"
             />
-            <span class="mx-4 font-medium">Your Ratings</span>
+            <span class="mx-4 font-medium">My Ratings</span>
           </Link>
 
           <!-- SUB-FINDER SEARCH -->
@@ -311,7 +312,7 @@ const openContractorPageModal = () => {
             <span class="mx-4 font-medium">Contractor page</span>
           </Link>
 
-          <hr class="mt-4 ml-6 mr-6 pt-4 pb-1 border-t-2 border-gray-400" />
+          <hr class="mt-3 ml-6 mr-6 pt-3 border-t-2 border-gray-400" />
 
           <!-- VIEW SETTINGS -->
           <button
@@ -352,7 +353,7 @@ const openContractorPageModal = () => {
           <!-- admin section -->
           <hr
             v-if="isAdminUrl"
-            class="mt-4 ml-6 mr-6 pt-4 pb-1 border-t-2 border-gray-400"
+            class="mt-3 ml-6 mr-6 pt-3 border-t-2 border-gray-400"
           />
           <Link
             v-if="isAdminUrl"
@@ -396,7 +397,7 @@ const openContractorPageModal = () => {
           </Link> -->
           <hr
             v-if="isAdminUrl"
-            class="mt-4 ml-6 mr-6 pt-4 pb-1 border-t-2 border-gray-400"
+            class="mt-3 ml-6 mr-6 pt-3 border-t-2 border-gray-400"
           />
 
           <!-- LOG OUT -->
