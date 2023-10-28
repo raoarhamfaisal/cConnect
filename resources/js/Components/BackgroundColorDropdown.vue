@@ -1,16 +1,19 @@
+<!-- BackgroundColorDropdown.vue -->
+
 <template>
-  <div class="relative fontColorDropdownRelateive">
+  <div class="relative bgColorDropdownRelateive">
     <!-- Button to toggle the dropdown -->
-    <v-tooltip text="Font Color" location="top">
+    <v-tooltip text="Background Color" location="top">
       <template v-slot:activator="{ props }">
         <button
           type="button"
           @click="isOpen = !isOpen"
           v-bind="props"
-          :class="{ 'bg-gray-100 border-gray-400': isOpen }"
           class="rounded border border-transparent flex items-center"
+          :class="{ 'bg-gray-100 border-2 border-gray-400': isOpen }"
         >
-          <Icon icon="ri:font-color" class="w-6 h-6" />
+          <Icon icon="ic:round-color-lens" class="w-6 h-6" />
+          <!-- Use a suitable icon here -->
           <Icon icon="gridicons:dropdown" />
         </button>
       </template>
@@ -24,7 +27,7 @@
       <button
         type="button"
         @click="clearColor"
-        class="mb-2 flex gap-2 items-center border-2 broder-gray-200 px-2 py-1 rounded"
+        class="mb-2 flex gap-2 items-center border-2 border-gray-200 px-2 py-1 rounded"
       >
         <Icon icon="ph:eraser-fill" class="w-5 h-5" />
         <div class="text-sm font-semibold translate-y-[1px]">Remove Color</div>
@@ -36,7 +39,7 @@
           :style="{ backgroundColor: color }"
           @click="setColor(color)"
           :class="{ 'ring-2 ring-blue-500': color === selectedColor }"
-          class="w-6 h-6 rounded cursor-pointer"
+          class="w-6 h-6 border-2 border-gray-200 rounded cursor-pointer"
         ></div>
       </div>
     </div>
@@ -56,14 +59,28 @@ const emit = defineEmits(["update:modelValue"]);
 const isOpen = ref(false);
 const selectedColor = ref(props.modelValue);
 const colors = [
+  "#ffffff",
   "#000000",
+
   "#2C3E50",
-  "#34495E",
+  //   "#34495E",
   "#7F8C8D",
   "#27AE60",
   "#2980B9",
   "#8E44AD",
-  "#F39C12",
+  //   "#F39C12",
+  //   "#1ABC9C", // Turquoise
+  "#E74C3C", // Red
+  //   "#3498DB", // Blue
+  "#E67E22", // Orange
+  //   "#95A5A6", // Concrete
+  //   "#9B59B6", // Amethyst
+  "#2E4053", // Midnight Blue
+  "#16A085", // Green Sea
+  "#E84393", // Plum
+  //   "#273746", // Dark Blue
+  //   "#C0392B", // Pomegranate
+  //   "#D35400", // Pumpkin
 ];
 
 watch(selectedColor, (newValue) => {
@@ -80,7 +97,7 @@ const clearColor = () => {
 
 // Click outside logic
 const handler = (e) => {
-  if (!e.target.closest(".fontColorDropdownRelateive")) {
+  if (!e.target.closest(".bgColorDropdownRelateive")) {
     isOpen.value = false;
   }
 };

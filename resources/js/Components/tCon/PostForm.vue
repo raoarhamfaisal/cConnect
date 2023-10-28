@@ -9,7 +9,7 @@ import TextEditor from "@/Components/TextEditor.vue";
 import SelectProfile from "@/Components/SelectProfile.vue";
 
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
-
+import TradesWithDialog from "@/Components/TradesWithDialog.vue";
 import Badge from "@/Components/Ratings/Badge.vue";
 // import DecoupledEditor from "@ckeditor/ckeditor5-build-decoupled-document";
 import Loader from "@/Components/Ratings/Loader.vue";
@@ -47,6 +47,7 @@ export default {
   components: {
     FilePond,
     Loader,
+    TradesWithDialog,
     InputLabel,
     // DecoupledEditor,
     InputError,
@@ -74,11 +75,13 @@ export default {
       options: options,
       isUploading: false,
       referenceList: ref([]),
+      showBackroundColor: true,
       selectedReferal: ref(""),
       // editor: DecoupledEditor,
       // editorData: "<p>Enter your top text</p>",
       // editorConfig: toolbarConfigPost,
       selectedItems: null,
+      selectAll: false,
       tradesPost: {
         trade1: false,
         trade2: false,
@@ -174,6 +177,7 @@ export default {
     },
     handleFilePondProcessStart(file) {
       console.log("started file");
+      this.showBackroundColor = false;
       this.isUploading = true;
     },
     handleFilePondProcessEnd(file, error) {
@@ -183,6 +187,7 @@ export default {
       console.log("ended2");
 
       this.isUploading = false;
+      this.showBackroundColor = true;
     },
     changeReferal(value) {
       this.selectedReferal = value;
@@ -250,6 +255,7 @@ export default {
       // had to get rid of '/' in order to make it delete
       console.log("file remove source: ", source);
       this.removeFormImage(source.replace(/^\//, ""));
+
       load();
     },
 
@@ -264,6 +270,10 @@ export default {
         image: uniqueId,
       });
       load();
+      console.log(this.form.image, "image");
+      if (!this.form.image) {
+        this.showBackroundColor = true;
+      }
     },
     openDialog() {
       this.$refs.tradeDialogRef.openDialog();
@@ -271,14 +281,17 @@ export default {
     handleSubmit() {
       this.$refs.tradeDialogRef.closeDialog();
     },
-    onReady(editor) {
-      // Insert the toolbar before the editable area.
-      editor.ui
-        .getEditableElement()
-        .parentElement.insertBefore(
-          editor.ui.view.toolbar.element,
-          editor.ui.getEditableElement()
-        );
+    selectAllTrades() {
+      if (this.selectAll) {
+        for (let key in this.tradesPost) {
+          this.tradesPost[key] = 0;
+        }
+      } else {
+        for (let key in this.tradesPost) {
+          this.tradesPost[key] = 1;
+        }
+      }
+      this.selectAll = !this.selectAll;
     },
   },
 };
@@ -303,19 +316,38 @@ Array.prototype.remove = function () {
 <template>
   <CustomDialog
     submitText="Okay"
+    :shouldFetchPost="false"
     @submit="handleSubmit"
     :showCancel="false"
     ref="tradeDialogRef"
     title="Edit Trades"
   >
     <div class="mb-4 sm:mb-0 mt-4">
+      <div class="flex items-center gap-4 mt-6 mb-5">
+        <div class="switch-trades" @click="selectAllTrades">
+          <div
+            :class="[
+              selectAll ? 'switch-bg-on-trades' : 'switch-bg-off-trades',
+            ]"
+          >
+            <div
+              :class="[
+                selectAll ? 'switch-knob-on-trades' : 'switch-knob-off-trades',
+              ]"
+            ></div>
+          </div>
+        </div>
+        <label for="select_all" class="mr-4 text-gray-800 font-bold"
+          >Select All</label
+        >
+      </div>
       <div class="grid mt-8 gap-3">
         <div
           v-for="(option, index) in options"
           :key="index"
-          class="flex items-center justify-between sm:w-96 ml-3 mb-5"
+          class="flex items-center justify-between sm:w-96 sm:ml-3 mb-5"
         >
-          <label :for="option.id" class="mr-4 font-bold">{{
+          <label :for="option.id" class="mr-4 max-sm:text-sm font-bold">{{
             option.name
           }}</label>
           <div class="switch" @click="toggleSwitch(option.id)">
@@ -336,6 +368,7 @@ Array.prototype.remove = function () {
       <InputError class="mt-2" :message="$page.props.errors.trades" />
     </div>
   </CustomDialog>
+
   <div
     class="fixed z-40 inset-0 overflow-y-auto ease-out duration-400 overscroll-contain"
   >
@@ -360,7 +393,7 @@ Array.prototype.remove = function () {
         aria-labelledby="modal-headline"
       >
         <form>
-          <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+          <div class="bg-white px-4 pt-5 pb-4 sm:p-6">
             <Loader :loading="loading" background="" height="30vh"></Loader>
 
             <div v-if="!loading" class="">
@@ -412,7 +445,10 @@ Array.prototype.remove = function () {
                   id="formPostbody1"
                   placeholder="Top text..."
                 /> -->
-                <TextEditor v-model="form.body1" />
+                <TextEditor
+                  v-model="form.body1"
+                  :shouldShowBackground="showBackroundColor"
+                />
                 <div v-if="$page.props.errors.body1" class="text-red-500">
                   {{ $page.props.errors.body1 }}
                 </div>
@@ -540,7 +576,8 @@ Array.prototype.remove = function () {
                     Edit
                   </div>
                 </div>
-                <template v-for="(option, index) in options" :key="option.name">
+                <TradesWithDialog v-model="tradesPost" />
+                <!-- <template v-for="(option, index) in options" :key="option.name">
                   <Badge
                     v-if="tradesPost[option.id]"
                     class="my-1 mx-1 space-x-1 flex"
@@ -552,7 +589,7 @@ Array.prototype.remove = function () {
                     }"
                     >{{ option.name }}</Badge
                   >
-                </template>
+                </template> -->
               </div>
             </div>
           </div>
@@ -625,42 +662,44 @@ Array.prototype.remove = function () {
 .disabled {
   opacity: 0.2;
 }
-/* .switch-post {
+.switch-trades {
   cursor: pointer;
-  width: 30px;
-  height: 15px;
+  width: 40px;
+  height: 20px;
   position: relative;
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
 }
-.switch-bg-on-post,
-.switch-bg-off-post {
+.switch-bg-on-trades,
+.switch-bg-off-trades {
   width: 100%;
   height: 100%;
-  border-radius: 15px;
+  border-radius: 20px;
   transition: background-color 0.2s;
 }
-.switch-bg-on-post {
-  background-color: rgba(36, 30, 109, 1);
-  width: 30px;
+.switch-bg-on-trades {
+  /* background-color: rgba(36, 30, 109, 1); */
+  background-color: rgba(10, 150, 10, 1);
+  width: 40px;
 }
-.switch-bg-off-post {
+.switch-bg-off-trades {
   background-color: #ccc;
-  width: 29px;
+  /* background-color: rgba(150, 10, 10, 1); */
+  width: 39px;
 }
-.switch-knob-on-post,
-.switch-knob-off-post {
-  width: 14px;
-  height: 14px;
+.switch-knob-on-trades,
+.switch-knob-off-trades {
+  width: 19px;
+  height: 18px;
   border-radius: 50%;
   background-color: #fff;
   position: absolute;
   top: 1px;
   transition: left 0.2s;
 }
-.switch-knob-on-post {
-  left: 16px;
+.switch-knob-on-trades {
+  left: 21px;
 }
-.switch-knob-off-post {
+.switch-knob-off-trades {
   left: 1px;
-} */
+}
 </style>
-@/helpers/selectListsHelpters.js

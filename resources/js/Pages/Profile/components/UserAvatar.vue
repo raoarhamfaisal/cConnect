@@ -11,6 +11,10 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  rounded: {
+    type: Boolean,
+    default: true,
+  },
 });
 const emit = defineEmits();
 const file = ref(null);
@@ -19,6 +23,7 @@ const imageFailed = ref(false);
 const disabled = ref(false);
 
 const handleImageError = () => {
+  cover;
   imageFailed.value = true;
 };
 
@@ -57,26 +62,36 @@ watch(
 </script>
 
 <template>
-  <div class="relative w-36 h-36 inline-block mb-4 mt-8">
+  <div
+    :class="`relative ${
+      rounded ? 'w-36 h-36' : 'w-48 h-24'
+    } inline-block mb-4 mt-8`"
+  >
     <img
       v-if="imageSrc && !imageFailed"
       :class="`object-${
-        cover ? 'cover' : 'contain'
-      } w-full h-full rounded-full`"
+        cover ? 'cover ' : 'contain border-2 border-gray-300 '
+      } ${rounded ? 'rounded-full' : 'rounded-md'}  w-full h-full `"
       :src="imageSrc"
       @error="handleImageError"
       alt="avatar"
     />
     <img
       v-else-if="updatedImage && !imageFailed"
-      class="object-cover w-full h-full rounded-full"
+      :class="`object-${
+        cover ? 'cover ' : 'contain border-2 border-gray-300 '
+      } ${rounded ? 'rounded-full' : 'rounded-md'} w-full h-full`"
       :src="updatedImage"
       @error="handleImageError"
       alt="avatar"
     />
     <div
       v-else
-      class="object-cover w-full h-full rounded-full border-2 border-gray-100 flex items-center justify-center"
+      :class="`object-${
+        cover ? 'cover ' : 'contain border-2 border-gray-300 '
+      } ${
+        rounded ? 'rounded-full' : 'rounded-md'
+      }  w-full h-full  border-2 border-gray-100 flex items-center justify-center`"
     >
       <Icon icon="mdi:camera" color="#777" width="24" />
     </div>

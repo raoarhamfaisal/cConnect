@@ -3,6 +3,11 @@
     <div class="toolbar bg-gray-100 p-2 border-b flex items-center">
       <FontSizeDropdown v-model="fontSizeIncrement" />
       <FontColorDropdown v-model="selectedColor" />
+      <BackgroundColorDropdown
+        v-if="shouldShowBackground"
+        v-model="backgroundColor"
+      />
+
       <!-- Bold Icon -->
       <button
         type="button"
@@ -55,7 +60,11 @@
         'text-center': alignment === 'center',
         'text-right': alignment === 'right',
       }"
-      :style="{ fontSize: 16 + fontSizeIncrement + 'px', color: selectedColor }"
+      :style="{
+        fontSize: 16 + fontSizeIncrement + 'px',
+        color: selectedColor,
+        backgroundColor: backgroundColor,
+      }"
       @input="updateContent"
     >
       {{ content }}
@@ -67,9 +76,12 @@
 import { ref, watch } from "vue";
 import { Icon } from "@iconify/vue";
 import FontSizeDropdown from "@/Components/FontSizeDropdown.vue";
+import BackgroundColorDropdown from "@/Components/BackgroundColorDropdown.vue";
+
 import FontColorDropdown from "@/Components/FontColorDropdown.vue";
 const props = defineProps({
   modelValue: String,
+  shouldShowBackground: Boolean,
 });
 
 const emit = defineEmits(["update:modelValue"]);
@@ -80,9 +92,10 @@ const content = ref(props.modelValue ?? "Top Text...");
 const editor = ref(null);
 const fontSizeIncrement = ref(0);
 const selectedColor = ref("inherit");
+const backgroundColor = ref("inherit");
 
 const generateStyledContent = () => {
-  let classes = "inline";
+  let classes = "inline ";
 
   if (isBold.value) {
     classes += " font-bold";
@@ -99,22 +112,55 @@ const generateStyledContent = () => {
   if (alignment.value === "right") {
     classes += " text-right";
   }
+  if (backgroundColor.value) {
+    classes += ` bg-[${backgroundColor.value}]`;
+  }
 
   const style = `font-size: ${16 + fontSizeIncrement.value}px; color: ${
     selectedColor.value
-  };`;
-  console.log("style", style);
+  }; `;
+  console.log("style", style, classes);
 
   return `<span id="toTeleport" class="${classes}" style="${style}">${content.value}</span>`;
 };
 
 watch(
-  [content, alignment, isBold, fontSizeIncrement, selectedColor],
+  [
+    content,
+    alignment,
+    isBold,
+    fontSizeIncrement,
+    selectedColor,
+    backgroundColor,
+  ],
   (newValue) => {
     const styledContent = generateStyledContent();
     emit("update:modelValue", styledContent);
   }
 );
+watch(
+  () => props.shouldShowBackground,
+  (newValue) => {
+    console.log(newValue, "inShowBackground");
+    if (!newValue) {
+      backgroundColor.value = "inherit";
+      // selectedColor.value = "black";
+      // alignment.value = "";
+    }
+  }
+);
+watch(backgroundColor, (newValue) => {
+  if (
+    backgroundColor.value !== "inherit" &&
+    backgroundColor.value !== "#ffffff"
+  ) {
+    selectedColor.value = "#ffffff";
+    alignment.value = "center";
+  } else {
+    selectedColor.value = "black";
+    alignment.value = "left";
+  }
+});
 
 const toggleBold = () => {
   isBold.value = !isBold.value;

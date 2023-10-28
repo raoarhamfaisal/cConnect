@@ -34,14 +34,14 @@ watch(
   >
     <img
       v-if="imageSrc && !imageFailed"
-      :class="`object-cover w-full  h-full rounded-full`"
+      :class="`object-contain w-full border-2 border-gray-300  h-full rounded-full`"
       :src="imageSrc"
       alt="avatar"
       @error="handleImageError"
     />
     <div
       v-else
-      class="object-cover w-full h-full rounded-full flex items-center justify-center bg-gray-400"
+      class="object-contain w-full h-full rounded-full flex items-center justify-center bg-gray-400"
     >
       <Icon icon="fluent-mdl2:contact" color="white" width="24" />
     </div>

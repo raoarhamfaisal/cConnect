@@ -3,6 +3,8 @@ import SignUpLayout from "@/Layouts/SignUpLayout.vue";
 import WelcomeHeader from "@/Components/Welcome/WelcomeHeader.vue";
 import WelcomeFooter from "@/Components/Welcome/WelcomeFooter.vue";
 
+import { Link } from "@inertiajs/inertia-vue3";
+
 import { Head } from "@inertiajs/inertia-vue3";
 
 const props = defineProps({
@@ -15,9 +17,16 @@ const props = defineProps({
     <Head title="Careers" />
     <WelcomeHeader :showNewsFeed="true" :showit="showit" :showSignUp="true" />
 
-    <div class="bg-gray-100 min-h-screen p-5">
-      <h1 class="text-4xl font-bold mb-6">Join Our Network of Contractors</h1>
-      <p class="text-lg mb-6">
+    <div class="bg-gray-100 min-h-screen p-3 sm:p-5 max-sm:rounded">
+      <div class="mb-3 sm:mb-6">
+        <Link href="/" class="text-blue-500 hover:underline"
+          >← Back to Main Page</Link
+        >
+      </div>
+      <h1 class="text-4xl font-bold mb-3 sm:mb-6">
+        Join Our Network of Contractors
+      </h1>
+      <p class="text-lg mb-3 sm:mb-6">
         At tcontractor.com, we're building a community where contractors help
         each other succeed. Whether you're looking to hire, seek guidance, or
         find new opportunities, you’re in the right place.

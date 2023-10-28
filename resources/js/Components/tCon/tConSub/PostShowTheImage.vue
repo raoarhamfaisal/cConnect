@@ -134,7 +134,7 @@ const onImageLoad = () => {
 
       <img
         v-else-if="cropImage"
-        class="max-h-[546px] w-full object-cover object-center rounded-lg"
+        class="max-h-[200px] x350:max-h-[250px] xs:max-h-[300px] md:max-h-[350px] lg:max-h-[546px] w-full object-cover object-center rounded-lg"
         :src="image_path(props.image)"
         alt=""
       />

@@ -97,7 +97,7 @@ onMounted(() => {
         );
       "
     >
-      <nav class="container max-w-7xl px-6 py-2 mx-auto md:px-12">
+      <nav class="container max-w-7xl pr-6 pl-4 sm:px-6 py-2 mx-auto md:px-12">
         <div class="flex items-center justify-between">
           <!-- LOGO -->
           <div class="flex items-center justify-start">
@@ -119,7 +119,7 @@ onMounted(() => {
             </ScrollToLinkVue>
 
             <Link
-              href="#"
+              href="/about-us#contactUs"
               class="hidden lg:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8"
             >
               Contact Us
@@ -133,7 +133,7 @@ onMounted(() => {
                     ? route('post')
                     : '/profile-setup'
                 "
-                class="block flex justify-center items-center mx-2 p-3 px-6 font-bold rounded-xl text-white bg-green-600 hover:bg-green-800 border-green-600"
+                class="block flex justify-center items-center mx-2 py-2 sm:py-3 px-3 sm:px-6 font-bold rounded-lg sm:rounded-xl text-white bg-green-600 hover:bg-green-800 border-green-600"
               >
                 News Feed
               </Link>
@@ -259,11 +259,11 @@ onMounted(() => {
                 >
                   Settings
                 </ResponsiveNavLink>
-                <ResponsiveNavLink :href="route('index')">
+                <ResponsiveNavLink href="/about-us#contactUs">
                   Contact Us
                 </ResponsiveNavLink>
 
-                <ResponsiveNavLink :href="route('index')">
+                <ResponsiveNavLink href="/about-us#aboutUs">
                   About Us
                 </ResponsiveNavLink>
                 <div
@@ -509,7 +509,7 @@ onMounted(() => {
     </section>
 
     <!-- CALL TO ACTION SECTION -->
-    <section id="cta" class="relative bg-[#16a34a] text-[#073116]">
+    <section id="pricing" class="relative bg-[#16a34a] text-[#073116]">
       <!-- CTA CONTAINER -->
       <div class="">
         <div
@@ -603,7 +603,7 @@ onMounted(() => {
           <div
             class="mx-auto my-6 text-center first-letter: text-white md:hidden"
           >
-            Copyright &copy; 2023, All Rights Reserved
+            Copyright &copy; 2024, All Rights Reserved
           </div>
 
           <!-- LOGO -->
@@ -638,8 +638,10 @@ onMounted(() => {
           <!-- First Menu List -->
           <div class="flex flex-col space-y-3 text-white">
             <a href="#" class="hover:text-blue-400">Home</a>
-            <a href="#" class="hover:text-blue-400">Pricing</a>
-            <a href="#" class="hover:text-blue-400">Contact Us</a>
+            <a href="#pricing" class="hover:text-blue-400">Pricing</a>
+            <a href="/about-us#contactUs" class="hover:text-blue-400"
+              >Contact Us</a
+            >
           </div>
           <!-- Second Menu List -->
           <div class="flex flex-col space-y-3 text-white">
@@ -732,7 +734,7 @@ onMounted(() => {
           <div
             class="hidden text-white md:block mx-auto my-6 text-center first-letter:"
           >
-            Copyright &copy; 2023, All Rights Reserved
+            Copyright &copy; 2024, All Rights Reserved
           </div>
         </div>
       </div>
