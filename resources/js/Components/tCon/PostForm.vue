@@ -134,7 +134,7 @@ export default {
     success(newVal) {
       if (newVal) {
         this.form.title = "";
-        this.form.body1 = "Top Text...";
+        this.form.body1 = "";
         this.form.body2 = "";
         this.myFiles = [];
         this.form.image = "";
@@ -539,13 +539,26 @@ Array.prototype.remove = function () {
                   class="block text-gray-700 text-sm font-bold mb-2"
                   >Bottom text (not required):
                 </label>
-                <input
+                <!-- <input
                   type="text"
                   v-model="form.body2"
                   class="w-full py-2 px-3 shadow appearance-none text-gray-900 font-semibold border rounded border-gray-600 leading-tight focus:outline-none focus:shadow-outline placeholder:italic placeholder:text-slate-500"
+                  style="height: 100px;"
                   id="formPostbody2"
                   placeholder="Bottom text..."
-                />
+                /> -->
+                <textarea
+                  v-model="form.body2"
+                  class="w-full py-2 px-3 shadow appearance-none text-gray-900 font-semibold border rounded border-gray-600 leading-tight focus:outline-none focus:shadow-outline placeholder:italic placeholder:text-slate-500"
+                  rows="3"
+                  id="formPostbody2"
+                  placeholder="Bottom text..."
+
+                >
+
+                </textarea>
+
+
                 <div v-if="$page.props.errors.body2" class="text-red-500">
                   {{ $page.props.errors.body2 }}
                 </div>
