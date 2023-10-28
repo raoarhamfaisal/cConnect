@@ -109,9 +109,13 @@ export default {
     },
     body1Class: function () {
       let regex = /class="([^"]*text-[^"]*)"/;
+      let regex2 = /class="([^"]*justify-[^"]*)"/;
+
       let match = this.post.body1.match(regex);
+      let match2 = this.post.body1.match(regex2);
 
       let className = match ? match[1] : ""; // Extract the classes
+      let className2 = match2 ? match2[1] : ""; // Extract the classes
       let bgClassMatch = className.match(/bg-\[#([a-zA-Z0-9]+)\]/);
 
       if (bgClassMatch) {
@@ -119,7 +123,7 @@ export default {
         this.customBgColor = "#" + bgClassMatch[1]; // Set the custom background color (with '#')
       }
 
-      return className;
+      return className + " " + className2;
     },
     displayedBody1() {
       if (this.showFullTextBody1) {
@@ -387,7 +391,7 @@ export default {
     <div
       :class="`${body1Class} ${
         customBgColor.startsWith('#')
-          ? 'p-2 py-3 rounded-md shadow-lg border-2'
+          ? ' flex-col items-center  px-2 py-32 rounded-md shadow-lg border-2'
           : ''
       } `"
       class=""
