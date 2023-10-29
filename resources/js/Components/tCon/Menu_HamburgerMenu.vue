@@ -160,19 +160,6 @@ const truncatedName = computed(() => {
             <span class="mx-4 font-medium">News Feed</span>
           </Link>
 
-          <Link
-            href="/ratings/contractor"
-            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
-          >
-            <Icon
-              icon="material-symbols:reviews"
-              color="#1098ad"
-              width="20"
-              height="20"
-            />
-            <span class="mx-4 font-medium">My Ratings</span>
-          </Link>
-
           <!-- DropDown: SUB FINDER -->
           <Link
             href="/sub-finder"
@@ -223,6 +210,84 @@ const truncatedName = computed(() => {
             <img src="/images/icons/news_view.png" width="20" height="20" />
             <span class="mx-4 font-medium">View Settings</span>
           </button>
+          <Link
+            :href="`/posts/${profile.user_id}`"
+            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
+          >
+            <svg
+              id="SvgjsSvg1017"
+              width="20"
+              height="20"
+              xmlns="http://www.w3.org/2000/svg"
+              version="1.1"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <defs id="SvgjsDefs1018"></defs>
+              <g id="SvgjsG1019">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill-rule="evenodd"
+                  stroke-linejoin="round"
+                  stroke-miterlimit="2"
+                  clip-rule="evenodd"
+                  viewBox="0 0 64 64"
+                  width="20"
+                  height="20"
+                >
+                  <rect width="20" height="20" fill="none"></rect>
+                  <path
+                    d="M58,104C58,98.696 56.946,93.609 55.071,89.858C53.196,86.107 50.652,84 48,84C39.122,84 24.878,84 16,84C13.348,84 10.804,86.107 8.929,89.858C7.054,93.609 6,98.696 6,104C6,117.961 6,136 6,136C6,138.209 6.895,140 8,140L56,140C57.105,140 58,138.209 58,136L58,104ZM54,132L54,104C54,100.817 53.368,97.765 52.243,95.515C51.117,93.264 49.591,92 48,92C39.122,92 24.878,92 16,92C14.409,92 12.883,93.264 11.757,95.515C10.632,97.765 10,100.817 10,104L10,132L54,132Z"
+                    transform="matrix(1 0 0 .5 0 -36)"
+                    fill="#464898"
+                    class="color000 svgShape"
+                  ></path>
+                  <path
+                    d="M10,92L10,120C10,123.183 10.632,126.235 11.757,128.485C12.883,130.736 14.409,132 16,132C24.878,132 39.122,132 48,132C49.591,132 51.117,130.736 52.243,128.485C53.368,126.235 54,123.183 54,120C54,117.792 54.896,116 56,116C57.104,116 58,117.792 58,120C58,125.304 56.946,130.391 55.071,134.142C53.196,137.893 50.652,140 48,140C39.122,140 24.878,140 16,140C13.348,140 10.804,137.893 8.929,134.142C7.054,130.391 6,125.304 6,120L6,88C6,85.791 6.895,84 8,84L56,84C57.105,84 58,85.791 58,88C58,88 58,95.188 58,104C58,106.208 57.104,108 56,108C54.896,108 54,106.208 54,104L54,92L10,92Z"
+                    transform="matrix(1 0 0 .5 0 -12)"
+                    fill="#464898"
+                    class="color000 svgShape"
+                  ></path>
+                  <path
+                    d="M26,100C26,98.895 25.105,98 24,98L16,98C14.895,98 14,98.895 14,100L14,108C14,109.105 14.895,110 16,110L24,110C25.105,110 26,109.105 26,108L26,100ZM18,102L18,106L22,106L22,102L18,102Z"
+                    transform="translate(0 -84)"
+                    fill="#464898"
+                    class="color000 svgShape"
+                  ></path>
+                  <path
+                    d="M24,103L48,103C49.656,103 51,102.104 51,101C51,99.896 49.656,99 48,99L24,99C22.344,99 21,99.896 21,101C21,102.104 22.344,103 24,103Z"
+                    transform="matrix(.66667 0 0 1 16 -85)"
+                    fill="#464898"
+                    class="color000 svgShape"
+                  ></path>
+                  <path
+                    d="M24,103L48,103C49.656,103 51,102.104 51,101C51,99.896 49.656,99 48,99L24,99C22.344,99 21,99.896 21,101C21,102.104 22.344,103 24,103Z"
+                    transform="matrix(.66667 0 0 1 16 -77)"
+                    fill="#464898"
+                    class="color000 svgShape"
+                  ></path>
+                  <path
+                    d="M26,127.172L36.586,116.586C37.367,115.805 38.633,115.805 39.414,116.586L55.071,132.243C55.85,133.022 55.852,134.285 55.075,135.067C55.075,135.067 55.075,135.067 55.071,135.071C53.196,136.946 50.652,138 48,138L32,138C32,138 16,138 16,138C13.348,138 10.804,136.946 8.929,135.071L8.925,135.067C8.148,134.285 8.15,133.022 8.929,132.243L18.586,122.586C19.367,121.805 20.633,121.805 21.414,122.586L26,127.172ZM50.586,133.414L38,120.828L28.828,130L32.828,134L48,134C48.904,134 49.787,133.796 50.586,133.414ZM27.172,134L20,126.828L13.414,133.414C14.214,133.796 15.097,134 16,134L27.172,134Z"
+                    transform="translate(0 -80)"
+                    fill="#464898"
+                    class="color000 svgShape"
+                  ></path>
+                </svg>
+              </g>
+            </svg>
+            <span class="mx-4 font-medium">My Posts</span>
+          </Link>
+          <Link
+            href="/ratings/contractor"
+            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
+          >
+            <Icon
+              icon="material-symbols:reviews"
+              color="#1098ad"
+              width="20"
+              height="20"
+            />
+            <span class="mx-4 font-medium">My Ratings</span>
+          </Link>
 
           <!-- DropDown: My Profile -->
           <Link
