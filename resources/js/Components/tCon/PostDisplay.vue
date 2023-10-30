@@ -212,7 +212,8 @@ export default {
       this.$store.commit("ratings/setIndex", this.index);
     },
     processUrls(body) {
-      const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/g;
+      // Improved regex: capture URLs but stop if a '<' character (start of a potential HTML tag) is encountered
+      const urlRegex = /(https?:\/\/[^<\s]+|www\.[^<\s]+)/g;
       return body?.replace(urlRegex, function (url) {
         let actualUrl = url.startsWith("http") ? url : "http://" + url;
         return `<a @click.self="()=>{}" href="${actualUrl}" target="_blank">${url}</a>`;
@@ -585,3 +586,16 @@ export default {
   text-decoration: underline;
 }
 </style>
+<!--
+  should be present on @input
+  const adjustHeight = () => {
+  nextTick(() => {
+    editor.value.style.height = 'auto'; // Reset height first to get the correct scrollHeight
+    editor.value.style.height = editor.value.scrollHeight + 'px';
+  });
+};
+.editor {
+  min-height: 200px;
+  overflow-y: hidden; /* Hide vertical scrollbar */
+  resize: none; /* Disable textarea resizing */
+} -->
