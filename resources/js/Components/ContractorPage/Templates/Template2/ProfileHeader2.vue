@@ -78,22 +78,24 @@
         screenWidth > 768 ? 'w-1/4' : ''
       } flex-grow flex flex-col gap-2  flex justify-center  items-center `"
     >
-      <div class="flex flex-col justify-center items-center">
+      <div class="flex flex-col md:mt-2 justify-center items-center">
         <StarRounded
           @click="openContractorRatingDialog"
-          :innerStarRadius="screenWidth > 768 ? 16 : 16"
-          :starWidth="screenWidth > 768 ? 24 : 24"
-          :class="`h-6 cursor-pointer`"
-          :indicatorClasses="`text-small h-6 `"
-          :starHeight="screenWidth > 768 ? 24 : 24"
+          :innerStarRadius="screenWidth > 768 ? 17 : 13"
+          :starWidth="screenWidth > 768 ? 24 : 15"
+          :class="`h-4 md:h-6 cursor-pointer`"
+          :indicatorClasses="`text-small h-4 md:h-6 `"
+          :starHeight="screenWidth > 768 ? 24 : 15"
           :rating="
             Number(parseFloat(averageRating ? averageRating : 0.0).toFixed(1))
           "
           :isIndicatorActive="false"
         />
 
-        <div class="">
-          <h2 class="font-light mt-2 text-sm overflow-hidden tracking-tighter">
+        <div class="md:mt-2">
+          <h2
+            class="font-light mt-2 md:text-base text-sm overflow-hidden tracking-tighter"
+          >
             {{ total_reviews }}
           </h2>
         </div>

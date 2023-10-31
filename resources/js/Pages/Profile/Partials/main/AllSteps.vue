@@ -1,6 +1,7 @@
 <script setup>
 // import DeleteUserForm from "./Partials/DeleteUserForm.vue";
 import GeneralInfo from "@/Pages/Profile/Partials/GeneralInfo.vue";
+import InputError from "@/Components/InputError.vue";
 import CompanyAddressInfo from "@/Pages/Profile/Partials/CompanyAddressInfo.vue";
 import Trades from "@/Pages/Profile/Partials/Trades.vue";
 import Views from "@/Pages/Profile/Partials/Views.vue";
@@ -83,6 +84,8 @@ const disable = computed(() => {
 });
 const screenWidth = computed(() => store.getters.screenWidth);
 const loading = computed(() => store.state.profile.loading);
+const areAllTradesSetToZeroError = ref("");
+const clickedTradeContinue = ref(false);
 
 // Methods
 
@@ -240,11 +243,27 @@ const nextClick = async () => {
       return;
     }
   }
+  if (currentStep.value === 2) {
+    if (areAllTradesSetToZeroError.value) {
+      clickedTradeContinue.value = true;
+      return;
+    }
+  }
   currentStep.value = currentStep.value + 1;
   editableAllowed.value = editableAllowed.value + 1;
 };
 const completePayment = async () => {
   await store.dispatch("profile/verifyPayment");
+};
+
+const dontProceed = (areAllTradesSetToZero) => {
+  if (areAllTradesSetToZero) {
+    areAllTradesSetToZeroError.value =
+      "Please select atleast one Trade to Proceed";
+  } else {
+    areAllTradesSetToZeroError.value = "";
+    clickedTradeContinue.value = false;
+  }
 };
 </script>
 
@@ -342,7 +361,17 @@ const completePayment = async () => {
             />
           </v-stepper-window-item>
           <v-stepper-window-item :value="2">
-            <Trades :profile="profile" apiChoice="2" />
+            <Trades
+              :profile="profile"
+              apiChoice="2"
+              @dontProceed="dontProceed"
+            />
+
+            <InputError
+              v-if="clickedTradeContinue"
+              class="mt-2"
+              :message="areAllTradesSetToZeroError"
+            />
           </v-stepper-window-item>
           <v-stepper-window-item :value="3">
             <Views :profile="profile" apiChoice="2" />

@@ -33,7 +33,6 @@ export default {
   },
 
   mounted() {
-
     // console.log('content', this.post);
     // this.post.body1 = this.post.body1.replace(/\/n/g, '<br>');
     // Remove PostingActionMenu upon scroll
@@ -117,8 +116,6 @@ export default {
       let match = this.post.body1.match(regex);
       let match2 = this.post.body1.match(regex2);
 
-
-
       let className = match ? match[1] : ""; // Extract the classes
       let className2 = match2 ? match2[1] : ""; // Extract the classes
       let bgClassMatch = className.match(/bg-\[#([a-zA-Z0-9]+)\]/);
@@ -134,10 +131,9 @@ export default {
     displayedBody1() {
       let content = this.post.body1;
       if (content) {
-        content = content.replace(/\/n/g, '<br>');  // Replace /n with <br>
+        content = content.replace(/\/n/g, "<br>"); // Replace /n with <br>
       }
 
-      
       if (this.showFullTextBody1 || content?.length <= this.truncatedLength) {
         return this.processUrls(content);
       } else {
@@ -153,10 +149,13 @@ export default {
     displayedBody2() {
       let content = this.post.body2;
       if (content) {
-        content = content.replace(/\/n/g, '<br>');  // Replace /n with <br>
+        content = content.replace(/\/n/g, "<br>"); // Replace /n with <br>
       }
-      
-      if (this.showFullTextBody2 || content?.length <= this.truncatedLengthBody2) {
+
+      if (
+        this.showFullTextBody2 ||
+        content?.length <= this.truncatedLengthBody2
+      ) {
         return this.processUrls(content);
       } else {
         let truncated = content?.substring(0, this.truncatedLengthBody2);
@@ -167,8 +166,6 @@ export default {
         return this.processUrls(truncated);
       }
     },
-
-
 
     processedBody1() {
       return this.processUrls(this.post.body1);
@@ -308,20 +305,21 @@ export default {
         <!-- User RATINGS /// INDIVIDUAL POST: TOP POSTING ROW -->
         <div class="flex flex-row flex-none justify-end items-center px-2">
           <!-- Premium Marking -->
-          <div class="">
+          <!-- <div class="">
             <img src="/images/icons/pre-diamond.png" width="20" height="30" />
-          </div>
+          </div> -->
 
           <!-- ${
               user.id === post.user_id ? 'pointer-events-none' : ''
             } -->
-          <div class="flex flex-col justify-center items-center">
+          <div class="flex flex-col md:mt-2 justify-center items-center">
             <StarRounded
               @click="openDialog"
-              :starWidth="15"
-              indicatorClasses="text-small h-4"
-              :class="`h-4 cursor-pointer `"
-              :starHeight="15"
+              :innerStarRadius="screenWidth > 768 ? 17 : 13"
+              :starWidth="screenWidth > 768 ? 24 : 15"
+              :class="`h-4 md:h-6 cursor-pointer`"
+              :indicatorClasses="`text-small h-4 md:h-6 `"
+              :starHeight="screenWidth > 768 ? 24 : 15"
               :rating="
                 Number(
                   parseFloat(
@@ -332,8 +330,10 @@ export default {
               :isIndicatorActive="false"
             />
 
-            <div class="">
-              <h2 class="font-light text-xs overflow-hidden tracking-tighter">
+            <div class="md:mt-2">
+              <h2
+                class="font-light text-xs md:text-sm overflow-hidden tracking-tighter"
+              >
                 {{ post.total_reviews }}
               </h2>
             </div>

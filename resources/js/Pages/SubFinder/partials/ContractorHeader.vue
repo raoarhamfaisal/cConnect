@@ -37,13 +37,13 @@
         </div>
       </div>
       <div class="flex items-center gap-1">
-        <div class="flex flex-col justify-center items-center">
+        <div class="flex flex-col md:mt-2 justify-center items-center">
           <!-- @click="openContractorRatingDialog" -->
           <StarRounded
             :innerStarRadius="screenWidth > 768 ? 17 : 13"
             :starWidth="screenWidth > 768 ? 24 : 15"
-            :class="`h-4 sm:h-6 cursor-pointer`"
-            :indicatorClasses="`text-small h-4 sm:h-6 `"
+            :class="`h-4 md:h-6 cursor-pointer`"
+            :indicatorClasses="`text-small h-4 md:h-6 `"
             :starHeight="screenWidth > 768 ? 24 : 15"
             :rating="
               Number(parseFloat(averageRating ? averageRating : 0.0).toFixed(1))
@@ -51,9 +51,9 @@
             :isIndicatorActive="false"
           />
 
-          <div class="">
+          <div class="md:mt-2">
             <h2
-              class="font-light sm:mt-2 text-xs sm:text-sm overflow-hidden tracking-tighter"
+              class="font-light text-xs md:text-sm overflow-hidden tracking-tighter"
             >
               {{ total_reviews }}
             </h2>

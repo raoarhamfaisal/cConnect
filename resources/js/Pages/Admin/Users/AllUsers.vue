@@ -283,7 +283,7 @@
             <InputLabel class="font-bold" for="region_id" value="Region ID*" />
             <TextInput
               id="region_id"
-              type="text"
+              type="number"
               class="mt-1 block w-full"
               placeholder="Type your Region ID"
               @input="clearErrors('region_id')"
@@ -291,6 +291,19 @@
               required
             />
             <InputError class="mt-2" :message="errors.region_id" />
+          </div>
+          <div>
+            <InputLabel class="font-bold" for="user_id" value="User ID*" />
+            <TextInput
+              id="user_id"
+              type="number"
+              class="mt-1 block w-full"
+              placeholder="Type your User ID"
+              @input="clearErrors('user_id')"
+              v-model="userToEdit.profile.user_id"
+              required
+            />
+            <InputError class="mt-2" :message="errors.user_id" />
           </div>
 
           <div>
@@ -517,8 +530,14 @@ const validateForm = () => {
   }
 
   // Validate region_id
-  if (userToEdit.value.profile.region_id === "") {
+  if (!userToEdit.value.profile.region_id) {
     errors.region_id = "Region Id is required";
+    isValid = false;
+  }
+  // Validate user_Id
+
+  if (!userToEdit.value.profile.user_id) {
+    errors.user_id = "User Id is required";
     isValid = false;
   }
 
@@ -696,6 +715,7 @@ const handleEditSubmit = async () => {
     const updateUser = {
       region_id: +userToEdit.value.profile.region_id,
       active_user: +userToEdit.value.profile.active_user,
+      // user_id: +userToEdit.value.profile.user_id,
       is_payment_verified: +userToEdit.value.profile.is_payment_verified,
       company_name: userToEdit.value.profile.company_name,
       first_name: userToEdit.value.first_name,
