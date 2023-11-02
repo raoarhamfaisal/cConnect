@@ -1,6 +1,5 @@
 <script setup>
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
-import Loader from "@/Components/Ratings/Loader.vue";
 
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import {
@@ -100,7 +99,7 @@ const fetchActiveSubscriptionDetails = async () => {
       pricingPlan.value.sales_tax = response.data.paymentInfo.sales_tax;
     }
   } catch (err) {
-    somethingWentWrong();
+    // somethingWentWrong();
   } finally {
     loading.value = false;
   }
@@ -143,13 +142,20 @@ const handleCancelSubscription = async () => {
           The next billing will be made with selected payment method below
         </p>
       </div>
-      <div
+      <!-- <div
         @click="openAssuringCancelSubDialog"
         class="border-2 border-blue-rgba text-blue-rgba font-bold py-2 px-4 rounded cursor-pointer transition transform duration-300 hover:shadow-lg active:scale-95"
       >
         Cancel Subscription
-      </div>
+      </div> -->
     </header>
+
+    <div
+      class="h-96 flex items-center justify-center font-semibold"
+      v-if="Object.keys(pricingPlan).length === 2 && !loading"
+    >
+      No Billing or Subscription Details available for you
+    </div>
     <div v-if="!loading && Object.keys(pricingPlan).length > 2">
       <div class="mb-4 mt-8">
         <div class="uppercase text-sm font-bold text-blue-rgba">
@@ -165,7 +171,7 @@ const handleCancelSubscription = async () => {
           style="transition: all 0.3s ease-in-out"
         >
           <div
-            v-if="coupon && coupon.percentage_off_regular_price"
+            v-if="coupon && coupon.percentage_off_regular_price > 0"
             class="absolute translate-x-[10%] sm:translate-x-1/4 -translate-y-[30%] sm:-translate-y-1/4 top-0 right-0 bg-green-500 text-white rounded-full h-16 sm:h-20 w-16 text-xs sm:text-sm sm:w-20 font-bold flex-wrap flex flex-col items-center justify-center transform"
           >
             <div>-{{ coupon.percentage_off_regular_price }}%</div>
@@ -205,7 +211,10 @@ const handleCancelSubscription = async () => {
                 </div>
                 <div>${{ pricingPlan.sales_tax }}</div>
               </div>
-              <div class="flex justify-between">
+              <div
+                class="flex justify-between"
+                v-if="pricingPlan.discount_amount > 0"
+              >
                 <div class="flex items-center justify-center mb-2">
                   <Icon icon="mdi-tag" class="w-5 h-5 mr-2" />
                   <p><strong>Discount</strong></p>
@@ -242,19 +251,33 @@ const handleCancelSubscription = async () => {
       </div>
 
       <div class="mt-8 flex text-sm">
-        <div class="">For questions about billling ,</div>
-        <Link
+        <div class="">For cancelling your subscription ,</div>
+        <div
+          @click="openAssuringCancelSubDialog"
+          class="font-bold ml-1 text-blue-rgba cursor-pointer"
+        >
+          click here.
+        </div>
+        <div class="ml-1">For billing inquiries ,</div>
+        <a
           href="mailto:tcontractor@gmail.com"
           class="font-bold ml-1 text-blue-rgba"
-          >please contact us.</Link
+          >please contact us.</a
         >
       </div>
     </div>
-    <Loader
-      :loading="loading || !pricingPlan"
-      background=""
-      height="80vh"
-    ></Loader>
+    <div
+      v-if="loading && Object.keys(pricingPlan).length === 2"
+      class="h-full h-[80vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4"
+    >
+      <div class="text-center text-xl">Loading...</div>
+      <v-progress-linear
+        color="#241e6d"
+        indeterminate
+        rounded
+        height="6"
+      ></v-progress-linear>
+    </div>
   </section>
   <CustomDialog
     submitText="Cancel Subscription"

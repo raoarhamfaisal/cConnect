@@ -389,8 +389,8 @@ const props = defineProps({
 });
 const mainColor = ref("#4169E1");
 const snackbarVisible = ref(false);
-let usePageDeatails = usePage().props.value;
 const notLoggedDialogRef = ref();
+let usePageDeatails = usePage().props.value;
 const user = usePageDeatails?.auth?.user;
 const profileId = usePageDeatails?.profile?.id;
 const modelText = ref("");

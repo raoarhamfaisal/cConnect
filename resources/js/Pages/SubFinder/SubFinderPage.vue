@@ -274,7 +274,7 @@ const sortButtonClass = (value) => [
           <span class="text-[#021d91]">"{{ atButtonClickSearchTerm }}"</span>
         </div>
       </div>
-      <div class="mt-4 mb-40" v-if="!loading">
+      <div class="mt-4 mb-40" v-if="!loading && foundContractors.length > 0">
         <SubFinderContractor
           v-for="contractor in foundContractors"
           :key="contractor.id"

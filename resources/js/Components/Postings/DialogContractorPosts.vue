@@ -3,7 +3,7 @@
     ref="dialogRef"
     :showFooter="false"
     dialogWidth="width780px"
-    title="Contractor Ratings"
+    title="Contractor Posts"
   >
     <Loader :loading="loading" background="white" height="70vh"></Loader>
     <ContractorPosts
