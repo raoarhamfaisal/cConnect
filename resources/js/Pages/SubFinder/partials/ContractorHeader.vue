@@ -94,7 +94,7 @@ let usePageDeatails = usePage().props.value;
 const loggedInUserId = usePageDeatails?.profile?.id;
 
 const total_reviews = ref(0);
-const averageRating = ref(4);
+const averageRating = ref(props.contractor.average_rating);
 
 //Computed
 

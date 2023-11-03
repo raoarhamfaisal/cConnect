@@ -1,6 +1,6 @@
 <template>
   <Card
-    :shadowLevel="2"
+    :shadowLevel="3"
     :isInside="true"
     bgColor="#fff"
     :padding="screenWidth < 640 ? '7px' : '20px'"
@@ -352,7 +352,7 @@ const props = defineProps({
   region_name: String,
 });
 const store = useStore();
-const note = ref("");
+const note = ref(props.contractor?.notes);
 const textRef = ref();
 const postDialogRef = ref();
 const isTyping = ref(false);
@@ -426,8 +426,8 @@ const saveNotes = () => {
     };
     console.log(notes, note.value, "selectedNote");
     try {
-      const response = await axios.put(
-        `/api/admin/discount-coupon/`,
+      const response = await axios.post(
+        `/api/sub-finder/${props.contractor.id}/preference-and-notes`,
         notes,
         getAxiosConfig()
       );
@@ -447,34 +447,51 @@ const openPostDialog = () => {
 
 const contractorSelectedDisplayChoiceButtons = ref([
   {
-    value: "preferred",
+    value: "Preferred",
     label: "Preferred",
     selectedClass: "bg-green-500 text-white border-green-500",
   },
   {
-    value: "backup",
+    value: "Back-Up",
     label: "Back-Up",
     selectedClass: "bg-blue-500 text-white border-blue-500",
   },
   {
-    value: "possible",
+    value: "Possible",
     label: "Possible",
     selectedClass: "bg-yellow-500 text-white border-yellow-500",
   },
   {
-    value: "rejected",
+    value: "Rejected",
     label: "Rejected",
     selectedClass: "bg-red-500 text-white border-red-500",
   },
 ]);
 
-const selectedDisplayContractorButton = ref("");
+const selectedDisplayContractorButton = ref(
+  props.contractor?.preference_status
+);
 
-const toggleButton = (value) => {
+const toggleButton = async (value) => {
   if (selectedDisplayContractorButton.value === value) {
     selectedDisplayContractorButton.value = ""; // deselect the button
   } else {
     selectedDisplayContractorButton.value = value;
+  }
+  const data = {
+    preference_status: selectedDisplayContractorButton.value,
+  };
+  try {
+    const response = await axios.post(
+      `/api/sub-finder/${props.contractor.id}/preference-and-notes`,
+      data,
+      getAxiosConfig()
+    );
+    console.log(response, "response");
+    if (response.data) {
+    }
+  } catch (err) {
+    somethingWentWrong(err.response.data.message, "inherit");
   }
 };
 </script>

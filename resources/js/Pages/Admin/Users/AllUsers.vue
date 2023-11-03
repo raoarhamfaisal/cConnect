@@ -280,8 +280,12 @@
           class="mt-6 space-y-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-4"
         >
           <div>
-            <InputLabel class="font-bold" for="region_id" value="Region ID*" />
-            <TextInput
+            <InputLabel
+              class="font-bold mb-1"
+              for="region_id"
+              value="Region ID*"
+            />
+            <!-- <TextInput
               id="region_id"
               type="number"
               class="mt-1 block w-full"
@@ -289,6 +293,11 @@
               @input="clearErrors('region_id')"
               v-model="userToEdit.profile.region_id"
               required
+            /> -->
+            <SelectProfile
+              :options="referenceList"
+              :modelValue="selectedReferal"
+              @update:modelValue="changeReferal"
             />
             <InputError class="mt-2" :message="errors.region_id" />
           </div>
@@ -297,13 +306,13 @@
             <TextInput
               id="user_id"
               type="number"
-              class="mt-1 block w-full"
+              class="mt-1 block w-full bg-gray-200 opacity-80"
+              :disabled="true"
               placeholder="Type your User ID"
               @input="clearErrors('user_id')"
               v-model="userToEdit.profile.user_id"
               required
             />
-            <InputError class="mt-2" :message="errors.user_id" />
           </div>
 
           <div>
@@ -415,6 +424,8 @@
 <script setup>
 import Header from "@/Layouts/Header.vue";
 import { Head, usePage } from "@inertiajs/inertia-vue3";
+import SelectProfile from "@/Components/SelectProfile.vue";
+
 import Button from "@/Components/Ratings/Button.vue";
 import axios from "axios";
 import InputError from "@/Components/InputError.vue";
@@ -471,6 +482,8 @@ const sortBy = ref("latest");
 const perPage = ref(15);
 const searchTerm = ref("");
 const selectedRegion = ref("All");
+const selectedReferal = ref("");
+const referenceList = ref([]);
 
 const pagination = ref(0);
 const loadingNextPage = ref(false);
@@ -530,16 +543,16 @@ const validateForm = () => {
   }
 
   // Validate region_id
-  if (!userToEdit.value.profile.region_id) {
+  if (!selectedReferal.value) {
     errors.region_id = "Region Id is required";
     isValid = false;
   }
-  // Validate user_Id
+  // // Validate user_Id
 
-  if (!userToEdit.value.profile.user_id) {
-    errors.user_id = "User Id is required";
-    isValid = false;
-  }
+  // if (!userToEdit.value.profile.user_id) {
+  //   errors.user_id = "User Id is required";
+  //   isValid = false;
+  // }
 
   // Validate state
   if (userToEdit.value.profile.active_user === "") {
@@ -588,6 +601,13 @@ const regions = computed(() => store.state.ratings.allRegions);
 const loadingRegions = computed(() => store.state.ratings.loading);
 const screenWidth = computed(() => store.getters.screenWidth);
 
+//Watch
+watch(regions, (newVal) => {
+  if (newVal.length > 0) {
+    console.log(regions, "regions");
+    referenceList.value = regions.value.map((item) => item.name);
+  }
+});
 // Methods
 const loadMoreUsers = async () => {
   loadingNextPage.value = true;
@@ -605,6 +625,13 @@ const handleFilterSelect = async (selected, sortByRate) => {
   users.value = [];
 
   await fetchUsersWithLoading(false);
+};
+
+const changeReferal = (value) => {
+  selectedReferal.value = value;
+  if (errors.region_id) {
+    errors.region_id = "";
+  }
 };
 
 // Fetch REviews
@@ -653,9 +680,13 @@ const openNoteDialog = (userNote, id) => {
   user_id.value = id;
   notesDialogRef.value.openDialog();
 };
+const getRegionName = (regionId) => {
+  return regions.value.find((item) => item.id === regionId).name;
+};
 
 const openEditDialog = (user) => {
   userToEdit.value = JSON.parse(JSON.stringify(user));
+  selectedReferal.value = getRegionName(userToEdit.value.profile.region_id);
   editDialogRef.value.openDialog();
 };
 const focusTextarea = async () => {
@@ -710,10 +741,17 @@ const onCloseUserEdit = () => {
   userToEdit.value = {};
 };
 const handleEditSubmit = async () => {
+  let region_id = null; // Initialize with a default value
+  regions.value.forEach((r) => {
+    if (r.name === selectedReferal.value) {
+      region_id = r.id;
+      return; // Exit the forEach loop once a match is found
+    }
+  });
   if (validateForm()) {
     console.log(userToEdit.value, "userToEdit.value");
     const updateUser = {
-      region_id: +userToEdit.value.profile.region_id,
+      region_id: region_id,
       active_user: +userToEdit.value.profile.active_user,
       // user_id: +userToEdit.value.profile.user_id,
       is_payment_verified: +userToEdit.value.profile.is_payment_verified,
@@ -735,8 +773,7 @@ const handleEditSubmit = async () => {
       if (response.data) {
         users.value.forEach((user, index) => {
           if (user.profile.user_id === userToEdit.value.profile.user_id) {
-            users.value[index].profile.region_id =
-              userToEdit.value.profile.region_id;
+            users.value[index].profile.region_id = region_id;
             users.value[index].profile.active_user =
               userToEdit.value.profile.active_user;
             users.value[index].profile.is_payment_verified =

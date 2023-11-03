@@ -332,9 +332,21 @@ export default {
       <div class="h-5"></div>
 
       <!-- 'next_page_url' is set to null in script -->
-      <div v-if="posts.next_page_url === null" class="mb-8">
+      <div
+        v-if="posts.next_page_url === null && allPosts && allPosts.length > 0"
+        class="mb-8"
+      >
         <div class="text-gray-300 inline text-center">
           You're all up to date! 🥳
+        </div>
+      </div>
+
+      <div
+        v-if="allPosts && allPosts.length === 0 && posts.next_page_url === null"
+        class="mb-8 flex items-center justify-center h-72"
+      >
+        <div class="text-gray-800 inline text-center">
+          No Posts found for this Contractor
         </div>
       </div>
 
