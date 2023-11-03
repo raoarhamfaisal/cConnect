@@ -52,4 +52,9 @@ class ContractorProfile extends Model
     {
         return $this->hasMany(BragSection::class);
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class)->withPivot('preference_status', 'notes');
+    }
 }
