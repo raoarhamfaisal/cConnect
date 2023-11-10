@@ -196,7 +196,7 @@ const validatePassword = () => {
           v-model="form.last_name"
           @input="clearError('last_name')"
           required
-          autocomplete="name"
+          name="lastName"
         />
         <InputError class="mt-1" :message="errors.last_name" />
       </div>
@@ -213,7 +213,8 @@ const validatePassword = () => {
           v-model="form.company_name"
           @input="clearError('company_name')"
           required
-          autocomplete="name"
+          autocomplete="organization"
+          name="organization"
         />
         <InputError class="mt-1" :message="errors.company_name" />
       </div>
