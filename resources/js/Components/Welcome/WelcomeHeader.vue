@@ -38,7 +38,7 @@
           <div v-if="showit && showNewsFeed">
             <Link
               :href="
-                profile && profile.is_payment_verified
+                profile && profile.is_payment_verified && profile.active_user
                   ? route('post')
                   : '/profile-setup'
               "

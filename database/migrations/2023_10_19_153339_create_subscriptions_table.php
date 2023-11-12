@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->boolean('is_subscription_successfull')->default(0);
             $table->boolean('is_subscription_active')->default(0);
+            $table->boolean('is_cancellation_requested')->default(0);
             $table->integer('user_id');
             $table->string('subscription_id')->nullable();
             $table->text('metadata');

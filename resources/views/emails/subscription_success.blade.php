@@ -43,7 +43,7 @@
                 <p>Thank you for choosing our services. We look forward to serving you!</p>
             </div>
             <div class="footer">
-                &copy; {{ date('Y') }} tContractor. All rights reserved.
+                &copy; 2024 tContractor. All rights reserved.
             </div>
         </div>
     </body>

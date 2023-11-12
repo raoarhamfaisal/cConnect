@@ -47,12 +47,12 @@ const monthlyTotal = computed(() => {
 
     // Return the discounted monthly total
     return (
-      originalMonthlyTotal - monthlyDiscount + +(+pricingPlan.value.sales_tax)
+      originalMonthlyTotal - monthlyDiscount + +(+pricingPlan.value.sales_tax * 0.01 * originalMonthlyTotal)
     );
   }
 
   // Return the original monthly total if there's no coupon.value
-  return originalMonthlyTotal + +(+pricingPlan.value.sales_tax);
+  return originalMonthlyTotal + +(+pricingPlan.value.sales_tax * 0.01 * originalMonthlyTotal);
 });
 
 const annualTotal = computed(() => {
@@ -67,12 +67,12 @@ const annualTotal = computed(() => {
 
     // Return the discounted annual total
     return (
-      originalAnnualTotal - annualDiscount + +pricingPlan.value.sales_tax * 12
+      originalAnnualTotal - annualDiscount + ((+pricingPlan.value.sales_tax * 0.01 * originalAnnualTotal))
     );
   }
 
   // Return the original annual total if there's no coupon
-  return originalAnnualTotal + +pricingPlan.value.sales_tax * 12;
+  return originalAnnualTotal + ((+pricingPlan.value.sales_tax * 0.01 * originalAnnualTotal));
 });
 
 //Methods
@@ -182,7 +182,7 @@ const handleCancelSubscription = async () => {
               {{ planType === "monthly" ? "MONTHLY" : "ANNUAL" }}
             </h2>
             <div
-              class="price-tag bg-white w-24 h-24 sm:w-32 sm:h-32 border-2 rounded-full flex items-center justify-center"
+              class="price-tag bg-white w-40 h-40 sm:w-40 sm:h-40 border-2 rounded-full flex items-center justify-center"
               :class="{
                 'bg-[#4169E1] border-[#4169E1] text-white': planType,
                 'bg-white border-black text-black': !planType,
@@ -190,10 +190,10 @@ const handleCancelSubscription = async () => {
             >
               <span class="text-lg sm:text-2xl"
                 >${{
-                  planType === "monthly" ? monthlyTotal : annualTotal
+                  planType === "monthly" ? parseFloat(monthlyTotal).toFixed(4) : parseFloat(annualTotal).toFixed(4)
                 }}</span
               >
-              <span class="text-xs ml-1">/mo</span>
+              <span class="text-xs ml-1">/{{ planType === "monthly" ? "mo" : "yr" }}</span>
             </div>
             <div class="features w-full text-center mb-6">
               <div class="flex justify-between">
@@ -209,7 +209,7 @@ const handleCancelSubscription = async () => {
                   <Icon icon="mdi:cash-register" class="w-5 h-5 mr-2" />
                   <p><strong>Sales Tax</strong></p>
                 </div>
-                <div>${{ pricingPlan.sales_tax }}</div>
+                <div>{{ pricingPlan.sales_tax }}%</div>
               </div>
               <div
                 class="flex justify-between"

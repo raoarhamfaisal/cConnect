@@ -17,18 +17,18 @@
     >
       <PricingCard
         plan="MONTHLY"
-        :monthlyPrice="pricingPlan.billed_monthly_price"
-        :salesTax="pricingPlan.sales_tax"
-        :total="monthlyTotal"
+        :monthlyPrice="pricingPlan.billed_monthly_price ? pricingPlan.billed_monthly_price : 0"
+        :salesTax="pricingPlan.sales_tax ? pricingPlan.sales_tax : 0"
+        :total="monthlyTotal ? parseFloat(monthlyTotal).toFixed(4) : 0"
         @selectedPricing="selectedPricing"
       />
 
       <PricingCard
         plan="ANNUAL"
-        :monthlyPrice="pricingPlan.billed_annual_price"
-        :total="annualTotal"
+        :monthlyPrice="pricingPlan.billed_annual_price ? pricingPlan.billed_annual_price : 0"
+        :total="annualTotal ? parseFloat(annualTotal).toFixed(4) : 0"
         @selectedPricing="selectedPricing"
-        :salesTax="pricingPlan.sales_tax * 12"
+        :salesTax="pricingPlan.sales_tax ? pricingPlan.sales_tax : 0"
       />
     </div>
     <!-- :coupon="43.88" -->
@@ -63,12 +63,12 @@ onMounted(() => {
 // computed
 
 const monthlyTotal = computed(() => {
-  return +pricingPlan.value.billed_monthly_price + +pricingPlan.value.sales_tax;
+  return +pricingPlan.value.billed_monthly_price + ((+pricingPlan.value.sales_tax * 0.01 * +pricingPlan.value.billed_monthly_price));
 });
 
 const annualTotal = computed(() => {
   return (
-    +pricingPlan.value.billed_annual_price + +pricingPlan.value.sales_tax * 12
+    +pricingPlan.value.billed_annual_price + ((+pricingPlan.value.sales_tax * 0.01 * +pricingPlan.value.billed_annual_price))
   );
 });
 

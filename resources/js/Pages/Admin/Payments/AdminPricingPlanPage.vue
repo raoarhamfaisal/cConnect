@@ -52,7 +52,7 @@
                   Advertised Price
                 </th>
                 <th style="text-align: center; font-weight: bold; color: white">
-                  Sales Tax
+                  Sales Tax(%)
                 </th>
                 <th style="text-align: center; font-weight: bold; color: white">
                   Actions
@@ -70,7 +70,7 @@
                 <td>${{ plan?.billed_monthly_price }}</td>
                 <td>${{ plan?.billed_annual_price }}</td>
                 <td>${{ plan?.advertised_price }}</td>
-                <td>${{ plan?.sales_tax }}</td>
+                <td>{{ plan?.sales_tax }}%</td>
                 <td class="flex gap-2 justify-center items-center">
                   <Icon
                     icon="mdi:edit"
@@ -194,14 +194,14 @@
             <InputError class="mt-2" :message="errors.advertised_price" />
           </div>
           <div>
-            <InputLabel class="font-bold" for="sales_tax" value="Sales Tax*" />
+            <InputLabel class="font-bold" for="sales_tax" value="Sales Tax(%)*" />
             <TextInput
               id="sales_tax"
               type="number"
               class="mt-1 block w-full"
               required
               v-model.trim="singlePlan.sales_tax"
-              placeholder="Type your Sales Tax"
+              placeholder="Type your Sales Tax(%)"
               @input="clearErrors('sales_tax')"
             />
             <InputError class="mt-2" :message="errors.sales_tax" />

@@ -7,10 +7,10 @@
   >
     <h2 class="text-2xl font-bold mb-4">{{ plan }}</h2>
     <div
-      class="price-tag bg-[#4169E1] text-white w-40 h-40 rounded-full flex items-center justify-center mb-6"
+      class="price-tag bg-[#4169E1] text-white w-48 h-48 rounded-full flex items-center justify-center mb-6"
     >
       <span class="text-3xl">${{ total }}</span>
-      <span class="text-xs ml-1">/mo</span>
+      <span class="text-xs ml-1">/{{ plan === "ANNUAL" ? "yr" : "mo" }}</span>
     </div>
 
     <div class="features w-full text-center mb-6">
@@ -35,7 +35,7 @@
           <Icon icon="mdi:cash-register" class="w-5 h-5 mr-2" />
           <p><strong>Sales Tax</strong></p>
         </div>
-        <div>${{ salesTax }}</div>
+        <div>{{ salesTax }}%</div>
       </div>
 
       <p v-if="savings" class="text-green-500 font-semibold">

@@ -270,7 +270,7 @@ const dontProceed = (areAllTradesSetToZero) => {
 <template>
   <v-stepper
     prev-text="back"
-    :next-text="currentStep >= steps ? 'News Feed' : 'Continue'"
+    next-text="Continue"
     alt-labels
     v-model="currentStep"
   >

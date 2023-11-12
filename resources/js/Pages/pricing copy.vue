@@ -64,7 +64,7 @@
           <div class="flex justify-center items-end">
             <Link
               :href="
-                showit && profile && profile.is_payment_verified === 0
+                showit && profile && (profile.is_payment_verified === 0 || profile.active_user === 0)
                   ? '/profile-setup'
                   : route('signup')
               "
