@@ -303,7 +303,7 @@ class PaymentController extends Controller
 
     public function getCancellationRequests()
     {
-        $cancellationRequests = Subscription::where('is_cancellation_requested', true)->get();
+        $cancellationRequests = Subscription::where('is_cancellation_requested', 1)->get();
         return response()->json($cancellationRequests);
     }
 
@@ -346,6 +346,7 @@ class PaymentController extends Controller
                $successMessages = $response->getMessages()->getMessage();
 
                 $subscription->is_subscription_active = 0;
+                $subscription->is_cancellation_requested = 0;
                 $subscription->update();
 
                 // Update the profile table
