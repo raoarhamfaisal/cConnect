@@ -77,24 +77,25 @@ import { useStore } from "vuex";
 import { filterBadWords } from "@/helpers/utilities";
 
 // States
-const { review, questionsSwitch, profileId,fromAdmin, contractorId } = defineProps({
-  review: {
-    type: Object,
-  },
-  fromAdmin:{
-    type: Boolean,
-    default: false,
-  },
-  questionsSwitch: {
-    type: Array,
-  },
-  contractorId: {
-    type: Number,
-  },
-  profileId: {
-    type: Number,
-  },
-});
+const { review, questionsSwitch, profileId, fromAdmin, contractorId } =
+  defineProps({
+    review: {
+      type: Object,
+    },
+    fromAdmin: {
+      type: Boolean,
+      default: false,
+    },
+    questionsSwitch: {
+      type: Array,
+    },
+    contractorId: {
+      type: Number,
+    },
+    profileId: {
+      type: Number,
+    },
+  });
 const store = useStore();
 const ratingError = ref("");
 const ratingReasonError = ref("");
@@ -196,6 +197,7 @@ const handleSubmit = async () => {
       review: updateReview,
     });
     editDialogRef.value.closeDialog();
+    console.log("this executed1");
     store.commit("ratings/setShouldLoadPosts", false);
     store.commit("ratings/setShouldFetchPostsOnClose", true);
   }

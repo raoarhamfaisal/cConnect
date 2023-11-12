@@ -222,7 +222,7 @@ const validate = () => {
 const handleSubmit = async () => {
   if (validate()) {
     try {
-      console.log("profileId", profileId)
+      console.log("profileId", profileId);
       loading.value = true;
       disabled.value = true;
       const review = {
@@ -247,6 +247,8 @@ const handleSubmit = async () => {
         changesSaved("Review Successfully Created");
         setTimeout(() => {
           emit("addReview");
+          console.log("this executed3");
+
           store.commit("ratings/setShouldLoadPosts", false);
           store.commit("ratings/setShouldFetchPostsOnClose", true);
         }, 2000);

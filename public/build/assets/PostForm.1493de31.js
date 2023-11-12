@@ -1,16 +1,2877 @@
-import{E as te,q as re,e as $,f as M,g as K,B as V,o as i,c,a as l,b as e,w as _,l as j,k as g,t as P,G as J,I as R,u as p,m as N,F as E,J as ne,n as F,L as I,M as z,N as de,O as D,P as T,d as W,Q as U,v as Z,x as q,h as Q,R as X,S as Y,C as ee,U as ce,y as ue,V as me,W as oe}from"./app.bd145a13.js";import{t as fe}from"./tContractorWord.c6273121.js";import{B as ge,_ as he}from"./ContractorPosts.df614022.js";import le from"./DialogProfileTabs.6761ce32.js";import{I as L}from"./iconify.6d79a3d5.js";import{A as ie}from"./StarRating.c76908ce.js";import{L as pe}from"./Loader.a0585d43.js";/* empty css                                                                                   */import{r as ve,O as se,c as ye,s as _e,p as be,a as xe,b as we,d as Ce,e as ke,f as $e,g as Se}from"./AdditionalInfoSection5.vue_vue_type_style_index_0_scoped_8a5fe4a5_lang.dfa2108b.js";import"./ContractorInfo.bcb5da64.js";/* empty css                                                             *//* empty css                                                                      *//* empty css                                                                   */import{C as Pe}from"./CustomDialog.d7d608ce.js";import{B as Le}from"./Tooltip.a3408bbe.js";import"./DialogContractorRating.ef131839.js";import"./Button.c2992af0.js";import"./StarRatingEditable.f7ea1e93.js";import"./Review.b7ccc796.js";import{_ as Fe}from"./InputLabel.b5c5278f.js";import{_ as A}from"./_plugin-vue_export-helper.cdc0426e.js";import{_ as Ve}from"./InputError.ce2446a9.js";import{S as Ie}from"./SelectProfile.4d1ecdc3.js";import{_ as Ee}from"./TradesWithDialog.fad1be46.js";import{o as Me}from"./selectListsHelpters.d0e3585f.js";/*!
+import {
+  E as te,
+  q as re,
+  e as $,
+  f as M,
+  g as K,
+  B as V,
+  o as i,
+  c,
+  a as l,
+  b as e,
+  w as _,
+  l as j,
+  k as g,
+  t as P,
+  G as J,
+  I as R,
+  u as p,
+  m as N,
+  F as E,
+  J as ne,
+  n as F,
+  L as I,
+  M as z,
+  N as de,
+  O as D,
+  P as T,
+  d as W,
+  Q as U,
+  v as Z,
+  x as q,
+  h as Q,
+  R as X,
+  S as Y,
+  C as ee,
+  U as ce,
+  y as ue,
+  V as me,
+  W as oe,
+} from "./app.bd145a13.js";
+import { t as fe } from "./tContractorWord.c6273121.js";
+import { B as ge, _ as he } from "./ContractorPosts.df614022.js";
+import le from "./DialogProfileTabs.6761ce32.js";
+import { I as L } from "./iconify.6d79a3d5.js";
+import { A as ie } from "./StarRating.c76908ce.js";
+import { L as pe } from "./Loader.a0585d43.js";
+/* empty css                                                                                   */ import {
+  r as ve,
+  O as se,
+  c as ye,
+  s as _e,
+  p as be,
+  a as xe,
+  b as we,
+  d as Ce,
+  e as ke,
+  f as $e,
+  g as Se,
+} from "./AdditionalInfoSection5.vue_vue_type_style_index_0_scoped_8a5fe4a5_lang.dfa2108b.js";
+import "./ContractorInfo.bcb5da64.js";
+/* empty css                                                             */ /* empty css                                                                      */ /* empty css                                                                   */ import { C as Pe } from "./CustomDialog.d7d608ce.js";
+import { B as Le } from "./Tooltip.a3408bbe.js";
+import "./DialogContractorRating.ef131839.js";
+import "./Button.c2992af0.js";
+import "./StarRatingEditable.f7ea1e93.js";
+import "./Review.b7ccc796.js";
+import { _ as Fe } from "./InputLabel.b5c5278f.js";
+import { _ as A } from "./_plugin-vue_export-helper.cdc0426e.js";
+import { _ as Ve } from "./InputError.ce2446a9.js";
+import { S as Ie } from "./SelectProfile.4d1ecdc3.js";
+import { _ as Ee } from "./TradesWithDialog.fad1be46.js";
+import { o as Me } from "./selectListsHelpters.d0e3585f.js";
+/*!
  * vue-filepond v7.0.3
  * A handy FilePond adapter component for Vue
- * 
+ *
  * Copyright (c) 2022 PQINA
  * https://pqina.nl/filepond
- * 
+ *
  * Licensed under the MIT license.
- */const Be=["setOptions","on","off","onOnce","appendTo","insertAfter","insertBefore","isAttachedTo","replaceElement","restoreElement","destroy"],je=_e(),De=t=>({string:String,boolean:Boolean,array:Array,function:Function,int:Number,serverapi:Object,object:Object})[t],O={},G=[],H=[];let ze={};const Re=(...t)=>{ve(...t),G.length=0;for(const o in se){if(/^on/.test(o)){G.push(o);continue}let s=[String,De(se[o])];o=="labelFileProcessingError"&&s.push(Function),O[o]={type:s,default:void 0}}return{name:"FilePond",props:O,render(){const o=Object.entries({id:this.id,name:this.name,type:"file",class:this.className,required:this.required,multiple:this.allowMultiple,accept:this.acceptedFileTypes,capture:this.captureMethod}).reduce((s,[n,r])=>(r!==void 0&&(s[n]=r),s),{});return te("div",{class:{"filepond--wrapper":!0}},[te("input",o)])},created(){this.watchers=Object.keys(O).map(o=>this.$watch(o,s=>{this._pond[o]=s}))},mounted(){if(!je)return;this._element=this.$el.querySelector("input");const o=G.reduce((n,r)=>(n[r]=(...d)=>{this.$emit("input",this._pond?this._pond.getFiles():[]),this.$emit(r.substr(2),...d)},n),{}),s={};Object.keys(O).forEach(n=>{this[n]!==void 0&&(s[n]=this[n])}),this._pond=ye(this._element,Object.assign({},ze,o,s)),Object.keys(this._pond).filter(n=>!Be.includes(n)).forEach(n=>{this[n]=this._pond[n]}),H.push(this._pond)},beforeUnmount(){const{detached:o}=this.$options;if(!this.$el.offsetParent){o.call(this);return}const s=(r,d)=>{const x=((r[0]||{}).removedNodes||[])[0];!x||!x.contains(this.$el)||(d.disconnect(),o.call(this))};new MutationObserver(s).observe(document.documentElement,{childList:!0,subtree:!0})},detached(){if(this.watchers.forEach(s=>s()),!this._pond)return;this._pond.destroy();const o=H.indexOf(this._pond);o>=0&&H.splice(o,1),this._pond=null}}},Te={style:{width:"650px"},class:"hidden lg:flex lg:flex-col bg-gray-200 items-center justify-start transition-all duration-700 ease-in-out h-screen overflow-y-scroll"},Ae={class:"hidden lg:flex lg:flex-col justify-start items-center px-4 py-2 rounded-lg bg-gray-200"},Oe={key:0,class:"flex flex-col items-center mt-6 -mx-2"},Ne={class:"mx-2 mt-2 font-bold text-gray-800"},Ue={class:"mx-2 font-bold text-gray-800"},Ze={key:2,class:"mx-2 text-sm font-semibold text-gray-700"},qe={key:3,class:"mx-2 text-sm font-medium text-gray-700"},Ge={key:4,class:"mx-2 text-sm font-medium text-gray-500"},He={class:"flex flex-col items-center mt-4 -mx-2"},Ke={class:"flex items-center justify-center gap-2"},We={key:1,class:""},Je={class:"relative mt-6"},Qe={class:"flex justify-center"},Xe={class:"mb-0"},Ye={class:"relative flex w-full flex-wrap items-stretch transition duration-300 ease-in-out focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1"},et=["value","onKeypress"],tt=e("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 20 20",fill:"currentColor",class:"h-5 w-5"},[e("path",{"fill-rule":"evenodd",d:"M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z","clip-rule":"evenodd"})],-1),ot=[tt],st={class:"flex flex-col justify-between flex-1 mt-6"},rt=e("img",{src:"/images/icons/newsfeed.png",width:"30",height:"30"},null,-1),nt=e("span",{class:"mx-4 font-medium"},"News Feed",-1),lt=e("img",{src:"/images/icons/contractor.png",width:"30",height:"30"},null,-1),it=e("span",{class:"mx-4 font-medium"},"Sub-Finder",-1),at=e("img",{src:"/images/icons/redflag.png",width:"30",height:"30"},null,-1),dt=e("span",{class:"mx-4 font-medium text-cyan-600"},"Red Flags",-1),ct=e("img",{src:"/images/icons/mentor.png",width:"30",height:"30"},null,-1),ut=e("span",{class:"mx-4 font-medium text-cyan-600"},"Mentoring",-1),mt=e("img",{src:"/images/icons/contractorpage_b.png",width:"30",height:"30"},null,-1),ft=e("span",{class:"mx-4 font-medium"},"Contractor page",-1),gt=e("hr",{class:"mt-3 ml-6 mr-6 pt-3 border-t-2 border-gray-400"},null,-1),ht=e("img",{src:"/images/icons/news_view.png",width:"30",height:"30"},null,-1),pt=e("span",{class:"mx-4 font-medium hover:text-cyan-600"},"View Settings",-1),vt=[ht,pt],yt=e("svg",{id:"SvgjsSvg1017",width:"30",height:"30",xmlns:"http://www.w3.org/2000/svg",version:"1.1","xmlns:xlink":"http://www.w3.org/1999/xlink"},[e("defs",{id:"SvgjsDefs1018"}),e("g",{id:"SvgjsG1019"},[e("svg",{xmlns:"http://www.w3.org/2000/svg","fill-rule":"evenodd","stroke-linejoin":"round","stroke-miterlimit":"2","clip-rule":"evenodd",viewBox:"0 0 64 64",width:"30",height:"30"},[e("rect",{width:"30",height:"30",fill:"none"}),e("path",{d:"M58,104C58,98.696 56.946,93.609 55.071,89.858C53.196,86.107 50.652,84 48,84C39.122,84 24.878,84 16,84C13.348,84 10.804,86.107 8.929,89.858C7.054,93.609 6,98.696 6,104C6,117.961 6,136 6,136C6,138.209 6.895,140 8,140L56,140C57.105,140 58,138.209 58,136L58,104ZM54,132L54,104C54,100.817 53.368,97.765 52.243,95.515C51.117,93.264 49.591,92 48,92C39.122,92 24.878,92 16,92C14.409,92 12.883,93.264 11.757,95.515C10.632,97.765 10,100.817 10,104L10,132L54,132Z",transform:"matrix(1 0 0 .5 0 -36)",fill:"#464898",class:"color000 svgShape"}),e("path",{d:"M10,92L10,120C10,123.183 10.632,126.235 11.757,128.485C12.883,130.736 14.409,132 16,132C24.878,132 39.122,132 48,132C49.591,132 51.117,130.736 52.243,128.485C53.368,126.235 54,123.183 54,120C54,117.792 54.896,116 56,116C57.104,116 58,117.792 58,120C58,125.304 56.946,130.391 55.071,134.142C53.196,137.893 50.652,140 48,140C39.122,140 24.878,140 16,140C13.348,140 10.804,137.893 8.929,134.142C7.054,130.391 6,125.304 6,120L6,88C6,85.791 6.895,84 8,84L56,84C57.105,84 58,85.791 58,88C58,88 58,95.188 58,104C58,106.208 57.104,108 56,108C54.896,108 54,106.208 54,104L54,92L10,92Z",transform:"matrix(1 0 0 .5 0 -12)",fill:"#464898",class:"color000 svgShape"}),e("path",{d:"M26,100C26,98.895 25.105,98 24,98L16,98C14.895,98 14,98.895 14,100L14,108C14,109.105 14.895,110 16,110L24,110C25.105,110 26,109.105 26,108L26,100ZM18,102L18,106L22,106L22,102L18,102Z",transform:"translate(0 -84)",fill:"#464898",class:"color000 svgShape"}),e("path",{d:"M24,103L48,103C49.656,103 51,102.104 51,101C51,99.896 49.656,99 48,99L24,99C22.344,99 21,99.896 21,101C21,102.104 22.344,103 24,103Z",transform:"matrix(.66667 0 0 1 16 -85)",fill:"#464898",class:"color000 svgShape"}),e("path",{d:"M24,103L48,103C49.656,103 51,102.104 51,101C51,99.896 49.656,99 48,99L24,99C22.344,99 21,99.896 21,101C21,102.104 22.344,103 24,103Z",transform:"matrix(.66667 0 0 1 16 -77)",fill:"#464898",class:"color000 svgShape"}),e("path",{d:"M26,127.172L36.586,116.586C37.367,115.805 38.633,115.805 39.414,116.586L55.071,132.243C55.85,133.022 55.852,134.285 55.075,135.067C55.075,135.067 55.075,135.067 55.071,135.071C53.196,136.946 50.652,138 48,138L32,138C32,138 16,138 16,138C13.348,138 10.804,136.946 8.929,135.071L8.925,135.067C8.148,134.285 8.15,133.022 8.929,132.243L18.586,122.586C19.367,121.805 20.633,121.805 21.414,122.586L26,127.172ZM50.586,133.414L38,120.828L28.828,130L32.828,134L48,134C48.904,134 49.787,133.796 50.586,133.414ZM27.172,134L20,126.828L13.414,133.414C14.214,133.796 15.097,134 16,134L27.172,134Z",transform:"translate(0 -80)",fill:"#464898",class:"color000 svgShape"})])])],-1),_t=e("span",{class:"mx-4 font-medium"},"My Posts",-1),bt=e("span",{class:"mx-4 font-medium"},"My Ratings",-1),xt=e("img",{src:"/images/icons/profile.png",width:"30",height:"30"},null,-1),wt=e("span",{class:"mx-4 font-medium"},"My Profile",-1),Ct=e("img",{src:"/images/icons/settings_bl.png",width:"30",height:"30"},null,-1),kt=e("span",{class:"mx-4 font-medium"},"Settings",-1),$t=e("img",{src:"/images/icons/contactus.png",width:"30",height:"30"},null,-1),St=e("span",{class:"mx-4 font-medium"},"Contact Us",-1),Pt={key:1,class:"mt-3 ml-6 mr-6 pt-3 border-t-2 border-gray-400"},Lt=e("span",{class:"mx-4 font-medium"},"Admin",-1),Ft={key:3,class:"mt-3 ml-6 mr-6 pt-3 border-t-2 border-gray-400"},Vt=e("img",{src:"/images/icons/logout_bl.png",width:"30",height:"30"},null,-1),It=e("span",{class:"mx-4 font-medium"},"Log Out",-1),Et=[Vt,It],_r={__name:"Menu_MainSideMenu",props:{showit:Boolean,profile:{type:Object,required:!0},isOpen:Boolean,showPostButtons:Boolean,modelValue:String,postSearchFilters:Object},emits:["update:modelValue","submitPostSearch","postClicked"],setup(t,{emit:o}){const s=t,n=re(),r=$();$(),$(!1);const d=()=>{o("submitPostSearch")};function b(h){h=!1,o("postClicked",h)}const x=M(()=>{const h=K().props.value.auth.user;return h?h.appeals_privileges||h.payments_privileges||h.users_privileges:!1}),f=M(()=>n.state.profile.loadingImage);function u(){ne(),N.Inertia.post("/logout")}const w=()=>{n.commit("profile/setActiveTab",3),K().url.value!=="/profile"&&r.value.openDialog()},S=M(()=>s.profile.city!==null||s.profile.state!==null||s.profile.zipcode!==null),k=M(()=>{const h=[];return s.profile.city!==null&&h.push(s.profile.city),s.profile.state!==null&&h.push(s.profile.state),s.profile.zipcode!==null&&h.push(s.profile.zipcode),h.join(" ")}),m=M(()=>{const h=s.profile.first_name+" "+(s.profile.last_name?s.profile.last_name:"");return h.length<27?h:h.substring(0,23)+"..."});return(h,C)=>{const a=V("Link"),v=V("v-skeleton-loader");return i(),c(E,null,[l(le,{ref_key:"dialogRef",ref:r,profile:t.profile},null,8,["profile"]),e("div",Te,[e("div",Ae,[l(a,{href:"/",class:"lg:text-5xl xl:text-6xl font-bold tracking-wide text-center"},{default:_(()=>[l(fe)]),_:1}),t.showit?(i(),c("div",Oe,[f.value?(i(),j(v,{key:0,style:{"border-radius":"9999px"},class:"overflow-hidden w-14 h-14 sm:w-24 sm:h-24",type:"image"})):g("",!0),f.value?g("",!0):(i(),j(ie,{key:1,imageSrc:`/${t.profile.user_avatar}`,class:"sm:w-24 sm:h-24"},null,8,["imageSrc"])),e("h4",Ne,P(m.value),1),e("h4",Ue,P(t.profile.company_name&&(t.profile.company_name.length<27?t.profile.company_name:t.profile.company_name.substring(0,23)+"...")),1),t.profile&&t.profile.phone_cell?(i(),c("h4",Ze," Cell: "+P(t.profile.phone_cell),1)):g("",!0),t.profile&&t.profile.email?(i(),c("h4",qe,P(t.profile.email),1)):g("",!0),t.showit&&S.value?(i(),c("h4",Ge,P(k.value),1)):g("",!0)])):g("",!0),e("div",He,[e("div",Ke,[t.showPostButtons?(i(),j(ge,{key:0,isOpen:t.isOpen,onPostClicked:b},null,8,["isOpen"])):g("",!0),t.showPostButtons?(i(),c("div",We,[l(he)])):g("",!0)]),e("div",Je,[e("form",null,[e("div",Qe,[e("div",Xe,[e("div",Ye,[e("input",{type:"text",value:t.modelValue,onInput:C[0]||(C[0]=y=>h.$emit("update:modelValue",y.target.value)),onKeypress:J(R(d,["prevent"]),["enter"]),class:"relative m-0 -mr-px block w-[1%] min-w-0 flex-auto bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 outline-none rounded-l-md border border-solid border-gray-600 placeholder:italic placeholder:text-slate-500",placeholder:"Search..."},null,40,et),e("button",{onClick:d,class:"relative z-[2] flex items-center px-4 py-2.5 text-xs font-medium uppercase leading-tight rounded-r-md border border-solid border-gray-600 text-white bg-blue-600 transition duration-150 ease-in-out hover:bg-blue-800 hover:shadow-lg",type:"button"},ot)])])])])])]),e("div",st,[e("nav",null,[p(N.Inertia).page.component!="Postings"?(i(),j(a,{key:0,class:"flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",href:h.route("post")},{default:_(()=>[rt,nt]),_:1},8,["href"])):g("",!0),l(a,{class:"flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",href:"/sub-finder"},{default:_(()=>[lt,it]),_:1}),l(a,{class:"flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",href:"#"},{default:_(()=>[at,dt]),_:1}),l(a,{class:"flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",href:"#"},{default:_(()=>[ct,ut]),_:1}),l(a,{class:"flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",href:`/contractor/${t.profile.user_id}/edit`},{default:_(()=>[mt,ft]),_:1},8,["href"]),gt,e("button",{onClick:w,class:"flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"},vt),l(a,{class:"flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",href:`/posts/${t.profile.user_id}`},{default:_(()=>[yt,_t]),_:1},8,["href"]),l(a,{class:"flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",href:"/ratings/contractor"},{default:_(()=>[l(p(L),{icon:"material-symbols:reviews",color:"#1098ad",width:"30",height:"30"}),bt]),_:1}),l(a,{class:"flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",href:"/profile"},{default:_(()=>[xt,wt]),_:1}),l(a,{class:"flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",href:"/settings"},{default:_(()=>[Ct,kt]),_:1}),l(a,{class:"flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",href:"/about-us#contactUs"},{default:_(()=>[$t,St]),_:1}),x.value?(i(),c("hr",Pt)):g("",!0),x.value?(i(),j(a,{key:2,class:"flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",href:"/admin"},{default:_(()=>[l(p(L),{icon:"clarity:administrator-solid",color:"#1098ad",width:"30",height:"30"}),Lt]),_:1})):g("",!0),x.value?(i(),c("hr",Ft)):g("",!0),e("button",{onClick:u,class:"flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"},Et)])])])])],64)}}},Mt={id:"hamburgerwithsticky",class:"z-40"},Bt={class:""},jt={key:0,class:"pt-2 pb-0 ml-3"},Dt={class:"mt-1 text-base font-bold text-gray-800"},zt={class:"text-base font-semibold text-gray-800"},Rt={class:"pt-1 pb-3 space-y-2"},Tt={class:"relative mt-1"},At={class:"flex justify-center"},Ot={class:"mb-0 xl:w-96"},Nt={class:"relative mb-2 flex w-full flex-wrap items-stretch transition duration-300 ease-in-out focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1"},Ut=["value","onKeypress"],Zt=e("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 20 20",fill:"currentColor",class:"h-5 w-5"},[e("path",{"fill-rule":"evenodd",d:"M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z","clip-rule":"evenodd"})],-1),qt=[Zt],Gt=e("img",{src:"/images/icons/newsfeed.png",width:"20",height:"20"},null,-1),Ht=e("span",{class:"mx-4 font-medium"},"News Feed",-1),Kt=e("img",{src:"/images/icons/contractor.png",width:"20",height:"20"},null,-1),Wt=e("span",{class:"mx-4 font-medium"},"Sub Finder",-1),Jt=e("img",{src:"/images/icons/redflag.png",width:"20",height:"20"},null,-1),Qt=e("span",{class:"mx-4 font-medium"},"Red Flags",-1),Xt=e("img",{src:"/images/icons/mentor.png",width:"20",height:"20"},null,-1),Yt=e("span",{class:"mx-4 font-medium"},"Mentoring",-1),eo=e("img",{src:"/images/icons/contractorpage_b.png",width:"20",height:"20"},null,-1),to=e("span",{class:"mx-4 font-medium"},"Contractor page",-1),oo=e("div",{class:"pt-1 border-t-2 border-gray-400"},null,-1),so=e("img",{src:"/images/icons/news_view.png",width:"20",height:"20"},null,-1),ro=e("span",{class:"mx-4 font-medium"},"View Settings",-1),no=[so,ro],lo=e("svg",{id:"SvgjsSvg1017",width:"20",height:"20",xmlns:"http://www.w3.org/2000/svg",version:"1.1","xmlns:xlink":"http://www.w3.org/1999/xlink"},[e("defs",{id:"SvgjsDefs1018"}),e("g",{id:"SvgjsG1019"},[e("svg",{xmlns:"http://www.w3.org/2000/svg","fill-rule":"evenodd","stroke-linejoin":"round","stroke-miterlimit":"2","clip-rule":"evenodd",viewBox:"0 0 64 64",width:"20",height:"20"},[e("rect",{width:"20",height:"20",fill:"none"}),e("path",{d:"M58,104C58,98.696 56.946,93.609 55.071,89.858C53.196,86.107 50.652,84 48,84C39.122,84 24.878,84 16,84C13.348,84 10.804,86.107 8.929,89.858C7.054,93.609 6,98.696 6,104C6,117.961 6,136 6,136C6,138.209 6.895,140 8,140L56,140C57.105,140 58,138.209 58,136L58,104ZM54,132L54,104C54,100.817 53.368,97.765 52.243,95.515C51.117,93.264 49.591,92 48,92C39.122,92 24.878,92 16,92C14.409,92 12.883,93.264 11.757,95.515C10.632,97.765 10,100.817 10,104L10,132L54,132Z",transform:"matrix(1 0 0 .5 0 -36)",fill:"#464898",class:"color000 svgShape"}),e("path",{d:"M10,92L10,120C10,123.183 10.632,126.235 11.757,128.485C12.883,130.736 14.409,132 16,132C24.878,132 39.122,132 48,132C49.591,132 51.117,130.736 52.243,128.485C53.368,126.235 54,123.183 54,120C54,117.792 54.896,116 56,116C57.104,116 58,117.792 58,120C58,125.304 56.946,130.391 55.071,134.142C53.196,137.893 50.652,140 48,140C39.122,140 24.878,140 16,140C13.348,140 10.804,137.893 8.929,134.142C7.054,130.391 6,125.304 6,120L6,88C6,85.791 6.895,84 8,84L56,84C57.105,84 58,85.791 58,88C58,88 58,95.188 58,104C58,106.208 57.104,108 56,108C54.896,108 54,106.208 54,104L54,92L10,92Z",transform:"matrix(1 0 0 .5 0 -12)",fill:"#464898",class:"color000 svgShape"}),e("path",{d:"M26,100C26,98.895 25.105,98 24,98L16,98C14.895,98 14,98.895 14,100L14,108C14,109.105 14.895,110 16,110L24,110C25.105,110 26,109.105 26,108L26,100ZM18,102L18,106L22,106L22,102L18,102Z",transform:"translate(0 -84)",fill:"#464898",class:"color000 svgShape"}),e("path",{d:"M24,103L48,103C49.656,103 51,102.104 51,101C51,99.896 49.656,99 48,99L24,99C22.344,99 21,99.896 21,101C21,102.104 22.344,103 24,103Z",transform:"matrix(.66667 0 0 1 16 -85)",fill:"#464898",class:"color000 svgShape"}),e("path",{d:"M24,103L48,103C49.656,103 51,102.104 51,101C51,99.896 49.656,99 48,99L24,99C22.344,99 21,99.896 21,101C21,102.104 22.344,103 24,103Z",transform:"matrix(.66667 0 0 1 16 -77)",fill:"#464898",class:"color000 svgShape"}),e("path",{d:"M26,127.172L36.586,116.586C37.367,115.805 38.633,115.805 39.414,116.586L55.071,132.243C55.85,133.022 55.852,134.285 55.075,135.067C55.075,135.067 55.075,135.067 55.071,135.071C53.196,136.946 50.652,138 48,138L32,138C32,138 16,138 16,138C13.348,138 10.804,136.946 8.929,135.071L8.925,135.067C8.148,134.285 8.15,133.022 8.929,132.243L18.586,122.586C19.367,121.805 20.633,121.805 21.414,122.586L26,127.172ZM50.586,133.414L38,120.828L28.828,130L32.828,134L48,134C48.904,134 49.787,133.796 50.586,133.414ZM27.172,134L20,126.828L13.414,133.414C14.214,133.796 15.097,134 16,134L27.172,134Z",transform:"translate(0 -80)",fill:"#464898",class:"color000 svgShape"})])])],-1),io=e("span",{class:"mx-4 font-medium"},"My Posts",-1),ao=e("span",{class:"mx-4 font-medium"},"My Ratings",-1),co=e("img",{src:"/images/icons/profile.png",width:"20",height:"20"},null,-1),uo=e("span",{class:"mx-4 font-medium"},"My Profile",-1),mo=e("img",{src:"/images/icons/settings_bl.png",width:"20",height:"20"},null,-1),fo=e("span",{class:"mx-4 font-medium"},"Settings",-1),go=e("img",{src:"/images/icons/contactus.png",width:"20",height:"20"},null,-1),ho=e("span",{class:"mx-4 font-medium"},"Contact Us",-1),po={key:1,class:"pt-1 border-t-2 border-gray-400"},vo=e("span",{class:"mx-4 font-medium"},"Admin",-1),yo={key:3,class:"pt-1 border-t-2 border-gray-400"},_o=e("img",{src:"/images/icons/logout_bl.png",width:"20",height:"20"},null,-1),bo=e("span",{class:"mx-4 font-medium"},"Log Out",-1),xo=[_o,bo],wo={class:"h-6 w-6",stroke:"currentColor",fill:"none",viewBox:"0 0 24 24"},br={__name:"Menu_HamburgerMenu",props:{showit:Boolean,profile:{type:Object,required:!0},modelValue:String,postSearchFilters:Object,showingNavigationDropdown:Boolean},emits:["NavigationDropdown","update:modelValue","submitPostSearch"],setup(t,{emit:o}){const s=t;re();const n=$();function r(){o("NavigationDropdown")}const d=()=>{o("submitPostSearch")},b=M(()=>K().props.value.auth.user.appeals_privileges===1);function x(){ne(),N.Inertia.post("/logout")}const f=()=>{n.value.openDialog()},u=M(()=>{const w=s.profile.first_name+" "+(s.profile.last_name?s.profile.last_name:"");return w.length<27?w:w.substring(0,23)+"..."});return(w,S)=>(i(),c(E,null,[l(le,{ref_key:"dialogRef",ref:n,profile:t.profile},null,8,["profile"]),e("div",Mt,[e("div",{id:"myHamburgerMenu",class:F([{block:t.showingNavigationDropdown,hidden:!t.showingNavigationDropdown},"lg:hidden absolute flex top-16 right-4 sm:right-6 lg:right-20 xl:right-32 2xl:right-80 z-20 px-3 text-left border-b border-gray-400 rounded-xl bg-gray-100"])},[e("div",Bt,[t.showit?(i(),c("div",jt,[l(ie,{imageSrc:`/${t.profile.user_avatar}`,class:"mt-2"},null,8,["imageSrc"]),e("h4",Dt,P(u.value),1),e("h4",zt,P(t.profile.company_name&&(t.profile.company_name.length<27?t.profile.company_name:t.profile.company_name.substring(0,23)+"...")),1)])):g("",!0),e("div",Rt,[e("div",Tt,[e("form",null,[e("div",At,[e("div",Ot,[e("div",Nt,[e("input",{type:"search",value:t.modelValue,onInput:S[0]||(S[0]=k=>w.$emit("update:modelValue",k.target.value)),onKeypress:J(R(d,["prevent"]),["enter"]),class:"relative m-0 -mr-px block w-[1%] min-w-0 flex-auto bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 outline-none rounded-l-md border border-solid border-gray-600 placeholder:italic placeholder:text-slate-500",placeholder:"Search..."},null,40,Ut),e("button",{onClick:d,class:"relative z-[2] flex items-center px-4 py-2.5 text-xs font-medium uppercase leading-tight rounded-r-md border border-solid border-gray-600 text-white bg-blue-600 transition duration-150 ease-in-out hover:bg-blue-800 hover:shadow-lg",type:"button"},qt)])])])])]),p(N.Inertia).page.component!="Postings"?(i(),j(p(I),{key:0,href:w.route("post"),class:"flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"},{default:_(()=>[Gt,Ht]),_:1},8,["href"])):g("",!0),l(p(I),{href:"/sub-finder",class:"flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"},{default:_(()=>[Kt,Wt]),_:1}),l(p(I),{href:w.route("post"),class:"flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"},{default:_(()=>[Jt,Qt]),_:1},8,["href"]),l(p(I),{href:w.route("post"),class:"flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"},{default:_(()=>[Xt,Yt]),_:1},8,["href"]),l(p(I),{href:`/contractor/${t.profile.user_id}/edit`,class:"flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"},{default:_(()=>[eo,to]),_:1},8,["href"]),oo,e("button",{onClick:f,class:"flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"},no),l(p(I),{href:`/posts/${t.profile.user_id}`,class:"flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"},{default:_(()=>[lo,io]),_:1},8,["href"]),l(p(I),{href:"/ratings/contractor",class:"flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"},{default:_(()=>[l(p(L),{icon:"material-symbols:reviews",color:"#1098ad",width:"20",height:"20"}),ao]),_:1}),l(p(I),{href:w.route("profile.edit"),class:"flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"},{default:_(()=>[co,uo]),_:1},8,["href"]),l(p(I),{href:"/settings",class:"flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"},{default:_(()=>[mo,fo]),_:1}),l(p(I),{href:"/about-us#contactUs",class:"flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"},{default:_(()=>[go,ho]),_:1}),b.value?(i(),c("div",po)):g("",!0),b.value?(i(),j(p(I),{key:2,href:"/admin",class:"flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"},{default:_(()=>[l(p(L),{icon:"clarity:administrator-solid",color:"#1098ad",width:"20",height:"20"}),vo]),_:1})):g("",!0),b.value?(i(),c("div",yo)):g("",!0),e("button",{onClick:x,class:"flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"},xo)])]),e("button",{onClick:r,class:"inline-flex items-start justify-center p-2 rounded-md text-black hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"},[(i(),c("svg",wo,[e("path",{class:F({hidden:!t.showingNavigationDropdown,"inline-flex":t.showingNavigationDropdown}),"stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2",d:"M6 18L18 6M6 6l12 12"},null,2)]))])],2)])],64))}};const Co=t=>(Z("data-v-6121af15"),t=t(),q(),t),ko={class:"chips"},$o={class:"chips__itemInput"},So={class:"chips__selectedItems"},Po={key:0},Lo=["onClick"],Fo=Co(()=>e("b",null,"x",-1)),Vo=[Fo],Io={key:0,class:"allitems"},Eo=["onClick"],Mo={key:0},Bo={__name:"MultiSelect",props:{modelValue:{type:Array,default:()=>[]},showSearch:{type:Boolean,default:!1},items:{type:Array,required:!0},sortingProperty:{type:String,default:null}},emits:["input"],setup(t,{emit:o}){const s=t,n=C=>(a,v)=>a[C]>v[C]?1:v[C]>a[C]?-1:0,r=$(s.modelValue||[]),d=$(""),b=$(!1);s.modelValue,z(()=>s.modelValue,C=>{console.log(s.modelValue,s.modelValue.value,"hello world"),r.value=s.modelValue});const x=M(()=>{let C=[...s.items];return s.sortingProperty?C.sort(n(s.sortingProperty)):C.sort()}),f=M(()=>d.value?x.value.filter(a=>s.sortingProperty?a[s.sortingProperty].toLowerCase().includes(d.value.toLowerCase()):a.toLowerCase().includes(d.value.toLowerCase())):x.value),u=C=>r.value.some(a=>a.id===C.id),w=C=>{r.value.some(v=>v.id===C.id)?S(C):r.value=[...r.value,C],o("input",r.value),d.value=""},S=C=>{r.value=r.value.filter(a=>a.id!==C.id),o("input",r.value)},k=()=>{b.value=!0},m=()=>{b.value=!b.value},h=()=>{console.log("deactivate"),b.value=!1};return(C,a)=>{const v=de("click-outside");return D((i(),c("div",null,[e("div",{class:"selecteditems",onClick:a[3]||(a[3]=R(y=>m(),["prevent"]))},[e("ul",ko,[e("li",$o,[e("div",So,[(i(!0),c(E,null,T(r.value,y=>(i(),c("span",{key:y.id,class:"chips__item"},[t.sortingProperty?(i(),c("span",Po,P(y[t.sortingProperty]),1)):(i(),c(E,{key:1},[W(P(y),1)],64)),e("span",{class:"chips--remove",onClick:R(ae=>S(y),["stop"])},Vo,8,Lo)]))),128))]),t.showSearch?D((i(),c("input",{key:0,"onUpdate:modelValue":a[0]||(a[0]=y=>d.value=y),onFocus:a[1]||(a[1]=R(y=>k(),["prevent"])),onKeyup:a[2]||(a[2]=J(y=>h(),["esc"])),class:"chips__input--fake",type:"text",placeholder:"Type to search",ref:"search"},null,544)),[[U,d.value]]):g("",!0)])])]),b.value?(i(),c("div",Io,[e("ul",null,[(i(!0),c(E,null,T(f.value,y=>(i(),c("li",{class:F(["allitems__list",{"allitems__list--selected":u(y)}]),key:y.id,onClick:R(ae=>w(y),["stop"])},[t.sortingProperty?(i(),c("span",Mo,P(y[t.sortingProperty]),1)):(i(),c(E,{key:1},[W(P(y),1)],64))],10,Eo))),128))])])):g("",!0)])),[[v,h,void 0,{prevent:!0}]])}}},jo=A(Bo,[["__scopeId","data-v-6121af15"]]);const Do={class:"relative fontSizeDropdownRelateive"},zo={key:0,class:"absolute shadow-lg bg-white border border-gray-200 p-2 rounded z-10 flex items-center"},Ro=e("div",{class:"w-40"},"Increase Font Size by:",-1),To={class:"mx-2 text-sm"},Ao={__name:"FontSizeDropdown",props:{modelValue:Number},emits:["update:modelValue"],setup(t,{emit:o}){const s=t,n=$(!1),r=$(s.modelValue);z(r,f=>{o("update:modelValue",f)});const d=()=>{r.value++},b=()=>{r.value>0&&r.value--},x=f=>{f.target.closest(".fontSizeDropdownRelateive")||(n.value=!1)};return Q(()=>{document.addEventListener("click",x)}),X(()=>{document.removeEventListener("click",x)}),(f,u)=>{const w=V("v-tooltip");return i(),c("div",Do,[l(w,{text:"Font Color",location:"top"},{activator:_(({props:S})=>[e("button",Y({type:"button",onClick:u[0]||(u[0]=k=>n.value=!n.value)},S,{class:[{"bg-gray-100 border-gray-400":n.value},"pl-1rounded border border-transparent flex items-center"]}),[l(p(L),{icon:"mdi:format-font-size-increase",class:"w-7 h-7"}),l(p(L),{icon:"gridicons:dropdown"})],16)]),_:1}),n.value?(i(),c("div",zo,[Ro,e("button",{type:"button",onClick:b,class:"ml-2 border border-gray-400 flex items-center justify-center rounded w-7"}," - "),e("span",To,P(r.value),1),e("button",{type:"button",onClick:d,class:"border border-gray-400 flex items-center justify-center rounded w-7"}," + ")])):g("",!0)])}}};const Oo=t=>(Z("data-v-dc47a18a"),t=t(),q(),t),No={class:"relative bgColorDropdownRelateive"},Uo={key:0,class:"absolute w-full flex flex-col flex-wrap w-40 mt-2 bg-white border border-gray-200 p-2 rounded z-10"},Zo=Oo(()=>e("div",{class:"text-sm font-semibold translate-y-[1px]"},"Remove Color",-1)),qo={class:"grid grid-cols-4 items-center justify-items-center gap-2"},Go=["onClick"],Ho={__name:"BackgroundColorDropdown",props:{modelValue:String},emits:["update:modelValue"],setup(t,{emit:o}){const s=t,n=$(!1),r=$(s.modelValue),d=["#ffffff","#000000","#2C3E50","#7F8C8D","#27AE60","#2980B9","#8E44AD","#E74C3C","#E67E22","#2E4053","#16A085","#E84393"];z(r,u=>{o("update:modelValue",u)});const b=u=>{r.value=u},x=()=>{r.value="inherit"},f=u=>{u.target.closest(".bgColorDropdownRelateive")||(n.value=!1)};return Q(()=>{document.addEventListener("click",f)}),X(()=>{document.removeEventListener("click",f)}),(u,w)=>{const S=V("v-tooltip");return i(),c("div",No,[l(S,{text:"Background Color",location:"top"},{activator:_(({props:k})=>[e("button",Y({type:"button",onClick:w[0]||(w[0]=m=>n.value=!n.value)},k,{class:["rounded border border-transparent flex items-center",{"bg-gray-100 border-2 border-gray-400":n.value}]}),[l(p(L),{icon:"ic:round-color-lens",class:"w-6 h-6"}),l(p(L),{icon:"gridicons:dropdown"})],16)]),_:1}),n.value?(i(),c("div",Uo,[e("button",{type:"button",onClick:x,class:"mb-2 flex gap-2 items-center border-2 border-gray-200 px-2 py-1 rounded"},[l(p(L),{icon:"ph:eraser-fill",class:"w-5 h-5"}),Zo]),e("div",qo,[(i(),c(E,null,T(d,(k,m)=>e("div",{key:m,style:ee({backgroundColor:k}),onClick:h=>b(k),class:F([{"ring-2 ring-blue-500":k===r.value},"w-6 h-6 border-2 border-gray-200 rounded cursor-pointer"])},null,14,Go)),64))])])):g("",!0)])}}},Ko=A(Ho,[["__scopeId","data-v-dc47a18a"]]);const Wo=t=>(Z("data-v-3c285aad"),t=t(),q(),t),Jo={class:"relative fontColorDropdownRelateive"},Qo={key:0,class:"absolute w-full flex flex-col flex-wrap w-40 mt-2 bg-white border border-gray-200 p-2 rounded z-10"},Xo=Wo(()=>e("div",{class:"text-sm font-semibold translate-y-[1px]"},"Remove Color",-1)),Yo={class:"grid grid-cols-4 items-center justify-items-center gap-2"},es=["onClick"],ts={__name:"FontColorDropdown",props:{modelValue:String},emits:["update:modelValue"],setup(t,{emit:o}){const s=t,n=$(!1),r=$(s.modelValue),d=["#000000","#ffffff","#2C3E50","#34495E","#7F8C8D","#27AE60","#2980B9","#8E44AD","#F39C12"];z(r,u=>{o("update:modelValue",u)});const b=u=>{r.value=u},x=()=>{r.value="inherit"},f=u=>{u.target.closest(".fontColorDropdownRelateive")||(n.value=!1)};return Q(()=>{document.addEventListener("click",f)}),X(()=>{document.removeEventListener("click",f)}),(u,w)=>{const S=V("v-tooltip");return i(),c("div",Jo,[l(S,{text:"Font Color",location:"top"},{activator:_(({props:k})=>[e("button",Y({type:"button",onClick:w[0]||(w[0]=m=>n.value=!n.value)},k,{class:[{"bg-gray-100 border-gray-400":n.value},"rounded border border-transparent flex items-center"]}),[l(p(L),{icon:"ri:font-color",class:"w-6 h-6"}),l(p(L),{icon:"gridicons:dropdown"})],16)]),_:1}),n.value?(i(),c("div",Qo,[e("button",{type:"button",onClick:x,class:"mb-2 flex gap-2 items-center border-2 broder-gray-200 px-2 py-1 rounded"},[l(p(L),{icon:"ph:eraser-fill",class:"w-5 h-5"}),Xo]),e("div",Yo,[(i(),c(E,null,T(d,(k,m)=>e("div",{key:m,style:ee({backgroundColor:k}),onClick:h=>b(k),class:F([{"ring-2 ring-blue-500":k===r.value},"w-6 h-6 rounded cursor-pointer border-2 border-gray-20"])},null,14,es)),64))])])):g("",!0)])}}},os=A(ts,[["__scopeId","data-v-3c285aad"]]);const ss={class:"toolbar bg-gray-100 p-2 border-b flex items-center"},rs={__name:"TextEditor",props:{modelValue:String,shouldShowBackground:Boolean},emits:["update:modelValue"],setup(t,{emit:o}){var C;const s=t,n=$(!1),r=$(""),d=$((C=s.modelValue)!=null?C:""),b=$(null),x=$(0),f=$("inherit"),u=$("inherit"),w=()=>{let a="inline ";n.value&&(a+=" font-bold"),r.value==="left"&&(a+=" justify-start text-left"),r.value==="center"&&(a+=" justify-center text-center"),r.value==="right"&&(a+=" justify-end text-right"),u.value!=="inherit"&&u.value!=="#ffffff"&&(a+=` bg-[${u.value}] items-center flex`);const v=`font-size: ${16+x.value}px; color: ${f.value}; `;return console.log("style",v,a),`<span id="toTeleport" class="${a}" style="${v}">${d.value}</span>`};z([d,r,n,x,f,u],a=>{k();const v=w();o("update:modelValue",v)}),z(()=>s.shouldShowBackground,a=>{console.log(a,"inShowBackground"),a||(u.value="inherit")}),z(u,a=>{(u.value!=="inherit"&&u.value!=="#ffffff"&&(f.value==="inherit"||f.value==="#000000")||u.value!=="inherit"&&u.value!=="#ffffff"&&(f.value!=="inherit"||f.value!=="#000000"))&&(r.value="center"),(u.value==="inherit"||u.value==="#ffffff")&&(r.value="left",f.value==="#ffffff"&&(f.value="inherit"))});const S=()=>{n.value=!n.value},k=()=>{ce(()=>{b.value.style.height="auto",b.value.style.height=b.value.scrollHeight+"px"})},m=a=>{k(),r.value=a},h=()=>{k()};return(a,v)=>(i(),c("div",null,[e("div",ss,[l(Ao,{modelValue:x.value,"onUpdate:modelValue":v[0]||(v[0]=y=>x.value=y)},null,8,["modelValue"]),l(os,{modelValue:f.value,"onUpdate:modelValue":v[1]||(v[1]=y=>f.value=y)},null,8,["modelValue"]),t.shouldShowBackground?(i(),j(Ko,{key:0,modelValue:u.value,"onUpdate:modelValue":v[2]||(v[2]=y=>u.value=y)},null,8,["modelValue"])):g("",!0),e("button",{type:"button",onClick:S,class:F([{"bg-gray-300":n.value},"p-1 rounded mr-2"])},[l(p(L),{icon:"fa-solid:bold",class:"w-5 h-5"})],2),e("button",{type:"button",onClick:v[3]||(v[3]=y=>m("left")),class:F([{"bg-gray-300":r.value==="left"},"p-1 rounded mr-2"])},[l(p(L),{icon:"fa-solid:align-left",class:"w-5 h-5"})],2),e("button",{type:"button",onClick:v[4]||(v[4]=y=>m("center")),class:F([{"bg-gray-300":r.value==="center"},"p-1 rounded mr-2"])},[l(p(L),{icon:"fa-solid:align-center",class:"w-5 h-5"})],2),e("button",{type:"button",onClick:v[5]||(v[5]=y=>m("right")),class:F([{"bg-gray-300":r.value==="right"},"p-1 rounded mr-2"])},[l(p(L),{icon:"fa-solid:align-right",class:"w-5 h-5"})],2)]),D(e("textarea",{ref_key:"editor",ref:b,class:F(["overflow-y-hidden resize-none min-h-[200px] rounded focus:border-gray-700 focus:border-2 focus:outline-none focus:ring-gray-700 border-gray-600 mt-4 py-2 px-3 border w-full resize-none",{"font-bold":n.value,"justify-start text-left":r.value==="left","justify-center text-center":r.value==="center","justify-end text-right":r.value==="right","items-center py-[87px]":u.value!=="inherit"&&u.value!=="#ffffff"}]),style:ee({fontSize:16+x.value+"px",color:f.value,backgroundColor:u.value}),onPaste:h,onInput:h,"onUpdate:modelValue":v[6]||(v[6]=y=>d.value=y)},null,38),[[U,d.value]])]))}},ns=A(rs,[["__scopeId","data-v-defa5373"]]);const ls=Re(Se,$e,ke,Ce,we,xe,be),is={components:{FilePond:ls,Loader:pe,TradesWithDialog:Ee,InputLabel:Fe,InputError:Ve,TextEditor:ns,SelectProfile:Ie,CustomDialog:Pe,Badge:Le,MultiSelect:jo},props:["form","isOpen","isEdit","id","success","shouldShowBackground"],data(){return{myFiles:[],options:Me,isUploading:!1,referenceList:$([]),showBackroundColor:!0,selectedReferal:$(""),selectedItems:null,selectAll:!1,tradesPost:{trade1:!1,trade2:!1,trade3:!1,trade4:!1,trade5:!1,trade6:!1,trade7:!1,trade8:!1,trade9:!1,trade10:!1,trade11:!1,trade12:!1,trade13:!1,trade14:!1,trade15:!1,trade16:!1,trade17:!1,trade18:!1,trade19:!1,trade20:!1,trade21:!1,trade22:!1,trade23:!1,trade24:!1,trade25:!1,trade26:!1,trade27:!1,trade28:!1,trade29:!1,trade30:!1}}},mounted(){this.$store.dispatch("ratings/getRegions"),this.$store.dispatch("ratings/getTrades",this.id)},computed:{...ue("ratings",["regions","loading","trades"])},watch:{regions(t){if(t.length>0){this.referenceList=this.regions.map(n=>n.name);const o=this.regions.find(n=>n.id===+this.form.region_id),s=o?o.name:void 0;this.selectedReferal=s}},shouldShowBackground(t,o){t&&t!==o&&(this.showBackroundColor=!0)},success(t){t&&(this.form.title="",this.form.body1="",this.form.body2="",this.myFiles=[],this.form.image="",this.$store.dispatch("ratings/getTrades",this.id))},trades(t){for(let o in this.tradesPost)this.tradesPost[o]=!1;t.forEach(o=>{this.tradesPost.hasOwnProperty(o.name)&&(this.tradesPost[o.name]=!0)})},tradesPost:{handler(t){this.form.trades=Object.entries(t).filter(([o,s])=>s).map(([o])=>parseInt(o.replace(/^trade/,""),10))},deep:!0},selectedItems(t){this.form.trades=this.selectedItems.map(o=>{const s=o.id.match(/\d+$/);return s?parseInt(s[0],10):null}).filter(Number.isInteger)}},methods:{toggleSwitch(t){if(t==="trade1"){const o=!this.tradesPost.trade1;for(let s=1;s<=24;s++)this.tradesPost["trade"+s]=o}else this.tradesPost[t]=!this.tradesPost[t]},handleFilePondProcessStart(t){console.log("started file"),this.showBackroundColor=!1,this.isUploading=!0},handleFilePondProcessEnd(t,o){console.log("ended1")},handleFilePondError(t){console.log("ended2"),this.isUploading=!1,this.showBackroundColor=!0},changeReferal(t){this.selectedReferal=t,this.regions.forEach(o=>{t===o.name&&(this.form.region_id=o.id.toString())})},handleFilePondInit(){console.log("Plugin initialized"),this.myFiles=[];let t=this.form.image?this.form.image.split("|"):[];for(let o=0;o<t.length;o++)this.myFiles.push({source:"/"+t[o],options:{type:"local",metadata:{poster:"/"+t[o]}}})},addFormImage(t){let o=this.form.image?this.form.image.split("|"):[];o.push(t),this.form.image=o.join("|"),console.log("addForm: ",this.form.image),console.log("ended3")},removeFormImage(t){let o=this.form.image?this.form.image.split("|"):[];o.remove(t),this.form.image=o.join("|"),console.log("removeForm: ",this.form.image)},handleFilePondLoad(t){return this.addFormImage(t),t},handleFilePondRemove(t,o,s){console.log("file remove source: ",t),this.removeFormImage(t.replace(/^\//,"")),o()},handleFilePondRevert(t,o,s){this.removeFormImage(t),me.post("/upload-post-revert",{image:t}),o(),console.log(this.form.image,"image"),this.form.image||(this.showBackroundColor=!0)},openDialog(){this.$refs.tradeDialogRef.openDialog()},handleSubmit(){this.$refs.tradeDialogRef.closeDialog()},selectAllTrades(){if(this.selectAll)for(let t in this.tradesPost)this.tradesPost[t]=0;else for(let t in this.tradesPost)this.tradesPost[t]=1;this.selectAll=!this.selectAll}}};Array.prototype.remove=function(){for(var t,o=arguments,s=o.length,n;s&&this.length;)for(t=o[--s];(n=this.indexOf(t))!==-1;)this.splice(n,1);return this};const B=t=>(Z("data-v-44de1eec"),t=t(),q(),t),as=B(()=>e("div",{class:"w-full"},[e("span",{class:"mt-1 text-base"},[e("strong",null,"Hint:"),W(" Select the Trade Groups you want your post tone displayed in. ")])],-1)),ds={class:"mb-4 sm:mb-0 mt-4"},cs={class:"flex items-center gap-4 mt-4 mb-5"},us=B(()=>e("label",{for:"select_all",class:"mr-4 text-gray-800 font-bold"},"Select All",-1)),ms={class:"grid mt-8 gap-3"},fs=["for"],gs=["onClick"],hs={class:"fixed z-40 inset-0 overflow-y-auto ease-out duration-400 overscroll-contain"},ps={key:0,class:"flex items-start justify-start min-h-screen mt-5 pt-4 px-1 pb-20 text-center sm:block sm:p-0"},vs=B(()=>e("div",{class:"absolute inset-0 bg-gray-500 opacity-70"},null,-1)),ys=[vs],_s={class:"inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all w-full mx-2 sm:my-8 sm:align-middle sm:w-full md:max-w-2xl",role:"dialog","aria-modal":"true","aria-labelledby":"modal-headline"},bs={class:"bg-white px-4 pt-5 pb-4 sm:p-6"},xs={key:0,class:""},ws=B(()=>e("div",{class:"flex justify-start items-center pb-2 space-x-2 text-blue-rgba font-bold text-xl md:text-3xl"},[e("img",{src:"/images/icons/post_b.png",width:"25",height:"25"}),e("p",{class:""},"Create Post")],-1)),Cs={class:"mb-4"},ks=B(()=>e("label",{for:"formPostTitle",class:"block text-gray-700 text-sm font-bold mb-2"},"Post Title: ",-1)),$s={key:0,class:"text-red-500"},Ss={class:"mb-4 closing"},Ps=B(()=>e("label",{for:"formPostbody1",class:"block text-gray-700 text-sm font-bold mb-2"},"Top text (required): ",-1)),Ls={key:0,class:"text-red-500"},Fs={class:"mb-4"},Vs=B(()=>e("label",{for:"formPostImage",class:"block text-gray-700 text-sm font-bold mb-2"},"Image (max 10): ",-1)),Is={class:"mb-4"},Es=B(()=>e("label",{for:"formPostbody2",class:"block text-gray-700 text-sm font-bold mb-2"},"Bottom text (not required): ",-1)),Ms={key:0,class:"text-red-500"},Bs={class:"mb-4 sm:mb-0"},js={class:"text-lg"},Ds={class:"mb-4 sm:mb-0 mt-1"},zs={class:"flex justify-between mb-2"},Rs=B(()=>e("div",{class:"text-lg font-bold text-[#241e6d]"}," Display in Trades Group ",-1)),Ts={class:"bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse"},As={class:"flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto"},Os=["disabled"],Ns={class:"flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto"},Us=["disabled"],Zs={class:"mt-3 flex w-full rounded-md shadow-sm sm:mt-0 sm:w-auto"},qs=["disabled"],Gs={class:"mt-3 flex w-full rounded-md shadow-sm sm:mt-0 sm:w-auto"};function Hs(t,o,s,n,r,d){const b=V("InputError"),x=V("CustomDialog"),f=V("Loader"),u=V("TextEditor"),w=V("file-pond"),S=V("InputLabel"),k=V("TradesWithDialog");return i(),c(E,null,[l(x,{submitText:"Okay",shouldFetchPost:!1,onSubmit:d.handleSubmit,showCancel:!1,ref:"tradeDialogRef",title:"Edit Trade Groups"},{default:_(()=>[as,e("div",ds,[e("div",cs,[e("div",{class:"switch-trades",onClick:o[0]||(o[0]=(...m)=>d.selectAllTrades&&d.selectAllTrades(...m))},[e("div",{class:F([r.selectAll?"switch-bg-on-trades":"switch-bg-off-trades"])},[e("div",{class:F([r.selectAll?"switch-knob-on-trades":"switch-knob-off-trades"])},null,2)],2)]),us]),e("div",ms,[(i(!0),c(E,null,T(r.options,(m,h)=>(i(),c("div",{key:h,class:"flex items-center justify-between sm:w-96 sm:ml-3 mb-5"},[e("label",{for:m.id,class:"mr-4 max-sm:text-sm font-bold"},P(m.name),9,fs),e("div",{class:"switch",onClick:C=>d.toggleSwitch(m.id)},[e("div",{class:F([r.tradesPost[m.id]?"switch-bg-on":"switch-bg-off"])},[e("div",{class:F([r.tradesPost[m.id]?"switch-knob-on":"switch-knob-off"])},null,2)],2)],8,gs)]))),128))]),l(b,{class:"mt-2",message:t.$page.props.errors.trades},null,8,["message"])])]),_:1},8,["onSubmit"]),e("div",hs,[s.isOpen?(i(),c("div",ps,[e("div",{class:"fixed inset-0 transition-opacity",onClick:o[1]||(o[1]=m=>t.$emit("formclose"))},ys),e("div",_s,[e("form",null,[e("div",bs,[l(f,{loading:t.loading,background:"",height:"30vh"},null,8,["loading"]),t.loading?g("",!0):(i(),c("div",xs,[ws,e("div",Cs,[ks,D(e("input",{type:"text","onUpdate:modelValue":o[2]||(o[2]=m=>s.form.title=m),class:"w-full py-2 px-3 shadow appearance-none text-gray-900 font-semibold border rounded border-gray-600 leading-tight focus:outline-none focus:shadow-outline placeholder:italic placeholder:text-slate-500",id:"formPostTitle",placeholder:"Post Title..."},null,512),[[U,s.form.title]]),t.$page.props.errors.title?(i(),c("div",$s,P(t.$page.props.errors.title),1)):g("",!0)]),e("div",Ss,[Ps,l(u,{modelValue:s.form.body1,"onUpdate:modelValue":o[3]||(o[3]=m=>s.form.body1=m),shouldShowBackground:r.showBackroundColor},null,8,["modelValue","shouldShowBackground"]),t.$page.props.errors.body1?(i(),c("div",Ls,P(t.$page.props.errors.body1),1)):g("",!0)]),e("div",Fs,[Vs,l(w,{name:"imageFilepond",ref:"pond",allowImageExifOrientation:"true","allow-multiple":!0,"accepted-file-types":`image/png,
+ */ const Be = [
+    "setOptions",
+    "on",
+    "off",
+    "onOnce",
+    "appendTo",
+    "insertAfter",
+    "insertBefore",
+    "isAttachedTo",
+    "replaceElement",
+    "restoreElement",
+    "destroy",
+  ],
+  je = _e(),
+  De = (t) =>
+    ({
+      string: String,
+      boolean: Boolean,
+      array: Array,
+      function: Function,
+      int: Number,
+      serverapi: Object,
+      object: Object,
+    }[t]),
+  O = {},
+  G = [],
+  H = [];
+let ze = {};
+const Re = (...t) => {
+    ve(...t), (G.length = 0);
+    for (const o in se) {
+      if (/^on/.test(o)) {
+        G.push(o);
+        continue;
+      }
+      let s = [String, De(se[o])];
+      o == "labelFileProcessingError" && s.push(Function),
+        (O[o] = { type: s, default: void 0 });
+    }
+    return {
+      name: "FilePond",
+      props: O,
+      render() {
+        const o = Object.entries({
+          id: this.id,
+          name: this.name,
+          type: "file",
+          class: this.className,
+          required: this.required,
+          multiple: this.allowMultiple,
+          accept: this.acceptedFileTypes,
+          capture: this.captureMethod,
+        }).reduce((s, [n, r]) => (r !== void 0 && (s[n] = r), s), {});
+        return te("div", { class: { "filepond--wrapper": !0 } }, [
+          te("input", o),
+        ]);
+      },
+      created() {
+        this.watchers = Object.keys(O).map((o) =>
+          this.$watch(o, (s) => {
+            this._pond[o] = s;
+          })
+        );
+      },
+      mounted() {
+        if (!je) return;
+        this._element = this.$el.querySelector("input");
+        const o = G.reduce(
+            (n, r) => (
+              (n[r] = (...d) => {
+                this.$emit("input", this._pond ? this._pond.getFiles() : []),
+                  this.$emit(r.substr(2), ...d);
+              }),
+              n
+            ),
+            {}
+          ),
+          s = {};
+        Object.keys(O).forEach((n) => {
+          this[n] !== void 0 && (s[n] = this[n]);
+        }),
+          (this._pond = ye(this._element, Object.assign({}, ze, o, s))),
+          Object.keys(this._pond)
+            .filter((n) => !Be.includes(n))
+            .forEach((n) => {
+              this[n] = this._pond[n];
+            }),
+          H.push(this._pond);
+      },
+      beforeUnmount() {
+        const { detached: o } = this.$options;
+        if (!this.$el.offsetParent) {
+          o.call(this);
+          return;
+        }
+        const s = (r, d) => {
+          const x = ((r[0] || {}).removedNodes || [])[0];
+          !x || !x.contains(this.$el) || (d.disconnect(), o.call(this));
+        };
+        new MutationObserver(s).observe(document.documentElement, {
+          childList: !0,
+          subtree: !0,
+        });
+      },
+      detached() {
+        if ((this.watchers.forEach((s) => s()), !this._pond)) return;
+        this._pond.destroy();
+        const o = H.indexOf(this._pond);
+        o >= 0 && H.splice(o, 1), (this._pond = null);
+      },
+    };
+  },
+  Te = {
+    style: { width: "650px" },
+    class:
+      "hidden lg:flex lg:flex-col bg-gray-200 items-center justify-start transition-all duration-700 ease-in-out h-screen overflow-y-scroll",
+  },
+  Ae = {
+    class:
+      "hidden lg:flex lg:flex-col justify-start items-center px-4 py-2 rounded-lg bg-gray-200",
+  },
+  Oe = { key: 0, class: "flex flex-col items-center mt-6 -mx-2" },
+  Ne = { class: "mx-2 mt-2 font-bold text-gray-800" },
+  Ue = { class: "mx-2 font-bold text-gray-800" },
+  Ze = { key: 2, class: "mx-2 text-sm font-semibold text-gray-700" },
+  qe = { key: 3, class: "mx-2 text-sm font-medium text-gray-700" },
+  Ge = { key: 4, class: "mx-2 text-sm font-medium text-gray-500" },
+  He = { class: "flex flex-col items-center mt-4 -mx-2" },
+  Ke = { class: "flex items-center justify-center gap-2" },
+  We = { key: 1, class: "" },
+  Je = { class: "relative mt-6" },
+  Qe = { class: "flex justify-center" },
+  Xe = { class: "mb-0" },
+  Ye = {
+    class:
+      "relative flex w-full flex-wrap items-stretch transition duration-300 ease-in-out focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1",
+  },
+  et = ["value", "onKeypress"],
+  tt = e(
+    "svg",
+    {
+      xmlns: "http://www.w3.org/2000/svg",
+      viewBox: "0 0 20 20",
+      fill: "currentColor",
+      class: "h-5 w-5",
+    },
+    [
+      e("path", {
+        "fill-rule": "evenodd",
+        d: "M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z",
+        "clip-rule": "evenodd",
+      }),
+    ],
+    -1
+  ),
+  ot = [tt],
+  st = { class: "flex flex-col justify-between flex-1 mt-6" },
+  rt = e(
+    "img",
+    { src: "/images/icons/newsfeed.png", width: "30", height: "30" },
+    null,
+    -1
+  ),
+  nt = e("span", { class: "mx-4 font-medium" }, "News Feed", -1),
+  lt = e(
+    "img",
+    { src: "/images/icons/contractor.png", width: "30", height: "30" },
+    null,
+    -1
+  ),
+  it = e("span", { class: "mx-4 font-medium" }, "Sub-Finder", -1),
+  at = e(
+    "img",
+    { src: "/images/icons/redflag.png", width: "30", height: "30" },
+    null,
+    -1
+  ),
+  dt = e("span", { class: "mx-4 font-medium text-cyan-600" }, "Red Flags", -1),
+  ct = e(
+    "img",
+    { src: "/images/icons/mentor.png", width: "30", height: "30" },
+    null,
+    -1
+  ),
+  ut = e("span", { class: "mx-4 font-medium text-cyan-600" }, "Mentoring", -1),
+  mt = e(
+    "img",
+    { src: "/images/icons/contractorpage_b.png", width: "30", height: "30" },
+    null,
+    -1
+  ),
+  ft = e("span", { class: "mx-4 font-medium" }, "Contractor page", -1),
+  gt = e(
+    "hr",
+    { class: "mt-3 ml-6 mr-6 pt-3 border-t-2 border-gray-400" },
+    null,
+    -1
+  ),
+  ht = e(
+    "img",
+    { src: "/images/icons/news_view.png", width: "30", height: "30" },
+    null,
+    -1
+  ),
+  pt = e("span", { class: "mx-4 font-medium hover:text-cyan-600" }, "View", -1),
+  vt = [ht, pt],
+  yt = e(
+    "svg",
+    {
+      id: "SvgjsSvg1017",
+      width: "30",
+      height: "30",
+      xmlns: "http://www.w3.org/2000/svg",
+      version: "1.1",
+      "xmlns:xlink": "http://www.w3.org/1999/xlink",
+    },
+    [
+      e("defs", { id: "SvgjsDefs1018" }),
+      e("g", { id: "SvgjsG1019" }, [
+        e(
+          "svg",
+          {
+            xmlns: "http://www.w3.org/2000/svg",
+            "fill-rule": "evenodd",
+            "stroke-linejoin": "round",
+            "stroke-miterlimit": "2",
+            "clip-rule": "evenodd",
+            viewBox: "0 0 64 64",
+            width: "30",
+            height: "30",
+          },
+          [
+            e("rect", { width: "30", height: "30", fill: "none" }),
+            e("path", {
+              d: "M58,104C58,98.696 56.946,93.609 55.071,89.858C53.196,86.107 50.652,84 48,84C39.122,84 24.878,84 16,84C13.348,84 10.804,86.107 8.929,89.858C7.054,93.609 6,98.696 6,104C6,117.961 6,136 6,136C6,138.209 6.895,140 8,140L56,140C57.105,140 58,138.209 58,136L58,104ZM54,132L54,104C54,100.817 53.368,97.765 52.243,95.515C51.117,93.264 49.591,92 48,92C39.122,92 24.878,92 16,92C14.409,92 12.883,93.264 11.757,95.515C10.632,97.765 10,100.817 10,104L10,132L54,132Z",
+              transform: "matrix(1 0 0 .5 0 -36)",
+              fill: "#464898",
+              class: "color000 svgShape",
+            }),
+            e("path", {
+              d: "M10,92L10,120C10,123.183 10.632,126.235 11.757,128.485C12.883,130.736 14.409,132 16,132C24.878,132 39.122,132 48,132C49.591,132 51.117,130.736 52.243,128.485C53.368,126.235 54,123.183 54,120C54,117.792 54.896,116 56,116C57.104,116 58,117.792 58,120C58,125.304 56.946,130.391 55.071,134.142C53.196,137.893 50.652,140 48,140C39.122,140 24.878,140 16,140C13.348,140 10.804,137.893 8.929,134.142C7.054,130.391 6,125.304 6,120L6,88C6,85.791 6.895,84 8,84L56,84C57.105,84 58,85.791 58,88C58,88 58,95.188 58,104C58,106.208 57.104,108 56,108C54.896,108 54,106.208 54,104L54,92L10,92Z",
+              transform: "matrix(1 0 0 .5 0 -12)",
+              fill: "#464898",
+              class: "color000 svgShape",
+            }),
+            e("path", {
+              d: "M26,100C26,98.895 25.105,98 24,98L16,98C14.895,98 14,98.895 14,100L14,108C14,109.105 14.895,110 16,110L24,110C25.105,110 26,109.105 26,108L26,100ZM18,102L18,106L22,106L22,102L18,102Z",
+              transform: "translate(0 -84)",
+              fill: "#464898",
+              class: "color000 svgShape",
+            }),
+            e("path", {
+              d: "M24,103L48,103C49.656,103 51,102.104 51,101C51,99.896 49.656,99 48,99L24,99C22.344,99 21,99.896 21,101C21,102.104 22.344,103 24,103Z",
+              transform: "matrix(.66667 0 0 1 16 -85)",
+              fill: "#464898",
+              class: "color000 svgShape",
+            }),
+            e("path", {
+              d: "M24,103L48,103C49.656,103 51,102.104 51,101C51,99.896 49.656,99 48,99L24,99C22.344,99 21,99.896 21,101C21,102.104 22.344,103 24,103Z",
+              transform: "matrix(.66667 0 0 1 16 -77)",
+              fill: "#464898",
+              class: "color000 svgShape",
+            }),
+            e("path", {
+              d: "M26,127.172L36.586,116.586C37.367,115.805 38.633,115.805 39.414,116.586L55.071,132.243C55.85,133.022 55.852,134.285 55.075,135.067C55.075,135.067 55.075,135.067 55.071,135.071C53.196,136.946 50.652,138 48,138L32,138C32,138 16,138 16,138C13.348,138 10.804,136.946 8.929,135.071L8.925,135.067C8.148,134.285 8.15,133.022 8.929,132.243L18.586,122.586C19.367,121.805 20.633,121.805 21.414,122.586L26,127.172ZM50.586,133.414L38,120.828L28.828,130L32.828,134L48,134C48.904,134 49.787,133.796 50.586,133.414ZM27.172,134L20,126.828L13.414,133.414C14.214,133.796 15.097,134 16,134L27.172,134Z",
+              transform: "translate(0 -80)",
+              fill: "#464898",
+              class: "color000 svgShape",
+            }),
+          ]
+        ),
+      ]),
+    ],
+    -1
+  ),
+  _t = e("span", { class: "mx-4 font-medium" }, "My Posts", -1),
+  bt = e("span", { class: "mx-4 font-medium" }, "My Ratings", -1),
+  xt = e(
+    "img",
+    { src: "/images/icons/profile.png", width: "30", height: "30" },
+    null,
+    -1
+  ),
+  wt = e("span", { class: "mx-4 font-medium" }, "My Profile", -1),
+  Ct = e(
+    "img",
+    { src: "/images/icons/settings_bl.png", width: "30", height: "30" },
+    null,
+    -1
+  ),
+  kt = e("span", { class: "mx-4 font-medium" }, "Settings", -1),
+  $t = e(
+    "img",
+    { src: "/images/icons/contactus.png", width: "30", height: "30" },
+    null,
+    -1
+  ),
+  St = e("span", { class: "mx-4 font-medium" }, "Contact Us", -1),
+  Pt = { key: 1, class: "mt-3 ml-6 mr-6 pt-3 border-t-2 border-gray-400" },
+  Lt = e("span", { class: "mx-4 font-medium" }, "Admin", -1),
+  Ft = { key: 3, class: "mt-3 ml-6 mr-6 pt-3 border-t-2 border-gray-400" },
+  Vt = e(
+    "img",
+    { src: "/images/icons/logout_bl.png", width: "30", height: "30" },
+    null,
+    -1
+  ),
+  It = e("span", { class: "mx-4 font-medium" }, "Log Out", -1),
+  Et = [Vt, It],
+  _r = {
+    __name: "Menu_MainSideMenu",
+    props: {
+      showit: Boolean,
+      profile: { type: Object, required: !0 },
+      isOpen: Boolean,
+      showPostButtons: Boolean,
+      modelValue: String,
+      postSearchFilters: Object,
+    },
+    emits: ["update:modelValue", "submitPostSearch", "postClicked"],
+    setup(t, { emit: o }) {
+      const s = t,
+        n = re(),
+        r = $();
+      $(), $(!1);
+      const d = () => {
+        o("submitPostSearch");
+      };
+      function b(h) {
+        (h = !1), o("postClicked", h);
+      }
+      const x = M(() => {
+          const h = K().props.value.auth.user;
+          return h
+            ? h.appeals_privileges ||
+                h.payments_privileges ||
+                h.users_privileges
+            : !1;
+        }),
+        f = M(() => n.state.profile.loadingImage);
+      function u() {
+        ne(), N.Inertia.post("/logout");
+      }
+      const w = () => {
+          n.commit("profile/setActiveTab", 3),
+            K().url.value !== "/profile" && r.value.openDialog();
+        },
+        S = M(
+          () =>
+            s.profile.city !== null ||
+            s.profile.state !== null ||
+            s.profile.zipcode !== null
+        ),
+        k = M(() => {
+          const h = [];
+          return (
+            s.profile.city !== null && h.push(s.profile.city),
+            s.profile.state !== null && h.push(s.profile.state),
+            s.profile.zipcode !== null && h.push(s.profile.zipcode),
+            h.join(" ")
+          );
+        }),
+        m = M(() => {
+          const h =
+            s.profile.first_name +
+            " " +
+            (s.profile.last_name ? s.profile.last_name : "");
+          return h.length < 27 ? h : h.substring(0, 23) + "...";
+        });
+      return (h, C) => {
+        const a = V("Link"),
+          v = V("v-skeleton-loader");
+        return (
+          i(),
+          c(
+            E,
+            null,
+            [
+              l(
+                le,
+                { ref_key: "dialogRef", ref: r, profile: t.profile },
+                null,
+                8,
+                ["profile"]
+              ),
+              e("div", Te, [
+                e("div", Ae, [
+                  l(
+                    a,
+                    {
+                      href: "/",
+                      class:
+                        "lg:text-5xl xl:text-6xl font-bold tracking-wide text-center",
+                    },
+                    { default: _(() => [l(fe)]), _: 1 }
+                  ),
+                  t.showit
+                    ? (i(),
+                      c("div", Oe, [
+                        f.value
+                          ? (i(),
+                            j(v, {
+                              key: 0,
+                              style: { "border-radius": "9999px" },
+                              class:
+                                "overflow-hidden w-14 h-14 sm:w-24 sm:h-24",
+                              type: "image",
+                            }))
+                          : g("", !0),
+                        f.value
+                          ? g("", !0)
+                          : (i(),
+                            j(
+                              ie,
+                              {
+                                key: 1,
+                                imageSrc: `/${t.profile.user_avatar}`,
+                                class: "sm:w-24 sm:h-24",
+                              },
+                              null,
+                              8,
+                              ["imageSrc"]
+                            )),
+                        e("h4", Ne, P(m.value), 1),
+                        e(
+                          "h4",
+                          Ue,
+                          P(
+                            t.profile.company_name &&
+                              (t.profile.company_name.length < 27
+                                ? t.profile.company_name
+                                : t.profile.company_name.substring(0, 23) +
+                                  "...")
+                          ),
+                          1
+                        ),
+                        t.profile && t.profile.phone_cell
+                          ? (i(),
+                            c("h4", Ze, " Cell: " + P(t.profile.phone_cell), 1))
+                          : g("", !0),
+                        t.profile && t.profile.email
+                          ? (i(), c("h4", qe, P(t.profile.email), 1))
+                          : g("", !0),
+                        t.showit && S.value
+                          ? (i(), c("h4", Ge, P(k.value), 1))
+                          : g("", !0),
+                      ]))
+                    : g("", !0),
+                  e("div", He, [
+                    e("div", Ke, [
+                      t.showPostButtons
+                        ? (i(),
+                          j(
+                            ge,
+                            { key: 0, isOpen: t.isOpen, onPostClicked: b },
+                            null,
+                            8,
+                            ["isOpen"]
+                          ))
+                        : g("", !0),
+                      t.showPostButtons
+                        ? (i(), c("div", We, [l(he)]))
+                        : g("", !0),
+                    ]),
+                    e("div", Je, [
+                      e("form", null, [
+                        e("div", Qe, [
+                          e("div", Xe, [
+                            e("div", Ye, [
+                              e(
+                                "input",
+                                {
+                                  type: "text",
+                                  value: t.modelValue,
+                                  onInput:
+                                    C[0] ||
+                                    (C[0] = (y) =>
+                                      h.$emit(
+                                        "update:modelValue",
+                                        y.target.value
+                                      )),
+                                  onKeypress: J(R(d, ["prevent"]), ["enter"]),
+                                  class:
+                                    "relative m-0 -mr-px block w-[1%] min-w-0 flex-auto bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 outline-none rounded-l-md border border-solid border-gray-600 placeholder:italic placeholder:text-slate-500",
+                                  placeholder: "Search...",
+                                },
+                                null,
+                                40,
+                                et
+                              ),
+                              e(
+                                "button",
+                                {
+                                  onClick: d,
+                                  class:
+                                    "relative z-[2] flex items-center px-4 py-2.5 text-xs font-medium uppercase leading-tight rounded-r-md border border-solid border-gray-600 text-white bg-blue-600 transition duration-150 ease-in-out hover:bg-blue-800 hover:shadow-lg",
+                                  type: "button",
+                                },
+                                ot
+                              ),
+                            ]),
+                          ]),
+                        ]),
+                      ]),
+                    ]),
+                  ]),
+                  e("div", st, [
+                    e("nav", null, [
+                      p(N.Inertia).page.component != "Postings"
+                        ? (i(),
+                          j(
+                            a,
+                            {
+                              key: 0,
+                              class:
+                                "flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",
+                              href: h.route("post"),
+                            },
+                            { default: _(() => [rt, nt]), _: 1 },
+                            8,
+                            ["href"]
+                          ))
+                        : g("", !0),
+                      l(
+                        a,
+                        {
+                          class:
+                            "flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",
+                          href: "/sub-finder",
+                        },
+                        { default: _(() => [lt, it]), _: 1 }
+                      ),
+                      l(
+                        a,
+                        {
+                          class:
+                            "flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",
+                          href: "#",
+                        },
+                        { default: _(() => [at, dt]), _: 1 }
+                      ),
+                      l(
+                        a,
+                        {
+                          class:
+                            "flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",
+                          href: "#",
+                        },
+                        { default: _(() => [ct, ut]), _: 1 }
+                      ),
+                      l(
+                        a,
+                        {
+                          class:
+                            "flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",
+                          href: `/contractor/${t.profile.user_id}/edit`,
+                        },
+                        { default: _(() => [mt, ft]), _: 1 },
+                        8,
+                        ["href"]
+                      ),
+                      gt,
+                      e(
+                        "button",
+                        {
+                          onClick: w,
+                          class:
+                            "flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",
+                        },
+                        vt
+                      ),
+                      l(
+                        a,
+                        {
+                          class:
+                            "flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",
+                          href: `/posts/${t.profile.user_id}`,
+                        },
+                        { default: _(() => [yt, _t]), _: 1 },
+                        8,
+                        ["href"]
+                      ),
+                      l(
+                        a,
+                        {
+                          class:
+                            "flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",
+                          href: "/ratings/contractor",
+                        },
+                        {
+                          default: _(() => [
+                            l(p(L), {
+                              icon: "material-symbols:reviews",
+                              color: "#1098ad",
+                              width: "30",
+                              height: "30",
+                            }),
+                            bt,
+                          ]),
+                          _: 1,
+                        }
+                      ),
+                      l(
+                        a,
+                        {
+                          class:
+                            "flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",
+                          href: "/profile",
+                        },
+                        { default: _(() => [xt, wt]), _: 1 }
+                      ),
+                      l(
+                        a,
+                        {
+                          class:
+                            "flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",
+                          href: "/settings",
+                        },
+                        { default: _(() => [Ct, kt]), _: 1 }
+                      ),
+                      l(
+                        a,
+                        {
+                          class:
+                            "flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",
+                          href: "/about-us#contactUs",
+                        },
+                        { default: _(() => [$t, St]), _: 1 }
+                      ),
+                      x.value ? (i(), c("hr", Pt)) : g("", !0),
+                      x.value
+                        ? (i(),
+                          j(
+                            a,
+                            {
+                              key: 2,
+                              class:
+                                "flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",
+                              href: "/admin",
+                            },
+                            {
+                              default: _(() => [
+                                l(p(L), {
+                                  icon: "clarity:administrator-solid",
+                                  color: "#1098ad",
+                                  width: "30",
+                                  height: "30",
+                                }),
+                                Lt,
+                              ]),
+                              _: 1,
+                            }
+                          ))
+                        : g("", !0),
+                      x.value ? (i(), c("hr", Ft)) : g("", !0),
+                      e(
+                        "button",
+                        {
+                          onClick: u,
+                          class:
+                            "flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",
+                        },
+                        Et
+                      ),
+                    ]),
+                  ]),
+                ]),
+              ]),
+            ],
+            64
+          )
+        );
+      };
+    },
+  },
+  Mt = { id: "hamburgerwithsticky", class: "z-40" },
+  Bt = { class: "" },
+  jt = { key: 0, class: "pt-2 pb-0 ml-3" },
+  Dt = { class: "mt-1 text-base font-bold text-gray-800" },
+  zt = { class: "text-base font-semibold text-gray-800" },
+  Rt = { class: "pt-1 pb-3 space-y-2" },
+  Tt = { class: "relative mt-1" },
+  At = { class: "flex justify-center" },
+  Ot = { class: "mb-0 xl:w-96" },
+  Nt = {
+    class:
+      "relative mb-2 flex w-full flex-wrap items-stretch transition duration-300 ease-in-out focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1",
+  },
+  Ut = ["value", "onKeypress"],
+  Zt = e(
+    "svg",
+    {
+      xmlns: "http://www.w3.org/2000/svg",
+      viewBox: "0 0 20 20",
+      fill: "currentColor",
+      class: "h-5 w-5",
+    },
+    [
+      e("path", {
+        "fill-rule": "evenodd",
+        d: "M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z",
+        "clip-rule": "evenodd",
+      }),
+    ],
+    -1
+  ),
+  qt = [Zt],
+  Gt = e(
+    "img",
+    { src: "/images/icons/newsfeed.png", width: "20", height: "20" },
+    null,
+    -1
+  ),
+  Ht = e("span", { class: "mx-4 font-medium" }, "News Feed", -1),
+  Kt = e(
+    "img",
+    { src: "/images/icons/contractor.png", width: "20", height: "20" },
+    null,
+    -1
+  ),
+  Wt = e("span", { class: "mx-4 font-medium" }, "Sub Finder", -1),
+  Jt = e(
+    "img",
+    { src: "/images/icons/redflag.png", width: "20", height: "20" },
+    null,
+    -1
+  ),
+  Qt = e("span", { class: "mx-4 font-medium" }, "Red Flags", -1),
+  Xt = e(
+    "img",
+    { src: "/images/icons/mentor.png", width: "20", height: "20" },
+    null,
+    -1
+  ),
+  Yt = e("span", { class: "mx-4 font-medium" }, "Mentoring", -1),
+  eo = e(
+    "img",
+    { src: "/images/icons/contractorpage_b.png", width: "20", height: "20" },
+    null,
+    -1
+  ),
+  to = e("span", { class: "mx-4 font-medium" }, "Contractor page", -1),
+  oo = e("div", { class: "pt-1 border-t-2 border-gray-400" }, null, -1),
+  so = e(
+    "img",
+    { src: "/images/icons/news_view.png", width: "20", height: "20" },
+    null,
+    -1
+  ),
+  ro = e("span", { class: "mx-4 font-medium" }, "View", -1),
+  no = [so, ro],
+  lo = e(
+    "svg",
+    {
+      id: "SvgjsSvg1017",
+      width: "20",
+      height: "20",
+      xmlns: "http://www.w3.org/2000/svg",
+      version: "1.1",
+      "xmlns:xlink": "http://www.w3.org/1999/xlink",
+    },
+    [
+      e("defs", { id: "SvgjsDefs1018" }),
+      e("g", { id: "SvgjsG1019" }, [
+        e(
+          "svg",
+          {
+            xmlns: "http://www.w3.org/2000/svg",
+            "fill-rule": "evenodd",
+            "stroke-linejoin": "round",
+            "stroke-miterlimit": "2",
+            "clip-rule": "evenodd",
+            viewBox: "0 0 64 64",
+            width: "20",
+            height: "20",
+          },
+          [
+            e("rect", { width: "20", height: "20", fill: "none" }),
+            e("path", {
+              d: "M58,104C58,98.696 56.946,93.609 55.071,89.858C53.196,86.107 50.652,84 48,84C39.122,84 24.878,84 16,84C13.348,84 10.804,86.107 8.929,89.858C7.054,93.609 6,98.696 6,104C6,117.961 6,136 6,136C6,138.209 6.895,140 8,140L56,140C57.105,140 58,138.209 58,136L58,104ZM54,132L54,104C54,100.817 53.368,97.765 52.243,95.515C51.117,93.264 49.591,92 48,92C39.122,92 24.878,92 16,92C14.409,92 12.883,93.264 11.757,95.515C10.632,97.765 10,100.817 10,104L10,132L54,132Z",
+              transform: "matrix(1 0 0 .5 0 -36)",
+              fill: "#464898",
+              class: "color000 svgShape",
+            }),
+            e("path", {
+              d: "M10,92L10,120C10,123.183 10.632,126.235 11.757,128.485C12.883,130.736 14.409,132 16,132C24.878,132 39.122,132 48,132C49.591,132 51.117,130.736 52.243,128.485C53.368,126.235 54,123.183 54,120C54,117.792 54.896,116 56,116C57.104,116 58,117.792 58,120C58,125.304 56.946,130.391 55.071,134.142C53.196,137.893 50.652,140 48,140C39.122,140 24.878,140 16,140C13.348,140 10.804,137.893 8.929,134.142C7.054,130.391 6,125.304 6,120L6,88C6,85.791 6.895,84 8,84L56,84C57.105,84 58,85.791 58,88C58,88 58,95.188 58,104C58,106.208 57.104,108 56,108C54.896,108 54,106.208 54,104L54,92L10,92Z",
+              transform: "matrix(1 0 0 .5 0 -12)",
+              fill: "#464898",
+              class: "color000 svgShape",
+            }),
+            e("path", {
+              d: "M26,100C26,98.895 25.105,98 24,98L16,98C14.895,98 14,98.895 14,100L14,108C14,109.105 14.895,110 16,110L24,110C25.105,110 26,109.105 26,108L26,100ZM18,102L18,106L22,106L22,102L18,102Z",
+              transform: "translate(0 -84)",
+              fill: "#464898",
+              class: "color000 svgShape",
+            }),
+            e("path", {
+              d: "M24,103L48,103C49.656,103 51,102.104 51,101C51,99.896 49.656,99 48,99L24,99C22.344,99 21,99.896 21,101C21,102.104 22.344,103 24,103Z",
+              transform: "matrix(.66667 0 0 1 16 -85)",
+              fill: "#464898",
+              class: "color000 svgShape",
+            }),
+            e("path", {
+              d: "M24,103L48,103C49.656,103 51,102.104 51,101C51,99.896 49.656,99 48,99L24,99C22.344,99 21,99.896 21,101C21,102.104 22.344,103 24,103Z",
+              transform: "matrix(.66667 0 0 1 16 -77)",
+              fill: "#464898",
+              class: "color000 svgShape",
+            }),
+            e("path", {
+              d: "M26,127.172L36.586,116.586C37.367,115.805 38.633,115.805 39.414,116.586L55.071,132.243C55.85,133.022 55.852,134.285 55.075,135.067C55.075,135.067 55.075,135.067 55.071,135.071C53.196,136.946 50.652,138 48,138L32,138C32,138 16,138 16,138C13.348,138 10.804,136.946 8.929,135.071L8.925,135.067C8.148,134.285 8.15,133.022 8.929,132.243L18.586,122.586C19.367,121.805 20.633,121.805 21.414,122.586L26,127.172ZM50.586,133.414L38,120.828L28.828,130L32.828,134L48,134C48.904,134 49.787,133.796 50.586,133.414ZM27.172,134L20,126.828L13.414,133.414C14.214,133.796 15.097,134 16,134L27.172,134Z",
+              transform: "translate(0 -80)",
+              fill: "#464898",
+              class: "color000 svgShape",
+            }),
+          ]
+        ),
+      ]),
+    ],
+    -1
+  ),
+  io = e("span", { class: "mx-4 font-medium" }, "My Posts", -1),
+  ao = e("span", { class: "mx-4 font-medium" }, "My Ratings", -1),
+  co = e(
+    "img",
+    { src: "/images/icons/profile.png", width: "20", height: "20" },
+    null,
+    -1
+  ),
+  uo = e("span", { class: "mx-4 font-medium" }, "My Profile", -1),
+  mo = e(
+    "img",
+    { src: "/images/icons/settings_bl.png", width: "20", height: "20" },
+    null,
+    -1
+  ),
+  fo = e("span", { class: "mx-4 font-medium" }, "Settings", -1),
+  go = e(
+    "img",
+    { src: "/images/icons/contactus.png", width: "20", height: "20" },
+    null,
+    -1
+  ),
+  ho = e("span", { class: "mx-4 font-medium" }, "Contact Us", -1),
+  po = { key: 1, class: "pt-1 border-t-2 border-gray-400" },
+  vo = e("span", { class: "mx-4 font-medium" }, "Admin", -1),
+  yo = { key: 3, class: "pt-1 border-t-2 border-gray-400" },
+  _o = e(
+    "img",
+    { src: "/images/icons/logout_bl.png", width: "20", height: "20" },
+    null,
+    -1
+  ),
+  bo = e("span", { class: "mx-4 font-medium" }, "Log Out", -1),
+  xo = [_o, bo],
+  wo = {
+    class: "h-6 w-6",
+    stroke: "currentColor",
+    fill: "none",
+    viewBox: "0 0 24 24",
+  },
+  br = {
+    __name: "Menu_HamburgerMenu",
+    props: {
+      showit: Boolean,
+      profile: { type: Object, required: !0 },
+      modelValue: String,
+      postSearchFilters: Object,
+      showingNavigationDropdown: Boolean,
+    },
+    emits: ["NavigationDropdown", "update:modelValue", "submitPostSearch"],
+    setup(t, { emit: o }) {
+      const s = t;
+      re();
+      const n = $();
+      function r() {
+        o("NavigationDropdown");
+      }
+      const d = () => {
+          o("submitPostSearch");
+        },
+        b = M(() => K().props.value.auth.user.appeals_privileges === 1);
+      function x() {
+        ne(), N.Inertia.post("/logout");
+      }
+      const f = () => {
+          n.value.openDialog();
+        },
+        u = M(() => {
+          const w =
+            s.profile.first_name +
+            " " +
+            (s.profile.last_name ? s.profile.last_name : "");
+          return w.length < 27 ? w : w.substring(0, 23) + "...";
+        });
+      return (w, S) => (
+        i(),
+        c(
+          E,
+          null,
+          [
+            l(
+              le,
+              { ref_key: "dialogRef", ref: n, profile: t.profile },
+              null,
+              8,
+              ["profile"]
+            ),
+            e("div", Mt, [
+              e(
+                "div",
+                {
+                  id: "myHamburgerMenu",
+                  class: F([
+                    {
+                      block: t.showingNavigationDropdown,
+                      hidden: !t.showingNavigationDropdown,
+                    },
+                    "lg:hidden absolute flex top-16 right-4 sm:right-6 lg:right-20 xl:right-32 2xl:right-80 z-20 px-3 text-left border-b border-gray-400 rounded-xl bg-gray-100",
+                  ]),
+                },
+                [
+                  e("div", Bt, [
+                    t.showit
+                      ? (i(),
+                        c("div", jt, [
+                          l(
+                            ie,
+                            {
+                              imageSrc: `/${t.profile.user_avatar}`,
+                              class: "mt-2",
+                            },
+                            null,
+                            8,
+                            ["imageSrc"]
+                          ),
+                          e("h4", Dt, P(u.value), 1),
+                          e(
+                            "h4",
+                            zt,
+                            P(
+                              t.profile.company_name &&
+                                (t.profile.company_name.length < 27
+                                  ? t.profile.company_name
+                                  : t.profile.company_name.substring(0, 23) +
+                                    "...")
+                            ),
+                            1
+                          ),
+                        ]))
+                      : g("", !0),
+                    e("div", Rt, [
+                      e("div", Tt, [
+                        e("form", null, [
+                          e("div", At, [
+                            e("div", Ot, [
+                              e("div", Nt, [
+                                e(
+                                  "input",
+                                  {
+                                    type: "search",
+                                    value: t.modelValue,
+                                    onInput:
+                                      S[0] ||
+                                      (S[0] = (k) =>
+                                        w.$emit(
+                                          "update:modelValue",
+                                          k.target.value
+                                        )),
+                                    onKeypress: J(R(d, ["prevent"]), ["enter"]),
+                                    class:
+                                      "relative m-0 -mr-px block w-[1%] min-w-0 flex-auto bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 outline-none rounded-l-md border border-solid border-gray-600 placeholder:italic placeholder:text-slate-500",
+                                    placeholder: "Search...",
+                                  },
+                                  null,
+                                  40,
+                                  Ut
+                                ),
+                                e(
+                                  "button",
+                                  {
+                                    onClick: d,
+                                    class:
+                                      "relative z-[2] flex items-center px-4 py-2.5 text-xs font-medium uppercase leading-tight rounded-r-md border border-solid border-gray-600 text-white bg-blue-600 transition duration-150 ease-in-out hover:bg-blue-800 hover:shadow-lg",
+                                    type: "button",
+                                  },
+                                  qt
+                                ),
+                              ]),
+                            ]),
+                          ]),
+                        ]),
+                      ]),
+                      p(N.Inertia).page.component != "Postings"
+                        ? (i(),
+                          j(
+                            p(I),
+                            {
+                              key: 0,
+                              href: w.route("post"),
+                              class:
+                                "flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700",
+                            },
+                            { default: _(() => [Gt, Ht]), _: 1 },
+                            8,
+                            ["href"]
+                          ))
+                        : g("", !0),
+                      l(
+                        p(I),
+                        {
+                          href: "/sub-finder",
+                          class:
+                            "flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700",
+                        },
+                        { default: _(() => [Kt, Wt]), _: 1 }
+                      ),
+                      l(
+                        p(I),
+                        {
+                          href: w.route("post"),
+                          class:
+                            "flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700",
+                        },
+                        { default: _(() => [Jt, Qt]), _: 1 },
+                        8,
+                        ["href"]
+                      ),
+                      l(
+                        p(I),
+                        {
+                          href: w.route("post"),
+                          class:
+                            "flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700",
+                        },
+                        { default: _(() => [Xt, Yt]), _: 1 },
+                        8,
+                        ["href"]
+                      ),
+                      l(
+                        p(I),
+                        {
+                          href: `/contractor/${t.profile.user_id}/edit`,
+                          class:
+                            "flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700",
+                        },
+                        { default: _(() => [eo, to]), _: 1 },
+                        8,
+                        ["href"]
+                      ),
+                      oo,
+                      e(
+                        "button",
+                        {
+                          onClick: f,
+                          class:
+                            "flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700",
+                        },
+                        no
+                      ),
+                      l(
+                        p(I),
+                        {
+                          href: `/posts/${t.profile.user_id}`,
+                          class:
+                            "flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700",
+                        },
+                        { default: _(() => [lo, io]), _: 1 },
+                        8,
+                        ["href"]
+                      ),
+                      l(
+                        p(I),
+                        {
+                          href: "/ratings/contractor",
+                          class:
+                            "flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700",
+                        },
+                        {
+                          default: _(() => [
+                            l(p(L), {
+                              icon: "material-symbols:reviews",
+                              color: "#1098ad",
+                              width: "20",
+                              height: "20",
+                            }),
+                            ao,
+                          ]),
+                          _: 1,
+                        }
+                      ),
+                      l(
+                        p(I),
+                        {
+                          href: w.route("profile.edit"),
+                          class:
+                            "flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700",
+                        },
+                        { default: _(() => [co, uo]), _: 1 },
+                        8,
+                        ["href"]
+                      ),
+                      l(
+                        p(I),
+                        {
+                          href: "/settings",
+                          class:
+                            "flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700",
+                        },
+                        { default: _(() => [mo, fo]), _: 1 }
+                      ),
+                      l(
+                        p(I),
+                        {
+                          href: "/about-us#contactUs",
+                          class:
+                            "flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700",
+                        },
+                        { default: _(() => [go, ho]), _: 1 }
+                      ),
+                      b.value ? (i(), c("div", po)) : g("", !0),
+                      b.value
+                        ? (i(),
+                          j(
+                            p(I),
+                            {
+                              key: 2,
+                              href: "/admin",
+                              class:
+                                "flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700",
+                            },
+                            {
+                              default: _(() => [
+                                l(p(L), {
+                                  icon: "clarity:administrator-solid",
+                                  color: "#1098ad",
+                                  width: "20",
+                                  height: "20",
+                                }),
+                                vo,
+                              ]),
+                              _: 1,
+                            }
+                          ))
+                        : g("", !0),
+                      b.value ? (i(), c("div", yo)) : g("", !0),
+                      e(
+                        "button",
+                        {
+                          onClick: x,
+                          class:
+                            "flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",
+                        },
+                        xo
+                      ),
+                    ]),
+                  ]),
+                  e(
+                    "button",
+                    {
+                      onClick: r,
+                      class:
+                        "inline-flex items-start justify-center p-2 rounded-md text-black hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out",
+                    },
+                    [
+                      (i(),
+                      c("svg", wo, [
+                        e(
+                          "path",
+                          {
+                            class: F({
+                              hidden: !t.showingNavigationDropdown,
+                              "inline-flex": t.showingNavigationDropdown,
+                            }),
+                            "stroke-linecap": "round",
+                            "stroke-linejoin": "round",
+                            "stroke-width": "2",
+                            d: "M6 18L18 6M6 6l12 12",
+                          },
+                          null,
+                          2
+                        ),
+                      ])),
+                    ]
+                  ),
+                ],
+                2
+              ),
+            ]),
+          ],
+          64
+        )
+      );
+    },
+  };
+const Co = (t) => (Z("data-v-6121af15"), (t = t()), q(), t),
+  ko = { class: "chips" },
+  $o = { class: "chips__itemInput" },
+  So = { class: "chips__selectedItems" },
+  Po = { key: 0 },
+  Lo = ["onClick"],
+  Fo = Co(() => e("b", null, "x", -1)),
+  Vo = [Fo],
+  Io = { key: 0, class: "allitems" },
+  Eo = ["onClick"],
+  Mo = { key: 0 },
+  Bo = {
+    __name: "MultiSelect",
+    props: {
+      modelValue: { type: Array, default: () => [] },
+      showSearch: { type: Boolean, default: !1 },
+      items: { type: Array, required: !0 },
+      sortingProperty: { type: String, default: null },
+    },
+    emits: ["input"],
+    setup(t, { emit: o }) {
+      const s = t,
+        n = (C) => (a, v) => a[C] > v[C] ? 1 : v[C] > a[C] ? -1 : 0,
+        r = $(s.modelValue || []),
+        d = $(""),
+        b = $(!1);
+      s.modelValue,
+        z(
+          () => s.modelValue,
+          (C) => {
+            console.log(s.modelValue, s.modelValue.value, "hello world"),
+              (r.value = s.modelValue);
+          }
+        );
+      const x = M(() => {
+          let C = [...s.items];
+          return s.sortingProperty ? C.sort(n(s.sortingProperty)) : C.sort();
+        }),
+        f = M(() =>
+          d.value
+            ? x.value.filter((a) =>
+                s.sortingProperty
+                  ? a[s.sortingProperty]
+                      .toLowerCase()
+                      .includes(d.value.toLowerCase())
+                  : a.toLowerCase().includes(d.value.toLowerCase())
+              )
+            : x.value
+        ),
+        u = (C) => r.value.some((a) => a.id === C.id),
+        w = (C) => {
+          r.value.some((v) => v.id === C.id)
+            ? S(C)
+            : (r.value = [...r.value, C]),
+            o("input", r.value),
+            (d.value = "");
+        },
+        S = (C) => {
+          (r.value = r.value.filter((a) => a.id !== C.id)), o("input", r.value);
+        },
+        k = () => {
+          b.value = !0;
+        },
+        m = () => {
+          b.value = !b.value;
+        },
+        h = () => {
+          console.log("deactivate"), (b.value = !1);
+        };
+      return (C, a) => {
+        const v = de("click-outside");
+        return D(
+          (i(),
+          c("div", null, [
+            e(
+              "div",
+              {
+                class: "selecteditems",
+                onClick: a[3] || (a[3] = R((y) => m(), ["prevent"])),
+              },
+              [
+                e("ul", ko, [
+                  e("li", $o, [
+                    e("div", So, [
+                      (i(!0),
+                      c(
+                        E,
+                        null,
+                        T(
+                          r.value,
+                          (y) => (
+                            i(),
+                            c("span", { key: y.id, class: "chips__item" }, [
+                              t.sortingProperty
+                                ? (i(),
+                                  c("span", Po, P(y[t.sortingProperty]), 1))
+                                : (i(), c(E, { key: 1 }, [W(P(y), 1)], 64)),
+                              e(
+                                "span",
+                                {
+                                  class: "chips--remove",
+                                  onClick: R((ae) => S(y), ["stop"]),
+                                },
+                                Vo,
+                                8,
+                                Lo
+                              ),
+                            ])
+                          )
+                        ),
+                        128
+                      )),
+                    ]),
+                    t.showSearch
+                      ? D(
+                          (i(),
+                          c(
+                            "input",
+                            {
+                              key: 0,
+                              "onUpdate:modelValue":
+                                a[0] || (a[0] = (y) => (d.value = y)),
+                              onFocus:
+                                a[1] || (a[1] = R((y) => k(), ["prevent"])),
+                              onKeyup: a[2] || (a[2] = J((y) => h(), ["esc"])),
+                              class: "chips__input--fake",
+                              type: "text",
+                              placeholder: "Type to search",
+                              ref: "search",
+                            },
+                            null,
+                            544
+                          )),
+                          [[U, d.value]]
+                        )
+                      : g("", !0),
+                  ]),
+                ]),
+              ]
+            ),
+            b.value
+              ? (i(),
+                c("div", Io, [
+                  e("ul", null, [
+                    (i(!0),
+                    c(
+                      E,
+                      null,
+                      T(
+                        f.value,
+                        (y) => (
+                          i(),
+                          c(
+                            "li",
+                            {
+                              class: F([
+                                "allitems__list",
+                                { "allitems__list--selected": u(y) },
+                              ]),
+                              key: y.id,
+                              onClick: R((ae) => w(y), ["stop"]),
+                            },
+                            [
+                              t.sortingProperty
+                                ? (i(),
+                                  c("span", Mo, P(y[t.sortingProperty]), 1))
+                                : (i(), c(E, { key: 1 }, [W(P(y), 1)], 64)),
+                            ],
+                            10,
+                            Eo
+                          )
+                        )
+                      ),
+                      128
+                    )),
+                  ]),
+                ]))
+              : g("", !0),
+          ])),
+          [[v, h, void 0, { prevent: !0 }]]
+        );
+      };
+    },
+  },
+  jo = A(Bo, [["__scopeId", "data-v-6121af15"]]);
+const Do = { class: "relative fontSizeDropdownRelateive" },
+  zo = {
+    key: 0,
+    class:
+      "absolute shadow-lg bg-white border border-gray-200 p-2 rounded z-10 flex items-center",
+  },
+  Ro = e("div", { class: "w-40" }, "Increase Font Size by:", -1),
+  To = { class: "mx-2 text-sm" },
+  Ao = {
+    __name: "FontSizeDropdown",
+    props: { modelValue: Number },
+    emits: ["update:modelValue"],
+    setup(t, { emit: o }) {
+      const s = t,
+        n = $(!1),
+        r = $(s.modelValue);
+      z(r, (f) => {
+        o("update:modelValue", f);
+      });
+      const d = () => {
+          r.value++;
+        },
+        b = () => {
+          r.value > 0 && r.value--;
+        },
+        x = (f) => {
+          f.target.closest(".fontSizeDropdownRelateive") || (n.value = !1);
+        };
+      return (
+        Q(() => {
+          document.addEventListener("click", x);
+        }),
+        X(() => {
+          document.removeEventListener("click", x);
+        }),
+        (f, u) => {
+          const w = V("v-tooltip");
+          return (
+            i(),
+            c("div", Do, [
+              l(
+                w,
+                { text: "Font Color", location: "top" },
+                {
+                  activator: _(({ props: S }) => [
+                    e(
+                      "button",
+                      Y(
+                        {
+                          type: "button",
+                          onClick: u[0] || (u[0] = (k) => (n.value = !n.value)),
+                        },
+                        S,
+                        {
+                          class: [
+                            { "bg-gray-100 border-gray-400": n.value },
+                            "pl-1rounded border border-transparent flex items-center",
+                          ],
+                        }
+                      ),
+                      [
+                        l(p(L), {
+                          icon: "mdi:format-font-size-increase",
+                          class: "w-7 h-7",
+                        }),
+                        l(p(L), { icon: "gridicons:dropdown" }),
+                      ],
+                      16
+                    ),
+                  ]),
+                  _: 1,
+                }
+              ),
+              n.value
+                ? (i(),
+                  c("div", zo, [
+                    Ro,
+                    e(
+                      "button",
+                      {
+                        type: "button",
+                        onClick: b,
+                        class:
+                          "ml-2 border border-gray-400 flex items-center justify-center rounded w-7",
+                      },
+                      " - "
+                    ),
+                    e("span", To, P(r.value), 1),
+                    e(
+                      "button",
+                      {
+                        type: "button",
+                        onClick: d,
+                        class:
+                          "border border-gray-400 flex items-center justify-center rounded w-7",
+                      },
+                      " + "
+                    ),
+                  ]))
+                : g("", !0),
+            ])
+          );
+        }
+      );
+    },
+  };
+const Oo = (t) => (Z("data-v-dc47a18a"), (t = t()), q(), t),
+  No = { class: "relative bgColorDropdownRelateive" },
+  Uo = {
+    key: 0,
+    class:
+      "absolute w-full flex flex-col flex-wrap w-40 mt-2 bg-white border border-gray-200 p-2 rounded z-10",
+  },
+  Zo = Oo(() =>
+    e(
+      "div",
+      { class: "text-sm font-semibold translate-y-[1px]" },
+      "Remove Color",
+      -1
+    )
+  ),
+  qo = { class: "grid grid-cols-4 items-center justify-items-center gap-2" },
+  Go = ["onClick"],
+  Ho = {
+    __name: "BackgroundColorDropdown",
+    props: { modelValue: String },
+    emits: ["update:modelValue"],
+    setup(t, { emit: o }) {
+      const s = t,
+        n = $(!1),
+        r = $(s.modelValue),
+        d = [
+          "#ffffff",
+          "#000000",
+          "#2C3E50",
+          "#7F8C8D",
+          "#27AE60",
+          "#2980B9",
+          "#8E44AD",
+          "#E74C3C",
+          "#E67E22",
+          "#2E4053",
+          "#16A085",
+          "#E84393",
+        ];
+      z(r, (u) => {
+        o("update:modelValue", u);
+      });
+      const b = (u) => {
+          r.value = u;
+        },
+        x = () => {
+          r.value = "inherit";
+        },
+        f = (u) => {
+          u.target.closest(".bgColorDropdownRelateive") || (n.value = !1);
+        };
+      return (
+        Q(() => {
+          document.addEventListener("click", f);
+        }),
+        X(() => {
+          document.removeEventListener("click", f);
+        }),
+        (u, w) => {
+          const S = V("v-tooltip");
+          return (
+            i(),
+            c("div", No, [
+              l(
+                S,
+                { text: "Background Color", location: "top" },
+                {
+                  activator: _(({ props: k }) => [
+                    e(
+                      "button",
+                      Y(
+                        {
+                          type: "button",
+                          onClick: w[0] || (w[0] = (m) => (n.value = !n.value)),
+                        },
+                        k,
+                        {
+                          class: [
+                            "rounded border border-transparent flex items-center",
+                            { "bg-gray-100 border-2 border-gray-400": n.value },
+                          ],
+                        }
+                      ),
+                      [
+                        l(p(L), {
+                          icon: "ic:round-color-lens",
+                          class: "w-6 h-6",
+                        }),
+                        l(p(L), { icon: "gridicons:dropdown" }),
+                      ],
+                      16
+                    ),
+                  ]),
+                  _: 1,
+                }
+              ),
+              n.value
+                ? (i(),
+                  c("div", Uo, [
+                    e(
+                      "button",
+                      {
+                        type: "button",
+                        onClick: x,
+                        class:
+                          "mb-2 flex gap-2 items-center border-2 border-gray-200 px-2 py-1 rounded",
+                      },
+                      [
+                        l(p(L), { icon: "ph:eraser-fill", class: "w-5 h-5" }),
+                        Zo,
+                      ]
+                    ),
+                    e("div", qo, [
+                      (i(),
+                      c(
+                        E,
+                        null,
+                        T(d, (k, m) =>
+                          e(
+                            "div",
+                            {
+                              key: m,
+                              style: ee({ backgroundColor: k }),
+                              onClick: (h) => b(k),
+                              class: F([
+                                { "ring-2 ring-blue-500": k === r.value },
+                                "w-6 h-6 border-2 border-gray-200 rounded cursor-pointer",
+                              ]),
+                            },
+                            null,
+                            14,
+                            Go
+                          )
+                        ),
+                        64
+                      )),
+                    ]),
+                  ]))
+                : g("", !0),
+            ])
+          );
+        }
+      );
+    },
+  },
+  Ko = A(Ho, [["__scopeId", "data-v-dc47a18a"]]);
+const Wo = (t) => (Z("data-v-3c285aad"), (t = t()), q(), t),
+  Jo = { class: "relative fontColorDropdownRelateive" },
+  Qo = {
+    key: 0,
+    class:
+      "absolute w-full flex flex-col flex-wrap w-40 mt-2 bg-white border border-gray-200 p-2 rounded z-10",
+  },
+  Xo = Wo(() =>
+    e(
+      "div",
+      { class: "text-sm font-semibold translate-y-[1px]" },
+      "Remove Color",
+      -1
+    )
+  ),
+  Yo = { class: "grid grid-cols-4 items-center justify-items-center gap-2" },
+  es = ["onClick"],
+  ts = {
+    __name: "FontColorDropdown",
+    props: { modelValue: String },
+    emits: ["update:modelValue"],
+    setup(t, { emit: o }) {
+      const s = t,
+        n = $(!1),
+        r = $(s.modelValue),
+        d = [
+          "#000000",
+          "#ffffff",
+          "#2C3E50",
+          "#34495E",
+          "#7F8C8D",
+          "#27AE60",
+          "#2980B9",
+          "#8E44AD",
+          "#F39C12",
+        ];
+      z(r, (u) => {
+        o("update:modelValue", u);
+      });
+      const b = (u) => {
+          r.value = u;
+        },
+        x = () => {
+          r.value = "inherit";
+        },
+        f = (u) => {
+          u.target.closest(".fontColorDropdownRelateive") || (n.value = !1);
+        };
+      return (
+        Q(() => {
+          document.addEventListener("click", f);
+        }),
+        X(() => {
+          document.removeEventListener("click", f);
+        }),
+        (u, w) => {
+          const S = V("v-tooltip");
+          return (
+            i(),
+            c("div", Jo, [
+              l(
+                S,
+                { text: "Font Color", location: "top" },
+                {
+                  activator: _(({ props: k }) => [
+                    e(
+                      "button",
+                      Y(
+                        {
+                          type: "button",
+                          onClick: w[0] || (w[0] = (m) => (n.value = !n.value)),
+                        },
+                        k,
+                        {
+                          class: [
+                            { "bg-gray-100 border-gray-400": n.value },
+                            "rounded border border-transparent flex items-center",
+                          ],
+                        }
+                      ),
+                      [
+                        l(p(L), { icon: "ri:font-color", class: "w-6 h-6" }),
+                        l(p(L), { icon: "gridicons:dropdown" }),
+                      ],
+                      16
+                    ),
+                  ]),
+                  _: 1,
+                }
+              ),
+              n.value
+                ? (i(),
+                  c("div", Qo, [
+                    e(
+                      "button",
+                      {
+                        type: "button",
+                        onClick: x,
+                        class:
+                          "mb-2 flex gap-2 items-center border-2 broder-gray-200 px-2 py-1 rounded",
+                      },
+                      [
+                        l(p(L), { icon: "ph:eraser-fill", class: "w-5 h-5" }),
+                        Xo,
+                      ]
+                    ),
+                    e("div", Yo, [
+                      (i(),
+                      c(
+                        E,
+                        null,
+                        T(d, (k, m) =>
+                          e(
+                            "div",
+                            {
+                              key: m,
+                              style: ee({ backgroundColor: k }),
+                              onClick: (h) => b(k),
+                              class: F([
+                                { "ring-2 ring-blue-500": k === r.value },
+                                "w-6 h-6 rounded cursor-pointer border-2 border-gray-20",
+                              ]),
+                            },
+                            null,
+                            14,
+                            es
+                          )
+                        ),
+                        64
+                      )),
+                    ]),
+                  ]))
+                : g("", !0),
+            ])
+          );
+        }
+      );
+    },
+  },
+  os = A(ts, [["__scopeId", "data-v-3c285aad"]]);
+const ss = { class: "toolbar bg-gray-100 p-2 border-b flex items-center" },
+  rs = {
+    __name: "TextEditor",
+    props: { modelValue: String, shouldShowBackground: Boolean },
+    emits: ["update:modelValue"],
+    setup(t, { emit: o }) {
+      var C;
+      const s = t,
+        n = $(!1),
+        r = $(""),
+        d = $((C = s.modelValue) != null ? C : ""),
+        b = $(null),
+        x = $(0),
+        f = $("inherit"),
+        u = $("inherit"),
+        w = () => {
+          let a = "inline ";
+          n.value && (a += " font-bold"),
+            r.value === "left" && (a += " justify-start text-left"),
+            r.value === "center" && (a += " justify-center text-center"),
+            r.value === "right" && (a += " justify-end text-right"),
+            u.value !== "inherit" &&
+              u.value !== "#ffffff" &&
+              (a += ` bg-[${u.value}] items-center flex`);
+          const v = `font-size: ${16 + x.value}px; color: ${f.value}; `;
+          return (
+            console.log("style", v, a),
+            `<span id="toTeleport" class="${a}" style="${v}">${d.value}</span>`
+          );
+        };
+      z([d, r, n, x, f, u], (a) => {
+        k();
+        const v = w();
+        o("update:modelValue", v);
+      }),
+        z(
+          () => s.shouldShowBackground,
+          (a) => {
+            console.log(a, "inShowBackground"), a || (u.value = "inherit");
+          }
+        ),
+        z(u, (a) => {
+          ((u.value !== "inherit" &&
+            u.value !== "#ffffff" &&
+            (f.value === "inherit" || f.value === "#000000")) ||
+            (u.value !== "inherit" &&
+              u.value !== "#ffffff" &&
+              (f.value !== "inherit" || f.value !== "#000000"))) &&
+            (r.value = "center"),
+            (u.value === "inherit" || u.value === "#ffffff") &&
+              ((r.value = "left"),
+              f.value === "#ffffff" && (f.value = "inherit"));
+        });
+      const S = () => {
+          n.value = !n.value;
+        },
+        k = () => {
+          ce(() => {
+            (b.value.style.height = "auto"),
+              (b.value.style.height = b.value.scrollHeight + "px");
+          });
+        },
+        m = (a) => {
+          k(), (r.value = a);
+        },
+        h = () => {
+          k();
+        };
+      return (a, v) => (
+        i(),
+        c("div", null, [
+          e("div", ss, [
+            l(
+              Ao,
+              {
+                modelValue: x.value,
+                "onUpdate:modelValue": v[0] || (v[0] = (y) => (x.value = y)),
+              },
+              null,
+              8,
+              ["modelValue"]
+            ),
+            l(
+              os,
+              {
+                modelValue: f.value,
+                "onUpdate:modelValue": v[1] || (v[1] = (y) => (f.value = y)),
+              },
+              null,
+              8,
+              ["modelValue"]
+            ),
+            t.shouldShowBackground
+              ? (i(),
+                j(
+                  Ko,
+                  {
+                    key: 0,
+                    modelValue: u.value,
+                    "onUpdate:modelValue":
+                      v[2] || (v[2] = (y) => (u.value = y)),
+                  },
+                  null,
+                  8,
+                  ["modelValue"]
+                ))
+              : g("", !0),
+            e(
+              "button",
+              {
+                type: "button",
+                onClick: S,
+                class: F([{ "bg-gray-300": n.value }, "p-1 rounded mr-2"]),
+              },
+              [l(p(L), { icon: "fa-solid:bold", class: "w-5 h-5" })],
+              2
+            ),
+            e(
+              "button",
+              {
+                type: "button",
+                onClick: v[3] || (v[3] = (y) => m("left")),
+                class: F([
+                  { "bg-gray-300": r.value === "left" },
+                  "p-1 rounded mr-2",
+                ]),
+              },
+              [l(p(L), { icon: "fa-solid:align-left", class: "w-5 h-5" })],
+              2
+            ),
+            e(
+              "button",
+              {
+                type: "button",
+                onClick: v[4] || (v[4] = (y) => m("center")),
+                class: F([
+                  { "bg-gray-300": r.value === "center" },
+                  "p-1 rounded mr-2",
+                ]),
+              },
+              [l(p(L), { icon: "fa-solid:align-center", class: "w-5 h-5" })],
+              2
+            ),
+            e(
+              "button",
+              {
+                type: "button",
+                onClick: v[5] || (v[5] = (y) => m("right")),
+                class: F([
+                  { "bg-gray-300": r.value === "right" },
+                  "p-1 rounded mr-2",
+                ]),
+              },
+              [l(p(L), { icon: "fa-solid:align-right", class: "w-5 h-5" })],
+              2
+            ),
+          ]),
+          D(
+            e(
+              "textarea",
+              {
+                ref_key: "editor",
+                ref: b,
+                class: F([
+                  "overflow-y-hidden resize-none min-h-[200px] rounded focus:border-gray-700 focus:border-2 focus:outline-none focus:ring-gray-700 border-gray-600 mt-4 py-2 px-3 border w-full resize-none",
+                  {
+                    "font-bold": n.value,
+                    "justify-start text-left": r.value === "left",
+                    "justify-center text-center": r.value === "center",
+                    "justify-end text-right": r.value === "right",
+                    "items-center py-[87px]":
+                      u.value !== "inherit" && u.value !== "#ffffff",
+                  },
+                ]),
+                style: ee({
+                  fontSize: 16 + x.value + "px",
+                  color: f.value,
+                  backgroundColor: u.value,
+                }),
+                onPaste: h,
+                onInput: h,
+                "onUpdate:modelValue": v[6] || (v[6] = (y) => (d.value = y)),
+              },
+              null,
+              38
+            ),
+            [[U, d.value]]
+          ),
+        ])
+      );
+    },
+  },
+  ns = A(rs, [["__scopeId", "data-v-defa5373"]]);
+const ls = Re(Se, $e, ke, Ce, we, xe, be),
+  is = {
+    components: {
+      FilePond: ls,
+      Loader: pe,
+      TradesWithDialog: Ee,
+      InputLabel: Fe,
+      InputError: Ve,
+      TextEditor: ns,
+      SelectProfile: Ie,
+      CustomDialog: Pe,
+      Badge: Le,
+      MultiSelect: jo,
+    },
+    props: [
+      "form",
+      "isOpen",
+      "isEdit",
+      "id",
+      "success",
+      "shouldShowBackground",
+    ],
+    data() {
+      return {
+        myFiles: [],
+        options: Me,
+        isUploading: !1,
+        referenceList: $([]),
+        showBackroundColor: !0,
+        selectedReferal: $(""),
+        selectedItems: null,
+        selectAll: !1,
+        tradesPost: {
+          trade1: !1,
+          trade2: !1,
+          trade3: !1,
+          trade4: !1,
+          trade5: !1,
+          trade6: !1,
+          trade7: !1,
+          trade8: !1,
+          trade9: !1,
+          trade10: !1,
+          trade11: !1,
+          trade12: !1,
+          trade13: !1,
+          trade14: !1,
+          trade15: !1,
+          trade16: !1,
+          trade17: !1,
+          trade18: !1,
+          trade19: !1,
+          trade20: !1,
+          trade21: !1,
+          trade22: !1,
+          trade23: !1,
+          trade24: !1,
+          trade25: !1,
+          trade26: !1,
+          trade27: !1,
+          trade28: !1,
+          trade29: !1,
+          trade30: !1,
+        },
+      };
+    },
+    mounted() {
+      this.$store.dispatch("ratings/getRegions"),
+        this.$store.dispatch("ratings/getTrades", this.id);
+    },
+    computed: { ...ue("ratings", ["regions", "loading", "trades"]) },
+    watch: {
+      regions(t) {
+        if (t.length > 0) {
+          this.referenceList = this.regions.map((n) => n.name);
+          const o = this.regions.find((n) => n.id === +this.form.region_id),
+            s = o ? o.name : void 0;
+          this.selectedReferal = s;
+        }
+      },
+      shouldShowBackground(t, o) {
+        t && t !== o && (this.showBackroundColor = !0);
+      },
+      success(t) {
+        t &&
+          ((this.form.title = ""),
+          (this.form.body1 = ""),
+          (this.form.body2 = ""),
+          (this.myFiles = []),
+          (this.form.image = ""),
+          this.$store.dispatch("ratings/getTrades", this.id));
+      },
+      trades(t) {
+        for (let o in this.tradesPost) this.tradesPost[o] = !1;
+        t.forEach((o) => {
+          this.tradesPost.hasOwnProperty(o.name) &&
+            (this.tradesPost[o.name] = !0);
+        });
+      },
+      tradesPost: {
+        handler(t) {
+          this.form.trades = Object.entries(t)
+            .filter(([o, s]) => s)
+            .map(([o]) => parseInt(o.replace(/^trade/, ""), 10));
+        },
+        deep: !0,
+      },
+      selectedItems(t) {
+        this.form.trades = this.selectedItems
+          .map((o) => {
+            const s = o.id.match(/\d+$/);
+            return s ? parseInt(s[0], 10) : null;
+          })
+          .filter(Number.isInteger);
+      },
+    },
+    methods: {
+      toggleSwitch(t) {
+        if (t === "trade1") {
+          const o = !this.tradesPost.trade1;
+          for (let s = 1; s <= 24; s++) this.tradesPost["trade" + s] = o;
+        } else this.tradesPost[t] = !this.tradesPost[t];
+      },
+      handleFilePondProcessStart(t) {
+        console.log("started file"),
+          (this.showBackroundColor = !1),
+          (this.isUploading = !0);
+      },
+      handleFilePondProcessEnd(t, o) {
+        console.log("ended1");
+      },
+      handleFilePondError(t) {
+        console.log("ended2"),
+          (this.isUploading = !1),
+          (this.showBackroundColor = !0);
+      },
+      changeReferal(t) {
+        (this.selectedReferal = t),
+          this.regions.forEach((o) => {
+            t === o.name && (this.form.region_id = o.id.toString());
+          });
+      },
+      handleFilePondInit() {
+        console.log("Plugin initialized"), (this.myFiles = []);
+        let t = this.form.image ? this.form.image.split("|") : [];
+        for (let o = 0; o < t.length; o++)
+          this.myFiles.push({
+            source: "/" + t[o],
+            options: { type: "local", metadata: { poster: "/" + t[o] } },
+          });
+      },
+      addFormImage(t) {
+        let o = this.form.image ? this.form.image.split("|") : [];
+        o.push(t),
+          (this.form.image = o.join("|")),
+          console.log("addForm: ", this.form.image),
+          console.log("ended3");
+      },
+      removeFormImage(t) {
+        let o = this.form.image ? this.form.image.split("|") : [];
+        o.remove(t),
+          (this.form.image = o.join("|")),
+          console.log("removeForm: ", this.form.image);
+      },
+      handleFilePondLoad(t) {
+        return this.addFormImage(t), t;
+      },
+      handleFilePondRemove(t, o, s) {
+        console.log("file remove source: ", t),
+          this.removeFormImage(t.replace(/^\//, "")),
+          o();
+      },
+      handleFilePondRevert(t, o, s) {
+        this.removeFormImage(t),
+          me.post("/upload-post-revert", { image: t }),
+          o(),
+          console.log(this.form.image, "image"),
+          this.form.image || (this.showBackroundColor = !0);
+      },
+      openDialog() {
+        this.$refs.tradeDialogRef.openDialog();
+      },
+      handleSubmit() {
+        this.$refs.tradeDialogRef.closeDialog();
+      },
+      selectAllTrades() {
+        if (this.selectAll)
+          for (let t in this.tradesPost) this.tradesPost[t] = 0;
+        else for (let t in this.tradesPost) this.tradesPost[t] = 1;
+        this.selectAll = !this.selectAll;
+      },
+    },
+  };
+Array.prototype.remove = function () {
+  for (var t, o = arguments, s = o.length, n; s && this.length; )
+    for (t = o[--s]; (n = this.indexOf(t)) !== -1; ) this.splice(n, 1);
+  return this;
+};
+const B = (t) => (Z("data-v-44de1eec"), (t = t()), q(), t),
+  as = B(() =>
+    e(
+      "div",
+      { class: "w-full" },
+      [
+        e("span", { class: "mt-1 text-base" }, [
+          e("strong", null, "Hint:"),
+          W(" Select the Trade Groups you want your post tone displayed in. "),
+        ]),
+      ],
+      -1
+    )
+  ),
+  ds = { class: "mb-4 sm:mb-0 mt-4" },
+  cs = { class: "flex items-center gap-4 mt-4 mb-5" },
+  us = B(() =>
+    e(
+      "label",
+      { for: "select_all", class: "mr-4 text-gray-800 font-bold" },
+      "Select All",
+      -1
+    )
+  ),
+  ms = { class: "grid mt-8 gap-3" },
+  fs = ["for"],
+  gs = ["onClick"],
+  hs = {
+    class:
+      "fixed z-40 inset-0 overflow-y-auto ease-out duration-400 overscroll-contain",
+  },
+  ps = {
+    key: 0,
+    class:
+      "flex items-start justify-start min-h-screen mt-5 pt-4 px-1 pb-20 text-center sm:block sm:p-0",
+  },
+  vs = B(() =>
+    e("div", { class: "absolute inset-0 bg-gray-500 opacity-70" }, null, -1)
+  ),
+  ys = [vs],
+  _s = {
+    class:
+      "inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all w-full mx-2 sm:my-8 sm:align-middle sm:w-full md:max-w-2xl",
+    role: "dialog",
+    "aria-modal": "true",
+    "aria-labelledby": "modal-headline",
+  },
+  bs = { class: "bg-white px-4 pt-5 pb-4 sm:p-6" },
+  xs = { key: 0, class: "" },
+  ws = B(() =>
+    e(
+      "div",
+      {
+        class:
+          "flex justify-start items-center pb-2 space-x-2 text-blue-rgba font-bold text-xl md:text-3xl",
+      },
+      [
+        e("img", {
+          src: "/images/icons/post_b.png",
+          width: "25",
+          height: "25",
+        }),
+        e("p", { class: "" }, "Create Post"),
+      ],
+      -1
+    )
+  ),
+  Cs = { class: "mb-4" },
+  ks = B(() =>
+    e(
+      "label",
+      {
+        for: "formPostTitle",
+        class: "block text-gray-700 text-sm font-bold mb-2",
+      },
+      "Post Title: ",
+      -1
+    )
+  ),
+  $s = { key: 0, class: "text-red-500" },
+  Ss = { class: "mb-4 closing" },
+  Ps = B(() =>
+    e(
+      "label",
+      {
+        for: "formPostbody1",
+        class: "block text-gray-700 text-sm font-bold mb-2",
+      },
+      "Top text (required): ",
+      -1
+    )
+  ),
+  Ls = { key: 0, class: "text-red-500" },
+  Fs = { class: "mb-4" },
+  Vs = B(() =>
+    e(
+      "label",
+      {
+        for: "formPostImage",
+        class: "block text-gray-700 text-sm font-bold mb-2",
+      },
+      "Image (max 10): ",
+      -1
+    )
+  ),
+  Is = { class: "mb-4" },
+  Es = B(() =>
+    e(
+      "label",
+      {
+        for: "formPostbody2",
+        class: "block text-gray-700 text-sm font-bold mb-2",
+      },
+      "Bottom text (not required): ",
+      -1
+    )
+  ),
+  Ms = { key: 0, class: "text-red-500" },
+  Bs = { class: "mb-4 sm:mb-0" },
+  js = { class: "text-lg" },
+  Ds = { class: "mb-4 sm:mb-0 mt-1" },
+  zs = { class: "flex justify-between mb-2" },
+  Rs = B(() =>
+    e(
+      "div",
+      { class: "text-lg font-bold text-[#241e6d]" },
+      " Display in Trades Group ",
+      -1
+    )
+  ),
+  Ts = { class: "bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse" },
+  As = { class: "flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto" },
+  Os = ["disabled"],
+  Ns = { class: "flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto" },
+  Us = ["disabled"],
+  Zs = { class: "mt-3 flex w-full rounded-md shadow-sm sm:mt-0 sm:w-auto" },
+  qs = ["disabled"],
+  Gs = { class: "mt-3 flex w-full rounded-md shadow-sm sm:mt-0 sm:w-auto" };
+function Hs(t, o, s, n, r, d) {
+  const b = V("InputError"),
+    x = V("CustomDialog"),
+    f = V("Loader"),
+    u = V("TextEditor"),
+    w = V("file-pond"),
+    S = V("InputLabel"),
+    k = V("TradesWithDialog");
+  return (
+    i(),
+    c(
+      E,
+      null,
+      [
+        l(
+          x,
+          {
+            submitText: "Okay",
+            shouldFetchPost: !1,
+            onSubmit: d.handleSubmit,
+            showCancel: !1,
+            ref: "tradeDialogRef",
+            title: "Edit Trade Groups",
+          },
+          {
+            default: _(() => [
+              as,
+              e("div", ds, [
+                e("div", cs, [
+                  e(
+                    "div",
+                    {
+                      class: "switch-trades",
+                      onClick:
+                        o[0] ||
+                        (o[0] = (...m) =>
+                          d.selectAllTrades && d.selectAllTrades(...m)),
+                    },
+                    [
+                      e(
+                        "div",
+                        {
+                          class: F([
+                            r.selectAll
+                              ? "switch-bg-on-trades"
+                              : "switch-bg-off-trades",
+                          ]),
+                        },
+                        [
+                          e(
+                            "div",
+                            {
+                              class: F([
+                                r.selectAll
+                                  ? "switch-knob-on-trades"
+                                  : "switch-knob-off-trades",
+                              ]),
+                            },
+                            null,
+                            2
+                          ),
+                        ],
+                        2
+                      ),
+                    ]
+                  ),
+                  us,
+                ]),
+                e("div", ms, [
+                  (i(!0),
+                  c(
+                    E,
+                    null,
+                    T(
+                      r.options,
+                      (m, h) => (
+                        i(),
+                        c(
+                          "div",
+                          {
+                            key: h,
+                            class:
+                              "flex items-center justify-between sm:w-96 sm:ml-3 mb-5",
+                          },
+                          [
+                            e(
+                              "label",
+                              {
+                                for: m.id,
+                                class: "mr-4 max-sm:text-sm font-bold",
+                              },
+                              P(m.name),
+                              9,
+                              fs
+                            ),
+                            e(
+                              "div",
+                              {
+                                class: "switch",
+                                onClick: (C) => d.toggleSwitch(m.id),
+                              },
+                              [
+                                e(
+                                  "div",
+                                  {
+                                    class: F([
+                                      r.tradesPost[m.id]
+                                        ? "switch-bg-on"
+                                        : "switch-bg-off",
+                                    ]),
+                                  },
+                                  [
+                                    e(
+                                      "div",
+                                      {
+                                        class: F([
+                                          r.tradesPost[m.id]
+                                            ? "switch-knob-on"
+                                            : "switch-knob-off",
+                                        ]),
+                                      },
+                                      null,
+                                      2
+                                    ),
+                                  ],
+                                  2
+                                ),
+                              ],
+                              8,
+                              gs
+                            ),
+                          ]
+                        )
+                      )
+                    ),
+                    128
+                  )),
+                ]),
+                l(
+                  b,
+                  { class: "mt-2", message: t.$page.props.errors.trades },
+                  null,
+                  8,
+                  ["message"]
+                ),
+              ]),
+            ]),
+            _: 1,
+          },
+          8,
+          ["onSubmit"]
+        ),
+        e("div", hs, [
+          s.isOpen
+            ? (i(),
+              c("div", ps, [
+                e(
+                  "div",
+                  {
+                    class: "fixed inset-0 transition-opacity",
+                    onClick: o[1] || (o[1] = (m) => t.$emit("formclose")),
+                  },
+                  ys
+                ),
+                e("div", _s, [
+                  e("form", null, [
+                    e("div", bs, [
+                      l(
+                        f,
+                        { loading: t.loading, background: "", height: "30vh" },
+                        null,
+                        8,
+                        ["loading"]
+                      ),
+                      t.loading
+                        ? g("", !0)
+                        : (i(),
+                          c("div", xs, [
+                            ws,
+                            e("div", Cs, [
+                              ks,
+                              D(
+                                e(
+                                  "input",
+                                  {
+                                    type: "text",
+                                    "onUpdate:modelValue":
+                                      o[2] ||
+                                      (o[2] = (m) => (s.form.title = m)),
+                                    class:
+                                      "w-full py-2 px-3 shadow appearance-none text-gray-900 font-semibold border rounded border-gray-600 leading-tight focus:outline-none focus:shadow-outline placeholder:italic placeholder:text-slate-500",
+                                    id: "formPostTitle",
+                                    placeholder: "Post Title...",
+                                  },
+                                  null,
+                                  512
+                                ),
+                                [[U, s.form.title]]
+                              ),
+                              t.$page.props.errors.title
+                                ? (i(),
+                                  c(
+                                    "div",
+                                    $s,
+                                    P(t.$page.props.errors.title),
+                                    1
+                                  ))
+                                : g("", !0),
+                            ]),
+                            e("div", Ss, [
+                              Ps,
+                              l(
+                                u,
+                                {
+                                  modelValue: s.form.body1,
+                                  "onUpdate:modelValue":
+                                    o[3] || (o[3] = (m) => (s.form.body1 = m)),
+                                  shouldShowBackground: r.showBackroundColor,
+                                },
+                                null,
+                                8,
+                                ["modelValue", "shouldShowBackground"]
+                              ),
+                              t.$page.props.errors.body1
+                                ? (i(),
+                                  c(
+                                    "div",
+                                    Ls,
+                                    P(t.$page.props.errors.body1),
+                                    1
+                                  ))
+                                : g("", !0),
+                            ]),
+                            e("div", Fs, [
+                              Vs,
+                              l(
+                                w,
+                                {
+                                  name: "imageFilepond",
+                                  ref: "pond",
+                                  allowImageExifOrientation: "true",
+                                  "allow-multiple": !0,
+                                  "accepted-file-types": `image/png,
                                             image/jpeg,
                                             image/gif,
                                             image/bmp,
                                             image/svg,
                                             video/mp4,
-                                            video/mov`,allowFileSizeValidation:"true",maxFileSize:"25MB",labelMaxTotalFileSizeExceeded:"Maximum Size Is 25MB",allowImageResize:"true",imageResizeMode:"contain",imageResizeTargetWidth:"1000",imageResizeTargetHeight:"2000",imageResizeUpscale:"true",maxFiles:"10",allowReorder:"true",credits:"false",server:{url:"",timeout:7e3,process:{url:"/upload-post",method:"POST",headers:{"X-CSRF-TOKEN":t.$page.props.csrf_token},withCredentials:!1,onload:d.handleFilePondLoad,onerror:d.handleFilePondError},remove:d.handleFilePondRemove,revert:d.handleFilePondRevert},files:r.myFiles,onInit:d.handleFilePondInit,onProcessfiles:o[4]||(o[4]=()=>{console.log("myFiles uploaded successfully"),r.isUploading=!1}),onError:o[5]||(o[5]=m=>r.isUploading=!1),onAddfilestart:d.handleFilePondProcessStart,onProcessfilestart:o[6]||(o[6]=()=>{console.log("myFiles started successfully")}),onAddfile:d.handleFilePondProcessEnd,onProcessfileabort:d.handleFilePondError,onRemovefile:d.handleFilePondProcessEnd,onProcessfilerevert:d.handleFilePondProcessEnd},null,8,["server","files","onInit","onAddfilestart","onAddfile","onProcessfileabort","onRemovefile","onProcessfilerevert"])]),e("div",Is,[Es,D(e("textarea",{"onUpdate:modelValue":o[7]||(o[7]=m=>s.form.body2=m),class:"w-full py-2 px-3 shadow appearance-none text-gray-900 font-semibold border rounded border-gray-600 leading-tight focus:outline-none focus:shadow-outline placeholder:italic placeholder:text-slate-500",rows:"3",id:"formPostbody2",placeholder:"Bottom text..."},`
-                `,512),[[U,s.form.body2]]),t.$page.props.errors.body2?(i(),c("div",Ms,P(t.$page.props.errors.body2),1)):g("",!0)]),e("div",Bs,[l(S,{class:"font-bold mb-1 mt-1",value:"Region"}),e("div",js,P(r.selectedReferal),1),l(b,{class:"mt-2",message:t.$page.props.errors.region_id},null,8,["message"])]),e("div",Ds,[e("div",zs,[Rs,e("div",{onClick:o[8]||(o[8]=(...m)=>d.openDialog&&d.openDialog(...m)),class:"cursor-pointer text-base font-bold self-center text-[#241e6d]"}," Edit ")]),l(k,{modelValue:r.tradesPost,"onUpdate:modelValue":o[9]||(o[9]=m=>r.tradesPost=m)},null,8,["modelValue"])])]))]),e("div",Ts,[e("span",As,[D(e("button",{type:"button",onClick:o[10]||(o[10]=m=>t.$emit("formsave",s.form)),disabled:r.isUploading,class:F(`inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-green-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5 ${r.isUploading?"disabled":""}`)}," Save Post ",10,Os),[[oe,!s.isEdit]])]),e("span",Ns,[D(e("button",{type:"button",disabled:r.isUploading,onClick:o[11]||(o[11]=m=>t.$emit("formsave",s.form)),class:"inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-green-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-green-500 focus:outline-none f ocus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5"}," Update Post ",8,Us),[[oe,s.isEdit]])]),e("span",Zs,[s.isEdit?g("",!0):(i(),c("button",{key:0,type:"button",disabled:r.isUploading,onClick:o[12]||(o[12]=m=>t.$emit("formclose")),class:"inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5"}," Cancel ",8,qs))]),e("span",Gs,[s.isEdit?(i(),c("button",{key:0,type:"button",onClick:o[13]||(o[13]=m=>t.$emit("formEditClose",s.form)),class:"inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5"}," Edit Cancel ")):g("",!0)])])])])])):g("",!0)])],64)}const xr=A(is,[["render",Hs],["__scopeId","data-v-44de1eec"]]);export{xr as P,Re as V,_r as _,br as a};
+                                            video/mov`,
+                                  allowFileSizeValidation: "true",
+                                  maxFileSize: "25MB",
+                                  labelMaxTotalFileSizeExceeded:
+                                    "Maximum Size Is 25MB",
+                                  allowImageResize: "true",
+                                  imageResizeMode: "contain",
+                                  imageResizeTargetWidth: "1000",
+                                  imageResizeTargetHeight: "2000",
+                                  imageResizeUpscale: "true",
+                                  maxFiles: "10",
+                                  allowReorder: "true",
+                                  credits: "false",
+                                  server: {
+                                    url: "",
+                                    timeout: 7e3,
+                                    process: {
+                                      url: "/upload-post",
+                                      method: "POST",
+                                      headers: {
+                                        "X-CSRF-TOKEN":
+                                          t.$page.props.csrf_token,
+                                      },
+                                      withCredentials: !1,
+                                      onload: d.handleFilePondLoad,
+                                      onerror: d.handleFilePondError,
+                                    },
+                                    remove: d.handleFilePondRemove,
+                                    revert: d.handleFilePondRevert,
+                                  },
+                                  files: r.myFiles,
+                                  onInit: d.handleFilePondInit,
+                                  onProcessfiles:
+                                    o[4] ||
+                                    (o[4] = () => {
+                                      console.log(
+                                        "myFiles uploaded successfully"
+                                      ),
+                                        (r.isUploading = !1);
+                                    }),
+                                  onError:
+                                    o[5] ||
+                                    (o[5] = (m) => (r.isUploading = !1)),
+                                  onAddfilestart: d.handleFilePondProcessStart,
+                                  onProcessfilestart:
+                                    o[6] ||
+                                    (o[6] = () => {
+                                      console.log(
+                                        "myFiles started successfully"
+                                      );
+                                    }),
+                                  onAddfile: d.handleFilePondProcessEnd,
+                                  onProcessfileabort: d.handleFilePondError,
+                                  onRemovefile: d.handleFilePondProcessEnd,
+                                  onProcessfilerevert:
+                                    d.handleFilePondProcessEnd,
+                                },
+                                null,
+                                8,
+                                [
+                                  "server",
+                                  "files",
+                                  "onInit",
+                                  "onAddfilestart",
+                                  "onAddfile",
+                                  "onProcessfileabort",
+                                  "onRemovefile",
+                                  "onProcessfilerevert",
+                                ]
+                              ),
+                            ]),
+                            e("div", Is, [
+                              Es,
+                              D(
+                                e(
+                                  "textarea",
+                                  {
+                                    "onUpdate:modelValue":
+                                      o[7] ||
+                                      (o[7] = (m) => (s.form.body2 = m)),
+                                    class:
+                                      "w-full py-2 px-3 shadow appearance-none text-gray-900 font-semibold border rounded border-gray-600 leading-tight focus:outline-none focus:shadow-outline placeholder:italic placeholder:text-slate-500",
+                                    rows: "3",
+                                    id: "formPostbody2",
+                                    placeholder: "Bottom text...",
+                                  },
+                                  `
+                `,
+                                  512
+                                ),
+                                [[U, s.form.body2]]
+                              ),
+                              t.$page.props.errors.body2
+                                ? (i(),
+                                  c(
+                                    "div",
+                                    Ms,
+                                    P(t.$page.props.errors.body2),
+                                    1
+                                  ))
+                                : g("", !0),
+                            ]),
+                            e("div", Bs, [
+                              l(S, {
+                                class: "font-bold mb-1 mt-1",
+                                value: "Region",
+                              }),
+                              e("div", js, P(r.selectedReferal), 1),
+                              l(
+                                b,
+                                {
+                                  class: "mt-2",
+                                  message: t.$page.props.errors.region_id,
+                                },
+                                null,
+                                8,
+                                ["message"]
+                              ),
+                            ]),
+                            e("div", Ds, [
+                              e("div", zs, [
+                                Rs,
+                                e(
+                                  "div",
+                                  {
+                                    onClick:
+                                      o[8] ||
+                                      (o[8] = (...m) =>
+                                        d.openDialog && d.openDialog(...m)),
+                                    class:
+                                      "cursor-pointer text-base font-bold self-center text-[#241e6d]",
+                                  },
+                                  " Edit "
+                                ),
+                              ]),
+                              l(
+                                k,
+                                {
+                                  modelValue: r.tradesPost,
+                                  "onUpdate:modelValue":
+                                    o[9] || (o[9] = (m) => (r.tradesPost = m)),
+                                },
+                                null,
+                                8,
+                                ["modelValue"]
+                              ),
+                            ]),
+                          ])),
+                    ]),
+                    e("div", Ts, [
+                      e("span", As, [
+                        D(
+                          e(
+                            "button",
+                            {
+                              type: "button",
+                              onClick:
+                                o[10] ||
+                                (o[10] = (m) => t.$emit("formsave", s.form)),
+                              disabled: r.isUploading,
+                              class: F(
+                                `inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-green-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5 ${
+                                  r.isUploading ? "disabled" : ""
+                                }`
+                              ),
+                            },
+                            " Save Post ",
+                            10,
+                            Os
+                          ),
+                          [[oe, !s.isEdit]]
+                        ),
+                      ]),
+                      e("span", Ns, [
+                        D(
+                          e(
+                            "button",
+                            {
+                              type: "button",
+                              disabled: r.isUploading,
+                              onClick:
+                                o[11] ||
+                                (o[11] = (m) => t.$emit("formsave", s.form)),
+                              class:
+                                "inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-green-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-green-500 focus:outline-none f ocus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5",
+                            },
+                            " Update Post ",
+                            8,
+                            Us
+                          ),
+                          [[oe, s.isEdit]]
+                        ),
+                      ]),
+                      e("span", Zs, [
+                        s.isEdit
+                          ? g("", !0)
+                          : (i(),
+                            c(
+                              "button",
+                              {
+                                key: 0,
+                                type: "button",
+                                disabled: r.isUploading,
+                                onClick:
+                                  o[12] ||
+                                  (o[12] = (m) => t.$emit("formclose")),
+                                class:
+                                  "inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5",
+                              },
+                              " Cancel ",
+                              8,
+                              qs
+                            )),
+                      ]),
+                      e("span", Gs, [
+                        s.isEdit
+                          ? (i(),
+                            c(
+                              "button",
+                              {
+                                key: 0,
+                                type: "button",
+                                onClick:
+                                  o[13] ||
+                                  (o[13] = (m) =>
+                                    t.$emit("formEditClose", s.form)),
+                                class:
+                                  "inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5",
+                              },
+                              " Edit Cancel "
+                            ))
+                          : g("", !0),
+                      ]),
+                    ]),
+                  ]),
+                ]),
+              ]))
+            : g("", !0),
+        ]),
+      ],
+      64
+    )
+  );
+}
+const xr = A(is, [
+  ["render", Hs],
+  ["__scopeId", "data-v-44de1eec"],
+]);
+export { xr as P, Re as V, _r as _, br as a };

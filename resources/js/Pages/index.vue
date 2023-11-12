@@ -270,11 +270,46 @@ const formatPrice = (price) => {
                 v-if="showit"
                 :href="
                   profile && profile.is_payment_verified && profile.active_user
-                    ? '/ratings/contractor '
+                    ? 'sub-finder'
                     : '/profile-setup'
                 "
+                class="font-bold"
               >
-                My Ratings
+                Sub Finder
+              </ResponsiveNavLink>
+              <ResponsiveNavLink
+                v-if="showit"
+                :href="
+                  profile && profile.is_payment_verified && profile.active_user
+                    ? route('post')
+                    : '/profile-setup'
+                "
+                class="font-bold"
+              >
+                Red Flags
+              </ResponsiveNavLink>
+
+              <ResponsiveNavLink
+                v-if="showit"
+                :href="
+                  profile && profile.is_payment_verified && profile.active_user
+                    ? route('post')
+                    : '/profile-setup'
+                "
+                class="font-bold"
+              >
+                Mentoring
+              </ResponsiveNavLink>
+              <ResponsiveNavLink
+                v-if="showit"
+                :href="
+                  profile && profile.is_payment_verified && profile.active_user
+                    ? `/contractor/${profile.user_id}/edit`
+                    : '/profile-setup'
+                "
+                class="font-bold"
+              >
+                Contractor page
               </ResponsiveNavLink>
             </div>
             <!-- Responsive Settings Options -->
@@ -283,18 +318,46 @@ const formatPrice = (price) => {
                 <ResponsiveNavLink
                   v-if="showit"
                   :href="
-                    profile && profile.is_payment_verified && profile.active_user
+                    profile &&
+                    profile.is_payment_verified &&
+                    profile.active_user
+                      ? `/posts/${profile.user_id}`
+                      : '/profile-setup'
+                  "
+                >
+                  My Posts
+                </ResponsiveNavLink>
+                <ResponsiveNavLink
+                  v-if="showit"
+                  :href="
+                    profile &&
+                    profile.is_payment_verified &&
+                    profile.active_user
+                      ? '/ratings/contractor '
+                      : '/profile-setup'
+                  "
+                >
+                  My Ratings
+                </ResponsiveNavLink>
+                <ResponsiveNavLink
+                  v-if="showit"
+                  :href="
+                    profile &&
+                    profile.is_payment_verified &&
+                    profile.active_user
                       ? '/profile'
                       : '/profile-setup'
                   "
                 >
-                  Profile
+                  My Profile
                 </ResponsiveNavLink>
 
                 <ResponsiveNavLink
                   v-if="showit"
                   :href="
-                    profile && profile.is_payment_verified && profile.active_user
+                    profile &&
+                    profile.is_payment_verified &&
+                    profile.active_user
                       ? '/settings'
                       : '/profile-setup'
                   "
@@ -416,7 +479,9 @@ const formatPrice = (price) => {
           <Link
             class="group flex items-center justify-between rounded-xl border border-red-500 bg-red-500 px-5 py-3 mt-8 transition-colors hover:bg-red-800 focus:outline-none focus:ring"
             :href="
-              showit && profile && (profile.is_payment_verified === 0 || profile.active_user === 0)
+              showit &&
+              profile &&
+              (profile.is_payment_verified === 0 || profile.active_user === 0)
                 ? '/profile-setup'
                 : route('signup')
             "
@@ -603,7 +668,13 @@ const formatPrice = (price) => {
                 <span class="pt-10">$</span>
               </div>
               <div class="price text-white">
-                <span>{{ formatPrice(pricingPlan.advertised_price ? pricingPlan.advertised_price : 0) }}</span>
+                <span>{{
+                  formatPrice(
+                    pricingPlan.advertised_price
+                      ? pricingPlan.advertised_price
+                      : 0
+                  )
+                }}</span>
               </div>
               <div
                 class="flex text-xl justify-end items-end italic text-blue-rgba pb-10"
@@ -615,7 +686,10 @@ const formatPrice = (price) => {
             <div class="flex justify-center items-end">
               <Link
                 :href="
-                  showit && profile && (profile.is_payment_verified === 0 || profile.active_user === 0)
+                  showit &&
+                  profile &&
+                  (profile.is_payment_verified === 0 ||
+                    profile.active_user === 0)
                     ? '/profile-setup'
                     : route('signup')
                 "
@@ -642,6 +716,11 @@ const formatPrice = (price) => {
                             This one for mobile
                             (we are using flex-col-reverse - we put
                             it first for last place postioning)-->
+          <div
+            class="mx-auto text-xs mb-6 text-center first-letter: text-white md:hidden"
+          >
+            0012311051855
+          </div>
           <div
             class="mx-auto my-6 text-center first-letter: text-white md:hidden"
           >
@@ -704,7 +783,9 @@ const formatPrice = (price) => {
             <Link
               class="group flex items-center justify-between rounded-xl border border-red-500 bg-red-500 px-5 py-3 mt-8 transition-colors hover:bg-red-800 focus:outline-none focus:ring"
               :href="
-                showit && profile && (profile.is_payment_verified === 0 || profile.active_user === 0)
+                showit &&
+                profile &&
+                (profile.is_payment_verified === 0 || profile.active_user === 0)
                   ? '/profile-setup'
                   : route('signup')
               "
@@ -774,9 +855,14 @@ const formatPrice = (price) => {
                             on screen size on Mobile its under
                             logo above-->
           <div
-            class="hidden text-white md:block mx-auto my-6 text-center first-letter:"
+            class="hidden text-white md:block mx-auto mt-6 text-center first-letter:"
           >
             Copyright &copy; 2024, All Rights Reserved
+          </div>
+          <div
+            class="hidden text-xs text-white md:block my-2 text-center first-letter:"
+          >
+            0012311051855
           </div>
         </div>
       </div>

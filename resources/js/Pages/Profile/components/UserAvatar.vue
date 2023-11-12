@@ -31,7 +31,7 @@ const updateImage = () => {
   disabled.value = true;
   const input = document.createElement("input");
   input.type = "file";
-  input.accept = "image/*";
+  input.accept = "image/jpeg, image/png, image/gif, image/jpg";
   input.addEventListener("change", (event) => {
     file.value = event.target.files[0];
     const reader = new FileReader();

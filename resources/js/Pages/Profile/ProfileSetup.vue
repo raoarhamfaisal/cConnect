@@ -33,6 +33,7 @@ onMounted(async () => {
   <Header
     :profile="profile"
     :show-post-buttons="false"
+    :showOnlyNewsFeed="false"
     :post-search-filters="postSearchFilters"
     :showit="showit"
   >

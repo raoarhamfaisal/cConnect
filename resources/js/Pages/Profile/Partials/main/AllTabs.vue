@@ -28,6 +28,7 @@ const props = defineProps({
     type: Boolean,
   },
 });
+
 const store = useStore();
 const tabNames = ["General Info", "Trades", "views"];
 const form = reactive({
@@ -240,6 +241,7 @@ const submitDetails = async () => {
           <div v-if="activeTab === 0">
             <GeneralInfo
               v-model:form="form"
+              :email="profile.email"
               mode="profile"
               :user_avatar="profile.user_avatar"
               :errors="errors"

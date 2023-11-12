@@ -93,11 +93,14 @@ const toggleSwitch = async (field) => {
 const selectAllTrades = async () => {
   if (selectAll.value) {
     // If selectAll is true, set all properties in form to 1
+    selectAll.value = !selectAll.value;
     for (let key in form) {
       form[key] = 0;
     }
   } else {
     // If selectAll is false, set all properties in form to 0
+    selectAll.value = !selectAll.value;
+
     for (let key in form) {
       form[key] = 1;
     }
@@ -121,7 +124,6 @@ const selectAllTrades = async () => {
     await store.dispatch("profile/updateViewSettingsTrades", form);
   }
   // Toggle the value of selectAll
-  selectAll.value = !selectAll.value;
 };
 
 // for more and less

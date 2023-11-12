@@ -26,6 +26,7 @@ const props = defineProps({
 
 const store = useStore();
 const dialogRef = ref();
+const url = usePage().url.value;
 
 const emit = defineEmits([
   "NavigationDropdown",
@@ -103,7 +104,14 @@ const truncatedName = computed(() => {
         </div>
 
         <!-- HAMBURGER MENU OPTIONS -->
-        <div class="pt-1 pb-3 space-y-2">
+        <div
+          class="pt-1 pb-3 space-y-2"
+          :class="
+            url === '/payment' || url === '/profile-setup'
+              ? 'pointer-events-none'
+              : ''
+          "
+        >
           <!-- DropDown: SEARCH POSTS -->
           <div class="relative mt-1">
             <form>
@@ -208,7 +216,7 @@ const truncatedName = computed(() => {
             class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
           >
             <img src="/images/icons/news_view.png" width="20" height="20" />
-            <span class="mx-4 font-medium">View Settings</span>
+            <span class="mx-4 font-medium">View</span>
           </button>
           <Link
             :href="`/posts/${profile.user_id}`"
@@ -310,7 +318,7 @@ const truncatedName = computed(() => {
           <!-- DropDown: Contact Us -->
           <Link
             href="/about-us#contactUs"
-            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
+            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700 pointer-events-auto"
           >
             <img src="/images/icons/contactus.png" width="20" height="20" />
             <span class="mx-4 font-medium">Contact Us</span>
@@ -336,7 +344,7 @@ const truncatedName = computed(() => {
           <!-- DropDown: LOGOUT -->
           <button
             @click="handleLogout"
-            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 pointer-events-auto"
           >
             <img src="/images/icons/logout_bl.png" width="20" height="20" />
             <span class="mx-4 font-medium">Log Out</span>

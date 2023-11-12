@@ -145,7 +145,7 @@
                 :href="route('post')"
                 :active="route().current('post')"
               >
-                View Settings
+                View
               </ResponsiveNavLink>
               <ResponsiveNavLink href="/about-us#contactUs">
                 Contact Us
