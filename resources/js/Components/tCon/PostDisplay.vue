@@ -91,8 +91,8 @@ export default {
       profileId: usePageDeatails.profile.id,
       showFullTextBody1: false,
       showFullTextBody2: false,
-      truncatedLength: this.$store.state.screenWidth > 769 ? 400 : 260,
-      truncatedLengthBody2: this.$store.state.screenWidth > 769 ? 300 : 200,
+      truncatedLength: this.$store.state.screenWidth > 769 ? 300 : 150,
+      truncatedLengthBody2: this.$store.state.screenWidth > 769 ? 200 : 120,
     };
   },
 
@@ -121,7 +121,7 @@ export default {
       let bgClassMatch = className.match(/bg-\[#([a-zA-Z0-9]+)\]/);
 
       if (bgClassMatch) {
-        this.post.body1 = this.post.body1.replace(bgClassMatch[0], ""); // Remove the bg-[#...] class from post.body1
+        // this.post.body1 = this.post.body1.replace(bgClassMatch[0], ""); // Remove the bg-[#...] class from post.body1
         this.customBgColor = "#" + bgClassMatch[1]; // Set the custom background color (with '#')
       }
 
@@ -225,7 +225,7 @@ export default {
       const urlRegex = /(https?:\/\/[^<\s]+|www\.[^<\s]+)/g;
       return body?.replace(urlRegex, function (url) {
         let actualUrl = url.startsWith("http") ? url : "http://" + url;
-        return `<a @click.self="()=>{}" href="${actualUrl}" target="_blank">${url}</a>`;
+        return `<a @click.self.stop="()=>{}" href="${actualUrl}" target="_blank">${url}</a>`;
       });
     },
     toggleText() {
@@ -411,18 +411,18 @@ export default {
           ? ' flex-col w-full items-center  px-2 py-32 rounded-md shadow-lg border-2'
           : ''
       } `"
+      @click="$emit('enlarge-post', post)"
       class=""
       :style="{ backgroundColor: customBgColor }"
     >
       <span
         v-show="post.body1"
-        @click="$emit('enlarge-post', post)"
         v-html="displayedBody1"
         class="w-full processed-body inline"
       ></span>
       <span
-        v-if="!showFullTextBody1 && post.body1.length > truncatedLength"
-        @click="toggleText"
+        v-if="!showFullTextBody1 && post.body1?.length > truncatedLength"
+        @click.self.stop="toggleText"
         :class="`cursor-pointer ${
           customBgColor.startsWith('#') ? 'text-sky-400' : 'text-sky-700'
         }`"
@@ -430,8 +430,8 @@ export default {
         ...more
       </span>
       <span
-        v-if="showFullTextBody1 && post.body1.length > truncatedLength"
-        @click="toggleText"
+        v-if="showFullTextBody1 && post.body1?.length > truncatedLength"
+        @click.self.stop="toggleText"
         :class="`cursor-pointer ${
           customBgColor.startsWith('#') ? 'text-sky-400' : 'text-sky-700'
         }`"
@@ -477,12 +477,12 @@ export default {
     >
       {{ post.body2 }}
     </div> -->
-    <div class="">
+    <div class="mb-3 mt-3">
       <div
         v-show="post.body2"
         v-html="displayedBody2"
-        @click.self="$emit('enlarge-post', post)"
-        class="processed-body inline justify-center items-center w-full mt-0 mb-0 text-base xs:text-lg md:text-xl font-normal text-gray-900"
+        @click="$emit('enlarge-post', post)"
+        class="processed-body inline justify-center items-center w-full text-base xs:text-lg md:text-xl font-normal text-gray-900"
       ></div>
       <span
         v-if="!showFullTextBody2 && post.body2?.length > truncatedLengthBody2"
@@ -492,7 +492,7 @@ export default {
         ...more
       </span>
       <span
-        v-if="showFullTextBody2 && post.body2.length > truncatedLengthBody2"
+        v-if="showFullTextBody2 && post.body2?.length > truncatedLengthBody2"
         @click="toggleTextBody2"
         class="cursor-pointer text-sky-700"
       >

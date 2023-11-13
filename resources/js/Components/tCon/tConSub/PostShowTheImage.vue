@@ -138,6 +138,7 @@ const onImageLoad = () => {
         :src="image_path(props.image)"
         alt=""
       />
+
       <img
         v-else
         class="w-full h-full object-fill object-center rounded-lg"
