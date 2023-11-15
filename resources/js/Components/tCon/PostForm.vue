@@ -517,7 +517,7 @@ Array.prototype.remove = function () {
                 <label
                   for="formPostImage"
                   class="block text-gray-700 text-sm font-bold mb-2"
-                  >Image (max 10):
+                  >Image (max 15):
                 </label>
 
                 <file-pond
