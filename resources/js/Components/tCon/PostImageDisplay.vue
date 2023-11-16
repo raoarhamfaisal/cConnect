@@ -93,12 +93,6 @@ watch(
       await checkAllImagesPortrait(props.imageArray.slice(0, 2));
       console.log(props.imageArray.slice(0, 2), "first2");
     }
-
-    // const heights = await Promise.all(
-    //   newImageArray.map((src) => getNaturalHeight(image_path(src)))
-    // );
-    // smallestHeight.value = Math.min(...heights);
-    // console.log(heights, "below");
   },
   { immediate: true }
 );

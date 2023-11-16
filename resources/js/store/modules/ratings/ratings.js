@@ -209,6 +209,32 @@ export default {
         commit("setDisabled", false);
       }
     },
+    async createResponseWithoutUpdateResponse({ commit }, payload) {
+      commit("setLoading", true);
+      commit("setDisabled", true);
+
+      console.log("payload.responseData", payload.responseData);
+
+      try {
+        const response = await axios.post(
+          `/api/review-responses`,
+          payload.responseData,
+          getAxiosConfig()
+        );
+        if (response.data) {
+          if (!payload.dontShowSuccessSnack) {
+            changesSaved(
+              response.data.message || "Review response added successfully!"
+            );
+          }
+        }
+      } catch (err) {
+        somethingWentWrong();
+      } finally {
+        commit("setLoading", false);
+        commit("setDisabled", false);
+      }
+    },
     async updateReview({ commit }, payload) {
       commit("setLoadingSending", true);
       commit("setDisabledSending", true);
