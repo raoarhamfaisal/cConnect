@@ -46,7 +46,7 @@
             : 0
         "
         :coupon="coupon"
-        :couponDiscount="monthlyDiscount"
+        :couponDiscount="monthlyDiscount ? monthlyDiscount.toFixed(2) : 0.0"
         :salesTax="pricingPlan.sales_tax ? pricingPlan.sales_tax : 0"
         :total="monthlyTotal ? parseFloat(monthlyTotal).toFixed(2) : 0"
         @selectedPricing="selectedPricing"
@@ -55,7 +55,7 @@
       <PricingCard
         plan="ANNUAL"
         :coupon="coupon"
-        :couponDiscount="annualDiscount"
+        :couponDiscount="annualDiscount ? annualDiscount.toFixed(2) : 0.0"
         :monthlyPrice="
           pricingPlan.billed_annual_price ? pricingPlan.billed_annual_price : 0
         "
@@ -91,12 +91,6 @@ const coupon = ref({});
 const form = reactive({
   coupon_code: "",
 });
-
-const selectedPricing = (plan) => {
-  console.log(plan, "plan");
-  localStorage.setItem("selectedPlan", plan);
-  Inertia.visit("/payment");
-};
 
 onMounted(() => {
   fetchPricingCardDetails();
@@ -210,6 +204,21 @@ const fetchPricingCardDetails = async () => {
   } finally {
     loading.value = false;
   }
+};
+
+const selectedPricing = (plan) => {
+  console.log(plan, "plan");
+  localStorage.setItem("selectedPlan", plan);
+  let couponData = coupon.value;
+  localStorage.setItem("coupon", JSON.stringify(couponData));
+  let totalData = {
+    monthlyTotal: monthlyTotal.value,
+    annualTotal: annualTotal.value,
+  };
+
+  // Serialize the object into a string and store it
+  localStorage.setItem("total", JSON.stringify(totalData));
+  Inertia.visit("/payment");
 };
 
 let saveTimeout = null;
