@@ -129,7 +129,6 @@ class PaymentController extends Controller
         } else {
             // 4. Handle failed payments
             $this->handleFailedPayment($userId, $subscriptionResponse);
-            dd($subscriptionResponse);
 
             // echo "ERROR :  Invalid subscriptionResponse\n";
             $errorMessages = $subscriptionResponse->getMessages()->getMessage();
