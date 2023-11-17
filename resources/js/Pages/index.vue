@@ -172,8 +172,10 @@ const formatPrice = (price) => {
               <Link
                 :href="
                   profile && profile.is_payment_verified && profile.active_user
-                    ? route('post')
-                    : '/profile-setup'
+                  ? route('post')
+                  : profile && !profile.is_payment_verified
+                  ? '/profile-setup'
+                  : '/inactive-account'
                 "
                 class="block flex justify-center items-center mx-2 py-2 sm:py-3 px-3 sm:px-6 font-bold rounded-lg sm:rounded-xl text-white bg-green-600 hover:bg-green-800 border-green-600"
               >
@@ -259,8 +261,10 @@ const formatPrice = (price) => {
                 v-if="showit"
                 :href="
                   profile && profile.is_payment_verified && profile.active_user
-                    ? route('post')
-                    : '/profile-setup'
+                  ? route('post')
+                  : profile && !profile.is_payment_verified
+                  ? '/profile-setup'
+                  : '/inactive-account'
                 "
                 class="font-bold"
               >
@@ -270,8 +274,10 @@ const formatPrice = (price) => {
                 v-if="showit"
                 :href="
                   profile && profile.is_payment_verified && profile.active_user
-                    ? 'sub-finder'
-                    : '/profile-setup'
+                  ? 'sub-finder'
+                  : profile && !profile.is_payment_verified
+                  ? '/profile-setup'
+                  : '/inactive-account'
                 "
                 class="font-bold"
               >
@@ -281,8 +287,10 @@ const formatPrice = (price) => {
                 v-if="showit"
                 :href="
                   profile && profile.is_payment_verified && profile.active_user
-                    ? route('post')
-                    : '/profile-setup'
+                  ? route('post')
+                  : profile && !profile.is_payment_verified
+                  ? '/profile-setup'
+                  : '/inactive-account'
                 "
                 class="font-bold"
               >
@@ -293,8 +301,10 @@ const formatPrice = (price) => {
                 v-if="showit"
                 :href="
                   profile && profile.is_payment_verified && profile.active_user
-                    ? route('post')
-                    : '/profile-setup'
+                  ? route('post')
+                  : profile && !profile.is_payment_verified
+                  ? '/profile-setup'
+                  : '/inactive-account'
                 "
                 class="font-bold"
               >
@@ -304,8 +314,10 @@ const formatPrice = (price) => {
                 v-if="showit"
                 :href="
                   profile && profile.is_payment_verified && profile.active_user
-                    ? `/contractor/${profile.user_id}/edit`
-                    : '/profile-setup'
+                  ? `/contractor/${profile.user_id}/edit`
+                  : profile && !profile.is_payment_verified
+                  ? '/profile-setup'
+                  : '/inactive-account'
                 "
                 class="font-bold"
               >
@@ -321,8 +333,10 @@ const formatPrice = (price) => {
                     profile &&
                     profile.is_payment_verified &&
                     profile.active_user
-                      ? `/posts/${profile.user_id}`
-                      : '/profile-setup'
+                    ? `/posts/${profile.user_id}`
+                    : profile && !profile.is_payment_verified
+                    ? '/profile-setup'
+                    : '/inactive-account'
                   "
                 >
                   My Posts
@@ -333,8 +347,10 @@ const formatPrice = (price) => {
                     profile &&
                     profile.is_payment_verified &&
                     profile.active_user
-                      ? '/ratings/contractor '
-                      : '/profile-setup'
+                    ? '/ratings/contractor '
+                    : profile && !profile.is_payment_verified
+                    ? '/profile-setup'
+                    : '/inactive-account'
                   "
                 >
                   My Ratings
@@ -345,8 +361,10 @@ const formatPrice = (price) => {
                     profile &&
                     profile.is_payment_verified &&
                     profile.active_user
-                      ? '/profile'
-                      : '/profile-setup'
+                    ? '/profile'
+                    : profile && !profile.is_payment_verified
+                    ? '/profile-setup'
+                    : '/inactive-account'
                   "
                 >
                   My Profile
@@ -358,8 +376,10 @@ const formatPrice = (price) => {
                     profile &&
                     profile.is_payment_verified &&
                     profile.active_user
-                      ? '/settings'
-                      : '/profile-setup'
+                    ? '/settings'
+                    : profile && !profile.is_payment_verified
+                    ? '/profile-setup'
+                    : '/inactive-account'
                   "
                 >
                   Settings
@@ -482,7 +502,7 @@ const formatPrice = (price) => {
               showit &&
               profile &&
               (profile.is_payment_verified === 0 || profile.active_user === 0)
-                ? '/profile-setup'
+                ? (profile.is_payment_verified === 0 ? '/profile-setup' : '/inactive-account')
                 : route('signup')
             "
           >
@@ -690,7 +710,7 @@ const formatPrice = (price) => {
                   profile &&
                   (profile.is_payment_verified === 0 ||
                     profile.active_user === 0)
-                    ? '/profile-setup'
+                    ? (profile.is_payment_verified === 0 ? '/profile-setup' : '/inactive-account')
                     : route('signup')
                 "
                 class="p-3 px-6 pt-2 text-red bg-white rounded-lg border-white border-spacing-3 shadow-2xl shadow-black align-baseline hover:text-white hover:bg-blue-30-rgba"
@@ -786,7 +806,7 @@ const formatPrice = (price) => {
                 showit &&
                 profile &&
                 (profile.is_payment_verified === 0 || profile.active_user === 0)
-                  ? '/profile-setup'
+                  ? (profile.is_payment_verified === 0 ? '/profile-setup' : '/inactive-account')
                   : route('signup')
               "
             >

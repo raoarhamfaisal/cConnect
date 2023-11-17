@@ -144,9 +144,21 @@ class PaymentController extends Controller
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]);
+
+            $subscriptionResponse = [
+                'messages' => [
+                    'resultCode' => 'Error',
+                    'message' => [
+                        [
+                            'code' => 'E00003',
+                            'text' => 'Your payment could not be processed due to incorrect card details. Please double-check your card information and try again.'
+                        ]
+                    ]
+                ]
+            ];            
         }
 
-        return $subscriptionResponse;
+        return response()->json($subscriptionResponse);
     }
 
     private function setUpSubscription($request, $finalAmount)
@@ -266,6 +278,7 @@ class PaymentController extends Controller
 
     private function handleFailedPayment($userId, $response)
     {
+
         // Update the profile table
         $profile = Profile::where('user_id', $userId)->first();
         if($profile) {

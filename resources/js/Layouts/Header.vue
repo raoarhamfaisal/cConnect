@@ -153,6 +153,7 @@ export default {
       (!this.user_profile.is_payment_verified ||
         !this.user_profile.active_user) &&
       this.url !== "/profile-setup" &&
+      this.url !== "/inactive-account" &&
       this.url !== "/payment"
     ) {
       this.$refs.paymentDialogRef.openDialog();

@@ -19,7 +19,7 @@ class VerifyEmailController extends Controller
     public function __invoke(EmailVerificationRequest $request)
     {
         if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->intended(RouteServiceProvider::PROFILE.'?verified=1');
+            return redirect(RouteServiceProvider::PROFILE.'?verified=1');
         }
 
         if ($request->user()->markEmailAsVerified()) {
@@ -30,6 +30,6 @@ class VerifyEmailController extends Controller
 
         }
 
-        return redirect()->intended(RouteServiceProvider::PROFILE.'?verified=1');
+        return redirect(RouteServiceProvider::PROFILE.'?verified=1');
     }
 }

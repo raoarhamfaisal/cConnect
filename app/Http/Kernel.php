@@ -76,5 +76,6 @@ class Kernel extends HttpKernel
         'admin-with-users-privileges' => \App\Http\Middleware\AdminWithUsersPrivileges::class,
         'admin-with-payments-privileges' => \App\Http\Middleware\AdminWithPaymentsPrivileges::class,
         'verifyPayment' => \App\Http\Middleware\VerifyPayment::class,
+        'activeUser' => \App\Http\Middleware\VerifyActiveUser::class,
     ];
 }

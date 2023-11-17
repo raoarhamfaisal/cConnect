@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class VerifyPayment
+class VerifyActiveUser
 {
     /**
      * Handle an incoming request.
@@ -19,10 +19,11 @@ class VerifyPayment
     {
         $user = Auth::user();
 
-        // Check if the user is authenticated and has a profile with is_payment_verified
-        if ($user && (!$user->profile->is_payment_verified)) {
-            // You can customize the response or redirection here
-            return redirect('/profile-setup');
+        // Check if the user is authenticated and active
+        if ($user && !$user->profile->active_user && $user->profile->is_payment_verified) {
+            // Redirect to a specific page or show an error message
+            // Customize this part as per your application's needs
+            return redirect('/inactive-account');
         }
 
         return $next($request);
