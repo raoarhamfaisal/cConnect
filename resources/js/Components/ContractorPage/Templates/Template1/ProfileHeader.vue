@@ -4,7 +4,7 @@
     <div
       class="relative gap-2 mb-1 bg-[] max-w-[1400px] px-3 sm:px-10 py-4 sm:py-8 mx-auto w-full"
     >
-      <div class="sm:hidden flex gap-2 mb-2">
+      <div v-if="showGoBack" class="sm:hidden flex gap-2 mb-2">
         <div @click="goBack" class="cursor-pointer">
           <Icon class="w-6 h-6" icon="ion:arrow-back" :color="'#c78b22'" />
         </div>
@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="flex gap-2 items-center justify-between w-full">
-        <div class="sm:flex gap-2 hidden">
+        <div v-if="showGoBack" class="sm:flex gap-2 hidden">
           <div @click="goBack" class="cursor-pointer">
             <Icon class="w-6 h-6" icon="ion:arrow-back" :color="'#fff'" />
           </div>
@@ -34,7 +34,9 @@
           </div>
         </div>
         <div
-          class="text-2xl sm:absolute company-center text-center xs:text-3xl font-bold uppercase"
+          :class="`text-2xl ${
+            showGoBack ? 'sm:absolute company-center' : ''
+          } text-center xs:text-3xl font-bold uppercase`"
           :style="{
             color: '#fff',
           }"
@@ -365,7 +367,7 @@ import Card from "@/Components/Card.vue";
 import Avatar from "@/Components/Ratings/Avatar.vue";
 import { Icon } from "@iconify/vue";
 
-import { computed, ref, watchEffect } from "vue";
+import { computed, ref, watchEffect, onMounted } from "vue";
 import { template1Default } from "@/helpers/templateDefaults";
 
 import { useStore } from "vuex";
@@ -394,16 +396,22 @@ let usePageDeatails = usePage().props.value;
 const user = usePageDeatails?.auth?.user;
 const profileId = usePageDeatails?.profile?.id;
 const modelText = ref("");
-
-const handleSubmit = () => {
-  notLoggedDialogRef.value.closeDialog();
-};
+const showGoBack = ref(true);
 
 const imageClass = ref("");
 function image_path(img) {
   // function adds the filepath
   return POSTS_IMAGES_FULL_PATH + img;
 }
+
+onMounted(() => {
+  const showBack = localStorage.getItem("showGoBack");
+  if (showBack === "false") {
+    showGoBack.value = false;
+  }
+  console.log(showBack);
+  localStorage.removeItem("showGoBack");
+});
 
 const onLoad = async () => {
   console.log("onLoad");
@@ -420,6 +428,9 @@ const onLoad = async () => {
       imageClass.value = ""; // No additional class for landscape images
     }
   }
+};
+const handleSubmit = () => {
+  notLoggedDialogRef.value.closeDialog();
 };
 
 const openNotLoggedDialog = () => {

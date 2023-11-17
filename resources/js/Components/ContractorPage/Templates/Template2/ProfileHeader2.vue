@@ -1,7 +1,7 @@
 <template>
   <!-- Header -->
 
-  <div class="flex gap-2 mb-1 items-center">
+  <div v-if="showGoBack" class="flex gap-2 mb-1 items-center">
     <div @click="goBack" class="cursor-pointer">
       <Icon
         class="w-6 h-6"
@@ -22,7 +22,7 @@
   <div class="flex gap-2" :style="{ color: selectedColorScheme[2] }">
     <div :class="`${screenWidth > 768 ? 'w-3/4' : 'w-4/5'}`">
       <!-- Company Logo -->
-      <div v-if="profile.company_logo" class="flex justify-center mb-3">
+      <div class="flex justify-center mb-3">
         <CompanyAvatar
           imageClass="companyLogo"
           :imageSrc="`/${profile.company_logo}`"
@@ -199,7 +199,7 @@ import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import CompanyAvatar from "@/Components/Ratings/CompanyAvatar.vue";
 import { Icon } from "@iconify/vue";
 
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { template1Default } from "@/helpers/templateDefaults";
 
 import { useStore } from "vuex";
@@ -226,7 +226,16 @@ const user = usePageDeatails?.auth?.user;
 const profileId = usePageDeatails?.profile?.id;
 const modelText = ref("");
 const notLoggedDialogRef = ref();
+const showGoBack = ref(true);
 
+onMounted(() => {
+  const showBack = localStorage.getItem("showGoBack");
+  if (showBack === "false") {
+    showGoBack.value = false;
+  }
+  console.log(showBack);
+  localStorage.removeItem("showGoBack");
+});
 const handleSubmit = () => {
   notLoggedDialogRef.value.closeDialog();
 };

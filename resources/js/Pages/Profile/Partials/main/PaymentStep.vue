@@ -47,7 +47,7 @@
         "
         :coupon="coupon"
         :couponDiscount="monthlyDiscount ? monthlyDiscount.toFixed(2) : 0.0"
-        :salesTax="pricingPlan.sales_tax ? pricingPlan.sales_tax : 0"
+        :salesTax="pricingPlan.sales_tax ? pricingPlan.sales_tax * 0.01 : 0"
         :total="monthlyTotal ? parseFloat(monthlyTotal).toFixed(2) : 0"
         @selectedPricing="selectedPricing"
       />
@@ -61,7 +61,7 @@
         "
         :total="annualTotal ? parseFloat(annualTotal).toFixed(2) : 0"
         @selectedPricing="selectedPricing"
-        :salesTax="pricingPlan.sales_tax ? pricingPlan.sales_tax : 0"
+        :salesTax="pricingPlan.sales_tax ? pricingPlan.sales_tax * 0.01 : 0"
       />
     </div>
     <!-- :coupon="43.88" -->
@@ -102,25 +102,23 @@ const monthlyTotal = computed(() => {
   // Calculate the original monthly price with tax
   const originalMonthlyTotal = +pricingPlan.value.billed_monthly_price;
 
+  const salesTax = +pricingPlan.value.sales_tax * 0.01;
   // If there's a coupon
   if (coupon.value && coupon.value.percentage_off_regular_price) {
     // Calculate the discount for the monthly price
     const monthlyDiscount =
       (originalMonthlyTotal * coupon.value.percentage_off_regular_price) / 100;
-
     // Return the discounted monthly total
     return (
       originalMonthlyTotal -
-      monthlyDiscount +
-      +pricingPlan.value.sales_tax * +pricingPlan.value.billed_monthly_price
+      (monthlyDiscount + salesTax * +pricingPlan.value.billed_monthly_price)
       // +(+pricingPlan.value.sales_tax * 0.01 * originalMonthlyTotal)
     );
   }
 
   // Return the original monthly total if there's no coupon.value
   return (
-    originalMonthlyTotal +
-    +pricingPlan.value.sales_tax * +pricingPlan.value.billed_monthly_price
+    originalMonthlyTotal + salesTax * +pricingPlan.value.billed_monthly_price
   );
 
   // return (
@@ -132,7 +130,8 @@ const monthlyTotal = computed(() => {
 const annualTotal = computed(() => {
   // Calculate the original annual price with tax for 12 months
   const originalAnnualTotal = +pricingPlan.value.billed_annual_price;
-
+  const salesTax = +pricingPlan.value.sales_tax * 0.01;
+  console.log("salesTax: " + salesTax);
   // If there's a coupon.value
   if (coupon.value && coupon.value.percentage_off_regular_price) {
     // Calculate the discount for the annual price
@@ -141,19 +140,17 @@ const annualTotal = computed(() => {
       ((+pricingPlan.value.billed_monthly_price *
         coupon.value.percentage_off_regular_price) /
         100);
-
     // Return the discounted annual total
     return (
       originalAnnualTotal -
       annualDiscount +
-      +pricingPlan.value.sales_tax * +pricingPlan.value.billed_annual_price
+      salesTax * +pricingPlan.value.billed_annual_price
     );
   }
 
   // Return the original annual total if there's no coupon
   return (
-    originalAnnualTotal +
-    +pricingPlan.value.sales_tax * +pricingPlan.value.billed_annual_price
+    originalAnnualTotal + salesTax * +pricingPlan.value.billed_annual_price
   );
 
   // return (

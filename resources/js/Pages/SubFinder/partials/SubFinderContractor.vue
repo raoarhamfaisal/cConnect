@@ -5,7 +5,7 @@
     bgColor="#fff"
     :padding="screenWidth < 640 ? '7px' : '20px'"
   >
-    <ContractorHeader :contractor="contractor" />
+    <ContractorHeader :contractor="contractor" :region_name="region_name" />
     <div class="flex justify-between gap-2 mt-2 sm:mt-3">
       <!-- left sections -->
       <div class="flex w-full self-start flex-col gap-2">

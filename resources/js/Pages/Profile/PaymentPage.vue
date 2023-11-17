@@ -419,15 +419,15 @@
                   </div>
                   <InputError class="mt-2" :message="subscriptionApiError" />
 
-                  <PrimaryButton
-                    @click.stop="startSubscription"
+                  <button
+                    @click="startSubscription"
                     type="button"
                     :disabled="loadingSubscribing"
                     :style="{
                       background: '#099268',
                       opacity: loadingSubscribing ? '0.4' : '1.0',
                     }"
-                    class="w-full mt-4 flex justify-center"
+                    class="w-full mt-4 flex justify-center inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-md text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
                   >
                     <div
                       v-show="!loadingSubscribing"
@@ -436,7 +436,7 @@
                       Subscribe now
                     </div>
                     <div v-show="loadingSubscribing">Subscribing...</div>
-                  </PrimaryButton>
+                  </button>
                 </div>
                 <!-- payment details -->
               </div>
@@ -575,7 +575,6 @@ import SelectProfile from "@/Components/SelectProfile.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 import Loader from "@/Components/Ratings/Loader.vue";
 
@@ -779,17 +778,19 @@ const fetchPricingCardDetails = async () => {
       `/api/payment-info-of-a-region/${props.profile.region_id}`,
       getAxiosConfig()
     );
-    console.log(response, "response");
     if (response.data) {
       pricingPlan.value = { ...response.data.paymentInfo };
-      if (!coupon.value) {
+      console.log(coupon.value, !coupon.value, "coupon");
+
+      if (!coupon.value || Object.keys(coupon.value).length == 0) {
+        console.log(response, "response");
+        const salesTax = +pricingPlan.value.sales_tax * 0.01;
         monthlyTotal.value =
           +pricingPlan.value.billed_monthly_price +
-          +pricingPlan.value.billed_monthly_price *
-            +pricingPlan.value.sales_tax;
+          +pricingPlan.value.billed_monthly_price * salesTax;
         annualTotal.value =
           +pricingPlan.value.billed_annual_price +
-          +pricingPlan.value.billed_annual_price * +pricingPlan.value.sales_tax;
+          +pricingPlan.value.billed_annual_price * salesTax;
       }
     }
   } catch (err) {

@@ -37,7 +37,7 @@
 
         <!-- Slot Content - Scrollable -->
         <div
-          :class="`flex-1 overflow-y-auto relative p-2 sm:p-4 ${contentClasses}`"
+          :class="`flex-1 overflow-y-auto relative  ${contentClasses}`"
           id="dialogContainer"
         >
           <slot></slot>
