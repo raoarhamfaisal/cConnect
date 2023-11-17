@@ -123,12 +123,13 @@ class PaymentController extends Controller
 
         if($subscriptionResponse && $subscriptionResponse->getMessages()->getResultCode() == "Ok") {
             // 3. Handle successful payments
-            $this->handleSuccessfulPayment($request, $userId, $subscriptionResponse, $baseAmount, $discountAmount, $discountEndDate);
+            $this->handleSuccessfulPayment($request, $userId, $subscriptionResponse, $baseAmount, $discountAmount, $discountEndDate, $finalAmount);
 
 
         } else {
             // 4. Handle failed payments
             $this->handleFailedPayment($userId, $subscriptionResponse);
+            dd($subscriptionResponse);
 
             // echo "ERROR :  Invalid subscriptionResponse\n";
             $errorMessages = $subscriptionResponse->getMessages()->getMessage();
@@ -203,7 +204,7 @@ class PaymentController extends Controller
         return $subscription;
     }
 
-    private function handleSuccessfulPayment($request, $userId, $subscriptionResponse, $originalAmount, $discountAmount, $discountEndDate)
+    private function handleSuccessfulPayment($request, $userId, $subscriptionResponse, $originalAmount, $discountAmount, $discountEndDate, $finalAmount)
     {
         // Update the profile table
         $profile = Profile::where('user_id', $userId)->first();
@@ -255,7 +256,11 @@ class PaymentController extends Controller
         // Send success email notification
         $user = User::find($userId);
         if($user) {
-            Mail::to($user->email)->send(new SubscriptionSuccessMail($user));
+            // Mail::to($user->email)->send(new SubscriptionSuccessMail($user));
+            $cardNumber = $request->input('card_number');
+            $last4Digits = substr($cardNumber, -4); // Extracts the last 4 digits of the card number
+            Mail::to($user->email)->send(new SubscriptionSuccessMail($user, $finalAmount, $last4Digits, Carbon::now()->format('Y-m-d')));
+
         }
 
     }

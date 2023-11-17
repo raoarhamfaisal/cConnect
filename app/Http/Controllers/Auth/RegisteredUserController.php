@@ -142,7 +142,7 @@ class RegisteredUserController extends Controller
             'view_regional' => 1
         ]);
 
-        $randomTrades = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+        $randomTrades = [];
         $profile->trades()->attach($randomTrades);  
         
         $profile = Profile::where('user_id', $user->id)->with('trades')->first();
