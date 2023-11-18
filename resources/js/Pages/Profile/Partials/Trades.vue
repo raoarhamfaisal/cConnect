@@ -53,9 +53,18 @@ const form = reactive({
 const emit = defineEmits(["dontProceed"]);
 
 onMounted(() => {
+  // if all trades selected change toggle to selectd all
   const allSelected = Object.values(form).every((value) => value === 1);
   if (allSelected) {
     selectAll.value = true;
+  }
+  if (props.apiChoice === "2") {
+    const areAllTradesSetToZero = Object.values(form).every(
+      (value) => value !== 1
+    );
+    if (areAllTradesSetToZero) {
+      emit("dontProceed", true);
+    }
   }
 });
 

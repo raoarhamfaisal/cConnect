@@ -21,6 +21,8 @@ export default {
   namespaced: true,
   state() {
     return {
+      averageRating: -1,
+      length: -1,
       loading: false,
       loadingSending: false,
       shouldFetchPostsOnClose: false,
@@ -59,6 +61,12 @@ export default {
     },
     setShouldFetchFirstPagePosts(state, payload) {
       state.shouldFetchFirstPagePosts = payload;
+    },
+    SET_AVERAGE_RATING(state, rating) {
+      state.averageRating = rating;
+    },
+    SET_LENGTH(state, length) {
+      state.length = length;
     },
 
     setAllTrades(state, payload) {

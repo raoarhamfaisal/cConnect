@@ -86,7 +86,7 @@ import StarRounded from "@/Components/Ratings/StarRounded.vue";
 import DialogContractorRating from "@/Components/Ratings/Contractor/DialogContractorRating.vue";
 import DialogContractorPage from "@/Pages/Contractor/DialogContractorPage.vue";
 
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useStore } from "vuex";
 import Card from "@/Components/Card.vue";
 import Tooltip from "@/Components/Ratings/Tooltip.vue";
@@ -100,13 +100,40 @@ const store = useStore();
 let usePageDeatails = usePage().props.value;
 const loggedInUserId = usePageDeatails?.profile?.id;
 
-const total_reviews = ref(0);
+const total_reviews = ref(props.contractor.total_reviews ?? 0);
 const averageRating = ref(props.contractor.average_rating);
 const contractorPageDialogRef = ref();
 
 //Computed
 
 const screenWidth = computed(() => store.getters.screenWidth);
+const shouldLoadPosts = computed(() => store.state.ratings.shouldLoadPosts);
+const averageRatingFromDialog = computed(
+  () => store.state.ratings.averageRating
+);
+const lengthFromDialog = computed(() => store.state.ratings.length);
+
+//Watch
+watch(shouldLoadPosts, (newValue) => {
+  if (newValue) {
+    console.log(
+      "shoouldLoad Post",
+      averageRatingFromDialog.value !== -1,
+      lengthFromDialog.value !== -1
+    );
+    if (averageRatingFromDialog.value !== -1) {
+      console.log("shoouldLoad Post2");
+
+      averageRating.value = averageRatingFromDialog.value;
+    }
+    if (lengthFromDialog.value !== -1) {
+      console.log("shoouldLoad Post3");
+
+      total_reviews.value = lengthFromDialog.value;
+    }
+    store.commit("ratings/setShouldLoadPosts", false);
+  }
+});
 
 const openContractorRatingDialog = () => {
   ratingDialogRef.value.openDialog();

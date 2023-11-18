@@ -285,6 +285,27 @@ watch(responseId, (newVal) => {
   }
 });
 
+watch(
+  () => average_rating.value,
+  (newVal, oldVal) => {
+    if (newVal != oldVal) {
+      console.log("averageRating: " + average_rating.value);
+      store.commit("ratings/SET_AVERAGE_RATING", newVal);
+      // store.commit("ratings/SET_USER_ID", newVal);
+    }
+  }
+);
+
+watch(
+  () => pagination.value.total,
+  (newVal, oldVal) => {
+    if (newVal != oldVal) {
+      console.log("total reviews: " + pagination.value.total);
+      store.commit("ratings/SET_LENGTH", newVal);
+    }
+  }
+);
+
 // Methods
 
 const loadMoreReviews = async () => {

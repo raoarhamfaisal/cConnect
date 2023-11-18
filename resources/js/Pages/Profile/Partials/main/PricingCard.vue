@@ -41,14 +41,14 @@
           <Icon icon="mdi-tag" class="w-5 h-5 mr-2" />
           <p><strong>Coupon</strong></p>
         </div>
-        <div>${{ couponDiscount ? couponDiscount : "0.00" }}</div>
+        <div>- ${{ couponDiscount ? couponDiscount : "0.00" }}</div>
       </div>
       <div class="flex justify-between">
         <div class="flex items-center justify-center mb-2">
           <Icon icon="mdi:cash-register" class="w-5 h-5 mr-2" />
           <p><strong>Sales Tax</strong></p>
         </div>
-        <div>{{ salesTax }}</div>
+        <div>${{ salesTax }}</div>
       </div>
       <div class="flex justify-between">
         <div class="flex items-center justify-center mb-2">
@@ -70,7 +70,7 @@
             v-if="plan === `MONTHLY` && couponDiscount"
             class="flex gap-2 mt-2 text-indigo-600 text-base justify-center items-center font-bold"
           >
-            {{ couponDiscount }} for the 1st {{ coupon.months }} months, then
+            {{ total }} for the 1st {{ coupon.months }} months, then
             {{ monthlyPrice }}
           </div>
           <div
