@@ -4,7 +4,8 @@ import { Head } from "@inertiajs/inertia-vue3";
 import { useStore } from "vuex";
 import { Icon } from "@iconify/vue";
 import MoveToTop from "@/Components/MoveToTop.vue";
-import { computed, onMounted, ref, watch } from "vue";
+
+import { computed, nextTick, onMounted, ref, watch } from "vue";
 import SelectProfile from "@/Components/SelectProfile.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
@@ -66,6 +67,9 @@ const perPage = ref(15);
 const loadingNextPage = ref(false);
 const loadMoreIntersect = ref();
 const basedOnSearch = ref(false);
+const showAdvanceFiltersButton = ref(false);
+const showAdvanceFilters = ref(true);
+
 const store = useStore();
 
 //Computed
@@ -101,9 +105,18 @@ watch(foundContractors, (newVal) => {
 });
 
 //Methods
+
+const handleSelect = async () => {
+  showAdvanceFilters.value = !showAdvanceFilters.value;
+};
+
 const submitSearchTerm = () => {
   atButtonClickSearchTerm.value = searchTerm.value;
   basedOnSearch.value = true;
+  if (screenWidth.value < 640) {
+    showAdvanceFiltersButton.value = true;
+    showAdvanceFilters.value = false;
+  }
   fetchSearchedContractorsWithLoading();
 };
 const changeReferal = (value) => {
@@ -313,69 +326,99 @@ const fetchSearchedContractorsWithLoading = async () => {
           </div>
         </div>
       </div>
-      <div class="my-4 border-2 border-gray-400 rounded"></div>
-
-      <!-- seelct region -->
-      <div class="w-full sm:grid sm:grid-cols-2 sm:gap-4">
-        <div class="mb-4 sm:mb-0">
-          <InputLabel class="font-bold text-base" value="Select Region:" />
-          <SelectProfile
-            class="bg-white rounded"
-            :options="referenceList"
-            :modelValue="selectedReferal"
-            @update:modelValue="changeReferal"
-          />
-        </div>
-
-        <!-- select trade -->
-        <div class="mb-4 sm:mb-0">
-          <InputLabel class="font-bold text-base" value="Select Trade:" />
-          <SelectProfile
-            class="bg-white rounded"
-            :options="tradesList"
-            :modelValue="selectedTrade"
-            @update:modelValue="changeTrade"
-          />
-        </div>
-      </div>
-      <!-- Display Contractors  -->
-      <div class="mt-4">
-        <InputLabel class="font-bold text-base" value="Display Contractor:" />
-        <div class="flex mt-2 gap-2 flex-wrap justify-center sm:justify-start">
-          <button
-            v-for="btn in buttonData"
-            :key="btn.value"
-            @click="selectButton(btn.value)"
-            :class="buttonClass(btn.value)"
-          >
-            {{ btn.label }}
-          </button>
-        </div>
-      </div>
-      <!-- Sort Contractors BY -->
-      <div class="mt-4">
-        <InputLabel class="font-bold text-base" value="Sort Contractors By:" />
-        <div class="flex mt-2 gap-2 flex-wrap justify-center sm:justify-start">
-          <button
-            v-for="btn in sortButtonData"
-            :key="btn.value"
-            @click="selectSort(btn.value)"
-            :class="sortButtonClass(btn.value)"
-          >
-            {{ btn.label }}
-          </button>
-        </div>
-      </div>
-
-      <!-- Find A Sub -->
-      <button
-        @click="onFindASub"
-        class="border-2 mt-5 w-full sm:w-40 flex items-center justify-center border-2 border-teal-green bg-teal-green text-white font-semibold text-xl py-2 px-4 rounded transition transform duration-300 hover:shadow-lg active:scale-95"
-      >
-        Find a Sub
-      </button>
       <div
-        class="mt-6"
+        v-if="!showAdvanceFiltersButton"
+        class="my-4 border-2 border-gray-400 rounded"
+      ></div>
+
+      <button
+        class="advance-filter-button rounded px-2 py-1 xs:px-4 xs:py-2 xs:text-md text-sm bg-white w-full text-base text-left rounded-lg"
+        :class="{ selected: showAdvanceFilters }"
+        v-if="showAdvanceFiltersButton && screenWidth < 640"
+        @click="handleSelect"
+        :style="{
+          boxShadow:
+            '0px 0px 3px rgba(0, 0, 0, 0.12), 0px 0px 2px rgba(0, 0, 0, 0.12)',
+        }"
+      >
+        Advance Filters
+      </button>
+      <transition name="accordion">
+        <div v-if="showAdvanceFilters" class="mt-2">
+          <!-- seelct region -->
+          <div class="w-full sm:grid sm:grid-cols-2 sm:gap-4">
+            <div class="mb-4 sm:mb-0">
+              <InputLabel class="font-bold text-base" value="Select Region:" />
+              <SelectProfile
+                class="bg-white rounded"
+                :options="referenceList"
+                :modelValue="selectedReferal"
+                @update:modelValue="changeReferal"
+              />
+            </div>
+
+            <!-- select trade -->
+            <div class="mb-4 sm:mb-0">
+              <InputLabel class="font-bold text-base" value="Select Trade:" />
+              <SelectProfile
+                class="bg-white rounded"
+                :options="tradesList"
+                :modelValue="selectedTrade"
+                @update:modelValue="changeTrade"
+              />
+            </div>
+          </div>
+          <!-- Display Contractors  -->
+          <div class="mt-4">
+            <InputLabel
+              class="font-bold text-base"
+              value="Display Contractor:"
+            />
+            <div
+              class="flex mt-2 gap-2 flex-wrap justify-center sm:justify-start"
+            >
+              <button
+                v-for="btn in buttonData"
+                :key="btn.value"
+                @click="selectButton(btn.value)"
+                :class="buttonClass(btn.value)"
+              >
+                {{ btn.label }}
+              </button>
+            </div>
+          </div>
+          <!-- Sort Contractors BY -->
+          <div class="mt-4">
+            <InputLabel
+              class="font-bold text-base"
+              value="Sort Contractors By:"
+            />
+            <div
+              class="flex mt-2 gap-2 flex-wrap justify-center sm:justify-start"
+            >
+              <button
+                v-for="btn in sortButtonData"
+                :key="btn.value"
+                @click="selectSort(btn.value)"
+                :class="sortButtonClass(btn.value)"
+              >
+                {{ btn.label }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Find A Sub -->
+          <button
+            @click="onFindASub"
+            class="border-2 mt-5 w-full sm:w-40 flex items-center justify-center border-2 border-teal-green bg-teal-green text-white font-semibold text-xl py-2 px-4 rounded transition transform duration-300 hover:shadow-lg active:scale-95"
+          >
+            Find a Sub
+          </button>
+        </div>
+      </transition>
+
+      <div
+        class="mt-3 sm:mt-6"
         v-if="atButtonClickSearchTerm && atButtonClickSearchTerm !== 'true'"
       >
         <div class="font-extrabold text-2xl leading-tight">
@@ -451,3 +494,17 @@ const fetchSearchedContractorsWithLoading = async () => {
     <MoveToTop />
   </Header>
 </template>
+
+<style scoped>
+.advance-filter-button {
+  border: 1px solid #ccc;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  position: relative;
+}
+
+.advance-filter-button.selected {
+  background-color: #3a357c;
+  color: #fff;
+}
+</style>
