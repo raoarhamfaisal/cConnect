@@ -108,6 +108,7 @@ class DatabaseSeeder extends Seeder
             ReviewSeeder::class,
             RatingReasonSeeder::class,
             AppealSeeder::class,
+            PostColorSeeder::class,
 
         ]);
 
