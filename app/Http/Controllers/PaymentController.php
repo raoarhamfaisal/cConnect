@@ -120,7 +120,7 @@ class PaymentController extends Controller
 
 
         // 2. Set up the subscription for Authorize.Net
-        $subscription = $this->setUpSubscription($request, floatval($finalAmount));
+        $subscription = $this->setUpSubscription($request, floatval($finalAmount) !== 0.0 ? floatval($finalAmount) : 0.01);
 
         // Authentication with Authorize.Net's credentials
         $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
@@ -185,6 +185,9 @@ class PaymentController extends Controller
 
     private function setUpSubscription($request, $finalAmount)
     {
+
+        // dd($finalAmount);
+
         // Define the payment type based on user's data from the request
         $creditCard = new AnetAPI\CreditCardType();
         $creditCard->setCardNumber($request->input('card_number'));
