@@ -16,7 +16,14 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->command('billing:process')->daily();
+        // $schedule->command('billing:process')->daily();
+        $schedule->command('billing:process')->everyFiveMinutes()->emailOutputOnFailure('ahmadraosanawarali@gmail.com');
+
+            // Running the command within the Laravel Sail Docker container
+        // $schedule->exec('sail php artisan billing:process')
+        // ->everyTwoMinutes()
+        // ->emailOutputOnFailure('ahmadraosanawarali@gmail.com');
+        
 
     }
 
@@ -32,3 +39,4 @@ class Kernel extends ConsoleKernel
         require base_path('routes/console.php');
     }
 }
+
