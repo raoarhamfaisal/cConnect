@@ -99,6 +99,7 @@ class DatabaseSeeder extends Seeder
 
 
         $this->call([
+            PostColorSeeder::class,
             RegionSeeder::class,
             TradeSeeder::class,
             UserSeeder::class,
@@ -108,7 +109,6 @@ class DatabaseSeeder extends Seeder
             ReviewSeeder::class,
             RatingReasonSeeder::class,
             AppealSeeder::class,
-            PostColorSeeder::class,
 
         ]);
 

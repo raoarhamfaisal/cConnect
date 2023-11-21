@@ -444,8 +444,8 @@ export default {
       @click="$emit('enlarge-post', post)"
       class="flex flex-row justify-center items-center w-full px-2 text-lg xs:text-xl md:text-2xl"
       :class="[
-        body1Colors[post.body1ColorId],
-        post.body1Bold ? 'font-bold' : 'font-normal',
+        body1Colors[post.post_text_color_id],
+        post.is_body_bold ? 'font-bold' : 'font-normal',
       ]"
     >
       {{ post.body1 }}

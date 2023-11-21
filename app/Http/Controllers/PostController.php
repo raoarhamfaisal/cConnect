@@ -134,8 +134,12 @@ class PostController extends Controller
                     'image' => $post->image,
                     'body1' => $post->body1,
                     'body2' => $post->body2,
-                    'body1Bold' => $post->body1Bold,
-                    'body1ColorId' => $post->body1ColorId,
+                    'is_body_bold' => $post->is_body_bold,
+                    'post_text_color_id' => $post->post_text_color_id,
+                    'post_background_color_id' => $post->post_background_color_id,
+                    'font_size' => $post->font_size,
+                    'text_alignment' => $post->text_alignment,
+
                     'repost' => $post->repost,
                     'shares' => $post->shares,
                     'first_name' => $post->first_name,
@@ -196,8 +200,12 @@ class PostController extends Controller
                         'image' => $post->image,
                         'body1' => $post->body1,
                         'body2' => $post->body2,
-                        'body1Bold' => $post->body1Bold,
-                        'body1ColorId' => $post->body1ColorId,
+                        'is_body_bold' => $post->is_body_bold,
+                        'post_text_color_id' => $post->post_text_color_id,
+                        'post_background_color_id' => $post->post_background_color_id,
+                        'font_size' => $post->font_size,
+                        'text_alignment' => $post->text_alignment,
+                            
                         'repost' => $post->repost,
                         'shares' => $post->shares,
                         'first_name' => $post->first_name,
@@ -302,7 +310,7 @@ class PostController extends Controller
     ) {
         $validatedInput = $request->validated();
 
-        // Set user_id for post
+        // Set user_id for post // Customize validation as needed
         $userID = Auth()->user('')->id;
         $validatedInput['user_id'] = $userID;
     
