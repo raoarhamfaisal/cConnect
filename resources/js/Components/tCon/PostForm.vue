@@ -199,18 +199,19 @@ export default {
       this.isUploading = true;
     },
     handleFileReorder(files, origin, target) {
-      console.log(origin, target, "target");
+      console.log(origin, target, "target\n", this.form.image, "previuos");
 
       // Split the form.image string into an array
       let imagesArray = this.form.image.split("|");
 
-      // Check if the origin and target indices are valid
+      console.log(imagesArray, "imagesArray"); // Check if the origin and target indices are valid
       if (origin < imagesArray.length && target < imagesArray.length) {
         // Swap the elements at the origin and target indices
-        let temp = imagesArray[origin];
-        imagesArray[origin] = imagesArray[target];
-        imagesArray[target] = temp;
-
+        const length = imagesArray.length - 1;
+        let temp = imagesArray[length - origin];
+        imagesArray[length - origin] = imagesArray[length - target];
+        imagesArray[length - target] = temp;
+        console.log(length - origin, length - target);
         // Update the form.image string with the new order
         this.form.image = imagesArray.join("|");
       }

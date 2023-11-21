@@ -73,7 +73,6 @@ const selectedColor = ref(props.modelValue);
 const colors = ref([
   // "#ffffff",
   // "#000000",
-
   // "#2C3E50",
   // //   "#34495E",
   // "#7F8C8D",
@@ -82,9 +81,9 @@ const colors = ref([
   // "#8E44AD",
   //   "#F39C12",
   //   "#1ABC9C", // Turquoise
-  "#E74C3C", // Red
+  // "#E74C3C", // Red
   //   "#3498DB", // Blue
-  "#E67E22", // Orange
+  // "#E67E22", // Orange
   //   "#95A5A6", // Concrete
   //   "#9B59B6", // Amethyst
   // "#2E4053", // Midnight Blue

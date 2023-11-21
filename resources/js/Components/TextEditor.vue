@@ -146,7 +146,7 @@ const generateStyledContent = () => {
   }; `;
   console.log("style", style, classes);
 
-  return `<span id="toTeleport" class="${classes}" style="${style}">${content.value}</span>`;
+  return `<span id="toTeleport" class="${classes} truncate-text" style="${style}">${content.value}</span>`;
 };
 
 watch(
