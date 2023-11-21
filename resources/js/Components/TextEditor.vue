@@ -81,12 +81,13 @@
         'justify-center text-center': alignment === 'center',
         'justify-end text-right': alignment === 'right',
         'items-center py-[87px]':
-          backgroundColor !== 'inherit' && backgroundColor !== '#ffffff',
+          backgroundColor.color !== 'inherit' &&
+          backgroundColor.color !== '#ffffff',
       }"
       :style="{
         fontSize: 16 + fontSizeIncrement + 'px',
-        color: selectedColor,
-        backgroundColor: backgroundColor,
+        color: selectedColor.color,
+        backgroundColor: backgroundColor.color,
       }"
       @paste="updateContent"
       @input="updateContent"
@@ -104,49 +105,65 @@ import BackgroundColorDropdown from "@/Components/BackgroundColorDropdown.vue";
 import FontColorDropdown from "@/Components/FontColorDropdown.vue";
 const props = defineProps({
   modelValue: String,
+  fontSize: Number,
+  textColorId: String,
+  backgroundColorId: String,
+  isBold: Boolean,
+  textAlignment: String,
 });
 
-const emit = defineEmits(["update:modelValue"]);
-
+const emit = defineEmits([
+  "update:modelValue",
+  "update:fontSize",
+  "update:textColorId",
+  "update:backgroundColorId",
+  "update:isBold",
+  "update:textAlignment",
+]);
 const isBold = ref(false);
 const alignment = ref(""); // Default to left alignment
 const content = ref(props.modelValue ?? "");
 const editor = ref(null);
 const fontSizeIncrement = ref(0);
-const selectedColor = ref("inherit");
-const backgroundColor = ref("inherit");
+const selectedColor = ref({
+  color: "inherit",
+});
+const backgroundColor = ref({
+  color: "inherit",
+});
 
 const generateStyledContent = () => {
-  let classes = "inline ";
+  // let classes = "inline ";
 
-  if (isBold.value) {
-    classes += " font-bold";
-  }
+  // if (isBold.value) {
+  //   classes += " font-bold";
+  // }
 
-  if (alignment.value === "left") {
-    classes += " justify-start text-left";
-  }
+  // if (alignment.value === "left") {
+  //   classes += " justify-start text-left";
+  // }
 
-  if (alignment.value === "center") {
-    classes += " justify-center text-center";
-  }
+  // if (alignment.value === "center") {
+  //   classes += " justify-center text-center";
+  // }
 
-  if (alignment.value === "right") {
-    classes += " justify-end text-right";
-  }
-  if (
-    backgroundColor.value !== "inherit" &&
-    backgroundColor.value !== "#ffffff"
-  ) {
-    classes += ` bg-[${backgroundColor.value}] items-center flex`;
-  }
+  // if (alignment.value === "right") {
+  //   classes += " justify-end text-right";
+  // }
+  // if (
+  //   backgroundColor.value.color !== "inherit" &&
+  //   backgroundColor.value.color !== "#ffffff"
+  // ) {
+  //   classes += ` bg-[${backgroundColor.value.color}] items-center flex`;
+  // }
 
-  const style = `font-size: ${16 + fontSizeIncrement.value}px; color: ${
-    selectedColor.value
-  }; `;
-  console.log("style", style, classes);
+  // const style = `font-size: ${16 + fontSizeIncrement.value}px; color: ${
+  //   selectedColor.value.color
+  // }; `;
+  // console.log("style", style, classes);
 
-  return `<span id="toTeleport" class="${classes} truncate-text" style="${style}">${content.value}</span>`;
+  // return `<span id="toTeleport" class="${classes} truncate-text" style="${style}">${content.value}</span>`;
+  return `<span  class="truncate-text">${content.value}</span>`;
 };
 
 watch(
@@ -169,16 +186,18 @@ watch(
 watch(backgroundColor, (newValue) => {
   // only if the selected color is black or inherit
   if (
-    backgroundColor.value !== "inherit" &&
-    backgroundColor.value !== "#ffffff" &&
-    (selectedColor.value === "inherit" || selectedColor.value === "#000000")
+    backgroundColor.value.color !== "inherit" &&
+    backgroundColor.value.color !== "#ffffff" &&
+    (selectedColor.value.color === "inherit" ||
+      selectedColor.value.color === "#000000")
   ) {
-    // selectedColor.value = "#ffffff";
+    // selectedColor.value.color = "#ffffff";
     alignment.value = "center";
   } else if (
-    backgroundColor.value !== "inherit" &&
-    backgroundColor.value !== "#ffffff" &&
-    (selectedColor.value !== "inherit" || selectedColor.value !== "#000000")
+    backgroundColor.value.color !== "inherit" &&
+    backgroundColor.value.color !== "#ffffff" &&
+    (selectedColor.value.color !== "inherit" ||
+      selectedColor.value.color !== "#000000")
   ) {
     alignment.value = "center";
   }
@@ -186,16 +205,26 @@ watch(backgroundColor, (newValue) => {
   // if font color changed other than black then this condition and when i remove the background color
 
   if (
-    backgroundColor.value === "inherit" ||
-    backgroundColor.value === "#ffffff"
+    backgroundColor.value.color === "inherit" ||
+    backgroundColor.value.color === "#ffffff"
   ) {
     alignment.value = "left";
-    if (selectedColor.value === "#ffffff") {
-      selectedColor.value = "inherit";
+    if (selectedColor.value.color === "#ffffff") {
+      selectedColor.value.color = "inherit";
     }
   }
+
+  emit("update:backgroundColorId", newValue.id);
+});
+watch(fontSizeIncrement, (newValue) =>
+  emit("update:fontSize", newValue.toString())
+);
+watch(selectedColor, (newValue) => {
+  emit("update:textColorId", newValue.id);
 });
 
+watch(isBold, (newValue) => emit("update:isBold", newValue));
+watch(alignment, (newValue) => emit("update:textAlignment", newValue));
 // cursor position
 
 const toggleBold = () => {

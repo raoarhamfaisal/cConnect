@@ -12,9 +12,13 @@ import { Icon } from "@iconify/vue";
 import PostDisplay from "@/Components/tCon/PostDisplay.vue";
 
 import { Head, Link } from "@inertiajs/inertia-vue3";
+import Loader from "@/Components/Ratings/Loader.vue";
+
 import { ref } from "vue";
 import PostDisplayEnlarged from "@/Components/tCon/PostDisplayEnlarged.vue";
 import { mapGetters, mapState } from "vuex";
+import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
+import { somethingWentWrong } from "@/helpers/utilities";
 
 const defaultPostFormObject = {
   user_id: 0,
@@ -33,6 +37,7 @@ export default {
   components: {
     AuthenticatedLayout,
     Icon,
+    Loader,
     AppSpinner,
     tContractorWord,
     Header,
@@ -60,6 +65,7 @@ export default {
 
     // observer.observe(this.$refs.loadMoreIntersect);
     localStorage.setItem("prevUrl", "/post");
+    this.fetchColors();
 
     setTimeout(() => {
       const observerCallback = (entries) => {
@@ -117,6 +123,11 @@ export default {
       allPosts: this.posts.data,
       // (2) sets the URL to the first url - for looks
       initialUrl: this.$page.url,
+
+      textColors: [],
+      backgroundColors: [],
+
+      loading: false,
 
       previousY: 0,
       previousRatio: 0,
@@ -268,6 +279,29 @@ export default {
     },
   },
   methods: {
+    fetchColors() {
+      this.loading = true;
+
+      axios
+        .get(`/api/post/text-colors`, getAxiosConfig())
+        .then((response) => {
+          if (response.data) {
+            this.textColors = response.data.textColors;
+          }
+          return axios.get(`/api/post/background-colors`, getAxiosConfig());
+        })
+        .then((response) => {
+          if (response.data) {
+            this.backgroundColors = response.data.backgroundColors;
+          }
+        })
+        .catch((err) => {
+          somethingWentWrong();
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
     loadMorePosts() {
       // Check to see if post proerty has a next page url
       // js function hasMore
@@ -462,29 +496,33 @@ export default {
         <!-- -------for="post in allPosts"------------- -->
         <!-- .slice only allows 400 iterations -->
         <!-- <div v-for="post in allPosts.slice(0, 400)" :key="post.id" -->
-        <div
-          v-for="(post, index) in postsToShow"
-          id="scrollPost"
-          :key="post.id"
-          class="relative mx-auto w-full py-0"
-        >
-          <!-- INDIVIDUAL POST DISPLAY WITH MENUS -->
-          <PostDisplay
-            :showit="showit"
-            :index="index"
-            :profile="profile"
-            :post="post"
-            :body1Colors="body1Colors"
-            @enlarge-post="EnlargePost"
+        <Loader :loading="loading" background="inherit" height="100vh"></Loader>
+        <template v-if="!loading">
+          <div
+            v-for="(post, index) in postsToShow"
+            id="scrollPost"
+            :key="post.id"
+            class="relative mx-auto w-full py-0"
           >
-          </PostDisplay>
-        </div>
-        <!-- v-for="post in allPosts" -->
-        <!-- ------------------------------------------- -->
+            <!-- INDIVIDUAL POST DISPLAY WITH MENUS -->
+            <PostDisplay
+              :showit="showit"
+              :index="index"
+              :profile="profile"
+              :textColors="textColors"
+              :backgroundColors="backgroundColors"
+              :post="post"
+              :body1Colors="body1Colors"
+              @enlarge-post="EnlargePost"
+            >
+            </PostDisplay>
+          </div>
+          <!-- v-for="post in allPosts" -->
+          <!-- ------------------------------------------- -->
 
-        <!-- Makes call to load more posts calling the script
+          <!-- Makes call to load more posts calling the script
                              observer.observe(this.$refs.loadMoreIntersect) -->
-        <!-- <div ref="loadMoreIntersect" style="width: 5px; height: 5px" />
+          <!-- <div ref="loadMoreIntersect" style="width: 5px; height: 5px" />
         <Loader
           classes="flex gap-2"
           :loading="loadingPosts"
@@ -492,56 +530,59 @@ export default {
           textClasses="small-text"
           background="#ccc"
           height="70px"
-        ></Loader>
-        <AppSpinner v-show="loadingPosts" :showSpinText="true">
+          ></Loader>
+          <AppSpinner v-show="loadingPosts" :showSpinText="true">
           <div class="px-5 text-gray-300 mb-8">LOADING MORE POSTS!</div>
         </AppSpinner> -->
 
-        <!-- Makes call to load more posts calling the script
+          <!-- Makes call to load more posts calling the script
                              observer.observe(this.$refs.loadMoreIntersect) -->
-        <span ref="loadMoreIntersect" style="width: 5px; height: 5px" />
+          <span ref="loadMoreIntersect" style="width: 5px; height: 5px" />
 
-        <!-- {{ posts.next_page_url }} -->
+          <!-- {{ posts.next_page_url }} -->
 
-        <!-- <AppSpinner v-show="posts.next_page_url" :showSpinText="true">
+          <!-- <AppSpinner v-show="posts.next_page_url" :showSpinText="true">
           <div class="px-5 text-gray-300 mb-8 mt-8">LOADING MORE POSTS!</div>
         </AppSpinner> -->
 
-        <div
-          v-show="posts.next_page_url"
-          class="flex mb-8 mt-8"
-          style="height: 250px; justify-content: center; align-items: center"
-        >
-          <!-- <Loader
+          <div
+            v-show="posts.next_page_url"
+            class="flex mb-8 mt-8"
+            style="height: 250px; justify-content: center; align-items: center"
+          >
+            <!-- <Loader
             classes="flex gap-2"
             :loading="loadingPosts"
             circleClasses="small-circle"
             textClasses="small-text"
             background="transparent"
             height="70px"
-          ></Loader> -->
+            ></Loader> -->
 
-          <!-- <AppSpinner :showSpinText="true">
+            <!-- <AppSpinner :showSpinText="true">
             <div class="px-5 text-gray-300 mb-8 mt-8">LOADING MORE POSTS!</div>
           </AppSpinner> -->
-          <div class="loader"></div>
-          <div class="px-5 text-gray-300">LOADING MORE POSTS!</div>
-        </div>
-
-        <div class="h-5"></div>
-
-        <!-- 'next_page_url' is set to null in script -->
-        <div v-if="posts.next_page_url === null" class="mt-6">
-          <div class="text-gray-300 inline text-center">
-            You're all up to date! 🥳
+            <div class="loader"></div>
+            <div class="px-5 text-gray-300">LOADING MORE POSTS!</div>
           </div>
-        </div>
+
+          <div class="h-5"></div>
+
+          <!-- 'next_page_url' is set to null in script -->
+          <div v-if="posts.next_page_url === null" class="mt-6">
+            <div class="text-gray-300 inline text-center">
+              You're all up to date! 🥳
+            </div>
+          </div>
+        </template>
 
         <div v-if="postDisplayEnlarged">
           <Teleport to="body">
             <PostDisplayEnlarged
               :profile="profile"
               :postToEnlarge="postToEnlarge"
+              :textColors="textColors"
+              :backgroundColors="backgroundColors"
               :body1Colors="body1Colors"
               @close-enlarged="EnLargedPostClosed"
             >
