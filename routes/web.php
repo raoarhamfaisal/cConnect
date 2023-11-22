@@ -88,6 +88,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         
         Route::get('/sub-finder', [ProfileController::class, 'getSubFinderPage'])->name('profile.s');
+        Route::get('/red-flag', [ProfileController::class, 'getRedFlagPage'])->name('profile.red-flag');
 
         Route::get('/ratings/contractor', [ContractorRatingController::class, 'index'])->name('ratings.contractor.index');
         Route::get('/contractor/{contractor_id}/edit', [ContractorPageController::class, 'index'])->name('ratings.contractor.index');
