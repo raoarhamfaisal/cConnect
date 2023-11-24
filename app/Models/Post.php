@@ -19,7 +19,7 @@ class Post extends Model
         'body2',
         'is_body_bold',
         'post_text_color_id',
-        'post_background_color_i',
+        'post_background_color_id',
         'font_size',
         'text_alignment',
         'likes',
