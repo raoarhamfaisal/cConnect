@@ -518,7 +518,7 @@ export default {
       <span
         v-if="isContentOverflow"
         @click.self.stop="toggleText"
-        :class="`${toggleClass} ${showFullTextBody1 ? 'inline' : 'block'} `"
+        :class="`${toggleClass} ${showFullTextBody1 ? 'inline' : 'inline'} `"
       >
         {{ showFullTextBody1 ? "...less" : "...more" }}
       </span>
