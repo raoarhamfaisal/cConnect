@@ -6,11 +6,11 @@
   >
     <!-- Accordion header -->
     <div
-      class="redFlag-item flex justify-start items-center cursor-pointer"
-      @click="toggleAccordion"
+      class="redFlag-item flex justify-start items-center "
+      
       v-show="!isAccordionOpen"
     >
-      <div class="w-[65px] sm:w-[50px]">
+      <div class="w-[65px] sm:w-[50px] cursor-pointer"   @click="toggleAccordion">
         <Icon
           :icon="'clarity:eye-show-line'"
           class="w-7 h-7 transition-transform duration-500 mx-auto"
@@ -20,15 +20,15 @@
       <div class="w-full sm:w-[31%]">
         <v-tooltip
           max-width="300px"
-          :text="redFlag.customerName"
+          :text="redFlag.name_of_the_contractor_or_customer"
           location="top"
         >
           <template v-slot:activator="{ props }">
             <div v-bind="props" class="text-sm font-medium">
               {{
-                redFlag.customerName && redFlag.customerName.length > 25
-                  ? redFlag.customerName?.substring(0, 25) + "..."
-                  : redFlag.customerName
+                redFlag.name_of_the_contractor_or_customer && redFlag.name_of_the_contractor_or_customer.length > 25
+                  ? redFlag.name_of_the_contractor_or_customer?.substring(0, 25) + "..."
+                  : redFlag.name_of_the_contractor_or_customer
               }}
             </div>
           </template>
@@ -62,10 +62,10 @@
         </v-tooltip>
       </div>
       <div v-if="screenWidth >= 640" class="sm:w-[20%] text-center text-sm">
-        {{ redFlag.region }}
+        {{ getRegionName(redFlag.region_id) }}
       </div>
       <div class="w-[20%] sm:w-[15%] text-sm text-center">
-        {{ redFlag.dateReported }}
+        {{ convertDateFormatWith2DigitsYear(redFlag.updated_at) }}
       </div>
     </div>
     <!-- Accordion content with manual style binding -->
@@ -91,20 +91,20 @@
             />
           </div>
           <div class="w-[65%] text-sm">
-            {{ redFlag.customerName }}
+            {{ redFlag.name_of_the_contractor_or_customer }}
             <div v-if="screenWidth < 640">
-              {{ redFlag.region }}
+              {{ getRegionName(redFlag.region_id) }}
             </div>
           </div>
           <!-- for desktop -->
           <div v-if="screenWidth >= 640" class="sm:w-[20%] text-center text-sm">
-            {{ redFlag.region }}
+            {{ getRegionName(redFlag.region_id) }}
           </div>
           <div
             v-if="screenWidth >= 640"
             class="w-[20%] sm:w-[15%] text-sm text-center"
           >
-            {{ redFlag.dateReported }}
+            {{ convertDateFormatWith2DigitsYear(redFlag.updated_at) }}
           </div>
         </div>
 
@@ -118,15 +118,15 @@
           <div>
             <div class="flex gap-1">
               <div>
-                {{ redFlag.flagAddedBy.name }}
+                {{ redFlag.first_name + " "+ redFlag.last_name }}
               </div>
               <div>
-                {{ redFlag.flagAddedBy.city }}, {{ redFlag.flagAddedBy.state }}
+                {{ redFlag.city }}, {{ redFlag.state }}
               </div>
             </div>
           </div>
           <div>
-            {{ redFlag.dateReported }}
+            {{ convertDateFormatWith2DigitsYear(redFlag.updated_at) }}
           </div>
         </div>
         <div class="redFlag-item flex justify-start items-start">
@@ -136,10 +136,10 @@
           <div v-if="screenWidth >= 640" class="w-[31%] text-sm">
             <div class="flex sm:flex-col">
               <div>
-                {{ redFlag.flagAddedBy.name }}
+                {{ redFlag.first_name + " "+ redFlag.last_name }}
               </div>
               <div>
-                {{ redFlag.flagAddedBy.city }}, {{ redFlag.flagAddedBy.state }}
+                {{ redFlag.city }}, {{ redFlag.state }}
               </div>
             </div>
           </div>
@@ -184,8 +184,8 @@
     @submit="onSubmitDeleteComplaint"
     ref="deleteDialogRef"
     errorIcon
-    :loading="loadingAccept"
-    :disabled="loadingAccept"
+    :loading="loadingAcceptDelete"
+    :disabled="loadingAcceptDelete"
     dialogWidth="max-h-[70vh] width50"
     title="Are you sure? "
   >
@@ -206,13 +206,14 @@ import { ref, watch, computed, nextTick } from "vue";
 import { Icon } from "@iconify/vue";
 import { useStore } from "vuex";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
-import { filterBadWordsWithoutValue } from "@/helpers/utilities";
+import { changesSaved, convertDateFormatWith2DigitsYear, filterBadWordsWithoutValue } from "@/helpers/utilities";
 
 const props = defineProps({
   redFlag: {
     type: Object,
     required: true,
   },
+  regions: Array,
   index: {
     type: Number,
   },
@@ -221,7 +222,7 @@ const props = defineProps({
   },
 });
 const store = useStore();
-const emit = defineEmits(["accordion-toggled"]);
+const emit = defineEmits(["accordion-toggled","removeFlag"]);
 
 const isAccordionOpen = ref(false);
 
@@ -230,6 +231,10 @@ const contentStyle = computed(() => ({
   height: isAccordionOpen.value ? `${content.value.scrollHeight}px` : "0",
   margin: isAccordionOpen.value ? `8px` : "0",
 }));
+
+const getRegionName = (regionId) => {
+  return props.regions.find((item) => item.id === regionId).name;
+};
 
 //Computed
 const screenWidth = computed(() => store.getters.screenWidth);
@@ -287,25 +292,28 @@ const saveRedFlagComplaint = () => {
 
   // Start a new timer
   saveTimeout = setTimeout(async () => {
-    const notes = {
-      notes: redFlagComplaintText.value
+    const {region_id,name_of_the_contractor_or_customer,red_flag_date,is_contractor_or_customer}= props.redFlag
+    const updatedRedFlag  = {
+      complaint: redFlagComplaintText.value
         ? filterBadWordsWithoutValue(redFlagComplaintText.value)
         : redFlagComplaintText.value,
+region_id,name_of_the_contractor_or_customer,red_flag_date,is_contractor_or_customer
+
     };
-    console.log(notes, redFlagComplaintText.value, "selectedNote");
-    // try {
-    //   const response = await axios.post(
-    //     `/api/sub-finder/${props.contractor.id}/preference-and-notes`,
-    //     notes,
-    //     getAxiosConfig()
-    //   );
-    //   console.log(response, "response");
-    //   if (response.data) {
-    //   }
-    // } catch (err) {
-    //   // somethingWentWrong(err.response.data.message, "inherit");
-    // }
-  }, 1000);
+    console.log(redFlagComplaintText.value, "selectedNote");
+    try {
+      const response = await axios.put(
+        `/api/red-flags/${props.redFlag.id}`,
+        updatedRedFlag,
+        getAxiosConfig()
+      );
+      if (response.data) {
+        console.log(response, "response");
+      }
+    } catch (err) {
+      // somethingWentWrong(err.response.data.message, "inherit");
+    }
+  }, 500);
 };
 const adjustHeight = () => {
   nextTick(() => {
@@ -316,40 +324,31 @@ const adjustHeight = () => {
 };
 
 const deleteDialogRef = ref();
-const loadingAccept = ref(false);
+const loadingAcceptDelete = ref(false);
 
 const onOpenDeleteComplaintModalDialog = () => {
   deleteDialogRef.value.openDialog();
 };
 const onSubmitDeleteComplaint = async () => {
-  loadingAccept.value = true;
+  loadingAcceptDelete.value = true;
 
-  // try {
-  //   const response = await axios.post(
-  //     `/api/admin/accept-cancellation/${userId.value}`,
-  //     {},
-  //     getAxiosConfig()
-  //   );
-  //   if (response.data) {
-  //     changesSaved(
-  //       response.data.message || "Cancel request successfully accepted"
-  //     );
-  //     //   const index = cancelRequests.value.findIndex((plan, index) => {
-  //     //     return plan.id === singlePlan.value.id;
-  //     //   });
-
-  //     //   if (index !== -1) {
-  //     //     cancelRequests.value.splice(index, 1);
-  //     //   }
-  //     setTimeout(() => {
-  //       fetchCancelRequests();
-  //     }, 2000);
-  //   }
-  // } catch (err) {
-  //   console.log(err);
-  //   somethingWentWrong(err.response.data.message, "inherit");
-  // }
-  loadingAccept.value = false;
+  try {
+    const response = await axios.delete(
+      `/api/red-flags/${props.redFlag.id}`,
+      getAxiosConfig()
+    );
+    if (response.data) {
+      changesSaved(
+        response.data.message || "Cancel request successfully accepted"
+      );
+     emit('removeFlag',props.redFlag.id)
+  
+    }
+  } catch (err) {
+    console.log(err);
+    somethingWentWrong(err.response.data.message, "inherit");
+  }
+  loadingAcceptDelete.value = false;
   deleteDialogRef.value.closeDialog();
 };
 </script>

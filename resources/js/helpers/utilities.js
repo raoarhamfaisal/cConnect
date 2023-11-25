@@ -76,6 +76,22 @@ export function convertDateFormat(dateString) {
   // Return the desired format
   return `${month}/${day}/${year}`;
 }
+export function convertDateFormatWith2DigitsYear(dateString) {
+  if (!dateString) {
+    return "";
+  }
+  
+  // Create a new date object from the input string
+  const date = new Date(dateString);
+
+  // Extract the day, month, and year from the date object
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Note: Months are 0-based
+  const year = String(date.getFullYear()).slice(-2); // Get the last two digits of the year
+
+  // Return the desired format
+  return `${month}/${day}/${year}`;
+}
 
 // convert teh Date Tue Oct 10 2023 00:00:00 GMT+0500 (Pakistan Standard to 2023-01-01
 export const formatDateToDashDate = (date) => {
