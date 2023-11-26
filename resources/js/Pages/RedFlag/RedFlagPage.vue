@@ -332,7 +332,7 @@ const clearError = (field) => {
 const onAddNewRedFlag = async () => {
   addingRedFlag.value = true;
   if (validateForm()) {
-    newRedFlag.red_flag_date = "2023-11-24";
+   
     try {
       const response = await axios.post(
         `/api/red-flags`,
