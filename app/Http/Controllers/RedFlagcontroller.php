@@ -16,31 +16,17 @@ class RedFlagController extends Controller
             'region_id' => 'required|exists:regions,id',
             'name_of_the_contractor_or_customer' => 'required|string|max:255',
             'complaint' => 'required|string',
-            'red_flag_date' => 'required|date',
             'is_contractor_or_customer' => 'required|boolean',
         ]);
 
-        // Get current user id
-        $userID = Auth()->user('')->id;
-        $profile = null;
-
-
-        // Get the profile information if the user id exists
-        if($userID) {
-            $profile = Profile::where('user_id', $userID)->first();
-        }
-        
+        $userID = Auth::user()->id;
+        $profile = Profile::where('user_id', $userID)->firstOrFail();
 
         $redFlag = RedFlag::create([
             'profile_id' => $profile->id,
             'region_id' => $request->region_id,
-            // 'first_name' => $profile->first_name, // Added
-            // 'last_name' => $profile->last_name,   // Added
-            // 'city' => $profile->city,             // Added
-            // 'state' => $profile->state,  
             'name_of_the_contractor_or_customer' => $request->name_of_the_contractor_or_customer,
             'complaint' => $request->complaint,
-            'red_flag_date' => $request->red_flag_date,
             'is_contractor_or_customer' => $request->is_contractor_or_customer,
         ]);
 
@@ -50,29 +36,17 @@ class RedFlagController extends Controller
     // Update a red flag
     public function update(Request $request, RedFlag $redFlag)
     {
+        $userID = Auth::user()->id;
+        $profile = Profile::where('user_id', $userID)->firstOrFail();
 
-        // Get current user id
-        $userID = Auth()->user('')->id;
-        $profile = null;
-
-
-        // Get the profile information if the user id exists
-        if($userID) {
-            $profile = Profile::where('user_id', $userID)->first();
+        if ($profile->id !== $redFlag->profile_id) {
+            return response()->json(["error" => true, "errorMessage" => "You are not allowed to update this red flag!"], 403);
         }
-
-
-        if($profile->id !== $redFlag->profile_id) {
-            return response()->json(["error" => true, "errorMessage" => "You are not allowed to update this red flag!"]);
-
-        }
-        
 
         $request->validate([
             'region_id' => 'required|exists:regions,id',
             'name_of_the_contractor_or_customer' => 'required|string|max:255',
             'complaint' => 'required|string',
-            'red_flag_date' => 'required|date',
             'is_contractor_or_customer' => 'required|boolean',
         ]);
 
@@ -84,21 +58,11 @@ class RedFlagController extends Controller
     // Delete a red flag
     public function destroy(RedFlag $redFlag)
     {
+        $userID = Auth::user()->id;
+        $profile = Profile::where('user_id', $userID)->firstOrFail();
 
-        // Get current user id
-        $userID = Auth()->user('')->id;
-        $profile = null;
-
-
-        // Get the profile information if the user id exists
-        if($userID) {
-            $profile = Profile::where('user_id', $userID)->first();
-        }
-
-
-        if($profile->id !== $redFlag->profile_id) {
-            return response()->json(["error" => true, "errorMessage" => "You are not allowed to update this red flag!"]);
-
+        if ($profile->id !== $redFlag->profile_id) {
+            return response()->json(["error" => true, "errorMessage" => "You are not allowed to delete this red flag!"], 403);
         }
 
         $redFlag->delete();
@@ -107,187 +71,105 @@ class RedFlagController extends Controller
     }
 
     // Get all red flags with filters and sorting
-    // public function index(Request $request)
-    // {
-    //     $query = RedFlag::query();
-
-    //     // Filtering
-    //     if ($request->has('name_of_the_contractor_or_customer')) {
-    //         $query->where('name_of_the_contractor_or_customer', 'like', '%' . $request->name_of_the_contractor_or_customer . '%');
-    //     }
-
-    //     if ($request->has('is_contractor_or_customer')) {
-    //         $query->where('is_contractor_or_customer', $request->is_contractor_or_customer);
-    //     }
-
-    //     if ($request->has('region_id')) {
-    //         $query->where('region_id', $request->region_id);
-    //     }
-
-    //     if ($request->has('red_flag_date')) {
-    //         $query->whereDate('red_flag_date', $request->red_flag_date);
-    //     }
-
-    //     // Sorting
-    //     $sortField = $request->get('sort_field', 'red_flag_date'); // Default sort field
-    //     $sortOrder = $request->get('sort_order', 'asc'); // Default sort order
-
-    //     // Validate sort field and order
-    //     $validSortFields = ['name_of_the_contractor_or_customer', 'region_id', 'red_flag_date'];
-    //     $validSortOrders = ['asc', 'desc'];
-
-    //     if (in_array($sortField, $validSortFields) && in_array($sortOrder, $validSortOrders)) {
-    //         $query->orderBy($sortField, $sortOrder);
-    //     }
-
-    //     $redFlags = $query->get();
-
-    //     return response()->json($redFlags, 200);
-    // }
-
     public function index(Request $request)
-{
-    $query = RedFlag::query();
-
-    // Join with the Profile table to fetch profile details
-    $query->join('profiles', 'red_flags.profile_id', '=', 'profiles.id')
-          ->select('red_flags.*', 'profiles.first_name', 'profiles.last_name', 'profiles.city', 'profiles.state');
-
-    // Filtering
-    if ($request->has('name_of_the_contractor_or_customer')) {
-        $query->where('red_flags.name_of_the_contractor_or_customer', 'like', '%' . $request->name_of_the_contractor_or_customer . '%');
+    {
+        // Determine pagination parameters
+        $perPage = $request->query('per_page', 15);  // Default to 15 if not provided
+        $page = $request->query('page', 1);          // Default to page 1 if not provided
+    
+        $query = RedFlag::query();
+    
+        // Filtering
+        if ($request->has('name_of_the_contractor_or_customer')) {
+            $query->where('name_of_the_contractor_or_customer', 'like', '%' . $request->name_of_the_contractor_or_customer . '%');
+        }
+    
+        if ($request->has('is_contractor_or_customer')) {
+            $query->where('is_contractor_or_customer', $request->is_contractor_or_customer);
+        }
+    
+        if ($request->has('region_id')) {
+            $query->where('region_id', $request->region_id);
+        }
+    
+        // Sorting
+        $sortField = $request->get('sort_field', 'updated_at'); // Default sort field
+        $sortOrder = $request->get('sort_order', 'desc');       // Default sort order
+    
+        $validSortFields = ['name_of_the_contractor_or_customer', 'region_id', 'updated_at'];
+        $validSortOrders = ['asc', 'desc'];
+    
+        if (in_array($sortField, $validSortFields) && in_array($sortOrder, $validSortOrders)) {
+            $query->orderBy($sortField, $sortOrder);
+        }
+    
+        // Paginate the results
+        $redFlags = $query->paginate($perPage, ['*'], 'page', $page);
+    
+        // Construct the response
+        $response = [
+            'red_flags' => $redFlags->items(),
+            'pagination' => [
+                'current_page' => $redFlags->currentPage(),
+                'last_page' => $redFlags->lastPage(),
+                'per_page' => $redFlags->perPage(),
+                'total' => $redFlags->total(),
+            ]
+        ];
+    
+        return response()->json($response);
     }
-
-    if ($request->has('is_contractor_or_customer')) {
-        $query->where('red_flags.is_contractor_or_customer', $request->is_contractor_or_customer);
-    }
-
-    if ($request->has('region_id')) {
-        $query->where('red_flags.region_id', $request->region_id);
-    }
-
-    if ($request->has('red_flag_date')) {
-        $query->whereDate('red_flags.red_flag_date', $request->red_flag_date);
-    }
-
-    // Include profile_id in the filter if provided in the request
-    if ($request->has('profile_id')) {
-        $query->where('profiles.id', $request->profile_id);
-    }
-
-    // Sorting
-    $sortField = $request->get('sort_field', 'red_flag_date'); // Default sort field
-    $sortOrder = $request->get('sort_order', 'asc'); // Default sort order
-
-    // Validate sort field and order
-    $validSortFields = ['name_of_the_contractor_or_customer', 'region_id', 'red_flag_date'];
-    $validSortOrders = ['asc', 'desc'];
-
-    if (in_array($sortField, $validSortFields) && in_array($sortOrder, $validSortOrders)) {
-        $query->orderBy($sortField, $sortOrder);
-    }
-
-    $redFlags = $query->get();
-
-    return response()->json($redFlags, 200);
-}
-
-
-
+    
     // Get red flags created by the authenticated user
-    // public function myFlags(Request $request)
-    // {
-    //     // Get current user id
-    //     $userID = Auth()->user('')->id;
-    //     $profile = null;
-
-
-    //     // Get the profile information if the user id exists
-    //     if($userID) {
-    //         $profile = Profile::where('user_id', $userID)->first();
-    //     }
-
-
-    //     $query = RedFlag::where('profile_id', $profile->id);
-
-    //     // Filtering
-    //     if ($request->has('name_of_the_contractor_or_customer')) {
-    //         $query->where('name_of_the_contractor_or_customer', 'like', '%' . $request->name_of_the_contractor_or_customer . '%');
-    //     }
-
-    //     if ($request->has('is_contractor_or_customer')) {
-    //         $query->where('is_contractor_or_customer', $request->is_contractor_or_customer);
-    //     }
-
-    //     if ($request->has('region_id')) {
-    //         $query->where('region_id', $request->region_id);
-    //     }
-
-    //     if ($request->has('red_flag_date')) {
-    //         $query->whereDate('red_flag_date', $request->red_flag_date);
-    //     }
-
-    //     // Sorting
-    //     $sortField = $request->get('sort_field', 'red_flag_date'); // Default sort field
-    //     $sortOrder = $request->get('sort_order', 'asc'); // Default sort order
-
-    //     // Validate sort field and order
-    //     $validSortFields = ['name_of_the_contractor_or_customer', 'region_id', 'red_flag_date'];
-    //     $validSortOrders = ['asc', 'desc'];
-
-    //     if (in_array($sortField, $validSortFields) && in_array($sortOrder, $validSortOrders)) {
-    //         $query->orderBy($sortField, $sortOrder);
-    //     }
-
-    //     $redFlags = $query->get();
-
-    //     return response()->json($redFlags, 200);
-    // }
-
     public function myFlags(Request $request)
-{
-    // Get current user id
-    $userID = Auth()->user()->id;
-
-    // Initialize the query with a join on the profiles table
-    $query = RedFlag::query()
-        ->join('profiles', 'red_flags.profile_id', '=', 'profiles.id')
-        ->where('profiles.user_id', $userID)
-        ->select('red_flags.*', 'profiles.first_name', 'profiles.last_name', 'profiles.city', 'profiles.state');
-
-    // Filtering
-    if ($request->has('name_of_the_contractor_or_customer')) {
-        $query->where('red_flags.name_of_the_contractor_or_customer', 'like', '%' . $request->name_of_the_contractor_or_customer . '%');
+    {
+        $userID = Auth::user()->id;
+    
+        // Determine pagination parameters
+        $perPage = $request->query('per_page', 15);  // Default to 15 if not provided
+        $page = $request->query('page', 1);          // Default to page 1 if not provided
+    
+        $query = RedFlag::query()
+            ->where('profile_id', $userID);
+    
+        // Filtering
+        if ($request->has('name_of_the_contractor_or_customer')) {
+            $query->where('name_of_the_contractor_or_customer', 'like', '%' . $request->name_of_the_contractor_or_customer . '%');
+        }
+    
+        if ($request->has('is_contractor_or_customer')) {
+            $query->where('is_contractor_or_customer', $request->is_contractor_or_customer);
+        }
+    
+        if ($request->has('region_id')) {
+            $query->where('region_id', $request->region_id);
+        }
+    
+        // Sorting
+        $sortField = $request->get('sort_field', 'updated_at'); // Default sort field
+        $sortOrder = $request->get('sort_order', 'desc');       // Default sort order
+    
+        $validSortFields = ['name_of_the_contractor_or_customer', 'region_id', 'updated_at'];
+        $validSortOrders = ['asc', 'desc'];
+    
+        if (in_array($sortField, $validSortFields) && in_array($sortOrder, $validSortOrders)) {
+            $query->orderBy($sortField, $sortOrder);
+        }
+    
+        // Paginate the results
+        $myRedFlags = $query->paginate($perPage, ['*'], 'page', $page);
+    
+        // Construct the response
+        $response = [
+            'my_red_flags' => $myRedFlags->items(),
+            'pagination' => [
+                'current_page' => $myRedFlags->currentPage(),
+                'last_page' => $myRedFlags->lastPage(),
+                'per_page' => $myRedFlags->perPage(),
+                'total' => $myRedFlags->total(),
+            ]
+        ];
+    
+        return response()->json($response);
     }
-
-    if ($request->has('is_contractor_or_customer')) {
-        $query->where('red_flags.is_contractor_or_customer', $request->is_contractor_or_customer);
-    }
-
-    if ($request->has('region_id')) {
-        $query->where('red_flags.region_id', $request->region_id);
-    }
-
-    if ($request->has('red_flag_date')) {
-        $query->whereDate('red_flags.red_flag_date', $request->red_flag_date);
-    }
-
-    // Sorting
-    $sortField = $request->get('sort_field', 'red_flag_date'); // Default sort field
-    $sortOrder = $request->get('sort_order', 'asc'); // Default sort order
-
-    // Validate sort field and order
-    $validSortFields = ['name_of_the_contractor_or_customer', 'region_id', 'red_flag_date'];
-    $validSortOrders = ['asc', 'desc'];
-
-    if (in_array($sortField, $validSortFields) && in_array($sortOrder, $validSortOrders)) {
-        $query->orderBy($sortField, $sortOrder);
-    }
-
-    $redFlags = $query->get();
-
-    return response()->json($redFlags, 200);
 }
-
-}
-
