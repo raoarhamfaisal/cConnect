@@ -17,11 +17,13 @@
           <Icon
             icon="el:caret-up"
             class="inline-block cursor-pointer w-3 h-3"
+            @click="emitSortEvent('name_of_the_contractor_or_customer', 'asc')"
           ></Icon>
           <Icon
             icon="el:caret-up"
             class="inline-block cursor-pointer w-3 h-3"
             :rotate="2"
+            @click="emitSortEvent('name_of_the_contractor_or_customer', 'desc')"
           ></Icon>
         </div>
       </div>
@@ -48,11 +50,15 @@
 
         <div class="flex flex-col">
           <Icon
+          @click="emitSortEvent('region_id', 'asc')"
+
             icon="el:caret-up"
             class="inline-block cursor-pointer w-3 h-3"
           ></Icon>
           <Icon
             icon="el:caret-up"
+          @click="emitSortEvent('region_id', 'desc')"
+
             class="inline-block cursor-pointer w-3 h-3"
             :rotate="2"
           ></Icon>
@@ -69,10 +75,14 @@
         <div class="flex flex-col">
           <Icon
             icon="el:caret-up"
+          @click="emitSortEvent('updated_at', 'asc')"
+
             class="inline-block cursor-pointer w-3 h-3"
           ></Icon>
           <Icon
             icon="el:caret-up"
+          @click="emitSortEvent('updated_at', 'desc')"
+
             class="inline-block cursor-pointer w-3 h-3"
             :rotate="2"
           ></Icon>
@@ -88,9 +98,15 @@ import { computed } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
+const emit = defineEmits(['sortChanged']);
 
 //Computed
 const screenWidth = computed(() => store.getters.screenWidth);
+
+const emitSortEvent = (sortField, sortOrder) => {
+  emit('sortChanged', { sortField, sortOrder });
+};
+
 </script>
 
 <style scoped>
@@ -106,5 +122,12 @@ div {
   justify-content: center;
   align-items: center;
   height: 45px;
+}
+.inline-block.cursor-pointer:hover {
+  color: #d1d1d1; /* Light grey color on hover */
+}
+
+.inline-block.cursor-pointer:active {
+  color: #a8a8a8; /* Darker grey color on click */
 }
 </style>

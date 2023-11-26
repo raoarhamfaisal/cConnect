@@ -17,6 +17,10 @@ class RedFlag extends Model
         'profile_id', 'region_id', 'name_of_the_contractor_or_customer', 
         'complaint', 'is_contractor_or_customer'
     ];
-
+    
+    public function profile()
+    {
+        return $this->belongsTo(Profile::class, 'profile_id');
+    }
     // Relationships and other model methods...
 }

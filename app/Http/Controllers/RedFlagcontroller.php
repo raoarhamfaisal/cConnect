@@ -77,7 +77,7 @@ class RedFlagController extends Controller
         $perPage = $request->query('per_page', 15);  // Default to 15 if not provided
         $page = $request->query('page', 1);          // Default to page 1 if not provided
     
-        $query = RedFlag::query();
+       $query = RedFlag::with(['profile:id,first_name,last_name,city,state']);
     
         // Filtering
         if ($request->has('name_of_the_contractor_or_customer')) {
@@ -129,8 +129,12 @@ class RedFlagController extends Controller
         $perPage = $request->query('per_page', 15);  // Default to 15 if not provided
         $page = $request->query('page', 1);          // Default to page 1 if not provided
     
+        // $query = RedFlag::query()
+        //     ->where('profile_id', $userID);
         $query = RedFlag::query()
-            ->where('profile_id', $userID);
+        ->where('red_flags.profile_id', $userID)
+        ->join('profiles', 'red_flags.profile_id', '=', 'profiles.id')
+        ->select('red_flags.*', 'profiles.first_name', 'profiles.last_name', 'profiles.city', 'profiles.state');
     
         // Filtering
         if ($request->has('name_of_the_contractor_or_customer')) {
@@ -142,7 +146,7 @@ class RedFlagController extends Controller
         }
     
         if ($request->has('region_id')) {
-            $query->where('region_id', $request->region_id);
+            $query->where('red_flags.region_id', $request->region_id);
         }
     
         // Sorting
@@ -158,10 +162,31 @@ class RedFlagController extends Controller
     
         // Paginate the results
         $myRedFlags = $query->paginate($perPage, ['*'], 'page', $page);
+        $transformedRedFlags = $myRedFlags->getCollection()->map(function ($redFlag) {
+            return [
+                'id' => $redFlag->id,
+                'profile_id' => $redFlag->profile_id,
+                'region_id' => $redFlag->region_id,
+            'name_of_the_contractor_or_customer' => $redFlag->name_of_the_contractor_or_customer,
+            'complaint' => $redFlag->complaint,
+            'is_contractor_or_customer' => $redFlag->is_contractor_or_customer,
+            'deleted_at' => $redFlag->deleted_at,
+            'created_at' => $redFlag->created_at,
+            'updated_at' => $redFlag->updated_at,
+                'profile' => [
+                    'first_name' => $redFlag->first_name,
+                    'last_name' => $redFlag->last_name,
+                    'city' => $redFlag->city,
+                    'state' => $redFlag->state
+                ]
+            ];
+        });
     
+        // Update the paginator's collection
+        $myRedFlags->setCollection($transformedRedFlags);   
         // Construct the response
         $response = [
-            'my_red_flags' => $myRedFlags->items(),
+            'red_flags' => $myRedFlags->items(),
             'pagination' => [
                 'current_page' => $myRedFlags->currentPage(),
                 'last_page' => $myRedFlags->lastPage(),

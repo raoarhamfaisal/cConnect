@@ -50,6 +50,8 @@ const pagination = ref(0);
 const perPage = ref(15);
 const loadingNextPage = ref(false);
 const loadMoreIntersect = ref();
+const sort_order = ref('desc');
+const sort_field = ref('updated_at');
 
 const store = useStore();
 
@@ -59,30 +61,32 @@ const screenWidth = computed(() => store.getters.screenWidth);
 //Mounted
 onMounted(async () => {
   fetchSearchedComplaintsWithLoading();
+  
 });
 
 // watch
 
 //
 watch(redFlags, (newVal) => {
-  // if (newVal.length > 0) {
-  //   setTimeout(() => {
-  //     const observerCallback = (entries) => {
-  //       entries.forEach((entry) => {
-  //         if (entry.isIntersecting) {
-  //           loadMoreContractors();
-  //         }
-  //       });
-  //     };
+  if (newVal.length > 0 ) {
+    setTimeout(() => {
+      const observerCallback = (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if(currentPage.value < pagination.value.last_page)
+            loadMoreContractors();
+          }
+        });
+      };
 
-  //     const observer = new IntersectionObserver(observerCallback, {
-  //       rootMargin: "0px 0px 0px 0px",
-  //       threshold: 0,
-  //     });
+      const observer = new IntersectionObserver(observerCallback, {
+        rootMargin: "0px 0px 0px 0px",
+        threshold: 0,
+      });
 
-  //     observer.observe(loadMoreIntersect.value);
-  //   }, 300);
-  // }
+      observer.observe(loadMoreIntersect.value);
+    }, 300);
+  }
 });
 
 watch(region_id, (newVal) => {
@@ -96,6 +100,7 @@ watch(isSearchByCustomer, (newVal) => {
 
 });
 
+
 //Methods
 
 let searchTimer;
@@ -107,9 +112,14 @@ const submitSearchTerm = () => {
   }
 
   // Set a new timer for 1 second
-  searchTimer = setTimeout(() => {
-    fetchMyRedFlags.value = false
-    fetchSearchedComplaintsWithLoading();
+  searchTimer = setTimeout( () => {
+  
+   
+  currentPage.value = 1;
+
+
+  fetchSearchedComplaintsWithLoading()
+ 
   }, 300);
 };
 
@@ -126,14 +136,17 @@ const changeReferal = (value) => {
 // apis
 
 const loadMoreContractors = async () => {
+  console.log(pagination.value , 'pagination',searchTerm.value,currentPage.value)
   loadingNextPage.value = true;
   currentPage.value = currentPage.value + 1;
-  await fetchSearchedComplaints(perPage.value, currentPage.value, true);
+  await fetchSearchedComplaints(perPage.value, currentPage.value);
   loadingNextPage.value = false;
 };
 
 const fetchComplaintsAddedByMe = ()=>{
-  fetchMyRedFlags.value = true
+  fetchMyRedFlags.value = !fetchMyRedFlags.value
+  currentPage.value = 1
+
   fetchSearchedComplaintsWithLoading();
 }
 
@@ -141,20 +154,20 @@ const fetchComplaintsAddedByMe = ()=>{
 const fetchSearchedComplaints = async (
   per_page = perPage.value,
   page = 1,
-  append = false
+  append = true
 ) => {
   let response;
   try {
+   
     if(fetchMyRedFlags.value){
       response = await axios.get(
       `/api/red-flags/my-red-flags?${
-        searchTerm.value &&
-        `name_of_the_contractor_or_customer=
-       ${searchTerm.value}`
-      }&region_id=${region_id.value}${
-        isSearchByCustomer.value !== null &&
-        `&is_contractor_or_customer=${isSearchByCustomer.value}`
-      }&sort_field=red_flag_date&sort_order=desc`,
+          searchTerm.value &&
+          `name_of_the_contractor_or_customer=${searchTerm.value}`
+        }&region_id=${region_id.value}${
+          isSearchByCustomer.value !== null &&
+          `&is_contractor_or_customer=${isSearchByCustomer.value}`
+        }&per_page=${per_page}&page=${page}&sort_field=${sort_field.value}&sort_order=${sort_order.value}`,
       getAxiosConfig()
     );
     }else{
@@ -162,23 +175,24 @@ const fetchSearchedComplaints = async (
       response = await axios.get(
         `/api/red-flags?${
           searchTerm.value &&
-          `name_of_the_contractor_or_customer=
-         ${searchTerm.value}`
+          `name_of_the_contractor_or_customer=${searchTerm.value}`
         }&region_id=${region_id.value}${
           isSearchByCustomer.value !== null &&
           `&is_contractor_or_customer=${isSearchByCustomer.value}`
-        }&sort_field=red_flag_date&sort_order=desc`,
+        }&per_page=${per_page}&page=${page}&sort_field=${sort_field.value}&sort_order=${sort_order.value}`,
         getAxiosConfig()
       );
     }
     // &per_page=${per_page}&page=${page}&sort_field=&sort_order=asc
     console.log(response.data, "response");
     if (append) {
-      redFlags.value = [...redFlags.value, ...response.data];
+      redFlags.value = [...redFlags.value, ...response.data.red_flags];
     } else {
-      redFlags.value = [...response.data];
+      redFlags.value = [...response.data.red_flags];
     }
-    // pagination.value = response.data.pagination;
+  
+
+    pagination.value = response.data.pagination;
 
     // Extracting the star counts
   } catch (err) {
@@ -188,7 +202,7 @@ const fetchSearchedComplaints = async (
 };
 const fetchSearchedComplaintsWithLoading = async () => {
   loading.value = true;
-  await fetchSearchedComplaints();
+  await fetchSearchedComplaints(perPage.value,currentPage.value,false);
   loading.value = false;
 };
 
@@ -345,6 +359,14 @@ const onAddNewRedFlag = async () => {
   }
 };
 
+const handleSortChange = ({sortField,sortOrder})=>{
+  sort_field.value = sortField;
+  sort_order.value = sortOrder;
+  currentPage.value = 1
+  fetchSearchedComplaintsWithLoading();
+
+}
+
 // for border visibility of between two red flags
 const openAccordions = ref([]);
 
@@ -422,7 +444,7 @@ const determineBorderVisibility = (index) => {
 
               class="w-1/5 px-1 py-1 h-[48px] rounded-lg transition transform duration-300 hover:shadow-lg active:scale-95 font-extrabold bg-[#8a0000] text-white text-sm leading-5 font-sans"
             >
-              My Red Flags
+              {{ fetchMyRedFlags ? "All Red Flags" :  "My Red Flags"}}
             </button>
           </div>
         </div>
@@ -495,7 +517,7 @@ const determineBorderVisibility = (index) => {
 
       <div class="mt-4">
         <div class="bg-white border-2 border-black table-container">
-          <TableHead />
+          <TableHead  @sortChanged="handleSortChange"/>
 
           <template
             v-if="!loading  && redFlags && redFlags.length > 0"
@@ -553,11 +575,13 @@ const determineBorderVisibility = (index) => {
           </div> -->
 
           <!-- lazy loading -->
-          <!-- <div
-            v-show="+currentPage !== +pagination.last_page"
+          <div
+            v-show="+currentPage !== +pagination.last_page "
             ref="loadMoreIntersect"
             style="width: 5px; height: 5px"
           ></div>
+       
+
           <div
             v-show="
               currentPage > 1 &&
@@ -575,13 +599,8 @@ const determineBorderVisibility = (index) => {
             textClasses="small-text"
             background=""
             height="70px"
-          ></Loader> -->
-          <!-- <SubFinderContractor
-            v-for="contractor in redFlags"
-            :key="contractor.id"
-            :contractor="contractor"
-            :region_name="selectedName"
-          /> -->
+          ></Loader>
+         
         </div>
       </div>
     </div>
