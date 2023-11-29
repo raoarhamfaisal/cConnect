@@ -50,22 +50,6 @@ export default {
   },
 
   mounted() {
-    // makes use of javascript IntersectionObserver
-    // entries & entry defined by browser as object enters viewing area
-    // 'IntersectionObserver' allows us to execute code when something
-    // enters or leaves the browser viewport
-    // const observer = new IntersectionObserver((entries) =>
-    //   entries.forEach((entry) => entry.isIntersecting && this.loadMorePosts(), {
-    //     rootMargin: "0px 0px 0px 0px",
-    //     threshold: 0,
-    //   })
-    // );
-    // // rootMargin: "-500px 0px -500px 0px",   top right bottom left
-
-    // observer.observe(this.$refs.loadMoreIntersect);
-    localStorage.setItem("prevUrl", "/post");
-    this.fetchColors();
-
     setTimeout(() => {
       const observerCallback = (entries) => {
         entries.forEach((entry) => {
@@ -80,10 +64,13 @@ export default {
         threshold: 0,
       });
 
-      observer.observe(this.$refs.loadMoreIntersect);
+      this.$nextTick(() => {
+        if (this.$refs.loadMoreIntersectPosts) {
+          observer.observe(this.$refs.loadMoreIntersectPosts);
+        }
+      });
     }, 1000);
   },
-
   // unmounted() {
 
   // },
@@ -520,8 +507,8 @@ export default {
           <!-- ------------------------------------------- -->
 
           <!-- Makes call to load more posts calling the script
-                             observer.observe(this.$refs.loadMoreIntersect) -->
-          <!-- <div ref="loadMoreIntersect" style="width: 5px; height: 5px" />
+                             observer.observe(this.$refs.loadMoreIntersectPosts) -->
+          <!-- <div ref="loadMoreIntersectPosts" style="width: 5px; height: 5px" />
         <Loader
           classes="flex gap-2"
           :loading="loadingPosts"
@@ -535,8 +522,8 @@ export default {
         </AppSpinner> -->
 
           <!-- Makes call to load more posts calling the script
-                             observer.observe(this.$refs.loadMoreIntersect) -->
-          <span ref="loadMoreIntersect" style="width: 5px; height: 5px" />
+                             observer.observe(this.$refs.loadMoreIntersectPosts) -->
+          <span ref="loadMoreIntersectPosts" style="width: 5px; height: 5px" ></span>
 
           <!-- {{ posts.next_page_url }} -->
 
