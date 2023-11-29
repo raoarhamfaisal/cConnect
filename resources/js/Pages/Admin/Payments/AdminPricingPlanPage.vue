@@ -199,6 +199,7 @@
               id="sales_tax"
               type="number"
               class="mt-1 block w-full"
+
               required
               v-model.trim="singlePlan.sales_tax"
               placeholder="Type your Sales Tax(%)"
@@ -361,7 +362,12 @@ const validateForm = () => {
   if (!singlePlan.value.sales_tax) {
     errors.sales_tax = "Sales Tax is Required";
     isValid = false;
+    
+  }else if(+singlePlan.value.sales_tax > 1){
+    errors.sales_tax = "Sales Tax cannot be greater than 1";
+    isValid = false;
   }
+  
 
   return isValid; // Return the overall validation status
 };

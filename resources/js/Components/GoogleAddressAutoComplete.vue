@@ -44,6 +44,7 @@ const setupAutocomplete = () => {
     autocomplete.addListener("place_changed", () => {
       const place = autocomplete.getPlace();
 
+      console.log(place,'componenetType')
       for (const component of place.address_components) {
         const componentType = component.types[0];
 
@@ -53,10 +54,10 @@ const setupAutocomplete = () => {
         if (componentType == "route") {
           internalModelValue.value += component.long_name;
         }
-        if (componentType !== "street_number" && componentType !== "route") {
-          // internalModelValue.value = place.formatted_address;
-          internalModelValue.value = autocompleteInput.value.value;
-        }
+        // if (componentType !== "street_number" && componentType !== "route") {
+        //   // internalModelValue.value = place.formatted_address;
+        //   internalModelValue.value = autocompleteInput.value.value;
+        // }
       }
 
       emit("update:modelValue", internalModelValue.value);
