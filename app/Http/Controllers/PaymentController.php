@@ -34,153 +34,178 @@ class PaymentController extends Controller
     public function startSubscription(Request $request)
     {
 
-        // return response()->json($request);
-        // Ensure user is authenticated
-        if(!Auth()->user('')){
-            return response()->json(['message' => 'User not authenticated'], 401);
-        }
 
-        $userId = Auth()->user('')->id;
+        try {
 
 
-        $profile = Profile::where('user_id', $userId)->first();
-
-
-        $activeSubscription = DB::table('subscriptions')->where('user_id', $userId)->where('is_subscription_active', 1)->first();
-        if ($activeSubscription) {
-            return response()->json(['message' => 'You already have an active subscription!']);
-        }
-
-        // 1. Calculate the subscription amount with coupon
-        $couponDiscount = 0;
-        if($request->has('coupon_code')) {
-            $coupon = DiscountCoupon::where('coupon_code', $request->coupon_code)->where('is_valid', true)->first();
-            if($coupon) {
-                $couponDiscount = $coupon->percentage_off_regular_price;
+            // return response()->json($request);
+            // Ensure user is authenticated
+            if(!Auth()->user('')){
+                return response()->json(['message' => 'User not authenticated'], 401);
             }
-        }
 
-        $paymentInfo = DB::table('payment_infos')->where('region_id', $profile->region_id)->first();
+            $userId = Auth()->user('')->id;
 
-        // Set base amount based on user's selected duration
-        $baseAmount = $request->input('duration') === 'annual' 
-        ? ($paymentInfo && $paymentInfo->billed_annual_price ? $paymentInfo->billed_annual_price : 390) 
-        : ($paymentInfo && $paymentInfo->billed_monthly_price ? $paymentInfo->billed_monthly_price : 39);
-           
-        // Retrieve the sales tax rate
-        $salesTaxRate = ($paymentInfo && $paymentInfo->sales_tax) ? ($paymentInfo->sales_tax * 0.01) : (0.02);       
 
-        $finalAmount = $request->input('duration') === 'annual' 
+            $profile = Profile::where('user_id', $userId)->first();
+
+
+            $activeSubscription = DB::table('subscriptions')->where('user_id', $userId)->where('is_subscription_active', 1)->first();
+            if ($activeSubscription) {
+                return response()->json(['message' => 'You already have an active subscription!']);
+            }
+
+            // 1. Calculate the subscription amount with coupon
+            $couponDiscount = 0;
+            if($request->has('coupon_code')) {
+                $coupon = DiscountCoupon::where('coupon_code', $request->coupon_code)->where('is_valid', true)->first();
+                if($coupon) {
+                    $couponDiscount = $coupon->percentage_off_regular_price;
+                }
+            }
+
+            $paymentInfo = DB::table('payment_infos')->where('region_id', $profile->region_id)->first();
+
+            // Set base amount based on user's selected duration
+            $baseAmount = $request->input('duration') === 'annual' 
             ? ($paymentInfo && $paymentInfo->billed_annual_price ? $paymentInfo->billed_annual_price : 390) 
             : ($paymentInfo && $paymentInfo->billed_monthly_price ? $paymentInfo->billed_monthly_price : 39);
+            
+            // Retrieve the sales tax rate
+            $salesTaxRate = ($paymentInfo && $paymentInfo->sales_tax) ? ($paymentInfo->sales_tax * 0.01) : (0.02);       
+
+            $finalAmount = $request->input('duration') === 'annual' 
+                ? ($paymentInfo && $paymentInfo->billed_annual_price ? $paymentInfo->billed_annual_price : 390) 
+                : ($paymentInfo && $paymentInfo->billed_monthly_price ? $paymentInfo->billed_monthly_price : 39);
 
 
-        $discountAmount = 0;
-        $discountEndDate = null;
+            $discountAmount = 0;
+            $discountEndDate = null;
 
-        if ($request->has('coupon_code')) {
-            $coupon = DiscountCoupon::where('coupon_code', $request->coupon_code)
-                        ->where('is_valid', true)
-                        ->first();
-            $couponDiscountValue = 0;
-            if ($coupon) {
-                if ($request->input('duration') === 'annual') {
-                    $couponDiscountValue = ((int)$baseAmount / 12) * ($coupon->percentage_off_regular_price * 0.01) * $coupon->months;
+            if ($request->has('coupon_code')) {
+                $coupon = DiscountCoupon::where('coupon_code', $request->coupon_code)
+                            ->where('is_valid', true)
+                            ->first();
+                $couponDiscountValue = 0;
+                if ($coupon) {
+                    if ($request->input('duration') === 'annual') {
+                        $couponDiscountValue = ((int)$baseAmount / 12) * ($coupon->percentage_off_regular_price * 0.01) * $coupon->months;
 
-                    $tempFinalAmount = $baseAmount - $couponDiscountValue;
-                    
-                    $salesTaxPrice = $tempFinalAmount * $salesTaxRate;
-                    $finalAmount = $tempFinalAmount + $salesTaxPrice;
-                } else {
-                    // Monthly logic
-                    if ($coupon->months > 0) {
-                        $couponDiscountValue = $baseAmount * ($coupon->percentage_off_regular_price * 0.01);
                         $tempFinalAmount = $baseAmount - $couponDiscountValue;
+                        
                         $salesTaxPrice = $tempFinalAmount * $salesTaxRate;
                         $finalAmount = $tempFinalAmount + $salesTaxPrice;
                     } else {
-                        $salesTaxPrice = $baseAmount * $salesTaxRate;
-                        $finalAmount = $baseAmount + $salesTaxPrice;
+                        // Monthly logic
+                        if ($coupon->months > 0) {
+                            $couponDiscountValue = $baseAmount * ($coupon->percentage_off_regular_price * 0.01);
+                            $tempFinalAmount = $baseAmount - $couponDiscountValue;
+                            $salesTaxPrice = $tempFinalAmount * $salesTaxRate;
+                            $finalAmount = $tempFinalAmount + $salesTaxPrice;
+                        } else {
+                            $salesTaxPrice = $baseAmount * $salesTaxRate;
+                            $finalAmount = $baseAmount + $salesTaxPrice;
+                        }
                     }
+                    $discountEndDate = Carbon::now()->addMonths($coupon->months);
+                    $discountAmount = $couponDiscountValue;
                 }
-                $discountEndDate = Carbon::now()->addMonths($coupon->months);
-                $discountAmount = $couponDiscountValue;
+            } else {
+                $salesTaxPrice = $baseAmount * $salesTaxRate;
+                $finalAmount = $baseAmount + $salesTaxPrice;
             }
-        } else {
-            $salesTaxPrice = $baseAmount * $salesTaxRate;
-            $finalAmount = $baseAmount + $salesTaxPrice;
-        }
 
-        // dd($finalAmount);
+            // dd($finalAmount);
 
 
-        // Set the transaction's refId
-        $refId = 'ref' . time();
+            // Set the transaction's refId
+            $refId = 'ref' . time();
 
 
 
-        // 2. Set up the subscription for Authorize.Net
-        $subscription = $this->setUpSubscription($request, floatval($finalAmount) !== 0.0 ? floatval($finalAmount) : 0.01);
+            // 2. Set up the subscription for Authorize.Net
+            $subscription = $this->setUpSubscription($request, floatval($finalAmount) !== 0.0 ? floatval($finalAmount) : 0.01);
 
-        // Authentication with Authorize.Net's credentials
-        $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
-        $merchantAuthentication->setName(env('MERCHANT_LOGIN_ID'));
-        $merchantAuthentication->setTransactionKey(env('MERCHANT_TRANSACTION_KEY'));
+            // Authentication with Authorize.Net's credentials
+            $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+            $merchantAuthentication->setName(env('MERCHANT_LOGIN_ID'));
+            $merchantAuthentication->setTransactionKey(env('MERCHANT_TRANSACTION_KEY'));
 
-        $apiRequest = new AnetAPI\ARBCreateSubscriptionRequest();
-        $apiRequest->setmerchantAuthentication($merchantAuthentication);
-        $apiRequest->setRefId($refId);
-        $apiRequest->setSubscription($subscription);
-        $controller = new AnetController\ARBCreateSubscriptionController($apiRequest);
+            $apiRequest = new AnetAPI\ARBCreateSubscriptionRequest();
+            $apiRequest->setmerchantAuthentication($merchantAuthentication);
+            $apiRequest->setRefId($refId);
+            $apiRequest->setSubscription($subscription);
+            $controller = new AnetController\ARBCreateSubscriptionController($apiRequest);
 
-        $subscriptionResponse = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::SANDBOX);
+            $subscriptionResponse = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::SANDBOX);
 
-        if($subscriptionResponse && $subscriptionResponse->getMessages()->getResultCode() == "Ok") {
-            // 3. Handle successful payments
-            $this->handleSuccessfulPayment($request, $userId, $subscriptionResponse, $baseAmount, $discountAmount, $discountEndDate, $finalAmount, $paymentInfo->id);
+            if($subscriptionResponse && $subscriptionResponse->getMessages()->getResultCode() == "Ok") {
+                // 3. Handle successful payments
+                $this->handleSuccessfulPayment($request, $userId, $subscriptionResponse, $baseAmount, $discountAmount, $discountEndDate, $finalAmount, $paymentInfo->id);
 
 
-        } else {
-            // 4. Handle failed payments
-            $this->handleFailedPayment($userId, $subscriptionResponse);
+            } else {
+                // 4. Handle failed payments
+                $this->handleFailedPayment($userId, $subscriptionResponse);
 
-            // echo "ERROR :  Invalid subscriptionResponse\n";
-            $errorMessages = $subscriptionResponse->getMessages()->getMessage();
-            // echo "Response : " . $errorMessages[0]->getCode() . "  " .$errorMessages[0]->getText() . "\n";
+                // echo "ERROR :  Invalid subscriptionResponse\n";
+                $errorMessages = $subscriptionResponse->getMessages()->getMessage();
+                // echo "Response : " . $errorMessages[0]->getCode() . "  " .$errorMessages[0]->getText() . "\n";
 
-            Subscription::updateOrCreate(
-                ['user_id' => $userId], // Attributes to check
-                [
-                    'payment_info_id' => $paymentInfo->id,
-                    'is_subscription_successfull' => 0,
-                    'is_subscription_active' => 0,
-                    'subscription_id' => null,
-                    'metadata' => json_encode($subscriptionResponse),
-                    'subscription_plan' => ($request->input('duration') === 'annual') ? 'Annual Subscription' : 'Monthly Subscription',
-                    'ends_at' => null,
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now()
-                ]
-            );
+                Subscription::updateOrCreate(
+                    ['user_id' => $userId], // Attributes to check
+                    [
+                        'payment_info_id' => $paymentInfo->id,
+                        'is_subscription_successfull' => 0,
+                        'is_subscription_active' => 0,
+                        'subscription_id' => null,
+                        'metadata' => json_encode($subscriptionResponse),
+                        'subscription_plan' => ($request->input('duration') === 'annual') ? 'Annual Subscription' : 'Monthly Subscription',
+                        'ends_at' => null,
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now()
+                    ]
+                );
+        
+
+
+                // dd()
+
+                $subscriptionResponse = [
+                    'messages' => [
+                        'resultCode' => 'Error',
+                        'message' => [
+                            [
+                                'code' => 'E00003',
+                                'text' => 'Your payment could not be processed due to incorrect card details. Please double-check your card information and try again.'
+                            ]
+                        ]
+                    ]
+                ];            
+            }
+
+            return response()->json($subscriptionResponse);
+
+        } catch (\Exception $e) {
+            // Log the error for debugging
+            \Log::error('Error in startSubscription: ' . $e->getMessage());
     
-
-
-            // dd()
-
+            // Prepare the custom error response
             $subscriptionResponse = [
                 'messages' => [
                     'resultCode' => 'Error',
                     'message' => [
                         [
                             'code' => 'E00003',
-                            'text' => 'Your payment could not be processed due to incorrect card details. Please double-check your card information and try again.'
+                            'text' => 'Your payment could not be processed due to server error. Please try again later or try a different card.'
                         ]
                     ]
                 ]
-            ];            
+            ];
+    
+            // Return the error response
+            return response()->json($subscriptionResponse);
         }
-
-        return response()->json($subscriptionResponse);
     }
 
     private function setUpSubscription($request, $finalAmount)
