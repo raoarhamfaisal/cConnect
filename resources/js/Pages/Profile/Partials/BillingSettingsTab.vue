@@ -128,7 +128,7 @@ const handleCancelSubscription = async () => {
       getAxiosConfig()
     );
     if (response.data) {
-      console.log(response.data, "response");
+    
       changesSaved("Cancellation Request Recieved");
       cancelSubscriptionDialogRef.value.closeDialog();
     }

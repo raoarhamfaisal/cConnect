@@ -9,7 +9,7 @@ import { Icon } from "@iconify/vue";
 import Avatar from "@/Components/Ratings/Avatar.vue";
 import { Inertia } from "@inertiajs/inertia";
 import { removeToken } from "@/helpers/localStorageHelper";
-import DialogContractorPage from "@/Pages/Contractor/DialogContractorPage.vue";
+// import DialogContractorPage from "@/Pages/Contractor/DialogContractorPage.vue";
 import { useStore } from "vuex";
 const props = defineProps({
   showit: Boolean,
@@ -69,10 +69,10 @@ function handleLogout() {
 }
 
 const openProfileModal = () => {
-  store.commit("profile/setActiveTab", 3);
-  if (usePage().url.value !== "/profile") {
+  // store.commit("profile/setActiveTab", 3);
+  // if (usePage().url.value !== "/profile") {
     dialogRef.value.openDialog();
-  }
+  // }
 };
 
 // Create a computed property to check if at least one property is not null
@@ -100,9 +100,9 @@ const truncatedName = computed(() => {
     (props.profile.last_name ? props.profile.last_name : "");
   return fullName.length < 27 ? fullName : fullName.substring(0, 23) + "...";
 });
-const openContractorPageModal = () => {
-  contractorPageRef.value.openDialog();
-};
+// const openContractorPageModal = () => {
+//   contractorPageRef.value.openDialog();
+// };
 </script>
 
 <template>
