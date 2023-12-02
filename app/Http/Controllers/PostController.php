@@ -137,6 +137,12 @@ class PostController extends Controller
                     'is_body_bold' => $post->is_body_bold,
                     'post_text_color_id' => $post->post_text_color_id,
                     'post_background_color_id' => $post->post_background_color_id,
+
+                    'title_text_color_id' => $post->title_text_color_id,
+                    'title_background_color_id' => $post->title_background_color_id,
+                    'title_text_alignment' => $post->title_text_alignment,
+        
+
                     'font_size' => $post->font_size,
                     'text_alignment' => $post->text_alignment,
 
@@ -203,6 +209,12 @@ class PostController extends Controller
                         'is_body_bold' => $post->is_body_bold,
                         'post_text_color_id' => $post->post_text_color_id,
                         'post_background_color_id' => $post->post_background_color_id,
+
+                        'title_text_color_id' => $post->title_text_color_id,
+                        'title_background_color_id' => $post->title_background_color_id,
+                        'title_text_alignment' => $post->title_text_alignment,
+            
+
                         'font_size' => $post->font_size,
                         'text_alignment' => $post->text_alignment,
                             

@@ -29,6 +29,10 @@ class PostFactory extends Factory
             'post_text_color_id' => $this->faker->numberBetween(1, 12),
             'post_background_color_id' => $this->faker->numberBetween(12, 24),
 
+            'title_text_color_id' => $this->faker->numberBetween(1, 12),
+            'title_background_color_id' => $this->faker->numberBetween(12, 24),
+
+
             'likes' => $this->faker->numberBetween(0, 100),
             'repost' => $this->faker->numberBetween(0, 100),
             'shares' => $this->faker->numberBetween(0, 100),

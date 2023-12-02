@@ -35,7 +35,12 @@ class StorePostRequest extends FormRequest
             'post_text_color_id' => 'nullable|exists:post_colors,id', // Ensure it exists in post_colors table
             'post_background_color_id' => 'nullable|exists:post_colors,id', // Ensure it exists in post_colors table
             'font_size' => 'nullable|string',
-            'text_alignment' => 'in:left,center,right'
+            'text_alignment' => 'in:left,center,right',
+
+            'title_text_alignment' => 'nullable|in:left,center,right',
+            'title_text_color_id' => 'nullable|exists:post_colors,id',
+            'title_background_color_id' => 'nullable|exists:post_colors,id',
+                
         ];
     }
 

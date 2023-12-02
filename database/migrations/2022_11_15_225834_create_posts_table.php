@@ -29,6 +29,9 @@ return new class extends Migration
             $table->unsignedBigInteger('post_background_color_id')->nullable();
             $table->string('font_size')->nullable();
             $table->string('text_alignment')->default('left');
+            $table->string('title_text_alignment')->default('left')->nullable();
+            $table->unsignedBigInteger('title_text_color_id')->nullable();
+            $table->unsignedBigInteger('title_background_color_id')->nullable();
 
             $table->smallInteger('likes')->default(0);
             $table->smallInteger('repost')->default(0);
