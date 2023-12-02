@@ -100,6 +100,11 @@ class AdminUsersController extends Controller
         // Fetch the user
         $user = User::where('id', $userId)->firstOrFail();
 
+        if($data['active_user']) {
+            $data['is_deactivated_by_admin'] = 0;
+        }else {
+            $data['is_deactivated_by_admin'] = 1;
+        }
 
         // Update the profile with the validated data
         $profile->update($data);

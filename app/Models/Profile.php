@@ -16,6 +16,7 @@ class profile extends Model
         'is_payment_verified',
         'user_id',
         'active_user',
+        'is_deactivated_by_admin',
         'first_name',
         'last_name',
         'email',

@@ -271,6 +271,7 @@ class PaymentController extends Controller
         $profile = Profile::where('user_id', $userId)->first();
         if($profile) {
             $profile->active_user = 1;
+            $profile->is_deactivated_by_admin = 0;
             $profile->is_payment_verified = 1;
             $profile->save();
         }
@@ -360,6 +361,7 @@ class PaymentController extends Controller
         $profile = Profile::where('user_id', $userId)->first();
         if($profile) {
             $profile->active_user = 0;
+            $profile->is_deactivated_by_admin = 0;
             $profile->is_payment_verified = 0;
             $profile->save();
         }
@@ -447,6 +449,7 @@ class PaymentController extends Controller
                 $profile = Profile::where('user_id', $userId)->first();
                 if($profile) {
                     $profile->active_user = 0;
+                    $profile->is_deactivated_by_admin = 0;
                     $profile->is_payment_verified = 0;
                     $profile->save();
                 }
