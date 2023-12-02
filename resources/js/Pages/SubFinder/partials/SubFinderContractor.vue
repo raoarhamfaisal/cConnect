@@ -324,6 +324,7 @@
     ref="postDialogRef"
     :contractorId="contractor.user_id"
   />
+  
 </template>
 
 <script setup>
@@ -336,9 +337,7 @@ import TradesWithDialog from "@/Components/TradesWithDialog.vue";
 import InfoWithIconLink from "@/Components/InfoWithIconLink.vue";
 import DialogContractorPosts from "@/Components/Postings/DialogContractorPosts.vue";
 
-import { options } from "@/helpers/selectListsHelpters.js";
 import { useStore } from "vuex";
-import Badge from "@/Components/Ratings/Badge.vue";
 
 import { Icon } from "@iconify/vue";
 import {
@@ -417,7 +416,9 @@ const insertTab = (event) => {
     note.value = note.value.substring(0, start) + '      ' + note.value.substring(end);
 
     // Put caret at right position again
-    event.target.selectionStart = event.target.selectionEnd = start + 4;
+    nextTick(() => {
+      event.target.selectionStart = event.target.selectionEnd = start + 6;
+    });
   }
 };
 

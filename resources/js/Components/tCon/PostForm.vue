@@ -5,7 +5,8 @@ import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orien
 import InputLabel from "@/Components/InputLabel.vue";
 import MultiSelect from "@/Components/MultiSelect.vue";
 import InputError from "@/Components/InputError.vue";
-import TextEditor from "@/Components/TextEditor.vue";
+import TextEditorTopText from "@/Components/TextEditorTopText.vue";
+import TextEditorTitle from "@/Components/TextEditorTitle.vue";
 import SelectProfile from "@/Components/SelectProfile.vue";
 
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
@@ -51,7 +52,8 @@ export default {
     InputLabel,
     // DecoupledEditor,
     InputError,
-    TextEditor,
+    TextEditorTopText,
+    TextEditorTitle,
     SelectProfile,
     CustomDialog,
     Badge,
@@ -137,18 +139,21 @@ export default {
         this.selectedReferal = selectedName;
       }
     },
-  
+
     success(newVal) {
       if (newVal) {
         this.form.title = "";
         this.form.body1 = "";
         this.form.body2 = "";
         this.form.post_text_color_id = null;
+        this.form.title_text_color_id = null;
 
         this.form.post_background_color_id = null;
+        this.form.title_background_color_id = null;
         this.form.is_body_bold = false;
         this.form.font_size = "0";
         this.form.text_alignment = "left";
+        this.form.title_text_alignment = "left";
         this.myFiles = [];
         this.form.image = "";
         this.$store.dispatch("ratings/getTrades", this.id);
@@ -195,6 +200,25 @@ export default {
         this.tradesPost[field] = !this.tradesPost[field];
       }
     },
+    insertTabBody2(event) {
+      if (event.key === "Tab") {
+        event.preventDefault();
+        const start = event.target.selectionStart;
+        const end = event.target.selectionEnd;
+if(this.form.body2 === null){
+  this.form.body2 = ''
+}
+        // Set the value to: text before caret + four spaces + text after caret
+        this.form.body2 =
+           this.form.body2.substring(0, start) + "      " + this.form.body2.substring(end);
+
+        // Put caret at right position again
+        nextTick(() => {
+      event.target.selectionStart = event.target.selectionEnd = start + 6;
+    });
+      }
+    },
+    
     handleFilePondProcessStart(file) {
       console.log("started file");
       // this.showBackroundColor = false;
@@ -469,18 +493,17 @@ Array.prototype.remove = function () {
               </div>
 
               <!-- TITLE TEXT -->
-              <div class="mb-4">
+              <div class="mb-2">
                 <label
                   for="formPostTitle"
-                  class="block text-gray-700 text-sm font-bold mb-2"
-                  >Post Title:
+                  class="block text-gray-700 text-sm font-bold mb-1"
+                  >Post Title (max 35char):
                 </label>
-                <input
-                  type="text"
-                  v-model="form.title"
-                  class="w-full py-2 px-3 shadow appearance-none text-gray-900 font-semibold border rounded border-gray-600 leading-tight focus:outline-none focus:shadow-outline placeholder:italic placeholder:text-slate-500"
-                  id="formPostTitle"
-                  placeholder="Post Title..."
+                <TextEditorTitle
+                  v-model:modelValue="form.title"
+                  v-model:textColorId="form.title_text_color_id"
+                  v-model:backgroundColorId="form.title_background_color_id" 
+                  v-model:textAlignment="form.title_text_alignment"
                 />
                 <div v-if="$page.props.errors.title" class="text-red-500">
                   {{ $page.props.errors.title }}
@@ -488,28 +511,14 @@ Array.prototype.remove = function () {
               </div>
 
               <!-- TOP TEXT -->
-              <div class="mb-4 closing">
+              <div class="mb-2 closing">
                 <label
                   for="formPostbody1"
-                  class="block text-gray-700 text-sm font-bold mb-2"
+                  class="block text-gray-700 text-sm font-bold mb-1"
                   >Top text (required):
                 </label>
-                <!-- <ckeditor
-                  class="default"
-                  @ready="onReady"
-                  :editor="editor"
-                  v-model="form.body1"
-                  :config="editorConfig"
-                ></ckeditor> -->
-                <!-- <input
-                  type="text"
-                  v-model="form.body1"
-                  class="w-full py-2 px-3 shadow appearance-none text-gray-900 font-semibold border rounded border-gray-600 leading-tight focus:outline-none focus:shadow-outline placeholder:italic placeholder:text-slate-500"
-                  id="formPostbody1"
-                  placeholder="Top text..."
-                /> -->
 
-                <TextEditor
+                <TextEditorTopText
                   v-model:modelValue="form.body1"
                   v-model:fontSize="form.font_size"
                   v-model:textColorId="form.post_text_color_id"
@@ -551,7 +560,7 @@ Array.prototype.remove = function () {
                   imageResizeTargetWidth="1000"
                   imageResizeTargetHeight="2000"
                   imageResizeUpscale="true"
-                  maxFiles="10"
+                  maxFiles="15"
                   :allowReorder="true"
                   credits="false"
                   v-bind:server="{
@@ -610,16 +619,10 @@ Array.prototype.remove = function () {
                   class="block text-gray-700 text-sm font-bold mb-2"
                   >Bottom text (not required):
                 </label>
-                <!-- <input
-                  type="text"
-                  v-model="form.body2"
-                  class="w-full py-2 px-3 shadow appearance-none text-gray-900 font-semibold border rounded border-gray-600 leading-tight focus:outline-none focus:shadow-outline placeholder:italic placeholder:text-slate-500"
-                  style="height: 100px;"
-                  id="formPostbody2"
-                  placeholder="Bottom text..."
-                /> -->
+
                 <textarea
                   v-model="form.body2"
+                  @keydown="insertTabBody2"
                   class="w-full py-2 px-3 shadow appearance-none text-gray-900 font-semibold border rounded border-gray-600 leading-tight focus:outline-none focus:shadow-outline placeholder:italic placeholder:text-slate-500"
                   rows="3"
                   id="formPostbody2"

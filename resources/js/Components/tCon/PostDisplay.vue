@@ -100,8 +100,11 @@ export default {
       dialogRef: ref(),
       user: usePageDeatails.auth.user,
       customBgColor: "",
+      customBgColor: "",
       text_alignment: "left",
+      titleCustomBgColor: "left",
       text_color: "",
+      title_text_color: "",
       profileId: usePageDeatails.profile.id,
       isContentOverflow: false,
       isContentOverflowBody2: false,
@@ -121,7 +124,7 @@ export default {
         this.customBgColor.startsWith("#") ? "text-sky-400" : "text-sky-700"
       }`;
     },
-    toggleClassBody2(){
+    toggleClassBody2() {
       return `cursor-pointer text-sky-700 "
       }`;
     },
@@ -130,8 +133,15 @@ export default {
         return {
           maxHeight: "none",
           overflow: "hidden",
+          lineHeight:
+            +this.post.font_size > 3 && this.post.font_size < 10
+              ? "1.7rem"
+              : this.post.font_size >= 10
+              ? "2rem"
+              : "inherit",
           display: "inline",
           fontSize: `${16 + +this.post.font_size}px`,
+
           color: this.text_color,
         };
       } else {
@@ -139,6 +149,12 @@ export default {
           maxHeight: this.lineHeight * 4 + "px",
           fontSize: `${16 + +this.post.font_size}px`,
           overflow: "hidden",
+          lineHeight:
+            +this.post.font_size > 3 && +this.post.font_size < 10
+              ? "1.7rem"
+              : +this.post.font_size >= 10
+              ? "2rem"
+              : "inherit",
           display: "block",
 
           color: this.text_color,
@@ -151,17 +167,18 @@ export default {
           maxHeight: "none",
           overflow: "hidden",
           display: "inline",
-         
         };
       } else {
         return {
           maxHeight: this.lineHeightBody2 * 4 + "px",
-         
+
           overflow: "hidden",
           display: "block",
-
         };
       }
+    },
+    titleTextStyle() {
+      return {};
     },
     numberOfImages: {
       // Gets the number of images in post.image string
@@ -175,14 +192,6 @@ export default {
       },
     },
     body1Class: function () {
-      // let regex = /class="([^"]*text-[^"]*)"/;
-      // let regex2 = /class="([^"]*justify-[^"]*)"/;
-
-      // let match = this.post.body1.match(regex);
-      // let match2 = this.post.body1.match(regex2);
-
-      // let className = match ? match[1] : ""; // Extract the classes
-      // let className2 = match2 ? match2[1] : ""; // Extract the classes
       let className, className2;
       if (this.post.is_body_bold) {
         className = "font-bold";
@@ -210,12 +219,33 @@ export default {
         });
       }
 
-      // let bgClassMatch = className.match(/bg-\[#([a-zA-Z0-9]+)\]/);
+      return className + " " + className2;
+    },
+    titleClass: function () {
+      let className, className2;
 
-      // if (bgClassMatch) {
-      //   // this.post.body1 = this.post.body1.replace(bgClassMatch[0], ""); // Remove the bg-[#...] class from post.body1
-      //   this.customBgColor = "#" + bgClassMatch[1]; // Set the custom background color (with '#')
-      // }
+      if (this.post.title_text_alignment) {
+        this.title_text_alignment =
+          this.post.title_text_alignment === "left"
+            ? " text-left"
+            : this.post.title_text_alignment === "center"
+            ? " text-center"
+            : " text-right";
+      }
+      if (this.post.title_text_color_id) {
+        this.textColors.forEach((color) => {
+          if (color.id === this.post.title_text_color_id) {
+            this.title_text_color = color.color;
+          }
+        });
+      }
+      if (this.post.title_background_color_id) {
+        this.backgroundColors.forEach((color) => {
+          if (color.id === this.post.title_background_color_id) {
+            this.titleCustomBgColor = color.color;
+          }
+        });
+      }
 
       return className + " " + className2;
     },
@@ -246,42 +276,11 @@ export default {
       }
 
       return this.processUrls(content);
-
-      // if (
-      //   this.showFullTextBody2 ||
-      //   content?.length <= this.truncatedLengthBody2
-      // ) {
-      //   return this.processUrls(content);
-      // } else {
-      //   let truncated = content?.substring(0, this.truncatedLengthBody2);
-      //   // Ensure it doesn't cut off in the middle of a word if and only if it's actually being truncated
-      //   if (truncated?.length >= this.truncatedLengthBody2) {
-      //     truncated = truncated.substring(0, truncated.lastIndexOf(" "));
-      //   }
-      //   return this.processUrls(truncated);
-      // }
     },
 
     processedBody1() {
       return this.processUrls(this.post.body1);
     },
-    // processedTopText() {
-    //   const parser = new DOMParser();
-    //   const doc = parser.parseFromString(this.post.body1, "text/html");
-
-    //   doc.querySelectorAll("a").forEach((anchor) => {
-    //     const hrefValue = anchor.getAttribute("href");
-    //     if (
-    //       !hrefValue.startsWith("http://") &&
-    //       !hrefValue.startsWith("https://")
-    //     ) {
-    //       anchor.setAttribute("href", "http://" + hrefValue);
-    //     }
-    //     anchor.target = "_blank";
-    //   });
-
-    //   return doc.body.innerHTML;
-    // },
 
     processedBody2() {
       return this.processUrls(this.post.body2);
@@ -308,7 +307,7 @@ export default {
     //   deep: true,
     // },
     showFullTextBody1: "checkContentHeight",
-    showFullTextBody2: "checkContentHeightBody2"
+    showFullTextBody2: "checkContentHeightBody2",
   },
   methods: {
     NavPostingActionMenu(showingPostingActionMenu) {
@@ -324,7 +323,7 @@ export default {
         window.getComputedStyle(textElement).lineHeight
       );
       const maxHeight = this.lineHeight * 4;
-      
+
       this.isContentOverflow =
         textElement.offsetHeight || textElement.scrollHeight > maxHeight;
     },
@@ -345,7 +344,8 @@ export default {
         maxHeight
       );
       this.isContentOverflowBody2 =
-        textElementBody2.offsetHeight || textElementBody2.scrollHeight > maxHeight;
+        textElementBody2.offsetHeight ||
+        textElementBody2.scrollHeight > maxHeight;
     },
 
     HidePostingActionMenu(showingPostingActionMenu) {
@@ -411,6 +411,7 @@ export default {
             />
           </div>
         </div>
+
         <!-- User Info -->
         <div class="flex flex-col justify-center ml-1">
           <h2
@@ -419,7 +420,8 @@ export default {
             @click="$emit('enlarge-post', post)"
           >
             <!-- {{  post }} -->
-            {{ post.id }}: {{ post.title }}
+            {{ post.id }}: {{ post.first_name + " " + post.last_name }}
+            <!-- {{ post.id }}: {{ post.title }} -->
           </h2>
           <div class="">
             {{ post.company_name }}
@@ -540,6 +542,26 @@ export default {
 
     <!-- Text Body1 UPPER -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+    <div
+      :class="`${title_text_alignment} ${
+        titleCustomBgColor.startsWith('#')
+          ? ' flex-col w-full items-center  px-2 py-20 rounded-md shadow-lg border-2'
+          : 'w-full'
+      } `"
+      @click="$emit('enlarge-post', post)"
+      class="font-bold text-xl sm:text-2xl md:tex-3xl mb-1 mt-1"
+      :style="{ backgroundColor: titleCustomBgColor }"
+    >
+      <span
+        v-show="post.title"
+        v-html="post.title"
+        style="white-space: pre-wrap"
+        :style="titleTextStyle"
+        :class="`${titleClass} w-full processed-body inline`"
+        ref="titleElement"
+      ></span>
+    </div>
     <div
       :class="`${text_alignment} ${
         customBgColor.startsWith('#')
@@ -553,6 +575,7 @@ export default {
       <span
         v-show="post.body1"
         v-html="displayedBody1"
+        style="white-space: pre-wrap"
         :style="textStyle"
         :class="`${body1Class} w-full processed-body inline`"
         ref="textElement"
@@ -564,31 +587,11 @@ export default {
       >
         {{ showFullTextBody1 ? "...less" : "...more" }}
       </span>
-      <!-- <span
-        v-if="!showFullTextBody1 && post.body1?.length > truncatedLength"
-        @click.self.stop="toggleText"
-        :class="`cursor-pointer ${
-          customBgColor.startsWith('#') ? 'text-sky-400' : 'text-sky-700'
-        }`"
-      >
-        ...more
-      </span>
-
-      <span
-        v-if="showFullTextBody1 && post.body1?.length > truncatedLength"
-        @click.self.stop="toggleText"
-        :class="`cursor-pointer ${
-          customBgColor.startsWith('#') ? 'text-sky-400' : 'text-sky-700'
-        }`"
-      >
-        ...less
-      </span> -->
     </div>
-
 
     <!-- INDIVIDUAL POST: MAIN IMAGES  -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-    <div class="flex flex-row justify-center w-full mb-1">
+    <div class="flex flex-row justify-center w-full mb-1 mt-1">
       <!-- justify-center  -->
 
       <div
@@ -605,56 +608,28 @@ export default {
     </div>
 
     <!-- Text Body2 LOWER -->
-    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-    <!-- <div
-      class="flex flex-row justify-center items-center w-full px-2 mt-0 mb-0 text-base xs:text-lg md:text-xl font-normal text-gray-900"
-      @click="$emit('enlarge-post', post)"
-    >
-      {{ post.body2 }}
-    </div> -->
-    <!-- <div class="mb-3 mt-3">
-      <div
-        v-show="post.body2"
-        v-html="displayedBody2"
-        @click="$emit('enlarge-post', post)"
-        class="processed-body inline justify-center items-center w-full text-base xs:text-lg md:text-xl font-normal text-gray-900"
-      ></div>
-      <span
-        v-if="!showFullTextBody2 && post.body2?.length > truncatedLengthBody2"
-        @click="toggleTextBody2"
-        class="cursor-pointer text-sky-700"
-      >
-        ...more
-      </span>
-      <span
-        v-if="showFullTextBody2 && post.body2?.length > truncatedLengthBody2"
-        @click="toggleTextBody2"
-        class="cursor-pointer text-sky-700"
-      >
-        ...less
-      </span>
-    </div> -->
-    <div
-      :class="`'w-full'`"
-      @click="$emit('enlarge-post', post)"
-      class=""
-    >
+
+    <div :class="`'w-full'`" @click="$emit('enlarge-post', post)" class="">
       <span
         v-show="post.body2"
         v-html="displayedBody2"
+        style="white-space: pre-wrap"
         :style="textStyleBody2"
         :class="`w-full processed-body inline`"
         ref="textElementBody2"
       ></span>
+
       <span
         v-if="isContentOverflowBody2"
         @click.self.stop="toggleTextBody2"
-        :class="`${toggleClassBody2} ${showFullTextBody2 ? 'inline' : 'inline'} `"
+        :class="`${toggleClassBody2} ${
+          showFullTextBody2 ? 'inline' : 'inline'
+        } `"
       >
         {{ showFullTextBody2 ? "...less" : "...more" }}
       </span>
-     
     </div>
+    <div class="mb-4 mt-3 border-[1px] w-1/3 border-gray-400 rounded"></div>
 
     <!-- INDIVIDUAL POST: BOTTOM ROW MENU -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->

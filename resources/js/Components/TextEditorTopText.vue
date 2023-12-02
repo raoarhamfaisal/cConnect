@@ -45,35 +45,12 @@
       </button>
     </div>
 
-    <!-- <div
-      ref="editor"
-      contenteditable="true"
-      class="editor rounded focus:outline-none focus:shadow-outline border-gray-600 mt-4 py-2 px-3 border"
-      @keydown="handleKeyPress"
-      :class="{
-        'font-bold': isBold,
-        'justify-start text-left': alignment === 'left',
-        'justify-center text-center': alignment === 'center',
-        'justify-end text-right': alignment === 'right',
-        'items-center':
-          backgroundColor !== 'inherit' && backgroundColor !== '#ffffff',
-      }"
-      :style="{
-        display: 'flex',
-        fontSize: 16 + fontSizeIncrement + 'px',
-        color: selectedColor,
-        backgroundColor: backgroundColor,
-      }"
-      placeholder="To Text..."
-      @input="updateContent"
-    >
-      {{ content }}
-    </div> -->
+  
 
     <!-- @keydown="handleKeyPress" -->
     <textarea
       ref="editor"
-      class="overflow-y-hidden resize-none min-h-[200px] rounded focus:border-gray-700 focus:border-2 focus:outline-none focus:ring-gray-700 border-gray-600 mt-4 py-2 px-3 border w-full resize-none"
+      class="overflow-y-hidden resize-none min-h-[200px] rounded focus:border-gray-700 focus:border-2 focus:outline-none focus:ring-gray-700 border-gray-600 mt-2 py-2 px-3 border w-full resize-none"
       :class="{
         'font-bold': isBold,
         'justify-start text-left': alignment === 'left',
@@ -85,11 +62,14 @@
       }"
       :style="{
         fontSize: 16 + fontSizeIncrement + 'px',
+        height: backgroundColor.color !== 'inherit' &&
+          backgroundColor.color !== '#ffffff' ? 87+ 87 + 10 + fontSizeIncrement  + 10 + 'px' : '44px',
         color: selectedColor.color,
         backgroundColor: backgroundColor.color,
       }"
       @paste="updateContent"
       @input="updateContent"
+      @keydown="insertTab"
       v-model="content"
     ></textarea>
   </div>
@@ -132,36 +112,7 @@ const backgroundColor = ref({
 });
 
 const generateStyledContent = () => {
-  // let classes = "inline ";
-
-  // if (isBold.value) {
-  //   classes += " font-bold";
-  // }
-
-  // if (alignment.value === "left") {
-  //   classes += " justify-start text-left";
-  // }
-
-  // if (alignment.value === "center") {
-  //   classes += " justify-center text-center";
-  // }
-
-  // if (alignment.value === "right") {
-  //   classes += " justify-end text-right";
-  // }
-  // if (
-  //   backgroundColor.value.color !== "inherit" &&
-  //   backgroundColor.value.color !== "#ffffff"
-  // ) {
-  //   classes += ` bg-[${backgroundColor.value.color}] items-center flex`;
-  // }
-
-  // const style = `font-size: ${16 + fontSizeIncrement.value}px; color: ${
-  //   selectedColor.value.color
-  // }; `;
-  // console.log("style", style, classes);
-
-  // return `<span id="toTeleport" class="${classes} truncate-text" style="${style}">${content.value}</span>`;
+ 
   return `<span  class="truncate-text">${content.value}</span>`;
 };
 
@@ -245,6 +196,24 @@ const updateContent = () => {
   // content.value = editor.value.innerText;
   adjustHeight();
 };
+const insertTab = (event) => {
+  if (event.key === 'Tab') {
+    event.preventDefault();
+    const start = event.target.selectionStart;
+    const end = event.target.selectionEnd;
+if(content.value === null){
+  content.value = ''
+}
+    // Set the value to: text before caret + four spaces + text after caret
+    content.value = content.value.substring(0, start) + '      ' + content.value.substring(end);
+
+    // Put caret at right position again
+    nextTick(() => {
+      event.target.selectionStart = event.target.selectionEnd = start + 6;
+    });
+  }
+};
+
 </script>
 
 <style scoped>

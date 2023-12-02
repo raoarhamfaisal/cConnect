@@ -102,7 +102,7 @@ watch(selectedColor, (newValue) => {
 });
 
 const setColor = (color) => {
-  selectedColor.value = color;
+  selectedColor.value = {...color};
 };
 
 const clearColor = () => {

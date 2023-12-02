@@ -11,13 +11,18 @@
       <div class="text-sm font-bold text-gray-600 mt-3 mb-2">
         Please provide the basis for your rating
       </div>
+
       <textarea
         id="rating_reason"
         type="text"
         :rows="3"
-        class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+        class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm overflow-hidden"
         required
         v-model="state.rating_reason"
+        ref="textRef"
+        @keydown="insertTab"
+        @input="adjustHeight"
+        @paste="adjustHeight"
         placeholder="Type reason for your rating"
       />
       <InputError
@@ -120,7 +125,7 @@
 </template>
 
 <script setup>
-import { reactive, toRefs, ref, watch } from "vue";
+import { reactive, toRefs, ref, watch, nextTick } from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import CustomSelect from "@/Components/CustomSelect.vue";
 import { filterBadWords } from "@/helpers/utilities";
@@ -262,6 +267,30 @@ const handleSubmit = async () => {
     }
   }
 };
+
+const textRef = ref();
+const insertTab = (event) => {
+  if (event.key === 'Tab') {
+    event.preventDefault();
+    const start = event.target.selectionStart;
+    const end = event.target.selectionEnd;
+
+    // Set the value to: text before caret + four spaces + text after caret
+    state.rating_reason = state.rating_reason.substring(0, start) + '      ' + state.rating_reason.substring(end);
+
+    // Put caret at right position again
+    nextTick(() => {
+      event.target.selectionStart = event.target.selectionEnd = start + 6;
+    });
+  }
+};
+const adjustHeight = () => {
+  nextTick(() => {
+    textRef.value.style.height = "auto"; // Reset height first to get the correct scrollHeight
+    textRef.value.style.height = textRef.value.scrollHeight + "px";
+  });
+};
+
 </script>
 
 <style scoped></style>

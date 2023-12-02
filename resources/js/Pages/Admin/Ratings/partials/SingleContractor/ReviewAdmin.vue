@@ -139,6 +139,7 @@
           <p
             class="text-sm font-semibold py-1 px-3 text-grey-600"
             v-if="review.rating_text"
+            style="white-space: pre-wrap"
           >
             {{
               showFullReview
