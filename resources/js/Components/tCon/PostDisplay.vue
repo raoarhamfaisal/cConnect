@@ -178,7 +178,9 @@ export default {
       }
     },
     titleTextStyle() {
-      return {};
+      return {
+        color: this.title_text_color,
+      };
     },
     numberOfImages: {
       // Gets the number of images in post.image string
@@ -546,7 +548,7 @@ export default {
     <div
       :class="`${title_text_alignment} ${
         titleCustomBgColor.startsWith('#')
-          ? ' flex-col w-full items-center  px-2 py-20 rounded-md shadow-lg border-2'
+          ? ' flex-col w-full items-center  px-2 py-5 rounded-md shadow-lg border-2'
           : 'w-full'
       } `"
       @click="$emit('enlarge-post', post)"
@@ -629,7 +631,7 @@ export default {
         {{ showFullTextBody2 ? "...less" : "...more" }}
       </span>
     </div>
-    <div class="mb-4 mt-3 border-[1px] w-1/3 border-gray-400 rounded"></div>
+    <div :class="`mb-4 ${post.body2 ? 'mt-3': ''} border-[1px] w-1/3 border-gray-800 rounded`"></div>
 
     <!-- INDIVIDUAL POST: BOTTOM ROW MENU -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -729,16 +731,4 @@ export default {
   text-decoration: underline;
 }
 </style>
-<!--
-  should be present on @input
-  const adjustHeight = () => {
-  nextTick(() => {
-    editor.value.style.height = 'auto'; // Reset height first to get the correct scrollHeight
-    editor.value.style.height = editor.value.scrollHeight + 'px';
-  });
-};
-.editor {
-  min-height: 200px;
-  overflow-y: hidden; /* Hide vertical scrollbar */
-  resize: none; /* Disable textarea resizing */
-} -->
+
