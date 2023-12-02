@@ -35,6 +35,11 @@ class ProcessRecurringBilling extends Command
         $subscriptions = Subscription::where('is_subscription_active', 1)->get();
 
         foreach ($subscriptions as $subscription) {
+
+            $this->getAuthorizeNetSubscription($subscription->subscription_id, $subscription);
+
+
+
             if (SubscriptionHelper::isTimeToCharge($subscription)) {
                 $amountToCharge = SubscriptionHelper::calculateBillingAmount($subscription);
                 
@@ -45,6 +50,17 @@ class ProcessRecurringBilling extends Command
                 $this->updateAuthorizeNetSubscription($subscription, $amountToCharge);
                 // $this->processPayment($subscription, $amountToCharge);
             }
+
+
+            $profile = Profile::where('user_id', $subscription->user_id)->first();
+
+            echo "profile of the user" . $profile->user_id;
+
+            if($profile->active_user === 0) {
+                $this->cancelSubscription($profile->user_id);
+            }
+            
+
         }
 
         $this->info('Recurring billing processed successfully.');
@@ -228,4 +244,182 @@ class ProcessRecurringBilling extends Command
         // Update subscription record based on payment success or failure
         // If payment is successful, update the 'ends_at' date for the subscription
     }
+
+    private function getAuthorizeNetSubscription($subscriptionId, $subscription) {
+        /* Create a merchantAuthenticationType object with authentication details
+        retrieved from the constants file */
+        $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+        $merchantAuthentication->setName(env('MERCHANT_LOGIN_ID'));
+        $merchantAuthentication->setTransactionKey(env('MERCHANT_TRANSACTION_KEY'));
+        
+        // Set the transaction's refId
+        $refId = 'ref' . time();
+            
+        // Creating the API Request with required parameters
+        $request = new AnetAPI\ARBGetSubscriptionRequest();
+        $request->setMerchantAuthentication($merchantAuthentication);
+        $request->setRefId($refId);
+        $request->setSubscriptionId($subscriptionId);
+        $request->setIncludeTransactions(true);
+            
+        // Controller
+        $controller = new AnetController\ARBGetSubscriptionController($request);
+            
+        // Getting the response
+        $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+            
+        if ($response != null) 
+        {
+            if($response->getMessages()->getResultCode() == "Ok")
+            {
+                // Success
+                echo "SUCCESS: GetSubscription:" . "\n";
+                // Displaying the details
+                echo "Subscription Name: " . $response->getSubscription()->getName(). "\n";
+                echo "Subscription amount: " . $response->getSubscription()->getAmount(). "\n";
+                echo "Subscription status: " . $response->getSubscription()->getStatus(). "\n";
+                echo "Subscription Description: " . $response->getSubscription()->getProfile()->getDescription(). "\n";
+                echo "Customer Profile ID: " .  $response->getSubscription()->getProfile()->getCustomerProfileId() . "\n";
+                echo "Customer payment Profile ID: ". $response->getSubscription()->getProfile()->getPaymentProfile()->getCustomerPaymentProfileId() . "\n";
+                $transactions = $response->getSubscription()->getArbTransactions();
+                if($transactions != null){
+                    foreach ($transactions as $transaction) {
+                        echo "Transaction ID : ".$transaction->getTransId()." -- ".$transaction->getResponse()." -- Pay Number : ".$transaction->getPayNum()."\n";
+                    }
+                }
+                $profile = Profile::where('user_id', $subscription->user_id)->first();
+                if($response->getSubscription()->getStatus() === 'active') {
+
+                    echo "In Active Subscription block\n";	
+                    if($profile) {
+                        $profile->is_payment_verified = 1; // Set to True
+                        $profile->active_user = 1;
+                        $profile->save();
+                    }
+
+                }else {
+
+                    if($profile) {
+                        $profile->is_payment_verified = 0; // Set to false
+                        $profile->active_user = 0;
+                        $profile->save();
+                        $this->cancelSubscription($profile->user_id);
+                    }
+                }
+            }else{
+                // Error
+                echo "ERROR :  Invalid response\n";	
+                $errorMessages = $response->getMessages()->getMessage();
+                echo "Response : " . $errorMessages[0]->getCode() . "  " .$errorMessages[0]->getText() . "\n";
+                // Update the profile table for failed payment
+                $profile = Profile::where('user_id', $subscription->user_id)->first();
+                if($profile) {
+                    $profile->is_payment_verified = 0; // Set to False
+                    $profile->active_user = 0;
+                    $profile->save();
+                    $this->cancelSubscription($profile->user_id);
+                }
+            }
+        }else{
+            // Failed to get response
+            echo "Null Response Error";
+            $profile = Profile::where('user_id', $subscription->user_id)->first();
+            if($profile) {
+                $profile->is_payment_verified = 0; // Set to False
+                $profile->active_user = 0;
+                $profile->save();
+                $this->cancelSubscription($profile->user_id);
+            }
+        }
+    
+    }
+
+
+    private function cancelSubscription($userId)
+    {
+        echo "In cancel subscription\n";	
+        $subscription = Subscription::where('user_id', $userId)
+            ->where('is_subscription_active', 1)
+            ->where('is_subscription_successfull', 1)
+            ->first();
+
+
+        if ($subscription) {
+
+            /* Create a merchantAuthenticationType object with authentication details
+           retrieved from the constants file */
+           $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+           $merchantAuthentication->setName(env('MERCHANT_LOGIN_ID'));
+           $merchantAuthentication->setTransactionKey(env('MERCHANT_TRANSACTION_KEY'));
+          
+           // Set the transaction's refId
+           $refId = 'ref' . time();
+       
+           $subscriptionRequest = new AnetAPI\ARBCancelSubscriptionRequest();
+           $subscriptionRequest->setMerchantAuthentication($merchantAuthentication);
+           $subscriptionRequest->setRefId($refId);
+           $subscriptionRequest->setSubscriptionId($subscription->subscription_id);
+       
+           $controller = new AnetController\ARBCancelSubscriptionController($subscriptionRequest);
+       
+           $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+       
+           if (($response != null) && ($response->getMessages()->getResultCode() == "Ok"))
+           {
+               $successMessages = $response->getMessages()->getMessage();
+
+                $subscription->is_subscription_active = 0;
+                $subscription->is_cancellation_requested = 0;
+                $subscription->update();
+
+                // Update the profile table
+                $profile = Profile::where('user_id', $userId)->first();
+                if($profile) {
+                    $profile->active_user = 0;
+                    $profile->is_payment_verified = 0;
+                    $profile->save();
+                }
+
+                // Remove or update the upcoming subscription record
+                $this->removeUpcomingSubscription($userId);
+
+                // Send an email about cancellation
+                $user = User::find($userId);
+                if($user) {
+                    Mail::to($user->email)->send(new SubscriptionCancelledMail($user));
+                }
+        
+            }
+           else
+           {
+            //    echo "ERROR :  Invalid response\n";
+               $errorMessages = $response->getMessages()->getMessage();
+            //    echo "Response : " . $errorMessages[0]->getCode() . "  " .$errorMessages[0]->getText() . "\n";
+            $this->removeUpcomingSubscription($userId);
+
+               
+           }
+       
+           return true;
+        } else {
+            return false;
+            $this->removeUpcomingSubscription($userId);
+        }
+
+    }
+
+
+    private function removeUpcomingSubscription($userId)
+    {
+        // Option 1: Delete the upcoming subscription record
+        UpcomingSubscription::where('user_id', $userId)->delete();
+        Subscription::where('user_id', $userId)->delete();
+    
+    }
+
+
+
+
+
+
 }

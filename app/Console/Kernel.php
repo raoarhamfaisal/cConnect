@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         // $schedule->command('billing:process')->daily();
-        $schedule->command('billing:process')->everyFiveMinutes()->emailOutputOnFailure('ahmadraosanawarali@gmail.com');
+        $schedule->command('billing:process')->daily()->emailOutputOnFailure('ahmadraosanawarali@gmail.com');
 
             // Running the command within the Laravel Sail Docker container
         // $schedule->exec('sail php artisan billing:process')
