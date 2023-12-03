@@ -13,7 +13,8 @@
       <p
         class="text-sm font-semibold py-1 px-3 text-grey-600"
         v-if="!editAdmitNoteText && adminNote && !isTyping"
-        style="height: 10.4rem"
+        style="min-height: 10.4rem"
+        ref="adminShowTextRef"
       >
         {{
           showFullText
@@ -23,14 +24,16 @@
         }}
         <span
           v-if="!showFullText && adminNote.length > 400"
-          @click="showFullText = true"
+          @click="()=>{showFullText = true
+          adjustHeightShow()}"
           class="cursor-pointer text-sky-700"
         >
-          See more :disabled="disabled"
+          See more 
         </span>
         <span
           v-if="showFullText && adminNote.length > 400"
-          @click="showFullText = false"
+          @click="()=>{showFullText = false
+          adjustHeightShow()}"
           class="cursor-pointer text-sky-700"
         >
           See less
@@ -41,11 +44,13 @@
         v-model="adminNote"
         @blur="stopTyping"
         ref="adminTextAreaRef"
-        style="height: 10.4rem"
-        @keydown="saveNotes"
+        style="min-height: 10.4rem"
+        @input="saveNotes"
+        @paste="adjustHeight"
+        @keydown="insertTab"
         placeholder="Type your Notes"
         class="text-sm w-full py-1 px-3 focus:shadow-none focus:ring-gray-600 focus:rounded font-semibold text-grey-600 border-none resize-none bg-transparent"
-        :rows="numberOfRows"
+        :rows="1"
       ></textarea>
     </Card>
     <div class="flex gap-2 flex-col items-center self-start">
@@ -110,18 +115,13 @@ const showFullText = ref(false);
 const appealFilter = ref(appeal_status);
 const editAdmitNoteText = ref(false);
 const adminTextAreaRef = ref();
+const adminShowTextRef = ref();
 const isTyping = ref(false);
 const adminNote = ref(appeal_judge_notes);
 const emit = defineEmits(["changeStatus"]);
 
 // Computed
 const success = computed(() => store.getters["ratings/success"]);
-const numberOfRows = computed(() => {
-  if (!adminNote.value) return 1; // if there's no content, return a default row number
-  const charsPerLine = 90;
-
-  return Math.ceil(adminNote.value.length / charsPerLine);
-});
 
 //Watch
 watch(success, (newVal) => {
@@ -132,6 +132,7 @@ watch(success, (newVal) => {
 //Methods
 const focusTextarea = async () => {
   editAdmitNoteText.value = true;
+  adjustHeight();
   await nextTick();
   adminTextAreaRef.value.focus();
 };
@@ -145,6 +146,7 @@ let saveTimeout = null;
 
 const saveNotes = () => {
   isTyping.value = true;
+  adjustHeight();
   if (saveTimeout) {
     clearTimeout(saveTimeout);
   }
@@ -162,6 +164,31 @@ const saveNotes = () => {
     });
   }, 1000);
 };
+
+const insertTab = (event) => {
+  adjustHeight();
+  if (event.key === 'Tab') {
+    event.preventDefault();
+    const start = event.target.selectionStart;
+    const end = event.target.selectionEnd;
+
+    // Set the value to: text before caret + four spaces + text after caret
+    adminNote.value = adminNote.value.substring(0, start) + '      ' + adminNote.value.substring(end);
+
+    // Put caret at right position again
+    nextTick(() => {
+      event.target.selectionStart = event.target.selectionEnd = start + 6;
+    });
+  }
+};
+
+const adjustHeight = () => {
+  console.log('here')
+  nextTick(() => {
+    adminTextAreaRef.value.style.height = "auto"; // Reset height first to get the correct scrollHeight
+    adminTextAreaRef.value.style.height = adminTextAreaRef.value.scrollHeight + "px";
+  });
+};
 const handleTabs = async (apiToCall) => {
   appealFilter.value = apiToCall;
   console.log(appealFilter.value, "hello");
@@ -175,6 +202,12 @@ const handleTabs = async (apiToCall) => {
     },
   });
 };
+const adjustHeightShow =()=>{
+  nextTick(() => {
+    adminShowTextRef.value.style.height = "auto"; // Reset height first to get the correct scrollHeight
+    adminShowTextRef.value.style.height = adminShowTextRef.value.scrollHeight + "px";
+  });
+}
 </script>
 
 <style scoped>

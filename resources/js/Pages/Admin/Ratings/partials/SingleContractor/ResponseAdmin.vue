@@ -14,6 +14,7 @@
         class="text-sm font-semibold py-1 px-3 text-grey-600"
         v-if="!editResponseText && !isTyping && response_text"
         style="white-space: pre-wrap"
+
       >
         {{
           showFullReview
@@ -41,9 +42,11 @@
         v-model="response_text"
         @blur="stopTyping"
         ref="responseTextArea"
-        @keydown="saveInput"
+        @input="saveInput"
+        @paste="adjustHeight"
+        @keydown="insertTab"
         class="text-sm w-full py-1 px-3 focus:shadow-none focus:ring-gray-600 focus:rounded font-semibold text-grey-600 border-none resize-none bg-transparent"
-        :rows="numberOfRows"
+        :rows="1"
       ></textarea>
     </Card>
     <ButtonRatings
@@ -91,11 +94,7 @@ const response_text = ref(response?.response_text);
 
 //Computed
 
-const numberOfRows = computed(() => {
-  if (!response_text.value) return 1; // if there's no content, return a default row number
-  const charsPerLine = 90;
-  return Math.ceil(response_text.value.length / charsPerLine);
-});
+
 watch(response, () => {
   console.log("response changed to: " + response);
 });
@@ -110,6 +109,7 @@ let saveTimeout = null;
 
 const saveInput = async () => {
   isTyping.value = true;
+
   console.log(response_text.value, "response_text", response);
   if (saveTimeout) {
     clearTimeout(saveTimeout);
@@ -149,7 +149,32 @@ const saveInput = async () => {
 const focusTextarea = async () => {
   editResponseText.value = true;
   await nextTick();
+  adjustHeight();
   responseTextArea.value.focus();
+};
+const insertTab = (event) => {
+  adjustHeight();
+  if (event.key === 'Tab') {
+    event.preventDefault();
+    const start = event.target.selectionStart;
+    const end = event.target.selectionEnd;
+
+    // Set the value to: text before caret + four spaces + text after caret
+    response_text.value = response_text.value.substring(0, start) + '      ' + response_text.value.substring(end);
+
+    // Put caret at right position again
+    nextTick(() => {
+      event.target.selectionStart = event.target.selectionEnd = start + 6;
+    });
+  }
+};
+
+const adjustHeight = () => {
+
+  nextTick(() => {
+    responseTextArea.value.style.height = "auto"; // Reset height first to get the correct scrollHeight
+    responseTextArea.value.style.height = responseTextArea.value.scrollHeight + "px";
+  });
 };
 </script>
 

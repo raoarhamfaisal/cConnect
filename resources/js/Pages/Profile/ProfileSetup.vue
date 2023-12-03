@@ -24,6 +24,7 @@ const store = useStore();
 store.commit("profile/setActiveTab", 0);
 onMounted(async () => {
   await store.dispatch("getToken");
+  localStorage.setItem("prevUrl", "/profile-setup");
 });
 </script>
 

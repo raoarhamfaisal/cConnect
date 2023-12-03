@@ -16,6 +16,7 @@
     />
     <InputError v-if="ratingError" class="mt-2" :message="ratingError" />
     <!-- review reason -->
+    
     <div class="mb-4">
       <div class="text-md font-bold text-gray-600 mt-3 mb-2">Review Text</div>
       <textarea

@@ -205,6 +205,34 @@ class ProfileController extends Controller
 
         //
     }
+
+    public function getPricingPlanPage()
+    {
+        // Get current user id
+        $userID = Auth()->user('')->id;
+        $profile = null;
+
+
+        // Get the profile information if the user id exists
+        if($userID) {
+            $profile = Profile::where('user_id', $userID)->with('trades')->first();
+        }
+
+     
+     
+
+        $tradesOldStructure = $this->convertTradesToOldStructure($profile->trades);
+
+        return Inertia::render('PricingPlanPage', [
+     
+            'profile' => array_merge($profile->toArray(), $tradesOldStructure),
+            'showit' => Auth::check(),
+          
+        'postSearchFilters' => FacadeRequest::only(['postSearch']),
+        ]);
+
+        //
+    }
     public function getRedFlagPage()
     {
         // Get current user id
@@ -1190,5 +1218,6 @@ class ProfileController extends Controller
     
         return response()->json(['message' => 'Email updated successfully.']);
     }    
+    
             
 }
