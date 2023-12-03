@@ -111,7 +111,8 @@
 import SignUpLayout from "@/Layouts/SignUpLayout.vue";
 import WelcomeHeader from "@/Components/Welcome/WelcomeHeader.vue";
 import WelcomeFooter from "@/Components/Welcome/WelcomeFooter.vue";
-import { Head, Link, Inertia } from "@inertiajs/inertia-vue3";
+import { Head, Link } from "@inertiajs/inertia-vue3";
+import { Inertia } from "@inertiajs/inertia";
 import { removeToken } from "@/helpers/localStorageHelper";
 
 const props = defineProps({

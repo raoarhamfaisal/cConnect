@@ -7,6 +7,7 @@ use App\Http\Controllers\ContractorProfileController;
 use App\Http\Controllers\ContractorPageController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\AdminUsersController;
 use App\Http\Controllers\ImageSectionController;
 use App\Http\Controllers\BragSectionController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\DiscountCouponController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PostColorController;
 use App\Http\Controllers\RedFlagcontroller;
+use App\Http\Controllers\PostReactionController;
 
 
 
@@ -76,6 +78,27 @@ Route::get('/post/background-colors', [PostColorController::class, 'getBackgroun
         Route::delete('/red-flags/{redFlag}', [RedFlagController::class, 'destroy']);
         Route::get('/red-flags', [RedFlagController::class, 'index']);
         Route::get('/red-flags/my-red-flags', [RedFlagController::class, 'myFlags']);
+
+
+        // Post reactions apis
+        Route::post('/posts/{post}/like', [PostReactionController::class, 'like']);
+        Route::delete('/posts/{post}/like', [PostReactionController::class, 'removeLike']);
+        Route::post('/posts/{post}/dislike', [PostReactionController::class, 'dislike']);
+        Route::delete('/posts/{post}/dislike', [PostReactionController::class, 'removeDislike']);
+        Route::get('/posts/{post}/likes', [PostReactionController::class, 'getPostLikes']);
+        Route::get('/posts/{post}/dislikes', [PostReactionController::class, 'getPostDislikes']);
+
+        // Post Comments
+        Route::get('/posts/{post}/comments', [CommentController::class, 'index']);
+        Route::post('/posts/{post}/comments', [CommentController::class, 'store']);
+        Route::put('/comments/{comment}', [CommentController::class, 'update']);
+        Route::delete('/comments/{comment}', [CommentController::class, 'destroy']);
+
+        // Repost
+        Route::post('/posts/{post}/repost', [PostController::class, 'repost']);
+
+
+
 
 
 
