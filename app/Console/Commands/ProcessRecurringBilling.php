@@ -104,7 +104,7 @@ class ProcessRecurringBilling extends Command
             $controller = new AnetController\ARBUpdateSubscriptionController($request);
 
 
-            $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+            $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 
             
             if (($response != null) && ($response->getMessages()->getResultCode() == "Ok") )
@@ -268,7 +268,7 @@ class ProcessRecurringBilling extends Command
         $controller = new AnetController\ARBGetSubscriptionController($request);
             
         // Getting the response
-        $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+        $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
             
         if ($response != null) 
         {
@@ -368,7 +368,7 @@ class ProcessRecurringBilling extends Command
        
            $controller = new AnetController\ARBCancelSubscriptionController($subscriptionRequest);
        
-           $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+           $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
        
            if (($response != null) && ($response->getMessages()->getResultCode() == "Ok"))
            {
