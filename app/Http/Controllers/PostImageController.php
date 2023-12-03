@@ -37,4 +37,39 @@ class PostImageController extends Controller
 
     }
 
+   public function reOrder(Request $request)
+{
+    // Validate the request here, for example, check if 'images' and 'imageFiles' are arrays
+
+  // Deletion part
+  if ($request->has('images') && is_array($request->get('images'))) {
+    $images = $request->get('images');
+    foreach ($images as $image) {
+        $path = storage_path('app/public/' . $image);
+        if (file_exists($path)) {
+            unlink($path);
+        }
+    }
+}
+    // Uploading part
+    $paths = [];
+    if ($request->has('imageFiles')) {
+        $files = $request->file('imageFiles');
+    
+
+        foreach ($files as $file) {
+            // if ($file instanceof UploadedFile) {
+                $path = $file->store('uploads/posts', 'public');
+                $paths[] = $path;
+             
+            // }
+        }
+    }
+    
+    return implode('|', $paths);
+    dd('Final paths:', $paths);
+    }
+
+  
+
 }

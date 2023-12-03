@@ -84,7 +84,7 @@ import BackgroundColorDropdown from "@/Components/BackgroundColorDropdown.vue";
 import FontColorDropdown from "@/Components/FontColorDropdown.vue";
 const props = defineProps({
   modelValue: String,
-  fontSize: Number,
+  fontSize: [Number,String],
   textColorId: String,
   backgroundColorId: String,
   isBold: Boolean,

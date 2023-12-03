@@ -18,6 +18,7 @@ use App\Http\Controllers\PaymentInfoController;
 use App\Http\Controllers\DiscountCouponController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PostColorController;
+use App\Http\Controllers\PostImageController;
 use App\Http\Controllers\RedFlagcontroller;
 use App\Http\Controllers\PostReactionController;
 
@@ -74,6 +75,7 @@ Route::get('/post/background-colors', [PostColorController::class, 'getBackgroun
 
         // Red Flag APIs
         Route::post('/red-flags', [RedFlagController::class, 'store']);
+        Route::post('/re-order', [PostImageController::class, 'reOrder']);
         Route::put('/red-flags/{redFlag}', [RedFlagController::class, 'update']);
         Route::delete('/red-flags/{redFlag}', [RedFlagController::class, 'destroy']);
         Route::get('/red-flags', [RedFlagController::class, 'index']);

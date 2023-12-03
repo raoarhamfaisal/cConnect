@@ -32,6 +32,7 @@ import "filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css";
 import { mapGetters } from "vuex";
 import { ref } from "vue";
 import { options } from "@/helpers/selectListsHelpters.js";
+import { getAxiosConfigFormData } from "@/helpers/axiosConfigHelpers";
 // import { toolbarConfigPost } from "@/helpers/utilities";
 
 const FilePond = VueFilePond(
@@ -79,6 +80,7 @@ export default {
       referenceList: ref([]),
       // showBackroundColor: true,
       selectedReferal: ref(""),
+      original: "",
       // editor: DecoupledEditor,
       // editorData: "<p>Enter your top text</p>",
       // editorConfig: toolbarConfigPost,
@@ -190,6 +192,19 @@ export default {
     },
   },
   methods: {
+    sortFilesByName(fileA, fileB) {
+      // Compare by filename
+      const fileNameA = fileA.file.name.toUpperCase(); // ignore upper and lowercase
+      const fileNameB = fileB.file.name.toUpperCase(); // ignore upper and lowercase
+      if (fileNameA < fileNameB) {
+        return -1;
+      }
+      if (fileNameA > fileNameB) {
+        return 1;
+      }
+      // names must be equal
+      return 0;
+    },
     toggleSwitch(field) {
       if (field === "trade1") {
         const newState = !this.tradesPost["trade1"];
@@ -205,46 +220,82 @@ export default {
         event.preventDefault();
         const start = event.target.selectionStart;
         const end = event.target.selectionEnd;
-if(this.form.body2 === null){
-  this.form.body2 = ''
-}
+        if (this.form.body2 === null) {
+          this.form.body2 = "";
+        }
         // Set the value to: text before caret + four spaces + text after caret
         this.form.body2 =
-           this.form.body2.substring(0, start) + "      " + this.form.body2.substring(end);
+          this.form.body2.substring(0, start) +
+          "      " +
+          this.form.body2.substring(end);
 
         // Put caret at right position again
-        nextTick(() => {
-      event.target.selectionStart = event.target.selectionEnd = start + 6;
-    });
       }
+      nextTick(() => {
+        event.target.selectionStart = event.target.selectionEnd = start + 6;
+      });
     },
-    
+
     handleFilePondProcessStart(file) {
       console.log("started file");
       // this.showBackroundColor = false;
       this.isUploading = true;
     },
-    handleFileReorder(files, origin, target) {
-      console.log(origin, target, "target\n", this.form.image, "previuos");
+    // console.log("Original values:", { origin, target },'before',this.form.image);
+    //   let imagesArray = this.form.image.split('|');
+    // // Adjust the indices if necessary
+    // const adjustedOrigin = origin;
+    // const adjustedTarget = target;
 
-      // Split the form.image string into an array
-      let imagesArray = this.form.image.split("|");
+    // console.log('adjustedOrigin', adjustedOrigin, 'adjustedTarget', adjustedTarget);
 
-      console.log(imagesArray, "imagesArray"); // Check if the origin and target indices are valid
-      if (origin < imagesArray.length && target < imagesArray.length) {
-        // Swap the elements at the origin and target indices
-        const length = imagesArray.length - 1;
-        let temp = imagesArray[length - origin];
-        imagesArray[length - origin] = imagesArray[length - target];
-        imagesArray[length - target] = temp;
-        console.log(length - origin, length - target);
-        // Update the form.image string with the new order
-        this.form.image = imagesArray.join("|");
+    // // Swap the images based on the adjusted origin and target
+    // let temp = imagesArray[adjustedOrigin];
+    // imagesArray[adjustedOrigin] = imagesArray[adjustedTarget];
+    // imagesArray[adjustedTarget] = temp;
+
+    // // Join the array back into a string and update the form's image field
+    // this.form.image = imagesArray.join('|');
+    handleFileReorder() {
+    let imagesArray = this.form.image.split("|");
+    let filePondFiles = this.$refs.pond.getFiles(); // Get actual File objects from FilePond
+
+    let formData = new FormData();
+    imagesArray.forEach((image, index) => {
+        formData.append(`images[${index}]`, image);
+    });
+
+    filePondFiles.forEach((fileItem, index) => {
+        if (fileItem.file) { // Check if the file object exists
+            formData.append(`imageFiles[${index}]`, fileItem.file);
+        }
+    });
+
+    axios.post("/api/re-order", formData, getAxiosConfigFormData())
+        .then(response => {
+          this.form.image = this.reverseAndJoinString(response.data);
+          console.log("Uploaded Images:", response.data);
+        })
+        .catch(error => {
+            console.error("Error uploading images", error);
+        });
+
+    console.log("Updated image order:", this.form.image);
+},
+    sortFiles(a, b) {
+      console.log("here", "insort");
+      // If no file data yet, treat as equal
+      if (!(a.file && b.file)) return 0;
+
+      // Move to right location in list
+      if (a.fileSize < b.fileSize) {
+        return -1;
+      } else if (a.fileSize > b.fileSize) {
+        return 1;
       }
 
-      console.log("Updated image order:", this.form.image);
+      return 0;
     },
-
     handleFilePondProcessEnd(file, error) {
       console.log("ended1");
     },
@@ -289,7 +340,8 @@ if(this.form.body2 === null){
 
       // Reverse the array
       console.log(arr, "array");
-
+      console.log("addFormImage");
+      arr = arr.reverse()
       // Join the array back into a string
       return arr.join("|");
     },
@@ -300,26 +352,29 @@ if(this.form.body2 === null){
       // using vertical line as delimiter... all the
       // file names will be in the same field in the DB
       // but seperated by '|'
-
+      console.log("addFormImage");
       let arr = this.form.image ? this.form.image.split("|") : [];
       arr.push(image);
       this.form.image = arr.join("|");
+      this.original = arr.join("|");
       // this.form.image = this.reverseAndJoinString(this.form.image);
       console.log("addFormsdljkf: ", image, "image", this.form.image);
-      console.log("ended3");
     },
 
     removeFormImage(image) {
       let arr = this.form.image ? this.form.image.split("|") : [];
       arr.remove(image);
+      console.log("addFormImage");
+
       this.form.image = arr.join("|");
-      console.log("removeForm: ", this.form.image);
     },
 
     // The callback when image is loaded
     // response is the image
     handleFilePondLoad(response) {
       console.log(response, "response");
+      console.log("addFormImage");
+
       this.addFormImage(response);
       // for multiple we need to return the unique file id
       // the name of the file
@@ -331,6 +386,8 @@ if(this.form.body2 === null){
       // call the method we created to remove deleted image(s)
       // had to get rid of '/' in order to make it delete
       console.log("file remove source: ", source);
+      console.log("addFormImage");
+
       this.removeFormImage(source.replace(/^\//, ""));
 
       load();
@@ -349,6 +406,8 @@ if(this.form.body2 === null){
       load();
       console.log(this.form.image, "image");
       // if (!this.form.image) {
+      console.log("addFormImage");
+
       //   this.showBackroundColor = true;
       // }
     },
@@ -359,6 +418,8 @@ if(this.form.body2 === null){
       this.$refs.tradeDialogRef.closeDialog();
     },
     updateFiles(files) {
+      console.log("addFormImage");
+
       let myFiles = files.map((fileItem) => fileItem.file);
       console.log(myFiles.map((file) => file.name).join("|"), "update files");
     },
@@ -502,7 +563,7 @@ Array.prototype.remove = function () {
                 <TextEditorTitle
                   v-model:modelValue="form.title"
                   v-model:textColorId="form.title_text_color_id"
-                  v-model:backgroundColorId="form.title_background_color_id" 
+                  v-model:backgroundColorId="form.title_background_color_id"
                   v-model:textAlignment="form.title_text_alignment"
                 />
                 <div v-if="$page.props.errors.title" class="text-red-500">
@@ -553,6 +614,8 @@ Array.prototype.remove = function () {
                                             video/mp4,
                                             video/mov"
                   allowFileSizeValidation="true"
+                  item-insert-location="before"
+                  :allow-reorder="true"
                   maxFileSize="25MB"
                   labelMaxTotalFileSizeExceeded="Maximum Size Is 25MB"
                   allowImageResize="true"
@@ -561,7 +624,6 @@ Array.prototype.remove = function () {
                   imageResizeTargetHeight="2000"
                   imageResizeUpscale="true"
                   maxFiles="15"
-                  :allowReorder="true"
                   credits="false"
                   v-bind:server="{
                     url: '',
@@ -580,7 +642,9 @@ Array.prototype.remove = function () {
                     revert: handleFilePondRevert,
                   }"
                   v-bind:files="myFiles"
+         
                   v-on:init="handleFilePondInit"
+                  v-on:sort="sortFiles"
                   v-on:processfiles="
                     () => {
                       console.log('myFiles uploaded successfully');
