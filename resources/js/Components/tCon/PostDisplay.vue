@@ -15,6 +15,7 @@ import { Link } from "@inertiajs/inertia-vue3";
 import { ref } from "vue";
 import { mapGetters } from "vuex";
 import DialogContractorRating from "@/Components/Ratings/Contractor/DialogContractorRating.vue";
+import { Icon } from "@iconify/vue";
 
 export default {
   components: {
@@ -23,6 +24,7 @@ export default {
     ButtonPost,
     ButtonRefresh,
     StarRounded,
+    Icon,
     PostingActionMenu,
     Avatar,
     PostImageDisplay,
@@ -30,6 +32,7 @@ export default {
     ref,
     throttle,
     DialogContractorRating,
+    Icon,
   },
 
   mounted() {
@@ -419,7 +422,7 @@ export default {
           <h2
             class="font-bold text-lg sm:text-xl"
             style="line-height: 1.5rem"
-            @click="$emit('enlarge-post', post)"
+           
           >
             <!-- {{  post }} -->
             {{ post.id }}: {{ post.first_name + " " + post.last_name }}
@@ -631,33 +634,131 @@ export default {
         {{ showFullTextBody2 ? "...less" : "...more" }}
       </span>
     </div>
-    <div :class="`mb-4 ${post.body2 ? 'mt-3': ''} border-[1px] w-1/3 border-gray-800 rounded`"></div>
+    <div
+      :class="`mb-2 ${
+        post.body2 ? 'mt-3' : ''
+      } border-[1px] w-1/3 border-gray-800 rounded`"
+    ></div>
 
-    <!-- INDIVIDUAL POST: BOTTOM ROW MENU -->
-    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-    <div class="flex flex-row justify-between items-center w-full mb-2">
-      <!-- Likes -->
-      <div class="">
-        <Link
-          href="#"
-          class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
+    <!-- footer icons counts -->
+    <div class="pb-2 flex justify-between w-full">
+
+      <div class="flex gap-2">
+
+     
+      <!-- Like -->
+      <div class="flex gap-1 justify-center items-center cursor-pointer">
+      <!-- <div v-if="post.likes_count" class=""> -->
+        <div
+          class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
         >
           <div class="flex flex-row justify-between items-center">
             <div class="">
-              <img src="/images/icons/like_green.png" width="25" height="25" />
-            </div>
-            <div class="pl-1">
-              {{ post.likes }}
+          
+              <Icon
+                icon="emojione-monotone:up-arrow"
+          
+                :class="`  text-[#16a34a]`"
+                width="25"
+              />
             </div>
           </div>
-        </Link>
+        </div>
+        <div>{{ post.likes_count }}</div>
+      </div>
+      <!-- dislikes -->
+      <div class="flex gap-1 justify-center items-center cursor-pointer">
+      <!-- <div v-if="post.likes_count" class=""> -->
+        <div
+          class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
+        >
+          <div class="flex flex-row justify-between items-center">
+            <div class="">
+          
+              <Icon
+                icon="emojione-monotone:up-arrow"
+          
+                :class="`  text-[#c40516]`"
+                width="25"
+                :rotate="2"
+              />
+            </div>
+          </div>
+        </div>
+        <div>{{ post.dislikes_count }}</div>
+      </div>
+    </div>
+    <div class="text-gray-900 flex gap-1">
+<span class="">
+  4 Comments
+</span>
+&#9679;
+<span class="">
+  {{ post.repost }} Re-posts
+</span>
+    </div>
+
+    </div>
+    
+
+    <!-- INDIVIDUAL POST: BOTTOM ROW MENU -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+    <div
+      :class="`mb-2 border-[1px] w-full border-gray-300 rounded`"
+    ></div>
+    <div class="flex flex-row justify-between items-center w-full mb-2">
+      <!-- Likes -->
+      <div class="hovered">
+        <div
+          class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
+        >
+          <div class="flex flex-row justify-between items-center">
+            <div hoveredclass="">
+              <!-- <img src="/images/icons/like_green.png" width="25" height="25" /> -->
+              <!-- <Icon icon="emojione-monotone:up-arrow" color="#16a34a" width="25" /> -->
+              <Icon
+                icon="emojione-monotone:up-arrow"
+          
+                :class="`icon-like text-transparent stroke-[2px] stroke-green-600   `"
+                width="25"
+              />
+            </div>
+            <div class="pl-1 icon-text text-[#16a34a]">
+             Like
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Dislike -->
+      <div class="hovered">
+        <a
+         
+          class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
+        >
+          <div class="flex flex-row justify-between items-center">
+            <div class="" >
+              <!-- <img src="/images/icons/like_green.png" width="25" height="25" /> -->
+              <!-- <Icon icon="emojione-monotone:up-arrow" :rotate="2" color="#c40516" width="25" /> -->
+              <Icon
+                icon="emojione-monotone:up-arrow"
+                :rotate="2"
+                :class="`icon-dislike text-transparent stroke-[2px] stroke-[#c40516] `"
+                width="25"
+              />
+            </div>
+            <div class="pl-1 icon-text text-[#c40516]" >
+              Dislike
+            </div>
+          </div>
+        </a>
       </div>
 
       <!-- Comments -->
-      <div class="">
+      <div class="hovered">
         <Link
           href="#"
-          class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
+          class="font-medium text-xs sm:text-sm text-blue-800 "
         >
           <div class="flex flex-row justify-between items-center">
             <div class="">
@@ -667,30 +768,30 @@ export default {
                 height="25"
               />
             </div>
-            <div class="pl-1">12,999</div>
+            <div class="pl-1 icon-text">Comment</div>
           </div>
         </Link>
       </div>
 
       <!-- Re-Posted -->
-      <div class="">
+      <div class="hovered">
         <Link
           href="#"
-          class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
+          class="font-medium text-xs sm:text-sm text-blue-800 "
         >
           <div class="flex flex-row justify-between items-center">
             <div class="">
               <img src="/images/icons/share_icon.png" width="25" height="25" />
             </div>
-            <div class="pl-1">
-              {{ post.repost }}
+            <div class="pl-1 icon-text">
+            Re-post
             </div>
           </div>
         </Link>
       </div>
 
       <!-- Shares -->
-      <div class="">
+      <!-- <div class="">
         <Link
           href="#"
           class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
@@ -708,7 +809,7 @@ export default {
             </div>
           </div>
         </Link>
-      </div>
+      </div> -->
     </div>
 
     <PostingActionMenu
@@ -730,5 +831,17 @@ export default {
 .processed-body a:hover {
   text-decoration: underline;
 }
-</style>
 
+.hovered:hover .icon-text{
+  text-decoration: underline;
+}
+
+.hovered:hover .icon-like{
+  stroke-width: 0px;
+  color: #16a34a;
+}
+.hovered:hover .icon-dislike{
+  stroke-width: 0px;
+  color: #c40516;
+}
+</style>

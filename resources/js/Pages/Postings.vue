@@ -50,6 +50,7 @@ export default {
   },
 
   mounted() {
+    localStorage.setItem("prevUrl", "/post");
     setTimeout(() => {
       const observerCallback = (entries) => {
         entries.forEach((entry) => {
