@@ -94,8 +94,6 @@ const onImageLoad = () => {
   }
 };
 
-// Check immediately on mount
-// onMounted(onImageLoad);
 </script>
 
 <template>
@@ -169,7 +167,7 @@ const onImageLoad = () => {
         :src="image_path(props.image)"
         alt=""
       />
-
+<!-- for enlageed view -->
       <img
         v-else
         class="w-full h-full object-fill object-center rounded-lg"

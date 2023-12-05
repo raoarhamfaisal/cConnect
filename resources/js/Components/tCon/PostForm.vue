@@ -30,7 +30,7 @@ import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
 import "filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css";
 import { mapGetters } from "vuex";
-import { ref } from "vue";
+import { nextTick, ref } from "vue";
 import { options } from "@/helpers/selectListsHelpters.js";
 import { getAxiosConfigFormData } from "@/helpers/axiosConfigHelpers";
 // import { toolbarConfigPost } from "@/helpers/utilities";
@@ -241,32 +241,47 @@ export default {
       // this.showBackroundColor = false;
       this.isUploading = true;
     },
-    handleFileReorder() {
-    let imagesArray = this.form.image.split("|");
-    let filePondFiles = this.$refs.pond.getFiles(); // Get actual File objects from FilePond
+    async handleFileReorder() {
+      let imagesArray = this.form.image.split("|");
+      let filePondFiles = this.$refs.pond.getFiles(); // Get actual File objects from FilePond
 
-    let formData = new FormData();
-    imagesArray.forEach((image, index) => {
+      let formData = new FormData();
+      imagesArray.forEach((image, index) => {
         formData.append(`images[${index}]`, image);
-    });
+      });
 
-    filePondFiles.forEach((fileItem, index) => {
-        if (fileItem.file) { // Check if the file object exists
-            formData.append(`imageFiles[${index}]`, fileItem.file);
+      filePondFiles.forEach((fileItem, index) => {
+        if (fileItem.file) {
+          // Check if the file object exists
+          formData.append(`imageFiles[${index}]`, fileItem.file);
         }
-    });
+      });
 
-    axios.post("/api/re-order", formData, getAxiosConfigFormData())
-        .then(response => {
+      axios
+        .post("/api/re-order", formData, getAxiosConfigFormData())
+        .then((response) => {
           this.form.image = this.reverseAndJoinString(response.data);
           console.log("Uploaded Images:", response.data);
         })
-        .catch(error => {
-            console.error("Error uploading images", error);
+        .catch((error) => {
+          console.error("Error uploading images", error);
         });
-
-    console.log("Updated image order:", this.form.image);
-},
+    },
+    async checkAllFilesProcessed() {
+     
+      const allProcessed = this.$refs.pond
+      .getFiles()
+      .every((file) => {
+        console.log(file.status,file);
+       return  file.status === 5
+      });
+      
+      if (allProcessed) {
+        await this.handleFileReorder()
+        
+      }
+      this.isUploading = false;
+    },
     sortFiles(a, b) {
       console.log("here", "insort");
       // If no file data yet, treat as equal
@@ -326,7 +341,7 @@ export default {
       // Reverse the array
       console.log(arr, "array");
       console.log("addFormImage");
-      arr = arr.reverse()
+      arr = arr.reverse();
       // Join the array back into a string
       return arr.join("|");
     },
@@ -627,15 +642,9 @@ Array.prototype.remove = function () {
                     revert: handleFilePondRevert,
                   }"
                   v-bind:files="myFiles"
-         
                   v-on:init="handleFilePondInit"
                   v-on:sort="sortFiles"
-                  v-on:processfiles="
-                    () => {
-                      console.log('myFiles uploaded successfully');
-                      isUploading = false;
-                    }
-                  "
+                  v-on:processfiles="checkAllFilesProcessed"
                   v-on:error="isUploading = false"
                   v-on:addfilestart="handleFilePondProcessStart"
                   @processfilestart="
@@ -648,6 +657,7 @@ Array.prototype.remove = function () {
                   v-on:updatefiles="updateFiles"
                   v-on:removefile="handleFilePondProcessEnd"
                   v-on:reorderfiles="handleFileReorder"
+                 
                   v-on:processfilerevert="handleFilePondProcessEnd"
                 >
                 </file-pond>
@@ -782,6 +792,7 @@ Array.prototype.remove = function () {
 .disabled {
   opacity: 0.2;
 }
+
 .switch-trades {
   cursor: pointer;
   width: 40px;
@@ -789,6 +800,7 @@ Array.prototype.remove = function () {
   position: relative;
   /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
 }
+
 .switch-bg-on-trades,
 .switch-bg-off-trades {
   width: 100%;
@@ -796,16 +808,19 @@ Array.prototype.remove = function () {
   border-radius: 20px;
   transition: background-color 0.2s;
 }
+
 .switch-bg-on-trades {
   /* background-color: rgba(36, 30, 109, 1); */
   background-color: rgba(10, 150, 10, 1);
   width: 40px;
 }
+
 .switch-bg-off-trades {
   background-color: #ccc;
   /* background-color: rgba(150, 10, 10, 1); */
   width: 39px;
 }
+
 .switch-knob-on-trades,
 .switch-knob-off-trades {
   width: 19px;
@@ -816,9 +831,11 @@ Array.prototype.remove = function () {
   top: 1px;
   transition: left 0.2s;
 }
+
 .switch-knob-on-trades {
   left: 21px;
 }
+
 .switch-knob-off-trades {
   left: 1px;
 }
