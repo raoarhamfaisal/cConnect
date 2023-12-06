@@ -15,6 +15,7 @@ use App\Models\Profile;
 use App\Models\User;
 
 use Mail;
+use App\Mail\SubscriptionCancelledMail;
 use App\Mail\SubscriptionFailedMail;
 use App\Mail\SubscriptionUpdateSuccessMail;
 
@@ -35,31 +36,28 @@ class ProcessRecurringBilling extends Command
         $subscriptions = Subscription::where('is_subscription_active', 1)->get();
 
         foreach ($subscriptions as $subscription) {
-
-            $this->getAuthorizeNetSubscription($subscription->subscription_id, $subscription);
-
-
-
+            
             if (SubscriptionHelper::isTimeToCharge($subscription)) {
+                $profile = Profile::where('user_id', $subscription->user_id)->first();
+    
+                echo "profile of the user" . $profile->user_id;
+    
+                if($profile->active_user === 0) {
+                    $this->cancelSubscription($profile->user_id);
+                }
+                
                 $amountToCharge = SubscriptionHelper::calculateBillingAmount($subscription);
                 
                 $this->info("Amount to Charge: " . $amountToCharge);
                 $this->info("Subscription Final Amount: " . $subscription->final_amount);
-
-
+                
+                
                 $this->updateAuthorizeNetSubscription($subscription, $amountToCharge);
                 // $this->processPayment($subscription, $amountToCharge);
+                
+                $this->getAuthorizeNetSubscription($subscription->subscription_id, $subscription);
+
             }
-
-
-            $profile = Profile::where('user_id', $subscription->user_id)->first();
-
-            echo "profile of the user" . $profile->user_id;
-
-            if($profile->active_user === 0) {
-                $this->cancelSubscription($profile->user_id);
-            }
-            
 
         }
 
@@ -153,8 +151,6 @@ class ProcessRecurringBilling extends Command
         // Update the profile table
         $profile = Profile::where('user_id', $subscription->user_id)->first();
         if($profile) {
-            $profile->active_user = 1;
-            $profile->is_deactivated_by_admin = 0;
             $profile->is_payment_verified = 1;
             $profile->save();
         }
@@ -205,8 +201,6 @@ class ProcessRecurringBilling extends Command
         // Update the profile table
         $profile = Profile::where('user_id', $subscription->user_id)->first();
         if($profile) {
-            $profile->active_user = 0;
-            $profile->is_deactivated_by_admin = 0;
             $profile->is_payment_verified = 0;
             $profile->save();
         }
@@ -295,8 +289,6 @@ class ProcessRecurringBilling extends Command
                     echo "In Active Subscription block\n";	
                     if($profile) {
                         $profile->is_payment_verified = 1; // Set to True
-                        $profile->active_user = 1;
-                        $profile->is_deactivated_by_admin = 0;
                         $profile->save();
                     }
 
@@ -304,8 +296,6 @@ class ProcessRecurringBilling extends Command
 
                     if($profile) {
                         $profile->is_payment_verified = 0; // Set to false
-                        $profile->active_user = 0;
-                        $profile->is_deactivated_by_admin = 0;
                         $profile->save();
                         $this->cancelSubscription($profile->user_id);
                     }
@@ -319,8 +309,6 @@ class ProcessRecurringBilling extends Command
                 $profile = Profile::where('user_id', $subscription->user_id)->first();
                 if($profile) {
                     $profile->is_payment_verified = 0; // Set to False
-                    $profile->active_user = 0;
-                    $profile->is_deactivated_by_admin = 0;
                     $profile->save();
                     $this->cancelSubscription($profile->user_id);
                 }
@@ -331,8 +319,6 @@ class ProcessRecurringBilling extends Command
             $profile = Profile::where('user_id', $subscription->user_id)->first();
             if($profile) {
                 $profile->is_payment_verified = 0; // Set to False
-                $profile->active_user = 0;
-                $profile->is_deactivated_by_admin = 0;
                 $profile->save();
                 $this->cancelSubscription($profile->user_id);
             }
@@ -381,9 +367,7 @@ class ProcessRecurringBilling extends Command
                 // Update the profile table
                 $profile = Profile::where('user_id', $userId)->first();
                 if($profile) {
-                    $profile->active_user = 0;
                     $profile->is_payment_verified = 0;
-                    $profile->is_deactivated_by_admin = 0;
                     $profile->save();
                 }
 

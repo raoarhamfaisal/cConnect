@@ -119,6 +119,8 @@
             <div class="font-bold text-2xl text-blue-rgba leading-tight">
               Choose Payment Method
             </div>
+            <!-- (c) 2005, 2023. Authorize.Net is a registered trademark of CyberSource Corporation  -->
+              <!-- <div class="AuthorizeNetSeal"> <script type="text/javascript" language="javascript">var ANS_customer_id="c5098736-0049-4d71-84e8-37f0778a3208";</script> <script type="text/javascript" language="javascript" src="//verify.authorize.net:443/anetseal/seal.js" ></script> </div> -->
             <div class="flex gap-4 gap-1 sx:gap-2 lg:gap-10 w-full mt-4">
               <div
                 :class="[

@@ -243,7 +243,7 @@ const truncatedName = computed(() => {
       <div
         class="flex flex-col justify-between flex-1 mt-6"
         :class="
-          url === '/payment' || url === '/profile-setup'
+          (url === '/payment' || url === '/profile-setup' || url === '/pricing-plan')
             ? 'pointer-events-none'
             : ''
         "

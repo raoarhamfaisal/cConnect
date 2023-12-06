@@ -40,8 +40,10 @@
               :href="
                 profile && profile.is_payment_verified && profile.active_user
                   ? route('post')
-                  : profile && !profile.is_payment_verified
-                  ? '/profile-setup'
+                  : profile && (!profile.is_payment_verified || !profile.active_user)
+                  ? (!profile.is_payment_verified && !profile.active_user) 
+                  ? '/profile-setup' 
+                  : ((!profile.is_payment_verified && profile.active_user) ? '/pricing-plan' : '/inactive-account')
                   : '/inactive-account'
               "
               class="block flex justify-center items-center mx-2 py-2 sm:py-3 px-3 sm:px-6 font-bold rounded-lg sm:rounded-xl text-white bg-green-600 hover:bg-green-800 border-green-600"
@@ -137,10 +139,12 @@
                 v-if="showit"
                 :href="
                   profile && profile.is_payment_verified && profile.active_user
-                  ? route('post')
-                  : profile && !profile.is_payment_verified
-                  ? '/profile-setup'
-                  : '/inactive-account'
+                    ? route('post')
+                    : profile && (!profile.is_payment_verified || !profile.active_user)
+                    ? (!profile.is_payment_verified && !profile.active_user) 
+                    ? '/profile-setup' 
+                    : ((!profile.is_payment_verified && profile.active_user) ? '/pricing-plan' : '/inactive-account')
+                    : '/inactive-account'
                 "
                 class="font-bold"
               >
@@ -150,11 +154,14 @@
                 v-if="showit"
                 :href="
                   profile && profile.is_payment_verified && profile.active_user
-                  ? 'sub-finder'
-                  : profile && !profile.is_payment_verified
-                  ? '/profile-setup'
-                  : '/inactive-account'
+                    ? 'sub-finder'
+                    : profile && (!profile.is_payment_verified || !profile.active_user)
+                    ? (!profile.is_payment_verified && !profile.active_user) 
+                    ? '/profile-setup' 
+                    : ((!profile.is_payment_verified && profile.active_user) ? '/pricing-plan' : '/inactive-account')
+                    : '/inactive-account'
                 "
+
                 class="font-bold"
               >
                 Sub Finder
@@ -163,11 +170,14 @@
                 v-if="showit"
                 :href="
                   profile && profile.is_payment_verified && profile.active_user
-                  ? route('post')
-                  : profile && !profile.is_payment_verified
-                  ? '/profile-setup'
-                  : '/inactive-account'
+                    ? 'red-flag'
+                    : profile && (!profile.is_payment_verified || !profile.active_user)
+                    ? (!profile.is_payment_verified && !profile.active_user) 
+                    ? '/profile-setup' 
+                    : ((!profile.is_payment_verified && profile.active_user) ? '/pricing-plan' : '/inactive-account')
+                    : '/inactive-account'
                 "
+
                 class="font-bold"
               >
                 Red Flags
@@ -177,10 +187,12 @@
                 v-if="showit"
                 :href="
                   profile && profile.is_payment_verified && profile.active_user
-                  ? route('post')
-                  : profile && !profile.is_payment_verified
-                  ? '/profile-setup'
-                  : '/inactive-account'
+                    ? route('post')
+                    : profile && (!profile.is_payment_verified || !profile.active_user)
+                    ? (!profile.is_payment_verified && !profile.active_user) 
+                    ? '/profile-setup' 
+                    : ((!profile.is_payment_verified && profile.active_user) ? '/pricing-plan' : '/inactive-account')
+                    : '/inactive-account'
                 "
                 class="font-bold"
               >
@@ -190,10 +202,12 @@
                 v-if="showit"
                 :href="
                   profile && profile.is_payment_verified && profile.active_user
-                  ? `/contractor/${profile.user_id}/edit`
-                  : profile && !profile.is_payment_verified
-                  ? '/profile-setup'
-                  : '/inactive-account'
+                    ? `/contractor/${profile.user_id}/edit`
+                    : profile && (!profile.is_payment_verified || !profile.active_user)
+                    ? (!profile.is_payment_verified && !profile.active_user) 
+                    ? '/profile-setup' 
+                    : ((!profile.is_payment_verified && profile.active_user) ? '/pricing-plan' : '/inactive-account')
+                    : '/inactive-account'
                 "
                 class="font-bold"
               >
@@ -206,13 +220,13 @@
                 <ResponsiveNavLink
                   v-if="showit"
                   :href="
-                    profile &&
-                    profile.is_payment_verified &&
-                    profile.active_user
-                    ? `/posts/${profile.user_id}`
-                    : profile && !profile.is_payment_verified
-                    ? '/profile-setup'
-                    : '/inactive-account'
+                    profile && profile.is_payment_verified && profile.active_user
+                      ? `/posts/${profile.user_id}`
+                      : profile && (!profile.is_payment_verified || !profile.active_user)
+                      ? (!profile.is_payment_verified && !profile.active_user) 
+                      ? '/profile-setup' 
+                      : ((!profile.is_payment_verified && profile.active_user) ? '/pricing-plan' : '/inactive-account')
+                      : '/inactive-account'
                   "
                 >
                   My Posts
@@ -220,13 +234,13 @@
                 <ResponsiveNavLink
                   v-if="showit"
                   :href="
-                    profile &&
-                    profile.is_payment_verified &&
-                    profile.active_user
-                    ? '/ratings/contractor '
-                    : profile && !profile.is_payment_verified
-                    ? '/profile-setup'
-                    : '/inactive-account'
+                    profile && profile.is_payment_verified && profile.active_user
+                      ? '/ratings/contractor'
+                      : profile && (!profile.is_payment_verified || !profile.active_user)
+                      ? (!profile.is_payment_verified && !profile.active_user) 
+                      ? '/profile-setup' 
+                      : ((!profile.is_payment_verified && profile.active_user) ? '/pricing-plan' : '/inactive-account')
+                      : '/inactive-account'
                   "
                 >
                   My Ratings
@@ -234,13 +248,13 @@
                 <ResponsiveNavLink
                   v-if="showit"
                   :href="
-                    profile &&
-                    profile.is_payment_verified &&
-                    profile.active_user
-                    ? '/profile'
-                    : profile && !profile.is_payment_verified
-                    ? '/profile-setup'
-                    : '/inactive-account'
+                    profile && profile.is_payment_verified && profile.active_user
+                      ? '/profile'
+                      : profile && (!profile.is_payment_verified || !profile.active_user)
+                      ? (!profile.is_payment_verified && !profile.active_user) 
+                      ? '/profile-setup' 
+                      : ((!profile.is_payment_verified && profile.active_user) ? '/pricing-plan' : '/inactive-account')
+                      : '/inactive-account'
                   "
                 >
                   My Profile
@@ -249,13 +263,13 @@
                 <ResponsiveNavLink
                   v-if="showit"
                   :href="
-                    profile &&
-                    profile.is_payment_verified &&
-                    profile.active_user
-                    ? '/settings'
-                    : profile && !profile.is_payment_verified
-                    ? '/profile-setup'
-                    : '/inactive-account'
+                    profile && profile.is_payment_verified && profile.active_user
+                      ? '/settings'
+                      : profile && (!profile.is_payment_verified || !profile.active_user)
+                      ? (!profile.is_payment_verified && !profile.active_user) 
+                      ? '/profile-setup' 
+                      : ((!profile.is_payment_verified && profile.active_user) ? '/pricing-plan' : '/inactive-account')
+                      : '/inactive-account'
                   "
                 >
                   Settings
@@ -277,7 +291,19 @@
                   <ResponsiveNavLink href="/admin/regions/appealed">
                     Appealed Reviews
                   </ResponsiveNavLink> -->
-                  <ResponsiveNavLink href="/admin"> Admin </ResponsiveNavLink>
+                  <ResponsiveNavLink 
+                    :href="
+                      profile && profile.is_payment_verified && profile.active_user
+                        ? '/admin'
+                        : profile && (!profile.is_payment_verified || !profile.active_user)
+                        ? (!profile.is_payment_verified && !profile.active_user) 
+                        ? '/profile-setup' 
+                        : ((!profile.is_payment_verified && profile.active_user) ? '/pricing-plan' : '/inactive-account')
+                        : '/inactive-account'
+                    "
+                  > 
+                    Admin 
+                  </ResponsiveNavLink>
                 </div>
 
                 <ResponsiveNavLink

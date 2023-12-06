@@ -107,7 +107,7 @@ const truncatedName = computed(() => {
         <div
           class="pt-1 pb-3 space-y-2"
           :class="
-            url === '/payment' || url === '/profile-setup'
+            (url === '/payment' || url === '/profile-setup' || url === '/pricing-plan')
               ? 'pointer-events-none'
               : ''
           "
