@@ -5,6 +5,8 @@ import Avatar from "@/Components/Ratings/Avatar.vue";
 import StarRounded from "@/Components/Ratings/StarRounded.vue";
 
 import tContractorWord from "@/Components/tCon/tContractorWord.vue";
+import LikedUser from "@/Components/PostFooter/LikedUser.vue";
+import DialogAllComments from "@/Components/PostFooter/DialogAllComments.vue";
 import ButtonPost from "@/Components/tCon/tConSub/ButtonPost.vue";
 import ButtonRefresh from "@/Components/tCon/tConSub/ButtonRefresh.vue";
 import PostingActionMenu from "@/Components/tCon/PostingActionMenu.vue";
@@ -14,6 +16,7 @@ import throttle from "lodash/throttle";
 import { Link } from "@inertiajs/inertia-vue3";
 import { ref } from "vue";
 import { mapGetters } from "vuex";
+import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import DialogContractorRating from "@/Components/Ratings/Contractor/DialogContractorRating.vue";
 import { Icon } from "@iconify/vue";
 import { somethingWentWrong } from "@/helpers/utilities";
@@ -28,6 +31,9 @@ export default {
     StarRounded,
     Icon,
     PostingActionMenu,
+    CustomDialog,
+    LikedUser,
+    DialogAllComments,
     Avatar,
     PostImageDisplay,
     Link,
@@ -38,17 +44,9 @@ export default {
   },
 
   mounted() {
-    // console.log('content', this.post);
-    // this.post.body1 = this.post.body1.replace(/\/n/g, '<br>');
-    // Remove PostingActionMenu upon scroll
-    // const scrollElement = document.querySelector('#scrollPost');
-    // console.log((scrollElement));
-
-    // scrollElement.addEventListener("scroll",
-    //     throttle(this.ScreenPostingActionMenu, 1000));
-
     // Remove PostingActionMenu upon scroll
     // ERROR ONLY WORKS IN MOBILE BECAUSE LOOKING AT WINDOW140
+    this.fetchAllComments();
     this.$nextTick(() => {
       this.checkContentHeight();
       this.checkContentHeightBody2();
@@ -109,6 +107,8 @@ export default {
       text_color: "",
       title_text_alignment: "",
       titleCustomBgColor: "left",
+      likedUsers: [],
+      unLikedUsers: [],
       title_text_color: "",
       profileId: usePageDeatails.profile.id,
       isContentOverflow: false,
@@ -120,6 +120,11 @@ export default {
       likes_count: this.post.likes_count,
       dislikes_count: this.post.dislikes_count,
       repost_count: this.post.repost,
+      loadingLiked: false,
+      loadingUnliked: false,
+      loadingRepost: false,
+      allComments:[],
+      loadingComments:false,
     };
   },
 
@@ -430,6 +435,84 @@ export default {
         }
       }
     },
+    onOpenListofLikedUsersModel() {
+      this.$refs.likeDialogRef.openDialog();
+    },
+    async onLikeModalOpen() {
+      this.loadingLiked = true;
+      try {
+        const response = await axios.get(
+          `/api/posts/${this.post.id}/likes`,
+          getAxiosConfig()
+        );
+        if (response.data) {
+          this.likedUsers = response.data;
+        }
+      } catch (err) {
+        somethingWentWrong();
+      } finally {
+        this.loadingLiked = false;
+      }
+    },
+    onOpenListofDislikedUsersModel() {
+      this.$refs.dislikeDialogRef.openDialog();
+    },
+    async onDislikeModalOpen() {
+      this.loadingUnliked = true;
+      try {
+        const response = await axios.get(
+          `/api/posts/${this.post.id}/dislikes`,
+          getAxiosConfig()
+        );
+        if (response.data) {
+          this.unLikedUsers = response.data;
+        }
+      } catch (err) {
+        somethingWentWrong();
+      } finally {
+        this.loadingUnliked = false;
+      }
+    },
+    onOpenRepostAssuranceModel() {
+      this.$refs.repostDialogRef.openDialog();
+    },
+    async onRepost() {
+      this.loadingRepost = true;
+      try {
+        const response = await axios.post(
+          `/api/posts/${this.post.id}/repost`,
+          {},
+          getAxiosConfig()
+        );
+        if (response.data) {
+          this.repost_count = this.repost_count + 1;
+        }
+      } catch (err) {
+        somethingWentWrong();
+      } finally {
+        this.loadingRepost = false;
+      this.$refs.repostDialogRef.closeDialog();
+      }
+    },
+    async fetchAllComments(){
+      this.loadingComments = true;
+      try {
+        const response = await axios.get(
+          `/api/posts/${this.post.id}/comments`,
+          getAxiosConfig()
+        );
+        if (response.data) {
+          this.allComments = response.data;
+        }
+      } catch (err) {
+        somethingWentWrong();
+      } finally {
+        this.loadingComments = false;
+      }
+    },
+    onOpenCommentsModal(){
+      this.$refs.commentDialogRef.openDialog();
+    }
   },
 };
 </script>
@@ -440,6 +523,91 @@ export default {
     :loggedInUserId="profileId"
     :userId="post.user_id"
   />
+  <!-- commentModal -->
+  <DialogAllComments
+    ref="commentDialogRef"
+    :allComments="allComments"
+  />
+  <!-- likes modal -->
+  <CustomDialog
+    ref="likeDialogRef"
+    @opened="onLikeModalOpen"
+    :showFooter="false"
+    title="People who liked the post"
+  >
+    <div v-if="loadingLiked">
+      <v-skeleton-loader
+        v-for="n in 5"
+        :key="n"
+        type="list-item-avatar"
+      ></v-skeleton-loader>
+    </div>
+    <div v-else-if="!loadingLiked && likedUsers && likedUsers.length > 0">
+      <LikedUser
+        liked
+        v-for="(user, index) in likedUsers"
+        :key="index"
+        :user="user"
+      />
+    </div>
+    
+    <div v-else>
+      <div
+        class="p-2 text-xl text-grey-600 font-bold h-72 flex items-center justify-center"
+      >
+        No Contractor Found
+      </div>
+    </div>
+  </CustomDialog>
+  <!-- dislike modal -->
+  <CustomDialog
+    ref="dislikeDialogRef"
+    @opened="onDislikeModalOpen"
+    :showFooter="false"
+    title="People who disliked the post"
+  >
+    <div v-if="loadingUnliked">
+      <v-skeleton-loader
+        v-for="n in 5"
+        :key="n"
+        type="list-item-avatar"
+      ></v-skeleton-loader>
+    </div>
+    <div v-else-if="!loadingUnliked && unLikedUsers && unLikedUsers.length > 0">
+      <LikedUser
+        v-for="(user, index) in unLikedUsers"
+        :key="index"
+        :user="user"
+      />
+    </div>
+    <div v-else>
+      <div
+        class="p-2 text-xl text-grey-600 font-bold h-72 flex items-center justify-center"
+      >
+        No Contractor Found
+      </div>
+    </div>
+  </CustomDialog>
+  <!--  repost confirmation modal-->
+  <CustomDialog
+    ref="repostDialogRef"
+    @submit="onRepost"
+    :loading="loadingRepost"
+    :disabled="loadingRepost"
+    :shouldFetchPost="false"
+    submitText="Repost Now"
+    title="Do you wish to share this post with your audience?"
+  >
+    <!-- :showHeader="false" -->
+    <div class="mb-4">
+      <div
+        class="section_text-lg font-bold pl-6 section_text-gray-800 mt-3 mb-2"
+      >
+        Reposting allows you to share this post with your followers, spreading
+        the message further.
+      </div>
+    </div>
+  </CustomDialog>
   <!-- {{ profile }} -->
   <div
     v-if="post.view"
@@ -698,7 +866,10 @@ export default {
     <div class="pb-2 flex justify-between w-full">
       <div class="flex gap-2">
         <!-- Like -->
-        <div class="flex gap-1 justify-center items-center cursor-pointer">
+        <div
+          class="flex gap-1 justify-center items-center cursor-pointer"
+          @click="onOpenListofLikedUsersModel"
+        >
           <!-- <div v-if="post.likes_count" class=""> -->
           <div
             class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
@@ -716,8 +887,11 @@ export default {
           <div>{{ likes_count }}</div>
         </div>
         <!-- dislikes -->
-        <div class="flex gap-1 justify-center items-center cursor-pointer">
-          <!-- <div v-if="post.likes_count" class=""> -->
+        <div
+        class="flex gap-1 justify-center items-center cursor-pointer"
+        @click="onOpenListofDislikedUsersModel"
+        >
+        <!-- <div v-if="post.likes_count" class=""> -->
           <div
             class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
           >
@@ -736,7 +910,7 @@ export default {
         </div>
       </div>
       <div class="text-gray-900 flex gap-1">
-        <span class=""> 4 comments </span>
+        <span class="cursor-pointer" @click="onOpenCommentsModal"> {{ allComments.length }} comments </span>
         &#9679;
         <span class=""> {{ repost_count }} reposts </span>
       </div>
@@ -774,7 +948,9 @@ export default {
               <Icon
                 icon="emojione-monotone:up-arrow"
                 :rotate="2"
-                :class="`${dislikes_count > post.dislikes_count ? 'disliked' : ''}`"
+                :class="`${
+                  dislikes_count > post.dislikes_count ? 'disliked' : ''
+                }`"
                 class="icon-dislike text-transparent stroke-[2px] stroke-[#c40516]"
                 width="25"
               />
@@ -785,8 +961,8 @@ export default {
       </div>
 
       <!-- Comments -->
-      <div class="hovered">
-        <Link href="#" class="font-medium text-xs sm:text-sm text-blue-800">
+      <div class="hovered cursor-pointer" @click="onOpenCommentsModal">
+        <div class="font-medium text-xs sm:text-sm text-blue-800">
           <div class="flex flex-row justify-between items-center">
             <div class="">
               <img
@@ -797,19 +973,19 @@ export default {
             </div>
             <div class="pl-1 icon-text">Comment</div>
           </div>
-        </Link>
+        </div>
       </div>
 
       <!-- Re-Posted -->
-      <div class="hovered">
-        <Link href="#" class="font-medium text-xs sm:text-sm text-blue-800">
+      <div class="hovered cursor-pointer" @click="onOpenRepostAssuranceModel">
+        <div  class="font-medium text-xs sm:text-sm text-blue-800">
           <div class="flex flex-row justify-between items-center">
             <div class="">
               <img src="/images/icons/share_icon.png" width="25" height="25" />
             </div>
             <div class="pl-1 icon-text">Repost</div>
           </div>
-        </Link>
+        </div>
       </div>
 
       <!-- Shares -->

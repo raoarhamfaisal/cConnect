@@ -53,10 +53,10 @@ const loadMoreIntersect = ref();
 const sort_order = ref('desc');
 const sort_field = ref('updated_at');
 
-const store = useStore();
+// const store = useStore();
 
-//Computed
-const screenWidth = computed(() => store.getters.screenWidth);
+// //Computed
+// const screenWidth = computed(() => store.getters.screenWidth);
 
 //Mounted
 onMounted(async () => {
