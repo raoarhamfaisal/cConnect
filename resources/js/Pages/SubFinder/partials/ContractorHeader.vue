@@ -8,7 +8,7 @@
     <div class="flex space-x-2 justify-between">
       <span class="cursor-pointer" @click="openContractorPageDiaglog">
         <div class="flex justify-center items-center space-x-2">
-          <div class="self-center">
+          <div class="self-start">
             <Avatar
               imageClass="w-16 h-16 sm:h-24 sm:w-24"
               :imageSrc="`/${
@@ -21,7 +21,7 @@
               :text="`${contractor.first_name} ${contractor.last_name}`"
               :applyTooltipLength="1260"
               :textLengthToShow="screenWidth < 380 ? 18 : 20"
-              textClass="text-md max-sm:translate-y-[4px]  xs:text-lg font-medium font-bold text-gray-900 "
+              textClass="text-md max-sm:translate-y-[0px]  xs:text-lg font-medium font-bold text-gray-900 "
             />
             <Tooltip
               :text="contractor.company_name"
@@ -36,11 +36,12 @@
               :textLengthToShow="screenWidth < 380 ? 20 : 23"
               textClass="leading-4 text-xs  xs:text-base "
             />
-            <div class="max-sm:text-xs">{{ contractor.phone_cell }}</div>
+            <div class="max-sm:text-xs">{{ contractor.phone_cell || contractor.phone_office }}</div>
+            <div class="max-sm:text-xs">{{ contractor.email }}</div>
           </div>
         </div>
       </span>
-      <div class="flex items-center gap-1">
+      <div class="flex items-start mt-1 max-sm:mt-2 gap-1">
         <div class="flex flex-col md:mt-2 justify-center items-center">
           <!-- @click="openContractorRatingDialog" -->
           <StarRounded
@@ -76,7 +77,7 @@
     ref="contractorPageDialogRef"
     :contractor_id="contractor.user_id"
     :region_name="region_name"
-    :profile="contractor"
+    :profile="profile"
   />
 </template>
 
@@ -97,9 +98,11 @@ const ratingDialogRef = ref();
 console.log("contractor", props.contractor);
 const store = useStore();
 
+
 let usePageDeatails = usePage().props.value;
 const loggedInUserId = usePageDeatails?.profile?.id;
-
+const profile = usePageDeatails?.profile;
+console.log(usePageDeatails.profile,'profile');
 const total_reviews = ref(props.contractor.total_reviews ?? 0);
 const averageRating = ref(props.contractor.average_rating);
 const contractorPageDialogRef = ref();

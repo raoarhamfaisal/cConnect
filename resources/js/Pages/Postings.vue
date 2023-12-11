@@ -558,7 +558,7 @@ export default {
 
           <!-- 'next_page_url' is set to null in script -->
           <div v-if="posts.next_page_url === null" class="mt-6">
-            <div class="text-gray-300 inline text-center">
+            <div class="text-white font-semibold text-2xl inline text-center">
               You're all up to date! 🥳
             </div>
           </div>

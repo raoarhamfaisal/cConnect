@@ -330,7 +330,7 @@ const dontProceed = (areAllTradesSetToZero) => {
       </v-stepper-header>
 
       <v-stepper-window>
-        <div class="sm:p-[1rem] bg-white">
+        <div class=" bg-white">
           <v-stepper-window-item :value="1">
             <GeneralInfo
               v-model:form="form"

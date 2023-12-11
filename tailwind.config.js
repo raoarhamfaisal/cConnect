@@ -16,10 +16,10 @@ module.exports = {
       x365: "365px",
       sx: "380px",
       xs: "460px",
-      "max-sm": { max: "640px" },
-      "max-md": { max: "768px" },
-      "max-lg": { max: "1024px" },
-      "max-xl": { max: "1280px" },
+      "max-sm": { max: "639px" },//640
+      "max-md": { max: "767px" },//768
+      "max-lg": { max: "1023px" },//1024
+      "max-xl": { max: "1279px" },//1280
       ...defaultTheme.screens,
     },
 

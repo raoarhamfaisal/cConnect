@@ -378,7 +378,7 @@ export default {
           <div
             class="flex flex-row justify-center items-center w-full mb-1 mt-1"
           >
-            <div v-if="imageArray.length > 0">
+            <div v-if="imageArray.length > 0" class="w-full">
               <div v-for="image in imageArray" :key="image.id" class="pb-2">
                 <PostShowTheImage
                   :image="image"

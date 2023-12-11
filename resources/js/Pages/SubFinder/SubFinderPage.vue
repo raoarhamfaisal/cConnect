@@ -234,7 +234,7 @@ const fetchSearchedContractors = async (
   try {
     if (basedOnSearch.value) {
       response = await axios.get(
-        `/api/sub-finder/find-contractors?region_id=${region_id.value}&per_page=${per_page}&page=${page}&search_term=${searchTerm.value}&sort_by=high_rated&preference_status=&trade_id=`,
+        `/api/sub-finder/find-contractors?region_id=${region_id.value}&per_page=${per_page}&page=${page}&search_term=${searchTerm.value}&sort_by=high_rated&preference_status=&trade_id=${trade_id.value}`,
         getAxiosConfig()
       );
     } else {

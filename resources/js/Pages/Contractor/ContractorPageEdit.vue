@@ -33,6 +33,8 @@ import { somethingWentWrong, startOptionToArray } from "@/helpers/utilities";
 import { template1Default } from "@/helpers/templateDefaults";
 
 import { useStore } from "vuex";
+import { usePage } from "@inertiajs/inertia-vue3";
+import { Inertia } from "@inertiajs/inertia";
 
 // State
 const { profile, contractor_id } = defineProps({
@@ -63,6 +65,18 @@ onMounted(() => {
   console.log("onMounted");
   localStorage.setItem("prevUrl", "/edit");
   fetchContractorDetails();
+  const url = usePage().url.value;
+  let extractedNumber;
+  console.log(url, "url");
+ 
+  const match = url.match(/\/contractor\/(\d+)\/edit/);
+
+  if (match) {
+    extractedNumber = parseInt(match[1], 10);
+  }
+  if(extractedNumber !== profile.user_id){
+    Inertia.visit(`/contractor/${profile.user_id}/edit`)
+  }
 });
 
 //Computed
