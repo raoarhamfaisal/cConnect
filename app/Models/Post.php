@@ -17,6 +17,7 @@ class Post extends Model
 
     protected $fillable = [
         'original_post_id',
+        'original_user_id',
         'region_id',
         'user_id',
         'title',

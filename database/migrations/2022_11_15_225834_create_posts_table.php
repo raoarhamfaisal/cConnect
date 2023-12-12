@@ -17,6 +17,7 @@ return new class extends Migration
 
             $table->id();
             $table->unsignedBigInteger('original_post_id')->nullable();
+            $table->unsignedBigInteger('original_user_id')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('region_id')->default(1);;
             $table->boolean('view')->default(1);
@@ -42,6 +43,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('original_user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('region_id')->references('id')->on('regions');
             $table->foreign('post_text_color_id')->references('id')->on('post_colors');
             $table->foreign('post_background_color_id')->references('id')->on('post_colors');
