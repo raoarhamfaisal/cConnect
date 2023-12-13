@@ -18,10 +18,12 @@ export default {
       loadFirstPageWithNoPreserve: false,
       mustVerifyEmail: false,
       activeProfileTab: 0,
+      commentId: 0,
     };
   },
   getters: {
     status: (state) => state.status,
+    commentId: (state) => state.commentId,
     activeProfileTab: (state) => state.activeProfileTab,
     loadFirstPageWithNoPreserve: (state) => state.loadFirstPageWithNoPreserve,
     loading: (state) => state.loading,
@@ -34,6 +36,9 @@ export default {
   mutations: {
     setStatus(state, payload) {
       state.status = payload;
+    },
+    setCommentId(state, payload) {
+      state.commentId = payload;
     },
     setContractorId(state, payload) {
       state.contractorId = payload;

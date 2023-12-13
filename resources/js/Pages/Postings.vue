@@ -486,25 +486,28 @@ export default {
         <!-- <div v-for="post in allPosts.slice(0, 400)" :key="post.id" -->
         <Loader :loading="loading" background="inherit" height="100vh"></Loader>
         <template v-if="!loading">
-          <div
-            v-for="(post, index) in postsToShow"
-            id="scrollPost"
-            :key="post.id"
-            class="relative mx-auto w-full py-0"
-          >
-            <!-- INDIVIDUAL POST DISPLAY WITH MENUS -->
-            <PostDisplay
-              :showit="showit"
-              :index="index"
-              :profile="profile"
-              :textColors="textColors"
-              :backgroundColors="backgroundColors"
-              :post="post"
-              :body1Colors="body1Colors"
-              @enlarge-post="EnlargePost"
+          <v-expand-transition>
+            <div
+              v-for="(post, index) in postsToShow"
+              id="scrollPost"
+              :key="post.id"
+              class="relative mx-auto w-full py-0"
             >
-            </PostDisplay>
-          </div>
+              <!-- INDIVIDUAL POST DISPLAY WITH MENUS -->
+              <PostDisplay
+                :showit="showit"
+                :index="index"
+                :profile="profile"
+                :textColors="textColors"
+                :backgroundColors="backgroundColors"
+                :post="post"
+                :body1Colors="body1Colors"
+                @enlarge-post="EnlargePost"
+              >
+              </PostDisplay>
+            </div>
+          </v-expand-transition>
+
           <!-- v-for="post in allPosts" -->
           <!-- ------------------------------------------- -->
 
@@ -525,7 +528,10 @@ export default {
 
           <!-- Makes call to load more posts calling the script
                              observer.observe(this.$refs.loadMoreIntersectPosts) -->
-          <span ref="loadMoreIntersectPosts" style="width: 5px; height: 5px" ></span>
+          <span
+            ref="loadMoreIntersectPosts"
+            style="width: 5px; height: 5px"
+          ></span>
 
           <!-- {{ posts.next_page_url }} -->
 

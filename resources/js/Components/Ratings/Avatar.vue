@@ -34,7 +34,7 @@ watch(
   >
     <img
       v-if="imageSrc && !imageFailed"
-      :class="`object-contain w-full border-2 border-gray-300  h-full rounded-full`"
+      :class="`object-contain w-full border-[1px] border-gray-400  h-full rounded-full`"
       :src="imageSrc"
       alt="avatar"
       @error="handleImageError"
