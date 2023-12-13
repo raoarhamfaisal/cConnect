@@ -68,6 +68,8 @@ class PostController extends Controller
         // dd($posts->trades);
 
 
+
+
     
         return Inertia::render('Postings', [
             'showit' => Auth::check(),
