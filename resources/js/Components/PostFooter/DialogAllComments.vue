@@ -51,9 +51,10 @@
             overflowAllowed ? 'overflow-y-auto' : ''
           } p-2 sm:p-4 padding-none ${contentClasses}`"
         >
+          <Loader :loading="loading" background="" height="60vh"></Loader>
           <!-- in case of Comments -->
           <div
-            v-if="comments && comments.length > 0"
+            v-if="comments && comments.length > 0 && !loading"
             class="flex flex-col gap-1 sm:gap-2"
             ref="commentList"
           >
@@ -75,8 +76,31 @@
           >
             No Comments Yet
           </div>
+          <div
+            v-if="+currentPage !== +pagination.last_page"
+            ref="loadMoreIntersect"
+            style="width: 5px; height: 5px"
+          ></div>
+          <div
+            v-show="
+              currentPage > 1 &&
+              !loadingNextPage &&
+              +currentPage === +pagination.last_page
+            "
+            class="text-center font-bold mt-4"
+          >
+            No More Comments to Load
+          </div>
+          <Loader
+            classes="flex gap-2"
+            :loading="loadingNextPage"
+            circleClasses="small-circle"
+            textClasses="small-text"
+            background=""
+            height="70px"
+          ></Loader>
         </div>
-
+        <!-- Dialog Footer -->
         <div
           :class="`flex ${
             !showCancel ? 'justify-end' : 'justify-between'
@@ -116,6 +140,8 @@
 
 <script setup>
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
+import Loader from "@/Components/Ratings/Loader.vue";
+
 import { filterBadWords, somethingWentWrong } from "@/helpers/utilities";
 import { Icon } from "@iconify/vue";
 import { computed, nextTick, onMounted, ref, watch } from "vue";
@@ -124,11 +150,17 @@ import Comment from "@/Components/PostFooter/Comment.vue";
 import { useStore } from "vuex";
 
 const props = defineProps({
-  allComments: {
+  modelValue: {
     type: Array,
   },
   postId: {
     type: [Number, String],
+  },
+  pagination: {
+    type: Object,
+  },
+  addedNumber: {
+    type: Number,
   },
   dontAllowCancel: {
     type: Boolean,
@@ -161,7 +193,13 @@ const props = defineProps({
     default: true,
   },
 });
-const emit = defineEmits(["submit", "closed", "opened"]);
+const emit = defineEmits([
+  "update:modelValue",
+  "update:addedNumber",
+  "submit",
+  "closed",
+  "opened",
+]);
 
 const store = useStore();
 const commentList = ref(null);
@@ -172,10 +210,18 @@ const commentText = ref("");
 const minHeight = ref(70);
 const paddingHeight = ref(25);
 const loadingSendComment = ref(false);
-const comments = ref(props.allComments);
+const comments = ref(props.modelValue ?? []);
+const pagination = ref(props.pagination);
+const currentPage = ref(1);
+const perPage = ref(10);
+const loadingNextPage = ref(false);
+const loadMoreIntersect = ref();
+const addedNumber = ref(props.addedNumber);
+const loading = ref(false);
 
 //Computed
 const screenWidth = computed(() => store.getters.screenWidth);
+const commentId = computed(() => store.state.profile.commentId);
 
 onMounted(() => {
   if (screenWidth.value > 640) {
@@ -200,21 +246,83 @@ watch(
   }
 );
 watch(
-  () => props.allComments,
+  () => props.modelValue,
   (newVal) => {
     if (newVal) {
+      console.log("here");
       comments.value = newVal;
     }
   }
 );
-
+watch(
+  () => props.addedNumber,
+  (newVal) => {
+    if (newVal) {
+      addedNumber.value = newVal;
+    }
+  }
+);
+watch(
+  () => props.pagination,
+  (newVal) => {
+    if (newVal) {
+      pagination.value = newVal;
+    }
+  }
+);
+watch(
+  () => comments.value,
+  (newValue) => {
+    emit("update:modelValue", comments.value);
+  }
+);
+watch(
+  () => addedNumber.value,
+  (newValue) => {
+    emit("update:addedNumber", addedNumber.value);
+  }
+);
+watch(
+  () => commentId.value,
+  async (newValue) => {
+    if (newValue > 0) {
+      currentPage.value = 1;
+      loading.value = true;
+      await fetchComments(perPage.value, currentPage.value, false, true);
+      loading.value = false;
+    }
+  }
+);
 //Methods
 const closeDialog = () => {
   isVisible.value = false;
 };
 
-const openDialog = () => {
+const openDialog = async () => {
   isVisible.value = true;
+  console.log("inOpen", comments.value);
+  // await fetchComments(perPage.value, currentPage.value, false);
+  if (comments.value.length > 0) {
+    setTimeout(() => {
+      const observerCallback = (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            console.log("intersecting");
+            loadMoreComments();
+          }
+        });
+      };
+      console.log("in");
+
+      const observer = new IntersectionObserver(observerCallback, {
+        rootMargin: "0px 0px 0px 0px",
+        threshold: 0,
+      });
+
+      observer.observe(loadMoreIntersect.value);
+    }, 100);
+  }
+
   emit("opened");
 };
 
@@ -274,7 +382,8 @@ const onSendComment = async () => {
       // this.allComments = response.data;
       commentText.value = "";
       adjustHeight();
-      comments.value.unshift(response.data);
+      // comments.value.unshift(response.data);
+      emit("unshiftIntoComments", response.data);
       nextTick(() => {
         commentList.value?.scrollIntoView({ behavior: "smooth" });
       });
@@ -283,6 +392,46 @@ const onSendComment = async () => {
     somethingWentWrong();
   } finally {
     loadingSendComment.value = false;
+  }
+};
+const loadMoreComments = async () => {
+  loadingNextPage.value = true;
+  currentPage.value = currentPage.value + 1;
+  console.log("3");
+
+  await fetchComments(perPage.value, currentPage.value);
+  loadingNextPage.value = false;
+};
+
+const fetchComments = async (
+  per_page = perPage.value,
+  page = 1,
+  append = true,
+  noReviewsChanges = false
+) => {
+  try {
+    console.log("fetchComments");
+    const response = await axios.get(
+      `/api/posts/${props.postId}/comments?per_page=${per_page}&page=${page}`,
+      getAxiosConfig()
+    );
+    if (addedNumber.value > 0) {
+      comments.value = [
+        ...comments.value,
+        ...response.data.comments.slice(addedNumber.value),
+      ];
+      addedNumber.value = 0;
+    } else if (append) {
+      comments.value = [...comments.value, ...response.data.comments];
+    } else {
+      if (!noReviewsChanges) {
+        currentPage.value = 1;
+        comments.value = [...response.data.comments];
+      }
+    }
+    pagination.value = response.data.pagination;
+  } catch (err) {
+    somethingWentWrong();
   }
 };
 

@@ -23,7 +23,7 @@
     </transition-group>
   </div>
 
-  <div class="flex gap-2 w-full items-start overflow-auto" v-if="length > 2">
+  <div class="flex gap-2 w-full items-start overflow-auto" v-if="length > 0">
     <textarea
       id="comment"
       v-model="commentText"
