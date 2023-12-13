@@ -73,21 +73,6 @@ export default {
     },
   },
   actions: {
-    async getProfileInfo({ commit }) {
-      commit("setLoadingProfile", true);
-      try {
-        const response = await axios.get(`/api/profileInfo`, getAxiosConfig());
-        if (response.data) {
-          commit("setStatus", response.data.status);
-          commit("setMustVerifyEmail", response.data.mustVerifyEmail);
-        }
-      } catch (err) {
-        somethingWentWrong();
-      } finally {
-        commit("setLoadingProfile", false);
-      }
-    },
-
     async getViewSettingsProfile({ commit }) {
       commit("setLoadingViewSettingsProfile", true);
       try {
@@ -250,25 +235,6 @@ export default {
         );
         if (response.data && payload.showSuccess) {
           changesSaved("Changes Successfully Saved");
-        }
-      } catch (err) {
-        somethingWentWrong();
-      } finally {
-        commit("setLoading", false);
-      }
-    },
-
-    async verifyPayment({ commit }) {
-      commit("setLoading", true);
-
-      try {
-        const response = await axios.patch(
-          `/api/profile/verify-payment`,
-          {},
-          getAxiosConfig()
-        );
-        if (response.data) {
-          Inertia.visit("/post");
         }
       } catch (err) {
         somethingWentWrong();

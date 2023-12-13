@@ -44,12 +44,15 @@ export default {
       allRegions: [],
       contractorDetails: {},
       success: false,
+      comment: {},
+      loadingComment: false,
     };
   },
   getters: {
     shouldFetchPostsOnClose: (state) => state.shouldFetchPostsOnClose,
     shouldLoadPosts: (state) => state.shouldLoadPosts,
     regions: (state) => state.allRegions,
+    comment: (state) => state.comment,
     trades: (state) => state.allTrades,
     success: (state) => state.success,
     loading: (state) => state.loading,
@@ -58,6 +61,12 @@ export default {
   mutations: {
     setLoading(state, payload) {
       state.loading = payload;
+    },
+    setLoadingComment(state, payload) {
+      state.loadingComment = payload;
+    },
+    setComment(state, payload) {
+      state.comment = payload;
     },
     setShouldFetchFirstPagePosts(state, payload) {
       state.shouldFetchFirstPagePosts = payload;
@@ -299,6 +308,27 @@ export default {
           }
         }
       } catch (err) {
+        somethingWentWrong();
+      } finally {
+        commit("setLoadingSending", false);
+        commit("setDisabledSending", false);
+      }
+    },
+    async updateComment({ commit }, payload) {
+      commit("setLoadingSending", true);
+      commit("setDisabledSending", true);
+
+      try {
+        const response = await axios.put(
+          `/api/comments/${payload.updatedComment.commentId}`,
+          { body: payload.updatedComment.body },
+          getAxiosConfig()
+        );
+        if (response.data) {
+          commit("setComment", payload.updatedComment);
+        }
+      } catch (err) {
+        commit("setLoadingComment", false);
         somethingWentWrong();
       } finally {
         commit("setLoadingSending", false);

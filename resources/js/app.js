@@ -17,8 +17,12 @@ import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 import { setupCalendar } from "v-calendar";
 import {
   VDivider,
+  VCard,
+  VCardText,
   VCheckbox,
+  VDialog,
   VLazy,
+  VOverlay,
   VTable,
   VSnackbar,
   VMenu,
@@ -47,8 +51,12 @@ const vuetify = createVuetify({
   components: {
     VStepper,
     VCheckbox,
+    VDialog,
     VSkeletonLoader,
     VTable,
+    VCard,
+    VOverlay,
+    VCardText,
     VSwitch,
     VExpandTransition,
     VMenu,

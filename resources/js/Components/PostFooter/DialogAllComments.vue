@@ -57,11 +57,15 @@
             class="flex flex-col gap-1 sm:gap-2"
             ref="commentList"
           >
-            <Comment
-              v-for="(comment, index) in comments"
-              :key="index"
-              :comment="comment"
-            />
+            <transition-group
+              name="comment-transition"
+              tag="div"
+              class="flex flex-col gap-1 sm:gap-2"
+            >
+              <div v-for="comment in comments" :key="comment.id">
+                <Comment :comment="comment" />
+              </div>
+            </transition-group>
           </div>
 
           <!-- if no Comment -->

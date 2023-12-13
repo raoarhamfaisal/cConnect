@@ -134,6 +134,7 @@ export default {
   computed: {
     ...mapGetters(["screenWidth"]),
     ...mapGetters("profile", ["commentId"]),
+    ...mapGetters("ratings", ["comment"]),
     toggleClass() {
       return `cursor-pointer ${
         this.customBgColor.startsWith("#") ? "text-sky-400" : "text-sky-700"
@@ -323,6 +324,24 @@ export default {
           this.allComments.splice(index, 1);
         }
       }
+    },
+    comment: {
+      handler(newVal) {
+        if (newVal && newVal.commentId) {
+          const commentIndex = this.allComments.findIndex(
+            (comment) => comment.id === newVal.commentId
+          );
+
+          if (commentIndex !== -1) {
+            // Update the existing comment with the new data
+            this.allComments[commentIndex].body = newVal.body;
+          }
+          setTimeout(() => {
+            this.$store.commit("ratings/setLoadingComment", false);
+          }, 300);
+        }
+      },
+      deep: true,
     },
   },
   methods: {
@@ -1128,18 +1147,8 @@ export default {
 .reveal {
   animation: revealAnimation 1.5s forwards;
 }
-.comment-transition-enter-active,
-.comment-transition-leave-active {
-  transition: all 0.3s ease;
-}
-.comment-transition-enter-from,
-.comment-transition-leave-to {
-  opacity: 0;
-  max-height: 0;
-}
-.comment-transition-enter-to,
-.comment-transition-leave-from {
-  opacity: 1;
-  max-height: 100px; /* Adjust based on your content */
+
+.dialog-modal .v-overlay__scrim {
+  background: transparent !important;
 }
 </style>

@@ -2,6 +2,8 @@
   <div
     class="flex flex-row gap-1 sm:gap-2 justify-start items-start transition-all duration-1000 transitioning"
   >
+    <!-- @mouseenter="showIcon = true"
+    @mouseleave="showIcon = false" -->
     <!-- Avatar -->
     <Link
       :href="`/contractor/${comment.user_id}`"
@@ -21,6 +23,8 @@
 
     <!-- User Info -->
     <div class="flex flex-col justify-center ml-1">
+      <!-- @touchstart="handleTouchStart"
+      @touchend="handleTouchEnd" -->
       <div class="flex gap-2">
         <div class="bg-[#f0f2f5] rounded-[18px] px-3 py-2">
           <Link
@@ -40,9 +44,9 @@
 
         <!-- action menu -->
         <div
-          class="hover:opacity-100 hover:pointer-events-auto cursor-pointer self-center"
+          class="hover:opacity-100 hover:pointer-events-auto cursor-pointer self-center w-[22%] h-full"
         >
-          <v-menu>
+          <v-menu v-model="menuVisible">
             <template v-slot:activator="{ props }">
               <button
                 class="bg-[#f0f2f5] px-3 py-2 rounded-[18px] flex items-center"
@@ -73,13 +77,58 @@
         <div class="font-bold hover:underline cursor-pointer">Like</div>
         <div class="font-bold hover:underline cursor-pointer">Dislike</div>
         <div class="font-bold hover:underline cursor-pointer">Reply</div>
+        <!-- Like -->
+        <div
+          class="flex gap-1 justify-center items-center cursor-pointer"
+          @click="onOpenListofLikedUsersModel"
+        >
+          <!-- <div v-if="post.likes_count" class=""> -->
+          <div
+            class="font-medium text-xs text-blue-800 flex flex-row justify-between items-center cursor-pointer"
+          >
+            <Icon
+              icon="emojione-monotone:up-arrow"
+              :class="`  text-[#16a34a]`"
+              width="14"
+            />
+          </div>
+          <div
+            class="translate-y-[0.5px] md:translate-y-[1px]"
+            style="font-size: 12px"
+          >
+            {{ likes_count }}
+          </div>
+        </div>
+        <!-- dislikes -->
+        <div
+          class="flex gap-1 justify-center items-center cursor-pointer"
+          @click="onOpenListofDislikedUsersModel"
+        >
+          <!-- <div v-if="post.likes_count" class=""> -->
+          <div
+            class="font-medium flex flex-row justify-between items-center text-xs text-blue-800 cursor-pointer"
+          >
+            <Icon
+              icon="emojione-monotone:up-arrow"
+              :class="`  text-[#c40516]`"
+              width="14"
+              :rotate="2"
+            />
+          </div>
+          <div
+            style="font-size: 12px"
+            class="translate-y-[0.5px] md:translate-y-[1px]"
+          >
+            {{ dislikes_count }}
+          </div>
+        </div>
       </div>
     </div>
   </div>
   <teleport to="body">
     <CustomDialog
       submitText="Delete"
-      :disableOutSideClick="true"
+      :disableOutSideClick="false"
       @submit="handleSubmitDelete"
       ref="deleteDialogRef"
       :loading="loadingDelete"
@@ -90,18 +139,24 @@
     >
       <div class="mb-4">
         <div
-          class="section_text-lg font-bold pl-6 section_text-gray-800 mt-3 mb-2"
+          class="section_text-lg font-bold sm:pl-6 section_text-gray-800 mt-3 mb-2"
         >
           Do you want to Delete this comment?
         </div>
       </div>
     </CustomDialog>
   </teleport>
+  <EditCommentModal
+    ref="editRef"
+    :commentText="comment?.body"
+    :commentId="comment.id"
+  />
 </template>
 
 <script setup>
 import { changesSaved, somethingWentWrong, timeAgo } from "@/helpers/utilities";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
+import EditCommentModal from "@/Components/PostFooter/EditCommentModal.vue";
 
 import Avatar from "@/Components/Ratings/Avatar.vue";
 
@@ -119,14 +174,19 @@ const props = defineProps({
 });
 const store = useStore();
 const visible = ref(false);
-const editDialogRef = ref();
 const deleteDialogRef = ref();
-const loadingEdit = ref(false);
+const likes_count = ref(0);
+const dislikes_count = ref(0);
 const loadingDelete = ref(false);
-
+const showIcon = ref(false);
+const menuVisible = ref(false);
+const editRef = ref();
+// const longPressTimer = ref(null);
 const screenWidth = computed(() => store.getters.screenWidth);
 
-const openEditModal = () => {};
+const openEditModal = () => {
+  editRef.value.openDialogEdit();
+};
 const openDeleteModal = () => {
   deleteDialogRef.value.openDialog();
 };
@@ -153,23 +213,18 @@ const handleSubmitDelete = async () => {
     deleteDialogRef.value.closeDialog();
   }
 };
+// const handleTouchStart = () => {
+//   if (longPressTimer.value) clearTimeout(longPressTimer.value);
+//   longPressTimer.value = setTimeout(() => {
+//     menuVisible.value = true; // Open the menu
+//   }, 500); // Time in milliseconds
+// };
+// const handleTouchEnd = () => {
+//   if (longPressTimer.value) clearTimeout(longPressTimer.value);
+// };
 </script>
 
 <style>
-.comment-transition-enter-active,
-.comment-transition-leave-active {
-  transition: all 0.3s ease;
-}
-.comment-transition-enter-from,
-.comment-transition-leave-to {
-  opacity: 0;
-  max-height: 0;
-}
-.comment-transition-enter-to,
-.comment-transition-leave-from {
-  opacity: 1;
-  max-height: 100px; /* Adjust based on your content */
-}
 .transitioning {
   transition: all 1.5s;
 }
