@@ -35,9 +35,9 @@ return new class extends Migration
             $table->unsignedBigInteger('title_text_color_id')->nullable();
             $table->unsignedBigInteger('title_background_color_id')->nullable();
 
-            $table->smallInteger('likes')->default(0);
-            $table->smallInteger('repost')->default(0);
-            $table->smallInteger('shares')->default(0);
+            $table->unsignedBigInteger('likes')->default(0);
+            $table->unsignedBigInteger('repost')->default(0);
+            $table->unsignedBigInteger('shares')->default(0);
 
 
             $table->timestamps();
