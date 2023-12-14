@@ -19,11 +19,15 @@ export default {
       mustVerifyEmail: false,
       activeProfileTab: 0,
       commentId: 0,
+      replyId: 0,
+      reply: {},
     };
   },
   getters: {
     status: (state) => state.status,
     commentId: (state) => state.commentId,
+    replyId: (state) => state.replyId,
+    reply: (state) => state.reply,
     activeProfileTab: (state) => state.activeProfileTab,
     loadFirstPageWithNoPreserve: (state) => state.loadFirstPageWithNoPreserve,
     loading: (state) => state.loading,
@@ -39,6 +43,12 @@ export default {
     },
     setCommentId(state, payload) {
       state.commentId = payload;
+    },
+    setReplyId(state, payload) {
+      state.replyId = payload;
+    },
+    setReply(state, payload) {
+      state.reply = payload;
     },
     setContractorId(state, payload) {
       state.contractorId = payload;

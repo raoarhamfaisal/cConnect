@@ -69,10 +69,10 @@ const props = defineProps({
 });
 const emit = defineEmits(["openAllComments", "unshiftIntoComments"]);
 const loadingSendComment = ref(false);
-
-const store = useStore();
 const commentText = ref("");
 const commentAreaRef = ref();
+
+const store = useStore();
 const insertTab = (event) => {
   if (event.key === "Tab") {
     event.preventDefault();

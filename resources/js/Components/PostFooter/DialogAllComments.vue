@@ -16,7 +16,7 @@
   >
     <transition name="fade">
       <div
-        class="bg-white md:w-2/3 w-full h-full rounded-xl max-sm:rounded-none shadow-xl flex flex-col z-10"
+        class="bg-white md:w-2/3 w-full h-full sm:h-5/6 rounded-xl max-sm:rounded-none shadow-xl flex flex-col z-10"
         type="button"
         @click.stop
       >

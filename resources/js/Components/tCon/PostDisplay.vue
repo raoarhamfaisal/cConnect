@@ -135,7 +135,7 @@ export default {
   emits: ["onRepost"],
   computed: {
     ...mapGetters(["screenWidth"]),
-    ...mapGetters("profile", ["commentId"]),
+    ...mapGetters("profile", ["commentId", "replyId", "reply"]),
     ...mapGetters("ratings", ["comment"]),
     toggleClass() {
       return `cursor-pointer ${
@@ -329,17 +329,71 @@ export default {
         }
       }
     },
+    replyId(newVal) {
+      if (newVal) {
+        console.log("in reply");
+        for (let i = 0; i < this.allComments.length; i++) {
+          const comment = this.allComments[i];
+          if (comment.replies) {
+            const replyIndex = comment.replies.findIndex(
+              (reply) => reply.id === newVal
+            );
+            if (replyIndex !== -1) {
+              comment.replies.splice(replyIndex, 1);
+              break;
+            }
+          }
+        }
+      }
+    },
+    reply(newVal) {
+      if (newVal) {
+        const commentIndex = this.allComments.findIndex((comment) => {
+          return comment.id === newVal.commentId;
+        });
+        if (commentIndex !== -1) {
+          this.allComments[commentIndex].replies.push(newVal.reply);
+        }
+      }
+    },
     comment: {
       handler(newVal) {
         if (newVal && newVal.commentId) {
-          const commentIndex = this.allComments.findIndex(
-            (comment) => comment.id === newVal.commentId
-          );
+          if (newVal.isReply) {
+            const commentIndex = this.allComments.findIndex((comment) => {
+              // Check if any reply ID matches
+              if (comment.replies) {
+                return comment.replies.some(
+                  (reply) => reply.id === newVal.commentId
+                );
+              }
+              return false;
+            });
 
-          if (commentIndex !== -1) {
-            // Update the existing comment with the new data
-            this.allComments[commentIndex].body = newVal.body;
+            if (commentIndex !== -1) {
+              // Check if the match was in the replies
+              if (this.allComments[commentIndex].replies) {
+                const replyIndex = this.allComments[
+                  commentIndex
+                ].replies.findIndex((reply) => reply.id === newVal.commentId);
+                if (replyIndex !== -1) {
+                  // Update the matching reply
+                  this.allComments[commentIndex].replies[replyIndex].body =
+                    newVal.body;
+                }
+              }
+            }
+          } else {
+            const commentIndex = this.allComments.findIndex(
+              (comment) => comment.id === newVal.commentId
+            );
+
+            if (commentIndex !== -1) {
+              // Update the existing comment with the new data
+              this.allComments[commentIndex].body = newVal.body;
+            }
           }
+
           setTimeout(() => {
             this.$store.commit("ratings/setLoadingComment", false);
           }, 300);
