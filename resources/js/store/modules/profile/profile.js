@@ -21,11 +21,15 @@ export default {
       commentId: 0,
       replyId: 0,
       reply: {},
+      postComment: {},
+      postReply: {},
     };
   },
   getters: {
     status: (state) => state.status,
     commentId: (state) => state.commentId,
+    postComment: (state) => state.postComment,
+    postReply: (state) => state.postReply,
     replyId: (state) => state.replyId,
     reply: (state) => state.reply,
     activeProfileTab: (state) => state.activeProfileTab,
@@ -43,6 +47,12 @@ export default {
     },
     setCommentId(state, payload) {
       state.commentId = payload;
+    },
+    setPostComment(state, payload) {
+      state.postComment = payload;
+    },
+    setPostReply(state, payload) {
+      state.postReply = payload;
     },
     setReplyId(state, payload) {
       state.replyId = payload;
