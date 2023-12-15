@@ -168,21 +168,29 @@ export default {
 
   methods: {
     ...mapActions("profile", ["fetchProfile"]),
-    saveItem(formData) {
+    async saveItem(formData) {
       this.success = false;
 
       formData.user_id = (this.profile && this.profile.user_id) || null;
       formData.is_body_bold = formData.is_body_bold ? 1 : 0;
-      console.log(formData.image,'before');
-      formData.image = formData.image ? this.reverseAndJoinString(formData.image):formData.image;
-      console.log(formData.image,'after');
+      console.log(formData.image, "before");
+      formData.image = formData.image
+        ? this.reverseAndJoinString(formData.image)
+        : formData.image;
+      console.log(formData.image, "after");
 
       // Same method for update & create
       // if we have an item id then update
       formData.region_id = +formData.region_id;
-      formData.title = formData.title ? filterBadWordsWithoutValue(formData.title) : formData.title;
-      formData.body1 = formData.body1 ? filterBadWordsWithoutValue(formData.body1):formData.body1;
-      formData.body2 = formData.body2 ? filterBadWordsWithoutValue(formData.body2) : formData.body2;
+      formData.title = formData.title
+        ? await filterBadWordsWithoutValue(formData.title)
+        : formData.title;
+      formData.body1 = formData.body1
+        ? await filterBadWordsWithoutValue(formData.body1)
+        : formData.body1;
+      formData.body2 = formData.body2
+        ? await filterBadWordsWithoutValue(formData.body2)
+        : formData.body2;
       let url = "/post";
       if (formData.id) {
         url = "/post/" + formData.id;

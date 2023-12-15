@@ -1,7 +1,8 @@
 import Swal from "sweetalert2";
-import badWordsArray from "./badword.json";
+// import badWordsArray from "./badword.json";
+// import { useStore } from "vuex";
 
-const badWords = new Set(badWordsArray.map((word) => word.toLowerCase()));
+// const badWords = new Set(badWordsArray.map((word) => word.toLowerCase()));
 
 // export const filterBadWords = (textRef) => {
 //   const words = textRef.value.split(" ");
@@ -16,16 +17,25 @@ const badWords = new Set(badWordsArray.map((word) => word.toLowerCase()));
 // };
 
 export const filterBadWords = (textRef) => {
-  const words = textRef.value.split(/\b/); // Split on word boundaries to handle punctuations correctly
+  // Retrieve the bad words from the store
+  // Key to store and retrieve the bad words from local storage\
+  let badWords;
+  const localStorageKey = "badWords";
+
+  // Try to get bad words from local storage
+  const storedBadWords = localStorage.getItem(localStorageKey);
+  console.log(storedBadWords, "storedBadwords");
+  // If found, parse and commit to the store
+  badWords = new Set(JSON.parse(storedBadWords));
+  const words = textRef.value.split(/\b/);
   const filteredWords = words.map((word) => {
-    if (badWords.has(word.toLowerCase().replace(/\W/g, ''))) { // Remove non-word characters for the check
+    if (badWords.has(word.toLowerCase().replace(/\W/g, ""))) {
       if (word.length > 2) {
         const firstChar = word[0];
         const lastChar = word[word.length - 1];
-        return `${firstChar}${'-'.repeat(word.length - 2)}${lastChar}`;
+        return `${firstChar}${"-".repeat(word.length - 2)}${lastChar}`;
       } else {
-        // For single character bad words, replace with a single asterisk
-        return '-'.repeat(word.length);
+        return "-".repeat(word.length);
       }
     }
     return word;
@@ -34,17 +44,28 @@ export const filterBadWords = (textRef) => {
   return (textRef.value = filteredWords.join(""));
 };
 
-export const filterBadWordsWithoutValue = (textRef) => {
-  const words = textRef.split(/\b/); // Split on word boundaries to handle punctuations correctly
+// Asynchronous function to filter text
+
+export const filterBadWordsWithoutValue = async (textRef) => {
+  // Retrieve the bad words from the store
+  // Key to store and retrieve the bad words from local storage\
+  let badWords;
+  const localStorageKey = "badWords";
+
+  // Try to get bad words from local storage
+  const storedBadWords = localStorage.getItem(localStorageKey);
+  console.log(storedBadWords, "storedBadwords");
+  // If found, parse and commit to the store
+  badWords = new Set(JSON.parse(storedBadWords));
+  const words = textRef.split(/\b/);
   const filteredWords = words.map((word) => {
-    if (badWords.has(word.toLowerCase().replace(/\W/g, ''))) { // Remove non-word characters for the check
+    if (badWords.has(word.toLowerCase().replace(/\W/g, ""))) {
       if (word.length > 2) {
         const firstChar = word[0];
         const lastChar = word[word.length - 1];
-        return `${firstChar}${'-'.repeat(word.length - 2)}${lastChar}`;
+        return `${firstChar}${"-".repeat(word.length - 2)}${lastChar}`;
       } else {
-        // For single character bad words, replace with a single asterisk
-        return '-'.repeat(word.length);
+        return "-".repeat(word.length);
       }
     }
     return word;
@@ -52,18 +73,6 @@ export const filterBadWordsWithoutValue = (textRef) => {
 
   return (textRef = filteredWords.join(""));
 };
-
-// export const filterBadWordsWithoutValue = (textRef) => {
-//   const words = textRef.split(" ");
-//   const filteredWords = words.map((word) => {
-//     if (badWords.has(word.toLowerCase())) {
-//       return "*".repeat(word.length);
-//     }
-//     return word;
-//   });
-
-//   return (textRef = filteredWords.join(" "));
-// };
 
 export const changesSaved = (
   notificationMessage = "Changes Successfully Saved!",
@@ -118,7 +127,7 @@ export function convertDateFormatWith2DigitsYear(dateString) {
   if (!dateString) {
     return "";
   }
-  
+
   // Create a new date object from the input string
   const date = new Date(dateString);
 
@@ -276,7 +285,7 @@ export const startOptionToArray = (option) => {
   return newOption;
 };
 
-export const timeAgo =(dateString)=> {
+export const timeAgo = (dateString) => {
   const date = new Date(dateString);
   const now = new Date();
   const seconds = Math.floor((now - date) / 1000);
@@ -291,8 +300,8 @@ export const timeAgo =(dateString)=> {
   if (days > 0) return `${days}d`;
   if (hours > 0) return `${hours}h`;
   if (minutes > 0) return `${minutes}m`;
-  return 'just now';
-}
+  return "just now";
+};
 
 function hexToRgb(hex) {
   console.log(hex, "hexToRgb");

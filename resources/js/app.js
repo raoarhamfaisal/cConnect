@@ -106,11 +106,15 @@ createInertiaApp({
 InertiaProgress.init({ color: "#4B5563" });
 
 const updateWidth = () => {
-  store.dispatch("updateScreenWidth");
+  store.dispatch("fetchBadWords");
+};
+const fetchBadWords = () => {
+  store.dispatch("fetchBadWords");
 };
 
 // Initial size
 updateWidth();
+fetchBadWords();
 
 // Update whenever the window is resized
 window.addEventListener("resize", updateWidth);

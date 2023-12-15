@@ -772,7 +772,7 @@ export default {
   <!-- {{ profile }} -->
 
   <div
-    v-if="post.view && !loadingComments"
+    v-show="post.view && !loadingComments"
     class="z-48 flex flex-col items-center justify-start my-2 py-1 lg:py-1 px-2 bg-gray-200 border-2 border-gray-300 rounded-lg drop-shadow-lg transition-all duration-1000 transitioning reveal"
   >
     <!-- INDIVIDUAL POST:
