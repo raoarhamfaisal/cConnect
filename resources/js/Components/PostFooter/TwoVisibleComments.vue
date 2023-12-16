@@ -6,7 +6,14 @@
   >
     View all comments
   </div>
-
+  <div v-if="loadingComments">
+    <v-skeleton-loader
+      v-for="n in 2"
+      :key="n"
+      color="#e5e7eb"
+      type="list-item-avatar-two-line"
+    ></v-skeleton-loader>
+  </div>
   <div
     v-if="comments && comments.length > 0"
     class="flex flex-col gap-1 sm:gap-2"
@@ -59,6 +66,10 @@ import { useStore } from "vuex";
 const props = defineProps({
   comments: {
     type: Array,
+  },
+  loadingComments: {
+    default: false,
+    type: Boolean,
   },
   length: {
     type: Number,

@@ -77,6 +77,10 @@ export default {
       type: Object,
       required: true,
     },
+    addedCommentInEnlarge: {
+      type: Object,
+      default: {},
+    },
 
     // Individual post from v-for posts (postings.vue)
     post: {
@@ -103,36 +107,36 @@ export default {
     return {
       showingPostingActionMenu: ref(false),
       dialogRef: ref(),
-      your_reaction: this.post.your_reaction,
-      user: usePageDeatails.auth.user,
       customBgColor: "",
       text_alignment: "left",
       text_color: "",
       title_text_alignment: "",
       titleCustomBgColor: "left",
-      likedUsers: [],
-      unLikedUsers: [],
       title_text_color: "",
-      profileId: usePageDeatails.profile.id,
       isContentOverflow: false,
       isContentOverflowBody2: false,
       lineHeight: 0,
       lineHeightBody2: 0,
       showFullTextBody1: false,
       showFullTextBody2: false,
+      your_reaction: this.post.your_reaction,
+      user: usePageDeatails.auth.user,
       likes_count: this.post.likes_count,
+      profileId: usePageDeatails.profile.id,
       dislikes_count: this.post.dislikes_count,
       repost_count: this.post.repost,
       loadingLiked: false,
       loadingUnliked: false,
       loadingRepost: false,
+      likedUsers: [],
+      unLikedUsers: [],
       allComments: [],
       loadingComments: false,
       pagination: {},
       addedNumber: 0,
     };
   },
-  emits: ["onRepost"],
+  emits: ["onRepost", "enlarge-post"],
   computed: {
     ...mapGetters(["screenWidth"]),
     ...mapGetters("profile", [
@@ -326,6 +330,12 @@ export default {
     // },
     showFullTextBody1: "checkContentHeight",
     showFullTextBody2: "checkContentHeightBody2",
+    addedCommentInEnlarge(newVal) {
+      console.log("added comment in");
+      if (newVal && Object.keys(newVal).length > 0) {
+        this.allComments.unshift(newVal);
+      }
+    },
     commentId(newVal) {
       if (newVal) {
         const index = this.allComments.findIndex(
@@ -661,7 +671,7 @@ export default {
       }
     },
     onOpenCommentsModal() {
-      this.$refs.commentDialogRef.openDialog();
+      this.$emit("enlarge-post", this.post);
     },
     onAddingComment(comment) {
       this.allComments.unshift(comment);
@@ -679,14 +689,14 @@ export default {
     :userId="post.user_id"
   />
   <!-- commentModal -->
-  <DialogAllComments
+  <!-- <DialogAllComments
     ref="commentDialogRef"
     @unshiftIntoComments="onAddingComment"
     v-model:modelValue="allComments"
     v-model:addedNumber="addedNumber"
     :postId="post.id"
     :pagination="pagination"
-  />
+  /> -->
   <!-- likes modal -->
   <CustomDialog
     ref="likeDialogRef"
@@ -772,7 +782,7 @@ export default {
   <!-- {{ profile }} -->
 
   <div
-    v-show="post.view && !loadingComments"
+    v-show="post.view"
     class="z-48 flex flex-col items-center justify-start my-2 py-1 lg:py-1 px-2 bg-gray-200 border-2 border-gray-300 rounded-lg drop-shadow-lg transition-all duration-1000 transitioning reveal"
   >
     <!-- INDIVIDUAL POST:
@@ -781,7 +791,7 @@ export default {
         TOP ROW MENUS
         POST ACTIONS MENU -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-    <div class="flex flex-row justify-between items-center w-full mb-2 mt-2">
+    <div class="flex flex-row justify-between items-center w-full mt-2">
       <!-- User Avatar & User /// INDIVIDUAL POST: TOP POSTING ROW -->
       <Link
         :href="`/contractor/${post.user_id}`"
@@ -809,32 +819,7 @@ export default {
             <!-- {{  post }} -->
             {{ post.id }}: {{ post.first_name + " " + post.last_name }}
           </h2>
-          <div
-            v-if="post.original_user_first_name && post.original_user_last_name"
-            class="text-sm flex gap-1 items-center"
-          >
-            <img src="/images/icons/share_icon.png" width="15" height="15" />
-            <div class="">Reposted From</div>
-            <Icon
-              class="translate-y-[-1px]"
-              icon="ion:caret-forward"
-              width="15"
-            />
-            <Link
-              :href="`/contractor/${post.original_user_id}`"
-              v-if="
-                post.original_user_first_name && post.original_user_last_name
-              "
-            >
-              <div class="font-bold cursor-pointer">
-                {{
-                  post.original_user_first_name +
-                  " " +
-                  post.original_user_last_name
-                }}
-              </div>
-            </Link>
-          </div>
+
           <div class="">
             {{ post.company_name }}
           </div>
@@ -949,6 +934,35 @@ export default {
         </div>
       </div>
       <!-- END Ratings / post action menu / posting date -->
+    </div>
+    <div
+      class="self-start flex gap-2 sm:mt-[-4px] md:mt-[-6px] ml-[3px]"
+      v-if="post.original_user_first_name && post.original_user_last_name"
+    >
+      <div
+        :style="{
+          width: screenWidth >= 640 ? '4.5rem' : '3.7rem',
+        }"
+      ></div>
+      <Link class="self-start" :href="`/contractor/${post.original_user_id}`">
+        <div
+          v-if="post.original_user_first_name && post.original_user_last_name"
+          class="text-sm flex gap-1 items-center"
+        >
+          <img src="/images/icons/share_icon.png" width="15" height="15" />
+          <div class="">Reposted From</div>
+          <Icon
+            class="translate-y-[-1px]"
+            icon="ion:caret-forward"
+            width="15"
+          />
+          <div class="font-bold cursor-pointer">
+            {{
+              post.original_user_first_name + " " + post.original_user_last_name
+            }}
+          </div>
+        </div>
+      </Link>
     </div>
     <!-- End TOP POSTING ROW -->
 
@@ -1100,7 +1114,7 @@ export default {
       <div class="text-gray-900 flex gap-1">
         <span
           class="cursor-pointer hover:underline"
-          @click="onOpenCommentsModal"
+          @click="$emit('enlarge-post', post)"
         >
           {{ pagination.total }} comments
         </span>
@@ -1152,7 +1166,7 @@ export default {
       </div>
 
       <!-- Comments -->
-      <div class="hovered cursor-pointer" @click="onOpenCommentsModal">
+      <div class="hovered cursor-pointer" @click="$emit('enlarge-post', post)">
         <div class="font-medium text-xs sm:text-sm text-blue-800">
           <div class="flex flex-row justify-between items-center">
             <div class="">
@@ -1204,6 +1218,7 @@ export default {
     <div :class="`mb-2 border-[1px] w-full border-gray-300 rounded`"></div>
     <div class="flex flex-col gap-1 sm:gap-2 w-full">
       <TwoVisibleComments
+        :loadingComments="loadingComments"
         @openAllComments="onOpenCommentsModal"
         @unshiftIntoComments="onAddingComment"
         :comments="firstTwoComments"

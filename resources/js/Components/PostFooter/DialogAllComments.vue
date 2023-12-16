@@ -194,6 +194,7 @@ const props = defineProps({
   },
 });
 const emit = defineEmits([
+  "unshiftIntoComments",
   "update:modelValue",
   "update:addedNumber",
   "submit",

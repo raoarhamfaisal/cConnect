@@ -116,7 +116,7 @@ export default {
       backgroundColors: [],
 
       loading: false,
-
+      addedCommentInEnlarge: {},
       previousY: 0,
       previousRatio: 0,
       showSpinText: false,
@@ -371,6 +371,10 @@ export default {
       this.postToEnlarge = null;
       this.postDisplayEnlarged = false;
     },
+    onAddingEnlargeComment(comment) {
+      console.log("in postings");
+      this.addedCommentInEnlarge = comment;
+    },
     onRespost() {
       this.dontTakeFirstPostOnRepost = true;
       this.$inertia.get(
@@ -523,6 +527,7 @@ export default {
             <!-- INDIVIDUAL POST DISPLAY WITH MENUS -->
             <PostDisplay
               @onRepost="onRespost"
+              :addedCommentInEnlarge="addedCommentInEnlarge"
               :showit="showit"
               :index="index"
               :profile="profile"
@@ -606,6 +611,7 @@ export default {
               :backgroundColors="backgroundColors"
               :body1Colors="body1Colors"
               @close-enlarged="EnLargedPostClosed"
+              @onAddingEnlargeComment="onAddingEnlargeComment"
             >
             </PostDisplayEnlarged>
           </Teleport>
