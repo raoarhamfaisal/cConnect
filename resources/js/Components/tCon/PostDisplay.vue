@@ -108,6 +108,7 @@ export default {
       showingPostingActionMenu: ref(false),
       dialogRef: ref(),
       customBgColor: "",
+      isPostVisible: false,
       text_alignment: "left",
       text_color: "",
       title_text_alignment: "",
@@ -328,6 +329,14 @@ export default {
     //   handler: "checkContentHeight",
     //   deep: true,
     // },
+    post(newVal) {
+      if (newVal && Object.keys(newVal).length > 0) {
+        // When post becomes available
+        setTimeout(() => {
+          this.isPostVisible = true; // Set visibility to true after 1 second
+        }, 1000); // 1000 milliseconds delay
+      }
+    },
     showFullTextBody1: "checkContentHeight",
     showFullTextBody2: "checkContentHeightBody2",
     addedCommentInEnlarge(newVal) {
