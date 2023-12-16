@@ -336,6 +336,7 @@ export default {
         this.allComments.unshift(newVal);
       }
     },
+    // comment delte
     commentId(newVal) {
       if (newVal) {
         const index = this.allComments.findIndex(
@@ -348,7 +349,10 @@ export default {
         }
       }
     },
+    // reply delted
     replyId(newVal) {
+      console.log("in reply handler post");
+
       if (newVal) {
         for (let i = 0; i < this.allComments.length; i++) {
           const comment = this.allComments[i];
@@ -364,8 +368,9 @@ export default {
         }
       }
     },
-    reply(newVal) {
-      if (newVal) {
+    // on reply adding
+    reply(newVal, oldVal) {
+      if (newVal && newVal.reply) {
         const commentIndex = this.allComments.findIndex((comment) => {
           return comment.id === newVal.commentId;
         });
@@ -374,14 +379,22 @@ export default {
             // If 'replies' doesn't exist, initialize it as an empty array
             this.allComments[commentIndex].replies = [];
           }
-          // Now that 'replies' is guaranteed to be an array, push the new reply
-          this.allComments[commentIndex].replies.push(newVal.reply);
+          if (
+            this.allComments[commentIndex].replies[
+              this.allComments[commentIndex].replies.length - 1
+            ].id !== newVal.reply.id
+          ) {
+            // Now that 'replies' is guaranteed to be an array, push the new reply
+            this.allComments[commentIndex].replies.push(newVal.reply);
+          }
         }
       }
     },
+    // update comment on like dislike of comment
     postComment: {
-      handler(newVal) {
-        if (newVal && newVal.id) {
+      handler(newVal, oldVal) {
+        if (newVal && newVal.id && newVal != oldVal) {
+          console.log("postComment postDisplay", newVal, oldVal);
           const commentIndex = this.allComments.findIndex(
             (comment) => comment.id === newVal.id
           );
@@ -394,8 +407,9 @@ export default {
       },
       deep: true,
     },
+    // update reply on like dislike of reply
     postReply: {
-      handler(newVal) {
+      handler(newVal, oldVal) {
         if (newVal && newVal.id) {
           this.allComments.forEach((comment, index) => {
             // Check if any reply ID matches
@@ -412,8 +426,9 @@ export default {
       },
       deep: true,
     },
+    // comment update and also reply updated
     comment: {
-      handler(newVal) {
+      handler(newVal, oldVal) {
         if (newVal && newVal.commentId) {
           if (newVal.isReply) {
             const commentIndex = this.allComments.findIndex((comment) => {

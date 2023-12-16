@@ -24,7 +24,7 @@ export const filterBadWords = (textRef) => {
 
   // Try to get bad words from local storage
   const storedBadWords = localStorage.getItem(localStorageKey);
-  console.log(storedBadWords, "storedBadwords");
+
   // If found, parse and commit to the store
   badWords = new Set(JSON.parse(storedBadWords));
   const words = textRef.value.split(/\b/);
@@ -54,7 +54,6 @@ export const filterBadWordsWithoutValue = async (textRef) => {
 
   // Try to get bad words from local storage
   const storedBadWords = localStorage.getItem(localStorageKey);
-  console.log(storedBadWords, "storedBadwords");
   // If found, parse and commit to the store
   badWords = new Set(JSON.parse(storedBadWords));
   const words = textRef.split(/\b/);
