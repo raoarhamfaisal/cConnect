@@ -128,13 +128,16 @@ export default {
             // If 'replies' doesn't exist, initialize it as an empty array
             this.allComments[commentIndex].replies = [];
           }
-
+          const length = this.allComments[commentIndex].replies.length;
+          console.log(length);
           if (
-            this.allComments[commentIndex].replies[
-              this.allComments[commentIndex].replies.length - 1
-            ].id !== newVal.reply.id
+            length > 0 &&
+            this.allComments[commentIndex].replies[length - 1]?.id !==
+              newVal.reply.id
           ) {
             // Now that 'replies' is guaranteed to be an array, push the new reply
+            this.allComments[commentIndex].replies.push(newVal.reply);
+          } else if (length === 0) {
             this.allComments[commentIndex].replies.push(newVal.reply);
           }
         }
