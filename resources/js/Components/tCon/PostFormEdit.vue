@@ -5,8 +5,10 @@ import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orien
 import InputLabel from "@/Components/InputLabel.vue";
 import MultiSelect from "@/Components/MultiSelect.vue";
 import InputError from "@/Components/InputError.vue";
-import TextEditorTopText from "@/Components/TextEditorTopText.vue";
-import TextEditorTitle from "@/Components/TextEditorTitle.vue";
+import { Icon } from "@iconify/vue";
+
+import TextEditorTopTextEdit from "@/Components/TextEditorTopTextEdit.vue";
+import TextEditorTitleEdit from "@/Components/TextEditorTitleEdit.vue";
 import SelectProfile from "@/Components/SelectProfile.vue";
 
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
@@ -33,6 +35,7 @@ import { mapGetters } from "vuex";
 import { nextTick, ref } from "vue";
 import { options } from "@/helpers/selectListsHelpters.js";
 import { getAxiosConfigFormData } from "@/helpers/axiosConfigHelpers";
+import { POSTS_IMAGES_FULL_PATH } from "@/config/constants";
 // import { toolbarConfigPost } from "@/helpers/utilities";
 
 const FilePond = VueFilePond(
@@ -53,30 +56,28 @@ export default {
     InputLabel,
     // DecoupledEditor,
     InputError,
-    TextEditorTopText,
-    TextEditorTitle,
+    TextEditorTopTextEdit,
+    TextEditorTitleEdit,
     SelectProfile,
     CustomDialog,
+    Icon,
     Badge,
     MultiSelect,
   },
 
-  props: ["form", "isOpen", "isEdit", "id", "success"],
+  props: ["form", "isOpen", "id", "success", "imageArray"],
 
   data() {
     return {
       // the image array parameter
       myFiles: [],
       options: options,
+      playVideo: false,
+      previousImages: this.imageArray,
       isUploading: false,
       referenceList: ref([]),
-      // showBackroundColor: true,
       selectedReferal: ref(""),
-      reverted: false,
       original: "",
-      // editor: DecoupledEditor,
-      // editorData: "<p>Enter your top text</p>",
-      // editorConfig: toolbarConfigPost,
       selectedItems: null,
       selectAll: false,
       tradesPost: {
@@ -107,9 +108,9 @@ export default {
         trade25: false,
         trade26: false,
         trade27: false,
-        trade28: true,
-        trade29: true,
-        trade30: true,
+        trade28: false,
+        trade29: false,
+        trade30: false,
       },
 
       // csrfToken: document.querySelector('meta[name="csrf-token"]').content
@@ -122,6 +123,7 @@ export default {
   computed: {
     ...mapGetters("ratings", ["regions", "loading", "trades"]),
   },
+  emits: ["formsave", "formclose"],
   watch: {
     regions(newValue) {
       if (newValue.length > 0) {
@@ -265,6 +267,7 @@ export default {
       if (allProcessed) {
         await this.handleFileReorder();
       }
+
       this.isUploading = false;
     },
     sortFiles(a, b) {
@@ -280,8 +283,7 @@ export default {
 
       return 0;
     },
-
-    handleFilePondProcessEnd() {},
+    handleFilePondProcessEnd(file, error) {},
     handleFilePondError(error) {
       this.isUploading = false;
       // this.showBackroundColor = true;
@@ -354,21 +356,14 @@ export default {
 
     // Remove Images
     handleFilePondRemove(source, load, error) {
-      console.log("handleFilePondRemove");
-
       this.removeFormImage(source.replace(/^\//, ""));
 
       load();
     },
 
-    // Remove images in temp storage when image uploaded
-    // but then deleted before saving
-    // Uses axios
     handleFilePondRevert(uniqueId, load, error) {
       this.removeFormImage(uniqueId);
-      // within the method make an HTTP call to upload-posts-revert
       axios.post("/upload-post-revert", {
-        // send there the name of the upload but not saved image
         image: uniqueId,
       });
       load();
@@ -389,18 +384,43 @@ export default {
     },
     selectAllTrades() {
       if (this.selectAll) {
-        this.selectAll = !this.selectAll;
-
         for (let key in this.tradesPost) {
           this.tradesPost[key] = 0;
         }
       } else {
-        this.selectAll = !this.selectAll;
-
         for (let key in this.tradesPost) {
           this.tradesPost[key] = 1;
         }
       }
+      this.selectAll = !this.selectAll;
+    },
+    image_path(img) {
+      // function adds the filepath
+      return POSTS_IMAGES_FULL_PATH + img;
+    },
+    isVideo(img) {
+      // determine if video
+      let extension = img.split(".").pop();
+      if ((extension == "mp4") | (extension == "mov")) {
+        this.playVideo = true;
+      } else {
+        this.playVideo = false;
+      }
+      return this.playVideo;
+    },
+    removeImage(index) {
+      this.previousImages.splice(index, 1);
+    },
+    onUpdate() {
+      let previousImages;
+      previousImages = this.previousImages.join("|");
+      if (this.form.image && previousImages) {
+        this.form.image = this.form.image + "|" + previousImages;
+      } else if (!this.form.image && previousImages) {
+        this.form.image = previousImages;
+      }
+      console.log(this.form.image, previousImages, "previous images");
+      this.$emit("formsave", this.form);
     },
   },
 };
@@ -517,7 +537,7 @@ Array.prototype.remove = function () {
                 class="flex justify-start items-center pb-2 space-x-2 text-blue-rgba font-bold text-xl md:text-3xl"
               >
                 <img src="/images/icons/post_b.png" width="25" height="25" />
-                <p class="">Create Post</p>
+                <p class="">Edit Post</p>
               </div>
 
               <!-- TITLE TEXT -->
@@ -527,7 +547,7 @@ Array.prototype.remove = function () {
                   class="block text-gray-700 text-sm font-bold mb-1"
                   >Post Title (max 35char):
                 </label>
-                <TextEditorTitle
+                <TextEditorTitleEdit
                   v-model:modelValue="form.title"
                   v-model:textColorId="form.title_text_color_id"
                   v-model:backgroundColorId="form.title_background_color_id"
@@ -546,7 +566,7 @@ Array.prototype.remove = function () {
                   >Top text (required):
                 </label>
 
-                <TextEditorTopText
+                <TextEditorTopTextEdit
                   v-model:modelValue="form.body1"
                   v-model:fontSize="form.font_size"
                   v-model:textColorId="form.post_text_color_id"
@@ -567,7 +587,54 @@ Array.prototype.remove = function () {
                   class="block text-gray-700 text-sm font-bold mb-2"
                   >Image (max 15):
                 </label>
+                <div
+                  class="w-full flex flex-col gap-2 mb-2"
+                  v-if="previousImages && previousImages.length > 0"
+                >
+                  <transition-group
+                    name="comment-transition"
+                    tag="div"
+                    class="flex flex-col gap-1 sm:gap-2"
+                  >
+                    <div
+                      v-for="(image, index) in previousImages"
+                      :key="index"
+                      class="relative"
+                    >
+                      <Icon
+                        icon="charm:circle-cross"
+                        width="25"
+                        class="absolute top-0 right-0 m-2 cursor-pointer text-white rounded-full ctive:scale-95 hover:bg-white hover:text-inherit transition transform duration-300"
+                        @click="removeImage(index)"
+                      />
+                      <video
+                        v-if="isVideo(image)"
+                        class="w-full h-full rounded-lg object-cover"
+                        controls
+                        autoplay
+                        loop
+                        muted
+                      >
+                        <source :src="image_path(image)" type="video/mp4" />
+                      </video>
+                      <div class="bg-[#222] p-2 rounded-md" v-else-if="image">
+                        <img
+                          ref="imageRef"
+                          :class="`w-full object-contain object-center rounded-lg`"
+                          :style="{ maxHeight: 256 + 'px' }"
+                          :src="image_path(image)"
+                          alt=""
+                        />
+                      </div>
+                    </div>
+                  </transition-group>
+                </div>
 
+                <!-- :maxFiles="
+                    15 - previousImages && previousImages.length > 0
+                      ? previousImages.length
+                      : 0
+                  " -->
                 <file-pond
                   name="imageFilepond"
                   ref="pond"
@@ -590,7 +657,7 @@ Array.prototype.remove = function () {
                   imageResizeTargetWidth="1000"
                   imageResizeTargetHeight="2000"
                   imageResizeUpscale="true"
-                  maxFiles="15"
+                  :maxFiles="15"
                   credits="false"
                   v-bind:server="{
                     url: '',
@@ -612,7 +679,11 @@ Array.prototype.remove = function () {
                   v-on:init="handleFilePondInit"
                   v-on:sort="sortFiles"
                   v-on:processfiles="checkAllFilesProcessed"
-                  v-on:error="isUploading = false"
+                  v-on:error="
+                    () => {
+                      isUploading = false;
+                    }
+                  "
                   v-on:addfilestart="handleFilePondProcessStart"
                   @processfilestart="() => {}"
                   v-on:addfile="handleFilePondProcessEnd"
@@ -650,12 +721,6 @@ Array.prototype.remove = function () {
               <div class="mb-4 sm:mb-0">
                 <InputLabel class="font-bold mb-1 mt-1" value="Region" />
                 <div class="text-lg">{{ selectedReferal }}</div>
-                <!-- <SelectProfile
-                  :options="referenceList"
-                  disabled="true"
-                  :modelValue="selectedReferal"
-                  @update:modelValue="changeReferal"
-                /> -->
                 <InputError
                   class="mt-2"
                   :message="$page.props.errors.region_id"
@@ -678,20 +743,19 @@ Array.prototype.remove = function () {
             </div>
           </div>
 
-          <!-- OUR BUTTONS -->
+          <!-- UPDATE POST BUTTON -->
           <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
             <!-- SAVE POST BUTTON - saveItem -->
             <span class="flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto">
               <button
                 type="button"
-                v-show="!isEdit"
-                @click="$emit('formsave', form)"
+                @click="onUpdate"
                 :disabled="isUploading"
                 :class="`inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-green-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5 ${
                   isUploading ? 'disabled' : ''
                 }`"
               >
-                Save Post
+                Update Post
               </button>
             </span>
 
@@ -701,12 +765,11 @@ Array.prototype.remove = function () {
             >
               <button
                 type="button"
-                v-if="!isEdit"
                 :disabled="isUploading"
                 @click="$emit('formclose')"
                 class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5"
               >
-                Cancel
+                Edit Cancel
               </button>
             </span>
           </div>

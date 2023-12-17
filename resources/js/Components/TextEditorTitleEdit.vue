@@ -1,8 +1,14 @@
 <template>
   <div>
     <div class="toolbar bg-gray-100 p-2 border-b flex items-center">
-      <FontColorDropdown v-model="selectedColor" />
-      <BackgroundColorDropdown v-model="backgroundColor" />
+      <FontColorDropdownEdit
+        v-model="selectedColor"
+        :textColorId="textColorId"
+      />
+      <BackgroundColorDropdownEdit
+        v-model="backgroundColor"
+        :backgroundColorId="backgroundColorId"
+      />
       <!-- Align Left Icon -->
       <button
         type="button"
@@ -63,17 +69,15 @@
 </template>
 
 <script setup>
-import { computed, nextTick, ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { Icon } from "@iconify/vue";
-import BackgroundColorDropdown from "@/Components/BackgroundColorDropdown.vue";
+import BackgroundColorDropdownEdit from "@/Components/BackgroundColorDropdownEdit.vue";
 
-import FontColorDropdown from "@/Components/FontColorDropdown.vue";
-import { useStore } from "vuex";
+import FontColorDropdownEdit from "@/Components/FontColorDropdownEdit.vue";
 const props = defineProps({
   modelValue: String,
   textColorId: String,
   backgroundColorId: String,
-
   textAlignment: String,
 });
 
@@ -84,8 +88,7 @@ const emit = defineEmits([
   "update:textAlignment",
 ]);
 
-const store = useStore();
-const alignment = ref(""); // Default to left alignment
+const alignment = ref(props.textAlignment ?? ""); // Default to left alignment
 const content = ref(props.modelValue ?? "");
 const editor = ref(null);
 const selectedColor = ref({
@@ -94,12 +97,19 @@ const selectedColor = ref({
 const backgroundColor = ref({
   color: "inherit",
 });
+onMounted(() => {
+  let porpContent = props.modelValue ?? "";
+  // Replace <br> and <br/> tags with \n
+  porpContent = porpContent.replace(/<br\s*\/?>/gi, "\n");
+  // Remove other HTML tags
+  porpContent = porpContent.replace(/<[^>]*>/g, "");
+
+  content.value = porpContent;
+});
 
 const generateStyledContent = () => {
   return `<span>${content.value}</span>`;
 };
-
-const screenWidth = computed(() => store.getters.screenWidth);
 
 watch([content, alignment, selectedColor, backgroundColor], (newValue) => {
   const styledContent = generateStyledContent();
@@ -130,17 +140,17 @@ watch(alignment, (newValue) => emit("update:textAlignment", newValue));
 const setAlignment = (align) => {
   alignment.value = align;
 };
-const updateContent = () => {
-  // content.value = editor.value.innerText;
-  adjustHeight();
-};
+// const updateContent = () => {
+//   // content.value = editor.value.innerText;
+//   adjustHeight();
+// };
 
-const adjustHeight = () => {
-  nextTick(() => {
-    editor.value.style.height = "auto"; // Reset height first to get the correct scrollHeight
-    editor.value.style.height = editor.value.scrollHeight + "px";
-  });
-};
+// const adjustHeight = () => {
+//   nextTick(() => {
+//     editor.value.style.height = "auto"; // Reset height first to get the correct scrollHeight
+//     editor.value.style.height = editor.value.scrollHeight + "px";
+//   });
+// };
 const handleInput = (event) => {
   // Remove carriage returns (\r) and newline (\n) characters
   let value = event.target.value.replace(/[\r\n]/g, "");

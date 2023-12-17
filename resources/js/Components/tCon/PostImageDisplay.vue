@@ -86,12 +86,10 @@ watch(
   () => props.imageArray,
   async (newImageArray) => {
     if (newImageArray.length === 2) {
-      console.log(newImageArray, "newImageArray");
       await checkAllImagesPortrait(props.imageArray);
     }
     if (newImageArray.length > 3) {
       await checkAllImagesPortrait(props.imageArray.slice(0, 2));
-      console.log(props.imageArray.slice(0, 2), "first2");
     }
   },
   { immediate: true }
@@ -453,4 +451,3 @@ const handleUpdateHeight = ({ height, imageLength, firstTwoImages }) => {
     </div>
   </div>
 </template>
-

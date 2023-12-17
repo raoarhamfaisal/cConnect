@@ -5,7 +5,6 @@ import { Inertia } from "@inertiajs/inertia";
 import { Link, usePage } from "@inertiajs/inertia-vue3";
 import { computed, ref } from "vue";
 import DialogProfileTabs from "@/Pages/Profile/Partials/main/DialogProfileTabs.vue";
-import { useStore } from "vuex";
 import Avatar from "@/Components/Ratings/Avatar.vue";
 
 const props = defineProps({
@@ -24,7 +23,6 @@ const props = defineProps({
   showingNavigationDropdown: Boolean,
 });
 
-const store = useStore();
 const dialogRef = ref();
 const url = usePage().url.value;
 

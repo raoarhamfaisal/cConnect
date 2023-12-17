@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="isVisible"
-    class="fixed m-0 inset-0 flex items-center justify-center z-50 bg-black bg-opacity-70"
+    class="fixed m-0 inset-0 flex items-center justify-center z-50 bg-black bg-opacity-70 p-2"
     :style="{
       '--tw-space-x-reverse': 'inherit',
     }"
@@ -46,7 +46,7 @@
             type="button"
             v-if="!dontAllowCancel"
             @click="closeDialog"
-            class="p-2 hover:bg-[#6741d9] w-10 h-10 flex justify-center items-center rounded-full "
+            class="p-2 hover:bg-[#6741d9] w-10 h-10 flex justify-center items-center rounded-full"
           >
             X
           </button>
@@ -161,7 +161,7 @@ const props = defineProps({
     default: "Cancel",
   },
 });
-const emit = defineEmits(["submit", "closed","opened"]);
+const emit = defineEmits(["submit", "closed", "opened"]);
 const submit = () => {
   emit("submit");
 };
@@ -178,7 +178,7 @@ const closeDialog = () => {
   if (props.dontAllowCancel) {
     return;
   }
-  console.log('false')
+  console.log("false");
   isVisible.value = false;
   emit("closed");
   if (shouldFetchPostsOnClose.value && props.shouldFetchPost) {
@@ -191,7 +191,6 @@ const closeDialog = () => {
 const openDialog = () => {
   isVisible.value = true;
   emit("opened");
-
 };
 defineExpose({ openDialog, closeDialog });
 </script>
