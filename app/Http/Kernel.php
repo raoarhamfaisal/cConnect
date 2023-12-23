@@ -73,8 +73,9 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'admin' => \App\Http\Middleware\CheckAdminPrivileges::class,
+        'post-privileges' => \App\Http\Middleware\EnsurePostPrivileges::class,
         'admin-with-users-privileges' => \App\Http\Middleware\AdminWithUsersPrivileges::class,
-        'admin-with-payments-privileges' => \App\Http\Middleware\AdminWithPaymentsPrivileges::class,
+        'admin-with-post-privileges' => \App\Http\Middleware\AdminWithPostPrivileges::class,
         'verifyPayment' => \App\Http\Middleware\VerifyPayment::class,
         'activeUser' => \App\Http\Middleware\VerifyActiveUser::class,
     ];

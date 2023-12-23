@@ -218,7 +218,7 @@ export default {
       // Gets the number of images in post.image string
       // passed as prop to PostImageDisplay.vue
       get: function () {
-        if (this.post.image.length > 0) {
+        if (this.post && this.post.image && this.post.image.length > 0) {
           return this.post.image.split("|").length;
         } else {
           return 0;
@@ -312,7 +312,7 @@ export default {
     // passed as prop to PostImageDisplay.vue
     imageArray: {
       get: function () {
-        if (this.post.image.length > 0) {
+        if (this.post && this.post.image && this.post.image.length > 0) {
           // split string into an array
           let videoArray = [];
 

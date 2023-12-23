@@ -21,7 +21,7 @@ class Trade extends Model
 
     public function posts()
     {
-        return $this->belongsToMany(Post::class, 'post_trade');
+        return $this->belongsToMany(Post::class, 'post_trade', 'trade_id', 'post_id');
     }
-
+    
 }

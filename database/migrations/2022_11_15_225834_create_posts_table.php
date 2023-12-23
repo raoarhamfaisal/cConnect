@@ -18,6 +18,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('original_post_id')->nullable();
             $table->unsignedBigInteger('original_user_id')->nullable();
+            $table->boolean('active_post')->default(1);
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('region_id')->default(1);;
             $table->boolean('view')->default(1);
