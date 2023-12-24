@@ -169,6 +169,12 @@ export default {
       this.tradesPost["trade28"] = true;
       this.tradesPost["trade29"] = true;
       this.tradesPost["trade30"] = true;
+      const allSelected = Object.values(this.tradesPost).every(
+        (value) => value === 1 || value === true
+      );
+      if (allSelected) {
+        this.selectAll = true;
+      }
     },
     tradesPost: {
       handler(newVal) {

@@ -6,10 +6,11 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
-import Card from "@/Components/Card.vue";
+
 import { reactive, ref } from "vue";
 import { useStore } from "vuex";
 import BillingSettingsTab from "@/Pages/Profile/Partials/BillingSettingsTab.vue";
+import BlockUsersList from "@/Pages/Profile/Partials/BlockUsersList.vue";
 
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
@@ -29,7 +30,12 @@ const props = defineProps({
 });
 const store = useStore();
 
-const tabNames = ["Update Email", "Change Password", "Billing"];
+const tabNames = [
+  "Update Email",
+  "Change Password",
+  "Billing",
+  "Blocked Users",
+];
 const verifyDialogRef = ref();
 const loading = ref(false);
 const loadingVerifyCode = ref(false);
@@ -241,6 +247,9 @@ const submitVerificationCode = async () => {
           </div>
           <div v-if="activeTab === 2">
             <BillingSettingsTab :user_id="profile.user_id" />
+          </div>
+          <div v-if="activeTab === 3">
+            <BlockUsersList />
           </div>
           <!-- ... -->
         </template>

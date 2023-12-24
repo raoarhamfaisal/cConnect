@@ -8,7 +8,7 @@
         <h2 class="text-xl font-medium font-bold text-gray-900">
           {{ contractor.first_name + " " + contractor.last_name }}
         </h2>
-        <div v-if="contractor.company">{{ contractor.company_name }}</div>
+        <div v-if="contractor.company_name">{{ contractor.company_name }}</div>
         <StarRating
           v-if="contractor.average_rating"
           :rating="Number(parseFloat(contractor.average_rating).toFixed(1))"

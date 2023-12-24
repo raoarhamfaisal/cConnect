@@ -34,8 +34,12 @@ import "filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css";
 import { mapGetters } from "vuex";
 import { nextTick, ref } from "vue";
 import { options } from "@/helpers/selectListsHelpters.js";
-import { getAxiosConfigFormData } from "@/helpers/axiosConfigHelpers";
+import {
+  getAxiosConfig,
+  getAxiosConfigFormData,
+} from "@/helpers/axiosConfigHelpers";
 import { POSTS_IMAGES_FULL_PATH } from "@/config/constants";
+import { somethingWentWrong } from "@/helpers/utilities";
 // import { toolbarConfigPost } from "@/helpers/utilities";
 
 const FilePond = VueFilePond(
@@ -65,7 +69,7 @@ export default {
     MultiSelect,
   },
 
-  props: ["form", "isOpen", "id", "success", "imageArray"],
+  props: ["form", "isOpen", "id", "success", "imageArray", "loadingUpdate"],
 
   data() {
     return {
@@ -80,6 +84,8 @@ export default {
       original: "",
       selectedItems: null,
       selectAll: false,
+      postTrades: [],
+      loadingPostTrades: false,
       tradesPost: {
         trade1: false,
         trade2: false,
@@ -116,9 +122,10 @@ export default {
       // csrfToken: document.querySelector('meta[name="csrf-token"]').content
     };
   },
-  mounted() {
+  async mounted() {
+    await this.fetchPostTrades();
     this.$store.dispatch("ratings/getRegions");
-    this.$store.dispatch("ratings/getTrades", this.id);
+    // this.$store.dispatch("ratings/getTrades", this.id);
   },
   computed: {
     ...mapGetters("ratings", ["regions", "loading", "trades"]),
@@ -153,33 +160,26 @@ export default {
         this.form.title_text_alignment = "left";
         this.myFiles = [];
         this.form.image = "";
-        this.$store.dispatch("ratings/getTrades", this.id);
+        // this.$store.dispatch("ratings/getTrades", this.id);
       }
     },
-    trades(newVal) {
-      // Resetting tradesPost object to all false
-      for (let key in this.tradesPost) {
-        this.tradesPost[key] = false;
-      }
+    // trades(newVal) {
+    //   // Resetting tradesPost object to all false
+    //   for (let key in this.tradesPost) {
+    //     this.tradesPost[key] = false;
+    //   }
 
-      // Iterating over the trades array and setting the corresponding key in tradesPost to true
-      newVal.forEach((trade) => {
-        if (this.tradesPost.hasOwnProperty(trade.name)) {
-          this.tradesPost[trade.name] = true;
-        }
-      });
-      this.tradesPost["trade28"] = true;
-      this.tradesPost["trade29"] = true;
-      this.tradesPost["trade30"] = true;
-    },
-    tradesPost: {
-      handler(newVal) {
-        this.form.trades = Object.entries(newVal)
-          .filter(([key, value]) => value)
-          .map(([key]) => parseInt(key.replace(/^trade/, ""), 10));
-      },
-      deep: true,
-    },
+    //   // Iterating over the trades array and setting the corresponding key in tradesPost to true
+    //   newVal.forEach((trade) => {
+    //     if (this.tradesPost.hasOwnProperty(trade.name)) {
+    //       this.tradesPost[trade.name] = true;
+    //     }
+    //   });
+    //   this.tradesPost["trade28"] = true;
+    //   this.tradesPost["trade29"] = true;
+    //   this.tradesPost["trade30"] = true;
+    //   this.selectAllTrades();
+    // },
     selectedItems(newVal) {
       this.form.trades = this.selectedItems
         .map((item) => {
@@ -327,11 +327,6 @@ export default {
     },
 
     addFormImage(image) {
-      // deleting or adding new item to array and
-      // then joining that array into a string
-      // using vertical line as delimiter... all the
-      // file names will be in the same field in the DB
-      // but seperated by '|'
       let arr = this.form.image ? this.form.image.split("|") : [];
       arr.push(image);
       this.form.image = arr.join("|");
@@ -345,12 +340,9 @@ export default {
       this.form.image = arr.join("|");
     },
 
-    // The callback when image is loaded
-    // response is the image
     handleFilePondLoad(response) {
       this.addFormImage(response);
-      // for multiple we need to return the unique file id
-      // the name of the file
+
       return response;
     },
 
@@ -384,15 +376,18 @@ export default {
     },
     selectAllTrades() {
       if (this.selectAll) {
+        this.selectAll = !this.selectAll;
+
         for (let key in this.tradesPost) {
           this.tradesPost[key] = 0;
         }
       } else {
+        this.selectAll = !this.selectAll;
+
         for (let key in this.tradesPost) {
           this.tradesPost[key] = 1;
         }
       }
-      this.selectAll = !this.selectAll;
     },
     image_path(img) {
       // function adds the filepath
@@ -414,13 +409,63 @@ export default {
     onUpdate() {
       let previousImages;
       previousImages = this.previousImages.join("|");
+      this.form.image = this.form.image
+        ? this.reverseAndJoinString(this.form.image)
+        : this.form.image;
       if (this.form.image && previousImages) {
-        this.form.image = this.form.image + "|" + previousImages;
+        this.form.image = previousImages + "|" + this.form.image;
       } else if (!this.form.image && previousImages) {
         this.form.image = previousImages;
       }
-      console.log(this.form.image, previousImages, "previous images");
+
       this.$emit("formsave", this.form);
+    },
+    reverseAndJoinString(inputString) {
+      // Split the string into an array
+      let arr = inputString.split("|");
+
+      // Reverse the array
+
+      arr = arr.reverse();
+      // Join the array back into a string
+      return arr.join("|");
+    },
+    async fetchPostTrades() {
+      this.loadingPostTrades = true;
+
+      // Resetting tradesPost object to all false
+      // for (let key in this.tradesPost) {
+      //   this.tradesPost[key] = false;
+      // }
+
+      try {
+        const response = await axios.get(
+          `/api/posts/${this.form.id}/trades`,
+          getAxiosConfig()
+        );
+        if (response.data) {
+          this.postTrades = response.data.trade_ids;
+
+          this.postTrades.forEach((postTradeNum) => {
+            this.tradesPost[`trade${postTradeNum}`] = true;
+          });
+
+          this.tradesPost["trade28"] = true;
+          this.tradesPost["trade29"] = true;
+          this.tradesPost["trade30"] = true;
+
+          const allSelected = Object.values(this.tradesPost).every(
+            (value) => value === 1 || value === true
+          );
+          if (allSelected) {
+            this.selectAll = true;
+          }
+        }
+      } catch (err) {
+        somethingWentWrong();
+      } finally {
+        this.loadingPostTrades = false;
+      }
     },
   },
 };
@@ -529,9 +574,13 @@ Array.prototype.remove = function () {
       >
         <form>
           <div class="bg-white px-4 pt-5 pb-4 sm:p-6">
-            <Loader :loading="loading" background="" height="30vh"></Loader>
+            <Loader
+              :loading="loading || loadingPostTrades"
+              background=""
+              height="30vh"
+            ></Loader>
 
-            <div v-if="!loading" class="">
+            <div v-if="!loading && !loadingPostTrades" class="">
               <!-- POST TITLE -->
               <div
                 class="flex justify-start items-center pb-2 space-x-2 text-blue-rgba font-bold text-xl md:text-3xl"
@@ -750,12 +799,12 @@ Array.prototype.remove = function () {
               <button
                 type="button"
                 @click="onUpdate"
-                :disabled="isUploading"
+                :disabled="isUploading || loadingUpdate"
                 :class="`inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-green-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5 ${
-                  isUploading ? 'disabled' : ''
+                  isUploading || loadingUpdate ? 'disabled' : ''
                 }`"
               >
-                Update Post
+                {{ loadingUpdate ? "Updating" : "Update" }} Post
               </button>
             </span>
 

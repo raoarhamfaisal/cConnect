@@ -128,7 +128,6 @@ const handleCancelSubscription = async () => {
       getAxiosConfig()
     );
     if (response.data) {
-    
       changesSaved("Cancellation Request Recieved");
       cancelSubscriptionDialogRef.value.closeDialog();
     }
@@ -160,12 +159,6 @@ const handleCancelSubscription = async () => {
       >
         Under Cancellation
       </div>
-      <!-- <div
-        @click="openAssuringCancelSubDialog"
-        class="border-2 border-blue-rgba text-blue-rgba font-bold py-2 px-4 rounded cursor-pointer transition transform duration-300 hover:shadow-lg active:scale-95"
-      >
-        Cancel Subscription
-      </div> -->
     </header>
 
     <div

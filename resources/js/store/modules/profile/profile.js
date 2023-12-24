@@ -23,6 +23,8 @@ export default {
       reply: {},
       postComment: {},
       postReply: {},
+      updatedPost: {},
+      deletedPost: {},
     };
   },
   getters: {
@@ -40,6 +42,8 @@ export default {
     viewsSettingsProfile: (state) => state.viewsSettingsProfile,
     getProfile: (state) => state.profile,
     mustVerifyEmail: (state) => state.mustVerifyEmail,
+    updatedPost: (state) => state.updatedPost,
+    deletedPost: (state) => state.deletedPost,
   },
   mutations: {
     setStatus(state, payload) {
@@ -90,6 +94,12 @@ export default {
 
     setViewsSettingsProfile(state, payload) {
       state.viewsSettingsProfile = payload;
+    },
+    setUpdatedPost(state, payload) {
+      state.updatedPost = payload;
+    },
+    setDeletedPost(state, payload) {
+      state.deletedPost = payload;
     },
   },
   actions: {

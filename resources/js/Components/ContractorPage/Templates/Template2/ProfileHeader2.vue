@@ -278,6 +278,8 @@ const goBack = () => {
     Inertia.visit(prevUrl);
   } else if (prevUrl === "/edit") {
     Inertia.visit(`/contractor/${props.profile.user_id}/edit`);
+  } else if (prevUrl === "/settings") {
+    Inertia.visit(`/settings`);
   } else {
     Inertia.visit("/sub-finder");
   }

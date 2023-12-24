@@ -194,12 +194,15 @@
             <InputError class="mt-2" :message="errors.advertised_price" />
           </div>
           <div>
-            <InputLabel class="font-bold" for="sales_tax" value="Sales Tax(%)*" />
+            <InputLabel
+              class="font-bold"
+              for="sales_tax"
+              value="Sales Tax(%)*"
+            />
             <TextInput
               id="sales_tax"
               type="number"
               class="mt-1 block w-full"
-
               required
               v-model.trim="singlePlan.sales_tax"
               placeholder="Type your Sales Tax(%)"
@@ -362,12 +365,10 @@ const validateForm = () => {
   if (!singlePlan.value.sales_tax) {
     errors.sales_tax = "Sales Tax is Required";
     isValid = false;
-    
-  }else if(+singlePlan.value.sales_tax > 1){
+  } else if (+singlePlan.value.sales_tax > 1) {
     errors.sales_tax = "Sales Tax cannot be greater than 1";
     isValid = false;
   }
-  
 
   return isValid; // Return the overall validation status
 };
@@ -398,7 +399,8 @@ const fetchPricingPlans = async () => {
       pricingPlans.value = [...response.data];
     }
   } catch (err) {
-    somethingWentWrong();
+    console.log("hrere ");
+    somethingWentWrong(err.response.data.message, "inherit");
   }
 };
 const getRegionName = (regionId) => {

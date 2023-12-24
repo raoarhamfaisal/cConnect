@@ -697,7 +697,7 @@ export default {
         > -->
 
       <div
-        class="flex-1 overflow-y-auto px-2 sm:px-4 overflow-x-hidden padding-none"
+        class="flex-1 flex flex-col overflow-y-auto px-2 sm:px-4 overflow-x-hidden padding-none"
       >
         <!-- TOP ROW MENUS POST ACTIONS MENU -->
         <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -905,7 +905,7 @@ export default {
         <div
           :class="`mb-2 ${
             postToEnlarge.body2 ? 'mt-3' : ''
-          } border-[1px] w-1/3 border-gray-800 rounded`"
+          } border-[1px] w-1/3 border-gray-800 rounded self-center`"
         ></div>
 
         <div class="pb-2 flex justify-between w-full">

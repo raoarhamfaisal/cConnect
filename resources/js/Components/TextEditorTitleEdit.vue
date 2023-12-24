@@ -76,8 +76,8 @@ import BackgroundColorDropdownEdit from "@/Components/BackgroundColorDropdownEdi
 import FontColorDropdownEdit from "@/Components/FontColorDropdownEdit.vue";
 const props = defineProps({
   modelValue: String,
-  textColorId: String,
-  backgroundColorId: String,
+  textColorId: [String, Number],
+  backgroundColorId: [String, Number],
   textAlignment: String,
 });
 
