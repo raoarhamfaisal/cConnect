@@ -467,14 +467,16 @@ class PostController extends Controller
     
 
     public function updatePost(
+        $post_id,
         StorePostRequest $request,
         InsertPostProfileService $InsertPostProfileService,
         ProcessImageService $processImageService,
-        $post_id
     ) {
 
         // Retrieve the post to update
         $postToUpdate = Post::findOrFail($post_id);
+        // dd($postToUpdate);
+
 
         $validatedInput = $request->validated();
 
@@ -505,6 +507,7 @@ class PostController extends Controller
 
         // Update the basic post details from validated input
         $postToUpdate->fill($validatedInput);
+        $postToUpdate->save();
 
         // Process the images that are filepath/name
         // is stored in $processedimages as a STRING
@@ -517,6 +520,7 @@ class PostController extends Controller
 
         // only then update image field
         Post::where("id", $postToUpdate->id)->update(["image" => $newImageString]);
+
 
         // Attach trades with post
         
