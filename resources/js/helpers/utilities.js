@@ -46,7 +46,7 @@ export const filterBadWords = (textRef) => {
 
 // Asynchronous function to filter text
 
-export const filterBadWordsWithoutValue = async (textRef) => {
+export const filterBadWordsWithoutValue = (textRef) => {
   // Retrieve the bad words from the store
   // Key to store and retrieve the bad words from local storage\
   let badWords;

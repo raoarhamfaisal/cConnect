@@ -578,7 +578,6 @@ const updateDateRange = () => {
   toggleDatePicker();
 };
 const handleOutsideClick = () => {
-  console.log("handleOutsideClick");
   if (isDatePickerShown.value) {
     toggleDatePicker();
   }
@@ -613,7 +612,6 @@ const numberOfRows = computed(() => {
 //Watch
 watch(regions, (newVal) => {
   if (newVal.length > 0) {
-    console.log(regions, "regions");
     referenceList.value = regions.value.map((item) => item.name);
   }
 });
@@ -686,7 +684,6 @@ const validateForm = () => {
   return isValid; // Return the overall validation status
 };
 const clearErrors = (field) => {
-  console.log("Clear errors", field);
   if (field === "region_id") {
     errors[field] = "";
     return;
@@ -698,7 +695,6 @@ const clearErrors = (field) => {
   if (field === "off_price" || field === "start_end_date") {
     errors[field] = "";
   }
-  console.log(range.value, "range");
 };
 
 const changeReferal = (value) => {
@@ -725,7 +721,7 @@ const fetchDiscountCoupons = async (
       `/api/admin/discount-coupon/${regionId.value}/all?search=${searchTerm.value}&per_page=${per_page}&page=${page}&sort_by_date=${sortByDate}`,
       getAxiosConfig()
     );
-    console.log(response.data, "response");
+
     if (append) {
       coupons.value = [...coupons.value, ...response.data.couponCodes];
     } else {
@@ -780,14 +776,14 @@ const saveNotes = () => {
     const notes = {
       notes: note.value ? filterBadWordsWithoutValue(note.value) : note.value,
     };
-    console.log(notes, note.value, "selectedNote");
+
     try {
       const response = await axios.put(
         `/api/admin/discount-coupon/${coupon_id.value}`,
         notes,
         getAxiosConfig()
       );
-      console.log(response, "response");
+
       if (response.data) {
         coupons.value.forEach((coupon, index) => {
           if (coupon.id === coupon_id.value) {
@@ -837,7 +833,6 @@ const onClosePriceEdit = () => {
 };
 const handleEditSubmit = async () => {
   if (validateForm()) {
-    console.log(singleCoupon.value, "singleCoupon.value");
     let region_id = null; // Initialize with a default value
     regions.value.forEach((r) => {
       if (r.name === selectedReferal.value) {
@@ -858,7 +853,7 @@ const handleEditSubmit = async () => {
       end_date: formatDateToDashDate(range.value.end),
       notes: singleCoupon.value.notes,
     };
-    console.log(couponToUpdate, "coupon to create");
+
     loadingEdit.value = true;
     disabled.value = true;
     try {
@@ -867,12 +862,12 @@ const handleEditSubmit = async () => {
         couponToUpdate,
         getAxiosConfig()
       );
-      console.log(response, "response");
+
       if (response.data) {
         const index = coupons.value.findIndex((plan, index) => {
           return plan.id === response.data.data.id;
         });
-        console.log(coupons.value, "selected", response.data.data);
+
         coupons.value[index] = response.data.data;
         changesSaved(response.data.message);
         setTimeout(() => {
@@ -880,7 +875,6 @@ const handleEditSubmit = async () => {
         }, 2000);
       }
     } catch (err) {
-      console.log(err);
       somethingWentWrong(err.response.data.message, "inherit");
     } finally {
       loadingEdit.value = false;
@@ -908,7 +902,6 @@ const handleSubmitDelete = async () => {
       }
     }
   } catch (err) {
-    console.log(err);
     somethingWentWrong(err.response.data.message, "inherit");
   }
   loadingDelete.value = false;
@@ -917,7 +910,6 @@ const handleSubmitDelete = async () => {
 };
 const handleCreateSubmit = async () => {
   if (validateForm()) {
-    console.log(singleCoupon.value, "singleCoupon.value");
     let region_id = null; // Initialize with a default value
     regions.value.forEach((r) => {
       if (r.name === selectedReferal.value) {
@@ -938,7 +930,7 @@ const handleCreateSubmit = async () => {
       end_date: formatDateToDashDate(range.value.end),
       notes: filterBadWordsWithoutValue(singleCoupon.value.notes),
     };
-    console.log(couponToCreate, "coupon to create");
+
     loadingEdit.value = true;
     disabled.value = true;
     try {
@@ -947,7 +939,7 @@ const handleCreateSubmit = async () => {
         couponToCreate,
         getAxiosConfig()
       );
-      console.log(response, "response");
+
       if (response.data) {
         coupons.value.push(response.data.data);
         changesSaved(response.data.message);
@@ -956,7 +948,6 @@ const handleCreateSubmit = async () => {
         }, 2000);
       }
     } catch (err) {
-      console.log(err);
       somethingWentWrong(err.response.data.message, "inherit");
     } finally {
       loadingEdit.value = false;
