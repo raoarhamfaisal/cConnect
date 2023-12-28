@@ -163,23 +163,14 @@ export default {
         // this.$store.dispatch("ratings/getTrades", this.id);
       }
     },
-    // trades(newVal) {
-    //   // Resetting tradesPost object to all false
-    //   for (let key in this.tradesPost) {
-    //     this.tradesPost[key] = false;
-    //   }
-
-    //   // Iterating over the trades array and setting the corresponding key in tradesPost to true
-    //   newVal.forEach((trade) => {
-    //     if (this.tradesPost.hasOwnProperty(trade.name)) {
-    //       this.tradesPost[trade.name] = true;
-    //     }
-    //   });
-    //   this.tradesPost["trade28"] = true;
-    //   this.tradesPost["trade29"] = true;
-    //   this.tradesPost["trade30"] = true;
-    //   this.selectAllTrades();
-    // },
+    tradesPost: {
+      handler(newVal) {
+        this.postTrades = Object.entries(newVal)
+          .filter(([key, value]) => value)
+          .map(([key]) => parseInt(key.replace(/^trade/, ""), 10));
+      },
+      deep: true,
+    },
     selectedItems(newVal) {
       this.form.trades = this.selectedItems
         .map((item) => {
