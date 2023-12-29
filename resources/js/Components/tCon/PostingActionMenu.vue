@@ -318,20 +318,20 @@ export default {
       </CustomDialog>
     </teleport>
     <Teleport to="body">
-      <keep-alive>
-        <PostFormEdit
-          v-if="isFormOpen"
-          :isOpen="isFormOpen"
-          :id="profileId"
-          :loadingUpdate="loadingUpdate"
-          :form="postToEdit"
-          :success="success"
-          :imageArray="imageArray"
-          @formsave="saveItem"
-          @formclose="closeEditModal"
-        >
-        </PostFormEdit>
-      </keep-alive>
+      <!-- <keep-alive> -->
+      <PostFormEdit
+        v-if="isFormOpen"
+        :isOpen="isFormOpen"
+        :id="profileId"
+        :loadingUpdate="loadingUpdate"
+        :form="postToEdit"
+        :success="success"
+        :imageArray="imageArray"
+        @formsave="saveItem"
+        @formclose="closeEditModal"
+      >
+      </PostFormEdit>
+      <!-- </keep-alive> -->
     </Teleport>
   </div>
 </template>

@@ -205,7 +205,10 @@ export default {
   },
   watch: {
     updatedPost(newVal) {
+      console.log("post is edited");
+
       if (newVal && Object.keys(newVal).length > 0) {
+        console.log("post is edited");
         // const updatedPostIndex = this.allPosts.findIndex(
         //   (post) => post.id === newVal.id
         // );
