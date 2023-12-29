@@ -48,6 +48,7 @@ export default {
   },
   methods: {
     openEditForm(formData) {
+      this.postToEdit = { ...this.post };
       this.showingNavigationDropdown = false;
       this.isFormOpen = true;
     },
@@ -171,7 +172,8 @@ export default {
           this.closeEditModal();
           this.success = true;
           this.loadingUpdate = false;
-          this.$store.commit("profile/setUpdatedPost", formData);
+          // this.$store.commit("profile/setUpdatedPost", formData);
+          this.$store.commit("profile/setUpdatedPostId", formData.id);
           changesSaved("Post Successfully updated");
         },
       });

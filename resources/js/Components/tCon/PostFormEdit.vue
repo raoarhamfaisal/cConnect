@@ -74,7 +74,7 @@ export default {
   data() {
     return {
       // the image array parameter
-      myFiles: [],
+      myFiles: ref([]),
       options: options,
       playVideo: false,
       previousImages: this.imageArray,
@@ -124,8 +124,10 @@ export default {
     };
   },
   async mounted() {
+    this.$refs.pond.removeFiles();
     this.myFiles = [];
-    console.log("mounted called");
+    this.form.image = "";
+
     await this.fetchPostTrades();
     this.$store.dispatch("ratings/getRegions");
     // this.$store.dispatch("ratings/getTrades", this.id);
@@ -300,19 +302,23 @@ export default {
     handleFilePondInit() {
       this.myFiles = [];
       // Create the array of images using seperator |
+
       let arr = this.form.image ? this.form.image.split("|") : [];
       // loop through array and display each image
       for (let i = 0; i < arr.length; i++) {
         // Adding image object to myFiles arrray
-        this.myFiles.push({
-          source: "/" + arr[i],
-          options: {
-            type: "local",
-            metadata: {
-              poster: "/" + arr[i],
+        if (arr[i].startsWith("uploads/posts")) {
+          console.log("here in the init", arr[i]);
+          this.myFiles.push({
+            source: "/" + arr[i],
+            options: {
+              type: "local",
+              metadata: {
+                poster: "/" + arr[i],
+              },
             },
-          },
-        });
+          });
+        }
       }
     },
     reverseAndJoinString(inputString) {
@@ -419,7 +425,8 @@ export default {
         this.form.image = previousImages;
       }
       this.form.trades = this.postTrades;
-      this.$emit("formsave", this.form);
+      let formData = { ...this.form };
+      this.$emit("formsave", formData);
     },
     reverseAndJoinString(inputString) {
       // Split the string into an array
