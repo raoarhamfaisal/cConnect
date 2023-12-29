@@ -403,6 +403,7 @@ export default {
       this.form.image = this.form.image
         ? this.reverseAndJoinString(this.form.image)
         : this.form.image;
+
       if (this.form.image && previousImages) {
         this.form.image = previousImages + "|" + this.form.image;
       } else if (!this.form.image && previousImages) {

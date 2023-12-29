@@ -118,16 +118,48 @@ export default {
       formData.body2 = formData.body2
         ? await filterBadWordsWithoutValue(formData.body2)
         : formData.body2;
+
       let url = "/post";
       if (formData.id) {
         url = "/post/" + formData.id;
         formData._method = "PATCH";
       }
-      console.log(formData, "formData");
-      // see results - chrome: inpect/network/headers & payload
-      // 1) goes to web.php router
-      // 2) router listens for Route::post('/post')
-      //    to PostController store method
+
+      if (formData.image) {
+        const allImages = formData.image.split("|");
+        const uploadPostsImages = allImages.map((path) => {
+          if (!path.startsWith("uploads/posts/")) {
+            console.log("formData.image");
+
+            return "uploads/posts/" + path;
+          }
+          return path;
+        });
+        // const uploadPostsImages = allImages.map((path) => {
+        //   const regexPattern = /\d+_\d+_/;
+        //   if (!path.startsWith("uploads/posts/") && regexPattern.test(path)) {
+        //     console.log("formData.image");
+
+        //     return path.replace(regexPattern, "uploads/posts/");
+        //   }
+        //   return path;
+        // });
+        formData.image = uploadPostsImages.join("|");
+      }
+      // const updatetPostWithoutFetching = { ...formData };
+      // if (updatetPostWithoutFetching.image) {
+      //   const allImages = updatetPostWithoutFetching.image.split("|");
+      //   const uploadPostsImages = allImages.map((path) => {
+      //     if (path.startsWith("uploads/posts/")) {
+      //       const replacedPath = path.replace("uploads/posts/", "");
+      //       console.log("updatetPostWithoutFetching", replacedPath);
+      //       return replacedPath;
+      //     }
+      //     return path;
+      //   });
+      //   updatetPostWithoutFetching.image = uploadPostsImages.join("|");
+      // }
+
       this.$inertia.patch(url, formData, {
         onError: () => {
           this.loadingUpdate = false;

@@ -19,6 +19,10 @@ import Swal from "sweetalert2";
 export const filterBadWords = (textRef) => {
   // Retrieve the bad words from the store
   // Key to store and retrieve the bad words from local storage\
+  if (!textRef.value) {
+    textRef.value = "";
+    return textRef.value;
+  }
   let badWords;
   const localStorageKey = "badWords";
 
@@ -49,6 +53,10 @@ export const filterBadWords = (textRef) => {
 export const filterBadWordsWithoutValue = (textRef) => {
   // Retrieve the bad words from the store
   // Key to store and retrieve the bad words from local storage\
+  if (!textRef) {
+    textRef = "";
+    return textRef;
+  }
   let badWords;
   const localStorageKey = "badWords";
 

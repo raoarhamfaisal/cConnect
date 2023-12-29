@@ -206,40 +206,19 @@ export default {
   watch: {
     updatedPost(newVal) {
       if (newVal && Object.keys(newVal).length > 0) {
-        const updatedPostIndex = this.allPosts.findIndex(
-          (post) => post.id === newVal.id
-        );
-        this.allPosts[updatedPostIndex] = newVal;
+        // const updatedPostIndex = this.allPosts.findIndex(
+        //   (post) => post.id === newVal.id
+        // );
+        // this.allPosts[updatedPostIndex] = newVal;
+        this.getFirstPage();
       }
     },
     deletedPost(newVal) {
       if (newVal && Object.keys(newVal).length > 0) {
-        this.loadingPosts = true;
-        this.$inertia.get(
-          this.posts.first_page_url,
-          {},
-          {
-            // these preserve state keeps our position in the scroll
-            preserveState: true,
-            preserveScroll: false,
-            // 'only' makes sure that inertia only loads current post property
-            // not the whole payload. Make sure lazy load is used in controller
-            only: ["posts"],
-            onSuccess: () => {
-              // takes the object posts and appends it to allpost
-              this.allPosts = [...this.posts.data];
-              this.loadingPosts = false;
-              // 'this.initialUrl' is set in script data
-              window.history.replaceState(
-                {},
-                this.$page.title,
-                this.initialUrl
-              );
-            },
-          }
-        );
+        this.getFirstPage();
       }
     },
+
     loadFirstPageWithNoPreserve(newVal) {
       if (newVal) {
         this.$inertia.get(
@@ -330,6 +309,28 @@ export default {
         .finally(() => {
           this.loading = false;
         });
+    },
+    getFirstPage() {
+      this.loadingPosts = true;
+      this.$inertia.get(
+        this.posts.first_page_url,
+        {},
+        {
+          // these preserve state keeps our position in the scroll
+          preserveState: true,
+          preserveScroll: false,
+          // 'only' makes sure that inertia only loads current post property
+          // not the whole payload. Make sure lazy load is used in controller
+          only: ["posts"],
+          onSuccess: () => {
+            // takes the object posts and appends it to allpost
+            this.allPosts = [...this.posts.data];
+            this.loadingPosts = false;
+            // 'this.initialUrl' is set in script data
+            window.history.replaceState({}, this.$page.title, this.initialUrl);
+          },
+        }
+      );
     },
     loadMorePosts() {
       // Check to see if post proerty has a next page url
