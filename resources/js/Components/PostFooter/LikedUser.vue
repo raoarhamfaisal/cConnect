@@ -1,6 +1,6 @@
 <template>
   <Link
-    :href="`/contractor/${user.id}`"
+    :href="`/contractor/${user.user_id}`"
     class="flex flex-row gap-2 justify-start items-center"
   >
     <!-- Avatar -->
