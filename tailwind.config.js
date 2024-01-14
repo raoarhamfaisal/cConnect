@@ -1,0 +1,39 @@
+const defaultTheme = require('tailwindcss/defaultTheme');
+
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+    content: [
+        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
+        './storage/framework/views/*.php',
+        './resources/views/**/*.blade.php',
+        './resources/js/**/*.vue',
+    ],
+
+    theme: {
+
+        screens: {
+            sx: "350px",
+            xs: "460px",
+            ...defaultTheme.screens
+        },
+
+
+        extend: {
+            fontFamily: {
+                sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+            },
+
+            colors: {
+                'black-rgba':   'rgba(0, 0,   0,  0.54)',
+                'blue-rgba':    'rgba(36, 30, 109,  1.00)',
+                'blue-30-rgba': 'rgba(36, 30, 109,  0.33)',
+                'green-rgba':   'rgba(0, 204, 0,  1.00)',
+                'slate-30-rgba':'rgba(226, 232, 240,  0.40)',
+                'gray-30-rgba':'rgba(209, 213, 219,  0.50)',
+
+            }
+        },
+    },
+
+    plugins: [require('@tailwindcss/forms')],
+};
