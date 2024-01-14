@@ -1,0 +1,43 @@
+<?php
+
+namespace App\Events;
+
+use Illuminate\Broadcasting\Channel;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
+
+use App\Models\Comment;
+
+class CommentReactionOrReplyChanged implements ShouldBroadcast
+{
+    use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    public $comment;
+
+    public function __construct(Comment $comment)
+    {
+        $comment->load([
+            // Load the count of likes
+            'likes',
+            // Load the count of dislikes
+            'dislikes'
+            // Load other related data as needed
+        ]);
+        $this->comment = $comment;
+    }
+
+    public function broadcastOn()
+    {
+
+        // dd('here is a comment');
+        \Log::info("Broadcasting on comment reactions channel");
+        \Log::info($this->comment);
+
+
+        return new Channel('commentReactions');
+    }
+}

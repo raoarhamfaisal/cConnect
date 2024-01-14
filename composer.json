@@ -6,13 +6,16 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "ably/ably-php": "^1.1",
+        "authorizenet/authorizenet": "2.0.2",
+        "beyondcode/laravel-websockets": "^2.0@beta",
         "guzzlehttp/guzzle": "^7.2",
         "inertiajs/inertia-laravel": "^0.6.3",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.7",
-        "tightenco/ziggy": "^1.0",
-        "authorizenet/authorizenet": "2.0.2"
+        "pusher/pusher-php-server": "^7.2",
+        "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

@@ -120,7 +120,7 @@
               Choose Payment Method
             </div>
             <!-- (c) 2005, 2023. Authorize.Net is a registered trademark of CyberSource Corporation  -->
-              <!-- <div class="AuthorizeNetSeal"> <script type="text/javascript" language="javascript">var ANS_customer_id="c5098736-0049-4d71-84e8-37f0778a3208";</script> <script type="text/javascript" language="javascript" src="//verify.authorize.net:443/anetseal/seal.js" ></script> </div> -->
+            <!-- <div class="AuthorizeNetSeal"> <script type="text/javascript" language="javascript">var ANS_customer_id="c5098736-0049-4d71-84e8-37f0778a3208";</script> <script type="text/javascript" language="javascript" src="//verify.authorize.net:6001/anetseal/seal.js" ></script> </div> -->
             <div class="flex gap-4 gap-1 sx:gap-2 lg:gap-10 w-full mt-4">
               <div
                 :class="[
@@ -451,7 +451,6 @@
           height="80vh"
         ></Loader>
 
-
         <CustomDialog
           :dontAllowCancel="true"
           submitText="Okay"
@@ -533,8 +532,6 @@ import SelectProfile from "@/Components/SelectProfile.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 
 import Loader from "@/Components/Ratings/Loader.vue";
-
-
 
 import Card from "@/Components/Card.vue";
 
@@ -626,7 +623,6 @@ onMounted(async () => {
   coupon.value = JSON.parse(localStorage.getItem("coupon"));
   const total = JSON.parse(localStorage.getItem("total"));
   if (coupon.value && Object.keys(coupon.value).length > 0) {
- 
     monthlyTotal.value = total.monthlyTotal;
     annualTotal.value = total.annualTotal;
   }
@@ -653,13 +649,11 @@ const goBack = computed(() => {
   // Check if the history is
   const prevUrl = localStorage.getItem("prevUrl");
   if (prevUrl === "/pricing-plan") {
-  return prevUrl;
-  }else {
-   return '/profile-setup'
+    return prevUrl;
+  } else {
+    return "/profile-setup";
   }
- 
 });
-
 
 watch(
   () => sameAsProfile.value,
@@ -698,10 +692,8 @@ const fetchPricingCardDetails = async () => {
     );
     if (response.data) {
       pricingPlan.value = { ...response.data.paymentInfo };
-     
 
       if (!coupon.value || Object.keys(coupon.value).length == 0) {
-      
         const salesTax = +pricingPlan.value.sales_tax * 0.01;
         monthlyTotal.value =
           +pricingPlan.value.billed_monthly_price +
@@ -726,7 +718,7 @@ const selectPayment = async (method) => {
   if (paymentMethod.value) {
     // Wait for the DOM update
     await nextTick();
-  
+
     setTimeout(() => {
       if (paymentDetailsRef.value) {
         const elementToScroll =
@@ -894,10 +886,8 @@ const validateForm = () => {
   return isValid;
 };
 
-
 const startSubscription = async () => {
   if (validateForm()) {
-   
     subscriptionApiError.value = "";
 
     loadingSubscribing.value = true;
@@ -922,7 +912,6 @@ const startSubscription = async () => {
         getAxiosConfig()
       );
       if (response.data) {
-       
         if (response.data?.messages?.resultCode === "Error") {
           subscriptionApiError.value = response.data?.messages?.message[0].text;
         } else {

@@ -72,7 +72,40 @@ export default {
       });
     }, 1000);
     this.fetchColors();
+
+    console.log("window.Echo", window.Echo);
+
+    window.Echo.channel("comments") // Replace with your channel name
+      .listen("CommentPosted", (e) => {
+        console.log("Event received:", e);
+        // Handle the event (e.g., update your data or UI)
+      })
+      .listen("CommentUpdated", (e) => {
+        console.log("Event received:", e);
+        // Handle the event (e.g., update your data or UI)
+      })
+      .listen("CommentDeleted", (e) => {
+        console.log("Event received:", e);
+        // Handle the event (e.g., update your data or UI)
+      });
+
+    window.Echo.channel("post") // Replace with your channel name
+      .listen("PostCountersChanged", (e) => {
+        console.log("Event received:", e);
+        // Handle the event (e.g., update your data or UI)
+      });
+
+    window.Echo.channel("commentReactions") // Replace with your channel name
+      .listen("CommentReactionOrReplyChanged", (e) => {
+        console.log("Event received:", e);
+        // Handle the event (e.g., update your data or UI)
+      });
   },
+
+  // beforeDestroy() {
+  //   window.Echo.leave("your-channel-name");
+  // },
+
   // unmounted() {
 
   // },
