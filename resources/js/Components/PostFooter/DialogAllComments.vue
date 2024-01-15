@@ -236,7 +236,6 @@ onMounted(() => {
 watch(
   () => screenWidth,
   (newVal) => {
-    console.log("here");
     if (newVal > 640) {
       minHeight.value = 70;
       paddingHeight.value = 25;
@@ -250,7 +249,6 @@ watch(
   () => props.modelValue,
   (newVal) => {
     if (newVal) {
-      console.log("here");
       comments.value = newVal;
     }
   }
@@ -301,19 +299,16 @@ const closeDialog = () => {
 
 const openDialog = async () => {
   isVisible.value = true;
-  console.log("inOpen", comments.value);
   // await fetchComments(perPage.value, currentPage.value, false);
   if (comments.value.length > 0) {
     setTimeout(() => {
       const observerCallback = (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            console.log("intersecting");
             loadMoreComments();
           }
         });
       };
-      console.log("in");
 
       const observer = new IntersectionObserver(observerCallback, {
         rootMargin: "0px 0px 0px 0px",
@@ -398,7 +393,6 @@ const onSendComment = async () => {
 const loadMoreComments = async () => {
   loadingNextPage.value = true;
   currentPage.value = currentPage.value + 1;
-  console.log("3");
 
   await fetchComments(perPage.value, currentPage.value);
   loadingNextPage.value = false;
@@ -411,7 +405,6 @@ const fetchComments = async (
   noReviewsChanges = false
 ) => {
   try {
-    console.log("fetchComments");
     const response = await axios.get(
       `/api/posts/${props.postId}/comments?per_page=${per_page}&page=${page}`,
       getAxiosConfig()

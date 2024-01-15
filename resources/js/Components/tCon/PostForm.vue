@@ -360,8 +360,6 @@ export default {
 
     // Remove Images
     handleFilePondRemove(source, load, error) {
-      console.log("handleFilePondRemove");
-
       this.removeFormImage(source.replace(/^\//, ""));
 
       load();

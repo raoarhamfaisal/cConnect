@@ -94,7 +94,6 @@ export default {
           this.$store.commit("profile/setDeletedPost", this.post);
         }
       } catch (err) {
-        console.log(err);
         somethingWentWrong(err.response.data.message, "inherit");
       } finally {
         this.loadingBlockContact = false;
@@ -130,36 +129,13 @@ export default {
         const allImages = formData.image.split("|");
         const uploadPostsImages = allImages.map((path) => {
           if (!path.startsWith("uploads/posts/")) {
-            console.log("formData.image");
-
             return "uploads/posts/" + path;
           }
           return path;
         });
-        // const uploadPostsImages = allImages.map((path) => {
-        //   const regexPattern = /\d+_\d+_/;
-        //   if (!path.startsWith("uploads/posts/") && regexPattern.test(path)) {
-        //     console.log("formData.image");
 
-        //     return path.replace(regexPattern, "uploads/posts/");
-        //   }
-        //   return path;
-        // });
         formData.image = uploadPostsImages.join("|");
       }
-      // const updatetPostWithoutFetching = { ...formData };
-      // if (updatetPostWithoutFetching.image) {
-      //   const allImages = updatetPostWithoutFetching.image.split("|");
-      //   const uploadPostsImages = allImages.map((path) => {
-      //     if (path.startsWith("uploads/posts/")) {
-      //       const replacedPath = path.replace("uploads/posts/", "");
-      //       console.log("updatetPostWithoutFetching", replacedPath);
-      //       return replacedPath;
-      //     }
-      //     return path;
-      //   });
-      //   updatetPostWithoutFetching.image = uploadPostsImages.join("|");
-      // }
 
       this.$inertia.patch(url, formData, {
         onError: () => {

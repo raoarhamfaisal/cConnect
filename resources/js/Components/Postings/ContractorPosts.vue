@@ -143,7 +143,6 @@ export default {
   computed: {
     ...mapState({
       index: (state) => {
-        console.log("index");
         return state.ratings.index;
       },
     }),
@@ -183,7 +182,6 @@ export default {
       }
     },
     shouldLoadPosts(newValue) {
-      console.log("inforLoadPosts", this.shouldLoadPosts);
       if (this.shouldLoadPosts) {
         this.loadPostsOnChange();
         this.$store.commit("ratings/setShouldLoadPosts", false);
@@ -261,7 +259,6 @@ export default {
           this.posts = { ...data.posts };
           const startIndex = (pageNumber - 1) * this.posts.per_page;
 
-          console.log(pageNumber, this.index, this.allPosts, "info");
           // Replace items in this.allPosts array
           this.allPosts.splice(
             startIndex,
@@ -270,7 +267,6 @@ export default {
           );
         }
       } catch (err) {
-        console.log(err, "error");
         somethingWentWrong(err.message);
       }
     },
