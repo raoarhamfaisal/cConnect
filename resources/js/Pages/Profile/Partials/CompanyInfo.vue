@@ -2,12 +2,13 @@
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import { useForm } from "@inertiajs/inertia-vue3";
+import { useForm, usePage } from "@inertiajs/inertia-vue3";
 import UserAvatar from "../components/UserAvatar.vue";
 
 const props = defineProps({
   profile: Object,
 });
+
 
 const form = useForm({
   company_logo: props.profile.company_logo,
@@ -16,10 +17,27 @@ const form = useForm({
   // business_start: null,
   phone_office: props.profile.phone_office,
 });
+
+// Upload Company Logo on image change
 const handleImageUpdate = (file) => {
-  console.log("Received file from child:", file);
-  // form.company_logo = file;
-  // Now you can use this file as needed, e.g., uploading it to a server
+  const formData = new FormData();
+  formData.append('company_logo', file);
+  formData.append('user_id', props.profile.user_id)
+
+  axios.post('/api/profile/company-logo', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      'X-CSRF-TOKEN': usePage().props.value.csrf_token,
+    },
+  })
+  .then((response) => {
+    console.log('Avatar uploaded successfully', response.data);
+    form.company_logo = response.data.company_logo; // Update the local state with the new avatar path
+  })
+  .catch((error) => {
+    console.log('Error uploading avatar:', error.response.data);
+    // Handle the error appropriately here
+  });
 };
 </script>
 

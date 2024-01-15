@@ -135,15 +135,11 @@ class ProfileController extends Controller
         $userID = Auth()->user('')->id;
         $profile = null;
 
-        // dd($request);
-
 
         // Get the profile information if the user id exists
         if($userID) {
             $profile = Profile::where('user_id', $userID)->first();
         }
-
-        // dd($profile);
 
         if($profile) {
 
@@ -219,14 +215,10 @@ class ProfileController extends Controller
         $userID = Auth()->user('')->id;
         $profile = null;
 
- 
-
         // Get the profile information if the user id exists
         if($userID) {
             $profile = Profile::where('user_id', $userID)->first();
         }
-
-
 
         if($profile) {
 
@@ -299,11 +291,6 @@ class ProfileController extends Controller
     public function updateUserAvatar(Request $request)
     {
 
-
-        // return response()->json([
-        //     'user' => $user
-        // ]);
-        // dd($user);
         // Get current user id
         $userID = $request->user_id;
         $profile = null;
@@ -342,7 +329,7 @@ class ProfileController extends Controller
         
             }
         }
-        // return Redirect::route('profile.edit');
+        // Return json response because this is an api axios call
         return response()->json([
             'status' => 'success',
             'message' => 'Avatar updated successfully',
@@ -350,4 +337,59 @@ class ProfileController extends Controller
         ]);    
     }
 
+
+    /**
+        * Update Company Logo
+        *
+        * @param  \App\Http\Requests\ProfileCompanyLogoUpdateRequest  $request
+        * @return \Illuminate\Http\RedirectResponse
+        */
+
+        public function updateCompanyLogo(Request $request)
+        {
+            $userID = $request->user_id;
+            $profile = null;
+    
+            // Get the profile information if the user id exists
+            if($userID) {
+                $profile = Profile::where('user_id', $userID)->first();
+            }
+    
+            if($profile) {
+                $request->validate([
+                    'company_logo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                ]);
+    
+                if ($request->hasFile('company_logo')) {
+    
+                    $file = $request->file('company_logo');
+                    $path = $file->store('images/company-logos', 'publicc');
+    
+                    $url = asset($path);
+    
+                    // Update the user's profile with the new avatar path
+                    $profile->update([
+                        'company_logo' => $url,
+                    ]);
+    
+                    return response()->json([
+                        'url' => $url
+                    ]);
+                }else {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Avatar not updated successfully',
+                        'company_logo' => '',
+                    ]);    
+            
+                }
+            }
+            // Return json response because this is an api axios call
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Avatar updated successfully',
+                'company_logo' => $url,
+            ]);    
+        }
+    
 }

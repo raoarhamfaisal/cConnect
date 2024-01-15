@@ -27,6 +27,8 @@ const form = useForm({
   latitude: props.profile.latitude,
   file: props.profile.user_avatar,
 });
+
+// Upload User Avatar on image change
 const handleImageUpdate = (file) => {
   const formData = new FormData();
   formData.append('user_avatar', file);
@@ -36,7 +38,6 @@ const handleImageUpdate = (file) => {
     headers: {
       'Content-Type': 'multipart/form-data',
       'X-CSRF-TOKEN': usePage().props.value.csrf_token,
-      'user': user.id
     },
   })
   .then((response) => {
@@ -49,17 +50,6 @@ const handleImageUpdate = (file) => {
   });
 };
 
-const handleSubmit = () => {
-    const formData = new FormData();
-    const formDataToSend = form.data()
-
-    console.log("formDataToSend", formDataToSend)
-    Object.keys(formDataToSend).forEach(key => {
-        formData.append(key, formDataToSend[key]);
-    });
-    console.log("formData", formData)
-    form.patch(route('profile.updateGeneralInfo')); // Use post here because FormData doesn't work well with patch in some scenarios
-};
 </script>
 
 <template>
