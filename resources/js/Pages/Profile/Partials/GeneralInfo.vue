@@ -9,25 +9,41 @@ import UserAvatar from "../components/UserAvatar.vue";
 const props = defineProps({
   mustVerifyEmail: Boolean,
   status: String,
+  profile: Object,
 });
 
 const user = usePage().props.value.auth.user;
 
+console.log("profile Data", props.profile)
+
 const form = useForm({
-  first_name: null,
-  last_name: null,
-  email: user.email,
-  phone_cell: null,
-  phone_office: null,
-  user_avatar: null,
-  longitude: null,
-  latitude: null,
-  user_avatar: null,
+  first_name: props.profile.first_name,
+  last_name: props.profile.last_name,
+  email: props.profile.email,
+  phone_cell: props.profile.phone_cell,
+  user_avatar: props.profile.user_avatar,
+  longitude: props.profile.longitude,
+  latitude: props.profile.latitude,
+  file: props.profile.user_avatar,
 });
 const handleImageUpdate = (file) => {
+  console.log("form", form)
   console.log("Received file from child:", file);
-  // form.user_avatar = file;
+  form.user_avatar = file;
+  console.log("form", form.data());
   // Now you can use this file as needed, e.g., uploading it to a server
+};
+
+const handleSubmit = () => {
+    const formData = new FormData();
+    const formDataToSend = form.data()
+
+    console.log("formDataToSend", formDataToSend)
+    Object.keys(formDataToSend).forEach(key => {
+        formData.append(key, formDataToSend[key]);
+    });
+    console.log("formData", formData)
+    form.patch(route('profile.updateGeneralInfo')); // Use post here because FormData doesn't work well with patch in some scenarios
 };
 </script>
 
@@ -35,7 +51,7 @@ const handleImageUpdate = (file) => {
   <section>
     <header class="flex space-x-2">
       <UserAvatar
-        :imageSrc="form.user_avatar"
+        :imageSrc="form.file"
         @update-image="handleImageUpdate"
       />
       <div>
@@ -50,20 +66,7 @@ const handleImageUpdate = (file) => {
       </div>
     </header>
 
-    <form @submit.prevent="form.patch(route('profile.update'))">
-      <!-- <div>
-        <InputLabel for="name" value="Name" />
-        <TextInput
-          id="name"
-          type="text"
-          class="mt-1 block w-full"
-          v-model="form.name"
-          required
-          autofocus
-          autocomplete="name"
-        />
-        <InputError class="mt-2" :message="form.errors.name" />
-      </div> -->
+    <form @submit.prevent="form.patch(route('profile.updateGeneralInfo'))">
       <div
         class="mt-6 space-y-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-6"
       >
@@ -73,11 +76,11 @@ const handleImageUpdate = (file) => {
             id="first_name"
             type="text"
             class="mt-1 block w-full"
-            v-model="form.first_name"
             required
+            v-model="form.first_name"
             placeholder="Type your first name"
             autocomplete="given-name"
-          />
+            />
           <InputError class="mt-2" :message="form.errors.first_name" />
         </div>
 
@@ -139,42 +142,12 @@ const handleImageUpdate = (file) => {
             A new verification link has been sent to your email address.
           </div>
         </div>
-        <div>
-          <InputLabel
-            class="font-bold"
-            for="company_name"
-            value="Company Name"
-          />
-          <TextInput
-            id="company_name"
-            type="text"
-            class="mt-1 block w-full"
-            v-model="form.company_name"
-            placeholder="Type your company name"
-          />
-        </div>
-
-        <div>
-          <InputLabel
-            class="font-bold"
-            for="phone_office"
-            value="Phone Office"
-          />
-          <TextInput
-            id="phone_office"
-            type="tel"
-            class="mt-1 block w-full"
-            v-model="form.phone_office"
-            placeholder="Type your office phone number"
-            autocomplete="tel"
-          />
-        </div>
 
         <div>
           <InputLabel class="font-bold" for="longitude" value="Longitude" />
           <TextInput
             id="longitude"
-            type="number"
+            type="text"
             class="mt-1 block w-full"
             v-model="form.longitude"
             placeholder="Enter the longitude"
@@ -185,7 +158,7 @@ const handleImageUpdate = (file) => {
           <InputLabel class="font-bold" for="latitude" value="Latitude" />
           <TextInput
             id="latitude"
-            type="number"
+            type="text"
             class="mt-1 block w-full"
             v-model="form.latitude"
             placeholder="Enter the latitude"
