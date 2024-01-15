@@ -86,9 +86,30 @@ export default {
   mounted() {
     // Remove PostingActionMenu upon scroll
     // ERROR ONLY WORKS IN MOBILE BECAUSE LOOKING AT WINDOW140
+    console.log("post display enalareged");
     this.fetchAllComments();
   },
   watch: {
+    pusherCommentPosted: {
+      handler(newVal, oldVal) {
+        if (
+          newVal &&
+          newVal.id &&
+          newVal != oldVal &&
+          this.postToEnlarge.id === newVal.post_id
+        ) {
+          const commentIndex = this.allComments.findIndex(
+            (comment) => comment.id === newVal.id
+          );
+          if (commentIndex === -1) {
+            console.log("in pusher comment posted");
+            this.allComments.unshift(newVal);
+            this.pagination.total = this.pagination.total + 1;
+          }
+        }
+      },
+      deep: true,
+    },
     commentId(newVal) {
       if (newVal) {
         const index = this.allComments.findIndex(
@@ -100,6 +121,35 @@ export default {
           // this.fetchAllComments();
         }
       }
+    },
+    pusherCommentToDelete: {
+      handler(newVal, oldVal) {
+        if (
+          newVal &&
+          newVal.id &&
+          newVal != oldVal &&
+          this.postToEnlarge.id === newVal.post_id
+        ) {
+          const comment_id = newVal.parent_id ? newVal.parent_id : newVal.id;
+          const index = this.allComments.findIndex(
+            (comment) => comment.id === comment_id
+          );
+          if (comment_id === newVal.id) {
+            // for comment deletion
+            if (index !== -1) {
+              this.allComments.splice(index, 1);
+              this.pagination.total = this.pagination.total - 1;
+            }
+          } else {
+            // for reply deletion
+            const replyIndex = this.allComments[index].replies.findIndex(
+              (comment) => comment.id === newVal.id
+            );
+            this.allComments[index].replies.splice(replyIndex, 1);
+          }
+        }
+      },
+      deep: true,
     },
     replyId(newVal) {
       console.log("in replyid handler post enlarged", newVal);
@@ -146,6 +196,26 @@ export default {
     postComment: {
       handler(newVal, oldVal) {
         if (newVal && newVal.id && newVal != oldVal) {
+          const commentIndex = this.allComments.findIndex(
+            (comment) => comment.id === newVal.id
+          );
+
+          if (commentIndex !== -1) {
+            // Update the existing comment with the new data
+            this.allComments[commentIndex] = newVal;
+          }
+        }
+      },
+      deep: true,
+    },
+    pusherComment: {
+      handler(newVal, oldVal) {
+        if (
+          newVal &&
+          newVal.id &&
+          newVal != oldVal &&
+          this.postEnlarged.id === newVal.post_id
+        ) {
           const commentIndex = this.allComments.findIndex(
             (comment) => comment.id === newVal.id
           );
@@ -229,6 +299,9 @@ export default {
       "replyId",
       "reply",
       "postReply",
+      "pusherComment",
+      "pusherCommentToDelete",
+      "pusherCommentPosted",
     ]),
     ...mapGetters("ratings", ["comment"]),
     // imageArray() {

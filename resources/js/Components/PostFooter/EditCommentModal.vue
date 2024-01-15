@@ -98,6 +98,21 @@ watch(
     responseError.value = "";
   }
 );
+watch(
+  () => commentText,
+  () => {
+    comment_text.value = commentText;
+  }
+);
+watch(
+  () => loadingSending.value,
+  (newVal) => {
+    if (!newVal) {
+      console.log(newVal, "commentloadig sending");
+      showDialog.value = false;
+    }
+  }
+);
 
 //Methods
 const validate = () => {
@@ -166,6 +181,7 @@ const adjustHeight = () => {
 };
 const onOpened = () => {
   showDialog.value = true;
+  console.log("dialog opened");
   adjustHeight();
 };
 </script>

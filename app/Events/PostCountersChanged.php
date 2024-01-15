@@ -21,12 +21,6 @@ class PostCountersChanged implements ShouldBroadcast
     public function __construct(Post $post)
     {
 
-        $post->load([
-            'likes',
-            'dislikes',
-            // Load other related data as needed
-        ]);
-
         $this->post = $post;
     }
 
