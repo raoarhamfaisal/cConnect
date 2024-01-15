@@ -9,14 +9,13 @@ import CompanyInfo from "./Partials/CompanyInfo.vue";
 import AddressInfo from "./Partials/AddressInfo.vue";
 import Trades from "./Partials/Trades.vue";
 import Views from "./Partials/Views.vue";
+import { ref } from "vue";
 
 defineProps({
   mustVerifyEmail: Boolean,
   status: Boolean,
   profile: Object,
-
 });
-
 
 const tabNames = [
   "General Info",
@@ -26,6 +25,11 @@ const tabNames = [
   "Trades",
   "views",
 ];
+const active = ref(0);
+
+const handleTabChange = (newActiveTab) => {
+  active.value = newActiveTab;
+};
 </script>
 
 <template>
@@ -43,7 +47,7 @@ const tabNames = [
     </header>
     <div class="bg-slate-30-rgba">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-        <Tabs :tabs="tabNames">
+        <Tabs :tabs="tabNames" @tabChanged="handleTabChange">
           <template #default="{ activeTab }">
             <div v-if="activeTab === 0">
               <GeneralInfo
@@ -60,22 +64,26 @@ const tabNames = [
               <UpdatePasswordForm />
             </div>
             <div v-if="activeTab === 3">
-              <AddressInfo />
+              <AddressInfo :profile="profile" />
             </div>
             <div v-if="activeTab === 4">
-              <Trades />
+              <Trades :profile="profile" />
             </div>
             <div v-if="activeTab === 5">
-              <Views />
+              <Views :profile="profile" />
             </div>
             <!-- ... -->
           </template>
         </Tabs>
-
-        <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+        <div
+          v-if="active === 0"
+          class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
+        >
           <DeleteUserForm class="max-w-xl" />
         </div>
       </div>
+      <br />
+      <br />
     </div>
   </AuthenticatedLayout>
 </template>

@@ -21,6 +21,20 @@ class profile extends Model
         'phone_office',
         'business_start',
         'company_logo',
+        'address_1',
+        'address_2',
+        'city',
+        'state',
+        'zipcode',
+        'counrty',
+        'county',
+        'view_locale',
+        'view_territorial',
+        'view_regional',
+        'view_statewide',
+        'view_nationwide',
+        'view_following',
+        'view_groups',
         'trade1', //  Supplier & Advertiser
         'trade2', //  Construction & Remodeler
         'trade3', //  Tile Works, kitchen & bathroom

@@ -1,18 +1,18 @@
 <script setup>
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import { useForm, usePage } from "@inertiajs/inertia-vue3";
-import { ref } from "vue";
-
-const user = usePage().props.value.auth.user;
+import { useForm } from "@inertiajs/inertia-vue3";
+const props = defineProps({
+  profile: Object,
+});
 
 const form = useForm({
-  view_locale: null,
-  view_territorial: null,
-  view_regional: null,
-  view_statewide: null,
-  view_nationwide: null,
-  view_following: null,
-  view_groups: null,
+  view_locale: props.profile.view_locale,
+  view_territorial: props.profile.view_territorial,
+  view_regional: props.profile.view_regional,
+  view_statewide: props.profile.view_statewide,
+  view_nationwide: props.profile.view_nationwide,
+  view_following: props.profile.view_following,
+  view_groups: props.profile.view_groups,
 });
 
 const switchFields = [
@@ -35,7 +35,8 @@ const labels = [
 ];
 
 const toggleSwitch = (field) => {
-  form[field] = !form[field];
+  form[field] = form[field] === 1 ? 0 : 1;
+  console.log(form);
 };
 </script>
 
@@ -54,7 +55,10 @@ const toggleSwitch = (field) => {
       </div>
     </header>
 
-    <form @submit.prevent="form.patch(route('profile.update'))" class="mt-6">
+    <form
+      @submit.prevent="form.patch(route('profile.updateViews'))"
+      class="mt-6"
+    >
       <div class="flex flex-col sm:flex-row sm:flex-wrap sm:-mx-2">
         <div
           v-for="(field, index) in switchFields"
@@ -65,9 +69,13 @@ const toggleSwitch = (field) => {
             labels[index]
           }}</label>
           <div class="switch" @click="toggleSwitch(field)">
-            <div :class="[form[field] ? 'switch-bg-on' : 'switch-bg-off']">
+            <div
+              :class="[form[field] === 1 ? 'switch-bg-on' : 'switch-bg-off']"
+            >
               <div
-                :class="[form[field] ? 'switch-knob-on' : 'switch-knob-off']"
+                :class="[
+                  form[field] === 1 ? 'switch-knob-on' : 'switch-knob-off',
+                ]"
               ></div>
             </div>
           </div>

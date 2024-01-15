@@ -149,7 +149,7 @@ class ProfileController extends Controller
 
             $data = $request->validate([
                 'company_name' => 'nullable|string|max:30',
-                // 'business_start' => 'nullable|date|max:30',
+                'business_start' => 'nullable|date',
                 'phone_office' => 'nullable|string|max:13|unique:profiles,phone_cell,'.$userID,
             ]);
 
@@ -160,6 +160,129 @@ class ProfileController extends Controller
             //     $avatarPath = $request->file('user_avatar')->store('avatars');
             //     $profile->update(['user_avatar' => $avatarPath]);
             // }            
+            
+        }
+        return Redirect::route('profile.edit');
+
+    }
+
+    /**
+     * Update the user's Address information.
+     *
+     * @param  \App\Http\Requests\ProfileAddressInformationUpdateRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateAddressInfo(Request $request)
+    {
+        // Get current user id
+        $userID = Auth()->user('')->id;
+        $profile = null;
+
+   
+
+
+        // Get the profile information if the user id exists
+        if($userID) {
+            $profile = Profile::where('user_id', $userID)->first();
+        }
+
+
+        if($profile) {
+
+            $data = $request->validate([
+                'address_1' => 'nullable|string|max:30',
+                'address_2' => 'nullable|string|max:30',
+                'city' => 'nullable|string|max:30',
+                'state' => 'nullable|string|max:30',
+                'zipcode' => 'nullable|string|max:30',
+                'counrty' => 'nullable|string|max:30',
+                'county' => 'nullable|string|max:30'
+            ]);
+
+            $profile->update($data);
+
+
+        }
+        return Redirect::route('profile.edit');
+
+    }
+
+    /**
+     * Update the user's Trades information.
+     *
+     * @param  \App\Http\Requests\ProfileTradesUpdateRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateTrades(Request $request)
+    {
+        // Get current user id
+        $userID = Auth()->user('')->id;
+        $profile = null;
+
+ 
+
+        // Get the profile information if the user id exists
+        if($userID) {
+            $profile = Profile::where('user_id', $userID)->first();
+        }
+
+
+
+        if($profile) {
+
+
+            $validationRules = [];
+
+            for ($i = 1; $i <= 30; $i++) {
+                $tradeKey = "trade{$i}";
+                $validationRules[$tradeKey] = 'nullable|boolean';
+            }
+            
+            $data = $request->validate($validationRules);
+            $profile->update($data);
+         
+            
+        }
+        return Redirect::route('profile.edit');
+
+    }
+
+    /**
+     * Update the user's Veiws information.
+     *
+     * @param  \App\Http\Requests\ProfileCompanyInformationUpdateRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateViews(Request $request)
+    {
+        // Get current user id
+        $userID = Auth()->user('')->id;
+        $profile = null;
+
+
+
+
+        // Get the profile information if the user id exists
+        if($userID) {
+            $profile = Profile::where('user_id', $userID)->first();
+        }
+        // dd($request);
+
+
+        if($profile) {
+
+            $data = $request->validate([
+                'view_locale' => 'nullable|boolean',
+                'view_territorial'  => 'nullable|boolean',
+                'view_regional' => 'nullable|boolean',
+                'view_statewide' => 'nullable|boolean',
+                'view_nationwide'  => 'nullable|boolean',
+                'view_following'  => 'nullable|boolean',
+                'view_groups'  => 'nullable|boolean',
+            ]);
+
+
+            $profile->update($data);
             
         }
         return Redirect::route('profile.edit');

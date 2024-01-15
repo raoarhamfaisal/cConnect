@@ -4,7 +4,7 @@
       <div
         v-for="(tab, index) in tabs"
         :key="index"
-        @click="activeTab = index"
+        @click="handleTabClick(index)"
         class="cursor-pointer whitespace-nowrap"
       >
         <div
@@ -30,8 +30,13 @@
 
 <script setup>
 import { ref } from "vue";
-import { defineProps } from "vue";
+import { defineProps, defineEmits } from "vue";
 
 const { tabs } = defineProps(["tabs"]);
 const activeTab = ref(0);
+const emit = defineEmits();
+const handleTabClick = (index) => {
+  activeTab.value = index;
+  emit("tabChanged", activeTab.value);
+};
 </script>
