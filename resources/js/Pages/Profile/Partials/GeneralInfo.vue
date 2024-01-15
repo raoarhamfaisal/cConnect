@@ -5,6 +5,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { Link, useForm, usePage } from "@inertiajs/inertia-vue3";
 import UserAvatar from "../components/UserAvatar.vue";
+import axios from 'axios'
 
 const props = defineProps({
   mustVerifyEmail: Boolean,
@@ -27,11 +28,25 @@ const form = useForm({
   file: props.profile.user_avatar,
 });
 const handleImageUpdate = (file) => {
-  console.log("form", form)
-  console.log("Received file from child:", file);
-  form.user_avatar = file;
-  console.log("form", form.data());
-  // Now you can use this file as needed, e.g., uploading it to a server
+  const formData = new FormData();
+  formData.append('user_avatar', file);
+  formData.append('user_id', user.id)
+
+  axios.post('/api/profile/user-avatar', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      'X-CSRF-TOKEN': usePage().props.value.csrf_token,
+      'user': user.id
+    },
+  })
+  .then((response) => {
+    console.log('Avatar uploaded successfully', response.data);
+    form.file = response.data.user_avatar; // Update the local state with the new avatar path
+  })
+  .catch((error) => {
+    console.log('Error uploading avatar:', error.response.data);
+    // Handle the error appropriately here
+  });
 };
 
 const handleSubmit = () => {

@@ -288,4 +288,66 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit');
 
     }
+
+    /**
+        * Update the user avatar.
+        *
+        * @param  \App\Http\Requests\ProfileUserAvatarUpdateRequest  $request
+        * @return \Illuminate\Http\RedirectResponse
+        */
+
+    public function updateUserAvatar(Request $request)
+    {
+
+
+        // return response()->json([
+        //     'user' => $user
+        // ]);
+        // dd($user);
+        // Get current user id
+        $userID = $request->user_id;
+        $profile = null;
+
+        // Get the profile information if the user id exists
+        if($userID) {
+            $profile = Profile::where('user_id', $userID)->first();
+        }
+
+        if($profile) {
+            $request->validate([
+                'user_avatar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
+
+            if ($request->hasFile('user_avatar')) {
+
+                $file = $request->file('user_avatar');
+                $path = $file->store('images/avatars', 'publicc');
+
+                $url = asset($path);
+
+                // Update the user's profile with the new avatar path
+                $profile->update([
+                    'user_avatar' => $url,
+                ]);
+
+                return response()->json([
+                    'url' => $url
+                ]);
+            }else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Avatar not updated successfully',
+                    'user_avatar' => '',
+                ]);    
+        
+            }
+        }
+        // return Redirect::route('profile.edit');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Avatar updated successfully',
+            'user_avatar' => $url,
+        ]);    
+    }
+
 }
