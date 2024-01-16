@@ -9,6 +9,7 @@ import CompanyInfo from "./Partials/CompanyInfo.vue";
 import AddressInfo from "./Partials/AddressInfo.vue";
 import Trades from "./Partials/Trades.vue";
 import Views from "./Partials/Views.vue";
+import LinksInfo from "./Partials/LinksInfo.vue";
 import { ref } from "vue";
 
 defineProps({
@@ -83,6 +84,12 @@ const handleTabChange = (newActiveTab) => {
           class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
         >
           <AddressInfo :profile="profile" />
+        </div>
+        <div
+          v-if="active === 0"
+          class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
+        >
+          <LinksInfo :profile="profile" />
         </div>
         <div
           v-if="active === 0"

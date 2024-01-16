@@ -20,6 +20,11 @@ return new class extends Migration
             $table->string('first_name', 30)->nullable();
             $table->string('last_name', 30)->nullable();
             $table->string('company_name', 30)->nullable();
+            $table->string('website_url')->nullable();
+            $table->string('facebook')->nullable();
+            $table->string('twitter')->nullable();
+            $table->string('tiktok')->nullable();
+            $table->string('instagram')->nullable();
             $table->string('address_1', 40)->nullable();
             $table->string('address_2', 40)->nullable();
             $table->string('city', 30)->nullable();
