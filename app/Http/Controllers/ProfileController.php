@@ -334,7 +334,7 @@ class ProfileController extends Controller
             if ($request->hasFile('user_avatar')) {
 
                 $file = $request->file('user_avatar');
-                $path = $file->store('images/avatars', 'publicc');
+                $path = $file->store('images/avatars', 'public-storage');
 
                 $userPath = $profile->user_avatar;
                 // Update the user's profile with the new avatar path
@@ -397,7 +397,7 @@ class ProfileController extends Controller
     
                     $companyLogoPath = $profile->company_logo;
                     $file = $request->file('company_logo');
-                    $path = $file->store('images/company-logos', 'publicc');
+                    $path = $file->store('images/company-logos', 'public-storage');
     
                     $url = asset($path);
     
