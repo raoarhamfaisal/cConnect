@@ -55,19 +55,14 @@ const toggleSwitch = (field) => {
       </div>
     </header>
 
-    <form
-      @submit.prevent="form.patch(route('profile.updateViews'))"
-      class="mt-6"
-    >
-      <div class="flex flex-col sm:flex-row sm:flex-wrap sm:-mx-2">
+    <form @submit.prevent="form.patch(route('profile.updateViews'))">
+      <div class="grid mt-8 gap-3">
         <div
           v-for="(field, index) in switchFields"
           :key="field"
-          class="flex items-center ml-3 mb-5"
+          class="flex items-center justify-between sm:w-96 ml-3 mb-5"
         >
-          <label :for="field" class="mr-4 w-36 font-bold">{{
-            labels[index]
-          }}</label>
+          <label :for="field" class="mr-4 font-bold">{{ labels[index] }}</label>
           <div class="switch" @click="toggleSwitch(field)">
             <div
               :class="[form[field] === 1 ? 'switch-bg-on' : 'switch-bg-off']"
@@ -81,7 +76,7 @@ const toggleSwitch = (field) => {
           </div>
         </div>
       </div>
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-4 mt-10">
         <PrimaryButton
           :disabled="form.processing"
           class="w-full flex justify-center"

@@ -9,45 +9,39 @@ const props = defineProps({
   profile: Object,
 });
 
-
 const form = useForm({
   company_logo: props.profile.company_logo,
   company_name: props.profile.company_name,
-  business_start: props.profile.business_start,
-  // business_start: null,
   phone_office: props.profile.phone_office,
 });
 
 // Upload Company Logo on image change
 const handleImageUpdate = (file) => {
   const formData = new FormData();
-  formData.append('company_logo', file);
-  formData.append('user_id', props.profile.user_id)
+  formData.append("company_logo", file);
+  formData.append("user_id", props.profile.user_id);
 
-  axios.post('/api/profile/company-logo', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-      'X-CSRF-TOKEN': usePage().props.value.csrf_token,
-    },
-  })
-  .then((response) => {
-    console.log('Avatar uploaded successfully', response.data);
-    form.company_logo = response.data.company_logo; // Update the local state with the new avatar path
-  })
-  .catch((error) => {
-    console.log('Error uploading avatar:', error.response.data);
-    // Handle the error appropriately here
-  });
+  axios
+    .post("/api/profile/company-logo", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        "X-CSRF-TOKEN": usePage().props.value.csrf_token,
+      },
+    })
+    .then((response) => {
+      console.log("Avatar uploaded successfully", response.data);
+      form.company_logo = response.data.company_logo; // Update the local state with the new avatar path
+    })
+    .catch((error) => {
+      console.log("Error uploading avatar:", error.response.data);
+      // Handle the error appropriately here
+    });
 };
 </script>
 
 <template>
   <section>
     <header class="flex space-x-2">
-      <UserAvatar
-        :imageSrc="form.company_logo"
-        @update-image="handleImageUpdate"
-      />
       <div>
         <h2
           class="text-lg font-medium font-bold text-gray-900 dark:text-gray-100"
@@ -60,7 +54,14 @@ const handleImageUpdate = (file) => {
       </div>
     </header>
 
-    <form @submit.prevent="form.patch(route('profile.updateCompanyInfo'))">
+    <form
+      @submit.prevent="form.patch(route('profile.updateCompanyInfo'))"
+      class="flex flex-col items-center"
+    >
+      <UserAvatar
+        :imageSrc="form.company_logo"
+        @update-image="handleImageUpdate"
+      />
       <div
         class="mt-6 space-y-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-6"
       >
@@ -84,20 +85,6 @@ const handleImageUpdate = (file) => {
         <div>
           <InputLabel
             class="font-bold"
-            for="business_start"
-            value="Business Start Date"
-          />
-          <input
-            id="datePicker"
-            type="date"
-            v-model="form.business_start"
-            class="rounded w-full mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 block w-full"
-          />
-        </div>
-
-        <div>
-          <InputLabel
-            class="font-bold"
             for="phone_office"
             value="Phone Office"
           />
@@ -111,7 +98,7 @@ const handleImageUpdate = (file) => {
           />
         </div>
       </div>
-      <div class="flex items-center mt-6 gap-4">
+      <div class="flex items-center mt-6 gap-4 w-full">
         <PrimaryButton
           :disabled="form.processing"
           class="w-full flex justify-center"

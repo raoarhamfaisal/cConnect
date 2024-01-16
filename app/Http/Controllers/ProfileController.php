@@ -105,8 +105,6 @@ class ProfileController extends Controller
                 'last_name' => 'nullable|string|max:30',
                 'email' => 'required|string|email|max:50|unique:profiles,email,'.$userID,
                 'phone_cell' => 'required|string|max:13|unique:profiles,phone_cell,'.$userID,
-                'longitude' => 'nullable|numeric',
-                'latitude' => 'nullable|numeric',
             ]);
 
             $profile->update($data);
@@ -145,7 +143,6 @@ class ProfileController extends Controller
 
             $data = $request->validate([
                 'company_name' => 'nullable|string|max:30',
-                'business_start' => 'nullable|date',
                 'phone_office' => 'nullable|string|max:13|unique:profiles,phone_cell,'.$userID,
             ]);
 
@@ -225,7 +222,7 @@ class ProfileController extends Controller
 
             $validationRules = [];
 
-            for ($i = 1; $i <= 30; $i++) {
+            for ($i = 1; $i <= 24; $i++) {
                 $tradeKey = "trade{$i}";
                 $validationRules[$tradeKey] = 'nullable|boolean';
             }
