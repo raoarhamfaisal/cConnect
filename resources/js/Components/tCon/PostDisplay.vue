@@ -338,6 +338,7 @@ export default {
           this.repost_count = this.post.repost;
           this.likes_count = this.post.likes_count;
           this.dislikes_count = this.post.dislikes_count;
+          this.your_reaction = this.post.your_reaction;
         }
       },
       deep: true,

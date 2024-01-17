@@ -102,11 +102,15 @@ export default {
         );
         if (index !== -1) {
           this.allPosts[index].repost = post.repost;
-          if (data.likesCount) {
-            this.allPosts[index].likes_count = data.likesCount;
-          }
-          if (data.dislikesCount) {
-            this.alllPost[index].dislikes_count = data.dislikesCount;
+
+          this.allPosts[index].likes_count = data.likesCount;
+
+          this.allPosts[index].dislikes_count = data.dislikesCount;
+
+          this.allPosts[index].your_reaction = data.userReaction;
+
+          if (this.postDisplayEnlarged) {
+            this.postToEnlarge = this.allPosts[index];
           }
         }
       });
