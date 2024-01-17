@@ -1,0 +1,69 @@
+<!-- src/components/Card.vue -->
+
+<template>
+  <div
+    :class="{
+      'max-w-7xl mx-auto sm:px-6 md:px-6 sm:px-2 lg:px-8 space-y-6': !isInside,
+    }"
+  >
+    <div class="card" :style="cardStyles">
+      <slot></slot>
+    </div>
+  </div>
+</template>
+
+<script>
+import { computed } from "vue";
+
+export default {
+  props: {
+    shadowLevel: {
+      type: Number,
+      default: 5,
+      validator: (value) => value >= 1 && value <= 10,
+    },
+    bgColor: {
+      type: String,
+      default: "white",
+    },
+    padding: {
+      type: String,
+      default: "20px",
+    },
+    isInside: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  setup(props) {
+    const shadows = [
+      "none", // Level 0 (No shadow)
+      "1px 1px 3px rgba(0, 0, 0, 0.12), 1px 1px 2px rgba(0, 0, 0, 0.24)", // Level 1
+      "2px 2px 4px rgba(0, 0, 0, 0.12), 2px 2px 3px rgba(0, 0, 0, 0.24)", // Level 2
+      "3px 3px 6px rgba(0, 0, 0, 0.12), 3px 3px 5px rgba(0, 0, 0, 0.24)", // Level 3
+      "4px 4px 8px rgba(0, 0, 0, 0.12), 4px 4px 6px rgba(0, 0, 0, 0.24)", // Level 4
+      "5px 5px 10px rgba(0, 0, 0, 0.12), 5px 5px 8px rgba(0, 0, 0, 0.24)", // Level 5
+      "6px 6px 12px rgba(0, 0, 0, 0.12), 6px 6px 10px rgba(0, 0, 0, 0.24)", // Level 6
+      "7px 7px 14px rgba(0, 0, 0, 0.12), 7px 7px 12px rgba(0, 0, 0, 0.24)", // Level 7
+      "8px 8px 16px rgba(0, 0, 0, 0.12), 8px 8px 14px rgba(0, 0, 0, 0.24)", // Level 8
+      "9px 9px 18px rgba(0, 0, 0, 0.12), 9px 9px 16px rgba(0, 0, 0, 0.24)", // Level 9
+      "10px 10px 20px rgba(0, 0, 0, 0.12), 10px 10px 18px rgba(0, 0, 0, 0.24)", // Level 10
+    ];
+
+    const cardStyles = computed(() => ({
+      boxShadow: shadows[props.shadowLevel],
+      backgroundColor: props.bgColor,
+      padding: props.padding,
+    }));
+
+    return { cardStyles };
+  },
+};
+</script>
+
+<style scoped>
+.card {
+  border-radius: 8px;
+  transition: box-shadow 0.3s;
+}
+</style>
