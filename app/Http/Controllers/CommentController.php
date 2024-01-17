@@ -157,7 +157,14 @@ class CommentController extends Controller
             // Hide the user object from the response
             $comment->makeHidden('user');
 
-            broadcast(new CommentPosted($comment));
+            try {
+                broadcast(new CommentPosted($comment));
+
+            } catch (\Exception $e) {
+                \Log::error('Error broadcasting CommentPosted event: ' . $e->getMessage());
+                // Optionally, handle the error further if needed
+            }
+    
 
 
 
@@ -171,14 +178,31 @@ class CommentController extends Controller
         {
             // Add authorization check to ensure users can only edit their comments
             $comment->update($request->all());
-            broadcast(new CommentUpdated($comment));
+            try {
+                broadcast(new CommentUpdated($comment));
+            } catch (\Exception $e) {
+                \Log::error('Error broadcasting CommentUpdated event: ' . $e->getMessage());
+                // Optionally, handle the error further if needed
+            }
+
+
+
             return response()->json($comment);
         }
     
         public function destroy(Comment $comment)
         {
             // Add authorization check to ensure users can only delete their comments
-            broadcast(new CommentDeleted($comment));
+            
+            try {
+                broadcast(new CommentDeleted($comment));
+            } catch (\Exception $e) {
+                \Log::error('Error broadcasting CommentDeleted event: ' . $e->getMessage());
+                // Optionally, handle the error further if needed
+            }
+
+
+
             $comment->delete();
             return response()->json(['message' => 'Comment deleted successfully.']);
         }
@@ -193,7 +217,14 @@ class CommentController extends Controller
                 ['type' => 'like']
             );
 
-            broadcast(new CommentReactionOrReplyChanged($comment));
+            
+            try {
+                broadcast(new CommentReactionOrReplyChanged($comment));
+            } catch (\Exception $e) {
+                \Log::error('Error broadcasting CommentReactionOrReplyChanged event: ' . $e->getMessage());
+                // Optionally, handle the error further if needed
+            }
+
 
 
             return response()->json($reaction, 200);
@@ -209,7 +240,14 @@ class CommentController extends Controller
         public function removeLikeComment(Comment $comment)
         {
             $this->removeReaction($comment, 'like');
-            broadcast(new CommentReactionOrReplyChanged($comment));
+
+            try {
+                broadcast(new CommentReactionOrReplyChanged($comment));
+            } catch (\Exception $e) {
+                \Log::error('Error broadcasting CommentReactionOrReplyChanged event: ' . $e->getMessage());
+                // Optionally, handle the error further if needed
+            }
+            
             return response()->json(['message' => 'Like removed']);
         }
 
@@ -224,7 +262,14 @@ class CommentController extends Controller
                 ],
                 ['type' => 'dislike']
             );
-            broadcast(new CommentReactionOrReplyChanged($comment));
+
+            try {
+                broadcast(new CommentReactionOrReplyChanged($comment));
+            } catch (\Exception $e) {
+                \Log::error('Error broadcasting CommentReactionOrReplyChanged event: ' . $e->getMessage());
+                // Optionally, handle the error further if needed
+            }
+
 
             return response()->json($reaction, 200);
         }
@@ -232,7 +277,15 @@ class CommentController extends Controller
         public function removeDislikeComment(Comment $comment)
         {
             $this->removeReaction($comment, 'dislike');
-            broadcast(new CommentReactionOrReplyChanged($comment));
+
+            try {
+                broadcast(new CommentReactionOrReplyChanged($comment));
+            } catch (\Exception $e) {
+                \Log::error('Error broadcasting CommentReactionOrReplyChanged event: ' . $e->getMessage());
+                // Optionally, handle the error further if needed
+            }
+
+
             return response()->json(['message' => 'Dislike removed']);
         }
 
@@ -270,7 +323,14 @@ class CommentController extends Controller
             $reply->user_reaction = $reply->reactions->first()->type ?? null;
             unset($reply->user); // Remove additional user details
 
-            broadcast(new CommentReactionOrReplyChanged($parentComment));
+
+            try {
+                broadcast(new CommentReactionOrReplyChanged($comment));
+            } catch (\Exception $e) {
+                \Log::error('Error broadcasting CommentReactionOrReplyChanged event: ' . $e->getMessage());
+                // Optionally, handle the error further if needed
+            }
+
         
             return response()->json($reply, 201);
         }
