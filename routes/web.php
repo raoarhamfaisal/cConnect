@@ -212,6 +212,9 @@ Route::post('/tokens/create', function (Request $request) {
     return ['token' => $token->plainTextToken];
 });
 
+// Route::get('run-server', function(){ Artisan::call('websockets:serve'); });
+
+
 
 // ->name('post.uploadImages')
 // ->middleware(['auth', 'verified']);
