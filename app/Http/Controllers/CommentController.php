@@ -325,7 +325,7 @@ class CommentController extends Controller
 
 
             try {
-                broadcast(new CommentReactionOrReplyChanged($comment));
+                broadcast(new CommentReactionOrReplyChanged($parentComment));
             } catch (\Exception $e) {
                 \Log::error('Error broadcasting CommentReactionOrReplyChanged event: ' . $e->getMessage());
                 // Optionally, handle the error further if needed
