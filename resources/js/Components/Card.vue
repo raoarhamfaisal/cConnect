@@ -38,8 +38,8 @@ export default {
   setup(props) {
     const shadows = [
       "none", // Level 0 (No shadow)
-      "1px 1px 3px rgba(0, 0, 0, 0.12), 1px 1px 2px rgba(0, 0, 0, 0.24)", // Level 1
-      "2px 2px 4px rgba(0, 0, 0, 0.12), 2px 2px 3px rgba(0, 0, 0, 0.24)", // Level 2
+      "0px 0px 3px rgba(0, 0, 0, 0.12), 0px 0px 2px rgba(0, 0, 0, 0.24)", // Level 1
+      "0px 0px 4px rgba(0, 0, 0, 0.12), 0px 0px 3px rgba(0, 0, 0, 0.24)", // Level 2
       "3px 3px 6px rgba(0, 0, 0, 0.12), 3px 3px 5px rgba(0, 0, 0, 0.24)", // Level 3
       "4px 4px 8px rgba(0, 0, 0, 0.12), 4px 4px 6px rgba(0, 0, 0, 0.24)", // Level 4
       "5px 5px 10px rgba(0, 0, 0, 0.12), 5px 5px 8px rgba(0, 0, 0, 0.24)", // Level 5
@@ -64,6 +64,6 @@ export default {
 <style scoped>
 .card {
   border-radius: 8px;
-  transition: box-shadow 0.3s;
+  transition: all 0.3s;
 }
 </style>

@@ -5,6 +5,8 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { Link, useForm, usePage } from "@inertiajs/inertia-vue3";
 import UserAvatar from "../components/UserAvatar.vue";
+import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
+
 import axios from "axios";
 
 const props = defineProps({
@@ -38,11 +40,11 @@ const handleImageUpdate = (file) => {
       },
     })
     .then((response) => {
-      console.log("Avatar uploaded successfully", response.data);
+      changesSaved("Avatar uploaded successfully");
       form.file = response.data.user_avatar; // Update the local state with the new avatar path
     })
     .catch((error) => {
-      console.log("Error uploading avatar:", error.response.data);
+      somethingWentWrong("Error uploading avatar");
       // Handle the error appropriately here
     });
 };

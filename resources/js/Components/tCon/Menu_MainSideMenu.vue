@@ -1,15 +1,7 @@
 <script setup>
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { InertiaLink } from "@inertiajs/inertia-vue3";
 import tContractorWord from "@/Components/tCon/tContractorWord.vue";
-import StickyHeader from "@/Components/tCon/NewsFeed_StickyHeader.vue";
 import ButtonPost from "@/Components/tCon/tConSub/ButtonPost.vue";
 import ButtonRefresh from "@/Components/tCon/tConSub/ButtonRefresh.vue";
-import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
-import { ref } from "vue";
-import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
-import ScrollToLinkVue from "@/Components/tCon/ScrollToLink.vue";
-import throttle from "lodash/throttle";
 
 defineProps({
   showit: Boolean,
@@ -235,7 +227,7 @@ function postClicked(isOpen) {
           <!-- PROFILE -->
           <Link
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
-            href="#"
+            href="/profile"
           >
             <img src="images/icons/profile.png" width="30" height="30" />
             <span class="mx-4 font-medium">My Profile</span>
