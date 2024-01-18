@@ -67,9 +67,9 @@
                 :key="plan.id"
               >
                 <td>{{ getRegionName(plan.region_id) }}</td>
-                <td>${{ plan?.billed_monthly_price }}</td>
-                <td>${{ plan?.billed_annual_price }}</td>
-                <td>${{ plan?.advertised_price }}</td>
+                <td>${{ plan?.gold_billed_monthly_price }}</td>
+                <td>${{ plan?.gold_billed_annual_price }}</td>
+                <td>${{ plan?.gold_advertised_price }}</td>
                 <td>{{ plan?.sales_tax }}%</td>
                 <td class="flex gap-2 justify-center items-center">
                   <Icon
@@ -145,53 +145,59 @@
           <div>
             <InputLabel
               class="font-bold"
-              for="billed_monthly_price"
+              for="gold_billed_monthly_price"
               value="Monthly Price*"
             />
             <TextInput
-              id="billed_monthly_price"
+              id="gold_billed_monthly_price"
               type="number"
               class="mt-1 block w-full"
               required
-              v-model.trim="singlePlan.billed_monthly_price"
+              v-model.trim="singlePlan.gold_billed_monthly_price"
               placeholder="Type your Monthly Price"
-              @input="clearErrors('billed_monthly_price')"
+              @input="clearErrors('gold_billed_monthly_price')"
             />
-            <InputError class="mt-2" :message="errors.billed_monthly_price" />
+            <InputError
+              class="mt-2"
+              :message="errors.gold_billed_monthly_price"
+            />
           </div>
           <div>
             <InputLabel
               class="font-bold"
-              for="billed_annual_price"
+              for="gold_billed_annual_price"
               value="Annual Price*"
             />
             <TextInput
-              id="billed_annual_price"
+              id="gold_billed_annual_price"
               type="number"
               class="mt-1 block w-full"
               required
-              v-model.trim="singlePlan.billed_annual_price"
+              v-model.trim="singlePlan.gold_billed_annual_price"
               placeholder="Type your Annual Price"
-              @input="clearErrors('billed_annual_price')"
+              @input="clearErrors('gold_billed_annual_price')"
             />
-            <InputError class="mt-2" :message="errors.billed_annual_price" />
+            <InputError
+              class="mt-2"
+              :message="errors.gold_billed_annual_price"
+            />
           </div>
           <div>
             <InputLabel
               class="font-bold"
-              for="advertised_price"
+              for="gold_advertised_price"
               value="Advertised Price*"
             />
             <TextInput
-              id="advertised_price"
+              id="gold_advertised_price"
               type="number"
               class="mt-1 block w-full"
               required
-              v-model.trim="singlePlan.advertised_price"
+              v-model.trim="singlePlan.gold_advertised_price"
               placeholder="Type your Advertised Price"
-              @input="clearErrors('advertised_price')"
+              @input="clearErrors('gold_advertised_price')"
             />
-            <InputError class="mt-2" :message="errors.advertised_price" />
+            <InputError class="mt-2" :message="errors.gold_advertised_price" />
           </div>
           <div>
             <InputLabel
@@ -304,9 +310,9 @@ const editDialogRef = ref();
 const deleteDialogRef = ref();
 const errors = reactive({
   region_id: "",
-  billed_monthly_price: "",
-  billed_annual_price: "",
-  advertised_price: "",
+  gold_billed_monthly_price: "",
+  gold_billed_annual_price: "",
+  gold_advertised_price: "",
   sales_tax: "",
 });
 
@@ -350,16 +356,16 @@ const validateForm = () => {
     errors.region_id = "Region is Required";
     isValid = false; // Set to false if validation fails
   }
-  if (!singlePlan.value.billed_monthly_price) {
-    errors.billed_monthly_price = "Monthly Price is Required";
+  if (!singlePlan.value.gold_billed_monthly_price) {
+    errors.gold_billed_monthly_price = "Monthly Price is Required";
     isValid = false;
   }
-  if (!singlePlan.value.billed_annual_price) {
-    errors.billed_annual_price = "Annual Price is Required";
+  if (!singlePlan.value.gold_billed_annual_price) {
+    errors.gold_billed_annual_price = "Annual Price is Required";
     isValid = false;
   }
-  if (!singlePlan.value.advertised_price) {
-    errors.advertised_price = "Advertised Price is Required";
+  if (!singlePlan.value.gold_advertised_price) {
+    errors.gold_advertised_price = "Advertised Price is Required";
     isValid = false;
   }
   if (!singlePlan.value.sales_tax) {
@@ -461,9 +467,9 @@ const handleEditSubmit = async () => {
     const updatedPlan = {
       region_id: region_id,
       sales_tax: +singlePlan.value.sales_tax,
-      billed_annual_price: +singlePlan.value.billed_annual_price,
-      billed_monthly_price: +singlePlan.value.billed_monthly_price,
-      advertised_price: +singlePlan.value.advertised_price,
+      gold_billed_annual_price: +singlePlan.value.gold_billed_annual_price,
+      gold_billed_monthly_price: +singlePlan.value.gold_billed_monthly_price,
+      gold_advertised_price: +singlePlan.value.gold_advertised_price,
     };
     loadingEdit.value = true;
     disabled.value = true;
@@ -547,9 +553,9 @@ const handleCreateSubmit = async () => {
     const planToCreate = {
       region_id: region_id,
       sales_tax: +singlePlan.value.sales_tax,
-      billed_annual_price: +singlePlan.value.billed_annual_price,
-      billed_monthly_price: +singlePlan.value.billed_monthly_price,
-      advertised_price: +singlePlan.value.advertised_price,
+      gold_billed_annual_price: +singlePlan.value.gold_billed_annual_price,
+      gold_billed_monthly_price: +singlePlan.value.gold_billed_monthly_price,
+      gold_advertised_price: +singlePlan.value.gold_advertised_price,
     };
     loadingEdit.value = true;
     disabled.value = true;
