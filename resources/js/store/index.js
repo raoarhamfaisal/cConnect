@@ -5,6 +5,8 @@ import contractor from "./modules/contractor/contractor";
 import axios from "axios";
 import { somethingWentWrong } from "@/helpers/utilities";
 import { setToken } from "@/helpers/localStorageHelper";
+import { getAxiosConfig } from "../helpers/axiosConfigHelpers";
+import { getToken } from "../helpers/localStorageHelper";
 
 export const store = createStore({
   modules: {
@@ -15,9 +17,11 @@ export const store = createStore({
   state: {
     screenWidth: window.innerWidth,
     badWords: null,
+    userVersion: 0,
   },
   getters: {
     screenWidth: (state) => state.screenWidth,
+    userVersion: (state) => state.userVersion,
   },
   mutations: {
     setScreenWidth(state, width) {
@@ -25,6 +29,9 @@ export const store = createStore({
     },
     setBadWords(state, words) {
       state.badWords = words;
+    },
+    setUserVersion(state, userVersion) {
+      state.userVersion = userVersion;
     },
   },
   actions: {
@@ -59,18 +66,48 @@ export const store = createStore({
       }
     },
 
-    async getToken() {
+    async getToken({ commit }) {
       try {
         const response = await axios.post(`/tokens/create`);
         if (response.data) {
           console.log("here to store");
-          setToken(response.data.token);
+          await setToken(response.data.token);
+          const versionResponse = await axios.get(`api/user-version`, {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              Authorization: `Bearer ${response.data.token}`,
+            },
+          });
+          console.log(versionResponse.data, "versionResponse");
+          if (versionResponse.data) {
+            commit("setUserVersion", versionResponse.data);
+          }
         }
       } catch (err) {
-        console.log("here to store2");
-
+        console.log(err);
         somethingWentWrong("wrong intoken");
       } finally {
+      }
+    },
+    async fetchUserVersion({ commit }) {
+      if (getToken()) {
+        try {
+          const versionResponse = await axios.get(`api/user-version`, {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              Authorization: `Bearer ${getToken()}`,
+            },
+          });
+          console.log(versionResponse.data, "versionResponse");
+          if (versionResponse.data) {
+            commit("setUserVersion", versionResponse.data);
+          }
+        } catch (err) {
+          console.log(err);
+          somethingWentWrong("wrong in User Version Fetching");
+        }
       }
     },
   },
