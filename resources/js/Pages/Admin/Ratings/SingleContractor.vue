@@ -9,18 +9,14 @@
     :show-post-buttons="true"
     color="rgb(229 231 235 / var(--tw-bg-opacity))"
   >
-    <!-- Average Ratings End-->
-    <!-- Average Ratings -->
-
     <div class="bg-gray-200 mt-10">
-      <Card :shadowLevel="2" bgColor="white" padding="20px">
-        <ContractorInfo :contractor="contractor" />
+      <Card :shadowLevel="2" bgColor="white">
         <heading-card heading="Average Ratings" class="mb-12" />
         <AverageRating class="mb-12" />
         <!-- Filters -->
         <div class="border-t-2 border-gray-300">
           <heading-card class="mt-6" heading="Order Reviews By" />
-          <div class="mb-12">
+          <div class="xs:mb-12 mb-6">
             <div class="flex gap-3">
               <Button @onSelect="handleSelect">Latest</Button>
               <Button @onSelect="handleSelect">Oldest</Button>
@@ -28,7 +24,7 @@
           </div>
         </div>
         <!-- RAting -->
-        <div class="mb-12 mt-12 border-t-2 border-gray-300">
+        <div class="xs:mb-12 mb-6 xs:mt-12 mt-7 border-t-2 border-gray-300">
           <heading-card heading="Ratings" class="mt-6" />
           <div class="flex gap-3">
             <div class="flex gap-3">
@@ -38,12 +34,12 @@
             </div>
           </div>
         </div>
-        <div class="mb-12 border-t-2 border-gray-300 mt-12">
+        <div class="xs:mb-12 mb-6 xs:mt-12 mt-7 border-t-2 border-gray-300">
           <heading-card heading="Top Reviews" class="mt-6 mb-12" />
           <!-- <Loader :loading="true" background="white" height="50vh"></Loader> -->
 
           <div v-if="reviews.length > 0" class="flex gap-8 flex-col">
-            <QuestionsReview
+            <ReviewResponseAdmin
               v-for="(review, index) in reviews"
               :key="index"
               :review="review"
@@ -60,21 +56,17 @@
         </div>
       </Card>
     </div>
-
-    <!-- Reviews End-->
   </Header>
 </template>
 
 <script setup>
 import Header from "@/Layouts/Header.vue";
-import QuestionsReview from "./PartialsPersonal/QuestionsReview.vue";
+import ReviewResponseAdmin from "@/Pages/Admin/Ratings/partials/SingleContractor/ReviewResponseAdmin.vue";
 import { Head } from "@inertiajs/inertia-vue3";
-import AverageRating from "./PartialsVisiting/AverageRating.vue";
-import Button from "./components/Button.vue";
-import HeadingCard from "./components/HeadingCard.vue";
+import AverageRating from "@/Pages/Ratings/PartialsVisiting/AverageRating.vue";
+import Button from "@/Components/Ratings/Button.vue";
+import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import Card from "@/Components/Card.vue";
-// import Loader from "./components/Loader.vue";
-import ContractorInfo from "./PartialsVisiting/ContractorInfo.vue";
 
 defineProps({
   profile: Object,
@@ -87,11 +79,10 @@ defineProps({
     }),
   },
 });
-import { ref } from "vue";
-
-// State
+const handleSelect = () => {};
 const reviews = [
   {
+    reviewId: 1,
     reviewer: {
       id: 1,
       firstName: "John",
@@ -104,7 +95,17 @@ const reviews = [
     },
     rating: 4.5,
     date: "03/03/2023",
-    reviewText:
+    onAppeal: {
+      reason:
+        "Lorem Ipsum is Lorem Ipsum is Lorem Ipsum is Lorem Ips lorem. Lorem Ipsum",
+      date: "03/03/2023",
+    },
+    offAppeal: {
+      reason:
+        "Lorem Ipsum is Lorem Ipsum is Lorem Ipsum is Lorem Ips lorem. Lorem Ipsum",
+      date: "03/03/2023",
+    },
+    rating_reason:
       "Lorem ipsum dolor sit amet consectetur... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non, dolores debitis! Repellat quasi sit placeat, assumenda distinctio laborum nihil quaerat veniam, dolore enim voluptatum. Sequi nihil libero animi illo ad?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis ut vero facere laborum sequi ducimus ullam itaque culpa harum! Et iste consequatur doloribus repudiandae. Temporibus adipisci vel ipsa inventore saepe?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil quod corrupti iusto. Enim sint hic molestias voluptates est vitae, blanditiis iure saepe possimus quasi, distinctio laudantium consequuntur. Facere, doloremque vitae. ",
     isUnderAppeal: 0,
     questions: [
@@ -142,11 +143,12 @@ const reviews = [
     response: {
       id: 5,
       date: "04/03/2023",
-      responseText:
+      response_text:
         "Lorem ipsum dolor sit amet consectetur... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non, dolores debitis! Repellat quasi sit placeat, assumenda distinctio laborum nihil quaerat veniam, dolore enim voluptatum. Sequi nihil libero animi illo ad?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis ut vero facere laborum sequi ducimus ullam itaque culpa harum! Et iste consequatur doloribus repudiandae. Temporibus adipisci vel ipsa inventore saepe?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil quod corrupti iusto. Enim sint hic molestias voluptates est vitae, blanditiis iure saepe possimus quasi, distinctio laudantium consequuntur. Facere, doloremque vitae.",
     },
   },
   {
+    reviewId: 2,
     reviewer: {
       id: 2,
       firstName: "John",
@@ -159,8 +161,13 @@ const reviews = [
     },
     rating: 4.3,
     date: "03/03/2023",
-    reviewText: "Lorem ipsum dolor sit amet consectetur...",
+    rating_reason: "Lorem ipsum dolor sit amet consectetur...",
     isUnderAppeal: 1,
+    onAppeal: {
+      reason:
+        "Lorem Ipsum is Lorem Ipsum is Lorem Ipsum is Lorem Ips lorem. Lorem Ipsum",
+      date: "03/03/2023",
+    },
     questions: [
       {
         id: 1,
@@ -195,6 +202,7 @@ const reviews = [
     ],
   },
   {
+    reviewId: 3,
     reviewer: {
       id: 2,
       firstName: "John",
@@ -203,10 +211,13 @@ const reviews = [
       city: "McKinney",
       state: "TX",
       profilePic:
-        "http://0.0.0.0/images/avatars/I3UQW3tApC1DHTE8Onj9IT060vVGZZBWZEaEIRX2",
+        "http://0.0.0.0/images/avatars/I3UQW3tApC1DHTE8Onj9IT060vVGZZBWZEaEIRX2.jpg",
     },
     rating: 4.3,
     date: "03/03/2023",
+    rating_reason:
+      "Lorem ipsum dolor sit amet consectetur... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non, dolores debitis! Repellat quasi sit placeat, assumenda distinctio laborum nihil quaerat veniam, dolore enim voluptatum. Sequi nihil libero animi illo ad?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis ut vero facere laborum sequi ducimus ullam itaque culpa harum! Et iste consequatur doloribus repudiandae. Temporibus adipisci vel ipsa inventore saepe?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil quod corrupti iusto. Enim sint hic molestias voluptates est vitae, blanditiis iure saepe possimus quasi, distinctio laudantium consequuntur. Facere, doloremque vitae.",
+    isUnderAppeal: 1,
     questions: [
       {
         id: 1,
@@ -239,9 +250,6 @@ const reviews = [
           "Curabitur non eros non ante vestibulum euismod. Fusce et facilisis urna.",
       },
     ],
-    reviewText:
-      "Lorem ipsum dolor sit amet consectetur... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non, dolores debitis! Repellat quasi sit placeat, assumenda distinctio laborum nihil quaerat veniam, dolore enim voluptatum. Sequi nihil libero animi illo ad?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis ut vero facere laborum sequi ducimus ullam itaque culpa harum! Et iste consequatur doloribus repudiandae. Temporibus adipisci vel ipsa inventore saepe?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil quod corrupti iusto. Enim sint hic molestias voluptates est vitae, blanditiis iure saepe possimus quasi, distinctio laudantium consequuntur. Facere, doloremque vitae.",
-    isUnderAppeal: 1,
   },
 
   // ... more reviews
@@ -254,8 +262,23 @@ const contractor = {
   city: "McKinney",
   state: "MX",
   profilePic:
-    "http://0.0.0.0/images/avatars/I3UQW3tApC1DHTE8Onj9IT060vVGZZBWZEaEIRX2.png",
+    "http://0.0.0.0/images/avatars/I3UQW3tApC1DHTE8Onj9IT060vVGZZBWZEaEIRX2.jpg",
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.accordion-enter-active,
+.accordion-leave-active {
+  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+.accordion-enter-from, .accordion-leave-to /* .accordion-leave-active in <2.1.8 */ {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+.accordion-enter-to,
+.accordion-leave-from {
+  max-height: 300px; /* This value might need to be adjusted depending on the expected max height of your content */
+  opacity: 1;
+}
+</style>

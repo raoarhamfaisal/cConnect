@@ -1,6 +1,6 @@
 <template>
   <button
-    class="rounded"
+    class="rounded px-2 py-1 xs:px-4 xs:py-2 xs:text-md text-sm"
     :class="{ selected: isSelected }"
     @click="toggleSelect"
   >
@@ -34,7 +34,6 @@ const toggleSelect = () => {
 <style scoped>
 button {
   /* Default button styles go here */
-  padding: 10px 20px;
   border: 1px solid #ccc;
   cursor: pointer;
   transition: background-color 0.3s ease;

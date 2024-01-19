@@ -32,8 +32,8 @@
 </template>
 
 <script setup>
-import Avatar from "../components/Avatar.vue";
-import Badge from "../components/Badge.vue";
+import Avatar from "@/Components/Ratings/Avatar.vue";
+import Badge from "@/Components/Ratings/Badge.vue";
 defineProps(["contractor"]);
 const options = [
   { id: "trade1", name: "Supplier & Advertiser (all trades)" },

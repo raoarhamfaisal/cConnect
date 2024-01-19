@@ -12,7 +12,7 @@
       <header class="flex space-x-2 justify-between">
         <div class="flex justify-center items-center space-x-2">
           <div>
-            <Avatar :imageSrc="contractor.profilePic" />
+            <Avatar :imageSrc="contractor?.profilePic" />
           </div>
           <div class="flex flex-col justify-center">
             <h2
@@ -37,19 +37,19 @@
           <p class="p-2 text-lg">
             {{
               showFullReview
-                ? response.responseText
-                : response.responseText.substring(0, 400) +
-                  (response.responseText.length > 400 ? "..." : "")
+                ? response.response_text
+                : response.response_text.substring(0, 400) +
+                  (response.response_text.length > 400 ? "..." : "")
             }}
             <span
-              v-if="!showFullReview && response.responseText.length > 400"
+              v-if="!showFullReview && response.response_text.length > 400"
               @click="showFullReview = true"
               class="cursor-pointer text-sky-700"
             >
               See more
             </span>
             <span
-              v-if="showFullReview && response.responseText.length > 400"
+              v-if="showFullReview && response.response_text.length > 400"
               @click="showFullReview = false"
               class="cursor-pointer text-sky-700"
             >
@@ -63,7 +63,7 @@
 </template>
 
 <script setup>
-import Avatar from "../components/Avatar.vue";
+import Avatar from "@/Components/Ratings/Avatar.vue";
 import Card from "@/Components/Card.vue";
 import { ref } from "vue";
 

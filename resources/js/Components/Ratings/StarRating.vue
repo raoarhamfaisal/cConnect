@@ -46,7 +46,7 @@
     </div>
     <div
       v-if="isIndicatorActive"
-      class="indicator font-mono font-semibold flex justify-center items-center text-xl"
+      :class="`indicator font-mono font-semibold flex justify-center items-center ${indicatorClasses} text-xl `"
     >
       {{ rating }}
     </div>
@@ -60,7 +60,15 @@ export default {
   props: {
     rating: {
       type: Number,
-      default: 4.3,
+      default: 4.7,
+    },
+    starWidth: {
+      type: Number,
+      default: 24,
+    },
+    starHeight: {
+      type: Number,
+      default: 24,
     },
     starStyle: {
       type: Object,
@@ -69,6 +77,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    indicatorClasses: {
+      type: String,
+      default: "",
+    },
   },
   data: function () {
     return {
@@ -76,15 +88,18 @@ export default {
       emptyStar: 0,
       fullStar: 1,
       totalStars: 5,
-      // Binded Nested Props registered as data/computed and not props
-      styleStarWidth: 24,
-      styleStarHeight: 24,
       styleEmptyStarColor: "#737373",
       styleFullStarColor: "#ed8a19",
     };
   },
   directives: {},
   computed: {
+    styleStarWidth() {
+      return this.starWidth;
+    },
+    styleStarHeight() {
+      return this.starHeight;
+    },
     getStarPoints() {
       let centerX = this.styleStarWidth / 2;
       let centerY = this.styleStarWidth / 2;

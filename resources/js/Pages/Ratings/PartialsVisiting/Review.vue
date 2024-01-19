@@ -17,13 +17,7 @@
       </div>
     </div>
     <div v-if="review.isUnderAppeal === 1">
-      <Badge
-        class="bg-orange-500"
-        :style="{
-          backgroundColor: '',
-        }"
-        >Under Appeal</Badge
-      >
+      <Badge class="bg-orange-500">Under Appeal</Badge>
     </div>
   </div>
   <div>
@@ -47,19 +41,19 @@
       <p class="p-2 text-lg">
         {{
           showFullReview
-            ? review.reviewText
-            : review.reviewText.substring(0, 400) +
-              (review.reviewText.length > 400 ? "..." : "")
+            ? review.rating_reason
+            : review.rating_reason.substring(0, 400) +
+              (review.rating_reason.length > 400 ? "..." : "")
         }}
         <span
-          v-if="!showFullReview && review.reviewText.length > 400"
+          v-if="!showFullReview && review.rating_reason.length > 400"
           @click="showFullReview = true"
           class="cursor-pointer text-sky-700"
         >
           See more
         </span>
         <span
-          v-if="showFullReview && review.reviewText.length > 400"
+          v-if="showFullReview && review.rating_reason.length > 400"
           @click="showFullReview = false"
           class="cursor-pointer text-sky-700"
         >
@@ -71,9 +65,9 @@
 </template>
 
 <script setup>
-import Avatar from "../components/Avatar.vue";
-import StarRating from "../components/StarRating.vue";
-import Badge from "../components/Badge.vue";
+import Avatar from "@/Components/Ratings/Avatar.vue";
+import StarRating from "@/Components/Ratings/StarRating.vue";
+import Badge from "@/Components/Ratings/Badge.vue";
 import { ref } from "vue";
 defineProps(["review", "contractor"]);
 const options = [
@@ -81,8 +75,6 @@ const options = [
   { id: "trade2", name: "Construction & Remodeling" },
   { id: "trade5", name: "Landscape" },
   { id: "trade6", name: "Earthworks, Drives & Parking Lots" },
-  { id: "trade7", name: "Roofing & Solar" },
-  { id: "trade8", name: "Gutters, Siding & Fencing" },
 ];
 const showFullReview = ref(false);
 </script>

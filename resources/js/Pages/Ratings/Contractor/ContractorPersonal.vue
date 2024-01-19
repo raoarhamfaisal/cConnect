@@ -12,8 +12,8 @@
     <div class="bg-gray-200 mt-10">
       <Card :shadowLevel="2" bgColor="white" padding="20px">
         <ContractorInfo :contractor="contractor" />
-        <heading-card heading="Average Ratings" class="mb-12" />
-        <AverageRating class="mb-12" />
+        <heading-card heading="Average Ratings" class="xs:mb-12 mb-6" />
+        <AverageRating class="xs:mb-12 mb-6" />
         <!-- Filters -->
         <div class="border-t-2 border-gray-300">
           <heading-card class="mt-6" heading="Order Reviews By" />
@@ -35,12 +35,12 @@
             </div>
           </div>
         </div>
-        <div class="xs:mb-12 mb-6 xs:mt-12 mt-7 border-t-2 border-gray-300">
+        <div class="xs:mb-12 mb-6 border-t-2 border-gray-300 xs:mt-12 mt-7">
           <heading-card heading="Top Reviews" class="mt-6 mb-12" />
           <!-- <Loader :loading="true" background="white" height="50vh"></Loader> -->
 
           <div v-if="reviews.length > 0" class="flex gap-8 flex-col">
-            <ReviewResponse
+            <QuestionsReview
               v-for="(review, index) in reviews"
               :key="index"
               :review="review"
@@ -55,47 +55,23 @@
             </div>
           </div>
         </div>
-        <div class="py-4 border-t-2 border-b-2 border-gray-300">
-          <Button
-            ref="cardRef"
-            @onSelect="handleSelect"
-            :style="{
-              boxShadow:
-                '0px 0px 3px rgba(0, 0, 0, 0.12), 0px 0px 2px rgba(0, 0, 0, 0.12)',
-            }"
-            class="w-full text-2xl text-left rounded-lg"
-            >Write a review</Button
-          >
-          <transition name="accordion">
-            <Card
-              v-if="showCard"
-              :shadowLevel="1"
-              bgColor="white"
-              padding="10px"
-              class="mt-8"
-            >
-              <transition name="accordion">
-                <GiveRating />
-              </transition>
-            </Card>
-          </transition>
-        </div>
       </Card>
     </div>
+
+    <!-- Reviews End-->
   </Header>
 </template>
 
 <script setup>
 import Header from "@/Layouts/Header.vue";
-import ReviewResponse from "./PartialsVisiting/ReviewResponse.vue";
+import QuestionsReview from "../PartialsPersonal/QuestionsReview.vue";
 import { Head } from "@inertiajs/inertia-vue3";
-import AverageRating from "./PartialsVisiting/AverageRating.vue";
+import AverageRating from "../PartialsVisiting/AverageRating.vue";
 import Button from "@/Components/Ratings/Button.vue";
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import Card from "@/Components/Card.vue";
 // import Loader from "./components/Loader.vue";
-import ContractorInfo from "./PartialsVisiting/ContractorInfo.vue";
-import GiveRating from "./PartialsVisiting/GiveRating.vue";
+import ContractorInfo from "../PartialsVisiting/ContractorInfo.vue";
 
 defineProps({
   profile: Object,
@@ -108,39 +84,8 @@ defineProps({
     }),
   },
 });
-import { ref, nextTick } from "vue";
 
 // State
-const showCard = ref(false);
-const cardRef = ref(null);
-
-// Methods
-const handleSelect = async () => {
-  showCard.value = !showCard.value;
-
-  if (showCard.value) {
-    // Wait for the DOM update
-    await nextTick();
-
-    setTimeout(() => {
-      if (
-        cardRef.value &&
-        cardRef.value.$el &&
-        cardRef.value.$el.scrollIntoView
-      ) {
-        console.log("here2");
-        const elementToScroll = cardRef.value.$el || cardRef.value;
-        elementToScroll.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-          inline: "start",
-        });
-      } else {
-        console.error("Unexpected issue with the ref");
-      }
-    }, 250);
-  }
-};
 const reviews = [
   {
     reviewer: {
@@ -158,6 +103,38 @@ const reviews = [
     rating_reason:
       "Lorem ipsum dolor sit amet consectetur... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non, dolores debitis! Repellat quasi sit placeat, assumenda distinctio laborum nihil quaerat veniam, dolore enim voluptatum. Sequi nihil libero animi illo ad?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis ut vero facere laborum sequi ducimus ullam itaque culpa harum! Et iste consequatur doloribus repudiandae. Temporibus adipisci vel ipsa inventore saepe?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil quod corrupti iusto. Enim sint hic molestias voluptates est vitae, blanditiis iure saepe possimus quasi, distinctio laudantium consequuntur. Facere, doloremque vitae. ",
     isUnderAppeal: 0,
+    questions: [
+      {
+        id: 1,
+        question: "Were you hired by this contractor?",
+        questionAnswer:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod.",
+      },
+      {
+        id: 2,
+        question: "Were you paid onetime?",
+        questionAnswer:
+          "Ut vehicula risus a auctor lacinia. Proin vitae faucibus est, vitae tincidunt orci.",
+      },
+      {
+        id: 3,
+        question: "Did you hire this contractor?",
+        questionAnswer:
+          "Pellentesque nec purus felis. Vivamus condimentum sem vel nunc cursus, quis congue neque rutrum.",
+      },
+      {
+        id: 4,
+        question: "Did you pay them?",
+        questionAnswer:
+          "Mauris posuere ligula ut quam pharetra, at pulvinar libero posuere.",
+      },
+      {
+        id: 5,
+        question: "How did you meet this contractor?",
+        questionAnswer:
+          "Curabitur non eros non ante vestibulum euismod. Fusce et facilisis urna.",
+      },
+    ],
     response: {
       id: 5,
       date: "04/03/2023",
@@ -180,6 +157,38 @@ const reviews = [
     date: "03/03/2023",
     rating_reason: "Lorem ipsum dolor sit amet consectetur...",
     isUnderAppeal: 1,
+    questions: [
+      {
+        id: 1,
+        question: "Were you hired by this contractor?",
+        questionAnswer:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod.",
+      },
+      {
+        id: 2,
+        question: "Were you paid onetime?",
+        questionAnswer:
+          "Ut vehicula risus a auctor lacinia. Proin vitae faucibus est, vitae tincidunt orci.",
+      },
+      {
+        id: 3,
+        question: "Did you hire this contractor?",
+        questionAnswer:
+          "Pellentesque nec purus felis. Vivamus condimentum sem vel nunc cursus, quis congue neque rutrum.",
+      },
+      {
+        id: 4,
+        question: "Did you pay them?",
+        questionAnswer:
+          "Mauris posuere ligula ut quam pharetra, at pulvinar libero posuere.",
+      },
+      {
+        id: 5,
+        question: "How did you meet this contractor?",
+        questionAnswer:
+          "Curabitur non eros non ante vestibulum euismod. Fusce et facilisis urna.",
+      },
+    ],
   },
   {
     reviewer: {
@@ -194,6 +203,38 @@ const reviews = [
     },
     rating: 4.3,
     date: "03/03/2023",
+    questions: [
+      {
+        id: 1,
+        question: "Were you hired by this contractor?",
+        questionAnswer:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod.",
+      },
+      {
+        id: 2,
+        question: "Were you paid onetime?",
+        questionAnswer:
+          "Ut vehicula risus a auctor lacinia. Proin vitae faucibus est, vitae tincidunt orci.",
+      },
+      {
+        id: 3,
+        question: "Did you hire this contractor?",
+        questionAnswer:
+          "Pellentesque nec purus felis. Vivamus condimentum sem vel nunc cursus, quis congue neque rutrum.",
+      },
+      {
+        id: 4,
+        question: "Did you pay them?",
+        questionAnswer:
+          "Mauris posuere ligula ut quam pharetra, at pulvinar libero posuere.",
+      },
+      {
+        id: 5,
+        question: "How did you meet this contractor?",
+        questionAnswer:
+          "Curabitur non eros non ante vestibulum euismod. Fusce et facilisis urna.",
+      },
+    ],
     rating_reason:
       "Lorem ipsum dolor sit amet consectetur... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non, dolores debitis! Repellat quasi sit placeat, assumenda distinctio laborum nihil quaerat veniam, dolore enim voluptatum. Sequi nihil libero animi illo ad?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis ut vero facere laborum sequi ducimus ullam itaque culpa harum! Et iste consequatur doloribus repudiandae. Temporibus adipisci vel ipsa inventore saepe?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil quod corrupti iusto. Enim sint hic molestias voluptates est vitae, blanditiis iure saepe possimus quasi, distinctio laudantium consequuntur. Facere, doloremque vitae.",
     isUnderAppeal: 1,
@@ -213,19 +254,4 @@ const contractor = {
 };
 </script>
 
-<style scoped>
-.accordion-enter-active,
-.accordion-leave-active {
-  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
-}
-.accordion-enter-from, .accordion-leave-to /* .accordion-leave-active in <2.1.8 */ {
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-}
-.accordion-enter-to,
-.accordion-leave-from {
-  max-height: 300px; /* This value might need to be adjusted depending on the expected max height of your content */
-  opacity: 1;
-}
-</style>
+<style scoped></style>
