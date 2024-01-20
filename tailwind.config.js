@@ -34,6 +34,7 @@ module.exports = {
         "green-rgba": "#00cc00", // #087f5b
         "teal-green": "#16a34a",
         "orange-accent": "#fc8c03",
+        "orange-accent-darker": "#fa7d00",
         "slate-30-rgba": "rgba(226, 232, 240,  0.40)",
         "gray-30-rgba": "rgba(209, 213, 219,  0.50)",
       },

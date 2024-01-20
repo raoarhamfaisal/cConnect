@@ -143,3 +143,14 @@ p.default {
   width: 100%;
   padding: 8px;
 }
+
+.text-3xl-imp .v-expansion-panel-title__icon {
+  color: #16a34a;
+}
+.text-3xl-imp
+  .v-expansion-panels:not(.v-expansion-panels--variant-accordion)
+  > :first-child:not(:last-child):not(.v-expansion-panel--active):not(
+    .v-expansion-panel--before-active
+  ).rounded-lg-imp {
+  border-radius: 0.5rem !important;
+}

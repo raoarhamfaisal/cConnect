@@ -6,8 +6,19 @@ import DropdownLink from "@/Components/DropdownLink.vue";
 import NavLink from "@/Components/NavLink.vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import { Link } from "@inertiajs/inertia-vue3";
+import { removeToken } from "@/helpers/localStorageHelper";
+import { Inertia } from "@inertiajs/inertia";
+import { useStore } from "vuex";
 
 const showingNavigationDropdown = ref(false);
+const store = useStore();
+
+const handleLogout = () => {
+  removeToken();
+  showingNavigationDropdown.value = !showingNavigationDropdown.value;
+  Inertia.post("/logout");
+  store.commit("setUserVersion", 0);
+};
 </script>
 
 <template>
@@ -82,9 +93,9 @@ const showingNavigationDropdown = ref(false);
                       Profile
                     </DropdownLink>
                     <DropdownLink
-                      :href="route('logout')"
                       method="post"
                       as="button"
+                      @click="handleLogout"
                     >
                       Log Out
                     </DropdownLink>
@@ -171,7 +182,7 @@ const showingNavigationDropdown = ref(false);
                 Profile
               </ResponsiveNavLink>
               <ResponsiveNavLink
-                :href="route('logout')"
+                @click="handleLogout"
                 method="post"
                 as="button"
               >

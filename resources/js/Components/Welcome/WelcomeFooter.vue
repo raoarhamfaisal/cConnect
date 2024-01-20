@@ -50,7 +50,9 @@
         <!-- First Menu List -->
         <div class="flex flex-col space-y-3 text-white">
           <a href="/" class="hover:text-blue-400">Home</a>
-          <a href="/#pricing" class="hover:text-blue-400">Pricing</a>
+          <a href="/pricing" class="hover:text-blue-400">Pricing</a>
+          <a href="/pricing#faqs" class="hover:text-blue-400">FAQs</a>
+
           <a href="/about-us#contactUs" class="hover:text-blue-400"
             >Contact Us</a
           >

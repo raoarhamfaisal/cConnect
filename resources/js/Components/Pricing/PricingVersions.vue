@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import PricingFeature from "@/Components/Pricing/PricingFeature.vue";
+import FAQS from "@/Components/Pricing/FAQS.vue";
 import { useStore } from "vuex";
 
 const freeVersion = ref({});
@@ -119,6 +120,7 @@ onUnmounted(() => {
         >
           <img class="mb-3 h-full object-contain" src="./assets/freebox.png" />
           <button
+            v-if="userVersion === 0"
             class="mt-[2px] checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95"
           >
             Select
@@ -171,6 +173,7 @@ onUnmounted(() => {
         >
           <img class="mb-3 h-full object-contain" src="./assets/freebox.png" />
           <button
+            v-if="userVersion === 0"
             class="mt-[2px] checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95"
           >
             Select
@@ -459,9 +462,11 @@ Text:"
       </div>
     </section>
   </div>
-  <div class="faqs h-[40px]" ref="faqsRef"></div>
+  <div class="faqs" ref="faqsRef">
+    <FAQS />
+  </div>
 
-  <!-- for Sticky Behavoir -->
+  <!-- for Sticky Behavoir in Mobile -->
   <div
     v-if="isSticky && screenWidth < 768"
     class="grid grid-cols-3 gap-x-1 versions-head sticky"
@@ -474,6 +479,7 @@ Text:"
     >
       <img class="mb-3 h-full object-contain" src="./assets/freebox.png" />
       <button
+        v-if="userVersion === 0"
         class="mt-[2px] checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95"
       >
         Select

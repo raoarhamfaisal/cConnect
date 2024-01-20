@@ -308,6 +308,12 @@
               <ResponsiveNavLink href="/about-us#aboutUs">
                 About Us
               </ResponsiveNavLink>
+              <ResponsiveNavLink href="/pricing" as="button">
+                Pricing
+              </ResponsiveNavLink>
+              <ResponsiveNavLink href="/pricing#faqs" as="button">
+                FAQs
+              </ResponsiveNavLink>
               <div
                 v-if="isAdminUrl && showit"
                 class="pt-2 pb-2 space-y-1 border-b-2 border-t-2 border-gray-400"
@@ -340,10 +346,9 @@
 
               <ResponsiveNavLink
                 v-if="showit"
-                :href="route('logout')"
                 method="post"
                 as="button"
-                @click="showingNavigationDropdown = !showingNavigationDropdown"
+                @click="handleLogout"
               >
                 Log Out
               </ResponsiveNavLink>
@@ -398,7 +403,7 @@ import tContractorWord from "@/Components/tCon/tContractorWord.vue";
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import { Inertia } from "@inertiajs/inertia";
-import { getToken } from "@/helpers/localStorageHelper";
+import { getToken, removeToken } from "@/helpers/localStorageHelper";
 import { useStore } from "vuex";
 
 defineProps({
@@ -463,4 +468,11 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   document.removeEventListener("click", handleOutsideClick);
 });
+
+function handleLogout() {
+  removeToken();
+  showingNavigationDropdown.value = !showingNavigationDropdown.value;
+  Inertia.post("/logout");
+  store.commit("setUserVersion", 0);
+}
 </script>
