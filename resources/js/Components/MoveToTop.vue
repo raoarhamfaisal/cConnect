@@ -2,6 +2,7 @@
   <!-- Scroll to Top Button -->
   <button
     @click="scrollToTop"
+    ref="scrollToTopRef"
     class="scroll-to-top"
     :style="{
       border: `2px solid ${selectedColor}`,
@@ -29,6 +30,8 @@ const props = defineProps({
     default: "#3a357c",
   },
 });
+
+const scrollToTopRef = ref(null);
 const scrollToTop = () => {
   const container = document.getElementById(props.scrollableContainer);
   if (container) {
@@ -37,15 +40,26 @@ const scrollToTop = () => {
       behavior: "smooth", // Smooth scrolling animation
     });
   }
+  if (props.scrollableContainer === "app") {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+  }
 };
 
 onMounted(() => {
-  if (props.scrollableContainer === "scrollableContainer") {
+  if (
+    props.scrollableContainer === "scrollableContainer" ||
+    props.scrollableContainer === "app"
+  ) {
     // Listening to the window's scroll event if it's the default viewport
     window.addEventListener("scroll", handleScroll);
   } else {
     // Listen for scroll events on the specified scrollable container
     const container = document.getElementById(props.scrollableContainer);
+    console.log(container, "scrollTop");
 
     if (container) {
       container.addEventListener("scroll", handleScroll);
@@ -54,7 +68,10 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  if (props.scrollableContainer === "scrollableContainer") {
+  if (
+    props.scrollableContainer === "scrollableContainer" ||
+    props.scrollableContainer === "app"
+  ) {
     // Removing the listener from the window
     window.removeEventListener("scroll", handleScroll);
   } else {
@@ -68,7 +85,10 @@ onUnmounted(() => {
 
 const handleScroll = () => {
   let scrollTop;
-  if (props.scrollableContainer === "scrollableContainer") {
+  if (
+    props.scrollableContainer === "scrollableContainer" ||
+    props.scrollableContainer === "app"
+  ) {
     // Getting scroll position from the window
     scrollTop = window.pageYOffset || document.documentElement.scrollTop;
   } else {
@@ -79,7 +99,7 @@ const handleScroll = () => {
     }
   }
 
-  const scrollButton = document.querySelector(".scroll-to-top");
+  const scrollButton = scrollToTopRef.value;
   if (scrollButton) {
     scrollButton.style.display = scrollTop > 100 ? "block" : "none";
   }

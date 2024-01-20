@@ -4,6 +4,7 @@ import WelcomeFooter from "@/Components/Welcome/WelcomeFooter.vue";
 import PricingVersions from "@/Components/Pricing/PricingVersions.vue";
 import { Head } from "@inertiajs/inertia-vue3";
 import { Link } from "@inertiajs/inertia-vue3";
+import MoveToTop from "@/Components/MoveToTop.vue";
 
 const props = defineProps({
   showit: Boolean,
@@ -110,4 +111,5 @@ const content = {
   </div>
 
   <WelcomeFooter :showit="showit" />
+  <MoveToTop scrollableContainer="app" />
 </template>

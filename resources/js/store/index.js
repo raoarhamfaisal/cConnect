@@ -93,7 +93,7 @@ export const store = createStore({
     async fetchUserVersion({ commit }) {
       if (getToken()) {
         try {
-          const versionResponse = await axios.get(`api/user-version`, {
+          const versionResponse = await axios.get(`/api/user-version`, {
             headers: {
               "Content-Type": "application/json",
               Accept: "application/json",

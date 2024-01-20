@@ -129,7 +129,20 @@
       "
     >
       <div class="py-2 p-4">
+        <v-btn-toggle
+          v-model="selected_version"
+          rounded="0"
+          color="primary"
+          class=""
+          group
+          mandatory
+        >
+          <v-btn class="bg-gray-800" value="gold"> Gold Pakage </v-btn>
+
+          <v-btn value="platinum"> Platinum Pakage</v-btn>
+        </v-btn-toggle>
         <div
+          v-if="selected_version"
           class="mt-6 space-y-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-4"
         >
           <div>
@@ -316,6 +329,8 @@ const errors = reactive({
   sales_tax: "",
 });
 
+const selected_version = ref("gold");
+
 // Mounted
 onMounted(async () => {
   store.dispatch("ratings/getRegions");
@@ -465,6 +480,7 @@ const handleEditSubmit = async () => {
     }
 
     const updatedPlan = {
+      selected_version: selected_version.value,
       region_id: region_id,
       sales_tax: +singlePlan.value.sales_tax,
       gold_billed_annual_price: +singlePlan.value.gold_billed_annual_price,
@@ -551,6 +567,7 @@ const handleCreateSubmit = async () => {
     }
 
     const planToCreate = {
+      selected_version: selected_version.value,
       region_id: region_id,
       sales_tax: +singlePlan.value.sales_tax,
       gold_billed_annual_price: +singlePlan.value.gold_billed_annual_price,
@@ -561,7 +578,7 @@ const handleCreateSubmit = async () => {
     disabled.value = true;
     try {
       const response = await axios.post(
-        `/api/admin/payment-info    `,
+        `/api/admin/payment-info`,
         planToCreate,
         getAxiosConfig()
       );

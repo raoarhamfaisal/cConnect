@@ -33,7 +33,7 @@ const store = useStore();
 const tabNames = [
   "Update Email",
   "Change Password",
-  "Billing",
+  "Billing / Version",
   "Blocked Users",
 ];
 const verifyDialogRef = ref();

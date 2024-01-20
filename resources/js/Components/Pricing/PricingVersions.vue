@@ -4,6 +4,17 @@ import PricingFeature from "@/Components/Pricing/PricingFeature.vue";
 import FAQS from "@/Components/Pricing/FAQS.vue";
 import { useStore } from "vuex";
 
+const props = defineProps({
+  showRightVersionText: {
+    type: Boolean,
+    default: true,
+  },
+  settingTab: {
+    type: Boolean,
+    default: false,
+  },
+});
+
 const freeVersion = ref({});
 const goldVersion = ref({});
 const platinumVersion = ref({});
@@ -51,15 +62,16 @@ const faqsRef = ref(null);
 // Fetch your version values and define other component logic here...
 
 const handleScroll = () => {
+  console.log("in scroll mode");
   const headerElement = headerRef.value;
   const faqsElement = faqsRef.value;
 
-  //   console.log(
-  //     headerElement.getBoundingClientRect().top,
-  //     whatVersionAreYourEl.getBoundingClientRect().top,
-  //     faqsElement.getBoundingClientRect().top,
-  //     "top"
-  //   );
+  console.log(
+    headerElement.getBoundingClientRect().top,
+
+    faqsElement.getBoundingClientRect().top,
+    "top"
+  );
   if (headerElement && faqsElement) {
     const headerTop = headerElement.getBoundingClientRect().top;
     const faqsTop = faqsElement.getBoundingClientRect().top;
@@ -76,19 +88,32 @@ const handleScroll = () => {
 
 onMounted(() => {
   if (screenWidth.value < 768) {
-    window.addEventListener("scroll", handleScroll);
+    console.log("mounted");
+    if (props.settingTab) {
+      const newFeed = document.querySelector("#scrollable");
+      newFeed.addEventListener("scroll", handleScroll);
+    } else {
+      window.addEventListener("scroll", handleScroll);
+    }
   }
 });
 
 onUnmounted(() => {
   if (screenWidth.value < 768) {
-    window.removeEventListener("scroll", handleScroll);
+    if (props.settingTab) {
+      const newFeed = document.querySelector("#scrollable");
+      newFeed.removeEventListener("scroll", handleScroll);
+    } else {
+      window.removeEventListener("scroll", handleScroll);
+    }
   }
 });
 </script>
 <template>
   <div
-    class="mt-4 xl:container bg-white md:mx-auto px-2 py-4 sm:p-6 shadow-md rounded-lg"
+    :class="` xl:container bg-white md:mx-auto ${
+      props.settingTab ? ' mt-4' : 'mt-4 px-2 sm:p-6 py-4'
+    }   shadow-md rounded-lg`"
   >
     <div
       v-if="loading"
@@ -104,13 +129,24 @@ onUnmounted(() => {
     </div>
     <!-- Pricing Versions Desktop -->
     <section v-if="!loading" id="pricing" class="">
-      <div class="flex justify-center" ref="whatVersionAreYourRef">
+      <div
+        v-if="props.showRightVersionText"
+        class="flex justify-center"
+        ref="whatVersionAreYourRef"
+      >
         <span class="text-3xl font-extrabold mb-4 text-center text-blue-rgba">
           What Version is Right for You!
         </span>
       </div>
       <!-- tableHead  for Desktop-->
-      <div class="flex gap-2" v-if="screenWidth > 768">
+      <div
+        class="flex gap-2"
+        v-if="
+          (props.settingTab && screenWidth > 768 && screenWidth < 1024) ||
+          (props.settingTab && screenWidth > 1280) ||
+          (!props.settingTab && screenWidth > 768)
+        "
+      >
         <div class="w-[55%]"></div>
         <!-- Free -->
 
@@ -218,7 +254,7 @@ onUnmounted(() => {
           </div>
         </div>
       </div>
-      <div class="features">
+      <div class="features pb-4">
         <!-- News Feed -->
         <div class="w-full mb-2">
           <span class="text-2xl font-extrabold text-blue-rgba">
@@ -227,6 +263,7 @@ onUnmounted(() => {
         </div>
         <div class="flex flex-col gap-2">
           <PricingFeature
+            :settingTab="props.settingTab"
             bgColor="#f4f8ff"
             featureText="View All Postings & Shared Information, Conversations, Available Jobs, Looking For Select Work or Subs, Questions & Answers,Opportunities and More:"
             :freeText="1"
@@ -234,6 +271,7 @@ onUnmounted(() => {
             :platinumText="1"
           />
           <PricingFeature
+            :settingTab="props.settingTab"
             bgColor="#f4f8ff"
             featureText="View All Postings by Trade or Geographical
     Location Like Local, Region, Statewide:"
@@ -250,6 +288,7 @@ onUnmounted(() => {
         </div>
         <div class="flex flex-col gap-2">
           <PricingFeature
+            :settingTab="props.settingTab"
             bgColor="#f4f8ff"
             featureText="Postings Per Month:"
             :freeText="freeVersion.nf_ppm"
@@ -257,6 +296,7 @@ onUnmounted(() => {
             :platinumText="platinumVersion.nf_ppm"
           />
           <PricingFeature
+            :settingTab="props.settingTab"
             bgColor="#f4f8ff"
             featureText="Images Inside Posting:"
             :freeText="freeVersion.nf_ipp"
@@ -264,6 +304,7 @@ onUnmounted(() => {
             :platinumText="platinumVersion.nf_ipp"
           />
           <PricingFeature
+            :settingTab="props.settingTab"
             bgColor="#f4f8ff"
             featureText="Improve Post Visibilty By Adding Title Text:"
             :freeText="freeVersion.nf_title"
@@ -271,6 +312,7 @@ onUnmounted(() => {
             :platinumText="platinumVersion.nf_title"
           />
           <PricingFeature
+            :settingTab="props.settingTab"
             bgColor="#f4f8ff"
             featureText="Improve Post Visibilty By Adding Closing
 Text:"
@@ -279,6 +321,7 @@ Text:"
             :platinumText="platinumVersion.nf_bottom"
           />
           <PricingFeature
+            :settingTab="props.settingTab"
             bgColor="#f4f8ff"
             featureText="Make Comments on Postings:"
             :freeText="freeVersion.nf_comments"
@@ -286,6 +329,7 @@ Text:"
             :platinumText="platinumVersion.nf_comments"
           />
           <PricingFeature
+            :settingTab="props.settingTab"
             bgColor="#f4f8ff"
             featureText="Repost Posting:"
             :freeText="freeVersion.nf_repost"
@@ -301,6 +345,7 @@ Text:"
         </div>
         <div class="flex flex-col gap-2">
           <PricingFeature
+            :settingTab="props.settingTab"
             bgColor="#f4f8ff"
             featureText="Searches For Contractors & Sub-Contractors:"
             :freeText="1"
@@ -308,6 +353,7 @@ Text:"
             :platinumText="1"
           />
           <PricingFeature
+            :settingTab="props.settingTab"
             bgColor="#f4f8ff"
             featureText="No of Contractor Searches Per Month:"
             :freeText="freeVersion.sf_search"
@@ -315,6 +361,7 @@ Text:"
             :platinumText="platinumVersion.sf_search"
           />
           <PricingFeature
+            :settingTab="props.settingTab"
             bgColor="#f4f8ff"
             featureText="Track Contractors & Sub-Contractors:"
             :freeText="freeVersion.sf_tracking"
@@ -322,6 +369,7 @@ Text:"
             :platinumText="platinumVersion.sf_tracking"
           />
           <PricingFeature
+            :settingTab="props.settingTab"
             bgColor="#f4f8ff"
             featureText="Create Personal Notes On Contractors,Full Info On Subs:"
             :freeText="freeVersion.sf_notes"
@@ -329,6 +377,7 @@ Text:"
             :platinumText="platinumVersion.sf_notes"
           />
           <PricingFeature
+            :settingTab="props.settingTab"
             bgColor="#f4f8ff"
             featureText="Access to Contractor Info Pages:"
             :freeText="freeVersion.sf_info"
@@ -344,6 +393,7 @@ Text:"
         </div>
         <div class="flex flex-col gap-2">
           <PricingFeature
+            :settingTab="props.settingTab"
             bgColor="#f4f8ff"
             featureText="Membership in No of Trade Groups:"
             :freeText="freeVersion.tg_members"
@@ -351,6 +401,7 @@ Text:"
             :platinumText="platinumVersion.tg_members"
           />
           <PricingFeature
+            :settingTab="props.settingTab"
             bgColor="#f4f8ff"
             featureText="Post in Member Trade Groups:"
             :freeText="freeVersion.tg_post"
@@ -358,6 +409,7 @@ Text:"
             :platinumText="platinumVersion.tg_post"
           />
           <PricingFeature
+            :settingTab="props.settingTab"
             bgColor="#f4f8ff"
             featureText="View All Trade Group's Postings:"
             :freeText="freeVersion.tg_view_all"
@@ -373,6 +425,7 @@ Text:"
         </div>
         <div class="flex flex-col gap-2">
           <PricingFeature
+            :settingTab="props.settingTab"
             bgColor="#f4f8ff"
             featureText="Search Red Flags:"
             :freeText="freeVersion.rf_access"
@@ -380,6 +433,7 @@ Text:"
             :platinumText="platinumVersion.rf_access"
           />
           <PricingFeature
+            :settingTab="props.settingTab"
             bgColor="#f4f8ff"
             featureText="Flagged Customers:"
             :freeText="freeVersion.rf_customers"
@@ -387,6 +441,7 @@ Text:"
             :platinumText="platinumVersion.rf_customers"
           />
           <PricingFeature
+            :settingTab="props.settingTab"
             bgColor="#f4f8ff"
             featureText="Flagged Sales Reps:"
             :freeText="freeVersion.rf_sales"
@@ -394,6 +449,7 @@ Text:"
             :platinumText="platinumVersion.rf_sales"
           />
           <PricingFeature
+            :settingTab="props.settingTab"
             bgColor="#f4f8ff"
             featureText="Flagged Contractors:"
             :freeText="freeVersion.rf_contractor"
@@ -409,6 +465,7 @@ Text:"
         </div>
         <div class="flex flex-col gap-2">
           <PricingFeature
+            :settingTab="props.settingTab"
             bgColor="#f4f8ff"
             featureText="Give a Review:"
             :freeText="freeVersion.re_reviews"
@@ -416,6 +473,7 @@ Text:"
             :platinumText="platinumVersion.re_reviews"
           />
           <PricingFeature
+            :settingTab="props.settingTab"
             bgColor="#f4f8ff"
             featureText="Provide Feedback on Review:"
             :freeText="freeVersion.re_feedback"
@@ -423,6 +481,7 @@ Text:"
             :platinumText="platinumVersion.re_feedback"
           />
           <PricingFeature
+            :settingTab="props.settingTab"
             bgColor="#f4f8ff"
             featureText="Appeal Review:"
             :freeText="freeVersion.re_appeal"
@@ -438,6 +497,7 @@ Text:"
         </div>
         <div class="flex flex-col gap-2">
           <PricingFeature
+            :settingTab="props.settingTab"
             bgColor="#f4f8ff"
             featureText="No of Free Page Templates:"
             :freeText="freeVersion.cp_template?.toString()"
@@ -445,6 +505,7 @@ Text:"
             :platinumText="platinumVersion.cp_template?.toString()"
           />
           <PricingFeature
+            :settingTab="props.settingTab"
             bgColor="#f4f8ff"
             featureText="No of Color Schemes:"
             :freeText="freeVersion.cp_color?.toString()"
@@ -452,6 +513,7 @@ Text:"
             :platinumText="platinumVersion.cp_color?.toString()"
           />
           <PricingFeature
+            :settingTab="props.settingTab"
             bgColor="#f4f8ff"
             featureText="Share Your Contractor Page With Others:"
             :freeText="freeVersion.cp_share"
@@ -469,6 +531,14 @@ Text:"
   <!-- for Sticky Behavoir in Mobile -->
   <div
     v-if="isSticky && screenWidth < 768"
+    :style="{
+      top:
+        props.settingTab && screenWidth >= 640
+          ? '64px'
+          : props.settingTab && screenWidth < 640
+          ? '56px'
+          : '0',
+    }"
     class="grid grid-cols-3 gap-x-1 versions-head sticky"
   >
     <!-- Free -->
