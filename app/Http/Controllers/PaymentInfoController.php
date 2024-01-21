@@ -15,6 +15,9 @@ class PaymentInfoController extends Controller
             'gold_billed_annual_price' => 'required|numeric',
             'gold_billed_monthly_price' => 'required|numeric',
             'gold_advertised_price' => 'required|numeric',
+            'platinum_billed_annual_price' => 'required|numeric',
+            'platinum_billed_monthly_price' => 'required|numeric',
+            'platinum_advertised_price' => 'required|numeric',
         ]);
 
         $paymentInfo = PaymentInfo::create($data);
@@ -39,6 +42,9 @@ class PaymentInfoController extends Controller
             'gold_billed_annual_price' => 'numeric',
             'gold_billed_monthly_price' => 'numeric',
             'gold_advertised_price' => 'numeric',
+            'platinum_billed_annual_price' => 'numeric',
+            'platinum_billed_monthly_price' => 'numeric',
+            'platinum_advertised_price' => 'numeric',
         ]);
 
         $paymentInfo = PaymentInfo::findOrFail($id);
