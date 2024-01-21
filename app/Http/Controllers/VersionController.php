@@ -14,7 +14,7 @@ class VersionController extends Controller
         $user = Auth::user();
         // Assuming the user model has a relation 'version' to get the user's version
         $userVersion = $user->profile->version;
-        return response()->json($userVersion);
+        return response()->json(['logged_in_user_version' => $userVersion]);
     }
 
     public function getAllVersions()
