@@ -25,18 +25,18 @@ return new class extends Migration
             $table->string('twitter')->nullable();
             $table->string('tiktok')->nullable();
             $table->string('instagram')->nullable();
-            $table->string('address_1', 40)->nullable();
-            $table->string('address_2', 40)->nullable();
-            $table->string('city', 30)->nullable();
-            $table->string('state', 2)->nullable();
-            $table->string('zipcode', 5)->nullable();
-            $table->string('county', 30)->nullable();
-            $table->string('counrty', 30)->nullable();
+            $table->string('address_1', 200)->nullable();
+            $table->string('address_2', 200)->nullable();
+            $table->string('city', 1000)->nullable();
+            $table->string('state', 50)->nullable();
+            $table->string('zipcode', 15)->nullable();
+            $table->string('county', 100)->nullable();
+            $table->string('counrty', 100)->nullable();
 
             $table->string('email', 50)->unique();
 
-            $table->string('phone_cell', 13)->unique();
-            $table->string('phone_office', 13)->nullable();
+            $table->string('phone_cell', 40)->unique();
+            $table->string('phone_office', 40)->nullable();
 
             $table->string('user_avatar')->nullable();
             $table->string('company_logo')->nullable();
