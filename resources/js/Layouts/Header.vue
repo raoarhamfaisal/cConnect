@@ -214,7 +214,6 @@ export default {
           :style="{
             backgroundColor: `${color}`,
             flexGrow: 1,
-            maxWidth: '776px',
           }"
         >
           <div

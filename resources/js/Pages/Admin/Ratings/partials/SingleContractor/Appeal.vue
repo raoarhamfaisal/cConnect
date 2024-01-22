@@ -1,30 +1,14 @@
 <template>
   <div
-    class="pl-2 text-md font-bold text-gray-600 mt-3 mb-3"
+    class="pl-2 text-xl font-bold text-gray-600 mt-3 mb-3"
     :style="{
       padding: noPadding ? '0px' : '',
     }"
   >
     {{ heading }} &nbsp;
-
-    <span
-      v-if="!showAppealInformation && showToogle"
-      @click="showAppealInformation = true"
-      class="cursor-pointer text-sky-700 font-semibold text-sm"
-    >
-      {{ "Show Request" }}
-    </span>
-    <span
-      v-if="showAppealInformation && showToogle"
-      @click="showAppealInformation = false"
-      class="cursor-pointer text-sky-700 font-semibold text-sm"
-    >
-      Hide Request
-    </span>
   </div>
 
   <Card
-    v-if="showAppealInformation"
     :shadowLevel="0"
     :isInside="true"
     bgColor="#f1f3f5"
@@ -74,15 +58,10 @@ const { showDetails } = defineProps({
     default: false,
     type: Boolean,
   },
-  showToogle: {
-    default: true,
-    type: Boolean,
-  },
   showDetails: {
     default: false,
     type: Boolean,
   },
 });
-const showAppealInformation = ref(showDetails);
 const showFullText = ref(false);
 </script>

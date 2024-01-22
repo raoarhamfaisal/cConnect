@@ -4,7 +4,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 import { useForm } from "@inertiajs/inertia-vue3";
 
-import { ref, onUnmounted, onMounted, withDefaults, defineProps } from "vue";
+import { defineProps } from "vue";
 const props = defineProps({
   profile: Object,
 });
@@ -129,40 +129,3 @@ const toggleSwitch = (field) => {
     </form>
   </section>
 </template>
-<style scoped>
-.switch {
-  cursor: pointer;
-  width: 60px;
-  height: 30px;
-  position: relative;
-}
-.switch-bg-on,
-.switch-bg-off {
-  width: 100%;
-  height: 100%;
-  border-radius: 15px;
-  transition: background-color 0.2s;
-}
-.switch-bg-on {
-  background-color: rgba(36, 30, 109, 1);
-}
-.switch-bg-off {
-  background-color: #ccc;
-}
-.switch-knob-on,
-.switch-knob-off {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background-color: #fff;
-  position: absolute;
-  top: 1px;
-  transition: left 0.2s;
-}
-.switch-knob-on {
-  left: 31px;
-}
-.switch-knob-off {
-  left: 1px;
-}
-</style>

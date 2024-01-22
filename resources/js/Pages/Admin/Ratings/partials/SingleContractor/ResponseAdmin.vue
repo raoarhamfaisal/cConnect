@@ -4,17 +4,14 @@
     :isInside="true"
     class="mt-3"
     bgColor="#f8f9fa"
-    padding="20px"
+    :padding="screenWidth > 460 ? '20px' : '10px'"
   >
     <section>
       <div class="flex justify-between">
-        <div class="font-bold text-md xs:text-lg sm:text-2xl text-2xl mb-2">
+        <div class="font-bold text-md xs:text-lg sm:text-2xl mb-3 sm-mb-5">
           Contractor's Response
         </div>
-        <div
-          v-if="screenWidth >= 600 && response.id === contractor.id"
-          class="flex flex-col justify-between"
-        >
+        <div v-if="screenWidth >= 700" class="flex flex-col justify-between">
           <div class="flex gap-2">
             <!-- edit -->
             <ButtonRatings
@@ -23,7 +20,14 @@
               @click="openEditDialog"
               >Edit</ButtonRatings
             >
-
+            <!-- Hide -->
+            <ButtonRatings
+              bgColor="bg-[#f08c00]"
+              icon="mdi:hide"
+              @click="openInActiveDialog"
+              >Inactive</ButtonRatings
+            >
+            <!-- delete -->
             <ButtonRatings
               bgColor="bg-red-500"
               icon="ic:baseline-delete"
@@ -33,27 +37,34 @@
           </div>
         </div>
       </div>
-      <div
-        v-if="screenWidth < 600 && response.id === contractor.id"
-        class="grid grid-cols-2 gap-4"
-      >
-        <!-- edit -->
-        <ButtonRatings
-          bgColor="bg-lime-700"
-          icon="material-symbols:edit-sharp"
-          @click="openEditDialog"
-          >Edit</ButtonRatings
-        >
+      <!-- for mobile view   edit inactive delete -->
+      <div v-if="screenWidth < 700" class="justify-between">
+        <div class="grid grid-cols-3 gap-3">
+          <!-- edit -->
+          <ButtonRatings
+            bgColor="bg-lime-700"
+            icon="material-symbols:edit-sharp"
+            @click="openEditDialog"
+            >Edit</ButtonRatings
+          >
+          <!-- Hide -->
+          <ButtonRatings
+            bgColor="bg-[#f08c00]"
+            icon="mdi:hide"
+            @click="openInActiveDialog"
+            >Inactive</ButtonRatings
+          >
 
-        <ButtonRatings
-          bgColor="bg-red-500"
-          icon="ic:baseline-delete"
-          @click="openDeleteDialog"
-          >Delete</ButtonRatings
-        >
+          <ButtonRatings
+            bgColor="bg-red-500"
+            icon="ic:baseline-delete"
+            @click="openDeleteDialog"
+            >Delete</ButtonRatings
+          >
+        </div>
       </div>
       <div>
-        <div class="mt-5 ml-2 flex items-center space-x-4">
+        <div class="mt-2 ml-2 flex items-center space-x-4">
           <div
             class="font-bold flex justify-center items-center text-sm xs:text-md sm:text-xl"
           >
@@ -61,7 +72,7 @@
           </div>
         </div>
         <div class="">
-          <p class="p-2 text-sm xs:text-sm xs:text-lg">
+          <p class="p-2 text-sm xs:text-lg">
             {{
               showFullReview
                 ? response.response_text
@@ -89,19 +100,22 @@
   </Card>
   <EditResponseModal ref="editRef" :responseText="response?.response_text" />
   <DeleteResponseModal ref="deleteRef" />
+  <InActiveResponseModal ref="inActiveRef" />
 </template>
 
 <script setup>
 import Card from "@/Components/Card.vue";
-import EditResponseModal from "@/Pages/Ratings/Edit/EditResponseModal.vue";
-import DeleteResponseModal from "@/Pages/Ratings/Edit/DeleteResponseModal.vue";
-import { onMounted, onUnmounted, ref } from "vue";
 import ButtonRatings from "@/Components/Ratings/ButtonRatings.vue";
+import EditResponseModal from "@/Pages/Admin/Ratings/partials/SingleContractor/Edit/EditResponseModal.vue";
+import DeleteResponseModal from "@/Pages/Admin/Ratings/partials/SingleContractor/Edit/DeleteResponseModal.vue";
+import InActiveResponseModal from "@/Pages/Admin/Ratings/partials/SingleContractor/Edit/InActiveResponseModal.vue";
+import { onMounted, onUnmounted, ref } from "vue";
 
 defineProps(["response", "contractor"]);
 const showFullReview = ref(false);
 const editRef = ref();
 const deleteRef = ref();
+const inActiveRef = ref();
 
 const openEditDialog = () => {
   editRef.value.openDialogEdit();
@@ -109,6 +123,9 @@ const openEditDialog = () => {
 
 const openDeleteDialog = () => {
   deleteRef.value.openDialogDelete();
+};
+const openInActiveDialog = () => {
+  inActiveRef.value.openDialogInActivate();
 };
 const screenWidth = ref(window.innerWidth);
 

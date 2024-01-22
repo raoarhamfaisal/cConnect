@@ -1,8 +1,13 @@
 <template>
-  <div class="star-rating" :aria-label="rating + ' of 5'">
+  <div
+    @mouseleave="resetHover"
+    class="star-rating"
+    :aria-label="rating + ' of 5'"
+  >
     <div
       v-for="(star, index) in stars"
       @click="handleStarClick($event, index)"
+      @mouseover="handleStarHover($event, index)"
       :key="index"
       class="star-container"
     >
@@ -49,13 +54,15 @@
         </defs>
       </svg>
     </div>
-    <div
+    <input
       v-if="isIndicatorActive"
-      class="indicator font-mono font-semibold flex justify-center items-center text-3xl"
+      v-model.number="inputRating"
+      type="text"
+      class="indicator w-20 font-mono font-semibold flex justify-center items-center text-3xl"
       :style="{ transform: 'translateY(3px)' }"
-    >
-      {{ rating }}
-    </div>
+      @input="handleInputChange"
+      @blur="validateInput"
+    />
   </div>
 </template>
 
@@ -86,6 +93,7 @@ export default {
       styleStarWidth: 35,
       styleStarHeight: 35,
       styleEmptyStarColor: "#737373",
+      inputRating: this.ratingGlobal,
       rating: this.ratingGlobal,
       styleFullStarColor: "#ed8a19",
     };
@@ -122,6 +130,41 @@ export default {
       // Emit the changed value
       this.$emit("update:rating", this.rating);
 
+      this.setStars();
+    },
+    handleStarHover(event, starIndex) {
+      const starWidth = event.currentTarget.offsetWidth;
+      let exactStarValue = starIndex + event.offsetX / starWidth;
+      exactStarValue = Math.round(exactStarValue * 10) / 10;
+
+      this.hoverRating = exactStarValue;
+      this.inputRating = exactStarValue; // Add this line
+      this.updateStarsTemporarily(this.hoverRating);
+    },
+
+    updateStarsTemporarily(value) {
+      let fullStarsCounter = Math.floor(value);
+      let surplus = Math.round((value % 1) * 10) / 10;
+
+      for (let i = 0; i < this.stars.length; i++) {
+        if (fullStarsCounter !== 0) {
+          this.stars[i].raw = this.fullStar;
+          this.stars[i].percent = this.calcStarFullness(this.stars[i]);
+          fullStarsCounter--;
+        } else if (surplus > 0) {
+          this.stars[i].raw = surplus;
+          this.stars[i].percent = this.calcStarFullness(this.stars[i]);
+          surplus = 0;
+        } else {
+          this.stars[i].raw = this.emptyStar;
+          this.stars[i].percent = this.emptyStar + "%";
+        }
+      }
+    },
+
+    resetHover() {
+      this.hoverRating = null;
+      this.inputRating = this.rating; // Add this line
       this.setStars();
     },
     calcStarPoints(
@@ -190,6 +233,22 @@ export default {
           this[newKey] = objToFlatten[i];
         }
       }
+    },
+    handleInputChange() {
+      if (this.inputRating >= 0 && this.inputRating <= 5) {
+        this.rating = this.inputRating;
+        this.setStars();
+      }
+    },
+
+    validateInput() {
+      if (this.inputRating < 0) {
+        this.inputRating = 0;
+      } else if (this.inputRating > 5) {
+        this.inputRating = 5;
+      }
+      this.rating = this.inputRating;
+      this.setStars();
     },
   },
   created() {

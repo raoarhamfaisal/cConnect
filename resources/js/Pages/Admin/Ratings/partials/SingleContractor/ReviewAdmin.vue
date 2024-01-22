@@ -6,180 +6,98 @@
       </div>
       <div class="flex flex-col justify-center">
         <h2
-          class="text-xl font-medium font-bold text-gray-900 dark:text-gray-100"
+          class="text-md xs:text-xl font-medium font-bold text-gray-900 dark:text-gray-100"
         >
           {{ review.reviewer.firstName }} {{ review.reviewer.lastName }}
         </h2>
-        <div>{{ review.reviewer.company }}</div>
-        <span v-if="review.reviewer.city || review.reviewer.state">{{
-          `${review.reviewer.city} ${review.reviewer.state}`
-        }}</span>
+        <div class="text-sm xs:text-lg">{{ review.reviewer.company }}</div>
+        <span
+          class="text-xs xs:text-lg"
+          v-if="review.reviewer.city || review.reviewer.state"
+          >{{ `${review.reviewer.city} ${review.reviewer.state}` }}</span
+        >
+      </div>
+      <div
+        v-if="screenWidth >= 1260"
+        class="flex flex-col self-start ml-12"
+        :style="{
+          marginLeft: '25px',
+        }"
+      >
+        <StarRating :rating="review.rating" :isIndicatorActive="true" />
+        <div
+          class="font-bold flex items-center text-md"
+          :style="{
+            transform: 'translateY(2px)',
+          }"
+        >
+          {{ review.date }}
+        </div>
       </div>
     </div>
-    <!-- edit dialog -->
-    <CustomDialog
-      submitText="Save Change"
-      @submit="handleSubmit"
-      ref="dialogRef"
-      title="Edit Rating"
-    >
-      <form @submit.prevent="handleSubmit">
-        <div class="text-md font-bold mb-3 text-gray-600">
-          Select your Rating:
-        </div>
-        <StarRatingEditable
-          :ratingGlobal="form.rating"
-          @update:rating="handleRatingChange"
-        />
-        <!-- review reason -->
-        <div class="mb-4">
-          <div class="text-md font-bold text-gray-600 mt-3 mb-2">
-            Review Text
-          </div>
-          <textarea
-            id="rating_reason"
-            type="text"
-            :rows="5"
-            class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
-            required
-            v-model="form.rating_reason"
-            placeholder="Type reason for your rating"
-          />
-          <InputError class="mt-2" :message="form.errors.rating_reason" />
-        </div>
-        <!-- response -->
-        <div v-if="form?.response_text" class="mb-4">
-          <div class="text-md font-bold text-gray-600 mt-3 mb-2">
-            Contractors Response
-          </div>
-          <textarea
-            id="responseText"
-            type="text"
-            :rows="5"
-            class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
-            required
-            v-model="form.response_text"
-            placeholder="Type reason for your rating"
-          />
-          <InputError class="mt-2" :message="form.errors.response_text" />
-        </div>
-        <!-- Appeal Grant -->
-        <Appeal
-          v-if="review?.onAppeal && Object.keys(review?.onAppeal).length > 0"
-          :noPadding="true"
-          :appeal="review?.onAppeal"
-          :showToogle="false"
-          :showDetails="true"
-          heading="Appeal Request from the Contractor"
-        />
-        <RadioGroup
-          v-if="review?.onAppeal && Object.keys(review?.onAppeal).length > 0"
-          :label-text="'Do you want to Accept the Appeal?'"
-          :options="[
-            { id: 'yes', value: 1, text: 'Yes' },
-            { id: 'no', value: 0, text: 'No' },
-          ]"
-          v-model="form.onApealGranted"
-        />
-        <!-- turn off appeal -->
-        <Appeal
-          v-if="review?.offAppeal && Object.keys(review?.offAppeal).length > 0"
-          :appeal="review?.offAppeal"
-          :showToogle="false"
-          :showDetails="true"
-          :noPadding="true"
-          heading="Appeal Turn Off Request from the Contractor"
-        />
-        <!-- Confirming Appeal-->
 
-        <RadioGroup
-          v-if="review?.offAppeal && Object.keys(review?.offAppeal).length > 0"
-          :label-text="'Do you want to Accept the Turn off Appeal?'"
-          :options="[
-            { id: 'turn_off_yess', value: 1, text: 'Yes' },
-            { id: 'turn_off_no', value: 0, text: 'No' },
-          ]"
-          v-model="form.offApealGranted"
-        />
-        <!-- Questions -->
-        <div
-          class="mb-4"
-          v-for="(question, index) in form.questions"
-          :key="index"
-        >
-          <div class="text-md font-bold text-gray-600 mt-3 mb-2">
-            {{ question.question }}
-          </div>
-          <textarea
-            :id="question.id"
-            type="text"
-            :rows="3"
-            class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
-            required
-            v-model="question.questionAnswer"
-            placeholder="Type reason for your rating"
-          />
-          <InputError
-            class="mt-2"
-            :message="form?.error?.question?.questionAnswer"
-          />
-        </div>
-      </form>
-    </CustomDialog>
-    <!-- ConfirmDialog -->
-    <!-- edit dialog -->
-    <CustomDialog
-      submitText="Save Change"
-      @submit="handleSubmit"
-      ref="submitRef"
-      title="Are you sure? You want to change this Rating?"
+    <!-- Edit delete with under appeal -->
+    <div
+      class="flex flex-col justify-between items-end"
+      :class="{
+        'xl:flex-col-reverse': review.isUnderAppeal === 1,
+      }"
     >
-      <form @submit.prevent="handleSubmit">
-        <!-- review reason -->
-        <div class="mb-4">
-          <div class="text-md font-bold text-gray-600 mt-3 mb-2">
-            Reason for Editing the Rating
-          </div>
-          <textarea
-            id="editing_reason"
-            type="text"
-            :rows="5"
-            class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
-            required
-            v-model="form.editing_reason"
-            placeholder="Type reason for Editing the rating"
-          />
-          <InputError class="mt-2" :message="form.errors.editing_reason" />
-        </div>
-      </form>
-    </CustomDialog>
-    <div class="flex flex-col justify-between">
-      <div class="flex gap-3">
-        <!-- edit -->
-        <div
-          class="bg-lime-700 inline-flex items-center px-3 py-2 text-sm font-bold leading-none uppercase text-white rounded-md cursor-pointer"
-          @click="openEditDialog"
-        >
-          Edit
-        </div>
-        <!-- delete -->
-        <div
-          class="bg-red-500 inline-flex items-center px-3 py-2 text-sm font-bold leading-none uppercase text-white rounded-md cursor-pointer"
-        >
-          Delete
-        </div>
-      </div>
       <Badge class="bg-orange-500" v-if="review.isUnderAppeal === 1"
         >Under Appeal</Badge
       >
+      <div v-if="screenWidth >= 700" class="grid grid-cols-3 gap-2">
+        <ButtonRatings
+          bgColor="bg-lime-700"
+          icon="material-symbols:edit-sharp"
+          @click="openEditDialog"
+          >Edit</ButtonRatings
+        >
+        <!-- Hide -->
+        <ButtonRatings
+          bgColor="bg-[#f08c00]"
+          icon="mdi:hide"
+          @click="openInActiveDialog"
+          >Inactive</ButtonRatings
+        >
+
+        <ButtonRatings
+          bgColor="bg-red-500"
+          icon="ic:baseline-delete"
+          @click="openDeleteDialog"
+          >Delete</ButtonRatings
+        >
+      </div>
     </div>
   </div>
-  <div>
-    <div class="mt-3 mb-2 ml-1 flex items-center space-x-4">
-      <StarRating :rating="review.rating" :isIndicatorActive="true" />
-      <div class="font-bold flex justify-center items-center text-xl">
-        {{ review.date }}
-      </div>
+  <!-- for mobile view icons edit inactive delete-->
+  <div v-if="screenWidth < 700" class="grid grid-cols-3 gap-2 mt-3">
+    <ButtonRatings
+      bgColor="bg-lime-700"
+      icon="material-symbols:edit-sharp"
+      @click="openEditDialog"
+      >Edit</ButtonRatings
+    >
+    <!-- Hide -->
+    <ButtonRatings
+      bgColor="bg-[#f08c00]"
+      icon="mdi:hide"
+      @click="openInActiveDialog"
+      >Inactive</ButtonRatings
+    >
+
+    <ButtonRatings
+      bgColor="bg-red-500"
+      icon="ic:baseline-delete"
+      @click="openDeleteDialog"
+      >Delete</ButtonRatings
+    >
+  </div>
+  <div class="mt-3">
+    <!-- trades -->
+    <div class="pl-2 text-sm xs:text-md font-bold">
+      {{ review.reviewer.firstName }} {{ review.reviewer.lastName }}
+      {{ "'s Trades :" }}
     </div>
     <Badge
       v-for="(option, index) in options"
@@ -187,12 +105,36 @@
       class="my-1 mx-1 space-x-1 flex"
       :style="{
         backgroundColor: index % 2 === 0 ? '#5f3dc4' : '#364fc7',
-        fontSize: '13px',
+        fontSize: '10px',
+        paddingTop: '6px',
+        paddingBottom: '6px',
       }"
       >{{ option.name }}</Badge
     >
+    <!-- mobile veiw stars -->
+    <div
+      v-if="screenWidth < 1260"
+      class="mt-3 mb-2 ml-1 flex items-center space-x-4"
+    >
+      <StarRating :rating="review.rating" :isIndicatorActive="true" />
+      <div
+        class="font-bold flex justify-center items-center text-md xs:text-xl"
+      >
+        {{ review.date }}
+      </div>
+    </div>
+    <!-- qulifying questions -->
+    <QualifyingQuestions
+      v-if="
+        review?.questionsSwitch?.length > 0 || review?.questionsText?.length > 0
+      "
+      :questionsSwitch="review.questionsSwitch"
+      :questionsText="review.questionsText"
+    />
+
+    <!-- review -->
     <div class="mt-1">
-      <p class="p-2 text-lg">
+      <p class="p-2 text-sm xs:text-lg">
         {{
           showFullReview
             ? review.rating_reason
@@ -215,21 +157,68 @@
         </span>
       </p>
     </div>
+    <!-- turn on appeal -->
+    <div class="mb-4">
+      <div v-if="review?.onAppeal && Object.keys(review?.onAppeal).length > 0">
+        <Appeal
+          :appeal="review?.onAppeal"
+          heading="Appeal Request from the Contractor"
+        />
+        <div class="flex justify-end">
+          <div class="flex gap-6">
+            <!-- edit -->
+            <ButtonRatings bgColor="bg-[#364fc7]" @click="openEditDialog"
+              >Accept</ButtonRatings
+            >
+
+            <!-- delete -->
+            <ButtonRatings bgColor="bg-[#e03131]" @click="openDeleteDialog"
+              >Reject</ButtonRatings
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- trun off appeal -->
+      <div
+        v-if="review?.offAppeal && Object.keys(review?.offAppeal).length > 0"
+      >
+        <Appeal
+          :appeal="review?.offAppeal"
+          heading="Appeal Turn Off Request from the Contractor"
+        />
+        <div class="flex justify-end">
+          <div class="flex gap-6">
+            <!-- edit -->
+            <ButtonRatings bgColor="bg-[#364fc7]" @click="openEditDialog"
+              >Accept</ButtonRatings
+            >
+
+            <!-- delete -->
+            <ButtonRatings bgColor="bg-[#e03131]" @click="openDeleteDialog"
+              >Reject</ButtonRatings
+            >
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+  <EditRatingModal ref="editRef" :review="review" />
+  <DeleteRatingModal ref="deleteRef" />
+  <InActiveRatingModal ref="inActiveRef" />
 </template>
 
 <script setup>
 import Avatar from "@/Components/Ratings/Avatar.vue";
 import Appeal from "@/Pages/Admin/Ratings/partials/SingleContractor/Appeal.vue";
+import InActiveRatingModal from "@/Pages/Admin/Ratings/partials/SingleContractor/Edit/InActiveRatingModal.vue";
 import StarRating from "@/Components/Ratings/StarRating.vue";
-import RadioGroup from "@/Components/Ratings/RadioGroup.vue";
-import InputError from "@/Components/InputError.vue";
-
+import ButtonRatings from "@/Components/Ratings/ButtonRatings.vue";
+import EditRatingModal from "@/Pages/Admin/Ratings/partials/SingleContractor/Edit/EditRatingModal.vue";
+import DeleteRatingModal from "@/Pages/Admin/Ratings/partials/SingleContractor/Edit/DeleteRatingModal.vue";
 import Badge from "@/Components/Ratings/Badge.vue";
-import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
-import { ref } from "vue";
-import StarRatingEditable from "@/Components/Ratings/StarRatingEditable.vue";
-import { useForm } from "@inertiajs/inertia-vue3";
+import QualifyingQuestions from "@/Pages/Ratings/PartialsPersonal/QualifyingQuestions.vue";
+import { ref, onMounted, onUnmounted } from "vue";
 
 const { review } = defineProps(["review", "contractor"]);
 const options = [
@@ -238,30 +227,35 @@ const options = [
   { id: "trade5", name: "Landscape" },
   { id: "trade6", name: "Earthworks, Drives & Parking Lots" },
 ];
-const dialogRef = ref();
-const submitRef = ref();
+
+const editRef = ref();
+const deleteRef = ref();
+const inActiveRef = ref();
+
 const openEditDialog = () => {
-  dialogRef.value.openDialog();
+  editRef.value.openDialogEdit();
 };
-const form = useForm({
-  rating: review.rating,
-  questions: review.questions,
-  rating_reason: review.rating_reason,
-  ...(review?.response?.response_text
-    ? { response_text: review?.response?.response_text }
-    : {}),
-  onApealGranted: null,
-  offAppealGranted: null,
-  editing_reason: null,
-});
-const handleSubmit = () => {
-  console.log("here", form);
-  //   open edit confirmDialog
-  submitRef.value.openDialog();
-  // form.patch(route('profile.updateGeneralInfo'))
+
+const openDeleteDialog = () => {
+  deleteRef.value.openDialogDelete();
 };
-function handleRatingChange(value) {
-  form.rating = value;
-}
+const openInActiveDialog = () => {
+  inActiveRef.value.openDialogInActivate();
+};
+
 const showFullReview = ref(false);
+const screenWidth = ref(window.innerWidth);
+
+// Update the screen width whenever the window is resized
+const updateWidth = () => {
+  screenWidth.value = window.innerWidth;
+};
+
+onMounted(() => {
+  window.addEventListener("resize", updateWidth);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", updateWidth);
+});
 </script>

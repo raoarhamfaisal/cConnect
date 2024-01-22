@@ -6,25 +6,36 @@
       </div>
       <div class="flex flex-col justify-center">
         <h2
-          class="text-xl font-medium font-bold text-gray-900 dark:text-gray-100"
+          class="text-md xs:text-xl font-medium font-bold text-gray-900 dark:text-gray-100"
         >
           {{ contractor.firstName + " " + contractor.lastName }}
         </h2>
-        <div v-if="contractor.company">{{ contractor.company }}</div>
-        <span v-if="contractor.city || contractor.state">{{
-          contractor.city + " " + contractor.state
-        }}</span>
+        <div class="text-sm xs:text-lg" v-if="contractor.company">
+          {{ contractor.company }}
+        </div>
+        <span
+          class="text-xs xs:text-lg"
+          v-if="contractor.city || contractor.state"
+          >{{ contractor.city + " " + contractor.state }}</span
+        >
       </div>
     </div>
   </div>
-  <div class="mb-8 mt-4">
+  <!-- trades -->
+  <div class="mb-3">
+    <div class="pl-2 text-sm xs:text-md font-bold mt-4 mb-1">
+      {{ contractor.firstName + " " + contractor.lastName }}
+      {{ "'s Trades :" }}
+    </div>
     <Badge
       v-for="(option, index) in options"
       :key="option.name"
       class="my-1 mx-1 space-x-1 flex"
       :style="{
         backgroundColor: index % 2 === 0 ? '#5f3dc4' : '#364fc7',
-        fontSize: '13px',
+        fontSize: '10px',
+        paddingTop: '6px',
+        paddingBottom: '6px',
       }"
       >{{ option.name }}</Badge
     >
