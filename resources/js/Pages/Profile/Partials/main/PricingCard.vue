@@ -41,7 +41,7 @@
           <Icon icon="mdi-tag" class="w-5 h-5 mr-2" />
           <p><strong>Coupon</strong></p>
         </div>
-        <div>- ${{  couponDiscount ? couponDiscount : "0.00" }}</div>
+        <div>- ${{ couponDiscount ? couponDiscount : "0.00" }}</div>
       </div>
       <div class="flex justify-between">
         <div class="flex items-center justify-center mb-2">
@@ -64,13 +64,16 @@
             class="flex gap-2 mt-2 text-xl justify-center items-center font-bold"
           >
             You Save
-            <p class="text-green-500 text-3xl">${{ parseFloat(savingValue).toFixed(2) }}.</p>
+            <p class="text-green-500 text-3xl">
+              ${{ parseFloat(savingValue).toFixed(2) }}.
+            </p>
           </div>
           <div
             v-if="plan === `MONTHLY` && couponDiscount"
             class="flex gap-2 mt-2 text-indigo-600 text-base justify-center items-center font-bold"
           >
-            {{ parseFloat(total - salesTax).toFixed(2) }} for the 1st {{ coupon.months }} months, then
+            {{ parseFloat(total - salesTax).toFixed(2) }} for the 1st
+            {{ coupon.months }} months, then
             {{ monthlyPrice }}
           </div>
 
@@ -111,7 +114,7 @@ const props = defineProps({
   couponDiscount: { type: [Number, String], default: "0.00" },
   total: [Number, String],
   savings: String,
-  savingValue:[Number, String]
+  savingValue: [Number, String],
 });
 
 const hover = ref(false);
@@ -129,13 +132,16 @@ const enter = (el, done) => {
   el.addEventListener("transitionend", done);
 };
 
-const anuualOnlyMonthValue = computed(()=>{
-  let result = ((+props.total - +props.couponDiscount - +props.salesTax) / 12).toFixed(2);
-if (result === 0 || result === "0.00" || result === "-0.00") {
-    return result = (+props.total / 12).toFixed(2);
-}
-return result;
-})
+const anuualOnlyMonthValue = computed(() => {
+  let result = (
+    (+props.total - +props.couponDiscount - +props.salesTax) /
+    12
+  ).toFixed(2);
+  if (result === 0 || result === "0.00" || result === "-0.00") {
+    return (result = (+props.total / 12).toFixed(2));
+  }
+  return result;
+});
 </script>
 
 <style scoped>
@@ -143,6 +149,7 @@ return result;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   background-color: #4169e1;
   border: 2px solid #4169e1;
+  z-index: 10;
 }
 
 .pricing-card:hover h2,

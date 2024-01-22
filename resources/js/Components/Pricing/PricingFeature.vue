@@ -19,9 +19,9 @@ const props = defineProps({
   platinumText: {
     type: [String, Number, Boolean],
   },
-  settingTab: {
-    type: Boolean,
-    default: false,
+  pageName: {
+    type: String,
+    default: "pricing",
   },
 });
 
@@ -30,20 +30,20 @@ const store = useStore();
 const userVersion = computed(() => store.getters.userVersion);
 const screenWidth = computed(() => store.getters.screenWidth);
 
+const notPricingPageAndDesktop = computed(
+  () =>
+    props.pageName !== "pricing" &&
+    screenWidth.value > 768 &&
+    screenWidth.value < 1200
+);
+
 const notFreeVersion = computed(
   () => userVersion.value !== 0 && userVersion.value !== 1
 );
 </script>
 <template>
   <!-- For Desktop -->
-  <div
-    :class="`flex gap-2 `"
-    v-if="
-      (props.settingTab && screenWidth > 768 && screenWidth < 1024) ||
-      (props.settingTab && screenWidth > 1280) ||
-      (!props.settingTab && screenWidth > 768)
-    "
-  >
+  <div :class="`flex gap-2 `" v-if="screenWidth > 768">
     <div class="w-[55%] text-xl text-end font-semibold">
       {{ props.featureText }}
     </div>
@@ -66,7 +66,13 @@ const notFreeVersion = computed(
         v-else-if="props.freeText === 0"
         icon="clarity:remove-solid"
       />
-      <div v-else class="text-lg lg:text-2xl font-bold">
+      <div
+        v-else
+        :style="{
+          fontSize: notPricingPageAndDesktop ? '1.2rem' : '',
+        }"
+        class="text-lg lg:text-2xl font-bold"
+      >
         {{ props.freeText === 99 ? "Unlimited" : props.freeText }}
       </div>
     </div>
@@ -89,7 +95,13 @@ const notFreeVersion = computed(
         v-else-if="props.goldText === 0"
         icon="clarity:remove-solid"
       />
-      <div v-else class="text-lg lg:text-2xl font-bold">
+      <div
+        v-else
+        :style="{
+          fontSize: notPricingPageAndDesktop ? '1.2rem' : '',
+        }"
+        class="text-lg lg:text-2xl font-bold"
+      >
         {{ props.goldText === 99 ? "Unlimited" : props.goldText }}
       </div>
     </div>
@@ -112,7 +124,13 @@ const notFreeVersion = computed(
         v-else-if="props.platinumText === 0"
         icon="clarity:remove-solid"
       />
-      <div v-else class="text-lg lg:text-2xl font-bold">
+      <div
+        v-else
+        :style="{
+          fontSize: notPricingPageAndDesktop ? '1.2rem' : '',
+        }"
+        class="text-lg lg:text-2xl font-bold"
+      >
         {{ props.platinumText === 99 ? "Unlimited" : props.platinumText }}
       </div>
     </div>

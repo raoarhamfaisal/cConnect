@@ -622,10 +622,11 @@ onMounted(async () => {
   const selectedPlan = localStorage.getItem("selectedPlan");
   coupon.value = JSON.parse(localStorage.getItem("coupon"));
   const total = JSON.parse(localStorage.getItem("total"));
-  if (coupon.value && Object.keys(coupon.value).length > 0) {
+  if (total && Object.keys(total).length > 0) {
     monthlyTotal.value = total.monthlyTotal;
     annualTotal.value = total.annualTotal;
   }
+
   if (selectedPlan) {
     planType.value = selectedPlan;
   }
@@ -647,12 +648,7 @@ onMounted(async () => {
 const screenWidth = computed(() => store.getters.screenWidth);
 const goBack = computed(() => {
   // Check if the history is
-  const prevUrl = localStorage.getItem("prevUrl");
-  if (prevUrl === "/pricing-plan") {
-    return prevUrl;
-  } else {
-    return "/profile-setup";
-  }
+  return "/pricing-plan";
 });
 
 watch(
@@ -693,7 +689,7 @@ const fetchPricingCardDetails = async () => {
     if (response.data) {
       pricingPlan.value = { ...response.data.paymentInfo };
 
-      if (!coupon.value || Object.keys(coupon.value).length == 0) {
+      if (!monthlyTotal.value) {
         const salesTax = +pricingPlan.value.sales_tax * 0.01;
         monthlyTotal.value =
           +pricingPlan.value.gold_billed_monthly_price +

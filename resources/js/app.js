@@ -16,8 +16,6 @@ import {
 } from "vuetify/labs/VStepper";
 import { setupCalendar } from "v-calendar";
 import {
-  VBtn,
-  VBtnToggle,
   VExpansionPanels,
   VExpansionPanel,
   VExpansionPanelTitle,
@@ -52,8 +50,6 @@ import * as directives from "vuetify/directives"; // You might want to fine-tune
 
 const vuetify = createVuetify({
   components: {
-    VBtn,
-    VBtnToggle,
     VExpansionPanels,
     VExpansionPanel,
     VExpansionPanelTitle,

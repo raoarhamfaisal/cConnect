@@ -71,18 +71,7 @@ export const store = createStore({
         const response = await axios.post(`/tokens/create`);
         if (response.data) {
           console.log("here to store");
-          await setToken(response.data.token);
-          const versionResponse = await axios.get(`api/user-version`, {
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              Authorization: `Bearer ${response.data.token}`,
-            },
-          });
-          console.log(versionResponse.data, "versionResponse");
-          if (versionResponse.data) {
-            commit("setUserVersion", versionResponse.data);
-          }
+          setToken(response.data.token);
         }
       } catch (err) {
         console.log(err);
@@ -100,12 +89,10 @@ export const store = createStore({
               Authorization: `Bearer ${getToken()}`,
             },
           });
-          console.log(versionResponse.data, "versionResponse");
+          const data = versionResponse.data;
           if (versionResponse.data) {
-            commit(
-              "setUserVersion",
-              versionResponse.data.logged_in_user_version
-            );
+            commit("setUserVersion", data.logged_in_user_version);
+            console.log(data.logged_in_user_version, "versionResponse");
           }
         } catch (err) {
           console.log(err);

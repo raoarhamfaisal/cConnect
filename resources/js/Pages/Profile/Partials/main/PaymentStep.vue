@@ -1,6 +1,11 @@
 <template>
   <div class="xl:p-5">
-    <h1 class="text-3xl font-bold mb-6 sm:mb-8">Choose Your Pricing Plan</h1>
+    <h1 class="text-3xl font-bold mb-6 sm:mb-8">
+      Choose Your Pricing Plan :
+      <span class="text-blue-rgba">{{
+        props.choosedPlan === "gold" ? "Gold Version" : "Platinum Version"
+      }}</span>
+    </h1>
     <div
       v-if="loading"
       style="height: 500px"
@@ -40,11 +45,7 @@
     >
       <PricingCard
         plan="MONTHLY"
-        :monthlyPrice="
-          pricingPlan.gold_billed_monthly_price
-            ? pricingPlan.gold_billed_monthly_price
-            : 0
-        "
+        :monthlyPrice="monthlyPrice"
         :coupon="coupon"
         :couponDiscount="monthlyDiscount ? monthlyDiscount.toFixed(2) : 0.0"
         :salesTax="pricingPlan.sales_tax ? monthlyTaxPrice : 0"
@@ -62,11 +63,7 @@
             : 0.0
         "
         :savingValue="annualDiscountBesideCoupon.toFixed(2)"
-        :monthlyPrice="
-          pricingPlan.gold_billed_annual_price
-            ? pricingPlan.gold_billed_annual_price
-            : 0
-        "
+        :monthlyPrice="annualPrice"
         :total="annualTotal ? parseFloat(annualTotal).toFixed(2) : 0"
         @selectedPricing="selectedPricing"
         :salesTax="pricingPlan.sales_tax ? annualTaxPrice : 0"
@@ -88,6 +85,10 @@ const props = defineProps({
   region_id: {
     type: [Number, String],
   },
+  choosedPlan: {
+    type: String,
+    default: "",
+  },
 });
 const loading = ref(false);
 const pricingPlan = ref({});
@@ -105,10 +106,26 @@ onMounted(() => {
 });
 
 // computed
-
+const monthlyPrice = computed(() => {
+  const originalMonthlyTotal =
+    props.choosedPlan === "gold"
+      ? +pricingPlan.value.gold_billed_monthly_price
+      : +pricingPlan.value.platinum_billed_monthly_price;
+  return originalMonthlyTotal ? originalMonthlyTotal : 0;
+});
+const annualPrice = computed(() => {
+  const originalAnnualTotal =
+    props.choosedPlan === "gold"
+      ? +pricingPlan.value.gold_billed_annual_price
+      : +pricingPlan.value.platinum_billed_annual_price;
+  return originalAnnualTotal ? originalAnnualTotal : 0;
+});
 const monthlyTotal = computed(() => {
   // Calculate the original monthly price with tax
-  const originalMonthlyTotal = +pricingPlan.value.gold_billed_monthly_price;
+  const originalMonthlyTotal =
+    props.choosedPlan === "gold"
+      ? +pricingPlan.value.gold_billed_monthly_price
+      : +pricingPlan.value.platinum_billed_monthly_price;
 
   // If there's a coupon
   if (coupon.value && coupon.value.percentage_off_regular_price) {
@@ -127,7 +144,10 @@ const monthlyTotal = computed(() => {
 
 const annualTotal = computed(() => {
   // Calculate the original annual price with tax for 12 months
-  const originalAnnualTotal = +pricingPlan.value.gold_billed_annual_price;
+  const originalAnnualTotal =
+    props.choosedPlan === "gold"
+      ? +pricingPlan.value.gold_billed_annual_price
+      : +pricingPlan.value.platinum_billed_annual_price;
 
   // If there's a coupon.value
   if (coupon.value && coupon.value.percentage_off_regular_price) {
@@ -146,30 +166,33 @@ const annualDiscount = computed(() => {
   const percentage_off_regular_price = coupon.value.percentage_off_regular_price
     ? coupon.value.percentage_off_regular_price
     : 0.0;
+  const originalAnnualTotal =
+    props.choosedPlan === "gold"
+      ? +pricingPlan.value.gold_billed_annual_price
+      : +pricingPlan.value.platinum_billed_annual_price;
 
   const couponMonths = coupon.value.months ? coupon.value.months : 0;
-  const annualPriceDiscount =
-    (+pricingPlan.value.gold_billed_annual_price / 12) * couponMonths;
+  const annualPriceDiscount = (originalAnnualTotal / 12) * couponMonths;
 
   return (annualPriceDiscount * percentage_off_regular_price) / 100;
 });
 
 const annualDiscountBesideCoupon = computed(() => {
-  const originalMonthlyTotal = +pricingPlan.value.gold_billed_monthly_price;
+  const originalMonthlyTotal =
+    props.choosedPlan === "gold"
+      ? +pricingPlan.value.gold_billed_monthly_price
+      : +pricingPlan.value.platinum_billed_monthly_price;
 
   const annualTotalwithRespectToMonth =
     (originalMonthlyTotal + +monthlyTaxPrice.value) * 12;
-  console.log(
-    annualTotalwithRespectToMonth,
-    annualTotal.value,
-    "annual",
-    originalMonthlyTotal,
-    monthlyTaxPrice.value
-  );
+
   return annualTotalwithRespectToMonth - annualTotal.value;
 });
 const monthlyDiscount = computed(() => {
-  const originalMonthlyTotal = +pricingPlan.value.gold_billed_monthly_price;
+  const originalMonthlyTotal =
+    props.choosedPlan === "gold"
+      ? +pricingPlan.value.gold_billed_monthly_price
+      : +pricingPlan.value.platinum_billed_monthly_price;
   const percentage_off_regular_price = coupon.value.percentage_off_regular_price
     ? coupon.value.percentage_off_regular_price
     : 0.0;
@@ -177,18 +200,26 @@ const monthlyDiscount = computed(() => {
 });
 const monthlyTaxPrice = computed(() => {
   const discount = monthlyDiscount.value;
+  const originalMonthlyTotal =
+    props.choosedPlan === "gold"
+      ? +pricingPlan.value.gold_billed_monthly_price
+      : +pricingPlan.value.platinum_billed_monthly_price;
   let price = (
     +pricingPlan.value.sales_tax *
-    (+pricingPlan.value.gold_billed_monthly_price - discount)
+    (originalMonthlyTotal - discount)
   ).toFixed(2);
   return price === "0.00" ? "0.01" : price;
 });
 
 const annualTaxPrice = computed(() => {
   const discount = annualDiscount.value;
+  const originalAnnualTotal =
+    props.choosedPlan === "gold"
+      ? +pricingPlan.value.gold_billed_annual_price
+      : +pricingPlan.value.platinum_billed_annual_price;
   let price = (
     +pricingPlan.value.sales_tax *
-    (+pricingPlan.value.gold_billed_annual_price - discount)
+    (originalAnnualTotal - discount)
   ).toFixed(2);
   return price === "0.00" ? "0.01" : price;
 });

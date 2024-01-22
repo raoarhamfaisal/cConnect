@@ -217,7 +217,7 @@ class ProfileController extends Controller
      
             'profile' => array_merge($profile->toArray(), $tradesOldStructure),
             'showit' => Auth::check(),
-        'postSearchFilters' => FacadeRequest::only(['postSearch']),
+            'postSearchFilters' => FacadeRequest::only(['postSearch']),
         ]);
 
         //

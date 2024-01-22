@@ -93,7 +93,6 @@ const submit = () => {
 
 onMounted(() => {
   animate.value = true;
-  fetchPricingCardDetails();
 });
 
 const fetchPricingCardDetails = async () => {

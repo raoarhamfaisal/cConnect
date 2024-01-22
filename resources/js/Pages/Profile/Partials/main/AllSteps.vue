@@ -7,11 +7,12 @@ import Trades from "@/Pages/Profile/Partials/Trades.vue";
 import Views from "@/Pages/Profile/Partials/Views.vue";
 import LinksInfo from "@/Pages/Profile/Partials/LinksInfo.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import { computed, reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import { useStore } from "vuex";
-import PaymentStep from "@/Pages/Profile/Partials/main/PaymentStep.vue";
+// import PaymentStep from "@/Pages/Profile/Partials/main/PaymentStep.vue";
 import { Inertia } from "@inertiajs/inertia";
 import { somethingWentWrong } from "@/helpers/utilities";
+import PricingVersions from "@/Components/Pricing/PricingVersions.vue";
 
 const props = defineProps({
   mustVerifyEmail: Boolean,
@@ -83,6 +84,16 @@ const disable = computed(() => {
     ? "next"
     : false;
 });
+
+onMounted(() => {
+  currentStep.value = +localStorage.getItem("stepNo");
+  if (!currentStep.value) {
+    currentStep.value = 1;
+  } else {
+    localStorage.removeItem("stepNo");
+  }
+});
+
 const screenWidth = computed(() => store.getters.screenWidth);
 const loading = computed(() => store.state.profile.loading);
 const areAllTradesSetToZeroError = ref("");
@@ -377,7 +388,10 @@ const dontProceed = (areAllTradesSetToZero) => {
             <Views :profile="profile" apiChoice="2" />
           </v-stepper-window-item>
           <v-stepper-window-item :value="4">
-            <PaymentStep :region_id="form.region_id" />
+            <PricingVersions
+              :showRightVersionText="false"
+              pageName="profile-setup"
+            />
           </v-stepper-window-item>
         </div>
       </v-stepper-window>

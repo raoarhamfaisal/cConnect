@@ -19,6 +19,9 @@ class PaymentInfo extends Model
         'sales_tax',
         'gold_billed_annual_price',
         'gold_billed_monthly_price',
-        'gold_advertised_price'
+        'gold_advertised_price',
+        'platinum_billed_annual_price',
+        'platinum_billed_monthly_price',
+        'platinum_advertised_price',
     ];
 }

@@ -177,7 +177,7 @@ const handleCancelSubscription = async () => {
         Current plan : <span class="font-extrabold">{{ userVersionText }}</span>
       </div>
     </header>
-    <PricingVersions :showRightVersionText="false" settingTab />
+    <PricingVersions :showRightVersionText="false" pageName="settings" />
 
     <!-- <div
       class="h-96 flex items-center justify-center font-semibold"
