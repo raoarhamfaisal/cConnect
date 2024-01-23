@@ -90,10 +90,10 @@
         </div>
       </div>
 
-      <!-- Did you give full  payment? -->
+      <!-- Did you give full  payment -->
       <div class="flex items-center justify-between sm:w-96 mb-5">
         <div class="text-md font-bold text-gray-600 mt-3 mb-2">
-          Did you give full payment?
+          Did you give full payment
         </div>
         <div class="switch" @click="toggleSwitch('paid_them')">
           <div
@@ -109,20 +109,17 @@
       </div>
 
       <!-- How did you meet this contractor? -->
-      <div>
-        <label class="text-md font-bold text-gray-600 block mb-2">
-          How did you meet this contractor?
-        </label>
-        <textarea
-          id="how_met"
-          :rows="3"
-          class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
-          required
-          v-model="form.how_met_contractor"
-          placeholder="Type how you met the contractor"
-        ></textarea>
-        <InputError class="mt-3" :message="form.errors.how_met_contractor" />
-      </div>
+      <CustomSelect
+        :options="referenceList"
+        :modelValue="selectedReferal"
+        @update:modelValue="
+          (val) => {
+            console.log(val);
+            selectedReferal = val;
+          }
+        "
+        label="How did you meet this contractor?"
+      />
     </form>
     <div class="flex items-center gap-4 mt-6 w-full">
       <PrimaryButton
@@ -149,13 +146,21 @@
 <script setup>
 import { ref } from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import CustomSelect from "@/Components/CustomSelect.vue";
 
 import InputError from "@/Components/InputError.vue";
 
 import StarRatingEditable from "@/Components/Ratings/StarRatingEditable.vue";
-const rating = ref(0);
 import { useForm } from "@inertiajs/inertia-vue3";
 
+const referenceList = [
+  "Contractor Referral",
+  "Friend Referral",
+  "Other Contractor",
+  "Job Site",
+  "Store/Gas Station",
+  "Other",
+];
 const form = useForm({
   rating_reason: null,
   hired_by_contractor: 0,
@@ -172,4 +177,7 @@ function handleRatingChange(value) {
 const toggleSwitch = (field) => {
   form[field] = form[field] === 1 ? 0 : 1;
 };
+const selectedReferal = ref("");
 </script>
+
+<style scoped></style>

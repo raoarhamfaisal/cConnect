@@ -1,5 +1,4 @@
 <script setup>
-import { Icon } from "@iconify/vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 import { useForm } from "@inertiajs/inertia-vue3";

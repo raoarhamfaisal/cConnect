@@ -113,22 +113,22 @@ const reviews = [
     questionsSwitch: [
       {
         id: 1,
-        question: "Hired by contractor?",
+        question: "I Hired Contractor",
         questionAnswer: 1,
       },
       {
         id: 2,
-        question: "Paid on time?",
+        question: "Contractor hired me",
         questionAnswer: 0,
       },
       {
         id: 3,
-        question: "Hired contractor?",
+        question: "Paid on time",
         questionAnswer: 1,
       },
       {
         id: 4,
-        question: "Give full  payment?",
+        question: "Give full  payment",
         questionAnswer: 1,
       },
     ],
@@ -180,7 +180,7 @@ const reviews = [
       },
       {
         id: 4,
-        question: "Did you give full  payment?",
+        question: "Did you give full  payment",
         questionAnswer: 1,
       },
     ],
@@ -228,7 +228,7 @@ const reviews = [
       },
       {
         id: 4,
-        question: "Did you give full  payment?",
+        question: "Did you give full  payment",
         questionAnswer: 1,
       },
     ],

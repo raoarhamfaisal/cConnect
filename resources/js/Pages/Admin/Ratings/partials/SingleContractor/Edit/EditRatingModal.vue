@@ -57,29 +57,18 @@
           </div>
         </div>
       </div>
-      <!-- QuestionsTExt -->
-      <div
-        class="mb-4 mt-4"
-        v-for="(question, index) in form.questionsText"
-        :key="index"
-      >
-        <div class="text-md font-bold text-gray-600 mt-3 mb-3">
-          {{ question.question }}
-        </div>
-        <textarea
-          :id="question.id"
-          type="text"
-          :rows="3"
-          class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
-          required
-          v-model="question.questionAnswer"
-          placeholder="Type reason for your rating"
-        />
-        <InputError
-          class="mt-2"
-          :message="form?.error?.question?.questionAnswer"
-        />
-      </div>
+
+      <CustomSelect
+        :options="referenceList"
+        :modelValue="selectedReferal"
+        @update:modelValue="
+          (val) => {
+            console.log(val);
+            selectedReferal = val;
+          }
+        "
+        label="How did you meet this contractor?"
+      />
     </form>
   </CustomDialog>
   <!-- ConfirmDialog -->
@@ -112,10 +101,10 @@
 </template>
 
 <script setup>
-import RadioGroup from "@/Components/Ratings/RadioGroup.vue";
 import InputError from "@/Components/InputError.vue";
 import { useForm } from "@inertiajs/inertia-vue3";
-import Appeal from "@/Pages/Admin/Ratings/partials/SingleContractor/Appeal.vue";
+import CustomSelect from "@/Components/CustomSelect.vue";
+
 import StarRatingEditable from "@/Components/Ratings/StarRatingEditable.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import { ref } from "vue";
@@ -150,7 +139,15 @@ const handleSubmit = () => {
 const openDialogEdit = () => {
   return dialogRef.value.openDialog();
 };
-
+const referenceList = [
+  "Contractor Referral",
+  "Friend Referral",
+  "Other Contractor",
+  "Job Site",
+  "Store/Gas Station",
+  "Other",
+];
+const selectedReferal = ref("Job Site");
 defineExpose({ openDialogEdit });
 </script>
 

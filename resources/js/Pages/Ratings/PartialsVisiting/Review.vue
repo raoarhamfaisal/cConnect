@@ -125,7 +125,7 @@
         review?.questionsSwitch?.length > 0 || review?.questionsText?.length > 0
       "
       :questionsSwitch="review.questionsSwitch"
-      :questionsText="review.questionsText"
+      :selectedReferal="review.selectedReferal"
     />
     <div class="mt-1">
       <p class="p-2 text-sm xs:text-lg">
