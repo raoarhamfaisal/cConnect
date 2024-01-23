@@ -68,15 +68,18 @@ class PaymentController extends Controller
 
             // Set base amount based on user's selected duration
             $baseAmount = $request->input('duration') === 'annual' 
-            ? ($paymentInfo && ($paymentInfo->gold_billed_annual_price || $paymentInfo->platinum_billed_annual_price) ? ($profile->version === 2 ? $paymentInfo->gold_billed_annual_price : $paymentInfo->platinum_billed_annual_price) : 390) 
-            : ($paymentInfo && ($paymentInfo->gold_billed_monthly_price || $paymentInfo->platinum_billed_monthly_price) ? ($profile->version === 2 ? $paymentInfo->gold_billed_monthly_price : $paymentInfo->platinum_billed_monthly_price) : 39);
+            ? ($paymentInfo && ($paymentInfo->gold_billed_annual_price || $paymentInfo->platinum_billed_annual_price) ? ($request->version === 2 ? $paymentInfo->gold_billed_annual_price : $paymentInfo->platinum_billed_annual_price) : 390) 
+            : ($paymentInfo && ($paymentInfo->gold_billed_monthly_price || $paymentInfo->platinum_billed_monthly_price) ? ($request->version === 2 ? $paymentInfo->gold_billed_monthly_price : $paymentInfo->platinum_billed_monthly_price) : 39);
             
             // Retrieve the sales tax rate
             $salesTaxRate = ($paymentInfo && $paymentInfo->sales_tax) ? ($paymentInfo->sales_tax * 0.01) : (0.02);       
 
             $finalAmount = $request->input('duration') === 'annual' 
-                ? ($paymentInfo && ($paymentInfo->gold_billed_annual_price || $paymentInfo->platinum_billed_annual_price) ? ($profile->version === 2 ? $paymentInfo->gold_billed_annual_price : $paymentInfo->platinum_billed_annual_price) : 390) 
-                : ($paymentInfo && ($paymentInfo->gold_billed_monthly_price || $paymentInfo->platinum_billed_monthly_price) ? ($profile->version === 2 ? $paymentInfo->gold_billed_monthly_price : $paymentInfo->platinum_billed_monthly_price) : 39);
+                ? ($paymentInfo && ($paymentInfo->gold_billed_annual_price || $paymentInfo->platinum_billed_annual_price) ? ($request->version === 2 ? $paymentInfo->gold_billed_annual_price : $paymentInfo->platinum_billed_annual_price) : 390) 
+                : ($paymentInfo && ($paymentInfo->gold_billed_monthly_price || $paymentInfo->platinum_billed_monthly_price) ? ($request->version === 2 ? $paymentInfo->gold_billed_monthly_price : $paymentInfo->platinum_billed_monthly_price) : 39);
+
+
+            // dd($finalAmount);
 
 
             $discountAmount = 0;
@@ -128,8 +131,11 @@ class PaymentController extends Controller
 
             // Authentication with Authorize.Net's credentials
             $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
-            $merchantAuthentication->setName(env('MERCHANT_LOGIN_ID'));
-            $merchantAuthentication->setTransactionKey(env('MERCHANT_TRANSACTION_KEY'));
+            // $merchantAuthentication->setName(env('MERCHANT_LOGIN_ID'));
+            // $merchantAuthentication->setTransactionKey(env('MERCHANT_TRANSACTION_KEY'));
+
+            $merchantAuthentication->setName("5KP3u95bQpv");
+            $merchantAuthentication->setTransactionKey("346HZ32z3fP4hTG2");
 
             $apiRequest = new AnetAPI\ARBCreateSubscriptionRequest();
             $apiRequest->setmerchantAuthentication($merchantAuthentication);
@@ -137,7 +143,9 @@ class PaymentController extends Controller
             $apiRequest->setSubscription($subscription);
             $controller = new AnetController\ARBCreateSubscriptionController($apiRequest);
 
-            $subscriptionResponse = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::PRODUCTION);
+            // dd(env('MERCHANT_LOGIN_ID'));
+
+            $subscriptionResponse = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::SANDBOX);
 
             if($subscriptionResponse && $subscriptionResponse->getMessages()->getResultCode() == "Ok") {
                 // 3. Handle successful payments
@@ -179,7 +187,8 @@ class PaymentController extends Controller
                                 'code' => 'E00003',
                                 'text' => 'Your payment could not be processed due to incorrect card details. Please double-check your card information and try again.'
                             ]
-                        ]
+                        ],
+                        'errorMessages' => $errorMessages
                     ]
                 ];            
             }
@@ -272,6 +281,7 @@ class PaymentController extends Controller
         if($profile) {
             $profile->active_user = 1;
             $profile->is_payment_verified = 1;
+            $profile->version = $request->version;
             $profile->save();
         }
 
@@ -420,8 +430,11 @@ class PaymentController extends Controller
             /* Create a merchantAuthenticationType object with authentication details
            retrieved from the constants file */
            $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
-           $merchantAuthentication->setName(env('MERCHANT_LOGIN_ID'));
-           $merchantAuthentication->setTransactionKey(env('MERCHANT_TRANSACTION_KEY'));
+        //    $merchantAuthentication->setName(env('MERCHANT_LOGIN_ID'));
+        //    $merchantAuthentication->setTransactionKey(env('MERCHANT_TRANSACTION_KEY'));
+
+            $merchantAuthentication->setName("5KP3u95bQpv");
+            $merchantAuthentication->setTransactionKey("346HZ32z3fP4hTG2");
           
            // Set the transaction's refId
            $refId = 'ref' . time();
@@ -433,7 +446,7 @@ class PaymentController extends Controller
        
            $controller = new AnetController\ARBCancelSubscriptionController($subscriptionRequest);
        
-           $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
+           $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
        
            if (($response != null) && ($response->getMessages()->getResultCode() == "Ok"))
            {

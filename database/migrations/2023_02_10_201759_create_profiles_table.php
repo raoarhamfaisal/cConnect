@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('region_id')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->boolean('active_user')->default(0);
-            $table->boolean('version')->default(1);
+            $table->boolean('version')->default(0);
             $table->boolean('is_payment_verified')->default(0);
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
