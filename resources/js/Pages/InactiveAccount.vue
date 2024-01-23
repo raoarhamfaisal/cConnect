@@ -13,12 +13,12 @@
     <div v-if="profile.active_user === 1 && profile.is_payment_verified === 0">
       <div class="text-3xl font-bold mb-6">Account Inactive</div>
       <p class="mb-4">
-        We noticed your account is inactive due to profile-setup issues.
+        We noticed your account is inactive due to billing issues.
       </p>
       <p class="mb-4">
-        To regain access, please update your profile setup & billing
-        information. If you feel this is incorrect or need further assistance,
-        please contact our support team at
+        To regain access, please update your billing information. If you feel
+        this is incorrect or need further assistance, please contact our support
+        team at
         <a
           href="mailto:support@tcontractor.com"
           class="text-blue-500 hover:underline"
@@ -27,14 +27,14 @@
       </p>
       <div class="flex gap-2 mt-3">
         <Link
-          href="/profile-setup"
+          href="/pricing-plan"
           :style="{
             backgroundImage:
               'linear-gradient( 111.4deg,rgba(7, 7, 9, 1) 6.5%, rgba(27, 24, 113, 1) 93.2% )',
           }"
           class="block w-full sm:w-40 flex items-center justify-center text-white font-semibold text-xl py-2 px-4 rounded transition transform duration-300 hover:shadow-lg active:scale-95 cursor-pointer"
         >
-          Profile Setup
+          Billing
         </Link>
         <button
           @click="handleLogout"
@@ -108,12 +108,16 @@ import WelcomeFooter from "@/Components/Welcome/WelcomeFooter.vue";
 import { Head, Link } from "@inertiajs/inertia-vue3";
 import { Inertia } from "@inertiajs/inertia";
 import { removeToken } from "@/helpers/localStorageHelper";
+import { onMounted } from "vue";
 
 const props = defineProps({
   showit: Boolean,
   profile: Object,
 });
 
+onMounted(() => {
+  localStorage.setItem("prevUrlPricingPlan", "inactive-account");
+});
 const logoutUser = () => {
   // Implement logout functionality
   // Example: Inertia.post('/logout');

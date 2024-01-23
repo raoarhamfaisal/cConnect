@@ -3,7 +3,7 @@ import TC_LoginForm from "@/Components/TC_LoginForm.vue";
 import { Head, Link, useForm, usePage } from "@inertiajs/inertia-vue3";
 import tContractorWord from "@/Components/tCon/tContractorWord.vue";
 import tContractorWhite from "@/Components/tCon/tContractorWhite.vue";
-import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import ScrollToLinkVue from "@/Components/tCon/ScrollToLink.vue";
 import FeaturesGrid from "@/Components/tCon/FeaturesGrid.vue";
@@ -43,6 +43,7 @@ const isAdminUrl = computed(() => {
   }
   return false;
 });
+
 const profile = computed(() => store.state.profile.profile);
 const userVersion = computed(() => store.getters.userVersion);
 const notFreeVersion = computed(
@@ -51,15 +52,68 @@ const notFreeVersion = computed(
 
 const getStartedButtonText = computed(() => {
   if (getToken() && profile.value && profile.value.id) {
+    console.log("this get executed successfully");
     return userVersion.value === 0
       ? "Get Started"
       : userVersion.value === 1
-      ? "Upgrade"
+      ? "Upgrade Now"
       : "News Feed";
   } else {
     return "Get Started";
   }
 });
+const newsFeedUrl = computed(() => {
+  return profile.value &&
+    profile.value.id &&
+    profile.value.is_payment_verified &&
+    profile.value.active_user &&
+    userVersion.value !== 0
+    ? route("post")
+    : profile.value &&
+      profile.value.id &&
+      (!profile.value.is_payment_verified || !profile.value.active_user)
+    ? !profile.value.is_payment_verified && !profile.value.active_user
+      ? "/profile-setup"
+      : !profile.value.is_payment_verified && profile.value.active_user
+      ? "/pricing-plan"
+      : "/inactive-account"
+    : "/inactive-account";
+});
+const getStartedButtonUrl = computed(() => {
+  return profile.value &&
+    profile.value.id &&
+    profile.value.is_payment_verified &&
+    profile.value.active_user &&
+    userVersion.value === 1
+    ? "/settings"
+    : profile.value &&
+      profile.value.id &&
+      profile.value.is_payment_verified &&
+      profile.value.active_user &&
+      (userVersion.value === 2 || userVersion.value === 3)
+    ? route("post")
+    : profile.value &&
+      profile.value.id &&
+      (!profile.value.is_payment_verified || !profile.value.active_user)
+    ? !profile.value.is_payment_verified && !profile.value.active_user
+      ? "/profile-setup"
+      : !profile.value.is_payment_verified && profile.value.active_user
+      ? "/pricing-plan"
+      : "/inactive-account"
+    : route("signup");
+});
+
+const settingTabBillingSelection = () => {
+  if (
+    profile.value &&
+    profile.value.id &&
+    profile.value.is_payment_verified &&
+    profile.value.active_user &&
+    userVersion.value === 1
+  ) {
+    localStorage.setItem("activeTab", 2);
+  }
+};
 
 // Methods
 
@@ -74,6 +128,10 @@ const toggleDropdown = () => {
 };
 
 onMounted(async () => {
+  await store.dispatch("fetchUserVersion");
+  if (userVersion.value !== 0) {
+    fetchPricingCardDetails();
+  }
   if (getToken()) {
     console.log("inside token");
     await store.dispatch("profile/fetchProfile");
@@ -193,22 +251,7 @@ const handleLogout = () => {
             <!-- News Feed Button -->
             <div v-if="showit">
               <Link
-                :href="
-                  profile &&
-                  profile.id &&
-                  profile.is_payment_verified &&
-                  profile.active_user
-                    ? route('post')
-                    : profile &&
-                      profile.id &&
-                      (!profile.is_payment_verified || !profile.active_user)
-                    ? !profile.is_payment_verified && !profile.active_user
-                      ? '/profile-setup'
-                      : !profile.is_payment_verified && profile.active_user
-                      ? '/pricing-plan'
-                      : '/inactive-account'
-                    : '/inactive-account'
-                "
+                :href="newsFeedUrl"
                 class="block flex justify-center items-center mx-2 py-2 sm:py-3 px-3 sm:px-6 font-bold rounded-lg sm:rounded-xl text-white bg-green-600 hover:bg-green-800 border-green-600"
               >
                 News Feed
@@ -291,22 +334,7 @@ const handleLogout = () => {
 
               <ResponsiveNavLink
                 v-if="showit"
-                :href="
-                  profile &&
-                  profile.id &&
-                  profile.is_payment_verified &&
-                  profile.active_user
-                    ? route('post')
-                    : profile &&
-                      profile.id &&
-                      (!profile.is_payment_verified || !profile.active_user)
-                    ? !profile.is_payment_verified && !profile.active_user
-                      ? '/profile-setup'
-                      : !profile.is_payment_verified && profile.active_user
-                      ? '/pricing-plan'
-                      : '/inactive-account'
-                    : '/inactive-account'
-                "
+                :href="newsFeedUrl"
                 class="font-bold"
               >
                 News Feed
@@ -623,57 +651,9 @@ const handleLogout = () => {
           </h1>
 
           <!-- {{  profile }} -->
-          <Link
-            v-if="getStartedButtonText === 'Get Started'"
-            class="group flex items-center justify-between rounded-xl border border-red-500 bg-red-500 px-5 py-3 mt-8 transition-colors hover:bg-red-800 focus:outline-none focus:ring"
-            :href="
-              profile &&
-              profile.id &&
-              profile.is_payment_verified &&
-              profile.active_user
-                ? route('post')
-                : profile &&
-                  profile.id &&
-                  (!profile.is_payment_verified || !profile.active_user)
-                ? !profile.is_payment_verified && !profile.active_user
-                  ? '/profile-setup'
-                  : !profile.is_payment_verified && profile.active_user
-                  ? '/pricing-plan'
-                  : '/inactive-account'
-                : route('signup')
-            "
-          >
-            <span
-              class="text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500"
-            >
-              {{ getStartedButtonText }}
-            </span>
-
-            <!-- Arrow -->
-            <span
-              class="ml-4 flex-shrink-0 rounded-full border border-current bg-white p-2 text-indigo-600 group-active:text-indigo-500"
-            >
-              <svg
-                class="h-5 w-5"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"
-                />
-              </svg>
-            </span>
-          </Link>
-          <div
-            v-if="getStartedButtonText !== 'Get Started'"
-            class="flex justify-center space-x-3"
-          >
+          <div v-if="!showit" class="flex justify-center space-x-3">
             <Link
+              class="group flex items-center justify-between rounded-xl border border-red-500 bg-red-500 px-5 py-3 mt-8 transition-colors hover:bg-red-800 focus:outline-none focus:ring"
               :href="
                 profile &&
                 profile.id &&
@@ -688,15 +668,47 @@ const handleLogout = () => {
                     : !profile.is_payment_verified && profile.active_user
                     ? '/pricing-plan'
                     : '/inactive-account'
-                  : '/inactive-account'
+                  : route('signup')
               "
+            >
+              <span
+                class="text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500"
+              >
+                Get Started
+              </span>
+              <!-- Arrow -->
+              <span
+                class="ml-4 flex-shrink-0 rounded-full border border-current bg-white p-2 text-indigo-600 group-active:text-indigo-500"
+              >
+                <svg
+                  class="h-5 w-5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </span>
+            </Link>
+          </div>
+
+          <!-- NEWS FEED BUTTON -->
+          <div v-if="showit" class="flex justify-center space-x-3">
+            <Link
+              :href="newsFeedUrl"
               class="group flex items-center justify-between rounded-xl border border-green-600 bg-green-600 hover:bg-green-800 px-5 py-3 mt-8 transition-colors focus:outline-none focus:ring"
               preserve-scroll
             >
               <span
                 class="text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500"
               >
-                {{ getStartedButtonText }}
+                News Feed
               </span>
               <!-- Arrow -->
               <span
@@ -880,9 +892,19 @@ const handleLogout = () => {
               <p class="tracking-tight">Your Top Tool For Only</p>
             </div> -->
             <img
+              v-if="userVersion !== 1"
               class="mb-3 h-full object-contain"
               src="@/Components/Pricing/assets/freebox.png"
             />
+            <div
+              v-else-if="userVersion === 1"
+              class="flex text-orange-accent font-extrabold mb-4 justify-center"
+            >
+              <div class="text-2xl self-center mt-[-40px]">$</div>
+              <div class="text-[90px] leading-[0.9]">
+                {{ formatPrice(pricingPlan.gold_advertised_price) }}
+              </div>
+            </div>
             <!-- Button Flex Item -->
             <div class="flex justify-center items-end">
               <!-- :href="
@@ -902,22 +924,8 @@ const handleLogout = () => {
                     : route('signup')
                 " -->
               <Link
-                :href="
-                  profile &&
-                  profile.id &&
-                  profile.is_payment_verified &&
-                  profile.active_user
-                    ? route('post')
-                    : profile &&
-                      profile.id &&
-                      (!profile.is_payment_verified || !profile.active_user)
-                    ? !profile.is_payment_verified && !profile.active_user
-                      ? '/profile-setup'
-                      : !profile.is_payment_verified && profile.active_user
-                      ? '/pricing-plan'
-                      : '/inactive-account'
-                    : route('signup')
-                "
+                @click="settingTabBillingSelection"
+                :href="getStartedButtonUrl"
                 class="p-3 px-6 pt-2 text-red bg-white rounded-lg border-white border-spacing-3 shadow-2xl shadow-black align-baseline hover:text-white hover:bg-blue-30-rgba"
                 >{{ getStartedButtonText }}
               </Link>
@@ -1055,22 +1063,7 @@ const handleLogout = () => {
           <!-- NEWS FEED BUTTON -->
           <div v-if="showit" class="flex justify-center space-x-3">
             <Link
-              :href="
-                profile &&
-                profile.id &&
-                profile.is_payment_verified &&
-                profile.active_user
-                  ? route('post')
-                  : profile &&
-                    profile.id &&
-                    (!profile.is_payment_verified || !profile.active_user)
-                  ? !profile.is_payment_verified && !profile.active_user
-                    ? '/profile-setup'
-                    : !profile.is_payment_verified && profile.active_user
-                    ? '/pricing-plan'
-                    : '/inactive-account'
-                  : '/inactive-account'
-              "
+              :href="newsFeedUrl"
               class="group flex items-center justify-between rounded-xl border border-green-600 bg-green-600 hover:bg-green-800 px-5 py-3 mt-8 transition-colors focus:outline-none focus:ring"
               preserve-scroll
             >

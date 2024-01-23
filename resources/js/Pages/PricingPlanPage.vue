@@ -6,6 +6,7 @@ import { useStore } from "vuex";
 import PaymentStep from "@/Pages/Profile/Partials/main/PaymentStep.vue";
 import { onMounted, ref } from "vue";
 import PageTitle from "@/Components/PageTitle.vue";
+import { VBtn, VBtnToggle } from "vuetify/components";
 
 const props = defineProps({
   profile: Object,
@@ -40,6 +41,30 @@ onMounted(() => {
       <PageTitle :linkUrl="prevUrlPricingPlan" pageTitle="Prcing Plan" />
     </div>
     <div class="mt-10 ml-2 sm:mt-0 p-2 sm:p-3 md:p-0">
+      <div>
+        <v-btn-toggle
+          v-model="choosedPlan"
+          rounded="0"
+          color="primary"
+          group
+          mandatory
+        >
+          <v-btn
+            class="bg-gray-800"
+            value="gold"
+            style="border: 1px solid #ccc !important; border-right: 0px"
+          >
+            Gold Pakage
+          </v-btn>
+
+          <v-btn
+            value="platinum"
+            style="border: 1px solid #ccc !important; border-left: 0px"
+          >
+            Platinum Pakage</v-btn
+          >
+        </v-btn-toggle>
+      </div>
       <PaymentStep :region_id="profile.region_id" :choosedPlan="choosedPlan" />
     </div>
   </Header>
