@@ -5,17 +5,11 @@
     :class="hover ? 'hovered' : ''"
     class="pricing-card flex flex-col justify-between items-center w-full sm:w-1/2 p-6 sm:p-9 lg:p-6 xl:p-14 bg-white border border-gray-300 rounded-lg shadow-md transition-all duration-300 ease-in-out transform hover:scale-105 relative"
   >
-    <!-- <div
-      v-if="coupon && coupon.percentage_off_regular_price"
-      class="absolute translate-x-[10%] sm:translate-x-1/4 -translate-y-[30%] sm:-translate-y-1/4 top-0 right-0 bg-green-500 text-white rounded-full h-16 sm:h-20 w-16 text-xs sm:text-sm sm:w-20 font-bold flex-wrap flex flex-col items-center justify-center transform"
-    >
-      <div>-{{ coupon.percentage_off_regular_price }}%</div>
-    </div> -->
     <h2 class="text-2xl font-bold mb-4">{{ plan }}</h2>
     <div
       class="price-tag bg-[#4169E1] text-white w-48 h-48 rounded-full flex items-center justify-center mb-6"
     >
-      <span class="text-3xl">${{ total }}</span>
+      <span class="text-3xl">${{ amountToBePaid }}</span>
       <span class="text-xs ml-1">/{{ plan === "ANNUAL" ? "yr" : "mo" }}</span>
     </div>
 
@@ -29,13 +23,7 @@
         </div>
         <div>${{ monthlyPrice }}</div>
       </div>
-      <!-- <div class="flex justify-between">
-        <div class="flex items-center justify-center mb-2">
-          <Icon icon="mdi:ticket-percent" class="w-5 h-5 mr-2" />
-          <p><strong>Coupon</strong></p>
-        </div>
-        <div>${{ coupon }}</div>
-      </div> -->
+
       <div class="flex justify-between">
         <div class="flex items-center justify-center mb-2">
           <Icon icon="mdi-tag" class="w-5 h-5 mr-2" />
@@ -50,13 +38,26 @@
         </div>
         <div>${{ salesTax }}</div>
       </div>
-
       <div class="flex justify-between">
         <div class="flex items-center justify-center mb-2">
           <Icon icon="carbon:cost-total" class="w-5 h-5 mr-2" />
-          <p><strong>Total</strong></p>
+          <p><strong>Total Annual</strong></p>
         </div>
         <div>${{ total }}</div>
+      </div>
+      <div v-if="annualPaid !== 0" class="flex justify-between">
+        <div class="flex items-center justify-center mb-2">
+          <Icon icon="flat-color-icons:paid" class="w-5 h-5 mr-2" />
+          <p><strong>Paid Amount</strong></p>
+        </div>
+        <div>- ${{ annualPaid }}</div>
+      </div>
+      <div v-if="annualPaid !== 0" class="flex justify-between">
+        <div class="flex items-center justify-center mb-2">
+          <Icon icon="material-symbols:paid" class="w-5 h-5 mr-2" />
+          <p><strong>Amount to be Paid</strong></p>
+        </div>
+        <div>${{ amountToBePaid }}</div>
       </div>
       <transition name="expand" @before-enter="beforeEnter" @enter="enter">
         <div class="sm:h-[80px]">
@@ -103,7 +104,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { Icon } from "@iconify/vue";
 
 const props = defineProps({
@@ -116,13 +117,24 @@ const props = defineProps({
   total: [Number, String],
   savings: String,
   savingValue: [Number, String],
+  annualPaid: {
+    type: [Number, String],
+    default: 0,
+  },
+  billing_start_date: {
+    type: [Number, String],
+    default: 0,
+  },
 });
 
 const hover = ref(false);
-const emit = defineEmits(["selectedPricing"]);
+const emit = defineEmits(["selectedPricing", "priceToBePaid"]);
 const selectedPricing = () => {
-  emit("selectedPricing", props.plan);
+  emit("priceToBePaid", amountToBePaid.value);
+  emit("selectedPricing", "monthdiff");
 };
+
+const monthDifferenceFromBilling = ref(null);
 
 const beforeEnter = (el) => {
   el.style.height = "0";
@@ -143,6 +155,41 @@ const anuualOnlyMonthValue = computed(() => {
   }
   return result;
 });
+const amountToBePaid = computed(() => {
+  let priceToBePaid;
+
+  const eachMonthPlatinumAdditionalCharge =
+    (props.total - props.annualPaid) / 12;
+  priceToBePaid = parseFloat(
+    eachMonthPlatinumAdditionalCharge * monthDifferenceFromBilling.value
+  ).toFixed(2);
+
+  if (priceToBePaid < 0) {
+    return 0;
+  }
+  return priceToBePaid;
+});
+onMounted(() => {
+  monthDifferenceFromBilling.value =
+    12 - monthsDifference(props.billing_start_date);
+  // monthDifferenceFromBilling.value =
+  //   12 - monthsDifference("2023-08-23 14:53:22");
+});
+
+function monthsDifference(billingStartDate) {
+  // Convert the billing start date string into a Date object
+  const startDate = new Date(billingStartDate);
+
+  // Get the current date
+  const currentDate = new Date();
+
+  // Calculate the year and month difference
+  const yearsDifference = currentDate.getFullYear() - startDate.getFullYear();
+  const monthsDifference = currentDate.getMonth() - startDate.getMonth();
+
+  // Total difference in months
+  return yearsDifference * 12 + monthsDifference;
+}
 </script>
 
 <style scoped>

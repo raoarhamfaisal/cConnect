@@ -615,6 +615,7 @@ const paymentDetailsRef = ref();
 const confirmPaymentDialogRef = ref();
 const monthlyTotal = ref(0.0);
 const annualTotal = ref(0.0);
+const choosedVersion = ref("");
 
 //onMounted
 
@@ -622,6 +623,8 @@ onMounted(async () => {
   const selectedPlan = localStorage.getItem("selectedPlan");
   coupon.value = JSON.parse(localStorage.getItem("coupon"));
   const total = JSON.parse(localStorage.getItem("total"));
+  choosedVersion.value = localStorage.getItem("choosedVersion");
+  localStorage.removeItem("choosedVersion");
   if (total && Object.keys(total).length > 0) {
     monthlyTotal.value = total.monthlyTotal;
     annualTotal.value = total.annualTotal;
@@ -901,6 +904,7 @@ const startSubscription = async () => {
     processedForm.expiration_date = form.expiration_date.replace(/\//g, "-");
     processedForm.duration =
       planType.value === "MONTHLY" ? "monthly" : "annual";
+    processedForm.version = choosedVersion.value === "gold" ? 2 : 3;
     try {
       const response = await axios.post(
         `/api/payment/start-subscription`,

@@ -22,7 +22,7 @@
 
     <div
       :class="`border-8 p-4 border-white rounded-t-lg ${
-        activeTab === 2 ? 'py-8 ' : 'sm:p-8'
+        activeTab === 2 ? 'py-6 ' : 'sm:p-8'
       } bg-white shadow sm:rounded-lg`"
     >
       <slot :activeTab="activeTab"></slot>

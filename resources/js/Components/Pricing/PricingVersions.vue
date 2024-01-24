@@ -20,6 +20,10 @@ const props = defineProps({
     type: Number,
     default: 1,
   },
+  showGoldSelect: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const freeVersion = ref({});
@@ -31,6 +35,8 @@ const store = useStore();
 const pricingPlan = ref({});
 const freeConfirmDialog = ref();
 const freeActivatedDialog = ref();
+
+const emit = defineEmits(["platinumSelected"]);
 
 const userVersion = computed(() => store.getters.userVersion);
 const screenWidth = computed(() => store.getters.screenWidth);
@@ -193,26 +199,34 @@ const configurePrevUrlPricingPlan = () => {
     localStorage.setItem("prevUrlPricingPlan", "/profile-setup");
   } else if (props.pageName === "pricing") {
     localStorage.setItem("prevUrlPricingPlan", "/pricing");
+  } else if (props.pageName === "settings") {
+    localStorage.setItem("prevUrlPricingPlan", "/settings");
   }
 };
 const configureUrlToVisit = () => {
-  if (props.pageName === "profile-setup") {
-    // localStorage.setItem("stepNo", 4);
+  if (
+    props.pageName === "profile-setup" ||
+    (props.pageName === "settings" && userVersion.value === 1)
+  ) {
     Inertia.visit("/pricing-plan");
-  } else if (props.pageName === "pricing" && userVersion === 0) {
+  } else if (props.pageName === "settings" && userVersion.value === 2) {
+    console.log("Inertia");
+    emit("platinumSelected", {});
+  } else if (props.pageName === "pricing" && userVersion.value === 0) {
     Inertia.visit("/profile-setup");
-  } else if (props.pageName === "pricing" && userVersion !== 0) {
+  } else if (props.pageName === "pricing" && userVersion.value !== 0) {
+    localStorage.setItem("activeTab", 2);
     Inertia.visit("/settings");
   }
 };
 const onGoldSelect = () => {
   configurePrevUrlPricingPlan();
-  localStorage.setItem("choosedPlan", "gold");
+  localStorage.setItem("choosedVersion", "gold");
   configureUrlToVisit();
 };
 const onPlatinumSelect = () => {
   configurePrevUrlPricingPlan();
-  localStorage.setItem("choosedPlan", "platinum");
+  localStorage.setItem("choosedVersion", "platinum");
   configureUrlToVisit();
 };
 </script>
@@ -365,7 +379,7 @@ const onPlatinumSelect = () => {
         </div>
         <!-- Gold -->
         <div :style="{ width: notFreeVersion ? '22.5%' : '15%' }">
-          <div class="flex flex-col justify-center items-center h-full">
+          <div class="flex flex-col items-center h-full">
             <div
               :style="{
                 fontSize: notPricingPageAndDesktop ? '1rem' : '',
@@ -404,6 +418,7 @@ const onPlatinumSelect = () => {
               Per Month
             </div>
             <button
+              v-if="showGoldSelect && userVersion !== 2"
               @click="onGoldSelect"
               class="checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95 mt-auto"
             >

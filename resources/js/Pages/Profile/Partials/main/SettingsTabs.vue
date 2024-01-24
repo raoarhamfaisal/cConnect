@@ -246,7 +246,11 @@ const submitVerificationCode = async () => {
             <UpdatePasswordForm />
           </div>
           <div v-if="activeTab === 2">
-            <BillingSettingsTab :user_id="profile.user_id" />
+            <BillingSettingsTab
+              :user_id="profile.user_id"
+              :region_id="profile.region_id"
+              :profile="profile"
+            />
           </div>
           <div v-if="activeTab === 3">
             <BlockUsersList />

@@ -2,6 +2,8 @@
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
+import SettingPricingPlans from "@/Pages/Profile/Partials/main/SettingPricingPlans.vue";
+
 import {
   changesSaved,
   somethingWentWrong,
@@ -9,6 +11,8 @@ import {
 } from "@/helpers/utilities";
 import { Icon } from "@iconify/vue";
 import PricingVersions from "@/Components/Pricing/PricingVersions.vue";
+import DialogUpdatePaymentMethod from "@/Components/Pricing/DialogUpdatePaymentMethod.vue";
+import { VWindowItem, VWindow } from "vuetify/components";
 
 import { Inertia } from "@inertiajs/inertia";
 import { Link } from "@inertiajs/inertia-vue3";
@@ -20,6 +24,7 @@ const props = defineProps({
     type: [String, Number],
     default: 0,
   },
+  profile: Object,
 });
 const cancelSubscriptionDialogRef = ref();
 const loading = ref(true);
@@ -30,6 +35,9 @@ const pricingPlan = ref({
 });
 const coupon = ref({});
 const store = useStore();
+const step = ref(1);
+const updatePaymentMethodDialogRef = ref(null);
+const isUpdateAndSubscribe = ref(false);
 
 //onMounted
 
@@ -115,10 +123,6 @@ const fetchActiveSubscriptionDetails = async () => {
         : "monthly";
       pricingPlan.value = { ...pricingPlan.value, ...data };
 
-      coupon.value.percentage_off_regular_price = (
-        (data.discount_amount / data.original_amount) *
-        100
-      ).toFixed(2);
       pricingPlan.value.sales_tax = response.data.paymentInfo.sales_tax;
     }
   } catch (err) {
@@ -151,11 +155,39 @@ const handleCancelSubscription = async () => {
     loading.value = false;
   }
 };
+
+const onUpdatePaymentMethod = () => {
+  isUpdateAndSubscribe.value = false;
+  updatePaymentMethodDialogRef.value.openDialog();
+};
+
+const updatePaymentMethodAndSubscribe = () => {
+  isUpdateAndSubscribe.value = true;
+
+  updatePaymentMethodDialogRef.value.openDialog();
+};
 </script>
 
 <template>
+  <DialogUpdatePaymentMethod
+    ref="updatePaymentMethodDialogRef"
+    :profile="profile"
+    :isUpdateAndSubscribe="isUpdateAndSubscribe"
+  />
+  <div
+    v-if="step > 1"
+    @click="step--"
+    class="cursor-pointer flex gap-2 mb-1 items-center"
+  >
+    <Icon class="w-6 h-6" icon="ion:arrow-back" color="#241e6d" />
+    <div class="font-bold text-xl text-blue-rgba leading-tight">
+      <div>Back</div>
+    </div>
+  </div>
   <section>
-    <header class="flex justify-between items-center">
+    <header
+      class="flex max-sm:flex-col max-sm:gap-4 sm:justify-between items-center"
+    >
       <div>
         <h2 class="text-2xl font-bold text-gray-900">Billing / Version</h2>
         <!-- <p class="mt-1 text-sm text-gray-600">
@@ -173,11 +205,18 @@ const handleCancelSubscription = async () => {
         Under Cancellation
       </div>
 
-      <div class="uppercase text-xl font-semibold text-blue-rgba">
+      <div
+        class="uppercase text-xl font-semibold text-blue-rgba"
+        v-if="step !== 3"
+      >
         Current plan : <span class="font-extrabold">{{ userVersionText }}</span>
       </div>
     </header>
-    <PricingVersions :showRightVersionText="false" pageName="settings" />
+    <PricingVersions
+      v-if="userVersion === 1"
+      :showRightVersionText="false"
+      pageName="settings"
+    />
 
     <!-- <div
       class="h-96 flex items-center justify-center font-semibold"
@@ -185,136 +224,204 @@ const handleCancelSubscription = async () => {
     >
       No Billing or Subscription Details available for you
     </div> -->
-    <div v-if="!loading && Object.keys(pricingPlan).length > 2">
-      <div class="mb-4 mt-8">
-        <!-- <div class="font-medium text-base">Monthly</div> -->
-        <div
-          :class="[
-            'shadow-md w-1/2 border-2 cursor-pointer mt-2 relative  active:scale-100  p-5 rounded',
-            planType ? 'border-[#4169E1]' : 'border-black hover:scale-[1.02]',
-          ]"
-          @click="selectPlan('monthly')"
-          style="transition: all 0.3s ease-in-out"
-        >
-          <div
-            v-if="coupon && coupon.percentage_off_regular_price > 0"
-            class="absolute translate-x-[10%] sm:translate-x-1/4 -translate-y-[30%] sm:-translate-y-1/4 top-0 right-0 bg-green-500 text-white rounded-full h-16 sm:h-20 w-16 text-xs sm:text-sm sm:w-20 font-bold flex-wrap flex flex-col items-center justify-center transform"
-          >
-            <div>-{{ coupon.percentage_off_regular_price }}%</div>
-          </div>
 
-          <div class="flex flex-col items-center justify-center">
-            <h2 class="text-xl sm:text-2xl font-bold mb-2">
-              {{ planType === "monthly" ? "MONTHLY" : "ANNUAL" }}
-            </h2>
-            <div
-              class="price-tag bg-white w-40 h-40 sm:w-40 sm:h-40 border-2 rounded-full flex items-center justify-center"
-              :class="{
-                'bg-[#4169E1] border-[#4169E1] text-white': planType,
-                'bg-white border-black text-black': !planType,
-              }"
-            >
-              <span class="text-lg sm:text-2xl"
-                >${{
-                  planType === "monthly"
-                    ? parseFloat(monthlyTotal).toFixed(4)
-                    : parseFloat(annualTotal).toFixed(4)
-                }}</span
-              >
-              <span class="text-xs ml-1"
-                >/{{ planType === "monthly" ? "mo" : "yr" }}</span
-              >
-            </div>
-            <div class="features w-full text-center mb-6">
-              <div class="flex justify-between">
-                <div class="flex items-center justify-center mb-2">
-                  <Icon icon="mdi:calendar-month" class="w-5 h-5 mr-2" />
-                  <p><strong>Monthly</strong></p>
-                </div>
-                <div>${{ pricingPlan.original_amount }}</div>
-              </div>
-
-              <div class="flex justify-between">
-                <div class="flex items-center justify-center mb-2">
-                  <Icon icon="mdi:cash-register" class="w-5 h-5 mr-2" />
-                  <p><strong>Sales Tax</strong></p>
-                </div>
-                <div>{{ pricingPlan.sales_tax }}%</div>
-              </div>
-              <div
-                class="flex justify-between"
-                v-if="pricingPlan.discount_amount > 0"
-              >
-                <div class="flex items-center justify-center mb-2">
-                  <Icon icon="mdi-tag" class="w-5 h-5 mr-2" />
-                  <p><strong>Discount</strong></p>
-                </div>
-                <div>${{ pricingPlan.discount_amount }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="mb-2">
-        <div class="uppercase text-sm font-bold text-blue-rgba">
-          Billing Start Date
-        </div>
-        <div class="font-medium text-base">
-          {{ formatDateTime(pricingPlan.started_at) }}
-        </div>
-      </div>
-      <div class="mb-2">
-        <div class="uppercase text-sm font-bold text-blue-rgba">
-          Next Billing Date
-        </div>
-        <div class="font-medium text-base">
-          {{ formatDateTime(pricingPlan.ends_at) }}
-        </div>
-      </div>
-      <div class="mb-2" v-if="pricingPlan.discount_end_date">
-        <div class="uppercase text-sm font-bold text-blue-rgba">
-          Discount end date
-        </div>
-        <div class="font-medium text-base">
-          {{ pricingPlan.discount_end_date.replace(/-/g, "/") }}
-        </div>
-      </div>
-
-      <div class="mt-8 flex text-sm">
-        <div
-          v-if="
-            Object.keys(pricingPlan).length > 2 &&
-            !pricingPlan.is_cancellation_requested
-          "
-        >
-          <div class="">For cancelling your subscription ,</div>
-          <div
-            @click="openAssuringCancelSubDialog"
-            class="font-bold ml-1 text-blue-rgba cursor-pointer"
-          >
-            click here.
-          </div>
-        </div>
-        <div class="ml-1">For billing inquiries ,</div>
-        <a
-          href="mailto:tcontractor@gmail.com"
-          class="font-bold ml-1 text-blue-rgba"
-          >please contact us.</a
-        >
-      </div>
-    </div>
-    <div
-      v-if="loading && Object.keys(pricingPlan).length === 2"
-      class="h-full h-[80vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4"
+    <v-window
+      v-model="step"
+      v-if="
+        !loading && Object.keys(pricingPlan).length > 2 && userVersion !== 1
+      "
     >
-      <div class="text-center text-xl">Loading...</div>
-      <v-progress-linear
-        color="#241e6d"
-        indeterminate
-        rounded
-        height="6"
-      ></v-progress-linear>
-    </div>
+      <v-window-item :value="1">
+        <div>
+          <div class="flex justify-center gap-2 max-sm:flex-col w-full">
+            <div
+              class="w-full sm:w-1/2 text-center flex flex-col gap-3 mt-2 sm:mt-8 items-center"
+            >
+              <button
+                v-if="userVersion === 2"
+                class="inline-block tex-center text-white py-2 w-full sm:w-2/3 font-bold uppercase px-4 rounded-lg hover:bg-teal-600 bg-teal-green transition transform duration-300 hover:shadow-lg active:scale-95 border-2"
+                @click="step = 2"
+              >
+                Upgrade
+              </button>
+              <button
+                class="inline-block tex-center py-2 w-full sm:w-2/3 font-bold uppercase px-4 rounded-lg hover:bg-gray-200 border-2 border-gray-500 transition transform duration-300 hover:shadow-lg active:scale-95"
+                @click="onUpdatePaymentMethod"
+              >
+                Update Payment Method
+              </button>
+              <button
+                class="inline-block tex-center py-2 w-full sm:w-2/4 font-bold uppercase px-4 rounded-lg hover:bg-gray-200 border-2 border-gray-500 transition transform duration-300 hover:shadow-lg active:scale-95"
+                @click="onFreeSelect"
+              >
+                Payment History
+              </button>
+            </div>
+            <!-- pricing plan side -->
+            <div class="w-full sm:w-1/2">
+              <div class="mb-4 mt-8">
+                <!-- <div class="font-medium text-base">Monthly</div> -->
+                <div
+                  :class="[
+                    'shadow-md border-2 cursor-pointer mt-2 relative  active:scale-100  p-5 rounded',
+                    planType
+                      ? 'border-[#4169E1]'
+                      : 'border-black hover:scale-[1.02]',
+                  ]"
+                  @click="selectPlan('monthly')"
+                  style="transition: all 0.3s ease-in-out"
+                >
+                  <div class="flex flex-col items-center justify-center">
+                    <h2 class="text-xl sm:text-2xl font-bold mb-2">
+                      {{ planType === "monthly" ? "MONTHLY" : "ANNUAL" }}
+                    </h2>
+                    <div
+                      class="price-tag bg-white w-40 h-40 sm:w-40 sm:h-40 border-2 rounded-full flex items-center justify-center"
+                      :class="{
+                        'bg-[#4169E1] border-[#4169E1] text-white': planType,
+                        'bg-white border-black text-black': !planType,
+                      }"
+                    >
+                      <span class="text-lg sm:text-2xl"
+                        >${{
+                          planType === "monthly"
+                            ? parseFloat(monthlyTotal).toFixed(4)
+                            : parseFloat(annualTotal).toFixed(4)
+                        }}</span
+                      >
+                      <span class="text-xs ml-1"
+                        >/{{ planType === "monthly" ? "mo" : "yr" }}</span
+                      >
+                    </div>
+                    <div class="features w-full text-center mb-6">
+                      <div class="flex justify-between">
+                        <div class="flex items-center justify-center mb-2">
+                          <Icon
+                            icon="mdi:calendar-month"
+                            class="w-5 h-5 mr-2"
+                          />
+                          <p>
+                            <strong>
+                              {{
+                                planType === "monthly" ? "Monthly" : "Annually"
+                              }}</strong
+                            >
+                          </p>
+                        </div>
+                        <div>${{ pricingPlan.original_amount }}</div>
+                      </div>
+
+                      <div class="flex justify-between">
+                        <div class="flex items-center justify-center mb-2">
+                          <Icon icon="mdi:cash-register" class="w-5 h-5 mr-2" />
+                          <p><strong>Sales Tax</strong></p>
+                        </div>
+                        <div>{{ pricingPlan.sales_tax }}%</div>
+                      </div>
+                      <div
+                        class="flex justify-between"
+                        v-if="pricingPlan.discount_amount > 0"
+                      >
+                        <div class="flex items-center justify-center mb-2">
+                          <Icon icon="mdi-tag" class="w-5 h-5 mr-2" />
+                          <p><strong>Discount</strong></p>
+                        </div>
+                        <div>${{ pricingPlan.discount_amount }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-2">
+                <div class="uppercase text-sm font-bold text-blue-rgba">
+                  Billing Start Date
+                </div>
+                <div class="font-medium text-base">
+                  {{ formatDateTime(pricingPlan.started_at) }}
+                </div>
+              </div>
+              <div class="mb-2">
+                <div class="uppercase text-sm font-bold text-blue-rgba">
+                  Next Billing Date
+                </div>
+                <div class="font-medium text-base">
+                  {{ formatDateTime(pricingPlan.ends_at) }}
+                </div>
+              </div>
+              <div class="mb-2" v-if="pricingPlan.discount_end_date">
+                <div class="uppercase text-sm font-bold text-blue-rgba">
+                  Discount end date
+                </div>
+                <div class="font-medium text-base">
+                  {{ pricingPlan.discount_end_date.replace(/-/g, "/") }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8 flex max-sm:flex-col text-sm">
+            <div
+              v-if="
+                Object.keys(pricingPlan).length > 2 &&
+                !pricingPlan.is_cancellation_requested
+              "
+              class="flex"
+            >
+              <div class="">For cancelling your subscription ,</div>
+              <div
+                @click="openAssuringCancelSubDialog"
+                class="font-bold ml-1 text-blue-rgba cursor-pointer"
+              >
+                click here.
+              </div>
+            </div>
+            <div class="flex">
+              <div class="sm:ml-1">For billing inquiries ,</div>
+              <a
+                href="mailto:tcontractor@gmail.com"
+                class="font-bold ml-1 text-blue-rgba"
+                >please contact us.</a
+              >
+            </div>
+          </div>
+        </div>
+        <div
+          v-if="loading && Object.keys(pricingPlan).length === 2"
+          class="h-full h-[80vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4"
+        >
+          <div class="text-center text-xl">Loading...</div>
+          <v-progress-linear
+            color="#241e6d"
+            indeterminate
+            rounded
+            height="6"
+          ></v-progress-linear></div
+      ></v-window-item>
+
+      <v-window-item :value="2">
+        <PricingVersions
+          @platinumSelected="
+            () => {
+              console.log('platinumSelected');
+              step++;
+            }
+          "
+          :showRightVersionText="false"
+          pageName="settings"
+      /></v-window-item>
+      <v-window-item :value="3">
+        <SettingPricingPlans
+          :subscribedPlan="planType"
+          :annualPaid="
+            planType !== 'monthly' ? parseFloat(annualTotal).toFixed(2) : 0
+          "
+          :region_id="props.profile.region_id"
+          choosedVersion="platinum"
+          :billing_start_date="pricingPlan.started_at"
+          @onUpdatePaymentMethod="updatePaymentMethodAndSubscribe"
+        />
+      </v-window-item>
+    </v-window>
   </section>
   <CustomDialog
     submitText="Cancel Subscription"
@@ -364,3 +471,4 @@ const handleCancelSubscription = async () => {
     </div>
   </CustomDialog>
 </template>
+<style scoped></style>

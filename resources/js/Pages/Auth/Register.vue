@@ -106,7 +106,6 @@ const validateForm = () => {
 };
 
 const clearError = (field) => {
-  console.log(field, form[field], "field");
   if (form[field].trim()) {
     errors[field] = "";
   }
@@ -350,12 +349,10 @@ const validatePassword = () => {
           width="30"
         />
       </PrimaryButton>
-      
     </div>
     <div class="flex items-center justify-end">
       <InputError class="mt-1" :message="form.errors.general" />
     </div>
-
   </SignUpLayout>
   <WelcomeFooter :showit="showit" />
 </template>

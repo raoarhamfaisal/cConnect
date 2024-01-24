@@ -5,7 +5,7 @@ import { createApp, h } from "vue";
 import "@mdi/font/css/materialdesignicons.css";
 import { createInertiaApp, Link, Head } from "@inertiajs/inertia-vue3";
 import { InertiaProgress } from "@inertiajs/progress";
-import { VSkeletonLoader } from "vuetify/components";
+import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 import {
   VStepper,
   VStepperWindow,
@@ -13,11 +13,9 @@ import {
   VStepperItem,
   VStepperActions,
   VStepperHeader,
-} from "vuetify/components";
+} from "vuetify/labs/VStepper";
 import { setupCalendar } from "v-calendar";
 import {
-  VBtn,
-  VBtnToggle,
   VExpansionPanels,
   VExpansionPanel,
   VExpansionPanelTitle,
@@ -52,8 +50,6 @@ import * as directives from "vuetify/directives"; // You might want to fine-tune
 
 const vuetify = createVuetify({
   components: {
-    VBtn,
-    VBtnToggle,
     VExpansionPanels,
     VExpansionPanel,
     VExpansionPanelTitle,
