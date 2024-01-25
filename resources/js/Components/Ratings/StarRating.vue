@@ -47,6 +47,9 @@
     <div
       v-if="isIndicatorActive"
       :class="`indicator font-mono font-semibold flex justify-center items-center ${indicatorClasses} text-xl `"
+      :style="{
+        transform: 'translateY(2px)',
+      }"
     >
       {{ rating }}
     </div>

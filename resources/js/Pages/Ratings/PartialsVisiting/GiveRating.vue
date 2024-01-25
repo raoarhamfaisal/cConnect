@@ -228,7 +228,7 @@ const handleSubmit = async () => {
         give_full_payment: form.paid_them.value,
         how_did_you_meet_this_contractor: selectedReferal.value,
         rating: form.rating.value,
-        profile_id: profileId,
+        reviewer_id: profileId,
         contractor_id: contractorId,
         is_under_appeal: false,
       };

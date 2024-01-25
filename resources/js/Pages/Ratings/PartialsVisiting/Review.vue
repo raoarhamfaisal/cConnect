@@ -2,19 +2,19 @@
   <div class="flex space-x-2 justify-between">
     <div class="flex justify-center items-center space-x-2">
       <div>
-        <Avatar :imageSrc="review.profile.user_avatar" />
+        <Avatar :imageSrc="review.reviewer.user_avatar" />
       </div>
       <div class="flex flex-col justify-center">
         <h2
           class="text-md xs:text-xl font-medium font-bold text-gray-900 dark:text-gray-100"
         >
-          {{ review.profile.first_name }} {{ review.profile.last_name }}
+          {{ review.reviewer.first_name }} {{ review.reviewer.last_name }}
         </h2>
-        <div class="text-sm xs:text-lg">{{ review.profile.company_name }}</div>
+        <div class="text-sm xs:text-lg">{{ review.reviewer.company_name }}</div>
         <span
           class="text-xs xs:text-lg"
-          v-if="review.profile.city || review.profile.state"
-          >{{ `${review.profile.city} ${review.profile.state}` }}</span
+          v-if="review.reviewer.city || review.reviewer.state"
+          >{{ `${review.reviewer.city} ${review.reviewer.state}` }}</span
         >
       </div>
       <div
@@ -46,7 +46,7 @@
         v-if="
           screenWidth >= 600 &&
           nonEditableReview === false &&
-          profileId === review.profile_id
+          profileId === review.reviewer_id
         "
       >
         <!-- edit -->
@@ -75,7 +75,7 @@
     v-if="
       screenWidth < 600 &&
       nonEditableReview === false &&
-      profileId === review.profile_id
+      profileId === review.reviewer_id
     "
   >
     <!-- edit -->
@@ -96,12 +96,12 @@
   <div class="mt-3">
     <!-- trades -->
     <div class="pl-2 text-sm xs:text-md font-bold">
-      {{ review.profile.first_name }} {{ review.profile.last_name }}
+      {{ review.reviewer.first_name }} {{ review.reviewer.last_name }}
       {{ "'s Trades :" }}
     </div>
     <template v-for="(option, index) in options" :key="option.name">
       <Badge
-        v-if="review.profile[option.id] === 1"
+        v-if="review.reviewer[option.id] === 1"
         class="my-1 mx-1 space-x-1 flex"
         :style="{
           backgroundColor: index % 2 === 0 ? '#5f3dc4' : '#364fc7',
