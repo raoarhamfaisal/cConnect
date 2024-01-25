@@ -9,15 +9,13 @@
     :show-post-buttons="true"
     color="rgb(229 231 235 / var(--tw-bg-opacity))"
   >
-    <div
-      v-if="!loading && contractorReviews && average_rating && starPercentages"
-      class="bg-gray-200 mt-10"
-    >
+    <div v-if="!loading && contractor" class="bg-gray-200 mt-10">
       <Card :shadowLevel="2" bgColor="white" padding="20px">
-        <ContractorInfo :contractor="contractorReviews[0]?.contractor" />
+        <ContractorInfo :contractor="contractor" />
 
         <heading-card heading="Average Ratings" class="mb-12" />
         <AverageRating
+          v-if="average_rating && starPercentages"
           :averageRating="average_rating"
           :starPercentages="starPercentages"
           :length="contractorReviews.length"
@@ -48,13 +46,13 @@
           <heading-card heading="Top Reviews" class="mt-6 mb-12" />
 
           <div v-if="contractorReviews.length > 0" class="flex gap-8 flex-col">
-            <ReviewResponse
+            <!-- <ReviewResponse
               v-for="(review, index) in contractorReviews"
               :key="index"
               :review="review"
-              :contractorId="contractorReviews[0]?.contractor_id"
+              :contractorId="contractor.id"
               :profileId="profile.user_id"
-            />
+            /> -->
           </div>
           <div v-if="contractorReviews.length === 0">
             <div
@@ -86,7 +84,7 @@
               <transition name="accordion">
                 <GiveRating
                   :profileId="profile.user_id"
-                  :contractorId="contractorReviews[0]?.contractor_id"
+                  :contractorId="contractor.id"
                   @addReview="refreshPage"
                 />
               </transition>
@@ -113,6 +111,11 @@ import Loader from "@/Components/Ratings/Loader.vue";
 import ContractorInfo from "./PartialsVisiting/ContractorInfo.vue";
 import GiveRating from "./PartialsVisiting/GiveRating.vue";
 
+import { ref, nextTick, onMounted, watch, computed } from "vue";
+import { somethingWentWrong } from "@/helpers/utilities";
+import { useStore } from "vuex";
+
+// State
 defineProps({
   profile: Object,
   posts: Object,
@@ -124,11 +127,6 @@ defineProps({
     }),
   },
 });
-import { ref, nextTick, onMounted, watch, computed } from "vue";
-import { somethingWentWrong } from "@/helpers/utilities";
-import { useStore } from "vuex";
-
-// State
 
 const store = useStore();
 const showCard = ref(false);
@@ -137,6 +135,7 @@ const contractorReviews = ref(null);
 const loading = ref(false);
 const starPercentages = ref([]);
 const average_rating = ref(null);
+const contractor = ref(null);
 
 // Mounted
 onMounted(() => {
@@ -168,7 +167,8 @@ const fetchReviews = async () => {
       },
     });
     contractorReviews.value = response.data.reviews;
-    console.log(response.data);
+    contractor.value = response.data.contractor;
+    console.log(contractor, response.data.contractor);
     average_rating.value = response.data.average_rating;
     // Extracting the star counts
     const {
