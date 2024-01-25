@@ -18,7 +18,7 @@
           v-if="average_rating && starPercentages"
           :averageRating="average_rating"
           :starPercentages="starPercentages"
-          :length="contractorReviews.length"
+          :length="pagination.total"
           class="mb-12"
         />
         <!-- Filters -->
@@ -26,8 +26,17 @@
           <heading-card class="mt-6" heading="Order Reviews By" />
           <div class="xs:mb-12 mb-6">
             <div class="flex gap-3">
-              <Button @onSelect="handleSelect">Latest</Button>
-              <Button @onSelect="handleSelect">Oldest</Button>
+              <Button
+                :selected="sortByDate === 'latest'"
+                @onSelect="(selected) => handleDate(selected, 'latest')"
+                >Latest</Button
+              >
+
+              <Button
+                :selected="sortByDate === 'oldest'"
+                @onSelect="(selected) => handleDate(selected, 'oldest')"
+                >Oldest</Button
+              >
             </div>
           </div>
         </div>
@@ -36,9 +45,23 @@
           <heading-card heading="Ratings" class="mt-6" />
           <div class="flex gap-3">
             <div class="flex gap-3">
-              <Button @onSelect="handleSelect">Highest rated</Button>
-              <Button @onSelect="handleSelect">Middle Rated</Button>
-              <Button @onSelect="handleSelect">Low Rated</Button>
+              <Button
+                :selected="sortByRating === 'highest'"
+                @onSelect="(selected) => handleRating(selected, 'highest')"
+                >Highest rated</Button
+              >
+
+              <Button
+                :selected="sortByRating === 'middle'"
+                @onSelect="(selected) => handleRating(selected, 'middle')"
+                >Middle Rated</Button
+              >
+
+              <Button
+                :selected="sortByRating === 'lowest'"
+                @onSelect="(selected) => handleRating(selected, 'lowest')"
+                >Low Rated</Button
+              >
             </div>
           </div>
         </div>
@@ -51,7 +74,7 @@
               :key="index"
               :review="review"
               :contractorId="contractor.id"
-              :profileId="profile.user_id"
+              :profileId="profile.id"
             />
           </div>
           <div v-if="contractorReviews.length === 0">
@@ -64,9 +87,9 @@
         </div>
         <div class="flex items-center justify-center mb-4">
           <CustomPagination
-            :total-items="50"
-            :current-page="1"
-            :items-per-page="5"
+            :total-items="pagination.total"
+            :current-page="pagination.current_page"
+            :items-per-page="pagination.per_page"
             v-model="currentPage"
             :max-pages-shown="3"
             :on-click="onClickHandler"
@@ -93,7 +116,7 @@
             >
               <transition name="accordion">
                 <GiveRating
-                  :profileId="profile.user_id"
+                  :profileId="profile.id"
                   :contractorId="contractor.id"
                   @addReview="refreshPage"
                 />
@@ -122,7 +145,7 @@ import Loader from "@/Components/Ratings/Loader.vue";
 import ContractorInfo from "./PartialsVisiting/ContractorInfo.vue";
 import GiveRating from "./PartialsVisiting/GiveRating.vue";
 
-import { ref, nextTick, onMounted, watch, computed } from "vue";
+import { ref, nextTick, onMounted, watch, computed, reactive } from "vue";
 import { somethingWentWrong } from "@/helpers/utilities";
 import { useStore } from "vuex";
 
@@ -148,6 +171,9 @@ const loading = ref(false);
 const starPercentages = ref([]);
 const average_rating = ref(null);
 const contractor = ref(null);
+const sortByDate = ref("latest");
+const sortByRating = ref("highest");
+const pagination = ref(0);
 
 // Mounted
 onMounted(() => {
@@ -157,29 +183,56 @@ onMounted(() => {
 //Computed
 
 const isFetchReviews = computed(() => store.state.ratings.isFetchReviews);
+const isDeleted = computed(() => store.state.ratings.isDeleted);
 
 //Watch
 watch(isFetchReviews, (newVal) => {
   if (newVal) {
-    fetchReviews();
-    console.log("inFetchReview");
+    fetchReviews(15, currentPage.value);
     store.commit("ratings/setIsFetchReviews", false);
+  }
+});
+watch(isDeleted, (newVal) => {
+  if (newVal) {
+    if (pagination.value.total % pagination.value.per_page === 1) {
+      currentPage.value = currentPage.value - 1;
+      fetchReviews(15, currentPage.value);
+    }
+    fetchReviews(15, currentPage.value);
+    store.commit("ratings/setIsDeleted", false);
   }
 });
 
 // Methods
 
+const handleDate = (selected, sortByString) => {
+  if (selected) {
+    sortByDate.value = sortByString;
+    fetchReviews(15, currentPage.value);
+  }
+};
+const handleRating = (selected, sortByRate) => {
+  if (selected) {
+    sortByRating.value = sortByRate;
+    fetchReviews(15, currentPage.value);
+  }
+};
+
 // Fetch REviews
-const fetchReviews = async () => {
+const fetchReviews = async (per_page = 15, page = 1) => {
   try {
     loading.value = true;
-    const response = await axios.get(`/api/reviews/6`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await axios.get(
+      `/api/reviews/2?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     contractorReviews.value = response.data.reviews;
     contractor.value = response.data.contractor;
+    pagination.value = response.data.pagination;
     console.log(contractor, response.data.contractor);
     average_rating.value = response.data.average_rating;
     // Extracting the star counts
@@ -239,11 +292,11 @@ const handleSelect = async () => {
   }
 };
 const refreshPage = () => {
-  fetchReviews();
+  fetchReviews(15, currentPage.value);
   handleSelect();
 };
 const onClickHandler = (page) => {
-  console.log("pageClick", page);
+  fetchReviews(15, page);
 };
 </script>
 

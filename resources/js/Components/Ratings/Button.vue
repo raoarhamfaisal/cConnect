@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 // Props for the component
 const props = defineProps({
@@ -29,6 +29,13 @@ const toggleSelect = () => {
   isSelected.value = !isSelected.value;
   emit("onSelect", isSelected.value); // For v-model compatibility
 };
+
+watch(
+  () => props.selected,
+  () => {
+    isSelected.value = props.selected;
+  }
+);
 </script>
 
 <style scoped>

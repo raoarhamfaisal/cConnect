@@ -440,12 +440,6 @@ const lastPageButtonIfCondition = computed(() => {
 // --------------------------- //
 // ---> Validations Check <--- //
 // --------------------------- //
-// current page can't be greater than total pages
-// if (currentPageRef.value > totalPages) {
-//   console.log("currentPage must be less than or equal to totalPages.");
-//   throw new TypeError(`currentPage must be less than or equal to totalPages.`);
-// }
-
 // if type attribute is link, then linkUrl attribute is required
 if (props.type === "link" && props.linkUrl === "#") {
   console.error(`linkUrl attribute is required if type attribute is 'link'`);

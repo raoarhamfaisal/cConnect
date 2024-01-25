@@ -4,6 +4,8 @@
   <CustomDialog
     submitText="Delete"
     @submit="handleSubmit"
+    :loading="loading"
+    :disabled="disabled"
     ref="deleteDialogRef"
     errorIcon
     dialogWidth="max-h-[70vh] width50"
@@ -21,17 +23,23 @@
 </template>
 
 <script setup>
-import { useForm } from "@inertiajs/inertia-vue3";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
-import { ref } from "vue";
-
-const form = useForm({
-  deleting_reason: null,
-});
+import { ref, computed } from "vue";
+import { useStore } from "vuex";
+//States
+const { responseId } = defineProps(["responseId"]);
 const deleteDialogRef = ref();
+const store = useStore();
 
-const handleSubmit = () => {
-  console.log("here", form);
+//Computed
+const loading = computed(() => store.state.ratings.loading);
+const disabled = computed(() => store.state.ratings.disabled);
+
+//Methods
+
+const handleSubmit = async () => {
+  await store.dispatch("ratings/deleteResponse", responseId);
+  deleteDialogRef.value.closeDialog();
 };
 
 const openDialogDelete = () => {

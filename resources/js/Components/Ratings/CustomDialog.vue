@@ -10,11 +10,11 @@
     >
       <div
         :class="[dialogWidth]"
-        class="bg-white md:w-2/3 w-full max-h-[90vh] max-md:max-h-full rounded-lg max-sm:rounded-none shadow-lg flex flex-col z-10"
+        class="bg-white md:w-2/3 w-full max-h-[90vh] max-md:max-h-full rounded-xl max-sm:rounded-none shadow-xl flex flex-col z-10"
         @click.stop
       >
         <div
-          class="flex justify-between max-md:rounded-none rounded-lg items-center p-4 bg-gray-100"
+          class="flex justify-between rounded-b-none max-md:rounded-none rounded-lg text-white items-center p-4 bg-[#241e6d]"
         >
           <div class="flex items-center gap-2">
             <h3 class="text-xl font-bold">{{ title }}</h3>
@@ -27,7 +27,7 @@
           </div>
           <button
             @click="closeDialog"
-            class="p-2 hover:bg-gray-200 rounded-full"
+            class="p-2 hover:bg-[#6741d9] rounded-full w-12"
           >
             X
           </button>
@@ -41,7 +41,7 @@
         <div class="flex justify-between p-4">
           <button
             @click="closeDialog"
-            class="px-4 py-2 rounded bg-red-500 text-white"
+            class="px-4 py-2 rounded text-white bg-[#364fc7]"
           >
             Cancel
           </button>
@@ -49,11 +49,14 @@
             @click="submit"
             :disabled="disabled"
             type="submit"
-            class="px-4 py-2 flex items-center gap-2 rounded bg-blue-500 text-white"
+            class="px-4 py-2 flex items-center gap-2 rounded bg-[#5f3dc4] text-white"
+            :style="{
+              backgroundColor: errorIcon ? '#f03e3e' : '',
+            }"
           >
             <div class="flex items-center justify-center">{{ submitText }}</div>
             <img
-              v-if="loading"
+              v-show="loading"
               src="/images/avatars/Spinner.gif"
               alt="spinner"
               width="30"

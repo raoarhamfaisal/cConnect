@@ -7,9 +7,17 @@
       :contractorId="contractorId"
     />
 
-    <!-- <div v-if="review.response">
-      <Response :response="review.response" :contractor="contractor" />
-    </div> -->
+    <div
+      v-if="
+        review.review_response && Object.keys(review.review_response).length > 1
+      "
+    >
+      <Response
+        :response="review.review_response"
+        :contractorId="contractorId"
+        :profileId="profileId"
+      />
+    </div>
   </section>
 </template>
 

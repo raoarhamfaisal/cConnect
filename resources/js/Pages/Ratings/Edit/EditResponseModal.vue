@@ -4,11 +4,13 @@
     submitText="Save Changes"
     @submit="handleSubmit"
     ref="dialogRef"
+    :loading="loading"
+    :disabled="disabled"
     title="Edit Response"
   >
     <form @submit.prevent="handleSubmit">
       <!-- response -->
-      <div v-if="form?.response_text" class="mb-4">
+      <div class="mb-4">
         <div class="text-md font-bold text-gray-600 mt-3 mb-2">
           Contractors Response
         </div>
@@ -18,10 +20,14 @@
           :rows="5"
           class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
           required
-          v-model="form.response_text"
+          v-model="response_text"
           placeholder="Type your response text"
         />
-        <InputError class="mt-2" :message="form.errors.response_text" />
+        <InputError
+          v-if="responseError"
+          class="mt-2"
+          :message="responseError"
+        />
       </div>
     </form>
   </CustomDialog>
@@ -29,19 +35,58 @@
 
 <script setup>
 import InputError from "@/Components/InputError.vue";
-import { useForm } from "@inertiajs/inertia-vue3";
 
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
-import { ref } from "vue";
-const { responseText } = defineProps(["responseText"]);
+import { ref, watch, computed } from "vue";
+import { useStore } from "vuex";
 
-const form = useForm({
-  response_text: responseText,
-});
+//States
+const { responseText, responseId } = defineProps([
+  "responseText",
+  "responseId",
+]);
+const store = useStore();
+
+const response_text = ref(responseText);
 
 const dialogRef = ref();
-const handleSubmit = () => {
-  // form.patch(route('profile.updateGeneralInfo'))
+const responseError = ref("");
+//Computed
+const loading = computed(() => store.state.ratings.loading);
+const disabled = computed(() => store.state.ratings.disabled);
+
+//Watch
+
+watch(
+  () => response_text.value,
+  () => {
+    responseError.value = "";
+  }
+);
+
+//Methods
+const validate = () => {
+  let isValid = true;
+  // Reset the error messages before validating
+  responseError.value = "";
+
+  // Validate rating_text
+  if (!response_text.value || response_text.value.trim() === "") {
+    responseError.value = "Response should not be empty.";
+    isValid = false;
+  }
+
+  return isValid;
+};
+const handleSubmit = async () => {
+  if (validate()) {
+    const updateResponse = {
+      response_text: response_text.value,
+      response_id: responseId,
+    };
+    await store.dispatch("ratings/updateResponse", updateResponse);
+    dialogRef.value.closeDialog();
+  }
 };
 
 const openDialogEdit = () => {
