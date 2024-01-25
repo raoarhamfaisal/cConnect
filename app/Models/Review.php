@@ -21,7 +21,7 @@ class Review extends Model
         'off_appeal_reason_date',
         'is_under_appeal',
         'hired_by_contractor',
-        'paid_on_tim',
+        'paid_on_time',
         'hired_contractor',
         'give_full_payment',
         'how_did_you_meet_this_contractor'

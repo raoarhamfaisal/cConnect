@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('review_responses', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('review_id');
             $table->longText('response_text');
             $table->dateTime('response_date')->default(now());
             $table->timestamps();
