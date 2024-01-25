@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Profile;
+
+
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,8 +20,8 @@ class ReviewFactory extends Factory
     public function definition()
     {
         return [
-            'profile_id' => $this->faker->numberBetween(1, 4),
-            'contractor_id' => $this->faker->numberBetween(1, 4),
+            'reviewer_id' => Profile::inRandomOrder()->first()->id,
+            'contractor_id' => Profile::inRandomOrder()->first()->id,
             'rating' => $this->faker->numberBetween(1, 5),
             'rating_text' => $this->faker->text(),
             'rating_date' => $this->faker->dateTime($max = 'now'),

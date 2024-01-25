@@ -24,7 +24,24 @@ class ReviewResponseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validation
+        $data = $request->validate([
+            'response_text' => 'required|string|max:5000',  // max length is just an example, adjust as needed
+            'review_id' => 'required|exists:reviews,id'
+        ]);
+
+        // Store the Review Response
+        $reviewResponse = new ReviewResponse;
+        $reviewResponse->response_text = $data['response_text'];
+        $reviewResponse->response_date = now();  // Laravel's helper to get current date-time
+        $reviewResponse->save();
+
+        // Update the Review model with the response_id
+        $review = Review::find($data['review_id']);
+        $review->response_id = $reviewResponse->id;
+        $review->save();
+
+        return response()->json(['message' => 'Review response saved successfully!'], 200);
     }
 
     /**

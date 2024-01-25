@@ -28,13 +28,14 @@ class Review extends Model
 
     ];
 
-    public function profile() 
+    public function reviewer() 
     {
-        return $this->belongsTo(Profile::class, 'profile_id');
+        return $this->belongsTo(Profile::class, 'reviewer_id');
     }
 
-    public function contractor()
+    public function review_response() 
     {
-        return $this->belongsTo(Profile::class, 'contractor_id');
+        return $this->belongsTo(ReviewResponse::class, 'response_id');
     }
+
 }
