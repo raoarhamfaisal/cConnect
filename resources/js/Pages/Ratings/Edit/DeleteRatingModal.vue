@@ -5,6 +5,8 @@
     submitText="Delete"
     @submit="handleSubmit"
     ref="deleteDialogRef"
+    :loading="loading"
+    :disabled="disabled"
     errorIcon
     dialogWidth="max-h-[70vh] width50"
     title="Are you sure? "
@@ -21,17 +23,27 @@
 </template>
 
 <script setup>
-import { useForm } from "@inertiajs/inertia-vue3";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import { useStore } from "vuex";
 
-const form = useForm({
-  deleting_reason: null,
-});
+const store = useStore();
 const deleteDialogRef = ref();
+const { reviewId } = defineProps({
+  reviewId: {
+    type: Number,
+  },
+});
 
-const handleSubmit = () => {
-  console.log("here", form);
+//Computed
+const loading = computed(() => store.state.ratings.loading);
+const disabled = computed(() => store.state.ratings.disabled);
+
+//Methods
+
+const handleSubmit = async () => {
+  await store.dispatch("ratings/deleteReview", reviewId);
+  deleteDialogRef.value.closeDialog();
 };
 
 const openDialogDelete = () => {

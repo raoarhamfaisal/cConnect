@@ -47,10 +47,17 @@
           </button>
           <button
             @click="submit"
+            :disabled="disabled"
             type="submit"
-            class="px-4 py-2 rounded bg-blue-500 text-white"
+            class="px-4 py-2 flex items-center gap-2 rounded bg-blue-500 text-white"
           >
-            {{ submitText }}
+            <div class="flex items-center justify-center">{{ submitText }}</div>
+            <img
+              v-if="loading"
+              src="/images/avatars/Spinner.gif"
+              alt="spinner"
+              width="30"
+            />
           </button>
         </div>
       </div>
@@ -73,6 +80,14 @@ const props = defineProps({
     default: "",
   },
   errorIcon: {
+    type: Boolean,
+    default: false,
+  },
+  loading: {
+    type: Boolean,
+    default: false,
+  },
+  disabled: {
     type: Boolean,
     default: false,
   },

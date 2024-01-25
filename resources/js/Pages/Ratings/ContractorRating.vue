@@ -52,7 +52,7 @@
               v-for="(review, index) in contractorReviews"
               :key="index"
               :review="review"
-              :contractor="contractor"
+              :contractorId="contractorReviews[0]?.contractor_id"
               :profileId="profile.user_id"
             />
           </div>
@@ -86,8 +86,8 @@
               <transition name="accordion">
                 <GiveRating
                   :profileId="profile.user_id"
-                  @addReview="refreshPage"
                   :contractorId="contractorReviews[0]?.contractor_id"
+                  @addReview="refreshPage"
                 />
               </transition>
             </Card>
@@ -124,11 +124,13 @@ defineProps({
     }),
   },
 });
-import { ref, nextTick, onMounted } from "vue";
+import { ref, nextTick, onMounted, watch, computed } from "vue";
 import { somethingWentWrong } from "@/helpers/utilities";
+import { useStore } from "vuex";
 
 // State
 
+const store = useStore();
 const showCard = ref(false);
 const cardRef = ref(null);
 const contractorReviews = ref(null);
@@ -139,6 +141,19 @@ const average_rating = ref(null);
 // Mounted
 onMounted(() => {
   fetchReviews();
+});
+
+//Computed
+
+const isFetchReviews = computed(() => store.state.ratings.isFetchReviews);
+
+//Watch
+watch(isFetchReviews, (newVal) => {
+  if (newVal) {
+    fetchReviews();
+    console.log("inFetchReview");
+    store.commit("ratings/setIsFetchReviews", false);
+  }
 });
 
 // Methods
