@@ -28,4 +28,17 @@ export const somethingWentWrong = (
     width: 300,
   });
 };
+
+export function convertDateFormat(dateString) {
+  // Create a new date object from the input string
+  const date = new Date(dateString);
+
+  // Extract the day, month, and year from the date object
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Note: Months are 0-based
+  const year = date.getFullYear();
+
+  // Return the desired format
+  return `${day}/${month}/${year}`;
+}
 // import { changesSaved, somethingWentWrong } from "@/helpers/utilities"

@@ -36,23 +36,6 @@
         >
           {{ question.question }}
         </div>
-        <!-- <div class="switch">
-          <div
-            :class="[
-              question.questionAnswer === 1
-                ? 'switch-bg-on opacity-30'
-                : 'switch-bg-off',
-            ]"
-          >
-            <div
-              :class="[
-                question.questionAnswer === 1
-                  ? 'switch-knob-on'
-                  : 'switch-knob-off',
-              ]"
-            ></div>
-          </div>
-        </div> -->
       </div>
       <div
         class="w-full flex items-center col-span-2 pl-1 text-xs xs:text-sm sm:text-base font-bold text-gray-600"
@@ -64,7 +47,7 @@
           }"
           class="border-b-2 border-[#495057] text-xs xs:text-sm"
         >
-          {{ selectedReferal[0] }}
+          {{ selectedReferal }}
         </div>
       </div>
     </div>

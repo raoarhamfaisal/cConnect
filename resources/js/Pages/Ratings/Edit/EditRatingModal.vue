@@ -18,15 +18,15 @@
       <div class="mb-4">
         <div class="text-md font-bold text-gray-600 mt-3 mb-2">Review Text</div>
         <textarea
-          id="rating_reason"
+          id="rating_text"
           type="text"
           :rows="5"
           class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
           required
-          v-model="form.rating_reason"
+          v-model="form.rating_text"
           placeholder="Type reason for your rating"
         />
-        <InputError class="mt-2" :message="form.errors.rating_reason" />
+        <!-- <InputError class="mt-2" :message="form.errors.rating_text" /> -->
       </div>
       <!-- QuestionsSwitch -->
       <div
@@ -53,36 +53,6 @@
           </div>
         </div>
       </div>
-      <!-- QuestionsTExt -->
-      <!-- <div class="relative grid items-center">
-        <label class="text-md font-bold text-gray-600 block mb-2">
-          How did you meet this contractor?
-        </label>
-        <div
-          class="relative w-auto border border-gray-300 rounded-md cursor-pointer p-2 pr-8"
-          @click.stop="showDropdown = !showDropdown"
-        >
-          {{ selectedReferal || "Select any option" }}
-          <Icon
-            icon="gridicons:dropdown"
-            class="absolute top-1/2 transform -translate-y-1/2 right-2 text-gray-500"
-          ></Icon>
-          <ul
-            v-if="showDropdown"
-            class="absolute left-0 w-full mt-2 border border-gray-300 rounded-md bg-white shadow-lg z-10"
-            @click.stop
-          >
-            <li
-              v-for="option in referenceList"
-              :key="option"
-              class="p-2 hover:bg-blue-700 hover:text-white cursor-pointer"
-              @click="selectOption(option)"
-            >
-              {{ option }}
-            </li>
-          </ul>
-        </div>
-      </div> -->
 
       <CustomSelect
         :options="referenceList"
@@ -106,13 +76,20 @@ import CustomSelect from "@/Components/CustomSelect.vue";
 import StarRatingEditable from "@/Components/Ratings/StarRatingEditable.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import { ref } from "vue";
-const { review } = defineProps(["review"]);
+const { review, questionsSwitch } = defineProps({
+  review: {
+    type: Object,
+  },
+  questionsSwitch: {
+    type: Array,
+  },
+});
 
 const form = useForm({
-  rating: review?.rating,
-  questionsSwitch: review?.questionsSwitch,
-  questionsText: review?.questionsText,
-  rating_reason: review?.rating_reason,
+  rating: Number(parseFloat(review.rating).toFixed(1)),
+  questionsSwitch: questionsSwitch,
+  how_did_you_meet_this_contractor: review?.how_did_you_meet_this_contractor,
+  rating_text: review?.rating_text,
   onApealGranted: null,
   offAppealGranted: null,
   editing_reason: null,
@@ -136,13 +113,14 @@ const openDialogEdit = () => {
 };
 const referenceList = [
   "Contractor Referral",
+  review.how_did_you_meet_this_contractor,
   "Friend Referral",
   "Other Contractor",
   "Job Site",
   "Store/Gas Station",
   "Other",
 ];
-const selectedReferal = ref("Job Site");
+const selectedReferal = ref(review.how_did_you_meet_this_contractor);
 
 defineExpose({ openDialogEdit });
 </script>

@@ -71,7 +71,6 @@ const selectOption = (option) => {
 };
 
 const handleOutsideClick = (event) => {
-  console.log(dropdownContainer.value, "clicked", event.target);
   if (
     dropdownContainer.value &&
     !(
