@@ -150,8 +150,9 @@ class ReviewController extends Controller
      */
     public function store(Request $request)
     {
+
         $data = $request->validate([
-            'profile_id' => 'required|integer|exists:profiles,id',
+            'reviewer_id' => 'required|integer|exists:profiles,id',
             'contractor_id' => 'required|integer|exists:profiles,id',
             'rating' => 'required|numeric|between:0,999999.99',
             'rating_text' => 'required|string',
@@ -197,7 +198,7 @@ class ReviewController extends Controller
     public function update(Request $request, Review $review)
     {
         $data = $request->validate([
-            'profile_id' => 'integer|exists:profiles,id',
+            'reviewer_id' => 'integer|exists:profiles,id',
             'contractor_id' => 'integer|exists:profiles,id',
             'rating' => 'numeric|between:0,999999.99',
             'rating_text' => 'string',
