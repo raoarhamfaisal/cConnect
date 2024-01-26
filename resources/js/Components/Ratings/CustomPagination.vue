@@ -1,4 +1,5 @@
 <script setup>
+import { Icon } from "@iconify/vue";
 import { toRef } from "vue";
 import { computed } from "vue";
 
@@ -528,7 +529,7 @@ if (props.type === "link" && !props.linkUrl.includes("[page]")) {
         :disabled="disablePagination"
       >
         <slot name="prev-button">
-          {{ prevButtonContent }}
+          <Icon icon="ooui:next-rtl" color="#333" />
         </slot>
       </component>
     </li>
@@ -680,7 +681,7 @@ if (props.type === "link" && !props.linkUrl.includes("[page]")) {
         :disabled="disablePagination"
       >
         <slot name="next-button">
-          {{ nextButtonContent }}
+          <Icon icon="grommet-icons:next" color="#333" />
         </slot>
       </component>
     </li>
@@ -758,13 +759,13 @@ ul#componentContainer a {
   column-gap: 10px;
 }
 .paginate-buttons {
-  height: 30px;
-  width: 30px;
+  height: 40px;
+  width: 40px;
   border-radius: 20px;
   cursor: pointer;
   background-color: rgb(248, 249, 250);
   border: 1px solid rgb(228, 236, 243);
-  color: black;
+  color: #333;
   display: flex;
   justify-content: center;
   align-items: center;

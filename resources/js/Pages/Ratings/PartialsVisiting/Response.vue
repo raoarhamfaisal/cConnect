@@ -4,7 +4,7 @@
     :isInside="true"
     class="mt-3"
     bgColor="#f8f9fa"
-    padding="20px"
+    :padding="screenWidth > 460 ? '20px' : '10px'"
   >
     <section>
       <div class="flex justify-between">

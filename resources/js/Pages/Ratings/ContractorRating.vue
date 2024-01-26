@@ -66,7 +66,7 @@
           </div>
         </div>
         <div class="xs:mb-12 mb-6 xs:mt-12 mt-7 border-t-2 border-gray-300">
-          <heading-card heading="Top Reviews" class="mt-6 mb-12" />
+          <heading-card heading="Reviews" class="mt-6 mb-12" />
 
           <div v-if="contractorReviews.length > 0" class="flex gap-8 flex-col">
             <ReviewResponse

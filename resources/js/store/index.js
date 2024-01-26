@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-import ratings from "./ratings"; // Assuming rating.js is in the same directory
+import ratings from "./modules/ratings"; // Assuming rating.js is in the same directory
 
 export const store = createStore({
   modules: {

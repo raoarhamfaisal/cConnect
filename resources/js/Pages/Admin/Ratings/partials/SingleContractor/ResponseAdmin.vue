@@ -8,10 +8,10 @@
   >
     <section>
       <div class="flex justify-between">
-        <div class="font-bold text-md xs:text-lg sm:text-2xl mb-3 sm-mb-5">
+        <div class="font-bold text-md xs:text-lg sm:text-2xl text-2xl mb-2">
           Contractor's Response
         </div>
-        <div v-if="screenWidth >= 700" class="flex flex-col justify-between">
+        <div v-if="screenWidth >= 600" class="flex flex-col justify-between">
           <div class="flex gap-2">
             <!-- edit -->
             <ButtonRatings
@@ -68,11 +68,11 @@
           <div
             class="font-bold flex justify-center items-center text-sm xs:text-md sm:text-xl"
           >
-            {{ response.date }}
+            {{ convertDateFormat(response.response_date) }}
           </div>
         </div>
         <div class="">
-          <p class="p-2 text-sm xs:text-lg">
+          <p class="p-2 text-sm xs:text-sm xs:text-lg">
             {{
               showFullReview
                 ? response.response_text
@@ -98,8 +98,12 @@
       </div>
     </section>
   </Card>
-  <EditResponseModal ref="editRef" :responseText="response?.response_text" />
-  <DeleteResponseModal ref="deleteRef" />
+  <EditResponseModal
+    ref="editRef"
+    :responseText="response?.response_text"
+    :responseId="response.id"
+  />
+  <DeleteResponseModal ref="deleteRef" :responseId="response.id" />
   <InActiveResponseModal ref="inActiveRef" />
 </template>
 
@@ -109,9 +113,21 @@ import ButtonRatings from "@/Components/Ratings/ButtonRatings.vue";
 import EditResponseModal from "@/Pages/Admin/Ratings/partials/SingleContractor/Edit/EditResponseModal.vue";
 import DeleteResponseModal from "@/Pages/Admin/Ratings/partials/SingleContractor/Edit/DeleteResponseModal.vue";
 import InActiveResponseModal from "@/Pages/Admin/Ratings/partials/SingleContractor/Edit/InActiveResponseModal.vue";
+import { convertDateFormat } from "@/helpers/utilities";
+
 import { onMounted, onUnmounted, ref } from "vue";
 
-defineProps(["response", "contractor"]);
+defineProps({
+  response: {
+    type: Object,
+  },
+  profileId: {
+    type: Number,
+  },
+  contractorId: {
+    type: Number,
+  },
+});
 const showFullReview = ref(false);
 const editRef = ref();
 const deleteRef = ref();

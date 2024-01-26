@@ -40,7 +40,7 @@
           </span>
         </div>
         <div class="pl-2 pr-2 text-right text-md font-bold text-gray-600">
-          {{ appeal.date }}
+          {{ convertDateFormat(appeal.date) }}
         </div>
       </div>
     </div>
@@ -50,6 +50,7 @@
 <script setup>
 import Card from "@/Components/Card.vue";
 import { ref } from "vue";
+import { convertDateFormat } from "@/helpers/utilities";
 
 const { showDetails } = defineProps({
   appeal: Object,

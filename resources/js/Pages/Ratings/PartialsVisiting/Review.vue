@@ -112,7 +112,7 @@
         >{{ option.name }}</Badge
       >
     </template>
-
+    <!-- mobile veiw stars -->
     <div
       v-if="screenWidth < 1260"
       class="mt-3 mb-2 ml-1 flex items-center space-x-4"
@@ -127,6 +127,8 @@
         {{ convertDateFormat(review.rating_date) }}
       </div>
     </div>
+    <!-- qulifying questions -->
+
     <QualifyingQuestions
       v-if="questionsSwitch.length && review?.how_did_you_meet_this_contractor"
       :questionsSwitch="questionsSwitch"
