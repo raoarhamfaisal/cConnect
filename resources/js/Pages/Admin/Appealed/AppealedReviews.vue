@@ -139,6 +139,7 @@ onMounted(() => {
 
 const isFetchReviews = computed(() => store.state.ratings.isFetchReviews);
 const isDeleted = computed(() => store.state.ratings.isDeleted);
+const isInactive = computed(() => store.state.ratings.isInactive);
 
 //Watch
 watch(isFetchReviews, (newVal) => {
@@ -149,18 +150,26 @@ watch(isFetchReviews, (newVal) => {
 });
 watch(isDeleted, (newVal) => {
   if (newVal) {
-    if (pagination.value.total % pagination.value.per_page === 1) {
-      if (pagination.value.last_page === currentPage.value) {
-        currentPage.value = currentPage.value - 1;
-      }
-    }
-    fetchReviews(perPage.value, currentPage.value);
+    configueCurrentPage();
     store.commit("ratings/setIsDeleted", false);
+  }
+});
+watch(isInactive, (newVal) => {
+  if (newVal) {
+    fetchReviews(perPage.value, currentPage.value);
+    store.commit("ratings/setIsInactive", false);
   }
 });
 
 // Methods
-
+const configueCurrentPage = () => {
+  if (pagination.value.total % pagination.value.per_page === 1) {
+    if (pagination.value.last_page === currentPage.value) {
+      currentPage.value = currentPage.value - 1;
+    }
+  }
+  fetchReviews(perPage.value, currentPage.value);
+};
 const handleDate = (selected, sortByString) => {
   if (selected) {
     sortByDate.value = sortByString;
