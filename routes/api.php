@@ -155,6 +155,12 @@ Route::get('/posts/{post}/trades', [PostController::class, 'getPostTrades']);
 
         // Process Payment
         Route::post('/payment/start-subscription', [PaymentController::class, 'startSubscription'])->name('payment.startSubscription');
+
+        Route::get('/user/{userId}/payment-history', [UserController::class, 'getPaymentHistory']);
+
+
+        Route::post('/payment/switch-subscription/{userId}', [PaymentController::class, 'switchSubscription'])->name('payment.switchSubscription');
+
         Route::post('/payment/cancel-subscription/{userId}', [PaymentController::class, 'cancelSubscription'])->name('payment.cancelSubscription');
         Route::post('/subscription/request-cancellation/{userId}', [PaymentController::class, 'requestCancellation'])->name('subscription.requestCancellation');
 

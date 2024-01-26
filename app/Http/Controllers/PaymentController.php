@@ -10,12 +10,14 @@ use App\Models\PaymentInfo;
 use Illuminate\Support\Carbon;
 use Mail;
 use App\Models\DiscountCoupon;
+use App\Models\PaymentHistory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use net\authorize\api\contract\v1 as AnetAPI;
 use net\authorize\api\controller as AnetController;
 use App\Mail\SubscriptionFailedMail;
 use App\Mail\SubscriptionSuccessMail;
+use App\Mail\UpdatedSubscriptionMail;
 use App\Mail\SubscriptionCancelledMail;
 
 use App\Helpers\SubscriptionHelper;
@@ -155,6 +157,15 @@ class PaymentController extends Controller
             } else {
                 // 4. Handle failed payments
                 $this->handleFailedPayment($userId, $subscriptionResponse);
+                PaymentHistory::create([
+                    'user_id' => $userId,
+                    'amount_paid' => $finalAmount,
+                    'charged_date' => now(),
+                    'subscription_plan' => ($request->input('duration') === 'annual') ? 'Annual Subscription' : 'Monthly Subscription',
+                    'subscription_id' => null,
+                    'version' => $request->version,
+                    'was_successful' => false
+                ]);
 
                 // echo "ERROR :  Invalid subscriptionResponse\n";
                 $errorMessages = $subscriptionResponse->getMessages()->getMessage();
@@ -216,6 +227,43 @@ class PaymentController extends Controller
             return response()->json($subscriptionResponse);
         }
     }
+
+    public function switchSubscription(Request $request, $userId)
+    {
+        // DB::beginTransaction();
+        try {
+            // First, cancel the current subscription
+            $this->cancelSubscription($request, $userId, false); // Suppressing email
+    
+            // Then, start a new subscription
+            $startSubscriptionResponseJson = $this->startSubscription($request);
+
+
+    
+            $startSubscriptionResponse = json_decode($startSubscriptionResponseJson->getContent());
+            return response()->json($startSubscriptionResponse);
+            // \Log::error('Error in switchSubscription: ' . $startSubscriptionResponse);
+    
+            // if ($startSubscriptionResponse && $startSubscriptionResponse->getMessages()->getResultCode() == "Ok") {
+            //     // Send consolidated email for updated subscription
+    
+            //     // You can also log the successful response or perform other actions here
+    
+            //     // DB::commit();
+            //     return response()->json(['message' => 'Subscription updated successfully.']);
+            // } else {
+            //     // DB::rollBack();
+            //     return response()->json(['error' => 'Failed to update the subscription.'], 500);
+            // }
+        } catch (\Exception $e) {
+            // DB::rollBack();
+            \Log::error('Error in switchSubscription: ' . $e->getMessage());
+            return response()->json(['error' => 'An error occurred while updating the subscription.'], 500);
+        }
+    }
+    
+
+
 
     private function setUpSubscription($request, $finalAmount)
     {
@@ -322,6 +370,16 @@ class PaymentController extends Controller
             ]
         );
 
+        PaymentHistory::create([
+            'user_id' => $userId,
+            'amount_paid' => $finalAmount,
+            'charged_date' => now(),
+            'subscription_plan' => ($request->input('duration') === 'annual') ? 'Annual Subscription' : 'Monthly Subscription',
+            'subscription_id' => $subscriptionResponse->getSubscriptionId(),
+            'version' => $request->version,
+            'was_successful' => true
+        ]);
+
         // Determine the upcoming amount
         $upcomingAmount = $endsAt->lessThanOrEqualTo($discountEndDate) ? ($originalAmount - $discountAmount) : $originalAmount;
 
@@ -358,6 +416,7 @@ class PaymentController extends Controller
         if($user) {
             // Mail::to($user->email)->send(new SubscriptionSuccessMail($user));
             Mail::to($user->email)->send(new SubscriptionSuccessMail($user, $finalAmount, $last4Digits, Carbon::now()->format('Y-m-d')));
+            
 
         }
 
@@ -417,7 +476,7 @@ class PaymentController extends Controller
         return $this->cancelSubscription($request, $userId);
     }
         
-    public function cancelSubscription(Request $request, $userId)
+    public function cancelSubscription(Request $request, $userId, $sendEmail = true)
     {
         $subscription = Subscription::where('user_id', $userId)
             ->where('is_subscription_active', 1)
@@ -425,7 +484,7 @@ class PaymentController extends Controller
             ->first();
 
 
-        if ($subscription && $subscription->is_cancellation_requested) {
+        if ($subscription && ($subscription->is_cancellation_requested || !$sendEmail)) {
 
             /* Create a merchantAuthenticationType object with authentication details
            retrieved from the constants file */
@@ -469,7 +528,7 @@ class PaymentController extends Controller
 
                 // Send an email about cancellation
                 $user = User::find($userId);
-                if($user) {
+                if($user && $sendEmail) {
                     Mail::to($user->email)->send(new SubscriptionCancelledMail($user));
                 }
         
@@ -492,12 +551,14 @@ class PaymentController extends Controller
 
     private function removeUpcomingSubscription($userId)
     {
-        // Option 1: Delete the upcoming subscription record
         UpcomingSubscription::where('user_id', $userId)->delete();
     
-        // Option 2: Update the record to set `is_subscription_active` to 0
-        // UpcomingSubscription::where('user_id', $userId)
-        //     ->update(['is_subscription_active' => 0]);
+        Subscription::where('user_id', $userId)
+            ->update(['is_subscription_active' => 0]);
+
+            \Log::error('Error in removeUpcomingSubscription: ' . $userId);
+
+
     }
     public function getSubscriptionDetails($userId)
     {
