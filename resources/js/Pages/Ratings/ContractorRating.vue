@@ -172,7 +172,7 @@ const starPercentages = ref([]);
 const average_rating = ref(null);
 const contractor = ref(null);
 const sortByDate = ref("latest");
-const sortByRating = ref("highest");
+const sortByRating = ref("");
 const pagination = ref(0);
 
 // Mounted
@@ -208,14 +208,18 @@ watch(isDeleted, (newVal) => {
 const handleDate = (selected, sortByString) => {
   if (selected) {
     sortByDate.value = sortByString;
-    fetchReviews(15, currentPage.value);
+  } else if (!selected) {
+    sortByDate.value = "";
   }
+  fetchReviews(15, currentPage.value);
 };
 const handleRating = (selected, sortByRate) => {
   if (selected) {
     sortByRating.value = sortByRate;
-    fetchReviews(15, currentPage.value);
+  } else if (!selected) {
+    sortByRating.value = "";
   }
+  fetchReviews(15, currentPage.value);
 };
 
 // Fetch REviews
@@ -223,7 +227,7 @@ const fetchReviews = async (per_page = 15, page = 1) => {
   try {
     loading.value = true;
     const response = await axios.get(
-      `/api/reviews/2?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
+      `/api/reviews/10?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
       {
         headers: {
           "Content-Type": "application/json",

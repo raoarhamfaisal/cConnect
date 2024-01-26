@@ -203,6 +203,19 @@ const isAdminUrl = computed(() => {
           />
 
           <!-- MENU ITEMS -->
+          <!-- Your Reviews -->
+          <Link
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            href="/ratings/contractor"
+          >
+            <Icon
+              icon="material-symbols:reviews"
+              color="#1098ad"
+              width="30"
+              height="30"
+            />
+            <span class="mx-4 font-medium">Your Ratings</span>
+          </Link>
           <Link
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
             href="#"

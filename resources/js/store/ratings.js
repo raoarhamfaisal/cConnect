@@ -153,5 +153,61 @@ export default {
         commit("setDisabled", false);
       }
     },
+    async sendAppeal({ commit }, payload) {
+      commit("setLoading", true);
+      commit("setDisabled", true);
+
+      try {
+        const response = await axios.post(
+          `/api/reviews/${payload.reviewId}/appeal`,
+          { on_appeal_reason: payload.on_appeal_reason },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (response.data) {
+          changesSaved(response.message || "Appeal is Successfully Submitted");
+          setTimeout(() => {
+            commit("setIsFetchReviews", true);
+          }, 2000);
+        }
+      } catch (err) {
+        somethingWentWrong();
+      } finally {
+        commit("setLoading", false);
+        commit("setDisabled", false);
+      }
+    },
+    async sendTurnOffApeal({ commit }, payload) {
+      commit("setLoading", true);
+      commit("setDisabled", true);
+
+      try {
+        const response = await axios.post(
+          `/api/reviews/${payload.reviewId}/off-appeal`,
+          { off_appeal_reason: payload.off_appeal_reason },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (response.data) {
+          changesSaved(
+            response.message || "Turn off Appeal is Successfully Submitted"
+          );
+          setTimeout(() => {
+            commit("setIsFetchReviews", true);
+          }, 2000);
+        }
+      } catch (err) {
+        somethingWentWrong();
+      } finally {
+        commit("setLoading", false);
+        commit("setDisabled", false);
+      }
+    },
   },
 };

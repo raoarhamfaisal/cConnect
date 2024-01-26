@@ -143,7 +143,7 @@ const starPercentages = ref([]);
 const average_rating = ref(null);
 const contractor = ref(null);
 const sortByDate = ref("latest");
-const sortByRating = ref("highest");
+const sortByRating = ref("");
 const pagination = ref(0);
 
 // Mounted
@@ -180,14 +180,18 @@ watch(isDeleted, (newVal) => {
 const handleDate = (selected, sortByString) => {
   if (selected) {
     sortByDate.value = sortByString;
-    fetchReviews(15, currentPage.value);
+  } else if (!selected) {
+    sortByDate.value = "";
   }
+  fetchReviews(15, currentPage.value);
 };
 const handleRating = (selected, sortByRate) => {
   if (selected) {
     sortByRating.value = sortByRate;
-    fetchReviews(15, currentPage.value);
+  } else if (!selected) {
+    sortByRating.value = "";
   }
+  fetchReviews(15, currentPage.value);
 };
 
 // Fetch REviews
@@ -239,31 +243,6 @@ const fetchReviews = async (per_page = 15, page = 1) => {
   }
 };
 
-const handleSelect = async () => {
-  showCard.value = !showCard.value;
-
-  if (showCard.value) {
-    // Wait for the DOM update
-    await nextTick();
-
-    setTimeout(() => {
-      if (
-        cardRef.value &&
-        cardRef.value.$el &&
-        cardRef.value.$el.scrollIntoView
-      ) {
-        const elementToScroll = cardRef.value.$el || cardRef.value;
-        elementToScroll.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-          inline: "start",
-        });
-      } else {
-        console.error("Unexpected issue with the ref");
-      }
-    }, 250);
-  }
-};
 const onClickHandler = (page) => {
   fetchReviews(15, page);
 };
