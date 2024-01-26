@@ -2,21 +2,18 @@
   <div class="flex space-x-2 justify-between">
     <div class="flex justify-center items-center space-x-2">
       <div>
-        <Avatar :imageSrc="contractor.profilePic" />
+        <Avatar :imageSrc="contractor.user_avatar" />
       </div>
       <div class="flex flex-col justify-center">
         <h2
           class="text-xl font-medium font-bold text-gray-900 dark:text-gray-100"
         >
-          {{ contractor.firstName + " " + contractor.lastName }}
+          {{ contractor.first_name + " " + contractor.last_name }}
         </h2>
-        <div v-if="contractor.company">{{ contractor.company }}</div>
+        <div v-if="contractor.company">{{ contractor.company_name }}</div>
         <StarRating
-          :rating="+contractor.averageRating.toFixed(1)"
+          :rating="Number(parseFloat(contractor.average_rating).toFixed(1))"
           :isIndicatorActive="true"
-          :starWidth="15"
-          :starHeight="15"
-          indicatorClasses="text-small font-normal"
         />
       </div>
     </div>

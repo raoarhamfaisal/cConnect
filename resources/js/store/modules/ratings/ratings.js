@@ -1,6 +1,6 @@
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 import axios from "axios";
-
+import { getAllContractors } from "./adminActions";
 export default {
   namespaced: true,
   state() {
@@ -9,6 +9,8 @@ export default {
       disabled: false,
       isFetchReviews: false,
       isDeleted: false,
+      allContractors: [],
+      pagination: {},
     };
   },
   mutations: {
@@ -23,6 +25,12 @@ export default {
     },
     setIsDeleted(state, payload) {
       state.isDeleted = payload;
+    },
+    setAllContractors(state, payload) {
+      state.allContractors = payload;
+    },
+    setPagination(state, payload) {
+      state.pagination = payload;
     },
     // ... other mutations ...
   },
@@ -46,7 +54,6 @@ export default {
         commit("setDisabled", false);
       }
     },
-
     async deleteResponse({ commit }, responseId) {
       commit("setLoading", true);
       commit("setDisabled", true);
@@ -209,5 +216,6 @@ export default {
         commit("setDisabled", false);
       }
     },
+    getAllContractors,
   },
 };
