@@ -23,9 +23,15 @@
             <!-- Hide -->
             <ButtonRatings
               bgColor="bg-[#f08c00]"
-              icon="mdi:hide"
+              :icon="
+                response.is_review_response_active === 1
+                  ? 'mdi:hide'
+                  : 'mdi:show'
+              "
               @click="openInActiveDialog"
-              >Inactive</ButtonRatings
+              >{{
+                response.is_review_response_active === 1 ? "Inactive" : "Active"
+              }}</ButtonRatings
             >
             <!-- delete -->
             <ButtonRatings
@@ -50,11 +56,14 @@
           <!-- Hide -->
           <ButtonRatings
             bgColor="bg-[#f08c00]"
-            icon="mdi:hide"
+            :icon="
+              response.is_review_response_active === 1 ? 'mdi:hide' : 'mdi:show'
+            "
             @click="openInActiveDialog"
-            >Inactive</ButtonRatings
+            >{{
+              response.is_review_response_active === 1 ? "Inactive" : "Active"
+            }}</ButtonRatings
           >
-
           <ButtonRatings
             bgColor="bg-red-500"
             icon="ic:baseline-delete"
@@ -104,7 +113,11 @@
     :responseId="response.id"
   />
   <DeleteResponseModal ref="deleteRef" :responseId="response.id" />
-  <InActiveResponseModal ref="inActiveRef" />
+  <InActiveResponseModal
+    ref="inActiveRef"
+    :isActive="response.is_review_response_active === 1"
+    :responseId="response.id"
+  />
 </template>
 
 <script setup>
