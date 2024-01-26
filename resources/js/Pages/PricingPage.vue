@@ -106,7 +106,7 @@ const content = {
           </div>
         </section>
       </div>
-      <PricingVersions />
+      <PricingVersions pageName="pricing" />
     </div>
   </div>
 

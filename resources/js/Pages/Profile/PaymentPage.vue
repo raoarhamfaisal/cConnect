@@ -606,9 +606,6 @@ const errors = reactive({
   coupon_code: "",
 });
 const loadingSubscribing = ref(false);
-const loadingCoupon = ref(false);
-const verifyCouponDialogRef = ref();
-const couponApiError = ref("");
 const subscriptionApiError = ref("");
 const coupon = ref({});
 const paymentDetailsRef = ref();
