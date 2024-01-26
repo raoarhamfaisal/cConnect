@@ -22,13 +22,13 @@
     </Link>
 
     <!-- User Info -->
-    <div class="flex flex-col justify-center ml-1">
+    <div class="flex flex-col justify-center">
       <!-- @touchstart="handleTouchStart"
       @touchend="handleTouchEnd" -->
-      <div class="flex gap-2">
+      <div class="flex gap-1 sm:gap-2">
         <div class="bg-[#f0f2f5] rounded-[18px] px-3 py-2">
           <Link
-            class="font-bold text-sm"
+            class="font-bold text-xs x350:text-sm"
             :href="`/contractor/${comment.user_id}`"
           >
             <!-- {{  user }} -->
@@ -37,7 +37,7 @@
               comment.company_name
             }}
           </Link>
-          <div class="text-sm" style="white-space: pre-wrap">
+          <div class="text-xs x350:text-sm" style="white-space: pre-wrap">
             {{ comment.body }}
           </div>
         </div>
@@ -60,7 +60,7 @@
                 <template v-slot:activator="{ props }">
                   <div v-bind="props">
                     <button
-                      class="bg-[#f0f2f5] px-3 py-2 rounded-[18px] flex items-center"
+                      class="bg-[#f0f2f5] px-2 sm:px-3 py-1 sm:py-2 rounded-[18px] flex items-center"
                       v-bind="menuProps.props"
                     >
                       <Icon icon="pepicons-pencil:dots-x" />
@@ -84,7 +84,9 @@
           </v-menu>
         </div>
       </div>
-      <div class="text-xs flex gap-4 mt-[3px] ml-3 text-[#65676B]">
+      <div
+        class="text-xs flex gap-2 x350:gap-3 xs:gap-4 items-center mt-[3px] ml-2 text-[#65676B]"
+      >
         <div>
           {{ timeAgo(comment.updated_at) }}
         </div>
@@ -157,7 +159,7 @@
     </div>
   </div>
   <div
-    class="flex gap-2 w-full items-start overflow-auto mt-2 pl-[48px] sm:pl-[61px]"
+    class="flex gap-2 w-full items-start overflow-auto mt-2 pl-[48px] sm:pl-[57px]"
     v-if="showReplyTextArea"
   >
     <textarea
@@ -183,7 +185,7 @@
   </div>
   <div
     @click="showReplies"
-    class="ml-[54px] hover:underline sm:ml-[65px] text-gray-600 mt-2 flex gap-2"
+    class="ml-[44px] hover:underline sm:ml-[60px] text-gray-600 mt-2 flex gap-2"
     v-if="comment.replies?.length > 0 && !isRepliesShown"
   >
     <Icon icon="bi:arrow-return-right" />
@@ -200,7 +202,7 @@
     v-if="
       comment && comment.replies && comment.replies.length > 0 && isRepliesShown
     "
-    class="flex flex-col gap-1 sm:gap-2 mt-2 ml-[48px] sm:ml-[61px]"
+    class="flex flex-col gap-1 sm:gap-2 mt-2 ml-[40px] sm:ml-[57px]"
     ref="commentList"
   >
     <transition-group
