@@ -105,4 +105,41 @@ class ReviewResponseController extends Controller
     
         return response()->json(['message' => 'Review response deleted successfully!'], 200);
     }
+
+
+    /**
+     * Deactivate the review response
+     *
+     * @param  \App\Models\ReviewResponse  $review
+     * @return \Illuminate\Http\Response
+     */
+    public function deactivate(Request $request, $id)
+    {
+        $review = ReviewResponse::findOrFail($id);
+
+        $review->is_review_response_active = 0;
+
+        $review->save();
+
+        return response()->json(['message' => 'Review Response deactivated successfully', 'review' => $review]);
+    }
+
+    /**
+     * Activate the review
+     *
+     * @param  \App\Models\ReviewResponse  $review
+     * @return \Illuminate\Http\Response
+     */
+    public function activate(Request $request, $id)
+    {
+        $review = ReviewResponse::findOrFail($id);
+
+        $review->is_review_response_active = 1;
+
+        $review->save();
+
+        return response()->json(['message' => 'Review Response activated successfully', 'review' => $review]);
+    }
+
+    
 }
