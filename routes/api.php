@@ -37,6 +37,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::patch('/review-responses', [ReviewResponseController::class, 'update']);
     Route::delete('/review-responses/{reviewResponse}', [ReviewResponseController::class, 'destroy']);
 
+    Route::get('/admin/all-contractors', [ReviewController::class, 'getContractorProfiles'])->name('review.allContractors');
+
+    Route::get('/admin/all-appealed-reviews', [ReviewController::class, 'getAppealedReviews'])->name('review.getAppealedReviews');
+
 
 
 

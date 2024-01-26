@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use App\Models\Review;
 use App\Models\Profile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 
 
@@ -83,8 +85,8 @@ class ReviewController extends Controller
         }, 'review_response'])->where('contractor_id', $contractor_id);
     
         // Apply sorting based on filters
-        $sortByDate = $request->query('sort_by_date', 'latest'); // Default to latest
-        $sortByRating = $request->query('sort_by_rating', 'highest'); // Default to highest
+        $sortByDate = $request->query('sort_by_date', '');
+        $sortByRating = $request->query('sort_by_rating', '');
         
         switch ($sortByRating) {
             case 'highest':
@@ -100,7 +102,7 @@ class ReviewController extends Controller
     
         if ($sortByDate === 'oldest') {
             $reviewsQuery = $reviewsQuery->oldest('rating_date');
-        } else {
+        } else if($sortByDate === 'latest') {
             $reviewsQuery = $reviewsQuery->latest('rating_date');
         }
     
@@ -310,5 +312,148 @@ class ReviewController extends Controller
 
         return response()->json(['message' => 'Appeal removed successfully!', 'review' => $review], 200);
     }
+
+
+
+    /**
+     * Get all the Contractor Profiles
+     *
+     * @param  \App\Models\Review  $review
+     * @return \Illuminate\Http\Response
+     */
+    public function getContractorProfiles(Request $request)
+    {
+        // Determine pagination parameters from the request's query parameters
+        $perPage = $request->query('per_page', 15); // Default to 15 if not provided
+        $page = $request->query('page', 1); // Default to page 1 if not provided
+
+        // Fetch profiles with average rating
+        $profiles = Profile::select([
+            'profiles.id',
+            'profiles.user_id',
+            'profiles.first_name',
+            'profiles.last_name',
+            'profiles.company_name',
+            'profiles.city',
+            'profiles.state',
+            'profiles.user_avatar',
+            'profiles.company_logo',
+            DB::raw('AVG(reviews.rating) as average_rating')
+        ])
+        ->leftJoin('reviews', 'profiles.id', '=', 'reviews.contractor_id')
+        ->groupBy('profiles.id')
+        ->paginate($perPage, ['*'], 'page', $page);
+
+        // Construct the response
+        $response = [
+            'profiles' => $profiles->items(),
+            'pagination' => [
+                'current_page' => $profiles->currentPage(),
+                'last_page' => $profiles->lastPage(),
+                'per_page' => $profiles->perPage(),
+                'total' => $profiles->total(),
+            ]
+        ];
+
+        return response()->json($response);
+    }
+
+
+    /**
+     * Get all appealed Reviews
+     *
+     * @param  \App\Models\Review  $review
+     * @return \Illuminate\Http\Response
+     */
+    public function getAppealedReviews(Request $request)
+    {
+        // Determine pagination parameters from the request's query parameters
+        $perPage = $request->query('per_page', 15);  // Default to 15 if not provided
+        $page = $request->query('page', 1);          // Default to page 1 if not provided
+    
+        // Initialize query builder
+        $query = Review::with(['reviewer' => function($query) {
+            $query->select([
+                'id',
+                'user_id',
+                'first_name',
+                'last_name',
+                'company_name',
+                'city',
+                'state',
+                'user_avatar',
+                'company_logo',
+                'trade1',
+                'trade2',
+                'trade3',
+                'trade4',
+                'trade5',
+                'trade6',
+                'trade7',
+                'trade8',
+                'trade9',
+                'trade10',
+                'trade11',
+                'trade12',
+                'trade13',
+                'trade14',
+                'trade15',
+                'trade16',
+                'trade17',
+                'trade18',
+                'trade19',
+                'trade20',
+                'trade21',
+                'trade22',
+                'trade23',
+                'trade24',
+                'trade25',
+                'trade26',
+                'trade27',
+                'trade28',
+                'trade29',
+                'trade30'
+            ]);
+        }, 'review_response'])->where('is_under_appeal', 1);
+    
+        // Apply sorting based on filters
+        $sortByDate = $request->query('sort_by_date', ''); // Default to latest
+        $sortByRating = $request->query('sort_by_rating', ''); // Default to highest
+    
+        if ($sortByDate === 'oldest') {
+            $query = $query->oldest('created_at');
+        } else if ($sortByDate === 'latest') {
+            $query = $query->latest('created_at');
+        }
+    
+        switch ($sortByRating) {
+            case 'highest':
+                $query = $query->orderByDesc('rating');
+                break;
+            case 'middle':
+                $query = $query->orderBy('rating', 'asc')->whereBetween('rating', [2.5, 3.5]);
+                break;
+            case 'lowest':
+                $query = $query->orderBy('rating', 'asc');
+                break;
+        }
+    
+        // Fetch paginated results
+        $reviews = $query->paginate($perPage, ['*'], 'page', $page);
+    
+        // Construct the response
+        $response = [
+            'reviews' => $reviews->items(),
+            'pagination' => [
+                'current_page' => $reviews->currentPage(),
+                'last_page' => $reviews->lastPage(),
+                'per_page' => $reviews->perPage(),
+                'total' => $reviews->total(),
+            ]
+        ];
+    
+        return response()->json($response);
+    }
+        
 
 }
