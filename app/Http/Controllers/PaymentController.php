@@ -74,7 +74,7 @@ class PaymentController extends Controller
             : ($paymentInfo && ($paymentInfo->gold_billed_monthly_price || $paymentInfo->platinum_billed_monthly_price) ? ($request->version === 2 ? $paymentInfo->gold_billed_monthly_price : $paymentInfo->platinum_billed_monthly_price) : 39);
             
             // Retrieve the sales tax rate
-            $salesTaxRate = ($paymentInfo && $paymentInfo->sales_tax) ? ($paymentInfo->sales_tax * 0.01) : (0.02);       
+            $salesTaxRate = ($paymentInfo && $paymentInfo->sales_tax) ? ($paymentInfo->sales_tax) : (0.02);       
 
             $finalAmount = $request->input('duration') === 'annual' 
                 ? ($paymentInfo && ($paymentInfo->gold_billed_annual_price || $paymentInfo->platinum_billed_annual_price) ? ($request->version === 2 ? $paymentInfo->gold_billed_annual_price : $paymentInfo->platinum_billed_annual_price) : 390) 
