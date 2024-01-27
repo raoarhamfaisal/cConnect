@@ -148,6 +148,8 @@ Route::post('/translations', [TranslationController::class, 'store']);
 
         // Repost
         Route::post('/posts/{post}/repost', [PostController::class, 'repost']);
+        Route::patch('/posts/{post}/edit-repost', [PostController::class, 'editRepost']);
+
 
 
         

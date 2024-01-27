@@ -26,6 +26,8 @@ use Illuminate\Support\Facades\Broadcast;
 
 
 
+
+
 class PostController extends Controller
 {
 
@@ -202,6 +204,7 @@ class PostController extends Controller
                     'dislikes_count' => $post->dislikes_count,
 
                     'repost' => $post->repost,
+                    'repost_comment' => $post->repost_comment,
                     'shares' => $post->shares,
                     'first_name' => $post->first_name,
                     'last_name' => $post->last_name,
@@ -303,6 +306,7 @@ class PostController extends Controller
                         'text_alignment' => $post->text_alignment,
                             
                         'repost' => $post->repost,
+                        'repost_comment' => $post->repost_comment,
                         'shares' => $post->shares,
                         'first_name' => $post->first_name,
                         'last_name' => $post->last_name,
@@ -659,17 +663,25 @@ class PostController extends Controller
     }
 
 
-    public function repost(Post $post)
+    public function repost(Post $post, HttpRequest $request)
     {
         // Check if the current user has already reposted this post
         $existingRepost = Post::where('original_post_id', $post->id)
                             ->where('user_id', Auth::id())
                             ->first();
 
+
+
+
         if ($existingRepost) {
             // Return an error response if the user has already reposted
             return response()->json(['message' => 'You have already reposted this post.'], 403);
         }
+
+        // Handle the repost comment
+        $repostComment = $request->input('repost_comment', ''); // Default to an empty string if not provided
+
+
 
         // List the attributes you want to replicate
         $attributesToReplicate = ['view', 'region_id', 'title', 'image', 'body1', 'body2', 'is_body_bold', 'post_text_color_id', 'post_background_color_id', 'font_size', 'text_alignment', 'title_text_alignment', 'title_text_color_id', 'title_background_color_id'];
@@ -682,6 +694,7 @@ class PostController extends Controller
         $repost->original_post_id = $post->id;
         $repost->original_user_id = $post->user_id; // Save the original user's ID
         $repost->repost = 1;
+        $repost->repost_comment = $repostComment; // Assign the repost comment
 
 
         $post->repost++;
@@ -708,6 +721,22 @@ class PostController extends Controller
         return response()->json($repost, 201);
     }
 
+    public function editRepost(HttpRequest $request, Post $post)
+    {
+        // Check if the logged-in user is the owner of the post
+        if (Auth::id() != $post->user_id) {
+            return response()->json(['message' => 'You are not allowed to edit this post.'], 403);
+        }
+
+        // Validate the input
+        $request->validate(['repost_comment' => 'string|nullable']);
+
+        // Update the repost_comment
+        $post->repost_comment = $request->repost_comment;
+        $post->save();
+
+        return response()->json(['message' => 'Repost comment updated successfully', 'post' => $post]);
+    }
 
     public function reportPost(HttpRequest $request, $postId)
     {

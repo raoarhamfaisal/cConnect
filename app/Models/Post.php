@@ -32,6 +32,7 @@ class Post extends Model
         'text_alignment',
         'likes',
         'repost',
+        'repost_comment',
         'shares',
         'title_text_alignment',
         'title_text_color_id',

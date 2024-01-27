@@ -57,6 +57,7 @@ class AdminRatingsController extends Controller
             'font_size' => $post->font_size,
             'text_alignment' => $post->text_alignment,
             'repost' => $post->repost,
+            'repost_comment' => $post->repost_comment,
             'shares' => $post->shares,
         ]),
     // pass on any existing search filters that exist
@@ -105,6 +106,7 @@ public function getRegionsContractors()
             'font_size' => $post->font_size,
             'text_alignment' => $post->text_alignment,    
             'repost' => $post->repost,
+            'repost_comment' => $post->repost_comment,
             'shares' => $post->shares,
         ]),
     // pass on any existing search filters that exist
