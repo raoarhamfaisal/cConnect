@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Review;
 use App\Models\Profile;
+use App\Models\RatingReason;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -418,11 +419,24 @@ class ReviewController extends Controller
      */
     public function deactivate(Request $request, $id)
     {
+        // Validate the 'reason' field in the request
+        $reasonData = $request->validate([
+            'reason' => 'required|string|max:1000'
+        ]);
         $review = Review::findOrFail($id);
 
         $review->is_review_active = 0;
 
         $review->save();
+
+        // Create a new record in the rating_reasons table
+        RatingReason::create([
+            'review_id' => $review->id,
+            'reason' => $reasonData['reason'],
+            'reason_date' => Carbon::now(),
+            'type' => 'deactivated_review'
+        ]);
+        
 
         return response()->json(['message' => 'Review deactivated successfully', 'review' => $review]);
     }
@@ -435,11 +449,25 @@ class ReviewController extends Controller
      */
     public function activate(Request $request, $id)
     {
+
+        // Validate the 'reason' field in the request
+        $reasonData = $request->validate([
+            'reason' => 'required|string|max:1000'
+        ]);
+
         $review = Review::findOrFail($id);
 
         $review->is_review_active = 1;
 
         $review->save();
+
+        // Create a new record in the rating_reasons table
+        RatingReason::create([
+            'review_id' => $review->id,
+            'reason' => $reasonData['reason'],
+            'reason_date' => Carbon::now(),
+            'type' => 'activated_review'
+        ]);
 
         return response()->json(['message' => 'Review activated successfully', 'review' => $review]);
     }
@@ -606,6 +634,79 @@ class ReviewController extends Controller
         ];
     
         return response()->json($response);
+    }
+
+
+    /**
+     * Update the specified resource for Admin in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Review  $review
+     * @return \Illuminate\Http\Response
+     */
+    public function updateFromAdmin(Request $request, Review $review)
+    {
+        $data = $request->validate([
+            'reviewer_id' => 'integer|exists:profiles,id',
+            'contractor_id' => 'integer|exists:profiles,id',
+            'rating' => 'numeric|between:0,999999.99',
+            'rating_text' => 'string',
+            'on_appeal_reason' => 'nullable|string',
+            'on_appeal_reason_date' => 'nullable|date_format:Y-m-d H:i:s',
+            'off_appeal_reason' => 'nullable|string',
+            'off_appeal_reason_date' => 'nullable|date_format:Y-m-d H:i:s',
+            'is_under_appeal' => 'boolean',
+            'hired_by_contractor' => 'boolean',
+            'paid_on_time' => 'boolean',
+            'hired_contractor' => 'boolean',
+            'give_full_payment' => 'boolean',
+            'how_did_you_meet_this_contractor' => 'nullable|string|max:255',
+        ]);
+
+        $review->update($data);
+
+        // Assuming 'reason' comes in from the request as well
+        $reasonData = $request->validate([
+            'reason' => 'required|string|max:1000'
+        ]);
+
+        // Create a new record in the rating_reasons table
+        RatingReason::create([
+            'review_id' => $review->id,
+            'reason' => $reasonData['reason'],
+            'reason_date' => Carbon::now(),
+            'type' => 'updated_review'
+        ]);
+
+        return response()->json(['message' => 'Review updated successfully!', 'review' => $review], 200);
+    }
+
+    /**
+     * Remove the specified resource from storage and save reason.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Review  $review
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyFromAdmin(Request $request, Review $review)
+    {
+        // Validate the 'reason' field in the request
+        $reasonData = $request->validate([
+            'reason' => 'required|string|max:1000'
+        ]);
+
+        // Delete the review
+        $review->delete();
+
+        // Create a new record in the rating_reasons table
+        RatingReason::create([
+            'review_id' => $review->id,
+            'reason' => $reasonData['reason'],
+            'reason_date' => Carbon::now(),
+            'type' => 'deleted_review'
+        ]);
+
+        return response()->json(['message' => 'Review deleted successfully!'], 200);
     }
 
 
