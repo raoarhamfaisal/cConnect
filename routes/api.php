@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ReviewResponseController;
+use App\Http\Controllers\ContractorRatingsAdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::delete('/admin/review-responses/{reviewResponse}', [ReviewResponseController::class, 'destroyFromAdmin']);
     Route::put('/admin/review-responses/{reviewResponse}/deactivate', [ReviewResponseController::class, 'deactivate']);
     Route::put('/admin/review-responses/{reviewResponse}/activate', [ReviewResponseController::class, 'activate']);
+
+    Route::get('/admin/{id}/history', [ContractorRatingsAdminController::class, 'history']);
 
 
 

@@ -17,4 +17,10 @@ class ReviewResponse extends Model
         'response_date',
         'review_id'
     ];
+
+    public function responseReasons()
+    {
+        return $this->hasMany(RatingReason::class, 'response_id', 'id');
+    }
+
 }

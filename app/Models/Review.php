@@ -36,9 +36,19 @@ class Review extends Model
         return $this->belongsTo(Profile::class, 'reviewer_id');
     }
 
+    public function contractor() 
+    {
+        return $this->belongsTo(Profile::class, 'contractor_id');
+    }
+
     public function review_response() 
     {
         return $this->belongsTo(ReviewResponse::class, 'response_id');
     }
 
+    public function ratingReasons()
+    {
+        return $this->hasMany(RatingReason::class, 'review_id', 'id');
+    }
+    
 }
