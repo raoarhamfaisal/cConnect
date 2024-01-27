@@ -9,7 +9,7 @@ import { computed } from "vue";
 const props = defineProps({
   // Configuration props
   totalItems: {
-    type: Number,
+    type: [Number, String],
     required: true,
   },
   itemsPerPage: {

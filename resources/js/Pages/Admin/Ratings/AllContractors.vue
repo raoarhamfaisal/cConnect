@@ -2,6 +2,7 @@
   <Head title="Ratings" />
 
   <Header
+    v-if="isAdminUrl"
     :profile="profile"
     :posts="posts"
     :post-search-filters="postSearchFilters"
@@ -12,7 +13,10 @@
     <div v-if="!loading" class="bg-gray-200 mt-10">
       <Card :shadowLevel="2" bgColor="white" padding="20px">
         <heading-card heading="All Contractors" class="mt-3 mb-6" />
-        <div class="flex flex-col" v-if="allContractors.length > 0">
+        <div
+          class="flex flex-col"
+          v-if="allContractors && allContractors.length > 0"
+        >
           <Link
             v-for="(contractor, index) in allContractors"
             :key="index"
@@ -32,9 +36,17 @@
             No Contractors Available
           </div>
         </div>
-        <div class="flex items-center justify-center mb-4 mt-5">
+        <div
+          v-if="
+            pagination &&
+            Object.keys(pagination).length > 0 &&
+            allContractors &&
+            allContractors.length > 0 &&
+            pagination.last_page > 1
+          "
+          class="flex items-center justify-center mb-4 mt-5"
+        >
           <CustomPagination
-            v-if="pagination && Object.keys(pagination).length > 0"
             :total-items="pagination.total"
             :current-page="pagination.current_page"
             :items-per-page="pagination.per_page"
@@ -51,7 +63,7 @@
 
 <script setup>
 import Header from "@/Layouts/Header.vue";
-import { Head } from "@inertiajs/inertia-vue3";
+import { Head, usePage } from "@inertiajs/inertia-vue3";
 import Loader from "@/Components/Ratings/Loader.vue";
 import CustomPagination from "@/Components/Ratings/CustomPagination.vue";
 
@@ -59,8 +71,9 @@ import Card from "@/Components/Card.vue";
 import { Link } from "@inertiajs/inertia-vue3";
 import Contractor from "./partials/AllContractors/Contractor.vue";
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
-import { computed, ref, onMounted } from "vue";
+import { computed, ref, onMounted, onBeforeMount } from "vue";
 import { useStore } from "vuex";
+import { Inertia } from "@inertiajs/inertia";
 // States
 defineProps({
   profile: Object,
@@ -73,6 +86,7 @@ defineProps({
     }),
   },
 });
+const isAdminUrl = usePage().props.value.auth.user.reviews_privileges === 1;
 const store = useStore();
 const currentPage = ref(1);
 const perPage = ref(5);
@@ -97,4 +111,9 @@ const fetchContractors = async (page = 1) => {
 const onClickHandler = (page) => {
   fetchContractors(page);
 };
+onBeforeMount(() => {
+  if (!isAdminUrl && window.location.pathname !== "/post") {
+    Inertia.visit("/post");
+  }
+});
 </script>

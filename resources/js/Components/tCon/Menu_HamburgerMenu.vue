@@ -34,7 +34,7 @@ const newPostSearchValue = () => {
   emit("submitPostSearch");
 };
 const isAdminUrl = computed(() => {
-  return usePage().url.value.includes("admin");
+  return usePage().props.value.auth.user.reviews_privileges === 1;
 });
 </script>
 
