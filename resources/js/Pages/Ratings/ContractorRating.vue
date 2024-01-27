@@ -9,140 +9,141 @@
     :show-post-buttons="true"
     color="rgb(229 231 235 / var(--tw-bg-opacity))"
   >
-    <div v-if="!loading && contractor" class="bg-gray-200 mt-10">
+    <div v-if="contractor" class="bg-gray-200 mt-10">
       <Card :shadowLevel="2" bgColor="white" padding="20px">
         <ContractorInfo :contractor="contractor" />
+        <div v-if="!loading">
+          <heading-card
+            v-if="average_rating && starPercentages"
+            heading="Average Ratings"
+            class="mb-12"
+          />
+          <AverageRating
+            v-if="average_rating && starPercentages"
+            :averageRating="average_rating"
+            :starPercentages="starPercentages"
+            :length="pagination.total"
+            class="mb-12"
+          />
+          <!-- Filters -->
+          <div class="border-t-2 border-gray-300">
+            <heading-card class="mt-6" heading="Order Reviews By" />
+            <div class="xs:mb-12 mb-6">
+              <div class="flex gap-3">
+                <Button
+                  :selected="sortByDate === 'latest'"
+                  @onSelect="(selected) => handleDate(selected, 'latest')"
+                  >Latest</Button
+                >
 
-        <heading-card
-          v-if="average_rating && starPercentages"
-          heading="Average Ratings"
-          class="mb-12"
-        />
-        <AverageRating
-          v-if="average_rating && starPercentages"
-          :averageRating="average_rating"
-          :starPercentages="starPercentages"
-          :length="pagination.total"
-          class="mb-12"
-        />
-        <!-- Filters -->
-        <div class="border-t-2 border-gray-300">
-          <heading-card class="mt-6" heading="Order Reviews By" />
-          <div class="xs:mb-12 mb-6">
-            <div class="flex gap-3">
-              <Button
-                :selected="sortByDate === 'latest'"
-                @onSelect="(selected) => handleDate(selected, 'latest')"
-                >Latest</Button
-              >
-
-              <Button
-                :selected="sortByDate === 'oldest'"
-                @onSelect="(selected) => handleDate(selected, 'oldest')"
-                >Oldest</Button
-              >
+                <Button
+                  :selected="sortByDate === 'oldest'"
+                  @onSelect="(selected) => handleDate(selected, 'oldest')"
+                  >Oldest</Button
+                >
+              </div>
             </div>
           </div>
-        </div>
-        <!-- RAting -->
-        <div class="xs:mb-12 mb-6 xs:mt-12 mt-7 border-t-2 border-gray-300">
-          <heading-card heading="Ratings" class="mt-6" />
-          <div class="flex gap-3">
+          <!-- RAting -->
+          <div class="xs:mb-12 mb-6 xs:mt-12 mt-7 border-t-2 border-gray-300">
+            <heading-card heading="Ratings" class="mt-6" />
             <div class="flex gap-3">
-              <Button
-                :selected="sortByRating === 'highest'"
-                @onSelect="(selected) => handleRating(selected, 'highest')"
-                >Highest rated</Button
-              >
+              <div class="flex gap-3">
+                <Button
+                  :selected="sortByRating === 'highest'"
+                  @onSelect="(selected) => handleRating(selected, 'highest')"
+                  >Highest rated</Button
+                >
 
-              <Button
-                :selected="sortByRating === 'middle'"
-                @onSelect="(selected) => handleRating(selected, 'middle')"
-                >Middle Rated</Button
-              >
+                <Button
+                  :selected="sortByRating === 'middle'"
+                  @onSelect="(selected) => handleRating(selected, 'middle')"
+                  >Middle Rated</Button
+                >
 
-              <Button
-                :selected="sortByRating === 'lowest'"
-                @onSelect="(selected) => handleRating(selected, 'lowest')"
-                >Low Rated</Button
-              >
+                <Button
+                  :selected="sortByRating === 'lowest'"
+                  @onSelect="(selected) => handleRating(selected, 'lowest')"
+                  >Low Rated</Button
+                >
+              </div>
             </div>
           </div>
-        </div>
-        <div class="xs:mb-12 mb-6 xs:mt-12 mt-7 border-t-2 border-gray-300">
-          <heading-card heading="Reviews" class="mt-6 mb-12" />
+          <div class="xs:mb-12 mb-6 xs:mt-12 mt-7 border-t-2 border-gray-300">
+            <heading-card heading="Reviews" class="mt-6 mb-12" />
 
+            <div
+              v-if="contractorReviews && contractorReviews.length > 0"
+              class="flex gap-8 flex-col"
+            >
+              <ReviewResponse
+                v-for="(review, index) in contractorReviews"
+                :key="index"
+                :review="review"
+                :contractorId="contractor.id"
+                :profileId="profile.id"
+              />
+            </div>
+            <div v-if="contractorReviews && contractorReviews.length === 0">
+              <div
+                class="p-2 text-xl text-grey-600 font-bold h-60 flex items-center justify-center"
+              >
+                No reviews Available for this Contractor
+              </div>
+            </div>
+          </div>
           <div
-            v-if="contractorReviews && contractorReviews.length > 0"
-            class="flex gap-8 flex-col"
+            v-if="
+              pagination &&
+              Object.keys(pagination).length > 0 &&
+              pagination.last_page > 1 &&
+              contractorReviews &&
+              contractorReviews.length > 0
+            "
+            class="flex items-center justify-center mb-4"
           >
-            <ReviewResponse
-              v-for="(review, index) in contractorReviews"
-              :key="index"
-              :review="review"
-              :contractorId="contractor.id"
-              :profileId="profile.id"
+            <CustomPagination
+              :total-items="pagination.total"
+              :current-page="pagination.current_page"
+              :items-per-page="pagination.per_page"
+              v-model="currentPage"
+              :max-pages-shown="3"
+              :on-click="onClickHandler"
             />
           </div>
-          <div v-if="contractorReviews && contractorReviews.length === 0">
-            <div
-              class="p-2 text-xl text-grey-600 font-bold h-60 flex items-center justify-center"
+          <div class="py-4 border-t-2 border-b-2 border-gray-300">
+            <Button
+              ref="cardRef"
+              @onSelect="handleSelect"
+              :style="{
+                boxShadow:
+                  '0px 0px 3px rgba(0, 0, 0, 0.12), 0px 0px 2px rgba(0, 0, 0, 0.12)',
+              }"
+              class="w-full text-2xl text-left rounded-lg"
+              >Write a review</Button
             >
-              No reviews Available for this Contractor
-            </div>
+            <transition name="accordion">
+              <Card
+                v-if="showCard"
+                :shadowLevel="1"
+                bgColor="white"
+                padding="10px"
+                class="mt-8"
+              >
+                <transition name="accordion">
+                  <GiveRating
+                    :profileId="profile.id"
+                    :contractorId="contractor.id"
+                    @addReview="refreshPage"
+                  />
+                </transition>
+              </Card>
+            </transition>
           </div>
         </div>
-        <div
-          v-if="
-            pagination &&
-            Object.keys(pagination).length > 0 &&
-            pagination.last_page > 1 &&
-            contractorReviews &&
-            contractorReviews.length > 0
-          "
-          class="flex items-center justify-center mb-4"
-        >
-          <CustomPagination
-            :total-items="pagination.total"
-            :current-page="pagination.current_page"
-            :items-per-page="pagination.per_page"
-            v-model="currentPage"
-            :max-pages-shown="3"
-            :on-click="onClickHandler"
-          />
-        </div>
-        <div class="py-4 border-t-2 border-b-2 border-gray-300">
-          <Button
-            ref="cardRef"
-            @onSelect="handleSelect"
-            :style="{
-              boxShadow:
-                '0px 0px 3px rgba(0, 0, 0, 0.12), 0px 0px 2px rgba(0, 0, 0, 0.12)',
-            }"
-            class="w-full text-2xl text-left rounded-lg"
-            >Write a review</Button
-          >
-          <transition name="accordion">
-            <Card
-              v-if="showCard"
-              :shadowLevel="1"
-              bgColor="white"
-              padding="10px"
-              class="mt-8"
-            >
-              <transition name="accordion">
-                <GiveRating
-                  :profileId="profile.id"
-                  :contractorId="contractor.id"
-                  @addReview="refreshPage"
-                />
-              </transition>
-            </Card>
-          </transition>
-        </div>
+        <Loader :loading="loading" background="white" height="70vh"></Loader>
       </Card>
     </div>
-    <Loader :loading="loading" background="white" height="100vh"></Loader>
   </Header>
 </template>
 
