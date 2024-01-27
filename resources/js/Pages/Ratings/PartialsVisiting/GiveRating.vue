@@ -123,6 +123,7 @@
 import { reactive, toRefs, ref, watch } from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import CustomSelect from "@/Components/CustomSelect.vue";
+import { filterBadWords } from "@/helpers/utilities";
 
 import InputError from "@/Components/InputError.vue";
 import StarRatingEditable from "@/Components/Ratings/StarRatingEditable.vue";
@@ -221,7 +222,7 @@ const handleSubmit = async () => {
       loading.value = true;
       disabled.value = true;
       const review = {
-        rating_text: form.rating_reason.value,
+        rating_text: filterBadWords(form.rating_reason),
         hired_by_contractor: form.hired_by_contractor.value,
         paid_on_time: form.paid_on_time.value,
         hired_contractor: form.hired_contractor.value,

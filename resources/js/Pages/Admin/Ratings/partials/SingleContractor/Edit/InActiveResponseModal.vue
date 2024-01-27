@@ -40,6 +40,7 @@
 <script setup>
 import InputError from "@/Components/InputError.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
+import { filterBadWords } from "@/helpers/utilities";
 import { computed, ref, watch } from "vue";
 import { useStore } from "vuex";
 
@@ -88,7 +89,7 @@ const validateConfirm = () => {
 
 const handleSubmit = async () => {
   if (validateConfirm()) {
-    console.log(editing_reason);
+    console.log(filterBadWords(editing_reason));
     if (isActive) {
       await store.dispatch("ratings/deactivateResponse", responseId);
     } else if (!isActive) {
