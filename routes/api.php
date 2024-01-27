@@ -7,6 +7,7 @@ use App\Http\Controllers\ContractorProfileController;
 use App\Http\Controllers\ContractorPageController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\AdminUsersController;
@@ -48,6 +49,10 @@ Route::get('/post/text-colors', [PostColorController::class, 'getTextColors']);
 Route::get('/post/background-colors', [PostColorController::class, 'getBackgroundColors']);
 
 Route::get('/posts/{post}/trades', [PostController::class, 'getPostTrades']);
+
+// Translations APIs
+Route::get('/translations', [TranslationController::class, 'index']);
+Route::post('/translations', [TranslationController::class, 'store']);
 
 
 // Route::get('/posts/{post}/comments', [CommentController::class, 'index']);
@@ -143,6 +148,9 @@ Route::get('/posts/{post}/trades', [PostController::class, 'getPostTrades']);
 
         // Repost
         Route::post('/posts/{post}/repost', [PostController::class, 'repost']);
+
+
+        
 
 
 
