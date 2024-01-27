@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Review;
 use App\Models\ReviewResponse;
+use App\Models\RatingReason;
 
 class ReviewResponseController extends Controller
 {
@@ -115,6 +117,12 @@ class ReviewResponseController extends Controller
      */
     public function deactivate(Request $request, $id)
     {
+        // Validate the 'reason' field in the request
+        $reasonData = $request->validate([
+            'reason' => 'required|string|max:1000'
+        ]);
+
+        
         $reviewResponse = ReviewResponse::findOrFail($id);
 
         // Get the associated review
@@ -130,6 +138,14 @@ class ReviewResponseController extends Controller
 
         $reviewResponse->save();
 
+        // Create a new record in the rating_reasons table
+        RatingReason::create([
+            'response_id' => $reviewResponse->id,
+            'reason' => $reasonData['reason'],
+            'reason_date' => Carbon::now(),
+            'type' => 'deactivated_review_response'
+        ]);
+
         return response()->json(['message' => 'Review Response deactivated successfully', 'reviewResponse' => $reviewResponse]);
     }
 
@@ -141,6 +157,13 @@ class ReviewResponseController extends Controller
      */
     public function activate(Request $request, $id)
     {
+
+
+        // Validate the 'reason' field in the request
+        $reasonData = $request->validate([
+            'reason' => 'required|string|max:1000'
+        ]);
+
         $reviewResponse = ReviewResponse::findOrFail($id);
 
         // Get the associated review
@@ -156,7 +179,94 @@ class ReviewResponseController extends Controller
 
         $reviewResponse->save();
 
+        // Create a new record in the rating_reasons table
+        RatingReason::create([
+            'response_id' => $reviewResponse->id,
+            'reason' => $reasonData['reason'],
+            'reason_date' => Carbon::now(),
+            'type' => 'activated_review_response'
+        ]);
+    
+
         return response()->json(['message' => 'Review Response activated successfully', 'reviewResponse' => $reviewResponse]);
+    }
+
+    /**
+     * Update the specified resource in storage and save the reason.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateFromAdmin(Request $request)
+    {
+        // Validation
+        $data = $request->validate([
+            'response_id' => 'required|exists:review_responses,id',  // make sure the ID exists in the review_responses table
+            'response_text' => 'required|string|max:5000',  // max length is just an example, adjust as needed
+        ]);
+
+        // Validate the 'reason' field in the request
+        $reasonData = $request->validate([
+            'reason' => 'required|string|max:1000'
+        ]);
+
+    
+        // Fetch the Review Response by ID
+        $reviewResponse = ReviewResponse::find($data['response_id']);
+    
+        // Update the response_text
+        $reviewResponse->response_text = $data['response_text'];
+        $reviewResponse->save();
+
+        // Create a new record in the rating_reasons table
+        RatingReason::create([
+            'response_id' => $reviewResponse->id,
+            'reason' => $reasonData['reason'],
+            'reason_date' => Carbon::now(),
+            'type' => 'updated_review_response'
+        ]);
+    
+    
+        return response()->json(['message' => 'Review response updated successfully!'], 200);
+    }
+    
+    /**
+     * Remove the specified resource from storage and save the reason.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyFromAdmin(Request $request, ReviewResponse $reviewResponse)
+    {
+
+        // Validate the 'reason' field in the request
+        $reasonData = $request->validate([
+            'reason' => 'required|string|max:1000'
+        ]);
+
+
+        // Get the associated review
+        $review = Review::find($reviewResponse->review_id);
+    
+        // If the review exists, set its response_id to null
+        if ($review) {
+            $review->response_id = null;
+            $review->save();
+        }
+    
+        // Delete the Review Response
+        $reviewResponse->delete();
+
+        // Create a new record in the rating_reasons table
+        RatingReason::create([
+            'response_id' => $reviewResponse->id,
+            'reason' => $reasonData['reason'],
+            'reason_date' => Carbon::now(),
+            'type' => 'deleted_review_response'
+        ]);
+    
+        return response()->json(['message' => 'Review response deleted successfully!'], 200);
     }
 
     

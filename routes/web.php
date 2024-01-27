@@ -43,6 +43,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile/links', [ProfileController::class, 'updateLinks'])->name('profile.updateLinks');
     Route::patch('/profile/views', [ProfileController::class, 'updateViews'])->name('profile.updateViews');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/admin/{contractor_id}/history', [ContractorRatingsAdminController::class, 'history']);
 });
 
 Route::get('/index', function () {
