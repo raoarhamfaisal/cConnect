@@ -110,54 +110,9 @@ class ReviewController extends Controller
         // Fetch paginated reviews
         $reviews = $reviewsQuery->paginate($perPage, ['*'], 'page', $page);
     
-        // Retrieve the contractor details from the Profile table
-        $contractorDetails = Profile::where('id', $contractor_id)
-                                    ->select([
-                                        'id',
-                                        'user_id',
-                                        'first_name',
-                                        'last_name',
-                                        'company_name',
-                                        'city',
-                                        'state',
-                                        'user_avatar',
-                                        'company_logo',
-                                        'trade1',
-                                        'trade2',
-                                        'trade3',
-                                        'trade4',
-                                        'trade5',
-                                        'trade6',
-                                        'trade7',
-                                        'trade8',
-                                        'trade9',
-                                        'trade10',
-                                        'trade11',
-                                        'trade12',
-                                        'trade13',
-                                        'trade14',
-                                        'trade15',
-                                        'trade16',
-                                        'trade17',
-                                        'trade18',
-                                        'trade19',
-                                        'trade20',
-                                        'trade21',
-                                        'trade22',
-                                        'trade23',
-                                        'trade24',
-                                        'trade25',
-                                        'trade26',
-                                        'trade27',
-                                        'trade28',
-                                        'trade29',
-                                        'trade30'
-                                    ])
-                                    ->first();
     
         // Construct the response
         $response = [
-            'contractor' => $contractorDetails,
             'reviews' => $reviews->items(),
             'pagination' => [
                 'current_page' => $reviews->currentPage(),

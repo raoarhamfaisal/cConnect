@@ -121,7 +121,8 @@ import { somethingWentWrong } from "@/helpers/utilities";
 import { useStore } from "vuex";
 
 // State
-const { profile } = defineProps({
+const { profile, contractorDetails } = defineProps({
+  contractorDetails: Object,
   profile: Object,
   posts: Object,
   showit: Boolean,
@@ -135,11 +136,11 @@ const { profile } = defineProps({
 
 const store = useStore();
 const currentPage = ref(1);
-const contractorReviews = ref(null);
+const contractorReviews = ref([]);
 const loading = ref(false);
 const starPercentages = ref([]);
 const average_rating = ref(null);
-const contractor = ref(null);
+const contractor = ref({});
 const sortByDate = ref("latest");
 const sortByRating = ref("");
 const pagination = ref(0);
@@ -148,6 +149,8 @@ const perPage = ref(15);
 // Mounted
 onMounted(() => {
   fetchReviews();
+  contractor.value = contractorDetails
+  console.log(contractor.value)
 });
 
 //Computed
@@ -207,9 +210,7 @@ const fetchReviews = async (per_page = perPage.value, page = 1) => {
       }
     );
     contractorReviews.value = response.data.reviews;
-    contractor.value = response.data.contractor;
     pagination.value = response.data.pagination;
-    console.log(contractor, response.data.contractor);
     average_rating.value = response.data.average_rating;
     // Extracting the star counts
     const {
