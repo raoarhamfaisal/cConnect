@@ -419,7 +419,7 @@ class ReviewController extends Controller
                 'trade29',
                 'trade30'
             ]);
-        }, 'review_response'])->where('is_under_appeal', 1);
+        }, 'review_response'])->withTrashed()->where('is_under_appeal', 1);
     
         // Apply sorting based on filters
         $sortByDate = $request->query('sort_by_date', ''); // Default to latest
