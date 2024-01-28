@@ -4,6 +4,7 @@
       :review="review"
       :profileId="profileId"
       :contractorId="contractorId"
+      :showContactDetails="showContactDetails"
     />
     <div
       v-if="
@@ -31,6 +32,10 @@ defineProps({
   },
   contractorId: {
     type: Number,
+  },
+  showContactDetails: {
+    type: Boolean,
+    default: false,
   },
 });
 </script>

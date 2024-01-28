@@ -242,7 +242,7 @@ const fetchReviews = async (per_page = perPage.value, page = 1) => {
       }
     );
     contractorReviews.value = response.data.reviews;
-    contractor.value = response.data.contractor;
+    // contractor.value = response.data.contractor;
     pagination.value = response.data.pagination;
     average_rating.value = response.data.average_rating;
     // Extracting the star counts
@@ -281,19 +281,4 @@ const onClickHandler = (page) => {
 };
 </script>
 
-<style scoped>
-.accordion-enter-active,
-.accordion-leave-active {
-  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
-}
-.accordion-enter-from, .accordion-leave-to /* .accordion-leave-active in <2.1.8 */ {
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-}
-.accordion-enter-to,
-.accordion-leave-from {
-  max-height: 300px; /* This value might need to be adjusted depending on the expected max height of your content */
-  opacity: 1;
-}
-</style>
+<style scoped></style>

@@ -53,7 +53,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::put('/admin/review-responses/{reviewResponse}/deactivate', [ReviewResponseController::class, 'deactivate']);
     Route::put('/admin/review-responses/{reviewResponse}/activate', [ReviewResponseController::class, 'activate']);
 
-    Route::get('/admin/{id}/history', [ContractorRatingsAdminController::class, 'history']);
+    Route::get('/admin/reviews/{id}/history', [ContractorRatingsAdminController::class, 'reviewsHistory']);
+
+    Route::get('/admin/responses/{id}/history', [ContractorRatingsAdminController::class, 'responsesHistory']);
 
 
 

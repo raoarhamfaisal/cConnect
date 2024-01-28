@@ -17,6 +17,7 @@
           >{{ `${review.reviewer.city} ${review.reviewer.state}` }}</span
         >
       </div>
+      <!-- star and date -->
       <div
         v-if="screenWidth >= 1260"
         class="flex flex-col self-start ml-12"
@@ -46,10 +47,27 @@
         'xl:flex-col-reverse': review.is_under_appeal === 1,
       }"
     >
-      <Badge class="bg-orange-500" v-if="review.is_under_appeal === 1"
-        >Under Appeal</Badge
-      >
-      <div v-if="screenWidth >= 700" class="grid grid-cols-3 gap-2">
+      <div class="flex gap-2 flex-col md:flex-row">
+        <Link
+          v-if="showContactDetails"
+          :href="`/admin/ratings/contractor/${review.reviewer_id}/history`"
+        >
+          <Badge
+            class="bg-white text-blue-500 padding border-2 cursor-pointer hover:shadow-lg active:scale-95"
+            :style="{
+              '--tw-border-opacity': 1,
+
+              borderColor: 'rgb(59 130 246 / var(--tw-text-opacity))',
+            }"
+            >Show History</Badge
+          >
+        </Link>
+
+        <Badge class="bg-orange-500" v-if="review.is_under_appeal === 1"
+          >Under Appeal</Badge
+        >
+      </div>
+      <div v-if="screenWidth >= 768" class="grid grid-cols-3 gap-2">
         <!-- edit -->
         <ButtonRatings
           bgColor="bg-lime-700"
@@ -76,8 +94,28 @@
       </div>
     </div>
   </div>
+  <!-- contact details -->
+  <div
+    class="pl-2 mt-3 flex gap-2 sm:gap-8 flex-col xs:flex-row"
+    v-if="showContactDetails"
+  >
+    <!-- trades -->
+    <!-- <div class="text-sm xs:text-md font-bold mb-1">Contact Details :</div> -->
+    <div class="flex gap-2 xs:gap-4">
+      <Icon icon="ic:baseline-phone" color="#241e6d" />
+      <div class="text-sm">
+        {{ review.reviewer.phone_cell }}
+      </div>
+    </div>
+    <div class="flex gap-2 xs:gap-4">
+      <Icon icon="clarity:email-solid" color="#241e6d" />
+      <div class="text-sm">
+        {{ review.reviewer.email }}
+      </div>
+    </div>
+  </div>
   <!-- for mobile view icons edit inactive delete-->
-  <div v-if="screenWidth < 700" class="grid grid-cols-3 gap-2 mt-3">
+  <div v-if="screenWidth < 768" class="grid grid-cols-3 gap-2 mt-3">
     <ButtonRatings
       bgColor="bg-lime-700"
       icon="material-symbols:edit-sharp"
@@ -167,7 +205,71 @@
         </span>
       </p>
     </div>
+    <!-- Contractor details -->
+    <div v-if="showContactDetails">
+      <div class="font-bold text-md xs:text-lg sm:text-2xl mb-2">
+        Appealing Contractor
+      </div>
+      <div class="flex justify-between">
+        <div class="flex items-center space-x-2">
+          <div>
+            <Avatar :imageSrc="review.contractor.user_avatar" />
+          </div>
+          <div class="flex flex-col justify-center">
+            <h2
+              class="text-md xs:text-xl font-medium font-bold text-gray-900 dark:text-gray-100"
+            >
+              {{ review.contractor.first_name }}
+              {{ review.contractor.last_name }}
+            </h2>
+            <div class="text-sm xs:text-lg">
+              {{ review.contractor.company_name }}
+            </div>
+            <span
+              class="text-xs xs:text-lg"
+              v-if="review.contractor.city || review.contractor.state"
+              >{{
+                `${review.contractor.city} ${review.contractor.state}`
+              }}</span
+            >
+          </div>
+        </div>
+        <div>
+          <Link
+            :href="`/admin/ratings/contractor/${review.contractor.id}/history`"
+          >
+            <Badge
+              class="bg-white text-blue-500 padding border-2 cursor-pointer hover:shadow-lg active:scale-95"
+              :style="{
+                '--tw-border-opacity': 1,
 
+                borderColor: 'rgb(59 130 246 / var(--tw-text-opacity))',
+              }"
+              >Show History</Badge
+            >
+          </Link>
+        </div>
+      </div>
+      <div
+        class="pl-2 mt-3 flex gap-2 sm:gap-8 flex-col xs:flex-row"
+        v-if="showContactDetails"
+      >
+        <!-- trades -->
+        <!-- <div class="text-sm xs:text-md font-bold mb-1">Contact Details :</div> -->
+        <div class="flex gap-2 xs:gap-4">
+          <Icon icon="ic:baseline-phone" color="#241e6d" />
+          <div class="text-sm">
+            {{ review.contractor.phone_cell }}
+          </div>
+        </div>
+        <div class="flex gap-2 xs:gap-4">
+          <Icon icon="clarity:email-solid" color="#241e6d" />
+          <div class="text-sm">
+            {{ review.contractor.email }}
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- turn on appeal -->
     <div class="mb-4" v-if="review.on_appeal_reason">
       <div>
@@ -246,6 +348,8 @@ import QualifyingQuestions from "@/Pages/Ratings/PartialsPersonal/QualifyingQues
 import { convertDateFormat } from "@/helpers/utilities";
 
 import { ref, onMounted, onUnmounted } from "vue";
+import { Icon } from "@iconify/vue";
+import { Link } from "@inertiajs/inertia-vue3";
 
 const { review } = defineProps({
   review: {
@@ -259,6 +363,10 @@ const { review } = defineProps({
   },
   nonEditableReview: {
     type: Boolean,
+  },
+  showContactDetails: {
+    type: Boolean,
+    default: false,
   },
 });
 const options = [
@@ -347,3 +455,15 @@ const questionsSwitch = questionsMapping.map((mapping) => ({
   questionAnswer: review[mapping.field],
 }));
 </script>
+
+<style scoped>
+.padding {
+  padding: 2px 6px;
+}
+
+@media (min-width: 640px) {
+  .padding {
+    padding: 6px 10px;
+  }
+}
+</style>

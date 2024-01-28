@@ -2,6 +2,7 @@
   <Head title="Ratings" />
 
   <Header
+    v-if="isAdminUrl"
     :profile="profile"
     :posts="posts"
     :post-search-filters="postSearchFilters"
@@ -10,14 +11,51 @@
     color="rgb(229 231 235 / var(--tw-bg-opacity))"
   >
     <div v-if="contractor" class="bg-gray-200 mt-10">
-      <Card :shadowLevel="2" bgColor="white" padding="20px">
+      <Card
+        :shadowLevel="2"
+        bgColor="white"
+        :padding="screenWidth < 640 ? '7px' : '20px'"
+      >
+        <!-- Contractor info -->
         <ContractorInfo :contractor="contractor" />
+        <!-- Tabs -->
+        <div class="border-gray-300">
+          <heading-card class="mt-6" heading="Check Contractor" />
+          <div class="xs:mb-12 mb-6">
+            <div class="flex gap-3">
+              <button
+                class="rounded px-2 py-1 xs:px-4 xs:py-2 xs:text-md text-sm flex gap-2"
+                :class="{ selected: reviewResponseFilter === 'reviews' }"
+                :disabled="disabled"
+                @click="handleTabs('reviews')"
+              >
+                <div class="flex items-center justify-center">Reviews</div>
+                <img
+                  v-show="loading && reviewResponseFilter === 'reviews'"
+                  src="/images/avatars/Spinner.gif"
+                  alt="spinner"
+                  width="20"
+                />
+              </button>
+              <button
+                class="rounded px-2 py-1 xs:px-4 xs:py-2 xs:text-md text-sm flex gap-2"
+                :disabled="disabled"
+                :class="{ selected: reviewResponseFilter === 'responses' }"
+                @click="handleTabs('responses')"
+              >
+                <div class="flex items-center justify-center">Responses</div>
+                <img
+                  v-show="loading && reviewResponseFilter === 'responses'"
+                  src="/images/avatars/Spinner.gif"
+                  alt="spinner"
+                  width="20"
+                />
+              </button>
+            </div>
+          </div>
+        </div>
         <div v-if="!loading">
-          <heading-card
-            v-if="average_rating && starPercentages"
-            heading="Average Ratings"
-            class="mb-12"
-          />
+          <heading-card heading="Average Ratings" class="mb-12" />
           <AverageRating
             v-if="average_rating && starPercentages"
             :averageRating="average_rating"
@@ -26,7 +64,7 @@
             class="mb-12"
           />
           <!-- Filters -->
-          <div class="border-t-2 border-gray-300">
+          <div class="border-gray-300">
             <heading-card class="mt-6" heading="Order Reviews By" />
             <div class="xs:mb-12 mb-6">
               <div class="flex gap-3">
@@ -73,18 +111,18 @@
             <heading-card heading="Reviews" class="mt-6 mb-12" />
 
             <div
-              v-if="contractorReviews && contractorReviews.length > 0"
+              v-if="contractorReviews && contractorReviews?.length > 0"
               class="flex gap-8 flex-col"
             >
-              <ReviewResponse
+              <HistoryReviewResponse
                 v-for="(review, index) in contractorReviews"
                 :key="index"
                 :review="review"
-                :contractorId="contractor.id"
+                :contractorId="review.contractor_id"
                 :profileId="profile.id"
               />
             </div>
-            <div v-if="contractorReviews && contractorReviews.length === 0">
+            <div v-if="contractorReviews && contractorReviews?.length === 0">
               <div
                 class="p-2 text-xl text-grey-600 font-bold h-60 flex items-center justify-center"
               >
@@ -111,36 +149,8 @@
               :on-click="onClickHandler"
             />
           </div>
-          <div class="py-4 border-t-2 border-b-2 border-gray-300">
-            <Button
-              ref="cardRef"
-              @onSelect="handleSelect"
-              :style="{
-                boxShadow:
-                  '0px 0px 3px rgba(0, 0, 0, 0.12), 0px 0px 2px rgba(0, 0, 0, 0.12)',
-              }"
-              class="w-full text-2xl text-left rounded-lg"
-              >Write a review</Button
-            >
-            <transition name="accordion">
-              <Card
-                v-if="showCard"
-                :shadowLevel="1"
-                bgColor="white"
-                padding="10px"
-                class="mt-8"
-              >
-                <transition name="accordion">
-                  <GiveRating
-                    :profileId="profile.id"
-                    :contractorId="contractor.id"
-                    @addReview="refreshPage"
-                  />
-                </transition>
-              </Card>
-            </transition>
-          </div>
         </div>
+
         <Loader :loading="loading" background="white" height="70vh"></Loader>
       </Card>
     </div>
@@ -149,27 +159,35 @@
 
 <script setup>
 import Header from "@/Layouts/Header.vue";
-import ReviewResponse from "./PartialsVisiting/ReviewResponse.vue";
-import { Head } from "@inertiajs/inertia-vue3";
-import AverageRating from "./PartialsVisiting/AverageRating.vue";
+import { Head, usePage } from "@inertiajs/inertia-vue3";
 import Button from "@/Components/Ratings/Button.vue";
 import CustomPagination from "@/Components/Ratings/CustomPagination.vue";
+import AverageRating from "@/Pages/Ratings/PartialsVisiting/AverageRating.vue";
+import ContractorInfo from "@/Pages/Ratings/PartialsVisiting/ContractorInfo.vue";
 import axios from "axios";
+import HistoryReviewResponse from "@/Pages/Admin/History/partials/HistoryReviewResponse.vue";
 
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import Card from "@/Components/Card.vue";
 import Loader from "@/Components/Ratings/Loader.vue";
-import ContractorInfo from "./PartialsVisiting/ContractorInfo.vue";
-import GiveRating from "./PartialsVisiting/GiveRating.vue";
 
-import { ref, nextTick, onMounted, watch, computed } from "vue";
+import {
+  ref,
+  onMounted,
+  watch,
+  computed,
+  onUnmounted,
+  onBeforeMount,
+  nextTick,
+} from "vue";
 import { somethingWentWrong } from "@/helpers/utilities";
 import { useStore } from "vuex";
+import { Inertia } from "@inertiajs/inertia";
 
 // State
 const { contractorDetails } = defineProps({
-  contractorDetails: Object,
   profile: Object,
+  contractorDetails: Object,
   posts: Object,
   showit: Boolean,
   postSearchFilters: {
@@ -179,16 +197,17 @@ const { contractorDetails } = defineProps({
     }),
   },
 });
-
 const store = useStore();
+const isAdminUrl = usePage().props.value.auth.user.reviews_privileges === 1;
 const currentPage = ref(1);
-const showCard = ref(false);
-const cardRef = ref(null);
-const contractorReviews = ref([]);
+const contractorId = ref(null);
+const contractorReviews = ref(null);
 const loading = ref(false);
+const disabled = ref(false);
 const starPercentages = ref([]);
 const average_rating = ref(null);
 const contractor = ref({});
+const reviewResponseFilter = ref("reviews");
 const sortByDate = ref("latest");
 const sortByRating = ref("");
 const pagination = ref(0);
@@ -196,14 +215,21 @@ const perPage = ref(15);
 
 // Mounted
 onMounted(() => {
-  fetchReviews();
+  contractorId.value = contractorDetails.id;
   contractor.value = contractorDetails;
+  fetchReviews();
+});
+onBeforeMount(() => {
+  if (!isAdminUrl && window.location.pathname !== "/post") {
+    Inertia.visit("/post");
+  }
 });
 
 //Computed
 
 const isFetchReviews = computed(() => store.state.ratings.isFetchReviews);
 const isDeleted = computed(() => store.state.ratings.isDeleted);
+const isInactive = computed(() => store.state.ratings.isInactive);
 
 //Watch
 watch(isFetchReviews, (newVal) => {
@@ -214,17 +240,27 @@ watch(isFetchReviews, (newVal) => {
 });
 watch(isDeleted, (newVal) => {
   if (newVal) {
-    if (pagination.value.total % pagination.value.per_page === 1) {
-      if (pagination.value.last_page === currentPage.value) {
-        currentPage.value = currentPage.value - 1;
-      }
-    }
-    fetchReviews(perPage.value, currentPage.value);
+    configueCurrentPage();
     store.commit("ratings/setIsDeleted", false);
+  }
+});
+watch(isInactive, (newVal) => {
+  if (newVal) {
+    fetchReviews(perPage.value, currentPage.value);
+    store.commit("ratings/setIsInactive", false);
   }
 });
 
 // Methods
+// when we delete one last review in the page so it can be the last or only one review in the page
+const configueCurrentPage = () => {
+  if (pagination.value.total % pagination.value.per_page === 1) {
+    if (pagination.value.last_page === currentPage.value) {
+      currentPage.value = currentPage.value - 1;
+    }
+  }
+  fetchReviews(perPage.value, currentPage.value);
+};
 
 const handleDate = (selected, sortByString) => {
   if (selected) {
@@ -243,12 +279,18 @@ const handleRating = (selected, sortByRate) => {
   fetchReviews(perPage.value, currentPage.value);
 };
 
+const handleTabs = (apiToCall) => {
+  reviewResponseFilter.value = apiToCall;
+  fetchReviews(perPage.value, currentPage.value);
+};
+
 // Fetch REviews
 const fetchReviews = async (per_page = perPage.value, page = 1) => {
   try {
     loading.value = true;
+    disabled.value = true;
     const response = await axios.get(
-      `/api/reviews/1?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
+      `/api/admin/${reviewResponseFilter.value}/${contractorId.value}/history?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -286,39 +328,38 @@ const fetchReviews = async (per_page = perPage.value, page = 1) => {
     somethingWentWrong();
   } finally {
     loading.value = false;
+    disabled.value = false;
   }
 };
+const screenWidth = ref(window.innerWidth);
 
-const handleSelect = async () => {
-  showCard.value = !showCard.value;
-
-  if (showCard.value) {
-    // Wait for the DOM update
-    await nextTick();
-
-    setTimeout(() => {
-      if (
-        cardRef.value &&
-        cardRef.value.$el &&
-        cardRef.value.$el.scrollIntoView
-      ) {
-        const elementToScroll = cardRef.value.$el || cardRef.value;
-        elementToScroll.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-          inline: "start",
-        });
-      } else {
-        console.error("Unexpected issue with the ref");
-      }
-    }, 250);
-  }
+// Update the screen width whenever the window is resized
+const updateWidth = () => {
+  screenWidth.value = window.innerWidth;
 };
-const refreshPage = () => {
-  fetchReviews(perPage.value, currentPage.value);
-  handleSelect();
-};
+
+onMounted(() => {
+  window.addEventListener("resize", updateWidth);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", updateWidth);
+});
+
 const onClickHandler = (page) => {
   fetchReviews(perPage.value, page);
 };
 </script>
+
+<style scoped>
+button.selected {
+  background-color: #3a357c;
+  color: #fff;
+}
+button {
+  border: 1px solid #ccc;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+</style>

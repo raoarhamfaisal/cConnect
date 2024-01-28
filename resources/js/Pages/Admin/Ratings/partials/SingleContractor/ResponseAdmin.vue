@@ -11,7 +11,7 @@
         <div class="font-bold text-md xs:text-lg sm:text-2xl text-2xl mb-2">
           Contractor's Response
         </div>
-        <div v-if="screenWidth >= 600" class="flex flex-col justify-between">
+        <div v-if="screenWidth >= 700" class="flex flex-col justify-between">
           <div class="flex gap-2">
             <!-- edit -->
             <ButtonRatings
