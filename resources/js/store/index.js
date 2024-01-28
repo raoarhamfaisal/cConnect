@@ -18,10 +18,14 @@ export const store = createStore({
     screenWidth: window.innerWidth,
     badWords: null,
     userVersion: 0,
+    translations: {},
+    englishTranslations: {},
+    spanishTranslations: {},
   },
   getters: {
     screenWidth: (state) => state.screenWidth,
     userVersion: (state) => state.userVersion,
+    translations: (state) => state.translations,
   },
   mutations: {
     setScreenWidth(state, width) {
@@ -30,8 +34,21 @@ export const store = createStore({
     setBadWords(state, words) {
       state.badWords = words;
     },
+    setTranlations(state, lang) {
+      if (lang === "english") {
+        state.translations = state.englishTranslations;
+      } else if (lang === "spanish") {
+        state.translations = state.spanishTranslations;
+      }
+    },
     setUserVersion(state, userVersion) {
       state.userVersion = userVersion;
+    },
+    SET_ENGLISH_TRANSLATIONS(state, translations) {
+      state.englishTranslations = translations;
+    },
+    SET_SPANISH_TRANSLATIONS(state, translations) {
+      state.spanishTranslations = translations;
     },
   },
   actions: {
@@ -82,9 +99,24 @@ export const store = createStore({
 
     async fetchTranslations({ commit }) {
       try {
-        const response = await axios.post(`/api/translations`);
+        const response = await axios.get(`/api/translations`);
         if (response.data) {
-          console.log(response.data, "translation");
+          const englishTranslations = {};
+          const spanishTranslations = {};
+
+          response.data.forEach((translation) => {
+            englishTranslations[translation.key] = translation.english;
+            spanishTranslations[translation.key] = translation.mexican_spanish;
+          });
+
+          commit("SET_ENGLISH_TRANSLATIONS", englishTranslations);
+          commit("SET_SPANISH_TRANSLATIONS", spanishTranslations);
+          let lang = localStorage.getItem("lang");
+          if (!lang) {
+            lang = "english";
+            localStorage.setItem("lang", "english");
+          }
+          commit("setTranlations", lang);
         }
       } catch (err) {
         console.log(err);

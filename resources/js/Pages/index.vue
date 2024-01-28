@@ -12,6 +12,7 @@ import { getToken, removeToken } from "@/helpers/localStorageHelper";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { somethingWentWrong } from "@/helpers/utilities";
 import { Inertia } from "@inertiajs/inertia";
+import { Icon } from "@iconify/vue";
 
 defineProps({
   showit: Boolean,
@@ -20,7 +21,6 @@ defineProps({
 const animate = ref(false);
 const loading = ref(false);
 const showingNavigationDropdown = ref(false);
-const store = useStore();
 const pricingPlan = ref({});
 const form = useForm({
   email: "",
@@ -28,9 +28,17 @@ const form = useForm({
   remember: false,
 });
 const dropdownMenu = ref(null);
+let lang = localStorage.getItem("lang");
+if (!lang) {
+  lang = "english";
+  localStorage.setItem("lang", "english");
+}
+const selectedLanguage = ref(lang);
+const store = useStore();
 
 //Computed
 
+const translations = computed(() => store.getters.translations);
 const isAdminUrl = computed(() => {
   const user = usePage().props.value.auth.user;
   console.log(user);
@@ -54,12 +62,12 @@ const getStartedButtonText = computed(() => {
   if (getToken() && profile.value && profile.value.id) {
     console.log("this get executed successfully");
     return userVersion.value === 0
-      ? "Get Started"
+      ? translations.value && translations.value.get_started
       : userVersion.value === 1
-      ? "Upgrade Now"
-      : "News Feed";
+      ? translations.value && translations.value.upgrade_now
+      : translations.value && translations.value.news_feed;
   } else {
-    return "Get Started";
+    return translations.value && translations.value.get_started;
   }
 });
 const newsFeedUrl = computed(() => {
@@ -185,6 +193,12 @@ const handleLogout = () => {
   Inertia.post("/logout");
   store.commit("setUserVersion", 0);
 };
+
+const onSelectLang = (lang) => {
+  localStorage.setItem("lang", lang);
+  selectedLanguage.value = lang;
+  store.commit("setTranlations", lang);
+};
 </script>
 
 <template>
@@ -193,7 +207,9 @@ const handleLogout = () => {
     v-if="loading"
     class="h-full h-[100vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4"
   >
-    <div class="text-center text-xl">Loading...</div>
+    <div class="text-center text-xl">
+      {{ translations && translations.loading }}
+    </div>
     <v-progress-linear
       color="#241e6d"
       indeterminate
@@ -226,7 +242,7 @@ const handleLogout = () => {
           <div class="flex items-center justify-start">
             <Link
               href="/"
-              class="text-2xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center"
+              class="text-xl x350:text-2xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center"
             >
               <tContractorWhite />
             </Link>
@@ -238,23 +254,83 @@ const handleLogout = () => {
               href="#whytContractor"
               class="hidden md:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8"
             >
-              Why tContractor
+              {{ translations && translations.why }} tContractor
             </ScrollToLinkVue>
 
             <Link
               href="/about-us#contactUs"
               class="hidden lg:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8"
             >
-              Contact Us
+              {{ translations && translations.contact_us }}
             </Link>
+
+            <v-menu open-on-hover open-on-click>
+              <template v-slot:activator="{ props }">
+                <div
+                  class="cursor-pointer flex gap-1 items-center justify-center"
+                  v-bind="props"
+                >
+                  <img
+                    v-if="selectedLanguage === 'english'"
+                    style="border: 1px solid #ccc"
+                    class="h-8 w-8 sm:h-10 sm:w-10 rounded-full block object-contain"
+                    src="@/Pages/assets/usa.svg"
+                  />
+                  <img
+                    v-else
+                    style="border: 1px solid #ccc"
+                    class="h-8 w-8 sm:h-10 sm:w-10 rounded-full block object-contain"
+                    src="@/Pages/assets/spanish.svg"
+                  />
+                  <Icon
+                    class="max-sm:hidden block w-4 h-4 hover:rotate-180 transition duration-150 ease-in-out"
+                    icon="mingcute:down-fill"
+                    color="white"
+                  ></Icon>
+                </div>
+              </template>
+              <v-list class="mt-2">
+                <v-list-item
+                  class="hover:bg-gray-200"
+                  @click="onSelectLang('english')"
+                >
+                  <div
+                    class="flex justify-left items-center gap-2 font-bold w-32"
+                  >
+                    <img
+                      style="border: 1px solid #ccc"
+                      class="h-8 w-8 object-contain block rounded-full"
+                      src="@/Pages/assets/usa.svg"
+                    />
+
+                    <div>English</div>
+                  </div>
+                </v-list-item>
+                <v-list-item
+                  class="hover:bg-gray-200"
+                  @click="onSelectLang('spanish')"
+                >
+                  <div
+                    class="flex justify-left items-center gap-2 font-bold w-44"
+                  >
+                    <img
+                      style="border: 1px solid #ccc"
+                      class="h-8 w-8 object-contain block rounded-full"
+                      src="@/Pages/assets/spanish.svg"
+                    />
+                    <div>Spanish / Mexican</div>
+                  </div>
+                </v-list-item>
+              </v-list>
+            </v-menu>
 
             <!-- News Feed Button -->
             <div v-if="showit">
               <Link
                 :href="newsFeedUrl"
-                class="block flex justify-center items-center mx-2 py-2 sm:py-3 px-3 sm:px-6 font-bold rounded-lg sm:rounded-xl text-white bg-green-600 hover:bg-green-800 border-green-600"
+                class="block flex justify-center items-center mx-1 x365:mx-2 py-[6px] x365:py-2 sm:py-3 px-2 x365:px-3 sm:px-6 font-bold rounded-lg sm:rounded-xl text-white bg-green-600 max-x365:text-sm hover:bg-green-800 border-green-600"
               >
-                News Feed
+                {{ translations && translations.news_feed }}
               </Link>
             </div>
 
@@ -264,7 +340,7 @@ const handleLogout = () => {
                 href="#loginHere"
                 class="block flex justify-center items-center p-1 px-3 sm:p-2 mx-2 sm:px-6 font-bold rounded-xl text-xs sm:text-base text-white bg-blue-800 hover:bg-green-800 border-2 shadow-lg border-green-600"
               >
-                Login
+                {{ translations && translations.login }}
               </ScrollToLinkVue>
             </div>
 
@@ -274,10 +350,10 @@ const handleLogout = () => {
               <button
                 ref="dropdownMenu"
                 @click="toggleDropdown"
-                class="inline-flex items-center justify-center p-2 rounded-md text-black text-gray-500 bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
+                class="inline-flex items-center justify-center p-[6px] x365:p-2 rounded-md text-black text-gray-500 bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
               >
                 <svg
-                  class="h-6 w-6"
+                  class="h-4 w-4 x365:h-6 x365:w-6"
                   stroke="currentColor"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -320,7 +396,9 @@ const handleLogout = () => {
             <div class="pt-4 pb-2 pl-3 border-b-2 border-gray-400">
               <div class="font-bold text-base text-gray-800">
                 <div v-if="showit">{{ $page.props.auth.user.name }}</div>
-                <div v-if="!showit">Not Logged In</div>
+                <div v-if="!showit">
+                  {{ translations && translations.not_logged_in }}
+                </div>
               </div>
               <div v-if="showit" class="font-medium text-sm text-gray-500">
                 {{ $page.props.auth.user.email }}
@@ -329,7 +407,8 @@ const handleLogout = () => {
 
             <div class="pt-2 pb-3 space-y-1">
               <ResponsiveNavLink href="#whytContractor">
-                Why <tContractorWord></tContractorWord>
+                {{ translations && translations.why }}
+                <tContractorWord></tContractorWord>
               </ResponsiveNavLink>
 
               <ResponsiveNavLink
@@ -337,7 +416,7 @@ const handleLogout = () => {
                 :href="newsFeedUrl"
                 class="font-bold"
               >
-                News Feed
+                {{ translations && translations.news_feed }}
               </ResponsiveNavLink>
               <ResponsiveNavLink
                 v-if="showit"
@@ -359,7 +438,7 @@ const handleLogout = () => {
                 "
                 class="font-bold"
               >
-                Sub Finder
+                {{ translations && translations.sub_finder }}
               </ResponsiveNavLink>
               <ResponsiveNavLink
                 v-if="showit"
@@ -381,7 +460,7 @@ const handleLogout = () => {
                 "
                 class="font-bold"
               >
-                Red Flags
+                {{ translations && translations.red_flags }}
               </ResponsiveNavLink>
 
               <!-- <ResponsiveNavLink
@@ -426,7 +505,7 @@ const handleLogout = () => {
                 "
                 class="font-bold"
               >
-                Contractor page
+                {{ translations && translations.contractor_page }}
               </ResponsiveNavLink>
             </div>
             <!-- Responsive Settings Options -->
@@ -451,7 +530,7 @@ const handleLogout = () => {
                       : '/inactive-account'
                   "
                 >
-                  My Posts
+                  {{ translations && translations.my_posts }}
                 </ResponsiveNavLink>
                 <ResponsiveNavLink
                   v-if="showit"
@@ -472,7 +551,7 @@ const handleLogout = () => {
                       : '/inactive-account'
                   "
                 >
-                  My Ratings
+                  {{ translations && translations.my_ratings }}
                 </ResponsiveNavLink>
                 <ResponsiveNavLink
                   v-if="showit"
@@ -493,7 +572,7 @@ const handleLogout = () => {
                       : '/inactive-account'
                   "
                 >
-                  My Profile
+                  {{ translations && translations.my_profile }}
                 </ResponsiveNavLink>
 
                 <ResponsiveNavLink
@@ -515,20 +594,20 @@ const handleLogout = () => {
                       : '/inactive-account'
                   "
                 >
-                  Settings
+                  {{ translations && translations.settings }}
                 </ResponsiveNavLink>
                 <ResponsiveNavLink href="/about-us#contactUs">
-                  Contact Us
+                  {{ translations && translations.contact_us }}
                 </ResponsiveNavLink>
 
                 <ResponsiveNavLink href="/about-us#aboutUs">
-                  About Us
+                  {{ translations && translations.about_us }}
                 </ResponsiveNavLink>
                 <ResponsiveNavLink href="/pricing" as="button">
-                  Pricing
+                  {{ translations && translations.pricing }}
                 </ResponsiveNavLink>
                 <ResponsiveNavLink href="/pricing#faqs" as="button">
-                  FAQs
+                  {{ translations && translations.faqs }}
                 </ResponsiveNavLink>
                 <div
                   v-if="isAdminUrl && showit"
@@ -568,7 +647,7 @@ const handleLogout = () => {
                   as="button"
                   @click="handleLogout"
                 >
-                  Log Out
+                  {{ translations && translations.log_out }}
                 </ResponsiveNavLink>
                 <ResponsiveNavLink
                   v-if="!showit"
@@ -576,7 +655,7 @@ const handleLogout = () => {
                   as="button"
                   class="text-blue-rgba font-bold"
                 >
-                  Sign Up
+                  {{ translations && translations.sign_up }}
                 </ResponsiveNavLink>
                 <ResponsiveNavLink
                   v-if="!showit"
@@ -586,7 +665,7 @@ const handleLogout = () => {
                     showingNavigationDropdown = !showingNavigationDropdown
                   "
                 >
-                  Log In
+                  {{ translations && translations.log_in }}
                 </ResponsiveNavLink>
               </div>
             </div>
@@ -642,12 +721,12 @@ const handleLogout = () => {
           </h2>
 
           <span class="font-bold uppercase text-white">
-            Better Construction!
+            {{ translations && translations.better_construction }}
           </span>
           <h1
             class="mt-4 text-4xl sm:text-5xl font-bold tracking-tighter capitalize"
           >
-            Want access to the most powerful tool in construction?
+            {{ translations && translations.want_access_powerful_tool }}
           </h1>
 
           <!-- {{  profile }} -->
@@ -674,7 +753,7 @@ const handleLogout = () => {
               <span
                 class="text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500"
               >
-                Get Started
+                {{ translations && translations.get_started }}
               </span>
               <!-- Arrow -->
               <span
@@ -708,7 +787,7 @@ const handleLogout = () => {
               <span
                 class="text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500"
               >
-                News Feed
+                {{ translations && translations.news_feed }}
               </span>
               <!-- Arrow -->
               <span
@@ -761,7 +840,7 @@ const handleLogout = () => {
         <!-- WITHOUT LOG IN OPTION /  showit = true -->
         <div v-if="showit">
           <h2 class="text-3xl text-center font-bold sm:text-4xl">
-            Why Do You need
+            {{ translations && translations.why_do_you_need }}
             <br />
             <span class="text-center mt-1 text-4xl sm:text-6xl"
               ><tContractorWord /> ?</span
@@ -771,11 +850,13 @@ const handleLogout = () => {
           <p
             class="mt-4 text-center text-3xl sm:text-4xl text-[#241e6d] font-extrabold"
           >
-            To Increase Your Bottom Line & Peace of Mind!
+            {{ translations && translations.increase_bottom_line }}
           </p>
           <p class="mt-4 text-center text-2xl font-semibold">
-            From Searching for Locally Vetted Sub-Contractors, to Finding Jobs,
-            Getting Bids... <br />to Free Advertising.
+            {{
+              translations &&
+              translations.searching_locally_vetted_subcontractors
+            }}<br />{{ translations && translations.free_advertising }}
           </p>
         </div>
 
@@ -788,7 +869,7 @@ const handleLogout = () => {
           <!-- Top or at md size Left Side -->
           <div class="flex flex-col flex-shrink-0 justify-center items-center">
             <h2 class="text-3xl font-bold sm:text-4xl md:max-lg:text-3xl">
-              Why Do You need
+              {{ translations && translations.why_do_you_need }}
               <br />
               <span
                 class="text-center mt-1 text-4xl sm:text-6xl md:max-lg:text-4xl"
@@ -799,11 +880,14 @@ const handleLogout = () => {
             <p
               class="mt-4 text-center text-3xl sm:text-4xl font-extrabold text-[#241e6d]"
             >
-              To Increase Your Bottom Line & Peace of Mind!
+              {{ translations && translations.increase_bottom_line }}
             </p>
             <p class="mt-4 text-center text-2xl font-semibold">
-              From Searching for Locally Vetted Sub-Contractors, to Finding
-              Jobs, Getting Bids... <br />to Free Advertising.
+              {{
+                translations &&
+                translations.searching_locally_vetted_subcontractors
+              }}
+              <br />{{ translations && translations.free_advertising }}
             </p>
           </div>
 
@@ -813,8 +897,7 @@ const handleLogout = () => {
           >
             <div class="mx-auto pt-0">
               <p class="text-green-800 text-center font-bold pb-2 text-xl">
-                Login in to Join The Private Community For the Construction
-                Trades!
+                {{ translations && translations.join_private_community }}
               </p>
             </div>
 
@@ -856,16 +939,25 @@ const handleLogout = () => {
                 class="text-xl font-semibold tracking-tighter text-[#] list-disc"
               >
                 <!-- a6b9b9 -->
-                <li>Find Local or Statewide Subs to hire</li>
-                <li>Advertise Your Business for Free!</li>
-                <li>Post Job Bids or Look for Work!</li>
-                <li>KNOW what's happening in your local area!</li>
-                <li>Ask Questions / Get Answers!</li>
+                <li>
+                  {{ translations && translations.find_local_statewide_subs }}
+                </li>
+                <li>
+                  {{ translations && translations.advertise_your_business }}
+                </li>
+                <li>
+                  {{ translations && translations.post_job_bids_look_work }}
+                </li>
+                <li>{{ translations && translations.know_whats_happening }}</li>
+                <li>
+                  {{ translations && translations.ask_questions_get_answers }}
+                </li>
 
                 <li class="md:max-w-md lg:max-w-lg">
                   <span class="font-bold italic"
-                    >"<strong>N</strong>o-<strong>B</strong>rainer
-                    <strong>P</strong>ricing"</span
+                    >"{{
+                      translations && translations.no_brainer_pricing
+                    }}"</span
                   >
                   &nbsp;- As Contractors Ourselves, Seems Like Everyone is
                   Trying to Sell Us Something At Super - Exorbitant Prices!
@@ -875,11 +967,13 @@ const handleLogout = () => {
                   <div class="inline-block mt-2">
                     <div class="inline">We Provide</div>
                     <div class="text-white inline text-2xl font-bold">
-                      Your Most Important Tool for Free !!
+                      &nbsp;{{
+                        translations && translations.important_tool_for_free
+                      }}
                     </div>
                   </div>
                   <div class="text-orange-accent-darker font-extrabold">
-                    A few bucks a month,brings you even more!
+                    {{ translations && translations.few_bucks_more_benefits }}
                   </div>
                 </li>
               </ul>
@@ -991,21 +1085,29 @@ const handleLogout = () => {
         <div class="flex justify-evenly space-x-10">
           <!-- First Menu List -->
           <div class="flex flex-col space-y-3 text-white">
-            <a href="#" class="hover:text-blue-400">Home</a>
-            <a href="/pricing" class="hover:text-blue-400">Pricing</a>
-            <a href="/pricing#faqs" class="hover:text-blue-400">FAQs</a>
-            <a href="/about-us#contactUs" class="hover:text-blue-400"
-              >Contact Us</a
-            >
+            <a href="#" class="hover:text-blue-400">{{
+              translations && translations.home
+            }}</a>
+            <a href="/pricing" class="hover:text-blue-400">{{
+              translations && translations.pricing
+            }}</a>
+            <a href="/pricing#faqs" class="hover:text-blue-400">{{
+              translations && translations.faqs
+            }}</a>
+            <a href="/about-us#contactUs" class="hover:text-blue-400">{{
+              translations && translations.contact_us
+            }}</a>
           </div>
           <!-- Second Menu List -->
           <div class="flex flex-col space-y-3 text-white">
-            <a href="/careers" class="hover:text-blue-400"> Careers</a>
+            <a href="/careers" class="hover:text-blue-400">
+              {{ translations && translations.careers }}</a
+            >
             <a href="/terms-of-service" class="hover:text-blue-400">
-              Terms of Service</a
+              {{ translations && translations.terms_of_service }}</a
             >
             <a href="/privacy-policy" class="hover:text-blue-400">
-              Privacy Policy</a
+              {{ translations && translations.privacy_policy }}</a
             >
           </div>
         </div>
@@ -1036,7 +1138,7 @@ const handleLogout = () => {
               <span
                 class="text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500"
               >
-                Get Started
+                {{ translations && translations.get_started }}
               </span>
               <!-- Arrow -->
               <span
@@ -1070,7 +1172,7 @@ const handleLogout = () => {
               <span
                 class="text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500"
               >
-                News Feed
+                {{ translations && translations.news_feed }}
               </span>
               <!-- Arrow -->
               <span

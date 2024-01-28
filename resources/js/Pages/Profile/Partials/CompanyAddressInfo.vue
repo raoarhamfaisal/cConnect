@@ -8,9 +8,10 @@ import { usePage } from "@inertiajs/inertia-vue3";
 import UserAvatar from "../components/UserAvatar.vue";
 import { stateList } from "@/helpers/selectListsHelpters.js";
 
-import { watch, ref, onMounted, onBeforeUnmount } from "vue";
+import { watch, ref, onMounted, onBeforeUnmount, computed } from "vue";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 import GoogleAddressAutocomplete from "@/Components/GoogleAddressAutoComplete.vue";
+import { useStore } from "vuex";
 
 const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const props = defineProps({
@@ -31,7 +32,11 @@ const selectedName = selectedObj ? selectedObj.name : undefined;
 
 const selectedReferal = ref(selectedName ?? "");
 const companyLogoError = ref("");
+const store = useStore();
 
+//Computed
+
+const translations = computed(() => store.getters.translations);
 //Emits
 const emit = defineEmits(["update:form", "clearErrors"]);
 
@@ -98,7 +103,6 @@ const handleImageUpdate = (file) => {
       company_logo.value = response.data.company_logo; // Update the local state with the new avatar path
     })
     .catch((error) => {
-     
       companyLogoError.value = error.response.data.message;
 
       loadingImage.value = false;

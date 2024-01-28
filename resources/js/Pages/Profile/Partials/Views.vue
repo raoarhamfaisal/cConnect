@@ -1,5 +1,5 @@
 <script setup>
-import { reactive } from "vue";
+import { computed, reactive } from "vue";
 import { useStore } from "vuex";
 const props = defineProps({
   profile: Object,
@@ -12,6 +12,12 @@ const props = defineProps({
 // 2 => profile-setup
 // 3 => model-view-settings
 
+const store = useStore();
+
+//Computed
+
+const translations = computed(() => store.getters.translations);
+
 const form = reactive({
   view_locale: props.profile.view_locale,
   view_regional: props.profile.view_regional,
@@ -19,7 +25,7 @@ const form = reactive({
   view_nationwide: props.profile.view_nationwide,
   view_following: props.profile.view_following,
 });
-const store = useStore();
+
 const switchFields = [
   "view_locale",
   "view_regional",

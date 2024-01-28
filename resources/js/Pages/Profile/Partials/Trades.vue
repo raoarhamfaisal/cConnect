@@ -52,6 +52,8 @@ const form = reactive({
 });
 const emit = defineEmits(["dontProceed"]);
 
+const translations = computed(() => store.getters.translations);
+
 onMounted(() => {
   // if all trades selected change toggle to selectd all
   const allSelected = Object.values(form).every((value) => value === 1);

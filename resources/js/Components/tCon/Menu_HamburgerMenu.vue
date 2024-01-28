@@ -6,6 +6,7 @@ import { Link, usePage } from "@inertiajs/inertia-vue3";
 import { computed, ref } from "vue";
 import DialogProfileTabs from "@/Pages/Profile/Partials/main/DialogProfileTabs.vue";
 import Avatar from "@/Components/Ratings/Avatar.vue";
+import { useStore } from "vuex";
 
 const props = defineProps({
   showit: Boolean,
@@ -24,7 +25,15 @@ const props = defineProps({
 });
 
 const dialogRef = ref();
+const store = useStore();
+
 const url = usePage().url.value;
+let lang = localStorage.getItem("lang");
+if (!lang) {
+  lang = "english";
+  localStorage.setItem("lang", "english");
+}
+const selectedLanguage = ref(lang);
 
 const emit = defineEmits([
   "NavigationDropdown",
@@ -39,6 +48,7 @@ function NavigationDropdown() {
 const newPostSearchValue = () => {
   emit("submitPostSearch");
 };
+const translations = computed(() => store.getters.translations);
 const isAdminUrl = computed(() => {
   return usePage().props.value.auth.user.appeals_privileges === 1;
 });
@@ -58,6 +68,12 @@ const truncatedName = computed(() => {
     (props.profile.last_name ? props.profile.last_name : "");
   return fullName.length < 27 ? fullName : fullName.substring(0, 23) + "...";
 });
+
+const onSelectLang = (lang) => {
+  localStorage.setItem("lang", lang);
+  selectedLanguage.value = lang;
+  store.commit("setTranlations", lang);
+};
 </script>
 
 <template>
@@ -100,6 +116,72 @@ const truncatedName = computed(() => {
                                 Cell: {{ profile.phone_cell }}
                             </h4> -->
         </div>
+        <v-menu open-on-hover open-on-click>
+          <template v-slot:activator="{ props }">
+            <!-- border-2 border-[#ced0d4] -->
+            <div
+              class="cursor-pointer mt-2 flex gap-1 items-center justify-left p-1 rounded-md"
+              v-bind="props"
+            >
+              <div
+                v-if="selectedLanguage === 'english'"
+                class="flex justify-left items-center gap-2 font-bold"
+              >
+                <img
+                  class="h-8 w-8 sm:h-10 sm:w-10 rounded-full block object-contain"
+                  style="border: 1px solid #ccc"
+                  src="@/Pages/assets/usa.svg"
+                />
+                <div>English</div>
+              </div>
+              <div
+                v-else
+                class="flex justify-left items-center gap-2 font-bold"
+              >
+                <img
+                  style="border: 1px solid #ccc"
+                  class="h-8 w-8 sm:h-10 sm:w-10 rounded-full block object-contain"
+                  src="@/Pages/assets/spanish.svg"
+                />
+                <div>Spanish / Mexican</div>
+              </div>
+              <Icon
+                class="block w-4 h-4"
+                icon="mingcute:down-fill"
+                color="black"
+              ></Icon>
+            </div>
+          </template>
+          <v-list class="mt-2">
+            <v-list-item
+              class="hover:bg-gray-200"
+              @click="onSelectLang('english')"
+            >
+              <div class="flex justify-left items-center gap-2 font-bold w-32">
+                <img
+                  style="border: 1px solid #ccc"
+                  class="h-8 w-8 object-contain block rounded-full"
+                  src="@/Pages/assets/usa.svg"
+                />
+
+                <div>English</div>
+              </div>
+            </v-list-item>
+            <v-list-item
+              class="hover:bg-gray-200"
+              @click="onSelectLang('spanish')"
+            >
+              <div class="flex justify-left items-center gap-2 font-bold w-44">
+                <img
+                  style="border: 1px solid #ccc"
+                  class="h-8 w-8 object-contain block rounded-full"
+                  src="@/Pages/assets/spanish.svg"
+                />
+                <div>Spanish / Mexican</div>
+              </div>
+            </v-list-item>
+          </v-list>
+        </v-menu>
 
         <!-- HAMBURGER MENU OPTIONS -->
         <div
@@ -166,7 +248,9 @@ const truncatedName = computed(() => {
             }`"
           >
             <img src="/images/icons/newsfeed.png" width="20" height="20" />
-            <span class="mx-4 font-medium">News Feed</span>
+            <span class="mx-4 font-medium">{{
+              translations && translations.news_feed
+            }}</span>
           </Link>
 
           <!-- DropDown: SUB FINDER -->
@@ -177,7 +261,9 @@ const truncatedName = computed(() => {
             }`"
           >
             <img src="/images/icons/contractor.png" width="20" height="20" />
-            <span class="mx-4 font-medium">Sub Finder</span>
+            <span class="mx-4 font-medium">{{
+              translations && translations.sub_finder
+            }}</span>
           </Link>
 
           <!-- DropDown: RED FLAG / SLIPPERY APPLES -->
@@ -188,7 +274,9 @@ const truncatedName = computed(() => {
             }`"
           >
             <img src="/images/icons/redflag.png" width="20" height="20" />
-            <span class="mx-4 font-medium">Red Flags</span>
+            <span class="mx-4 font-medium">{{
+              translations && translations.red_flags
+            }}</span>
           </Link>
 
           <!-- DropDown: MENTORING -->
@@ -213,7 +301,9 @@ const truncatedName = computed(() => {
               width="20"
               height="20"
             />
-            <span class="mx-4 font-medium">Contractor page</span>
+            <span class="mx-4 font-medium">{{
+              translations && translations.contractor_page
+            }}</span>
           </Link>
 
           <div class="pt-1 border-t-2 border-gray-400"></div>
@@ -292,7 +382,9 @@ const truncatedName = computed(() => {
                 </svg>
               </g>
             </svg>
-            <span class="mx-4 font-medium">My Posts</span>
+            <span class="mx-4 font-medium">{{
+              translations && translations.my_posts
+            }}</span>
           </Link>
           <Link
             href="/ratings/contractor"
@@ -306,7 +398,9 @@ const truncatedName = computed(() => {
               width="20"
               height="20"
             />
-            <span class="mx-4 font-medium">My Ratings</span>
+            <span class="mx-4 font-medium">{{
+              translations && translations.my_ratings
+            }}</span>
           </Link>
 
           <!-- DropDown: My Profile -->
@@ -317,7 +411,9 @@ const truncatedName = computed(() => {
             }`"
           >
             <img src="/images/icons/profile.png" width="20" height="20" />
-            <span class="mx-4 font-medium">My Profile</span>
+            <span class="mx-4 font-medium">{{
+              translations && translations.my_profile
+            }}</span>
           </Link>
 
           <!-- DropDown: Settings -->
@@ -328,7 +424,9 @@ const truncatedName = computed(() => {
             }`"
           >
             <img src="/images/icons/settings_bl.png" width="20" height="20" />
-            <span class="mx-4 font-medium">Settings</span>
+            <span class="mx-4 font-medium">{{
+              translations && translations.settings
+            }}</span>
           </Link>
 
           <!-- DropDown: Contact Us -->
@@ -357,7 +455,9 @@ const truncatedName = computed(() => {
               width="20"
               height="20"
             />
-            <span class="mx-4 font-medium">Admin</span>
+            <span class="mx-4 font-medium">{{
+              translations && translations.admin
+            }}</span>
           </Link>
 
           <div v-if="isAdminUrl" class="pt-1 border-t-2 border-gray-400"></div>
@@ -367,7 +467,9 @@ const truncatedName = computed(() => {
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 pointer-events-auto"
           >
             <img src="/images/icons/logout_bl.png" width="20" height="20" />
-            <span class="mx-4 font-medium">Log Out</span>
+            <span class="mx-4 font-medium">{{
+              translations && translations.log_out
+            }}</span>
           </button>
           <!-- <Link
             :href="route('logout')"

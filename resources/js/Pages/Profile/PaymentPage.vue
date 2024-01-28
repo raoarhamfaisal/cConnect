@@ -646,6 +646,8 @@ onMounted(async () => {
 
 //Computed
 const screenWidth = computed(() => store.getters.screenWidth);
+const translations = computed(() => store.getters.translations);
+
 const goBack = computed(() => {
   // Check if the history is
   return "/pricing-plan";

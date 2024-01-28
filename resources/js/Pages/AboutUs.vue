@@ -5,10 +5,15 @@ import WelcomeFooter from "@/Components/Welcome/WelcomeFooter.vue";
 
 import { Head } from "@inertiajs/inertia-vue3";
 import { Link } from "@inertiajs/inertia-vue3";
+import { useStore } from "vuex";
+import { computed } from "vue";
 
 const props = defineProps({
   showit: Boolean,
 });
+const store = useStore();
+
+const translations = computed(() => store.getters.translations);
 </script>
 
 <template>
@@ -25,7 +30,9 @@ const props = defineProps({
 
       <!-- About Us Section -->
       <section id="aboutUs" class="mb-8">
-        <h2 class="text-2xl font-bold mb-4">About Us</h2>
+        <h2 class="text-2xl font-bold mb-4">
+          {{ translations && translations.about_us }}
+        </h2>
         <p class="text-lg mb-4">
           At tContractor, we're building a community where contractors help each
           other succeed. Whether you're looking to hire, seek guidance, or find
@@ -50,7 +57,9 @@ const props = defineProps({
 
       <!-- Contact Us Section -->
       <section id="contactUs" class="mb-8">
-        <h2 class="text-2xl font-bold mb-4">Contact Us</h2>
+        <h2 class="text-2xl font-bold mb-4">
+          {{ translations && translations.contact_us }}
+        </h2>
         <p class="text-lg mb-4">
           We're always here to help. Whether you have a question, feedback, or
           just want to chat, our team is just an email away. We value our

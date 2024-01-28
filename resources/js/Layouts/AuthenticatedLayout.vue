@@ -97,7 +97,7 @@ const handleLogout = () => {
                       as="button"
                       @click="handleLogout"
                     >
-                      Log Out
+                      {{ translations && translations.log_out }}
                     </DropdownLink>
                   </template>
                 </Dropdown>
@@ -186,7 +186,7 @@ const handleLogout = () => {
                 method="post"
                 as="button"
               >
-                Log Out
+                {{ translations && translations.log_out }}
               </ResponsiveNavLink>
             </div>
           </div>

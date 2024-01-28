@@ -50,6 +50,7 @@ onMounted(() => {
   fetchActiveSubscriptionDetails();
 });
 const userVersion = computed(() => store.getters.userVersion);
+const translations = computed(() => store.getters.translations);
 const screenWidth = computed(() => store.getters.screenWidth);
 const userVersionText = computed(() =>
   userVersion.value === 1
@@ -425,7 +426,9 @@ const fetchPaymentHistoryDetails = async () => {
           v-if="loading && Object.keys(pricingPlan).length === 2"
           class="h-full h-[80vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4"
         >
-          <div class="text-center text-xl">Loading...</div>
+          <div class="text-center text-xl">
+            {{ translations && translations.loading }}
+          </div>
           <v-progress-linear
             color="#241e6d"
             indeterminate
@@ -518,7 +521,9 @@ const fetchPaymentHistoryDetails = async () => {
         v-if="loadingPaymentHistoryDetails"
         class="h-full h-[40vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4"
       >
-        <div class="text-center text-xl">Loading...</div>
+        <div class="text-center text-xl">
+          {{ translations && translations.loading }}
+        </div>
         <v-progress-linear
           color="#241e6d"
           indeterminate

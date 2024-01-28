@@ -36,6 +36,12 @@ const dialogRef = ref();
 const contractorPageRef = ref();
 const showContractorPageModal = ref(false);
 const url = usePage().url.value;
+let lang = localStorage.getItem("lang");
+if (!lang) {
+  lang = "english";
+  localStorage.setItem("lang", "english");
+}
+const selectedLanguage = ref(lang);
 console.log(url, "url");
 const newPostSearchValue = () => {
   emit("submitPostSearch");
@@ -58,6 +64,7 @@ const isAdminUrl = computed(() => {
   return false;
 });
 const loadingImage = computed(() => store.state.profile.loadingImage);
+const translations = computed(() => store.getters.translations);
 
 function handleLogout() {
   removeToken();
@@ -97,6 +104,12 @@ const truncatedName = computed(() => {
     (props.profile.last_name ? props.profile.last_name : "");
   return fullName.length < 27 ? fullName : fullName.substring(0, 23) + "...";
 });
+
+const onSelectLang = (lang) => {
+  localStorage.setItem("lang", lang);
+  selectedLanguage.value = lang;
+  store.commit("setTranlations", lang);
+};
 // const openContractorPageModal = () => {
 //   contractorPageRef.value.openDialog();
 // };
@@ -175,6 +188,68 @@ const truncatedName = computed(() => {
           {{ address }}
         </h4>
       </div>
+      <v-menu open-on-hover open-on-click>
+        <template v-slot:activator="{ props }">
+          <!-- border-2 border-[#ced0d4] -->
+          <div
+            class="cursor-pointer mt-2 flex gap-1 items-center justify-center p-1 rounded-md"
+            v-bind="props"
+          >
+            <div
+              v-if="selectedLanguage === 'english'"
+              class="flex justify-left items-center gap-2 font-bold"
+            >
+              <img
+                class="h-8 w-8 sm:h-10 sm:w-10 rounded-full block object-contain"
+                style="border: 1px solid #ccc"
+                src="@/Pages/assets/usa.svg"
+              />
+              <div>English</div>
+            </div>
+            <div v-else class="flex justify-left items-center gap-2 font-bold">
+              <img
+                style="border: 1px solid #ccc"
+                class="h-8 w-8 sm:h-10 sm:w-10 rounded-full block object-contain"
+                src="@/Pages/assets/spanish.svg"
+              />
+              <div>Spanish / Mexican</div>
+            </div>
+            <Icon
+              class="max-sm:hidden block w-4 h-4"
+              icon="mingcute:down-fill"
+            ></Icon>
+          </div>
+        </template>
+        <v-list class="mt-2">
+          <v-list-item
+            class="hover:bg-gray-200"
+            @click="onSelectLang('english')"
+          >
+            <div class="flex justify-left items-center gap-2 font-bold w-32">
+              <img
+                style="border: 1px solid #ccc"
+                class="h-8 w-8 object-contain block rounded-full"
+                src="@/Pages/assets/usa.svg"
+              />
+
+              <div>English</div>
+            </div>
+          </v-list-item>
+          <v-list-item
+            class="hover:bg-gray-200"
+            @click="onSelectLang('spanish')"
+          >
+            <div class="flex justify-left items-center gap-2 font-bold w-44">
+              <img
+                style="border: 1px solid #ccc"
+                class="h-8 w-8 object-contain block rounded-full"
+                src="@/Pages/assets/spanish.svg"
+              />
+              <div>Spanish / Mexican</div>
+            </div>
+          </v-list-item>
+        </v-list>
+      </v-menu>
 
       <!-- POST BUTTON & SEARCH -->
       <div class="flex flex-col items-center mt-4 -mx-2">
@@ -261,7 +336,9 @@ const truncatedName = computed(() => {
             :href="route('post')"
           >
             <img src="/images/icons/newsfeed.png" width="30" height="30" />
-            <span class="mx-4 font-medium">News Feed</span>
+            <span class="mx-4 font-medium">{{
+              translations && translations.news_feed
+            }}</span>
           </Link>
           <!-- SUB-FINDER SEARCH -->
           <Link
@@ -282,7 +359,9 @@ const truncatedName = computed(() => {
             href="/red-flag"
           >
             <img src="/images/icons/redflag.png" width="30" height="30" />
-            <span class="mx-4 font-medium">Red Flags</span>
+            <span class="mx-4 font-medium">{{
+              translations && translations.red_flags
+            }}</span>
           </Link>
 
           <!-- Mentor SEARCH -->
@@ -307,7 +386,9 @@ const truncatedName = computed(() => {
               width="30"
               height="30"
             />
-            <span class="mx-4 font-medium">Contractor page</span>
+            <span class="mx-4 font-medium">{{
+              translations && translations.contractor_page
+            }}</span>
           </Link>
 
           <hr class="mt-3 ml-6 mr-6 pt-3 border-t-2 border-gray-400" />
@@ -387,7 +468,9 @@ const truncatedName = computed(() => {
                 </svg>
               </g>
             </svg>
-            <span class="mx-4 font-medium">My Posts</span>
+            <span class="mx-4 font-medium">{{
+              translations && translations.my_posts
+            }}</span>
           </Link>
           <!-- Your Reviews -->
           <Link
@@ -402,7 +485,9 @@ const truncatedName = computed(() => {
               width="30"
               height="30"
             />
-            <span class="mx-4 font-medium">My Ratings</span>
+            <span class="mx-4 font-medium">{{
+              translations && translations.my_ratings
+            }}</span>
           </Link>
 
           <!-- PROFILE -->
@@ -413,7 +498,9 @@ const truncatedName = computed(() => {
             href="/profile"
           >
             <img src="/images/icons/profile.png" width="30" height="30" />
-            <span class="mx-4 font-medium">My Profile</span>
+            <span class="mx-4 font-medium">{{
+              translations && translations.my_profile
+            }}</span>
           </Link>
 
           <!-- SETTINGS -->
@@ -424,7 +511,9 @@ const truncatedName = computed(() => {
             href="/settings"
           >
             <img src="/images/icons/settings_bl.png" width="30" height="30" />
-            <span class="mx-4 font-medium">Settings</span>
+            <span class="mx-4 font-medium">{{
+              translations && translations.settings
+            }}</span>
           </Link>
 
           <!-- CONTACT -->
@@ -435,7 +524,9 @@ const truncatedName = computed(() => {
             href="/about-us#contactUs"
           >
             <img src="/images/icons/contactus.png" width="30" height="30" />
-            <span class="mx-4 font-medium">Contact Us</span>
+            <span class="mx-4 font-medium">{{
+              translations && translations.contact_us
+            }}</span>
           </Link>
 
           <!-- admin section -->
@@ -456,7 +547,9 @@ const truncatedName = computed(() => {
               width="30"
               height="30"
             />
-            <span class="mx-4 font-medium">Admin</span>
+            <span class="mx-4 font-medium">{{
+              translations && translations.admin
+            }}</span>
           </Link>
           <!-- <Link
             v-if="isAdminUrl"
@@ -496,7 +589,9 @@ const truncatedName = computed(() => {
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 pointer-events-auto"
           >
             <img src="/images/icons/logout_bl.png" width="30" height="30" />
-            <span class="mx-4 font-medium">Log Out</span>
+            <span class="mx-4 font-medium">{{
+              translations && translations.log_out
+            }}</span>
           </button>
           <!-- <Link
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg  hover:bg-gray-100   hover:text-gray-700"

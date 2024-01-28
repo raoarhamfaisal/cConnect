@@ -1,7 +1,8 @@
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, computed } from "vue";
 import tContractorWord from "@/Components/tCon/tContractorWord.vue";
 import ScrollToLinkVue from "@/Components/tCon/ScrollToLink.vue";
+import { useStore } from "vuex";
 
 const showMore1 = ref(false);
 const showMore2 = ref(false);
@@ -9,20 +10,28 @@ const showMore3 = ref(false);
 const showMore4 = ref(false);
 const showMore5 = ref(false);
 const showMore6 = ref(false);
+
+const store = useStore();
+
+//Computed
+
+const translations = computed(() => store.getters.translations);
 </script>
 
 <template>
   <section class="bg-white">
     <div class="container px-6 py-10 mx-auto">
       <h1 class="text-3xl font-semibold text-gray-800 capitalize lg:text-4xl">
-        explore our <br />
+        {{ translations && translations.explore_our }} <br />
         <span class="underline underline-offset-8 decoration-blue-rgba">
-          Game-Changing Tools
+          {{ translations && translations.game_changing_tools }}
         </span>
       </h1>
 
       <p class="text-2xl capitalize mt-4 text-gray-600 xl:mt-6">
-        more business - more profit - less hassles
+        {{
+          translations && translations.more_business_more_profit_less_hassles
+        }}
       </p>
 
       <div
@@ -41,7 +50,7 @@ const showMore6 = ref(false);
               <h1
                 class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase"
               >
-                news feed
+                {{ translations && translations.news_feed }}
               </h1>
             </div>
           </div>
@@ -53,45 +62,46 @@ const showMore6 = ref(false);
               <div
                 class="pl-4 text-xl text-black font-semibold capitalize tracking-tight"
               >
-                <h2>Want To BID on JOBS?</h2>
-                <h2 class="pl-4">Looking For WORK?</h2>
-                <h2 class="pl-8">...For SUBS? ...INFO?</h2>
+                <h2>{{ translations && translations.want_to_bid_on_jobs }}</h2>
+                <h2 class="pl-4">
+                  {{ translations && translations.looking_for_work }}
+                </h2>
+                <h2 class="pl-8">
+                  {{ translations && translations.for_subs_info }}
+                </h2>
               </div>
 
               <p
                 class="mt-1 text-xl font-bold italic tracking-tighter text-red-600 uppercase"
               >
-                The ACTION Starts Here!
+                {{ translations && translations.the_action_starts_here }}
               </p>
 
               <div v-show="showMore1">
                 <p class="pt-2 font-semibold text-slate-700 capitalize">
-                  See postings from other contractors, locally, city wide or the
-                  region!
+                  {{
+                    translations && translations.see_postings_from_contractors
+                  }}
                 </p>
                 <p class="pt-2 font-semibold text-blue-700 capitalize">
-                  See what jobs you can bid on, who to hire or not, and who to
-                  stay away from! looking for work, you'll find plenty of
-                  opportunities here!
+                  {{ translations && translations.see_what_jobs_to_bid }}
                 </p>
                 <p class="pt-2 font-semibold text-slate-700 capitalize">
-                  Hear and see the latest "happenings" from other contractors,
-                  in your locale area or from around the country!
+                  {{ translations && translations.hear_see_latest_happenings }}
                 </p>
                 <p class="pt-2 font-semibold text-slate-700 capitalize">
-                  Got Some Questions on tough projects? Put it on the FEED, Find
-                  out from other experts what may be the best route for you!
+                  {{ translations && translations.got_questions_on_projects }}
                 </p>
                 <p
                   class="-ml-4 pt-2 text-lg font-bold italic text-red-600 capitalize"
                 >
-                  Visit Often - Hourly/Daily
+                  {{ translations && translations.visit_often }}
                 </p>
 
                 <p
                   class="pt-2 text-lg font-bold italic text-blue-rgba capitalize text-center"
                 >
-                  Private - For Members Only!
+                  {{ translations && translations.private_for_members_only }}
                 </p>
               </div>
 
@@ -102,7 +112,7 @@ const showMore6 = ref(false);
                 @click="showMore1 = !showMore1"
                 class="inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform hover:underline hover:text-blue-600"
               >
-                More
+                {{ translations && translations.more }}
                 <svg
                   class="w-4 h-4 mx-1 rtl:-scale-x-100"
                   fill="currentColor"
@@ -135,7 +145,7 @@ const showMore6 = ref(false);
                     clip-rule="evenodd"
                   ></path>
                 </svg>
-                Less
+                {{ translations && translations.less }}
               </ScrollToLinkVue>
             </div>
           </div>
@@ -154,7 +164,7 @@ const showMore6 = ref(false);
               <h1
                 class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase"
               >
-                sub finder
+                {{ translations && translations.sub_finder }}
               </h1>
             </div>
           </div>
@@ -166,79 +176,89 @@ const showMore6 = ref(false);
               <div
                 class="pl-4 text-xl text-black font-semibold capitalize tracking-tight"
               >
-                <h2>Need To Hire Someone?</h2>
-                <h2 class="pl-4">Hire with confidence!</h2>
+                <h2>{{ translations && translations.need_to_hire_someone }}</h2>
+                <h2 class="pl-4">
+                  {{ translations && translations.hire_with_confidence }}
+                </h2>
                 <h2 class="pl-8 text-lg">
-                  Subs, Contractors, Talent, Engineers & Temps
+                  {{
+                    translations &&
+                    translations.subs_contractors_talent_engineers_temps
+                  }}
                 </h2>
               </div>
 
               <p
                 class="mt-1 text-xl font-bold italic tracking-tighter text-red-600 uppercase"
               >
-                Rated By Their Peers!
+                {{ translations && translations.rated_by_their_peers }}
               </p>
 
               <div v-show="showMore2">
                 <ul
                   class="pt-2 text-md font-semibold text-slate-700 capitalize list-disc"
                 >
-                  <li>Con't find a contractor or a sub?</li>
-                  <li>Who do you trust?</li>
                   <li>
-                    Ever hire a sub only to have them try and renegotiate the
-                    deal... or disappear?
+                    {{ translations && translations.cant_find_contractor_sub }}
                   </li>
-                  <li>Ever hire a contractor who just did a bad job?</li>
-                  <li>Ever got stiffed by someone who hired you?</li>
-                  <li>Who do you trust to represent your name?</li>
+                  <li>{{ translations && translations.who_do_you_trust }}</li>
+                  <li>
+                    {{
+                      translations &&
+                      translations.hire_sub_renegotiate_disappear
+                    }}
+                  </li>
+                  <li>
+                    {{ translations && translations.hire_contractor_bad_job }}
+                  </li>
+                  <li>
+                    {{ translations && translations.got_stiffed_by_hirer }}
+                  </li>
+                  <li>
+                    {{ translations && translations.trust_to_represent_name }}
+                  </li>
                 </ul>
                 <span class="pt-2 text-blue-700 font-bold -ml-4"
-                  >Do you want to be<br
+                  >{{ translations && translations.confident_in_next_hire }}<br
                 /></span>
-                <span class="text-blue-700 font-bold -ml-4"
-                  >confident in your next hire?</span
-                >
+
                 <ul
                   class="text-md font-semibold text-blue-700 capitalize list-disc"
                 >
                   <li>
-                    Hire A Contractor Reviewed By Your Peers! Not Bogus review
-                    companies or even their buddies!
+                    {{
+                      translations &&
+                      translations.hire_contractor_reviewed_by_peers
+                    }}
                   </li>
                   <li>
-                    Hire a Sub who has demonstrated integrity, gets the job done
-                    - the right way - the first time, at the price agreed!
+                    {{ translations && translations.hire_sub_with_integrity }}
                   </li>
                   <li>
-                    <tContractorWord></tContractorWord> has it's own private
-                    rating system!
-                    <span class="font-bold underline"
-                      >No fake ratings Here!</span
-                    >
-                    Know what your getting into!
+                    <tContractorWord></tContractorWord>
+                    {{ translations && translations.private_rating_system }}
                   </li>
                   <li>
-                    Need to find a sub, electrician, plumber for a job across
-                    town
+                    {{ translations && translations.find_sub_for_job }}
                   </li>
                 </ul>
 
                 <p class="pt-2 text-center font-bold text-red-600 uppercase">
-                  Hiring with confidence makes all the difference in the world!
+                  {{ translations && translations.hiring_with_confidence }}
                 </p>
                 <p class="text-center font-semibold text-red-600 capitalize">
-                  Saves Time, Saves Headaches
+                  {{ translations && translations.saves_time_headaches }}
                 </p>
                 <p class="text-center font-semibold text-red-600 capitalize">
-                  Allows Time To Take On More Jobs
+                  {{ translations && translations.allows_more_jobs }}
                 </p>
                 <p class="text-center font-semibold text-red-600 capitalize">
-                  When Your subs do a great job.. you both look great and you
-                  make more money!
+                  {{ translations && translations.great_job_more_money }}
                 </p>
                 <p class="text-center font-bold text-red-600 uppercase">
-                  GET peace of mind & higher profits
+                  {{
+                    translations && translations.peace_of_mind_higher_profits
+                  }}
                 </p>
               </div>
 
@@ -247,7 +267,7 @@ const showMore6 = ref(false);
                 @click="showMore2 = !showMore2"
                 class="inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform hover:underline hover:text-blue-600"
               >
-                More
+                {{ translations && translations.more }}
                 <svg
                   class="w-4 h-4 mx-1 rtl:-scale-x-100"
                   fill="currentColor"
@@ -281,7 +301,7 @@ const showMore6 = ref(false);
                     clip-rule="evenodd"
                   ></path>
                 </svg>
-                Less
+                {{ translations && translations.less }}
               </ScrollToLinkVue>
             </div>
           </div>
@@ -300,7 +320,7 @@ const showMore6 = ref(false);
               <h1
                 class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase"
               >
-                Red Flag Customers
+                {{ translations && translations.red_flag_customers }}
               </h1>
             </div>
           </div>
@@ -312,16 +332,22 @@ const showMore6 = ref(false);
               <div
                 class="pl-4 text-xl text-blue-700 text-center font-bold uppercase tracking-tight"
               >
-                <h2>The Customer Is<br />Always Right</h2>
+                <h2>
+                  {{ translations && translations.customer_is }}<br />{{
+                    translations && translations.always_right
+                  }}
+                </h2>
                 <h2 class="capitalize text-black">
-                  All Customers are<br />Great... RIGHT?
+                  {{ translations && translations.all_customers_are }}e<br />{{
+                    translations && translations.great_right
+                  }}
                 </h2>
               </div>
 
               <p
                 class="mt-1 text-3xl text-center font-bold italic tracking-tighter text-red-600 uppercase"
               >
-                not!
+                {{ translations && translations.not }}
               </p>
 
               <div v-show="showMore3">
@@ -329,35 +355,47 @@ const showMore6 = ref(false);
                   class="pt-2 text-md font-semibold text-slate-700 capitalize list-disc"
                 >
                   <li>
-                    Ever had one of those customer's from
-                    <i>"You Know Where"</i>?
+                    {{ translations && translations.ever_customers_from }}
+                    <i> {{ translations && translations.you_know_where }}</i
+                    >?
                   </li>
                   <li>
-                    How about the customer who insist on renegotiating after the
-                    deal... after the work is completed?
+                    {{
+                      translations &&
+                      translations.renegotiating_customers_post_work
+                    }}
                   </li>
-                  <li>How about slow-payers... never pay customers?</li>
-                  <li>Unfair reviewers... and those Hostage Reviews?</li>
-                  <li>Ever had an Unrealistic or difficult customers?</li>
+                  <li>
+                    {{ translations && translations.slow_never_pay_customers }}
+                  </li>
+                  <li>
+                    {{
+                      translations &&
+                      translations.unfair_reviewers_hostage_reviews
+                    }}
+                  </li>
+                  <li>
+                    {{
+                      translations &&
+                      translations.unrealistic_difficult_customers
+                    }}
+                  </li>
                 </ul>
 
                 <p class="-ml-4 pt-3 text-blue-700 font-bold capitalize">
-                  We've all had those good customers, even great customers! THIS
-                  LIST IS NOT FOR THEM.
+                  {{ translations && translations.good_customers_not_for_them }}
                   <span class="text-red-700"
-                    >This List Is for those customers you would not wish on your
-                    worst enemy... those customers that take advantage of you
-                    more than most...
+                    >{{ translations && translations.list_for_bad_customers }}
                   </span>
                 </p>
 
                 <p class="pt-3 text-blue-700 font-bold capitalize">
-                  We call these people
+                  {{ translations && translations.call_these_people }}
                 </p>
                 <p
-                  class="text-red-800 text-2xl text-center uppercase font-extrabold"
+                  class="text-red-800 text-2xl text-center uppercase font-extrabold uppercase"
                 >
-                  "RED FLAGS"
+                  "{{ translations && translations.red_flags }}"
                 </p>
 
                 <p class="-ml-4 pt-3 text-blue-700 font-bold capitalize">
@@ -394,7 +432,7 @@ const showMore6 = ref(false);
                 @click="showMore3 = !showMore3"
                 class="inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform hover:underline hover:text-blue-600"
               >
-                More
+                {{ translations && translations.more }}
                 <svg
                   class="w-4 h-4 mx-1 rtl:-scale-x-100"
                   fill="currentColor"
@@ -427,7 +465,7 @@ const showMore6 = ref(false);
                     clip-rule="evenodd"
                   ></path>
                 </svg>
-                Less
+                {{ translations && translations.less }}
               </ScrollToLinkVue>
             </div>
           </div>
@@ -450,7 +488,7 @@ const showMore6 = ref(false);
               <h1
                 class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase"
               >
-                Contractor Page
+                {{ translations && translations.contractor_page }}
               </h1>
             </div>
           </div>
@@ -508,7 +546,7 @@ const showMore6 = ref(false);
                 @click="showMore4 = !showMore4"
                 class="inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform hover:underline hover:text-blue-600"
               >
-                More
+                {{ translations && translations.more }}
                 <svg
                   class="w-4 h-4 mx-1 rtl:-scale-x-100"
                   fill="currentColor"
@@ -541,7 +579,7 @@ const showMore6 = ref(false);
                     clip-rule="evenodd"
                   ></path>
                 </svg>
-                Less
+                {{ translations && translations.less }}
               </ScrollToLinkVue>
             </div>
           </div>
@@ -718,7 +756,7 @@ const showMore6 = ref(false);
                 @click="showMore6 = !showMore6"
                 class="inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform hover:underline hover:text-blue-600"
               >
-                More
+                {{ translations && translations.more }}
                 <svg
                   class="w-4 h-4 mx-1 rtl:-scale-x-100"
                   fill="currentColor"
@@ -751,7 +789,7 @@ const showMore6 = ref(false);
                     clip-rule="evenodd"
                   ></path>
                 </svg>
-                Less
+                {{ translations && translations.less }}
               </ScrollToLinkVue>
             </div>
           </div>
