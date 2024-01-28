@@ -173,10 +173,16 @@ const fetchUserVersion = () => {
   store.dispatch("fetchUserVersion");
 };
 
+const fetchTranslations = () => {
+  console.log("Fetching translations");
+  store.dispatch("fetchTranslations");
+};
+
 // Initial size
 updateWidth();
 fetchBadWords();
 fetchUserVersion();
+fetchTranslations();
 
 // Update whenever the window is resized
 window.addEventListener("resize", updateWidth);

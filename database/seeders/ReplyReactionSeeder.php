@@ -18,7 +18,7 @@ class ReplyReactionSeeder extends Seeder
 
         // Iterate over each reply and randomly add reactions
         foreach ($replies as $reply) {
-            $users->random(rand(1, 5))->each(function ($user) use ($reply) {
+            $users->random(rand(1, 3))->each(function ($user) use ($reply) {
                 CommentReaction::create([
                     'comment_id' => $reply->id,
                     'user_id' => $user->id,
