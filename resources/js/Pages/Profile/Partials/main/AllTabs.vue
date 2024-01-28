@@ -30,7 +30,7 @@ const props = defineProps({
 });
 
 const store = useStore();
-const tabNames = ["General Info", "Trades", "views"];
+const tabNames = ["General Info", "Trades", "Views"];
 const form = reactive({
   first_name: props.profile.first_name,
   last_name: props.profile.last_name,
@@ -83,7 +83,7 @@ const validateForm = () => {
   for (let field in errors) {
     errors[field] = "";
   }
- 
+
   // Validate first_name
   if (!form.first_name?.trim()) {
     errors.first_name = "First name is required";
@@ -196,7 +196,6 @@ const isValidUrl = (urlString) => {
 };
 
 const clearErrors = (field) => {
- 
   //for phone_cell only
   if (field === "phone_cell" || field === "phone_office") {
     if (form[field]?.trim().length <= 13) {

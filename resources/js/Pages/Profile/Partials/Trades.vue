@@ -81,9 +81,8 @@ const toggleSwitch = async (field) => {
   const allSelected = Object.values(form).every((value) => value === 1);
   if (allSelected) {
     selectAll.value = true;
-  }else{
+  } else {
     selectAll.value = false;
-
   }
 
   // The rest of your existing toggleSwitch code
@@ -133,10 +132,10 @@ const selectAllTrades = async () => {
     }
   }
   if (props.apiChoice === "1") {
-  //   const allSelected = Object.values(form).every((value) => value === 1);
-  // if (!allSelected) {
-  //   selectAll.value = true;
-  // }
+    //   const allSelected = Object.values(form).every((value) => value === 1);
+    // if (!allSelected) {
+    //   selectAll.value = true;
+    // }
     await store.dispatch("profile/updateTrades", form);
   } else if (props.apiChoice === "2") {
     await store.dispatch("profile/updateProfileSetupTrades", form);
@@ -204,7 +203,7 @@ const displayedText = computed(() => {
         </div>
         <div v-if="apiChoice === '3'" class="w-full">
           <span class="mt-1 text-sm">
-            <strong class="text-sm">Hint:</strong> Select Trade Groups allows
+            <strong class="text-sm">Hint:</strong> Selecting Trade Groups allows
             you to control what postings you see in the News Feed.
           </span>
         </div>

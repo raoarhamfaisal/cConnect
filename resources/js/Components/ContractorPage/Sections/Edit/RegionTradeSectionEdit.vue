@@ -86,7 +86,7 @@
     :loading="loadingDialog"
     :disabled="disabled"
     ref="editDialogRef"
-    title="Edit Your General Information"
+    title="Edit Your Trades and Regions Information"
   >
     <Loader :loading="loading" background="" height="60vh"></Loader>
 
