@@ -164,7 +164,6 @@ const isAdminUrl = computed(() => {
 
           <!-- DropDown: NEWS FEED -->
           <Link
-            v-if="Inertia.page.component != 'Postings'"
             href="/ratings/contractor"
             class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
           >
