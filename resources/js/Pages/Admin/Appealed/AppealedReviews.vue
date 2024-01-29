@@ -11,7 +11,11 @@
     color="rgb(229 231 235 / var(--tw-bg-opacity))"
   >
     <div v-if="!loading" class="bg-gray-200 mt-10">
-      <Card :shadowLevel="2" bgColor="white" padding="20px">
+      <Card
+        :shadowLevel="2"
+        bgColor="white"
+        :padding="screenWidth < 640 ? '7px' : '20px'"
+      >
         <!-- Filters -->
         <div class="border-gray-300">
           <heading-card class="mt-6" heading="Order Reviews By" />
@@ -155,6 +159,7 @@ onBeforeMount(() => {
 //Computed
 
 const isFetchReviews = computed(() => store.state.ratings.isFetchReviews);
+const screenWidth = computed(() => store.getters.screenWidth);
 const isDeleted = computed(() => store.state.ratings.isDeleted);
 const isInactive = computed(() => store.state.ratings.isInactive);
 

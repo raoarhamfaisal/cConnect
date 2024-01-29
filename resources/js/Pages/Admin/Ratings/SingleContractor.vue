@@ -11,7 +11,11 @@
     color="rgb(229 231 235 / var(--tw-bg-opacity))"
   >
     <div v-if="contractor" class="bg-gray-200 mt-10">
-      <Card :shadowLevel="2" bgColor="white" padding="20px">
+      <Card
+        :shadowLevel="2"
+        bgColor="white"
+        :padding="screenWidth < 640 ? '7px' : '20px'"
+      >
         <!-- Filters -->
         <ContractorInfo :contractor="contractor" />
         <div v-if="!loading">
@@ -178,6 +182,7 @@ onBeforeMount(() => {
 
 //Computed
 
+const screenWidth = computed(() => store.getters.screenWidth);
 const isFetchReviews = computed(() => store.state.ratings.isFetchReviews);
 const isDeleted = computed(() => store.state.ratings.isDeleted);
 const isInactive = computed(() => store.state.ratings.isInactive);

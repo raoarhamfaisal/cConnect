@@ -5,17 +5,36 @@
         <Avatar :imageSrc="review.reviewer.user_avatar" />
       </div>
       <div class="flex flex-col justify-center">
-        <h2
+        <!-- <h2
           class="text-md xs:text-xl font-medium font-bold text-gray-900 dark:text-gray-100"
         >
           {{ review.reviewer.first_name }} {{ review.reviewer.last_name }}
-        </h2>
-        <div class="text-sm xs:text-lg">{{ review.reviewer.company_name }}</div>
+        </h2> -->
+        <Tooltip
+          :text="`${review.reviewer.first_name} ${review.reviewer.last_name}`"
+          :applyTooltipLength="640"
+          :textLengthToShow="20"
+          textClass="text-md xs:text-xl font-medium font-bold text-gray-900 dark:text-gray-100"
+        />
+        <Tooltip
+          :text="review.reviewer.company_name"
+          :applyTooltipLength="640"
+          :textLengthToShow="23"
+          textClass="text-sm xs:text-lg"
+        />
+        <Tooltip
+          v-if="review.reviewer.city || review.reviewer.state"
+          :text="`${review.reviewer.city} ${review.reviewer.state}`"
+          :applyTooltipLength="640"
+          :textLengthToShow="23"
+          textClass="text-xs xs:text-lg"
+        />
+        <!-- <div class="text-sm xs:text-lg">{{ review.reviewer.company_name }}</div>
         <span
           class="text-xs xs:text-lg"
           v-if="review.reviewer.city || review.reviewer.state"
           >{{ `${review.reviewer.city} ${review.reviewer.state}` }}</span
-        >
+        > -->
       </div>
       <div
         v-if="screenWidth >= 1260"
@@ -68,7 +87,14 @@
         >Under Appeal</Badge
       >
       <!-- Submit appeal -->
-      <div class="text-right" v-if="review.is_under_appeal === 0 && showAppeal">
+      <div
+        class="text-right"
+        v-if="
+          (review.is_under_appeal === 0 ||
+            review.is_appeal_already_accepted_or_rejected === 1) &&
+          showAppeal
+        "
+      >
         <Button
           @onSelect="handleAppeal"
           tooltipText="Submit your appeal"
@@ -249,6 +275,8 @@
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import Button from "@/Components/Ratings/Button.vue";
 import InputError from "@/Components/InputError.vue";
+import Tooltip from "@/Components/Ratings/Tooltip.vue";
+
 import Avatar from "@/Components/Ratings/Avatar.vue";
 import StarRating from "@/Components/Ratings/StarRating.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";

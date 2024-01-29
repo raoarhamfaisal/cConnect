@@ -15,7 +15,7 @@
         Object.keys(review.review_response).length < 1
       "
     >
-      <div class="py-4 border-t-2 border-gray-300">
+      <div class="py-4 border-t-2 border-b-2 border-gray-300">
         <Button
           @onSelect="handleResponse"
           :style="{
@@ -66,8 +66,8 @@
 
     <!-- Turn off appeal -->
     <div
-      v-if="review.is_under_appeal === 1"
-      class="py-4 border-t-2 border-b-2 border-gray-300"
+      v-if="review.is_under_appeal === 1 && !review.off_appeal_reason"
+      class="py-4 border-b-2 border-gray-300"
     >
       <Button
         @onSelect="handleAppeal"

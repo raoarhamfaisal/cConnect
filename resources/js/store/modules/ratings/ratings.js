@@ -10,6 +10,8 @@ import {
   deleteReviewAdmin,
   deleteResponseAdmin,
   activateResponse,
+  sendAcceptRequest,
+  sendRejectRequest,
 } from "./adminActions";
 export default {
   namespaced: true,
@@ -239,5 +241,7 @@ export default {
     updateReviewAdmin,
     updateResponseAdmin,
     deleteResponseAdmin,
+    sendAcceptRequest,
+    sendRejectRequest,
   },
 };
