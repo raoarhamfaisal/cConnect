@@ -72,7 +72,7 @@
                 ? 'translateY(9px)'
                 : 'translateY(0px)',
           }"
-          >Under Appeal</Badge
+          >{{ translations && translations.under_appeal }}</Badge
         >
       </div>
     </div>
@@ -102,7 +102,7 @@
           bgColor="bg-red-500"
           icon="ic:baseline-delete"
           @click="openDeleteDialog"
-          >Delete</ButtonRatings
+          >{{ translations && translations.delete }}</ButtonRatings
         >
       </div>
       <Badge class="bg-orange-500" v-if="review.is_under_appeal"
@@ -146,7 +146,9 @@
           @keydown="insertTab"
           @input="adjustHeight"
           @paste="adjustHeight"
-          placeholder="Type your reason for your appeal"
+          :placeholder="
+            translations && translations.type_your_reason_for_your_appeal
+          "
         />
 
         <InputError
@@ -164,7 +166,7 @@
             :disabled="disabled"
             class="w-full flex justify-center gap-2"
           >
-            <div>Send</div>
+            <div>{{ translations && translations.send }}</div>
             <img
               v-show="loading"
               src="/images/avatars/Spinner.gif"
@@ -176,17 +178,17 @@
     </div>
   </transition>
   <CustomDialog
-    submitText="Send"
+    :submitText="translations && translations.send"
     @submit="handleAppealSubmit"
     ref="confirmDialogRef"
     :loading="loading"
     :disabled="disabled"
     errorIcon
     dialogWidth="max-h-[70vh] width50"
-    title="Are you sure? "
+    :title="translations && translations.are_you_sure"
   >
     <div v-if="!review.is_under_appeal" class="mt-3 block">
-      Send any supporting document to
+      {{ translations && translations.send_any_supporting_document_to }}
       <a
         class="underline text-sky-600"
         href="mailto:appeal@tContractor.com"
@@ -217,14 +219,14 @@
       bgColor="bg-red-500"
       icon="ic:baseline-delete"
       @click="openDeleteDialog"
-      >Delete</ButtonRatings
+      >{{ translations && translations.delete }}</ButtonRatings
     >
   </div>
   <div class="mt-3">
     <!-- trades -->
     <div class="pl-2 text-sm xs:text-md font-bold">
       {{ review.reviewer.first_name }} {{ review.reviewer.last_name }}
-      {{ "'s Trades :" }}
+      {{ `'s ${translations && translations.trades} :` }}
     </div>
     <template v-for="(option, index) in options" :key="option.name">
       <Badge
@@ -258,14 +260,14 @@
           @click="showFullReview = true"
           class="cursor-pointer text-sky-700"
         >
-          See more
+          {{ translations && translations.see_more }}
         </span>
         <span
           v-if="showFullReview && review.rating_text.length > 400"
           @click="showFullReview = false"
           class="cursor-pointer text-sky-700"
         >
-          See less
+          {{ translations && translations.see_less }}
         </span>
       </p>
     </div>
@@ -335,6 +337,7 @@ const appealReasonError = ref("");
 
 const loading = computed(() => store.state.ratings.loading);
 const screenWidth = computed(() => store.getters.screenWidth);
+const translations = computed(() => store.getters.translations);
 const disabled = computed(() => store.state.ratings.disabled);
 //watch
 

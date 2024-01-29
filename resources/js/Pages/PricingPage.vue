@@ -31,7 +31,7 @@ const translations = computed(() => store.getters.translations);
       <!-- Back Button -->
       <div class="mb-2 sm:mb-2">
         <Link href="/" class="text-blue-500 hover:underline"
-          >← Back to Main Page</Link
+          >← {{ translations && translations.back_to_main_page }}</Link
         >
       </div>
       <div
@@ -43,7 +43,10 @@ const translations = computed(() => store.getters.translations);
             <span
               class="text-3xl font-bold mb-4 text-center text-blue-rgba border-b-2 border-black"
             >
-              THE MOST POWERFUL TOOL IN THE TOOLBOX!
+              {{
+                translations &&
+                translations.the_most_powerful_tool_in_the_toolbox
+              }}
             </span>
           </div>
           <div
@@ -54,31 +57,50 @@ const translations = computed(() => store.getters.translations);
                 class="text-xl sm:text-2xl font-semibold tracking-tighter list-disc pl-8"
               >
                 <li>
-                  {{ translations && translations.find_local_statewide_subs }}!
-                </li>
-                <li>Hire Someone You Can Trust - Check Them Out Here!</li>
-                <li>Looking For Work - Check Out the News Feed</li>
-                <li>Advertise Your Business for Free - Post It!</li>
-                <li>Got a Job to be Done, Post it To The News Feed!</li>
-                <li>
-                  Want to KNOW, what's happening in your local area or Got a
-                  Question? Check Out the News Feed!
+                  {{
+                    translations && translations.find_local_or_statewide_subs
+                  }}!
                 </li>
                 <li>
-                  New Customer - Can you trust Them? See If Other Contractors
-                  Had Issues with Them With Using Our Slippery Customers!
+                  {{ translations && translations.hire_someone_you_can_trust }}
                 </li>
                 <li>
-                  {{ translations && translations.ask_questions_get_answers }}
+                  {{
+                    translations &&
+                    translations.looking_for_work_check_news_feed
+                  }}
+                </li>
+                <li>
+                  {{
+                    translations &&
+                    translations.advertise_your_business_for_free
+                  }}
+                </li>
+                <li>{{ translations && translations.got_a_job_to_be_done }}</li>
+                <li>
+                  {{ translations && translations.got_a_job_to_be_done }}
+                </li>
+                <li>
+                  {{
+                    translations && translations.want_to_know_whats_happening
+                  }}
+                </li>
+                <li>
+                  {{
+                    translations && translations.new_customer_can_you_trust_them
+                  }}
                 </li>
               </ul>
             </div>
             <div class="md:w-[50%] text-center">
               <h1 class="text-3xl font-bold text-blue-rgba mb-1">
-                It's a GAME CHANGER!
+                {{ translations && translations.its_a_game_changer }}
               </h1>
               <h2 class="text-2xl font-bold mb-1 text-orange-accent">
-                FOR CONTRACTORS & SUB-CONTRACTORS ONLY!
+                {{
+                  translations &&
+                  translations.for_contractors_and_subcontractors_only
+                }}
               </h2>
               <p class="text-xl mb-1 text-blue-rgba font-bold">
                 {{ translations && translations.no_brainer_pricing }}
@@ -87,13 +109,15 @@ const translations = computed(() => store.getters.translations);
                 {{ translations && translations.contractors_trying_to_sell }}
               </p>
               <p class="text-xl text-blue-rgba font-bold">
-                Not Here at tContractor...
+                {{ translations && translations.not_here_at_tcontractor }}
               </p>
               <h3 class="mx-auto text-3xl font-bold text-red-600 max-w-[418px]">
                 {{ translations && translations.important_tool_for_free }}
               </h3>
 
-              <p class="text-xl">for basic services</p>
+              <p class="text-xl">
+                {{ translations && translations.for_basic_services }}
+              </p>
               <p
                 class="mx-auto text-xl font-bold text-orange-accent w-[17rem] text"
               >

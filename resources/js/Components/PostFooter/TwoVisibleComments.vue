@@ -4,7 +4,7 @@
     @click="emit('openAllComments')"
     class="cursor-pointer hover:underline font-bold text-gray-600 text-sm w-fit"
   >
-    View all comments
+    {{ translations && translations.view_all_comments }}
   </div>
   <div v-if="loadingComments">
     <v-skeleton-loader
@@ -39,7 +39,7 @@
       @keydown="insertTab"
       @input="adjustHeight"
       :rows="1"
-      placeholder="Write a comment..."
+      :placeholder="translations && translations.write_a_comment"
       class="text-xl w-full py-1 min-h-[40px] overflow-hidden px-3 focus:shadow-none focus:ring-gray-600 focus:rounded bg-[#f9fafb] border-gray-400 text-grey-600 resize-none rounded focus-within:ring-gray-600 focus:border-gray-600"
     ></textarea>
     <Icon
@@ -65,7 +65,9 @@
       bgColor="#364fc7"
       :padding="screenWidth < 640 ? '7px' : '10px'"
     >
-      <div class="text-white">Uploading Comment...</div>
+      <div class="text-white">
+        {{ translations && translations.uploading }} Comment...
+      </div>
       <v-progress-linear
         indeterminate
         color="#fff"
@@ -162,4 +164,5 @@ const adjustHeight = () => {
 
 //Computed
 const screenWidth = computed(() => store.getters.screenWidth);
+const translations = computed(() => store.getters.translations);
 </script>

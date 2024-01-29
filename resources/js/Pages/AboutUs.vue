@@ -24,7 +24,7 @@ const translations = computed(() => store.getters.translations);
       <!-- Back Button -->
       <div class="mb-3 sm:mb-6">
         <Link href="/" class="text-blue-500 hover:underline"
-          >← Back to Main Page</Link
+          >← {{ translations && translations.back_to_main_page }}</Link
         >
       </div>
 
@@ -34,24 +34,13 @@ const translations = computed(() => store.getters.translations);
           {{ translations && translations.about_us }}
         </h2>
         <p class="text-lg mb-4">
-          At tContractor, we're building a community where contractors help each
-          other succeed. Whether you're looking to hire, seek guidance, or find
-          new opportunities, you’re in the right place. Our platform connects
-          contractors with customers seeking contractor services, allowing
-          contractors to advertise their services, create profiles, and
-          communicate with potential clients.
+          {{ translations && translations.building_community }}
         </p>
         <p class="text-lg mb-4">
-          At tContractor,our mission is to empower contractors, helping them
-          connect, collaborate, and succeed. Our platform serves as a bridge
-          between contractors and clients, ensuring that every project is a
-          success story waiting to be told. From small tasks to large projects,
-          our community thrives on mutual support and collaboration.
+          {{ translations && translations.mission_empower_contractors }}
         </p>
         <p class="text-lg">
-          We believe in the power of community, and at tContractor, every member
-          plays a pivotal role in shaping our collective future. Join us and be
-          a part of our ever-growing family.
+          {{ translations && translations.power_of_community }}
         </p>
       </section>
 
@@ -61,16 +50,13 @@ const translations = computed(() => store.getters.translations);
           {{ translations && translations.contact_us }}
         </h2>
         <p class="text-lg mb-4">
-          We're always here to help. Whether you have a question, feedback, or
-          just want to chat, our team is just an email away. We value our
-          community and are committed to ensuring that every experience with
-          tContractor is a positive one.
+          {{ translations && translations.always_here_to_help }}
         </p>
         <p class="text-lg">
-          Reach out to us at
+          {{ translations && translations.reach_out_to_us }}
           <a href="mailto:tcontractor@gmail.com" class="text-blue-500"
             >tcontractor@gmail.com</a
-          >, and we'll get back to you as soon as possible.
+          >, {{ translations && translations.get_back_to_you }}
         </p>
       </section>
     </div>

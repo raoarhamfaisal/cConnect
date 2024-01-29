@@ -90,7 +90,7 @@
     </div>
   </Card>
   <CustomDialog
-    submitText="Save"
+    :submitText="translations && translations.save"
     @submit="handleSubmit"
     :loading="loading"
     :disabled="disabled"
@@ -98,7 +98,7 @@
     :title="`${
       !website_url && !facebook && !twitter && !tiktok && !instagram
         ? 'Add'
-        : 'Edit'
+        : translations && translations.edit
     } Your Social Links`"
   >
     <div
@@ -108,7 +108,7 @@
         <InputLabel
           class="font-bold"
           for="website_url"
-          value="Personal / Company Website"
+          :value="translations && translations.personal_company_website"
         />
         <input-icon
           id="website_url"
@@ -117,7 +117,7 @@
           color="#241e6d"
           @input="clearError('website_url')"
           v-model="tempSocialProfiles.website_url"
-          placeholder="Type your Website URL"
+          :placeholder="translations && translations.type_your_website_url"
         />
         <InputError class="mt-2" :message="errors.website_url" />
       </div>
@@ -191,11 +191,12 @@ import { Icon } from "@iconify/vue";
 import Card from "@/Components/Card.vue";
 
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
-import { reactive, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
+import { useStore } from "vuex";
 
 const propertiesToProcess = [
   "website_url",
@@ -233,6 +234,9 @@ const tempSocialProfiles = reactive({
   tiktok: tiktok.value ?? "",
   instagram: instagram.value ?? "",
 });
+const store = useStore();
+
+const translations = computed(() => store.getters.translations);
 
 //Methods
 const validateForm = () => {

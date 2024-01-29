@@ -27,7 +27,7 @@
             @keyup.esc="deactivate()"
             class="chips__input--fake"
             type="text"
-            placeholder="Type to search"
+            :placeholder="translations && translations.type_to_search"
             ref="search"
           />
         </li>
@@ -57,6 +57,7 @@
 
 <script setup>
 import { ref, watch, computed, onMounted, onUnmounted } from "vue";
+import { useStore } from "vuex";
 
 const props = defineProps({
   modelValue: {
@@ -86,6 +87,11 @@ const searchedText = ref("");
 const showList = ref(false);
 const emit = defineEmits(["input"]);
 let localValue = props.modelValue;
+const store = useStore();
+
+//Computed
+
+const translations = computed(() => store.getters.translations);
 
 const clickOutsideDirective = (el, binding) => {
   const handleClickOutside = (event) => {

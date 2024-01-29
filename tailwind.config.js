@@ -67,3 +67,17 @@ module.exports = {
 // #16a34a
 // pricing
 // 073e53 b5c5cb
+// placeholder="Type reason for your rating"
+// :placeholder="translations && translations.type_your_reason_for_your_appeal"
+
+// submitText="Save"
+// :submitText="translations && translations.save"
+// title="Save"
+// :title="translations && translations.save"
+// heading="Save"
+// :heading="translations && translations.save"
+// value="Save"
+// :value="translations && translations.save"
+
+// const store = useStore();
+// const translations = computed(() => store.getters.translations);

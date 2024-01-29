@@ -52,7 +52,7 @@
             v-show="showCancel"
             class="px-4 py-2 rounded text-white bg-[#364fc7]"
           >
-            Cancel
+            {{ translations && translations.cancel }}
           </button>
           <button
             @click="submit"

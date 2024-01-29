@@ -9,12 +9,15 @@
         fontWeight: 800,
         fontSize: screenWidth > 640 ? '24px' : '20px',
       }"
-      :heading="`Trade Groups`"
+      :heading="translations && translations.trade_groups"
     />
     <!-- User Posting and Edit Button -->
     <div class="flex gap-2 sm:gap-3">
       <!-- User Postings -->
-      <v-tooltip text="See User Posts" location="left">
+      <v-tooltip
+        :text="translations && translations.see_user_posts"
+        location="left"
+      >
         <template v-slot:activator="{ props }">
           <div
             @click="openPostDialog"
@@ -81,17 +84,19 @@
     </div>
   </div>
   <CustomDialog
-    submitText="Save"
+    :submitText="translations && translations.save"
     @submit="handleSubmit"
     :loading="loadingDialog"
     :disabled="disabled"
     ref="editDialogRef"
-    title="Edit Your Trades and Regions Information"
+    :title="
+      translations && translations.edit_your_trades_and_region_information
+    "
   >
     <Loader :loading="loading" background="" height="60vh"></Loader>
 
     <div v-if="regions" class="mb-4 sm:mb-0">
-      <InputLabel class="font-bold mb-1" value="Region" />
+      <InputLabel class="font-bold mb-1" :value="translations && translations.region" />
       <SelectProfile
         :options="referenceList"
         :modelValue="selectedReferal"
@@ -100,7 +105,10 @@
       <InputError class="mt-2" :message="errors.region_id" />
     </div>
     <div class="mb-4 sm:mb-0 mt-4">
-      <InputLabel class="font-bold mb-3" value="Trades" />
+      <InputLabel
+        class="font-bold mb-3"
+        :value="translations && translations.trades"
+      />
       <div class="flex items-center gap-4 mt-2 mb-5">
         <div class="switch-trades" @click="selectAllTrades">
           <div
@@ -115,9 +123,9 @@
             ></div>
           </div>
         </div>
-        <label for="select_all" class="mr-4 text-gray-800 font-bold"
-          >Select All</label
-        >
+        <label for="select_all" class="mr-4 text-gray-800 font-bold">{{
+          translations && translations.select_all
+        }}</label>
       </div>
 
       <div class="grid grid-cols-2 gap-x-14 gap-y-3">
@@ -264,6 +272,7 @@ const tempTradesPost = reactive({
 
 const loading = computed(() => store.state.ratings.loading);
 const regions = computed(() => store.state.ratings.allRegions);
+const translations = computed(() => store.getters.translations);
 
 //Watch
 watch(regions, (newVal) => {

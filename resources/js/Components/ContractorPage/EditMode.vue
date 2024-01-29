@@ -87,7 +87,10 @@
               <div
                 class="flex text-blue-rgba items-center font-extrabold text-2xl"
               >
-                About Us - Why You Should Work For or Hire Us
+                {{
+                  translations &&
+                  translations.about_us_why_you_should_work_for_or_hire_us
+                }}
               </div>
               <IconButton
                 @click="openDialogEdit"
@@ -105,7 +108,7 @@
               fontWeight: 800,
               fontSize: screenWidth > 640 ? '24px' : '20px',
             }"
-            :heading="`Brag Sections`"
+            ::heading="translations && translations.brag_sections"
           />
           <BragSectionEdit
             :brag_sections="profile.brag_sections"
@@ -118,14 +121,14 @@
             :screen-width="screenWidth"
           />
           <CustomDialog
-            submitText="Save"
+            :submitText="translations && translations.save"
             :loading="loading"
             :disabled="disabled"
             :overflowAllowed="true"
             @submit="handleSubmit"
             @closed="handleClosed"
             ref="dialogRef"
-            title="Add Bottom Text"
+            :title="translations && translations.add_bottom_text"
           >
             <div class="closing default">
               <ckeditor
@@ -169,6 +172,7 @@ import {
   somethingWentWrong,
   toolbarConfig,
 } from "@/helpers/utilities";
+import { useStore } from "vuex";
 
 // State
 const props = defineProps({
@@ -213,8 +217,9 @@ const onReady = (editor) => {
       editor.ui.getEditableElement()
     );
 };
-
+const store = useStore();
 // computed
+const translations = computed(() => store.getters.translations);
 const processedBottomText = computed(() => {
   const parser = new DOMParser();
   const doc = parser.parseFromString(bottomText.value, "text/html");

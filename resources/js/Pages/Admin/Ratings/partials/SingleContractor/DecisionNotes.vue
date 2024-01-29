@@ -24,16 +24,24 @@
         }}
         <span
           v-if="!showFullText && adminNote.length > 400"
-          @click="()=>{showFullText = true
-          adjustHeightShow()}"
+          @click="
+            () => {
+              showFullText = true;
+              adjustHeightShow();
+            }
+          "
           class="cursor-pointer text-sky-700"
         >
-          See more 
+          See more
         </span>
         <span
           v-if="showFullText && adminNote.length > 400"
-          @click="()=>{showFullText = false
-          adjustHeightShow()}"
+          @click="
+            () => {
+              showFullText = false;
+              adjustHeightShow();
+            }
+          "
           class="cursor-pointer text-sky-700"
         >
           See less
@@ -48,7 +56,7 @@
         @input="saveNotes"
         @paste="adjustHeight"
         @keydown="insertTab"
-        placeholder="Type your Notes"
+        :placeholder="translations && translations.type_your_notes"
         class="text-sm w-full py-1 px-3 focus:shadow-none focus:ring-gray-600 focus:rounded font-semibold text-grey-600 border-none resize-none bg-transparent"
         :rows="1"
       ></textarea>
@@ -122,6 +130,7 @@ const emit = defineEmits(["changeStatus"]);
 
 // Computed
 const success = computed(() => store.getters["ratings/success"]);
+const translations = computed(() => store.getters.translations);
 
 //Watch
 watch(success, (newVal) => {
@@ -167,13 +176,16 @@ const saveNotes = () => {
 
 const insertTab = (event) => {
   adjustHeight();
-  if (event.key === 'Tab') {
+  if (event.key === "Tab") {
     event.preventDefault();
     const start = event.target.selectionStart;
     const end = event.target.selectionEnd;
 
     // Set the value to: text before caret + four spaces + text after caret
-    adminNote.value = adminNote.value.substring(0, start) + '      ' + adminNote.value.substring(end);
+    adminNote.value =
+      adminNote.value.substring(0, start) +
+      "      " +
+      adminNote.value.substring(end);
 
     // Put caret at right position again
     nextTick(() => {
@@ -183,10 +195,11 @@ const insertTab = (event) => {
 };
 
 const adjustHeight = () => {
-  console.log('here')
+  console.log("here");
   nextTick(() => {
     adminTextAreaRef.value.style.height = "auto"; // Reset height first to get the correct scrollHeight
-    adminTextAreaRef.value.style.height = adminTextAreaRef.value.scrollHeight + "px";
+    adminTextAreaRef.value.style.height =
+      adminTextAreaRef.value.scrollHeight + "px";
   });
 };
 const handleTabs = async (apiToCall) => {
@@ -202,12 +215,13 @@ const handleTabs = async (apiToCall) => {
     },
   });
 };
-const adjustHeightShow =()=>{
+const adjustHeightShow = () => {
   nextTick(() => {
     adminShowTextRef.value.style.height = "auto"; // Reset height first to get the correct scrollHeight
-    adminShowTextRef.value.style.height = adminShowTextRef.value.scrollHeight + "px";
+    adminShowTextRef.value.style.height =
+      adminShowTextRef.value.scrollHeight + "px";
   });
-}
+};
 </script>
 
 <style scoped>

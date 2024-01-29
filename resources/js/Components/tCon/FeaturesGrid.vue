@@ -399,31 +399,34 @@ const translations = computed(() => store.getters.translations);
                 </p>
 
                 <p class="-ml-4 pt-3 text-blue-700 font-bold capitalize">
-                  if you've been in business long enough, you know that
-                  <span class="text-red-700"> NOT all customers</span> are good
-                  for you.
+                  {{ translations && translations.in_business_lon_enough }}
+                  <span class="text-red-700">
+                    {{ translations && translations.not_all_customers }}</span
+                  >
+                  {{ translations && translations.are_good_for_you }}
                 </p>
 
                 <p class="pt-2 font-medium -ml-4 capitalize">
-                  As a contractor, you're always under review, now here's your
-                  chance to
-                  <span class="text-red-700 font-bold"
-                    >Keep them accountable for their underhanded play - review
-                    them yourselves!</span
+                  {{
+                    translations && translations.contactor_always_under_review
+                  }}
+                  <span class="text-red-700 font-bold">
+                    {{
+                      translations && translations.accountable_and_review_them
+                    }}</span
                   >
                 </p>
 
                 <p
                   class="-ml-4 pt-4 text-blue-rgba text-center uppercase font-extrabold"
                 >
-                  Don't Loose Money or your reputation... Make More Money &
-                  Better Peace of Mind...
+                  {{ translations && translations.dont_lose_money_reputation }}.
                 </p>
 
                 <p
                   class="-ml-4 pt-3 text-xl text-rose-700 text-center uppercase font-extrabold"
                 >
-                  Check your prospective customer out before agreeing to a deal!
+                  {{ translations && translations.check_customer_before_deal }}
                 </p>
               </div>
 
@@ -500,15 +503,22 @@ const translations = computed(() => store.getters.translations);
               <div
                 class="pl-4 text-xl text-black font-semibold capitalize tracking-tight"
               >
-                <h2>Help other contractors<br />find you</h2>
-                <h2 class="pl-4">Free Advertisement!</h2>
-                <h2 class="pl-8">Quick & Easy!</h2>
+                <h2>
+                  {{ translations && translations.help_other_contractors
+                  }}<br />{{ translations && translations.find_you }}
+                </h2>
+                <h2 class="pl-4">
+                  {{ translations && translations.free_advertisement }}
+                </h2>
+                <h2 class="pl-8">
+                  {{ translations && translations.quick_easy }}
+                </h2>
               </div>
 
               <p
                 class="mt-1 text-xl font-bold italic tracking-tighter text-red-600 uppercase"
               >
-                be a show off here!
+                {{ translations && translations.be_show_off_here }}
               </p>
 
               <div v-show="showMore4">
@@ -516,28 +526,32 @@ const translations = computed(() => store.getters.translations);
                   class="pt-2 text-md font-semibold text-slate-700 capitalize list-disc"
                 >
                   <li>
-                    Advertise your services to other contractors looking to hire
-                    or sub out!
+                    {{
+                      translations &&
+                      translations.advertise_services_to_other_contractors
+                    }}
                   </li>
-                  <li>Show off your work through images & video.</li>
-                  <li>quick and easy setup!</li>
+                  <li>{{ translations && translations.show_off_work }}</li>
+                  <li>{{ translations && translations.quick_easy_setup }}</li>
                 </ul>
 
                 <p
                   class="-ml-4 pt-3 text-blue-rgba text-center uppercase font-extrabold"
                 >
-                  FREE advertisement to your local areas
+                  {{
+                    translations && translations.free_advertisement_local_areas
+                  }}
                 </p>
 
                 <p
                   class="-ml-4 pt-4 text-xl text-rose-700 text-center uppercase font-extrabold"
                 >
-                  ridiculously low cost advertisement!
+                  {{ translations && translations.low_cost_advertisement }}
                 </p>
                 <p
                   class="-ml-4 text-lg text-blue-rgba text-center capitalize font-extrabold"
                 >
-                  ... As low as $5 bucks for larger advertisement areas
+                  {{ translations && translations.low_as_5_bucks }}
                 </p>
               </div>
 
@@ -706,7 +720,9 @@ const translations = computed(() => store.getters.translations);
               <h1
                 class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase"
               >
-                NEW FEATURES<br />COMING SOON!
+                {{ translations && translations.new_features }}<br />{{
+                  translations && translations.coming_soon
+                }}
               </h1>
             </div>
           </div>
@@ -719,35 +735,40 @@ const translations = computed(() => store.getters.translations);
                 class="pl-4 text-xl text-blue-700 text-center font-bold capitalize tracking-tight"
               >
                 <h2>
-                  <tContractorWord></tContractorWord> is built & managed by
-                  contractors,<br />for contractors & sub-contractors!
+                  <tContractorWord></tContractorWord>
+                  {{ translations && translations.built_managed_by_contractors
+                  }}<br />{{
+                    translations && translations.for_contractors_subcontractors
+                  }}
                 </h2>
               </div>
 
               <p
                 class="mt-1 text-lg text-center font-bold italic tracking-tighter text-red-600 uppercase"
               >
-                Always Free<br />Never an upcharge!
+                {{ translations && translations.always_free }}<br />{{
+                  translations && translations.never_an_upcharge
+                }}
               </p>
 
               <div v-show="showMore6">
                 <h2 class="capitalize text-black">
-                  tContractor is always adding new features
+                  tContractor
+                  {{ translations && translations.adding_new_features }}
                 </h2>
 
                 <p class="-ml-4 pt-3 text-blue-rgba capitalize font-extrabold">
-                  <tContractorWord></tContractorWord> wants to be the most
-                  important tool in the toolbox! We are always looking to
-                  improve, upgrade our services to you for a
-                  <span class="uppercase text-rose-700"
-                    >better contruction business!</span
-                  >
+                  <tContractorWord></tContractorWord>
+                  {{ translations && translations.important_tool_in_toolbox }}
+                  <span class="uppercase text-rose-700">{{
+                    translations && translations.better_construction_business
+                  }}</span>
                 </p>
 
                 <p
                   class="-ml-4 pt-4 text-xl text-rose-700 text-center uppercase font-extrabold"
                 >
-                  NEVER AN UPCHARGE FOR NEW FEATURES
+                  {{ translations && translations.never_upcharge_new_features }}
                 </p>
               </div>
 

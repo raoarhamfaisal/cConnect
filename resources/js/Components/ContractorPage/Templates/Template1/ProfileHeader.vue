@@ -15,7 +15,7 @@
             color: '#c78b22',
           }"
         >
-          Go Back
+          {{ translations && translations.go_back }}
         </div>
       </div>
       <div class="flex gap-2 items-center justify-between w-full">
@@ -30,7 +30,7 @@
               color: '#fff',
             }"
           >
-            Go Back
+            {{ translations && translations.go_back }}
           </div>
         </div>
         <div
@@ -69,7 +69,7 @@
             }"
             :class="`bg-white px-4 py-1 text-xs hover:bg-[#f8f9fa] sm:text-sm font-bold rounded-full border-[1px] bg-white cursor-pointer hover:shadow-lg active:scale-95`"
           >
-            Share
+            {{ translations && translations.share }}
           </button>
           <v-snackbar
             location="top"
@@ -78,7 +78,7 @@
             color="success"
             :timeout="2000"
           >
-            Link Copied to Clipboard
+            {{ translations && translations.link_copied_to_clipboard }}
           </v-snackbar>
         </div>
       </div>
@@ -99,7 +99,7 @@
         v-else
         class="w-full text-[#2d2c2b] bg-[#f8f8f8] text-3xl flex justify-center items-center font-bold h-[400px]"
       >
-        No Company Logo or User Avatar available for this contractor
+        {{ translations && translations.no_company_logo_or_user_avatar }}
       </div>
     </div>
   </div>
@@ -170,7 +170,10 @@
         </div>
 
         <div class="flex gap-2 sm:gap-3 translate-x-[-2px]">
-          <v-tooltip text="See User Posts" location="left">
+          <v-tooltip
+            :text="translations && translations.see_user_posts"
+            location="left"
+          >
             <template v-slot:activator="{ props }">
               <div
                 @click="openPostDialog"
@@ -200,16 +203,16 @@
   />
   <DialogContractorPosts ref="postDialogRef" :contractorId="profile.user_id" />
   <CustomDialog
-    submitText="Okay"
+    :submitText="translations && translations.okay"
     @submit="handleSubmit"
     :showCancel="false"
     :disableOutSideClick="false"
     ref="notLoggedDialogRef"
     errorIcon
-    title="Log in Error"
+    :title="translations && translations.log_in_error"
   >
     <div class="mb-4 sm:mb-0 mt-4">
-      You must be logged in to see the contractor's {{ modelText }}
+      {{ translations && translations.you_must_be_logged_in }} {{ modelText }}
     </div>
   </CustomDialog>
 </template>
@@ -254,6 +257,12 @@ const modelText = ref("");
 const showGoBack = ref(true);
 
 const imageClass = ref("");
+const store = useStore();
+
+//Computed
+
+const translations = computed(() => store.getters.translations);
+
 function image_path(img) {
   // function adds the filepath
   return POSTS_IMAGES_FULL_PATH + img;
@@ -347,7 +356,6 @@ const goBack = () => {
   // }
 };
 
-const store = useStore();
 const blueRgba = ref("#241e6d");
 const first_name = ref(props.profile.first_name);
 const last_name = ref(props.profile.last_name);

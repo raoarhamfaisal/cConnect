@@ -6,7 +6,10 @@
   >
     <div class="flex justify-between">
       <div class="flex items-center font-bold text-lg">
-        About Us - Why You Should Work For or Hire Us
+        {{
+          translations &&
+          translations.about_us_why_you_should_work_for_or_hire_us
+        }}
       </div>
       <IconButton @click="openDialogEdit" icon="nimbus:edit" color="#1864ab" />
     </div>
@@ -19,19 +22,22 @@
     @click="openDialogEdit"
     class="w-full flex gap-2 items-center justify-center h-[42px] rounded bg-[#087f5b] text-white active:scale-[0.99] transition transform duration-300 hover:shadow-lg"
   >
-    <Icon icon="mdi:plus-thick" /> About Us - Why You Should Work For or Hire Us
+    <Icon icon="mdi:plus-thick" />
+    {{
+      translations && translations.about_us_why_you_should_work_for_or_hire_us
+    }}
   </button>
 
   <!-- CustomDialog for adding -->
 
   <CustomDialog
-    submitText="Save"
+    :submitText="translations && translations.save"
     :loading="loading"
     :disabled="disabled"
     @submit="handleSubmit"
     @closed="handleClosed"
     ref="dialogRef"
-    title="Add Bottom Text"
+    :title="translations && translations.add_bottom_text"
   >
     <!-- Textarea -->
     <textarea
@@ -48,7 +54,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import IconButton from "@/Components/IconButton.vue";
 import { Icon } from "@iconify/vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
@@ -58,6 +64,7 @@ import {
   somethingWentWrong,
   toolbarConfig,
 } from "@/helpers/utilities";
+import { useStore } from "vuex";
 
 const props = defineProps({
   screenWidth: {
@@ -74,6 +81,8 @@ const loading = ref(false);
 const disabled = ref(false);
 const bottomTextTemp = ref(bottomText.value);
 const isChecked = ref(false);
+const store = useStore();
+const translations = computed(() => store.getters.translations);
 
 const openDialogEdit = () => {
   dialogRef.value.openDialog();

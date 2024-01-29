@@ -297,7 +297,7 @@ const fetchSearchedContractorsWithLoading = async () => {
       <div class="w-full sm:grid sm:grid-cols-2 sm:gap-4">
         <div class="">
           <label class="block font-bold text-base text-gray-700" for="search"
-            >Search:</label
+            >{{ translations && translations.search }}:</label
           >
           <div
             class="relative mb-2 flex w-full flex-wrap items-stretch transition duration-300 ease-in-out focus-within:border-sky-500 focus-within:ring-sky-500 focus-within:ring-1 focus-within:rounded"
@@ -308,7 +308,7 @@ const fetchSearchedContractorsWithLoading = async () => {
               v-model="searchTerm"
               @keypress.prevent.enter="submitSearchTerm"
               class="relative m-0 flex-grow block w-full h-[42px] px-3 py-1.5 text-base font-normal text-gray-700 outline-none rounded-md border-solid border-gray-600 placeholder:italic placeholder:text-slate-500 pr-12"
-              placeholder="Search Contractor"
+              :placeholder="translations && translations.search_contractor"
             />
 
             <button
@@ -346,14 +346,17 @@ const fetchSearchedContractorsWithLoading = async () => {
             '0px 0px 3px rgba(0, 0, 0, 0.12), 0px 0px 2px rgba(0, 0, 0, 0.12)',
         }"
       >
-        Advance Filters
+        {{ translations && translations.advance_filters }}
       </button>
       <transition name="accordion">
         <div v-if="showAdvanceFilters" class="mt-2">
           <!-- seelct region -->
           <div class="w-full sm:grid sm:grid-cols-2 sm:gap-4">
             <div class="mb-4 sm:mb-0">
-              <InputLabel class="font-bold text-base" value="Select Region:" />
+              <InputLabel
+                class="font-bold text-base"
+                :value="translations && translations.select_region"
+              />
               <SelectProfile
                 class="bg-white rounded"
                 :options="referenceList"
@@ -364,7 +367,10 @@ const fetchSearchedContractorsWithLoading = async () => {
 
             <!-- select trade -->
             <div class="mb-4 sm:mb-0">
-              <InputLabel class="font-bold text-base" value="Select Trade:" />
+              <InputLabel
+                class="font-bold text-base"
+                :value="translations && translations.select_trade"
+              />
               <SelectProfile
                 class="bg-white rounded"
                 :options="tradesList"
@@ -377,7 +383,7 @@ const fetchSearchedContractorsWithLoading = async () => {
           <div class="mt-4">
             <InputLabel
               class="font-bold text-base"
-              value="Display Contractor:"
+              :value="translations && translations.display_contractor"
             />
             <div
               class="flex mt-2 gap-2 flex-wrap justify-center sm:justify-start"
@@ -396,7 +402,7 @@ const fetchSearchedContractorsWithLoading = async () => {
           <div class="mt-4">
             <InputLabel
               class="font-bold text-base"
-              value="Sort Contractors By:"
+              :value="translations && translations.sort_contractors_by"
             />
             <div
               class="flex mt-2 gap-2 flex-wrap justify-center sm:justify-start"
@@ -417,7 +423,7 @@ const fetchSearchedContractorsWithLoading = async () => {
             @click="onFindASub"
             class="border-2 mt-5 w-full sm:w-40 flex items-center justify-center border-2 border-teal-green bg-teal-green text-white font-semibold text-xl py-2 px-4 rounded transition transform duration-300 hover:shadow-lg active:scale-95"
           >
-            Find a Sub
+            {{ translations && translations.find_a_sub }}
           </button>
         </div>
       </transition>
@@ -427,13 +433,16 @@ const fetchSearchedContractorsWithLoading = async () => {
         v-if="atButtonClickSearchTerm && atButtonClickSearchTerm !== 'true'"
       >
         <div class="font-extrabold text-2xl leading-tight">
-          Showing results for term
+          {{ translations && translations.showing_results_for_term }}
           <span class="text-[#021d91]">"{{ atButtonClickSearchTerm }}"</span>
         </div>
       </div>
       <div class="mt-6" v-if="atButtonClickSearchTerm === 'true'">
         <div class="font-extrabold text-2xl leading-tight">
-          Showing contractors based on your selected criteria
+          {{
+            translations &&
+            translations.showing_contractors_based_on_your_selected_criteria
+          }}
         </div>
       </div>
       <div class="mt-4" v-if="!loading && atButtonClickSearchTerm">
@@ -452,7 +461,7 @@ const fetchSearchedContractorsWithLoading = async () => {
           <div
             class="p-2 text-xl text-grey-600 font-bold h-72 flex items-center justify-center"
           >
-            No Contractor Found
+            {{ translations && translations.no_contractor_found }}
           </div>
         </div>
 
@@ -470,7 +479,7 @@ const fetchSearchedContractorsWithLoading = async () => {
           "
           class="text-center my-5 font-bold"
         >
-          No More Contractors to Load
+          {{ translations && translations.no_more_contractors_to_load }}
         </div>
         <Loader
           classes="flex gap-2"
@@ -487,7 +496,9 @@ const fetchSearchedContractorsWithLoading = async () => {
       v-if="loading && atButtonClickSearchTerm"
       class="h-full h-[30vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4"
     >
-      <div class="text-center text-xl">Searching...</div>
+      <div class="text-center text-xl">
+        {{ translations && translations.searching }}...
+      </div>
       <v-progress-linear
         color="#241e6d"
         indeterminate

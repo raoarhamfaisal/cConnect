@@ -24,7 +24,10 @@
         />
         <!-- Filters -->
         <div class="border-gray-300">
-          <heading-card class="" heading="Order Reviews By" />
+          <heading-card
+            class=""
+            :heading="translations && translations.order_reviews_by"
+          />
           <div class="mb-4">
             <div class="flex gap-3 flex-wrap">
               <Button
@@ -204,6 +207,7 @@ onMounted(async () => {
 const screenWidth = computed(() => store.getters.screenWidth);
 const updatedReview = computed(() => store.state.ratings.updatedReview);
 const updatedResponse = computed(() => store.state.ratings.updatedResponse);
+const translations = computed(() => store.getters.translations);
 
 //Watch
 watch(updatedResponse, (newVal) => {

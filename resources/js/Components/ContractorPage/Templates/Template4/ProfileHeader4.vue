@@ -16,7 +16,7 @@
         color: selectedColorScheme[3],
       }"
     >
-      Go Back
+      {{ translations && translations.go_back }}
     </div>
   </div>
   <div class="flex gap-2 mt-4" :style="{ color: selectedColorScheme[2] }">
@@ -115,7 +115,10 @@
         </div>
 
         <div class="flex gap-2 sm:gap-3 translate-x-[-2px]">
-          <v-tooltip text="See User Posts" location="left">
+          <v-tooltip
+            :text="translations && translations.see_user_posts"
+            location="left"
+          >
             <template v-slot:activator="{ props }">
               <div
                 @click="openPostDialog"
@@ -161,7 +164,7 @@
           }"
           :class="`bg-white px-4 py-1 text-xs hover:bg-[#f8f9fa] sm:text-sm font-bold rounded-full border-[1px] bg-white cursor-pointer hover:shadow-lg active:scale-95`"
         >
-          Share
+          {{ translations && translations.share }}
         </button>
         <v-snackbar
           location="bottom"
@@ -169,7 +172,7 @@
           :timeout="2000"
           color="success"
         >
-          Link Copied to Clipboard
+          {{ translations && translations.link_copied_to_clipboard }}
         </v-snackbar>
       </div>
     </div>
@@ -182,16 +185,16 @@
   />
   <DialogContractorPosts ref="postDialogRef" :contractorId="profile.user_id" />
   <CustomDialog
-    submitText="Okay"
+    :submitText="translations && translations.okay"
     @submit="handleSubmit"
     :showCancel="false"
     :disableOutSideClick="false"
     ref="notLoggedDialogRef"
     errorIcon
-    title="Log in Error"
+    :title="translations && translations.log_in_error"
   >
     <div class="mb-4 sm:mb-0 mt-4">
-      You must be logged in to see the contractor's {{ modelText }}
+      {{ translations && translations.you_must_be_logged_in }} {{ modelText }}
     </div>
   </CustomDialog>
 </template>
@@ -314,6 +317,7 @@ const state = ref(props.profile.state);
 //  Emits
 
 //Computed
+const translations = computed(() => store.getters.translations);
 const selectedColorScheme = computed(
   () => store.state.contractor.selectedColorScheme || template1Default
 );

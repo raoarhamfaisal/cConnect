@@ -121,6 +121,7 @@ export default {
   },
   computed: {
     ...mapGetters("ratings", ["regions", "loading", "trades"]),
+    ...mapGetters(["translations"]),
   },
   watch: {
     regions(newValue) {
@@ -428,17 +429,17 @@ Array.prototype.remove = function () {
 
 <template>
   <CustomDialog
-    submitText="Okay"
+    :submitText="translations && translations.okay"
     :shouldFetchPost="false"
     @submit="handleSubmit"
     :showCancel="false"
     ref="tradeDialogRef"
-    title="Edit Trade Groups"
+    :title="translations && translations.edit_trade_groups"
   >
     <div class="w-full">
       <span class="mt-1 text-base">
-        <strong>Hint:</strong> Select the Trade Groups you want your post tone
-        displayed in.
+        <strong>{{ translations && translations.hint }}</strong>
+        {{ translations && translations.select_the_trade_groups_for_your_post }}
       </span>
     </div>
     <div class="mb-4 sm:mb-0 mt-4">
@@ -456,9 +457,9 @@ Array.prototype.remove = function () {
             ></div>
           </div>
         </div>
-        <label for="select_all" class="mr-4 text-gray-800 font-bold"
-          >Select All</label
-        >
+        <label for="select_all" class="mr-4 text-gray-800 font-bold">{{
+          translations && translations.select_all
+        }}</label>
       </div>
       <div class="grid mt-8 gap-3">
         <div
@@ -521,7 +522,7 @@ Array.prototype.remove = function () {
                 class="flex justify-start items-center pb-2 space-x-2 text-blue-rgba font-bold text-xl md:text-3xl"
               >
                 <img src="/images/icons/post_b.png" width="25" height="25" />
-                <p class="">Create Post</p>
+                <p class="">{{ translations && translations.create_post }}</p>
               </div>
 
               <!-- TITLE TEXT -->
@@ -529,7 +530,7 @@ Array.prototype.remove = function () {
                 <label
                   for="formPostTitle"
                   class="block text-gray-700 text-sm font-bold mb-1"
-                  >Post Title (max 35char):
+                  >{{ translations && translations.post_title_max_35char }}
                 </label>
                 <TextEditorTitle
                   v-model:modelValue="form.title"
@@ -547,7 +548,7 @@ Array.prototype.remove = function () {
                 <label
                   for="formPostbody1"
                   class="block text-gray-700 text-sm font-bold mb-1"
-                  >Top text (required):
+                  >{{ translations && translations.top_text_required }}
                 </label>
 
                 <TextEditorTopText
@@ -569,7 +570,7 @@ Array.prototype.remove = function () {
                 <label
                   for="formPostImage"
                   class="block text-gray-700 text-sm font-bold mb-2"
-                  >Image (max 15):
+                  >{{ translations && translations.image }} (max 15):
                 </label>
 
                 <file-pond
@@ -634,7 +635,7 @@ Array.prototype.remove = function () {
                 <label
                   for="formPostbody2"
                   class="block text-gray-700 text-sm font-bold mb-2"
-                  >Bottom text (not required):
+                  >{{ translations && translations.bottom_text_not_required }}
                 </label>
 
                 <textarea
@@ -643,7 +644,7 @@ Array.prototype.remove = function () {
                   class="w-full py-2 px-3 shadow appearance-none text-gray-900 font-semibold border rounded border-gray-600 leading-tight focus:outline-none focus:shadow-outline placeholder:italic placeholder:text-slate-500"
                   rows="3"
                   id="formPostbody2"
-                  placeholder="Bottom text..."
+                  placeholder="{{translations && translations.bottom_text}}"
                 >
                 </textarea>
 
@@ -652,7 +653,10 @@ Array.prototype.remove = function () {
                 </div>
               </div>
               <div class="mb-4 sm:mb-0">
-                <InputLabel class="font-bold mb-1 mt-1" value="Region" />
+                <InputLabel
+                  class="font-bold mb-1 mt-1"
+                  :value="translations && translations.region"
+                />
                 <div class="text-lg">{{ selectedReferal }}</div>
                 <!-- <SelectProfile
                   :options="referenceList"
@@ -668,7 +672,7 @@ Array.prototype.remove = function () {
               <div class="mb-4 sm:mb-0 mt-1">
                 <div class="flex justify-between mb-2">
                   <div class="text-lg font-bold text-[#241e6d]">
-                    Display in Trades Group
+                    {{ translations && translations.display_in_trades_group }}
                   </div>
                   <div
                     @click="openDialog"
@@ -695,7 +699,7 @@ Array.prototype.remove = function () {
                   isUploading ? 'disabled' : ''
                 }`"
               >
-                Save Post
+                {{ translations && translations.save_post }}
               </button>
             </span>
 
@@ -710,7 +714,7 @@ Array.prototype.remove = function () {
                 @click="$emit('formclose')"
                 class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5"
               >
-                Cancel
+                {{ translations && translations.cancel }}
               </button>
             </span>
           </div>

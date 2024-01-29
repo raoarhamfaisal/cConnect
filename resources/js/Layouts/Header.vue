@@ -203,7 +203,9 @@ export default {
           this.closeModal();
           this.success = true;
           this.$store.commit("ratings/setShouldFetchFirstPagePosts", true);
-          changesSaved("Post Successfully Added");
+          changesSaved(
+            this.translations && this.translations.post_successfully_added
+          );
         },
       });
     },
@@ -294,7 +296,7 @@ export default {
 
 <template>
   <CustomDialog
-    submitText="Okay"
+    :submitText="translations && translations.okay"
     @submit="handleSubmit"
     :showCancel="false"
     dontAllowCancel

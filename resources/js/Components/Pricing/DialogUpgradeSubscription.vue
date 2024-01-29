@@ -16,7 +16,7 @@
         <!-- payment type -->
         <div class="mt-4">
           <div class="font-bold text-2xl text-blue-rgba leading-tight">
-            Choose Payment Method
+            {{ translations && translations.choose_payment_method }}
           </div>
           <!-- (c) 2005, 2023. Authorize.Net is a registered trademark of CyberSource Corporation  -->
           <!-- <div class="AuthorizeNetSeal"> <script type="text/javascript" language="javascript">var ANS_customer_id="c5098736-0049-4d71-84e8-37f0778a3208";</script> <script type="text/javascript" language="javascript" src="//verify.authorize.net:6001/anetseal/seal.js" ></script> </div> -->
@@ -115,8 +115,10 @@
                   @click="sameAsProfile = !sameAsProfile"
                   class="w-full cursor-pointer text-sm sm:text-base translate-y-[0px]"
                 >
-                  Would you prefer to use the same billing details as you've
-                  previously set up in your profile?
+                  {{
+                    translations &&
+                    translations.would_you_prefer_to_use_the_same_billing_details
+                  }}
                 </div>
               </div>
               <!-- v-if="paymentMethod === 'AUTHORIZE.NET'" -->
@@ -128,7 +130,7 @@
                     <InputLabel
                       class="font-bold"
                       for="first_name"
-                      value="First Name*"
+                      :value="translations && translations.first_name + '*'"
                     />
                     <TextInput
                       id="first_name"
@@ -136,7 +138,9 @@
                       class="mt-1 block w-full"
                       required
                       v-model="form.first_name"
-                      placeholder="Type your first name"
+                      :placeholder="
+                        translations && translations.type_your_first_name
+                      "
                       @input="clearError('first_name')"
                       autocomplete="given-name"
                     />
@@ -147,7 +151,7 @@
                     <InputLabel
                       class="font-bold"
                       for="last_name"
-                      value="Last Name*"
+                      :value="translations && translations.last_name + '*'"
                     />
                     <TextInput
                       class="mt-1 block w-full"
@@ -155,7 +159,9 @@
                       type="text"
                       v-model="form.last_name"
                       required
-                      placeholder="Type your last name"
+                      :placeholder="
+                        translations && translations.type_your_last_name
+                      "
                       @input="clearError('last_name')"
                       autocomplete="family-name"
                     />
@@ -165,7 +171,7 @@
                     <InputLabel
                       class="font-bold"
                       for="card_number"
-                      value="Card Number*"
+                      :value="translations && translations.card_number + '*'"
                     />
                     <TextInput
                       id="card_number"
@@ -174,7 +180,9 @@
                       v-model="form.card_number"
                       @input="clearError('card_number')"
                       v-mask="'####-####-####-#############'"
-                      placeholder="Type your card number"
+                      :placeholder="
+                        translations && translations.type_your_card_number
+                      "
                     />
                     <InputError class="mt-2" :message="errors.card_number" />
                   </div>
@@ -187,7 +195,7 @@
                         :icon="isCvvShown ? 'mdi:hide' : 'mdi:show'"
                         color="#241e6d"
                         :cursor="true"
-                        placeholder="CVV Number"
+                        :placeholder="translations && translations.cvv_number"
                         id="cvv"
                         :type="isCvvShown ? 'text' : 'password'"
                         class="mt-1 block w-full cursor-pointer"
@@ -207,7 +215,9 @@
                       <InputLabel
                         class="font-bold"
                         for="expiration_date"
-                        value="Expiration Date*"
+                        :value="
+                          translations && translations.expiration_date + '*'
+                        "
                       />
                       <TextInput
                         id="expiration_date"
@@ -236,25 +246,34 @@
                       @input="clearError('address')"
                       @callback="callbackFunction"
                       class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                      placeholder="Type your address"
+                      :placeholder="
+                        translations && translations.type_your_address
+                      "
                     />
 
                     <InputError class="mt-2" :message="errors.address" />
                   </div>
                   <div class="mb-4 sm:mb-0">
-                    <InputLabel class="font-bold" for="city" value="City*" />
+                    <InputLabel
+                      class="font-bold"
+                      for="city"
+                      :value="translations && translations.city + '*'"
+                    />
                     <TextInput
                       id="city"
                       type="text"
                       class="mt-1 block w-full"
                       v-model="form.city"
                       @input="clearError('city')"
-                      placeholder="Type your city"
+                      :placeholder="translations && translations.type_your_city"
                     />
                     <InputError class="mt-2" :message="errors.city" />
                   </div>
                   <div class="mb-4 sm:mb-0">
-                    <InputLabel class="font-bold mb-1" value="State*" />
+                    <InputLabel
+                      class="font-bold mb-1"
+                      :value="translations && translations.state + '*'"
+                    />
                     <SelectProfile
                       :options="stateList"
                       :modelValue="form.state"
@@ -272,7 +291,7 @@
                     <InputLabel
                       class="font-bold"
                       for="zipcode"
-                      value="Zip Code*"
+                      :value="translations && translations.zip_code + '*'"
                     />
                     <TextInput
                       id="zipcode"
@@ -280,7 +299,9 @@
                       class="mt-1 block w-full"
                       v-model="form.zipcode"
                       @input="clearError('zipcode')"
-                      placeholder="Type your zip code"
+                      :placeholder="
+                        translations && translations.type_your_zip_code
+                      "
                     />
                     <InputError class="mt-2" :message="errors.zipcode" />
                   </div>
@@ -289,7 +310,7 @@
                     <InputLabel
                       class="font-bold"
                       for="country"
-                      value="Country*"
+                      :value="translations && translations.county + '*'"
                     />
                     <TextInput
                       id="country"
@@ -297,7 +318,9 @@
                       class="mt-1 block w-full"
                       v-model="form.country"
                       @input="clearError('country')"
-                      placeholder="Type your country"
+                      :placeholder="
+                        translations && translations.type_your_country
+                      "
                     />
                     <InputError class="mt-2" :message="errors.country" />
                   </div>
@@ -355,14 +378,14 @@
         <!-- <ul> -->
 
         <!-- </ul> -->
-        <li>Press continue to enter the News Feed!</li>
+        <li>{{translations && translations.press_continue_only}}</li>
       </ul>
       <Link
         class="group flex items-center self-start justify-between rounded-xl border border-teal-500 bg-[#16a34a] sm:px-5 px-3 py-2 sm:py-3 mt-4 hover:bg-[#16a34a] focus:outline-none focus:ring transition transform duration-300 hover:shadow-lg active:scale-95"
         href="/post"
       >
         <span class="text-lg font-bold text-white uppercase transition">
-          Continue
+          {{ translations && translations.continue }}
         </span>
 
         <!-- Arrow -->

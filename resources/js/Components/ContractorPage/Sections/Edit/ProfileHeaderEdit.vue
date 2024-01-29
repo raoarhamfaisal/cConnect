@@ -72,12 +72,12 @@
     </div>
   </Card>
   <CustomDialog
-    submitText="Save"
+    :submitText="translations && translations.save"
     @submit="handleSubmit"
     :loading="loading"
     :disabled="disabled"
     ref="dialogRef"
-    title="Edit Your General Information"
+    :title="translations && translations.edit_your_general_information"
   >
     <div class="flex justify-center">
       <v-skeleton-loader
@@ -97,7 +97,11 @@
       class="mt-6 space-y-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-4"
     >
       <div>
-        <InputLabel class="font-bold" for="first_name" value="First Name*" />
+        <InputLabel
+          class="font-bold"
+          for="first_name"
+          :value="translations && translations.first_name + '*'"
+        />
         <TextInput
           id="first_name"
           type="text"
@@ -105,14 +109,18 @@
           class="mt-1 block w-full"
           required
           v-model="tempProfile.first_name"
-          placeholder="Type your first name"
+          :placeholder="translations && translations.type_your_first_name"
           autocomplete="given-name"
         />
         <InputError class="mt-2" :message="errors.first_name" />
       </div>
 
       <div>
-        <InputLabel class="font-bold" for="last_name" value="Last Name*" />
+        <InputLabel
+          class="font-bold"
+          for="last_name"
+          :value="translations && translations.last_name + '*'"
+        />
         <TextInput
           id="last_name"
           type="text"
@@ -120,7 +128,7 @@
           @input="clearError('last_name')"
           v-model="tempProfile.last_name"
           required
-          placeholder="Type your last name"
+          :placeholder="translations && translations.type_your_last_name"
           autocomplete="family-name"
         />
         <InputError class="mt-2" :message="errors.last_name" />
@@ -129,13 +137,13 @@
         <InputLabel
           class="font-bold"
           for="company_name"
-          value="Company Name*"
+          :value="translations && translations.company_name + '*'"
         />
         <TextInput
           id="company_name"
           type="text"
           class="mt-1 block w-full"
-          placeholder="Type your Company name"
+          :placeholder="translations && translations.type_your_company_name"
           @input="clearError('company_name')"
           v-model="tempProfile.company_name"
           required
@@ -145,20 +153,28 @@
       </div>
 
       <div>
-        <InputLabel class="font-bold" for="city" value="City*" />
+        <InputLabel
+          class="font-bold"
+          for="city"
+          :value="translations && translations.city + '*'"
+        />
         <TextInput
           id="city"
           type="text"
           class="mt-1 block w-full"
           v-model="tempProfile.city"
           @input="clearError('city')"
-          placeholder="Type your city"
+          :placeholder="translations && translations.type_your_city"
           autocomplete="city"
         />
         <InputError class="mt-2" :message="errors.city" />
       </div>
       <div>
-        <InputLabel class="font-bold mb-1" for="state" value="State*" />
+        <InputLabel
+          class="font-bold mb-1"
+          for="state"
+          :value="translations && translations.state + '*'"
+        />
         <SelectProfile
           :options="stateList"
           :modelValue="tempProfile.state"
@@ -204,6 +220,7 @@ import {
   getAxiosConfigFormData,
 } from "@/helpers/axiosConfigHelpers";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
+import { useStore } from "vuex";
 // State
 const props = defineProps({
   profile: Object,
@@ -240,8 +257,11 @@ const errors = reactive({
   city: "",
   state: "",
 });
+const store = useStore();
 
 //Computed
+
+const translations = computed(() => store.getters.translations);
 const fullName = computed(() => first_name.value + " " + last_name.value);
 const truncatedName = computed(() => {
   console.log("here in teh trunctated", props.screenWidth);

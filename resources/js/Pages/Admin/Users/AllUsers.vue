@@ -253,7 +253,7 @@
               ref="adminTextAreaRef"
               style="height: 10.4rem; border: 1px solid grey"
               @keydown="saveNotes"
-              placeholder="Type your Notes"
+              :placeholder="translations && translations.type_your_notes"
               class="text-sm w-full py-1 px-3 focus:shadow-none focus:ring-gray-600 focus:rounded font-semibold text-grey-600 border-none resize-none bg-transparent rounded"
               :rows="numberOfRows"
             ></textarea>
@@ -323,7 +323,7 @@
             <InputLabel
               class="font-bold"
               for="first_name"
-              value="First Name*"
+              :value="translations && translations.first_name + '*'"
             />
             <TextInput
               id="first_name"
@@ -331,7 +331,7 @@
               class="mt-1 block w-full"
               required
               v-model="userToEdit.first_name"
-              placeholder="Type your first name"
+              :placeholder="translations && translations.type_your_first_name"
               @input="clearErrors('first_name')"
               autocomplete="given-name"
             />
@@ -339,14 +339,18 @@
           </div>
 
           <div>
-            <InputLabel class="font-bold" for="last_name" value="Last Name*" />
+            <InputLabel
+              class="font-bold"
+              for="last_name"
+              :value="translations && translations.last_name + '*'"
+            />
             <TextInput
               id="last_name"
               type="text"
               class="mt-1 block w-full"
               v-model="userToEdit.last_name"
               required
-              placeholder="Type your last name"
+              :placeholder="translations && translations.type_your_last_name"
               @input="clearErrors('last_name')"
               autocomplete="family-name"
             />
@@ -356,13 +360,13 @@
             <InputLabel
               class="font-bold"
               for="company_name"
-              value="Company Name*"
+              :value="translations && translations.company_name + '*'"
             />
             <TextInput
               id="company_name"
               type="text"
               class="mt-1 block w-full"
-              placeholder="Type your Company name"
+              :placeholder="translations && translations.type_your_company_name"
               @input="clearErrors('company_name')"
               v-model="userToEdit.profile.company_name"
               required
@@ -415,7 +419,7 @@
             @blur="stopTyping"
             ref="adminTextAreaRef"
             style="height: 10.4rem; border: 1px solid grey"
-            placeholder="Type your Notes"
+            :placeholder="translations && translations.type_your_notes"
             class="text-sm w-full py-1 px-3 focus:shadow-none focus:ring-gray-600 focus:rounded font-semibold text-grey-600 border-none resize-none bg-transparent rounded"
             rows="3"
           ></textarea>
@@ -604,6 +608,7 @@ const numberOfRows = computed(() => {
 const regions = computed(() => store.state.ratings.allRegions);
 const loadingRegions = computed(() => store.state.ratings.loading);
 const screenWidth = computed(() => store.getters.screenWidth);
+const translations = computed(() => store.getters.translations);
 
 //Watch
 watch(regions, (newVal) => {

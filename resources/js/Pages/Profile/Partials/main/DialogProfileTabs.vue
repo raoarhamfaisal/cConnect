@@ -3,7 +3,7 @@
     ref="dialogRef"
     :showFooter="false"
     dialogWidth="width-75"
-    title="Views Setting"
+    :title="translations && translations.views_setting"
     contentClasses="bg-gray-200 pt-6"
   >
     <Loader :loading="loading" background="white" height="70vh"></Loader>
@@ -32,6 +32,9 @@ defineProps({
 const store = useStore();
 
 const dialogRef = ref();
+
+const translations = computed(() => store.getters.translations);
+
 const loading = computed(
   () => store.getters["profile/loadingViewSettingsProfile"]
 );

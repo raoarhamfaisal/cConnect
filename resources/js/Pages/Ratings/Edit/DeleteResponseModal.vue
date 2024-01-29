@@ -2,20 +2,20 @@
   <!-- ConfirmDialog -->
 
   <CustomDialog
-    submitText="Delete"
+    :submitText="translations && translations.delete"
     @submit="handleSubmit"
     :loading="loadingSending"
     :disabled="disabledSending"
     ref="deleteDialogRef"
     errorIcon
     dialogWidth="max-h-[70vh] width50"
-    title="Are you sure? "
+    :title="translations && translations.are_you_sure"
   >
     <form @submit.prevent="handleSubmit">
       <!-- review reason -->
       <div class="mb-4">
         <div class="text-lg font-bold pl-6 text-gray-800 mt-3 mb-2">
-          You want to Delete this Response?
+          {{ translations && translations.you_want_to_delete_this_response }}
         </div>
       </div>
     </form>
@@ -34,6 +34,7 @@ const store = useStore();
 //Computed
 const loadingSending = computed(() => store.state.ratings.loadingSending);
 const disabledSending = computed(() => store.state.ratings.disabledSending);
+const translations = computed(() => store.state.ratings.translations);
 
 //Methods
 

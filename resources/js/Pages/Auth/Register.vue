@@ -41,6 +41,8 @@ const errors = reactive({
   passwordValidationMessage: "",
   password_confirmation: "",
 });
+
+const translations = computed(() => store.getters.translations);
 //Methods
 const validateForm = () => {
   let isValid = true;
@@ -173,7 +175,11 @@ const validatePassword = () => {
       class="mt-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-6"
     >
       <div>
-        <InputLabel for="name" class="font-bold" value="First Name*" />
+        <InputLabel
+          for="name"
+          class="font-bold"
+          :value="translations && translations.first_name + '*'"
+        />
         <TextInput
           id="name"
           type="text"
@@ -187,7 +193,11 @@ const validatePassword = () => {
         <InputError class="mt-1" :message="errors.first_name" />
       </div>
       <div class="mt-4">
-        <InputLabel for="last_name" class="font-bold" value="Last Name*" />
+        <InputLabel
+          for="last_name"
+          class="font-bold"
+          :value="translations && translations.last_name + '*'"
+        />
         <TextInput
           id="last_name"
           type="text"
@@ -203,7 +213,7 @@ const validatePassword = () => {
         <InputLabel
           for="company_name"
           class="font-bold"
-          value="Company Name*"
+          :value="translations && translations.company_name + '*'"
         />
         <TextInput
           id="company_name"
@@ -280,7 +290,7 @@ const validatePassword = () => {
         <InputLabel
           for="password_confirmation"
           class="font-bold"
-          value="Confirm Password*"
+          :value="translations && translations.confirm_password + '*'"
         />
         <input-icon
           :icon="isPasswordConfirmationShown ? 'mdi:hide' : 'mdi:show'"

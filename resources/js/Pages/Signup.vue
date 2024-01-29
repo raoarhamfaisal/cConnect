@@ -195,7 +195,7 @@ onMounted(() => {});
             <div class="pt-4 pb-1 border-t-2 border-gray-400">
               <div class="mt-3 space-y-1">
                 <ResponsiveNavLink v-if="showit" :href="route('profile.edit')">
-                  Profile
+                  {{ translations && translations.profile }}
                 </ResponsiveNavLink>
 
                 <ResponsiveNavLink

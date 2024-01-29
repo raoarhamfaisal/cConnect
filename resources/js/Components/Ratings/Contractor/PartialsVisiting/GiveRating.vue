@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="text-sm font-bold mb-3 text-gray-600">Select your Rating:</div>
+    <div class="text-sm font-bold mb-3 text-gray-600">
+      {{ translations && translations.select_your_rating }}
+    </div>
     <StarRatingEditable
       :ratingGlobal="state.rating"
       @update:rating="handleRatingChange"
@@ -9,7 +11,9 @@
     <!-- reason -->
     <div class="mb-4">
       <div class="text-sm font-bold text-gray-600 mt-3 mb-2">
-        Please provide the basis for your rating
+        {{
+          translations && translations.please_provide_the_basis_for_your_rating
+        }}
       </div>
 
       <textarea
@@ -23,7 +27,7 @@
         @keydown="insertTab"
         @input="adjustHeight"
         @paste="adjustHeight"
-        placeholder="Type reason for your rating"
+        :placeholder="translations && translations.type_reason_for_your_rating"
       />
       <InputError
         v-if="ratingReasonError"
@@ -34,7 +38,7 @@
     <!-- Were you hired by this contractor? -->
     <div class="flex items-center justify-between sm:w-96 mb-5">
       <div class="text-md font-bold text-gray-600 mt-3 mb-2">
-        Were you hired by this contractor?
+        {{ translations && translations.were_you_hired_by_this_contractor }}
       </div>
       <div class="switch" @click="toggleSwitch('hired_by_contractor')">
         <div
@@ -53,7 +57,7 @@
     <!-- Were you paid on time? -->
     <div class="flex items-center justify-between sm:w-96 mb-5">
       <div class="text-md font-bold text-gray-600 mt-3 mb-2">
-        Were you paid on time?
+        {{ translations && translations.were_you_paid_on_time }}
       </div>
       <div class="switch" @click="toggleSwitch('paid_on_time')">
         <div :class="[state.paid_on_time ? 'switch-bg-on' : 'switch-bg-off']">
@@ -67,7 +71,7 @@
     <!-- Did you hire this contractor? -->
     <div class="flex items-center justify-between sm:w-96 mb-5">
       <div class="text-md font-bold text-gray-600 mt-3 mb-2">
-        Did you hire this contractor?
+        {{ translations && translations.did_you_hire_this_contractor }}
       </div>
       <div class="switch" @click="toggleSwitch('hired_contractor')">
         <div
@@ -85,7 +89,7 @@
     <!-- Did you give full  payment -->
     <div class="flex items-center justify-between sm:w-96 mb-5">
       <div class="text-md font-bold text-gray-600 mt-3 mb-2">
-        Did you give full payment
+        {{ translations && translations.did_you_give_full_payment }}
       </div>
       <div class="switch" @click="toggleSwitch('paid_them')">
         <div :class="[state.paid_them ? 'switch-bg-on' : 'switch-bg-off']">
@@ -96,12 +100,12 @@
       </div>
     </div>
 
-    <!-- How did you meet this contractor? -->
+    <!-- {{translations && translations.how_did_you_meet_this_contractor}} -->
     <CustomSelect
       :options="referenceList"
       :modelValue="selectedReferal"
       @update:modelValue="changeReferal"
-      label="How did you meet this contractor?"
+      label="{{translations && translations.how_did_you_meet_this_contractor}}"
     />
 
     <div class="flex items-center gap-4 mt-6 w-full">
@@ -125,7 +129,7 @@
 </template>
 
 <script setup>
-import { reactive, toRefs, ref, watch, nextTick } from "vue";
+import { reactive, toRefs, ref, watch, nextTick, computed } from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import CustomSelect from "@/Components/CustomSelect.vue";
 import { filterBadWords } from "@/helpers/utilities";
@@ -174,6 +178,10 @@ const disabled = ref(false);
 const ratingError = ref("");
 const ratingReasonError = ref("");
 const emit = defineEmits(["addReview"]);
+
+// Computed
+
+const translations = computed(() => store.getters.translations);
 
 //Watch
 
@@ -270,13 +278,16 @@ const handleSubmit = async () => {
 
 const textRef = ref();
 const insertTab = (event) => {
-  if (event.key === 'Tab') {
+  if (event.key === "Tab") {
     event.preventDefault();
     const start = event.target.selectionStart;
     const end = event.target.selectionEnd;
 
     // Set the value to: text before caret + four spaces + text after caret
-    state.rating_reason = state.rating_reason.substring(0, start) + '      ' + state.rating_reason.substring(end);
+    state.rating_reason =
+      state.rating_reason.substring(0, start) +
+      "      " +
+      state.rating_reason.substring(end);
 
     // Put caret at right position again
     nextTick(() => {
@@ -290,7 +301,6 @@ const adjustHeight = () => {
     textRef.value.style.height = textRef.value.scrollHeight + "px";
   });
 };
-
 </script>
 
 <style scoped></style>

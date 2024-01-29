@@ -142,17 +142,24 @@ const submitVerificationCode = async () => {
 
 <template>
   <CustomDialog
-    submitText="Okay"
+    :submitText="translations && translations.okay"
     :showFooter="false"
     ref="verifyDialogRef"
     title="Verify Email"
   >
     <div class="mb-4 sm:mb-0">
       <div class="text-xl sm:text-2xl mb-2 font-semibold">
-        Please enter the code sent to your email address to verify your email.
+        {{
+          translations &&
+          translations.please_enter_the_code_sent_to_your_email_address
+        }}
       </div>
       <div class="mt-3">
-        <InputLabel class="font-bold" for="email" value="Enter Code" />
+        <InputLabel
+          class="font-bold"
+          for="email"
+          :value="translations && translations.enter_code"
+        />
         <TextInput
           id="email"
           type="text"
@@ -174,7 +181,9 @@ const submitVerificationCode = async () => {
         "
         class="mt-3 w-full flex justify-center"
       >
-        <div class="flex items-center justify-center">Send</div>
+        <div class="flex items-center justify-center">
+          {{ translations && translations.send }}
+        </div>
         <img
           v-show="loadingSending"
           src="/images/avatars/Spinner.gif"
@@ -191,9 +200,11 @@ const submitVerificationCode = async () => {
         class="w-full mt-1 flex justify-center"
       >
         <div v-show="!loading" class="flex items-center justify-center">
-          Resend Verification Code
+          {{ translations && translations.resend_verification_code }}
         </div>
-        <div v-show="loading">Sending...</div></PrimaryButton
+        <div v-show="loading">
+          {{ translations && translations.sending }}...
+        </div></PrimaryButton
       >
     </div>
     <!-- </Card> -->
@@ -237,7 +248,9 @@ const submitVerificationCode = async () => {
                 "
                 class="w-full flex justify-center"
               >
-                <div class="flex items-center justify-center">Save</div>
+                <div class="flex items-center justify-center">
+                  {{ translations && translations.save }}
+                </div>
                 <img
                   v-show="loading"
                   src="/images/avatars/Spinner.gif"

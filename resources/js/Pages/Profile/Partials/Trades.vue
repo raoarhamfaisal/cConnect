@@ -158,15 +158,28 @@ const toggleText = () => {
 const displayedText = computed(() => {
   if (isExpanded.value) {
     return `
-      <span><strong class="text-sm">Hint:</strong> Selecting your Trade Group allows you to control
-      what postings you see in the News Feed.</br>
-      <strong>For example,</strong> if you do not care about Roofing, turn that
-      group off so you will not see postings referring to Roofing.
+      <span><strong class="text-sm">${
+        translations.value && translations.value.hint
+      }</strong> ${
+      translations.value &&
+      translations.value.selecting_your_trade_group_allows_you_to_control
+    }</br>
+      <strong>${
+        translations.value && translations.value.for_example
+      },</strong>${
+      translations.value && translations.value.if_you_do_not_care_about_roofing
+    }
     </br>
-      This is your default information and can be changed at
-      anytime. </span>`;
+    ${
+      translations.value && translations.value.this_is_your_default_information
+    } </span>`;
   } else {
-    return "<span><strong class='text-sm'>Hint:</strong> Selecting your Trade Group allows you</span>";
+    return `<span><strong class='text-sm'>${
+      translations.value && translations.value.hint
+    }</strong>  ${
+      translations.value &&
+      translations.value.selecting_your_trade_group_allows_you
+    }</span>`;
   }
 });
 </script>
@@ -182,7 +195,7 @@ const displayedText = computed(() => {
               : 'text-gray-900 text-lg'
           }`"
         >
-          Trade Groups
+          {{ translations && translations.trade_groups }}
         </h2>
         <div v-if="apiChoice !== '3'" class="w-full">
           <span class="mt-1 text-sm" v-html="displayedText"></span>
@@ -205,8 +218,11 @@ const displayedText = computed(() => {
         </div>
         <div v-if="apiChoice === '3'" class="w-full">
           <span class="mt-1 text-sm">
-            <strong class="text-sm">Hint:</strong> Selecting Trade Groups allows
-            you to control what postings you see in the News Feed.
+            <strong class="text-sm">{{
+              translations && translations.hint
+            }}</strong>
+            Selecting Trade Groups allows you to control what postings you see
+            in the News Feed.
           </span>
         </div>
       </div>
@@ -223,9 +239,9 @@ const displayedText = computed(() => {
           ></div>
         </div>
       </div>
-      <label for="select_all" class="mr-4 text-gray-800 font-bold"
-        >Select All</label
-      >
+      <label for="select_all" class="mr-4 text-gray-800 font-bold">{{
+        translations && translations.select_all
+      }}</label>
     </div>
     <!-- <div class="divider"></div> -->
     <div class="grid mt-8 gap-3">

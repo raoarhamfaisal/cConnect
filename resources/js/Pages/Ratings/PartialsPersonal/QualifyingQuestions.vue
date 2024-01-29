@@ -48,7 +48,9 @@
       <div
         class="w-full flex items-center col-span-2 pl-1 text-xs xs:text-sm sm:text-base font-bold text-gray-600"
       >
-        <div>How did I meet Contractor : &nbsp;</div>
+        <div>
+          {{ translations && translations.how_did_i_meet_contractor }} &nbsp;
+        </div>
         <div
           :style="{
             transform: 'translateY(-1px)',
@@ -65,6 +67,8 @@
 <script setup>
 import Card from "@/Components/Card.vue";
 import { Icon } from "@iconify/vue";
+import { computed } from "vue";
+import { useStore } from "vuex";
 
 defineProps({
   questionsSwitch: {
@@ -78,5 +82,11 @@ defineProps({
     default: "#f8f9fa",
   },
 });
+
+const store = useStore();
+
+//Computed
+
+const translations = computed(() => store.getters.translations);
 </script>
 <style scoped></style>

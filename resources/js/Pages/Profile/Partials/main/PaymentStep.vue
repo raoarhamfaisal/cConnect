@@ -55,7 +55,7 @@
       />
 
       <PricingCard
-        plan="ANNUAL"
+        :plan="translations && translations.annual_cap"
         :coupon="coupon"
         :couponDiscount="
           coupon && coupon.percentage_off_regular_price

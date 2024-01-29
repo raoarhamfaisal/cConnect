@@ -74,7 +74,7 @@
             v-if="comments && comments.length === 0"
             class="p-2 text-xl text-grey-600 font-bold h-full flex items-center justify-center"
           >
-            No Comments Yet
+            {{ translations && translations.no_comments_yet }}
           </div>
           <div
             v-if="+currentPage !== +pagination.last_page"
@@ -89,7 +89,7 @@
             "
             class="text-center font-bold mt-4"
           >
-            No More Comments to Load
+            {{ translations && translations.no_comments_yet }}
           </div>
           <Loader
             classes="flex gap-2"
@@ -119,7 +119,7 @@
               @keydown="insertTab"
               @input="adjustHeight"
               :rows="1"
-              placeholder="Write a comment..."
+              :placeholder="translations && translations.write_a_comment"
               class="text-xl w-full py-1 min-h-[40px] overflow-hidden px-3 focus:shadow-none focus:ring-gray-600 focus:rounded bg-[#f9fafb] border-gray-400 text-grey-600 resize-none rounded focus-within:ring-gray-600 focus:border-gray-600"
             ></textarea>
             <Icon
@@ -222,6 +222,7 @@ const loading = ref(false);
 
 //Computed
 const screenWidth = computed(() => store.getters.screenWidth);
+const translations = computed(() => store.getters.translations);
 const commentId = computed(() => store.state.profile.commentId);
 
 onMounted(() => {

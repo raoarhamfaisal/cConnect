@@ -9,16 +9,20 @@
     ref="editDialogRef"
     title="Edit Rating"
   >
-    <div class="text-md font-bold mb-3 text-gray-600">Select your Rating:</div>
+    <div class="text-md font-bold mb-3 text-gray-600">
+      {{ translations && translations.select_your_rating }}
+    </div>
     <StarRatingEditable
       :ratingGlobal="state.rating"
       @update:rating="handleRatingChange"
     />
     <InputError v-if="ratingError" class="mt-2" :message="ratingError" />
     <!-- review reason -->
-    
+
     <div class="mb-4">
-      <div class="text-md font-bold text-gray-600 mt-3 mb-2">Review Text</div>
+      <div class="text-md font-bold text-gray-600 mt-3 mb-2">
+        {{ translations && translations.review_text }}
+      </div>
       <textarea
         id="rating_text"
         type="text"
@@ -30,7 +34,7 @@
         @keydown="insertTab"
         @input="adjustHeight"
         @paste="adjustHeight"
-        placeholder="Type reason for your rating"
+        :placeholder="translations && translations.type_reason_for_your_rating"
       />
       <InputError
         v-if="ratingReasonError"
@@ -63,12 +67,12 @@
         </div>
       </div>
     </div>
-    
+
     <CustomSelect
       :options="referenceList"
       :modelValue="selectedReferal"
       @update:modelValue="changeReferal"
-      label="How did you meet this contractor?"
+      label="{{translations && translations.how_did_you_meet_this_contractor}}"
     />
   </CustomDialog>
 </template>
@@ -78,7 +82,15 @@ import InputError from "@/Components/InputError.vue";
 import CustomSelect from "@/Components/CustomSelect.vue";
 import StarRatingEditable from "@/Components/Ratings/StarRatingEditable.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
-import { computed, nextTick, onMounted, reactive, ref, toRefs, watch } from "vue";
+import {
+  computed,
+  nextTick,
+  onMounted,
+  reactive,
+  ref,
+  toRefs,
+  watch,
+} from "vue";
 import { useStore } from "vuex";
 import { filterBadWords } from "@/helpers/utilities";
 
@@ -210,7 +222,6 @@ const handleSubmit = async () => {
 };
 
 const openDialogEdit = () => {
-
   return editDialogRef.value.openDialog();
 };
 
@@ -218,13 +229,16 @@ defineExpose({ openDialogEdit });
 
 const textRef = ref();
 const insertTab = (event) => {
-  if (event.key === 'Tab') {
+  if (event.key === "Tab") {
     event.preventDefault();
     const start = event.target.selectionStart;
     const end = event.target.selectionEnd;
 
     // Set the value to: text before caret + four spaces + text after caret
-    state.rating_text = state.rating_text.substring(0, start) + '      ' + state.rating_text.substring(end);
+    state.rating_text =
+      state.rating_text.substring(0, start) +
+      "      " +
+      state.rating_text.substring(end);
 
     // Put caret at right position again
     nextTick(() => {
@@ -233,16 +247,15 @@ const insertTab = (event) => {
   }
 };
 const adjustHeight = () => {
-  console.log('here')
+  console.log("here");
   nextTick(() => {
     textRef.value.style.height = "auto"; // Reset height first to get the correct scrollHeight
     textRef.value.style.height = textRef.value.scrollHeight + "px";
   });
 };
-const onOpened = ()=>{
-  adjustHeight()
-}
-
+const onOpened = () => {
+  adjustHeight();
+};
 </script>
 
 <style></style>

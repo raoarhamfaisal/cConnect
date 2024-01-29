@@ -10,7 +10,7 @@
         fontSize: screenWidth > 640 ? '24px' : '20px',
         color: selectedColorScheme[3],
       }"
-      :heading="`Trade Groups`"
+      :heading="translations && translations.trade_groups"
     />
   </div>
   <!-- trades -->
@@ -125,6 +125,7 @@ const selectedColorScheme = computed(
 const filteredOptions = computed(() => {
   return options.filter((option) => tradesPost[option.id] === 1);
 });
+const translations = computed(() => store.getters.translations);
 
 //Methods
 </script>

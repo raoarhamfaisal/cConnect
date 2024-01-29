@@ -217,7 +217,15 @@ const onSelectLang = (lang) => {
       height="6"
     ></v-progress-linear>
   </div>
-  <div v-if="!loading" class="relative h-screen bg-white">
+  <div
+    v-if="
+      !loading &&
+      translations &&
+      translations &&
+      Object.keys(translations).length > 0
+    "
+    class="relative h-screen bg-white"
+  >
     <!-- bg-gray-200 -->
     <img
       :class="{ 'animate-scale': animate }"
@@ -940,7 +948,9 @@ const onSelectLang = (lang) => {
               >
                 <!-- a6b9b9 -->
                 <li>
-                  {{ translations && translations.find_local_statewide_subs }}
+                  {{
+                    translations && translations.find_local_or_statewide_subs
+                  }}
                 </li>
                 <li>
                   {{ translations && translations.advertise_your_business }}
@@ -959,8 +969,8 @@ const onSelectLang = (lang) => {
                       translations && translations.no_brainer_pricing
                     }}"</span
                   >
-                  &nbsp;- As Contractors Ourselves, Seems Like Everyone is
-                  Trying to Sell Us Something At Super - Exorbitant Prices!
+                  &nbsp;-
+                  {{ translations && translations.everyone_trying_to_sell }}
                   <div class="font-extrabold text-white normal-case">
                     Not Here at&nbsp; <tContractorWhite isOrange />
                   </div>

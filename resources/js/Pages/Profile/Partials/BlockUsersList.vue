@@ -1,6 +1,8 @@
 <template>
   <div class="mb-4">
-    <h2 class="text-2xl font-bold text-gray-900">Blocked Users</h2>
+    <h2 class="text-2xl font-bold text-gray-900">
+      {{ translations && translations.blocked_users }}
+    </h2>
   </div>
   <div
     class="flex flex-col"
@@ -44,8 +46,8 @@
         >
           {{
             loadingUnblocking && loadingIndex > -1 && loadingIndex === index
-              ? "Unblocking"
-              : "Unblock"
+              ? translations && translations.unblocking
+              : translations && translations.unblock
           }}
         </button>
       </div>
@@ -56,7 +58,7 @@
     class="h-96 flex items-center justify-center font-semibold"
     v-if="allBlockedUsers && !loading && allBlockedUsers.length === 0"
   >
-    No Blocked Users Available
+    {{ translations && translations.no_blocked_users_available }}
   </div>
 
   <Loader :loading="loading" background="white" height="60vh"></Loader>
@@ -83,6 +85,7 @@ const loadingIndex = ref(-1);
 //Computed
 
 const screenWidth = computed(() => store.getters.screenWidth);
+const translations = computed(() => store.getters.translations);
 //on Mounted
 onMounted(async () => {
   localStorage.setItem("prevUrl", "/settings");

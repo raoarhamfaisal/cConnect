@@ -10,7 +10,11 @@
       class="price-tag bg-[#4169E1] text-white w-48 h-48 rounded-full flex items-center justify-center mb-6"
     >
       <span class="text-3xl">${{ amountToBePaid }}</span>
-      <span class="text-xs ml-1">/{{ plan === "ANNUAL" ? "yr" : "mo" }}</span>
+      <span class="text-xs ml-1"
+        >/{{
+          plan === translations && translations.annual_cap ? "yr" : "mo"
+        }}</span
+      >
     </div>
 
     <div class="features w-full text-center mb-6">
@@ -18,7 +22,11 @@
         <div class="flex items-center justify-center mb-2">
           <Icon icon="mdi:calendar-month" class="w-5 h-5 mr-2" />
           <p>
-            <strong>{{ plan === "MONTHLY" ? "Monthly" : "Anually" }}</strong>
+            <strong>{{
+              plan === "MONTHLY"
+                ? translations && translations.monthly
+                : translations && translations.annually
+            }}</strong>
           </p>
         </div>
         <div>${{ monthlyPrice }}</div>
@@ -34,7 +42,9 @@
       <div class="flex justify-between">
         <div class="flex items-center justify-center mb-2">
           <Icon icon="mdi:cash-register" class="w-5 h-5 mr-2" />
-          <p><strong>Sales Tax</strong></p>
+          <p>
+            <strong>{{ translations && translations.sales_tax }}</strong>
+          </p>
         </div>
         <div>${{ salesTax }}</div>
       </div>
@@ -65,7 +75,7 @@
             v-if="savingValue"
             class="flex gap-2 mt-2 text-xl justify-center items-center font-bold"
           >
-            You Save
+            {{ translations && translations.you_save }}
             <p class="text-green-500 text-3xl">
               ${{ parseFloat(savingValue).toFixed(2) }}.
             </p>
@@ -74,8 +84,9 @@
             v-if="plan === `MONTHLY` && couponDiscount"
             class="flex gap-2 mt-2 text-indigo-600 text-base justify-center items-center font-bold"
           >
-            {{ parseFloat(total - salesTax).toFixed(2) }} for the 1st
-            {{ coupon.months }} months, then
+            {{ parseFloat(total - salesTax).toFixed(2) }}
+            {{ translations && translations.for_the_1st }}
+            {{ coupon.months }} {{ translations && translations.months_then }}
             {{ monthlyPrice }}
           </div>
 
@@ -83,11 +94,11 @@
             v-else-if="plan !== `MONTHLY`"
             class="mt-2 text-lg text-center font-bold"
           >
-            That's only
+            {{ translations && translations.thats_only }}
             <span class="text-indigo-600 month-price">{{
               anuualOnlyMonthValue
             }}</span>
-            per Month!!
+            {{ translations && translations.per_month }}!!
           </div>
           <!-- here we are -->
         </div>
@@ -98,7 +109,7 @@
       class="checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1]"
       @click="selectedPricing"
     >
-      Continue
+      {{ translations && translations.continue }}
     </button>
   </div>
 </template>
@@ -106,6 +117,7 @@
 <script setup>
 import { computed, onMounted, ref } from "vue";
 import { Icon } from "@iconify/vue";
+import { useStore } from "vuex";
 
 const props = defineProps({
   plan: String,
@@ -135,6 +147,8 @@ const selectedPricing = () => {
 };
 
 const monthDifferenceFromBilling = ref(null);
+const store = useStore();
+const translations = computed(() => store.getters.translations);
 
 const beforeEnter = (el) => {
   el.style.height = "0";

@@ -8,7 +8,7 @@
       class="relative w-auto border border-gray-300 rounded-md cursor-pointer p-2 pr-8"
       @click="toggleDropdown"
     >
-      {{ modelValue || "Select any option" }}
+      {{ modelValue || (translations && translations.select_any_option) }}
       <Icon
         icon="gridicons:dropdown"
         class="absolute top-1/2 transform -translate-y-1/2 right-2 text-gray-500"

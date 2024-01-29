@@ -95,6 +95,7 @@ const disable = computed(() => {
 });*/
 
 const screenWidth = computed(() => store.getters.screenWidth);
+const translations = computed(() => store.getters.translations);
 const loading = computed(() => store.state.profile.loading);
 const areAllTradesSetToZeroError = ref("");
 const clickedTradeContinue = ref(false);
@@ -269,7 +270,8 @@ const nextClick = async () => {
 const dontProceed = (areAllTradesSetToZero) => {
   if (areAllTradesSetToZero) {
     areAllTradesSetToZeroError.value =
-      "Please select atleast one Trade to Proceed";
+      translations.value &&
+      translations.value.please_select_at_least_one_trade_to_proceed;
   } else {
     areAllTradesSetToZeroError.value = "";
     clickedTradeContinue.value = false;
@@ -291,10 +293,12 @@ const dontProceed = (areAllTradesSetToZero) => {
             <h2
               class="font-bold text-2xl sm:text-3xl text-blue-rgba leading-tight"
             >
-              Profile Setup
+              {{ translations && translations.profile_setup }}
             </h2>
             <p class="mt-0.5 text-sm text-gray-600">
-              Set up your Profile to get started
+              {{
+                translations && translations.set_up_your_profile_to_get_started
+              }}
             </p>
           </div>
         </header>
