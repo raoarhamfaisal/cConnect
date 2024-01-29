@@ -253,7 +253,7 @@ const fetchReviews = async (per_page = perPage.value, page = 1) => {
   try {
     loading.value = true;
     const response = await axios.get(
-      `/api/reviews/1?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
+      `/api/reviews/${contractorDetails.id}?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
       {
         headers: {
           "Content-Type": "application/json",

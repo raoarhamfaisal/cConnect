@@ -90,8 +90,8 @@
       <div
         class="text-right"
         v-if="
-          (review.is_under_appeal === 0 ||
-            review.is_appeal_already_accepted_or_rejected === 1) &&
+          review.is_under_appeal === 0 &&
+          review.is_appeal_already_accepted_or_rejected === 0 &&
           showAppeal
         "
       >
