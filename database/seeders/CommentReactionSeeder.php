@@ -16,7 +16,7 @@ class CommentReactionSeeder extends Seeder
         $comments = Comment::all();
 
         foreach ($comments as $comment) {
-            $users->random(rand(1, 5))->each(function ($user) use ($comment) {
+            $users->random(rand(1, 3))->each(function ($user) use ($comment) {
                 CommentReaction::create([
                     'comment_id' => $comment->id,
                     'user_id' => $user->id,

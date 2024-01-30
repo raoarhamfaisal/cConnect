@@ -96,7 +96,7 @@
                   Region
                 </th>
                 <th style="text-align: center; font-weight: bold; color: white">
-                  Coupon Code
+                  {{ translations && translations.coupon_code }}
                 </th>
                 <th style="text-align: center; font-weight: bold; color: white">
                   Is Valid

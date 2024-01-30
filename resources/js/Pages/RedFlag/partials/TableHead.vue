@@ -4,7 +4,7 @@
       style="text-align: center; font-weight: bold; color: white"
       :class="`w-[50px] header-cell`"
     >
-      View
+      {{ translations && translations.view }}
     </div>
     <div
       :class="`w-full sm:w-[31%] header-cell`"

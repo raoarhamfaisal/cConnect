@@ -39,10 +39,10 @@
                   User Id
                 </th>
                 <th style="text-align: center; font-weight: bold; color: white">
-                  Subscription Plan
+                  {{ translations && translations.subscription_plan }}
                 </th>
                 <th style="text-align: center; font-weight: bold; color: white">
-                  Billing Start Date
+                  {{ translations && translations.billing_start_date }}
                 </th>
                 <th style="text-align: center; font-weight: bold; color: white">
                   Billing End Date
@@ -228,6 +228,7 @@ onBeforeMount(() => {
 
 // Computed
 const screenWidth = computed(() => store.getters.screenWidth);
+const translations = computed(() => store.getters.translations);
 
 //Watch
 

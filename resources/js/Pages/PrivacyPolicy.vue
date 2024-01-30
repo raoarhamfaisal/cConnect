@@ -29,19 +29,16 @@ const translations = computed(() => store.getters.translations);
     </div>
     <div class="text-3xl font-bold mb-6">{{ translations && translations.privacy_policy }}</div>
     <p class="mb-4">
-      Thank you for choosing to be part of our community at tContractor.com. We
-      are committed to protecting your personal information and your right to
-      privacy.
+  {{ translations && translations.thank_you_being_part_and_we_care_about_privacy }}
     </p>
 
     <section class="mb-6 closing">
       <h2 class="text-xl font-semibold mb-2">{{ translations && translations.information_we_collect }}</h2>
       <p class="mb-2">
       <ul>
-        <li><strong>{{ translations && translations.personal_information }}</strong> Such as names, email addresses, phone numbers, and physical addresses
-          that users provide during account creation or in their profiles.</li>
+        <li><strong>{{ translations && translations.personal_information }}</strong> {{ translations && translations.such_as_names_email_addresses_phone_numbers_and_physical_addresses }}</li>
 
-        <li><strong>{{ translations && translations.financial_information }}</strong> Credit/debit card details and other payment-related information.</li>
+        <li><strong>{{ translations && translations.financial_information }}</strong> {{ translations && translations.credit_debit_card_details_and_other_payment_related_information }}</li>
       </ul>
       </p>
     </section>
@@ -50,42 +47,33 @@ const translations = computed(() => store.getters.translations);
       <h2 class="text-xl font-semibold mb-2">{{ translations && translations.how_we_use_your_information }}</h2>
       <p class="mb-2">
       <ul>
-        <li><strong>{{ translations && translations.provide_maintain_improve }}</strong> We use your personal information to manage your
-          account, provide you with customer support, and ensure you are taking advantage of our full range of services.
+        <li><strong>{{ translations && translations.provide_maintain_improve }}</strong> {{ translations && translations.we_use_your_personal_information_to_manage_your_account }}
         </li>
-        <li><strong>Communications:</strong> We use your contact details to communicate with you on matters related to
-          your account and to provide you with updates and information about our Services.</li>
-        <li><strong>{{ translations && translations.security }}:</strong> We use information about you to verify accounts and activity, and to promote safety
-          and security on and off our platform.</li>
+        <li><strong>{{ translations && translations.communications }}</strong> {{ translations && translations.we_use_your_contact_details_to_communicate_with_you }}</li>
+        <li><strong>{{ translations && translations.security }}:</strong> {{ translations && translations.we_use_information_about_you_to_verify_accounts_and_activity }}</li>
       </ul>
       </p>
     </section>
     <section class="mb-6 closing">
       <h2 class="text-xl font-semibold mb-2">{{ translations && translations.sharing_your_information }}</h2>
-      <p class="mb-2">We do not share your personal information with third parties without your consent, except in the
-        following circumstances:
+      <p class="mb-2">{{ translations && translations.we_do_not_share_your_personal_information_without_your_consent }}
       <ul>
-        <li><strong>{{ translations && translations.legal_compliance }}</strong> We may disclose your information to comply with applicable legal and
-          regulatory obligations, such as responding to subpoenas or other governmental requests.</li>
-        <li><strong>{{ translations && translations.service_providers }}</strong> We may employ third-party companies and individuals to facilitate our
-          Services (e.g., payment processors).</li>
+        <li><strong>{{ translations && translations.legal_compliance }}</strong> {{ translations && translations.we_may_disclose_your_information_to_comply_with_legal_obligations }}</li>
+        <li><strong>{{ translations && translations.service_providers }}</strong> {{ translations && translations.we_may_employ_third_party_companies_to_facilitate_our_services }}</li>
       </ul>
       </p>
     </section>
     <section class="mb-6 closing">
       <h2 class="text-xl font-semibold mb-2">{{ translations && translations.your_rights }}</h2>
-      <p class="mb-2">You have certain rights regarding the personal information we hold about you, which may include the
-        right to access, correct, delete, restrict, or object to our use of your personal information.</p>
+      <p class="mb-2">{{ translations && translations.you_have_certain_rights_regarding_personal_information }}</p>
     </section>
     <section class="mb-6 closing">
     <h2 class="text-xl font-semibold mb-2">{{ translations && translations.security }}</h2>
-    <p class="mb-2">We implement appropriate technical and organizational safeguards designed to protect your personal
-      information. However, we cannot guarantee that the information will not be accessed, disclosed, altered, or
-      destroyed in breach of such safeguards.</p>
+    <p class="mb-2">{{ translations && translations.we_implement_technical_and_organizational_safeguards }}</p>
   </section>
   <section class="mb-6 closing">
     <h2 class="text-xl font-semibold mb-2">{{ translations && translations.contact_us }}</h2>
-    <p class="mb-2">For any questions about these TOS, please contact us at <a href='mailto:tcontractor@gmail.com'
+    <p class="mb-2">{{ translations && translations.tos_questions_contact }} <a href='mailto:tcontractor@gmail.com'
         class='text-blue-rgba font-bold'>tcontractor@gmail.com</a></p>
   </section>
 

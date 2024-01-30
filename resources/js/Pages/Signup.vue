@@ -203,7 +203,7 @@ onMounted(() => {});
                   :href="route('post')"
                   :active="route().current('post')"
                 >
-                  View
+                  {{ translations && translations.view }}
                 </ResponsiveNavLink>
 
                 <ResponsiveNavLink

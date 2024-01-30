@@ -3,11 +3,13 @@
     :disableOutSideClick="false"
     ref="dialogRef"
     :showFooter="false"
-    title="Confirm Payment "
+    :title="translations && translations.confirm_payment"
   >
     <div class="section_text-gray-700 mb-2">
       <div class="text-2xl">
-        <strong>Total Amount to be charged : </strong>
+        <strong
+          >{{ translations && translations.total_amount_to_be_charged }} :
+        </strong>
         ${{ amountToBePaid }}
       </div>
     </div>
@@ -95,7 +97,7 @@
         <transition name="accordion">
           <div class="mt-4" v-if="paymentMethod">
             <div class="font-bold text-2xl text-blue-rgba leading-tight">
-              Payment Details
+              {{ translations && translations.payment_details }}
             </div>
             <!--  -->
             <div class="mt-0">
@@ -341,9 +343,11 @@
                     v-show="!loadingSubscribing"
                     class="flex items-center justify-center"
                   >
-                    Subscribe
+                    {{ translations && translations.subscribe }}
                   </div>
-                  <div v-show="loadingSubscribing">Subscribing</div>
+                  <div v-show="loadingSubscribing">
+                    {{ translations && translations.subscribing }}
+                  </div>
                 </button>
               </div>
               <!-- payment details -->
@@ -362,23 +366,29 @@
     :dontAllowCancel="true"
     :showFooter="false"
     ref="paymentMethodUpdatedDialogRef"
-    title="Successfully Upgraded"
+    :title="translations && translations.successfully_upgraded"
   >
     <div class="flex justify-center flex-col">
-      <div class="">Congratulations on upgrading to the Platinum Package!</div>
+      <div class="">
+        {{
+          translations &&
+          translations.congratulations_on_upgrading_to_platinum_package
+        }}
+      </div>
       <ul>
         <li>
-          Enjoy unlimited post visibility, searches, and access to exclusive
-          trade groups to enhance your business opportunities.
+          {{ translations && translations.enjoy_unlimited_post_visibility }}
         </li>
         <li>
-          Get ready to experience all the premium features tailored for your
-          success.
+          {{
+            translations &&
+            translations.get_ready_to_experience_all_premium_features
+          }}
         </li>
         <!-- <ul> -->
 
         <!-- </ul> -->
-        <li>{{translations && translations.press_continue_only}}</li>
+        <li>{{ translations && translations.press_continue_only }}</li>
       </ul>
       <Link
         class="group flex items-center self-start justify-between rounded-xl border border-teal-500 bg-[#16a34a] sm:px-5 px-3 py-2 sm:py-3 mt-4 hover:bg-[#16a34a] focus:outline-none focus:ring transition transform duration-300 hover:shadow-lg active:scale-95"

@@ -17,7 +17,7 @@ class TranslationController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'key' => 'required|string|unique:translations',
+            'key' => 'required|text',
             'english' => 'required|text',
             'mexican_spanish' => 'required|text',
         ]);

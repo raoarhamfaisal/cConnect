@@ -30,7 +30,7 @@ const props = defineProps({
 });
 
 const store = useStore();
-const tabNames = ["General Info", "Trades", "Views"];
+// const tabNames = ["General Info", "Trades", "Views"];
 const form = reactive({
   first_name: props.profile.first_name,
   last_name: props.profile.last_name,
@@ -74,6 +74,13 @@ const errors = reactive({
 const loading = computed(() => store.state.profile.loading);
 
 const translations = computed(() => store.getters.translations);
+const tabNames = computed(() => {
+  return [
+    translations.value && translations.value.general_info,
+    translations.value && translations.value.trades,
+    translations.value && translations.value.views,
+  ];
+});
 
 const validateForm = () => {
   //Computed

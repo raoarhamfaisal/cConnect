@@ -84,17 +84,21 @@ const validateForm = () => {
     isValid = false;
   } else {
     if (form.password.trim().length < 8) {
-      errors.password = "The password must be at least 8 characters.";
+      errors.password =
+        translations.value &&
+        translations.value.password_must_be_at_least_8_characters;
       isValid = false;
     }
     if (!/[A-Z]/.test(form.password)) {
       errors.password =
-        "The password must contain at least one uppercase letter.";
+        translations.value &&
+        translations.value.password_must_contain_uppercase_letter;
       isValid = false;
     }
     if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(form.password)) {
       errors.password =
-        "The password must contain at least one special character.";
+        translations.value &&
+        translations.value.password_must_contain_special_character;
       isValid = false;
     }
   }
@@ -152,13 +156,16 @@ const validatePassword = () => {
 
   if (form.password.trim().length < 8) {
     errors.passwordValidationMessage =
-      "The password must be at least 8 characters.";
+      translations.value &&
+      translations.value.password_must_be_at_least_8_characters;
   } else if (!/[A-Z]/.test(form.password)) {
     errors.passwordValidationMessage =
-      "The password must contain at least one uppercase letter.";
+      translations.value &&
+      translations.value.password_must_contain_uppercase_letter;
   } else if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(form.password)) {
     errors.passwordValidationMessage =
-      "The password must contain at least one special character.";
+      translations.value &&
+      translations.value.password_must_contain_special_character;
   }
 };
 </script>
@@ -167,7 +174,9 @@ const validatePassword = () => {
   <SignUpLayout>
     <Head title="Register" />
     <WelcomeHeader :showit="showit" :showSignUp="false" />
-    <div class="text-3xl font-bold mb-6">Create Your Account</div>
+    <div class="text-3xl font-bold mb-6">
+      {{ translations && translations.create_your_account }}
+    </div>
 
     <form
       @submit.prevent="submit"
@@ -272,8 +281,7 @@ const validatePassword = () => {
         </div>
         <InputError class="mt-1" :message="errors.password" />
         <div class="text-xs text-gray-500 mt-1">
-          Password must contain one uppercase, one special character and be at
-          least 8 characters long.
+          {{ translations && translations.password_requirements }}
         </div>
         <!-- <TextInput
           id="password"
@@ -321,10 +329,12 @@ const validatePassword = () => {
             v-if="form.password_confirmation === form.password"
             class="text-green-500"
           >
-            <i class="mdi mdi-check-circle-outline"></i> Matched
+            <i class="mdi mdi-check-circle-outline"></i>
+            {{ translations && translations.matched }}
           </span>
           <span v-else class="text-red-500">
-            <i class="mdi mdi-close-circle-outline"></i> Unmatched
+            <i class="mdi mdi-close-circle-outline"></i>
+            {{ translations && translations.unmatched }}
           </span>
         </div>
         <InputError class="mt-2" :message="errors.password_confirmation" />
@@ -335,7 +345,7 @@ const validatePassword = () => {
         :href="route('login')"
         class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
       >
-        Already a user?
+        {{ translations && translations.already_a_user }}
       </Link>
 
       <PrimaryButton
@@ -351,7 +361,9 @@ const validatePassword = () => {
         "
         @click.prevent="submit"
       >
-        <div class="flex items-center justify-center">Signup</div>
+        <div class="flex items-center justify-center">
+          {{ translations && translations.signup }}
+        </div>
         <img
           v-show="form.processing"
           src="/images/avatars/Spinner.gif"
