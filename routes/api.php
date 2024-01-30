@@ -132,6 +132,8 @@ Route::post('/translations', [TranslationController::class, 'store']);
 
         Route::post('/posts/{post}/comments', [CommentController::class, 'store']);
         Route::put('/comments/{comment}', [CommentController::class, 'update']);
+        Route::get('/comments/{comment}/likes', [CommentController::class, 'getCommentLikes']);
+        Route::get('/comments/{comment}/dislikes', [CommentController::class, 'getCommentDislikes']);
         Route::delete('/comments/{comment}', [CommentController::class, 'destroy']);
 
 
