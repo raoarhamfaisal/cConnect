@@ -33,7 +33,9 @@
               icon="icon-park:back"
               color="red"
             />
-            <h3 class="text-lg sx:text-xl font-bold">Comments</h3>
+            <h3 class="text-lg sx:text-xl font-bold">
+              {{ translations.translations.comments_first_cap }}
+            </h3>
           </div>
           <button
             type="button"

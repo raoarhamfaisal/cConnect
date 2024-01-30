@@ -537,11 +537,13 @@ const validateForm = () => {
   }
   // Validate first_name
   if (!userToEdit.value.first_name.trim()) {
-    errors.first_name = "First name is required";
+    errors.first_name =
+      translations.value && translations.value.first_name_is_required;
     isValid = false;
   }
   if (!userToEdit.value.last_name.trim()) {
-    errors.last_name = "Last name is required";
+    errors.last_name =
+      translations.value && translations.value.last_name_is_required;
     isValid = false;
   }
   // Validate company_name

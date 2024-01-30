@@ -35,8 +35,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watchEffect, nextTick } from "vue";
+import {
+  ref,
+  onMounted,
+  onUnmounted,
+  watchEffect,
+  nextTick,
+  computed,
+} from "vue";
 import { Icon } from "@iconify/vue";
+import { useStore } from "vuex";
 
 const props = defineProps({
   options: {
@@ -54,7 +62,11 @@ const showDropdown = ref(false);
 const dropdownContainer = ref(null);
 const dropdownMenu = ref(null);
 const dropdownPositionClass = ref("");
+const store = useStore();
 
+//Computed
+
+const translations = computed(() => store.getters.translations);
 const selectOption = (option) => {
   emit("update:modelValue", option);
   showDropdown.value = false; // This should close the dropdown on selecting an option.

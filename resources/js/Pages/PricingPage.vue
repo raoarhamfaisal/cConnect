@@ -20,7 +20,7 @@ const translations = computed(() => store.getters.translations);
 </script>
 
 <template>
-  <Head title="Pricing" />
+  <Head :title="translations && translations.pricing" />
   <div
     :class="`pt-20 sm:pt-28 pb-2  flex sm:justify-center items-center bg-white   bg-gray-100 `"
   >

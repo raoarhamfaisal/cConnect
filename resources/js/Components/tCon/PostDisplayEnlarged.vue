@@ -12,7 +12,7 @@ import WriteCommentFooter from "@/Components/PostFooter/WriteCommentFooter.vue";
 
 import { usePage } from "@inertiajs/inertia-vue3";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
-import { somethingWentWrong } from "@/helpers/utilities";
+import { somethingWentWrong, changesSaved } from "@/helpers/utilities";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { filterBadWordsWithoutValue } from "@/helpers/utilities";
 import InputError from "@/Components/InputError.vue";
@@ -86,6 +86,7 @@ export default {
       loadingComments: false,
       pagination: {},
       addedNumber: 0,
+      total_number_of_comments_with_replies: 0,
     };
   },
   mounted() {
@@ -123,7 +124,8 @@ export default {
           );
           if (commentIndex === -1) {
             this.allComments.unshift(newVal);
-            this.pagination.total = this.pagination.total + 1;
+            this.total_number_of_comments_with_replies =
+              this.total_number_of_comments_with_replies + 1;
           }
         }
       },
@@ -136,7 +138,8 @@ export default {
         );
         if (index !== -1) {
           this.allComments.splice(index, 1);
-          this.pagination.total = this.pagination.total - 1;
+          this.total_number_of_comments_with_replies =
+            this.total_number_of_comments_with_replies - 1;
           // this.fetchAllComments();
         }
       }
@@ -157,7 +160,8 @@ export default {
             // for comment deletion
             if (index !== -1) {
               this.allComments.splice(index, 1);
-              this.pagination.total = this.pagination.total - 1;
+              this.total_number_of_comments_with_replies =
+                this.total_number_of_comments_with_replies - 1;
             }
           } else {
             // for reply deletion
@@ -453,7 +457,8 @@ export default {
       this.commentTextError = "";
       // Validate rating_text
       if (!this.commentText || this.commentText.trim() === "") {
-        this.commentTextError = "Comment should not be empty.";
+        this.commentTextError =
+          this.translations && this.translations.repost_should_not_be_empty;
         isValid = false;
       }
 
@@ -623,7 +628,7 @@ export default {
       if (this.validate()) {
         this.loadingRepost = true;
         const reposterComment = {
-          comment: filterBadWordsWithoutValue(this.commentText),
+          repost_comment: filterBadWordsWithoutValue(this.commentText),
         };
         try {
           const response = await axios.post(
@@ -634,7 +639,9 @@ export default {
           if (response.data) {
             this.repost_count = this.repost_count + 1;
             this.$emit("onRepost");
-            changesSaved("Reposted Successfully");
+            changesSaved(
+              this.translations && this.translations.repost_successfully
+            );
           }
         } catch (err) {
           somethingWentWrong(err.response.data.message, "inherit");
@@ -654,6 +661,8 @@ export default {
         if (response.data) {
           this.allComments = response.data?.comments;
           this.pagination = response.data?.pagination;
+          this.total_number_of_comments_with_replies =
+            response.data?.total_number_of_comments_with_replies;
         }
       } catch (err) {
         somethingWentWrong();
@@ -667,7 +676,8 @@ export default {
     onAddingComment(comment) {
       this.added = true;
       this.allComments.unshift(comment);
-      this.pagination.total = this.pagination.total + 1;
+      this.total_number_of_comments_with_replies =
+        this.total_number_of_comments_with_replies + 1;
       if (this.pagination.current_page !== this.pagination.last_page) {
         this.addedNumber = this.addedNumber + 1;
       }
@@ -729,7 +739,7 @@ export default {
       <div
         class="p-2 text-xl text-grey-600 font-bold h-72 flex items-center justify-center"
       >
-        translations && translations.no_contractor_found
+        {{ translations && translations.no_contractor_found }}
       </div>
     </div>
   </CustomDialog>
@@ -762,7 +772,7 @@ export default {
       <div
         class="p-2 text-xl text-grey-600 font-bold h-72 flex items-center justify-center"
       >
-        translations && translations.no_contractor_found
+        {{ translations && translations.no_contractor_found }}
       </div>
     </div>
   </CustomDialog>
@@ -773,7 +783,7 @@ export default {
     :loading="loadingRepost"
     :disabled="loadingRepost"
     :shouldFetchPost="false"
-    submitText="Repost Now"
+    :submitText="translations && translations.repost_now"
     :title="translations && translations.do_you_wish_to_share_this_post"
   >
     <!-- :showHeader="false" -->
@@ -795,7 +805,7 @@ export default {
         @keydown="insertTab"
         @input="adjustHeight"
         @paste="adjustHeight"
-        :placeholder="translations && translations.write_a_comment"
+        :placeholder="translations && translations.say_something_about_the_post"
       />
       <InputError
         v-if="commentTextError"
@@ -975,7 +985,9 @@ export default {
               class="text-sm flex gap-1 items-center"
             >
               <img src="/images/icons/share_icon.png" width="15" height="15" />
-              <div class="">Reposted From</div>
+              <div class="">
+                {{ translations && translations.reposted_from }}
+              </div>
               <Icon
                 class="translate-y-[-1px]"
                 icon="ion:caret-forward"
@@ -991,6 +1003,14 @@ export default {
             </div>
           </Link>
         </div>
+        <div
+          class="self-start"
+          style="white-space: pre-wrap"
+          v-if="postToEnlarge.repost_comment"
+        >
+          {{ postToEnlarge.repost_comment }}
+        </div>
+
         <div
           :class="`${title_text_alignment} ${
             titleCustomBgColor.startsWith('#')
@@ -1112,12 +1132,13 @@ export default {
               class="cursor-pointer hover:underline"
               @click="$emit('enlarge-post', post)"
             >
-              {{ pagination.total }} comments
+              {{ total_number_of_comments_with_replies }}
+              {{ translations && translations.comments }}
             </span>
 
-            <Icon icon="octicon:dot-fill-16" width="14" />
+            <Icon icon="octicon:dot-fill-16" width="11" />
             <span class="text-[13px] sx:text-[14px] sm:text-[16px]">
-              {{ repost_count }} reposts
+              {{ repost_count }} {{ translations && translations.reposts }}
             </span>
           </div>
         </div>
@@ -1140,7 +1161,9 @@ export default {
                     width="25"
                   />
                 </div>
-                <div class="pl-1 icon-text text-[#16a34a]">Like</div>
+                <div class="pl-1 icon-text text-[#16a34a]">
+                  {{ translations && translations.like }}
+                </div>
               </div>
             </div>
           </div>
@@ -1161,7 +1184,9 @@ export default {
                     width="25"
                   />
                 </div>
-                <div class="pl-1 icon-text text-[#c40516]">Dislike</div>
+                <div class="pl-1 icon-text text-[#c40516]">
+                  {{ translations && translations.dislike }}
+                </div>
               </div>
             </a>
           </div>
@@ -1177,7 +1202,9 @@ export default {
                     height="25"
                   />
                 </div>
-                <div class="pl-1 icon-text">Comment</div>
+                <div class="pl-1 icon-text">
+                  {{ translations && translations.comment }}
+                </div>
               </div>
             </div>
           </div>
@@ -1196,7 +1223,9 @@ export default {
                     height="25"
                   />
                 </div>
-                <div class="pl-1 icon-text">Repost</div>
+                <div class="pl-1 icon-text">
+                  {{ translations && translations.repost }}
+                </div>
               </div>
             </div>
           </div>

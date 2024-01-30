@@ -4,7 +4,7 @@ import { Head } from "@inertiajs/inertia-vue3";
 import { useStore } from "vuex";
 
 import PaymentStep from "@/Pages/Profile/Partials/main/PaymentStep.vue";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import PageTitle from "@/Components/PageTitle.vue";
 import { VBtn, VBtnToggle } from "vuetify/components";
 
@@ -18,7 +18,11 @@ const props = defineProps({
     }),
   },
 });
+const store = useStore();
 
+//Computed
+
+const translations = computed(() => store.getters.translations);
 const prevUrlPricingPlan = ref("");
 const choosedVersion = ref("gold");
 onMounted(() => {
@@ -34,7 +38,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <Head title="Pricing Plan" />
+  <Head :title="translations && translations.pricing_plan" />
 
   <Header
     :profile="profile"
@@ -44,7 +48,10 @@ onMounted(() => {
     color="#f9fafb"
   >
     <div class="flex mt-6 sm:mt-3 justify-between">
-      <PageTitle :linkUrl="prevUrlPricingPlan" pageTitle="Prcing Plan" />
+      <PageTitle
+        :linkUrl="prevUrlPricingPlan"
+        :pageTitle="translations && translations.pricing_plan"
+      />
     </div>
     <div class="mt-10 ml-2 sm:mt-0 p-2 sm:p-3 md:p-0">
       <div>

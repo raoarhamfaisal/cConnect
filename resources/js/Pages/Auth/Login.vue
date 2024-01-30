@@ -36,7 +36,7 @@ const translations = computed(() => store.getters.translations);
 
 <template>
   <GuestLayout>
-    <Head title="Log in" />
+    <Head :title="translations && translations.log_in" />
 
     <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
       {{ status }}

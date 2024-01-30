@@ -20,6 +20,7 @@ defineProps({
   },
 });
 const store = useStore();
+const translations = computed(() => store.getters.translations);
 
 store.commit("profile/setActiveTab", 0);
 onMounted(async () => {
@@ -29,7 +30,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Head title="Profile" />
+  <Head :title="translations && translations.profile_setup" />
 
   <Header
     :profile="profile"

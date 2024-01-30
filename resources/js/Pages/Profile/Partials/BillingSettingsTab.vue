@@ -367,7 +367,11 @@ const fetchPaymentHistoryDetails = async () => {
                       >
                         <div class="flex items-center justify-center mb-2">
                           <Icon icon="mdi-tag" class="w-5 h-5 mr-2" />
-                          <p><strong>Discount</strong></p>
+                          <p>
+                            <strong>{{
+                              translations && translations.discount
+                            }}</strong>
+                          </p>
                         </div>
                         <div>${{ pricingPlan.discount_amount }}</div>
                       </div>
@@ -510,7 +514,9 @@ const fetchPaymentHistoryDetails = async () => {
           }}
           <span class="font-bold">tContractor</span>?
 
-          <p class="text-lg font-semibold">Upon cancellation:</p>
+          <p class="text-lg font-semibold">
+            {{ translations && translations.upon_cancellation }}:
+          </p>
         </div>
         <ul class="list-disc pl-5 text-base">
           <li class="mb-1">

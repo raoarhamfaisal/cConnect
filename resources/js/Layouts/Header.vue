@@ -125,6 +125,7 @@ export default {
   },
   computed: {
     ...mapGetters("profile", ["getProfile"]),
+    ...mapGetters(["translations"]),
   },
   watch: {
     getProfile(newVal) {
@@ -203,6 +204,11 @@ export default {
           this.closeModal();
           this.success = true;
           this.$store.commit("ratings/setShouldFetchFirstPagePosts", true);
+
+          console.log(
+            this.translations && this.translations.post_successfully_added,
+            "post Successfully added text"
+          );
           changesSaved(
             this.translations && this.translations.post_successfully_added
           );

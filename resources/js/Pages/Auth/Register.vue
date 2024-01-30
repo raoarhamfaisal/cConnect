@@ -54,33 +54,38 @@ const validateForm = () => {
 
   // Validate first_name
   if (!form.first_name.trim()) {
-    errors.first_name = "First name is required";
+    errors.first_name =
+      translations.value && translations.value.first_name_is_required;
     isValid = false;
   }
   if (!form.last_name.trim()) {
-    errors.last_name = "Last name is required";
+    errors.last_name =
+      translations.value && translations.value.last_name_is_required;
     isValid = false;
   }
 
   // Validate company_name
   if (!form.company_name.trim()) {
-    errors.company_name = "Company name is required";
+    errors.company_name =
+      translations.value && translations.value.company_name_is_required;
     isValid = false;
   }
   // Add validations for other fields similarly, for example:
   if (!form.email.trim()) {
-    errors.email = "Email is required";
+    errors.email = translations.value && translations.value.email_is_required;
     isValid = false;
   } else if (
     !/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(form.email) ||
     !form.email.includes(".")
   ) {
-    errors.email = "Invalid email format";
+    errors.email =
+      translations.value && translations.value.invalid_email_format;
     isValid = false;
   }
 
   if (!form.password.trim()) {
-    errors.password = "Password is required";
+    errors.password =
+      translations.value && translations.value.password_is_required;
     isValid = false;
   } else {
     if (form.password.trim().length < 8) {
@@ -91,8 +96,7 @@ const validateForm = () => {
     }
     if (!/[A-Z]/.test(form.password)) {
       errors.password =
-        translations.value &&
-        translations.value.password_must_contain_uppercase_letter;
+        translations.value && translations.value.passwords_dont_match;
       isValid = false;
     }
     if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(form.password)) {
@@ -104,7 +108,8 @@ const validateForm = () => {
   }
 
   if (form.password.trim() !== form.password_confirmation.trim()) {
-    errors.password_confirmation = "Passwords don't match";
+    errors.password_confirmation =
+      translations.value && translations.value.last_name_is_required;
     isValid = false;
   }
 
@@ -172,7 +177,7 @@ const validatePassword = () => {
 
 <template>
   <SignUpLayout>
-    <Head title="Register" />
+    <Head :title="translations && translations.sign_up" />
     <WelcomeHeader :showit="showit" :showSignUp="false" />
     <div class="text-3xl font-bold mb-6">
       {{ translations && translations.create_your_account }}

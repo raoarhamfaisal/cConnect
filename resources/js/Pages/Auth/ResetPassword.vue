@@ -5,6 +5,8 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { Head, useForm } from "@inertiajs/inertia-vue3";
+import { useStore } from "vuex";
+import { computed } from "vue";
 
 const props = defineProps({
   email: String,
@@ -23,11 +25,16 @@ const submit = () => {
     onFinish: () => form.reset("password", "password_confirmation"),
   });
 };
+const store = useStore();
+
+//Computed
+
+const translations = computed(() => store.getters.translations);
 </script>
 
 <template>
   <GuestLayout>
-    <Head title="Reset Password" />
+    <Head :title="translations && translations.update_password" />
 
     <form @submit.prevent="submit">
       <div>
@@ -58,8 +65,10 @@ const submit = () => {
       </div>
 
       <div class="mt-4">
-        <InputLabel for="password_confirmation" :value="translations &&
-        translations.confirm_password}} />
+        <InputLabel
+          for="password_confirmation"
+          :value="translations && translations.confirm_password"
+        />
         <TextInput
           id="password_confirmation"
           type="password"

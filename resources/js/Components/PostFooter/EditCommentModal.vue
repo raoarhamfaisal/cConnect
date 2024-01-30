@@ -8,7 +8,11 @@
       @opened="onOpened"
       :loading="loadingSending"
       :disabled="disabledSending"
-      :title="`Edit ${isReply ? 'Reply' : 'Comment'}`"
+      :title="`${translations && translations.edit} ${
+        isReply
+          ? translations && translations.reply_first_cap
+          : translations && translations.comment
+      }`"
     >
       <form @submit.prevent="handleSubmit">
         <!-- response -->
@@ -50,7 +54,9 @@
     >
       <div class="text-white">
         {{ translations && translations.updating }}
-        {{ isReply ? "Reply" : "Comment" }}...
+        {{
+          isReply ? translations && translations.reply_first_cap : "Comment"
+        }}...
       </div>
       <v-progress-linear
         indeterminate
@@ -125,7 +131,7 @@ const validate = () => {
   // Validate rating_text
   if (!comment_text.value || comment_text.value.trim() === "") {
     responseError.value = `${
-      isReply ? "Reply" : "Comment"
+      isReply ? translations && translations.reply_first_cap : "Comment"
     } should not be empty.`;
     isValid = false;
   }

@@ -90,14 +90,14 @@
           class="font-bold hover:underline hover:text-[#16a34a] cursor-pointer"
           :class="`${your_reaction === 'like' ? 'text-[#16a34a]' : ''}`"
         >
-          Like
+          {{ translations && translations.like }}
         </div>
         <div
           @click="onDislike"
           class="font-bold hover:underline cursor-pointer hover:text-[#c40516]"
           :class="`${your_reaction === 'dislike' ? 'text-[#c40516]' : ''}`"
         >
-          Dislike
+          {{ translations && translations.dislike }}
         </div>
         <!-- Like -->
         <div
@@ -225,6 +225,7 @@ let usePageDeatails = usePage().props.value;
 const loggedInUserId = usePageDeatails.profile.user_id;
 // const longPressTimer = ref(null);
 const screenWidth = computed(() => store.getters.screenWidth);
+const translations = computed(() => store.getters.translations);
 
 const openEditModal = () => {
   editRef.value.openDialogEdit();
@@ -232,6 +233,8 @@ const openEditModal = () => {
 const openDeleteModal = () => {
   deleteDialogRef.value.openDialog();
 };
+
+const emit = defineEmits(["openDislikedUserModal", "openlikedUserModal"]);
 
 watch(
   () => menuVisible.value,
@@ -414,6 +417,12 @@ const onDislike = async () => {
 };
 const showReplies = () => {
   isRepliesShown.value = true;
+};
+const onOpenListofLikedUsersModel = () => {
+  emit("openLikedUserModal", true, props.reply.id);
+};
+const onOpenListofDislikedUsersModel = () => {
+  emit("openDislikedUserModal", true, props.reply.id);
 };
 
 // const handleTouchStart = () => {

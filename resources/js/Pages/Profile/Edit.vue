@@ -4,6 +4,7 @@ import { Head } from "@inertiajs/inertia-vue3";
 
 import AllTabs from "@/Pages/Profile/Partials/main/AllTabs.vue";
 import { useStore } from "vuex";
+import { computed } from "vue";
 
 defineProps({
   mustVerifyEmail: Boolean,
@@ -21,10 +22,11 @@ defineProps({
 const store = useStore();
 
 store.commit("profile/setActiveTab", 0);
+const translations = computed(() => store.getters.translations);
 </script>
 
 <template>
-  <Head title="Profile" />
+  <Head :title="translations && translations.profile" />
 
   <Header
     :profile="profile"

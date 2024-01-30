@@ -40,7 +40,7 @@ const translations = computed(() => store.getters.translations);
 </script>
 
 <template>
-  <Head title="Log in" />
+  <Head :title="translations && translations.log_in" />
 
   <Link
     href="/"

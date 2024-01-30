@@ -75,7 +75,7 @@ const clearError = (field) => {
             icon="logos:facebook"
             v-model="form.facebook"
             @input="clearError('facebook')"
-            placeholder="Type your Facebook link"
+            :placeholder="translations && translations.type_your_facebook_link"
           />
           <InputError class="mt-2" :message="errors.facebook" />
         </div>
@@ -90,7 +90,7 @@ const clearError = (field) => {
             class="mt-1 block w-full"
             v-model="form.twitter"
             @input="clearError('twitter')"
-            placeholder="Type your Twitter link"
+            :placeholder="translations && translations.type_your_twitter_link"
           />
           <InputError class="mt-2" :message="errors.twitter" />
         </div>
@@ -104,7 +104,7 @@ const clearError = (field) => {
             icon="logos:tiktok-icon"
             v-model="form.tiktok"
             @input="clearError('tiktok')"
-            placeholder="Type your TikTok link"
+            :placeholder="translations && translations.type_your_tiktok_link"
           />
           <InputError class="mt-2" :message="errors.tiktok" />
         </div>
@@ -118,7 +118,7 @@ const clearError = (field) => {
             class="mt-1 block w-full"
             v-model="form.instagram"
             @input="clearError('instagram')"
-            placeholder="Type your Instagram link"
+            :placeholder="translations && translations.type_your_instagram_link"
           />
           <InputError class="mt-2" :message="errors.instagram" />
         </div>

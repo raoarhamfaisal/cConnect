@@ -11,7 +11,13 @@
     >
       <div>-{{ coupon.percentage_off_regular_price }}%</div>
     </div> -->
-    <h2 class="text-2xl font-bold mb-4">{{ plan }}</h2>
+    <h2 class="text-2xl font-bold mb-4 uppercase">
+      {{
+        plan === "MONTHLY"
+          ? translations && translations.monthly
+          : translations && translations.annual_cap
+      }}
+    </h2>
     <div
       class="price-tag bg-[#4169E1] text-white w-48 h-48 rounded-full flex items-center justify-center mb-6"
     >
@@ -28,10 +34,10 @@
         <div class="flex items-center justify-center mb-2">
           <Icon icon="mdi:calendar-month" class="w-5 h-5 mr-2" />
           <p>
-            <strong>{{
+            <strong class="capitalize">{{
               plan === "MONTHLY"
                 ? translations && translations.monthly
-                : translations && translations.annually
+                : translations && translations.annual_cap
             }}</strong>
           </p>
         </div>
@@ -66,7 +72,9 @@
       <div class="flex justify-between">
         <div class="flex items-center justify-center mb-2">
           <Icon icon="carbon:cost-total" class="w-5 h-5 mr-2" />
-          <p><strong>Total</strong></p>
+          <p>
+            <strong>{{ translations && translations.total }}</strong>
+          </p>
         </div>
         <div>${{ total }}</div>
       </div>

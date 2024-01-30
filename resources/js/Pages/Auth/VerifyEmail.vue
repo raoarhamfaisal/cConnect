@@ -90,7 +90,7 @@ const submitVerificationCode = async () => {
 
 <template>
   <GuestLayout verifyEmailPage>
-    <Head title="Email Verification" />
+    <Head :title="translations && translations.email_verification" />
     <WelcomeHeader :showit="showit" :showSignUp="false" />
 
     <div class="mb-4 text-sm text-gray-600">

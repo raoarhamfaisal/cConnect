@@ -3,7 +3,9 @@
     <h1 class="text-3xl font-bold mb-6 sm:mb-8">
       {{ translations && translations.choose_your_pricing_plan }} :
       <span class="text-blue-rgba">{{
-        props.choosedVersion === "gold" ? "Gold Version" : "Platinum Version"
+        props.choosedVersion === "gold"
+          ? translations && translations.gold_version
+          : translations && translations.platinum_version
       }}</span>
     </h1>
     <div
@@ -57,7 +59,7 @@
       />
 
       <PricingCard
-        :plan="translations && translations.annual_cap"
+        plan="ANNUAL"
         :coupon="coupon"
         :couponDiscount="
           coupon && coupon.percentage_off_regular_price
@@ -83,6 +85,7 @@ import PricingCard from "@/Pages/Profile/Partials/main/PricingCard.vue";
 
 import { Inertia } from "@inertiajs/inertia";
 import { computed, onMounted, reactive, ref, watch } from "vue";
+import { useStore } from "vuex";
 const props = defineProps({
   region_id: {
     type: [Number, String],
@@ -102,6 +105,11 @@ const coupon = ref({});
 const form = reactive({
   coupon_code: "",
 });
+const store = useStore();
+
+//Computed
+
+const translations = computed(() => store.getters.translations);
 
 onMounted(() => {
   fetchPricingCardDetails();
@@ -256,7 +264,7 @@ const fetchPricingCardDetails = async () => {
 };
 
 const selectedPricing = (plan) => {
-  console.log(plan, "plan");
+  console.log(plan, "planlksd");
   localStorage.setItem("selectedPlan", plan);
   let couponData = coupon.value;
   localStorage.setItem("coupon", JSON.stringify(couponData));

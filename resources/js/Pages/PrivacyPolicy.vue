@@ -22,7 +22,7 @@ const translations = computed(() => store.getters.translations);
 <template>
   <SignUpLayout>
 
-    <Head title="Privacy Policy" />
+    <Head :title="translations && translations.privacy_policy" />
     <WelcomeHeader :showNewsFeed="true" :showit="showit" :showSignUp="true" />
     <div class="mb-3 sm:mb-6">
       <Link href="/" class="text-blue-500 hover:underline">← {{ translations && translations.back_to_main_page }}</Link>

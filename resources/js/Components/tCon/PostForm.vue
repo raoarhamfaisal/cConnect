@@ -23,7 +23,7 @@ import FilePondPluginImageTransform from "filepond-plugin-image-transform";
 import FilePondPluginImageResize from "filepond-plugin-image-resize";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 
-// Note: Need both plugins image transform & resize for resize options to work
+// {{translations. && translations..note}}: Need both plugins image transform & resize for resize options to work
 
 // import filepond css
 import "filepond/dist/filepond.min.css";
@@ -644,7 +644,7 @@ Array.prototype.remove = function () {
                   class="w-full py-2 px-3 shadow appearance-none text-gray-900 font-semibold border rounded border-gray-600 leading-tight focus:outline-none focus:shadow-outline placeholder:italic placeholder:text-slate-500"
                   rows="3"
                   id="formPostbody2"
-                  placeholder="{{translations && translations.bottom_text}}"
+                  :placeholder="translations && translations.bottom_text"
                 >
                 </textarea>
 
@@ -678,7 +678,7 @@ Array.prototype.remove = function () {
                     @click="openDialog"
                     class="cursor-pointer text-base font-bold self-center text-[#241e6d]"
                   >
-                    Edit
+                    {{ translations && translations.edit }}
                   </div>
                 </div>
                 <TradesWithDialog v-model="tradesPost" />

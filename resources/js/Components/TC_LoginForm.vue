@@ -40,7 +40,7 @@ const translations = computed(() => store.getters.translations);
 </script>
 
 <template>
-  <Head title="Log in" />
+  <Head :title="translations && translations.log_in" />
 
   <!-- <div class="relative
                 flex
@@ -125,7 +125,10 @@ const translations = computed(() => store.getters.translations);
     </div>
 
     <div class="mt-4">
-      <InputLabel for="password" value="Password" />
+      <InputLabel
+        for="password"
+        :value="translations && translations.password"
+      />
       <TextInput
         id="password"
         type="password"

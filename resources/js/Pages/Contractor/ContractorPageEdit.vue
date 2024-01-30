@@ -1,5 +1,5 @@
 <template>
-  <Head title="Contractor Page" />
+  <Head :title="translations && translations.contractor_page" />
 
   <Header
     :profile="profile"
@@ -68,14 +68,14 @@ onMounted(() => {
   const url = usePage().url.value;
   let extractedNumber;
   console.log(url, "url");
- 
+
   const match = url.match(/\/contractor\/(\d+)\/edit/);
 
   if (match) {
     extractedNumber = parseInt(match[1], 10);
   }
-  if(extractedNumber !== profile.user_id){
-    Inertia.visit(`/contractor/${profile.user_id}/edit`)
+  if (extractedNumber !== profile.user_id) {
+    Inertia.visit(`/contractor/${profile.user_id}/edit`);
   }
 });
 
