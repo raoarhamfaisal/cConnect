@@ -21,6 +21,7 @@ class profileFactory extends Factory
             'region_id' => fake()->numberBetween(1, 11),
             'active_user' => fake()->numberBetween(0, 1),
             'is_payment_verified' => 1,
+            'version' => 1,
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
             'company_name' => fake()->company(),

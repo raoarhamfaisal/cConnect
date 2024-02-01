@@ -7,6 +7,7 @@ use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use App\Models\Profile;
 use App\Models\BlockUser;
+use App\Models\VersionDefault;
 use App\Services\InsertPostProfileService;
 use App\Services\ProcessImageService;
 use Illuminate\Routing\Controller;
@@ -408,7 +409,32 @@ class PostController extends Controller
         InsertPostProfileService $InsertPostProfileService,
         ProcessImageService $processImageService
     ) {
+        $user = Auth::user();
+        $userVersion = $user->profile->version; // Fetch the version identifier from the user's profile
+    
+        // Fetch version defaults based on the user's version
+        $versionDefault = VersionDefault::find($userVersion);
+        if (!$versionDefault) {
+            return redirect()->back()->with('error', 'Version defaults not found for your account.');
+        }
+    
+        // Convert 'nf_ppm' to PHP_INT_MAX if it's 99
+        $postsLimit = $versionDefault->nf_ppm == 99 ? PHP_INT_MAX : $versionDefault->nf_ppm;
+    
+        $currentMonthPosts = Post::where('user_id', $user->id)
+                                 ->whereMonth('created_at', now()->month)
+                                 ->whereYear('created_at', now()->year)
+                                 ->count();
+    
+        // Check if user has exceeded their posting limit
+        if ($currentMonthPosts >= $postsLimit) {
+            return redirect()->back()->with('error', 'You have reached your posting limit for this month.');
+        }
+
+
+
         $validatedInput = $request->validated();
+
 
         // Set user_id for post // Customize validation as needed
         $userID = Auth()->user('')->id;
@@ -425,6 +451,33 @@ class PostController extends Controller
         if(!array_key_exists('region_id', $validatedInput) || !$validatedInput['region_id']) {
             $validatedInput['region_id'] = $postersProfile['region_id'];
         }
+
+
+
+        // Handle images based on version defaults
+        $images = $request->has('image') ? $validatedInput['image'] : [];
+        
+
+        // Assuming $validatedInput['image'] contains the concatenated image paths
+        $tempImagesString = $request->has('image') ? $validatedInput['image'] : '';
+        // Split the string into an array using the "|" delimiter
+        $tempImages = explode('|', $tempImagesString);
+        // Remove any empty elements which might result from trailing delimiters
+        $tempImages = array_filter($tempImages, function($value) { return !is_null($value) && $value !== ''; });
+
+        // Now $tempImages is an array where each element is the path to an image
+        if (count($tempImages) > $versionDefault->nf_ipp) {
+            return redirect()->back()->with('error', "You are allowed to upload only up to {$versionDefault->nf_ipp} Images.");
+        }
+
+        // Check for nf_bottom and nf_title constraints
+        if (!$versionDefault->nf_bottom && !empty($validatedInput['body2'])) {
+            return redirect()->back()->with('error', 'You are not allowed to add bottom text.');
+        }
+
+        if (!$versionDefault->nf_title && !empty($validatedInput['title'])) {
+            return redirect()->back()->with('error', 'You are not allowed to add a title.');
+        }
         
         // $validatedInput = $InsertPostProfileService->insertPostersProfile($validatedInput);
         //dd($validatedInput);
@@ -435,6 +488,7 @@ class PostController extends Controller
         $validatedInput['image'] = null;
         //dd($processedimages);
 
+        // dd($validatedInput);
         // Create the post $validatedInput STORED in DataBase
         // Except image field is null - stored in $processedimages
         $postCreated = Post::create($validatedInput);
@@ -472,6 +526,12 @@ class PostController extends Controller
             $postCreated->trades()->sync($trades);
         }
 
+        $userVersionDetail = $user->versionDetail()->firstOrCreate([
+            'user_id' => $user->id,
+        ], [
+            'nf_ppm' => $currentMonthPosts + 1
+        ]);
+
         return redirect()->back()
             ->with('message', 'Post created');
 
@@ -486,6 +546,18 @@ class PostController extends Controller
         InsertPostProfileService $InsertPostProfileService,
         ProcessImageService $processImageService,
     ) {
+
+        $user = Auth::user();
+        $userVersion = $user->profile->version; // Fetch the version identifier from the user's profile
+    
+        // Fetch version defaults based on the user's version
+        $versionDefault = VersionDefault::find($userVersion);
+        if (!$versionDefault) {
+            return redirect()->back()->with('error', 'Version defaults not found for your account.');
+        }
+    
+  
+
 
         // Retrieve the post to update
         $postToUpdate = Post::findOrFail($post_id);
@@ -508,6 +580,31 @@ class PostController extends Controller
 
         if(!array_key_exists('region_id', $validatedInput) || !$validatedInput['region_id']) {
             $validatedInput['region_id'] = $postersProfile['region_id'];
+        }
+
+
+        // Handle images based on version defaults
+        $images = $request->has('image') ? $validatedInput['image'] : [];
+        
+        // Assuming $validatedInput['image'] contains the concatenated image paths
+        $tempImagesString = $request->has('image') ? $validatedInput['image'] : '';
+        // Split the string into an array using the "|" delimiter
+        $tempImages = explode('|', $tempImagesString);
+        // Remove any empty elements which might result from trailing delimiters
+        $tempImages = array_filter($tempImages, function($value) { return !is_null($value) && $value !== ''; });
+
+        // Now $tempImages is an array where each element is the path to an image
+        if (count($tempImages) > $versionDefault->nf_ipp) {
+            return redirect()->back()->with('error', "You are allowed to upload only up to {$versionDefault->nf_ipp} Images.");
+        }
+
+        // Check for nf_bottom and nf_title constraints
+        if (!$versionDefault->nf_bottom && !empty($validatedInput['body2'])) {
+            return redirect()->back()->with('error', 'You are not allowed to add bottom text.');
+        }
+
+        if (!$versionDefault->nf_title && !empty($validatedInput['title'])) {
+            return redirect()->back()->with('error', 'You are not allowed to add a title.');
         }
         
         // $validatedInput = $InsertPostProfileService->insertPostersProfile($validatedInput);
@@ -591,7 +688,7 @@ class PostController extends Controller
             'body2' => '',
         ])->validate();
 
-        dd($request);
+        // dd($request);
 
         $post->update($request->only(['title', 'body1', 'body2']));
 
