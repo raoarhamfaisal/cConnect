@@ -585,7 +585,7 @@ class PostController extends Controller
 
         // Handle images based on version defaults
         $images = $request->has('image') ? $validatedInput['image'] : [];
-        
+
         // Assuming $validatedInput['image'] contains the concatenated image paths
         $tempImagesString = $request->has('image') ? $validatedInput['image'] : '';
         // Split the string into an array using the "|" delimiter
