@@ -134,7 +134,31 @@ export default {
   },
   computed: {
     ...mapGetters("ratings", ["regions", "loading", "trades"]),
-    ...mapGetters(["translations"]),
+    ...mapGetters(["translations", "userVersion"]),
+    maxImages() {
+      if (this.userVersion === 1) {
+        return 3;
+      } else if (this.userVersion === 2) {
+        return 15;
+      } else if (this.userVersion === 3) {
+        return 20;
+      }
+    },
+    upgradeImageText() {
+      if (this.userVersion === 1) {
+        return (
+          this.translations &&
+          this.translations.upgrade_to_gold_version_for_15_images
+        );
+      } else if (this.userVersion === 2) {
+        return (
+          this.translations &&
+          this.translations.upgrade_to_platinum_version_for_20_images
+        );
+      } else if (this.userVersion === 3) {
+        return "";
+      }
+    },
   },
   emits: ["formsave", "formclose"],
   watch: {
@@ -599,7 +623,7 @@ Array.prototype.remove = function () {
               </div>
 
               <!-- TITLE TEXT -->
-              <div class="mb-2">
+              <div class="mb-2" v-if="userVersion !== 1">
                 <label
                   for="formPostTitle"
                   class="block text-gray-700 text-sm font-bold mb-1"
@@ -643,7 +667,13 @@ Array.prototype.remove = function () {
                 <label
                   for="formPostImage"
                   class="block text-gray-700 text-sm font-bold mb-2"
-                  >{{ translations && translations.image }} (max 15):
+                  >{{ translations && translations.image }} ({{
+                    translations && translations.max
+                  }}
+                  {{ maxImages }})
+                  <span class="italic lowercase font-normal text-xs">
+                    {{ upgradeImageText }}:
+                  </span>
                 </label>
                 <div
                   class="w-full flex flex-col gap-2 mb-2"
@@ -715,7 +745,7 @@ Array.prototype.remove = function () {
                   imageResizeTargetWidth="1000"
                   imageResizeTargetHeight="2000"
                   imageResizeUpscale="true"
-                  :maxFiles="15"
+                  :maxFiles="maxImages"
                   credits="false"
                   v-bind:server="{
                     url: '',
@@ -755,7 +785,7 @@ Array.prototype.remove = function () {
               </div>
 
               <!-- BOTTOM TEXT -->
-              <div class="mb-4">
+              <div class="mb-4" v-if="userVersion !== 1 && userVersion !== 2">
                 <label
                   for="formPostbody2"
                   class="block text-gray-700 text-sm font-bold mb-2"

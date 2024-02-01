@@ -21,9 +21,11 @@ export const store = createStore({
     translations: {},
     englishTranslations: {},
     spanishTranslations: {},
+    userDetails: {},
   },
   getters: {
     screenWidth: (state) => state.screenWidth,
+    userDetails: (state) => state.userDetails,
     userVersion: (state) => state.userVersion,
     translations: (state) => state.translations,
   },
@@ -43,6 +45,9 @@ export const store = createStore({
     },
     setUserVersion(state, userVersion) {
       state.userVersion = userVersion;
+    },
+    setUserDetails(state, userDetails) {
+      state.userDetails = userDetails;
     },
     SET_ENGLISH_TRANSLATIONS(state, translations) {
       state.englishTranslations = translations;
@@ -83,12 +88,14 @@ export const store = createStore({
       }
     },
 
-    async getToken({ commit }) {
+    async getToken({ commit, dispatch }) {
       try {
         const response = await axios.post(`/tokens/create`);
         if (response.data) {
           console.log("here to store");
           setToken(response.data.token);
+          dispatch("fetchUserVersion");
+          dispatch("fetchUserDetails");
         }
       } catch (err) {
         console.log(err);
@@ -142,6 +149,27 @@ export const store = createStore({
         } catch (err) {
           console.log(err);
           somethingWentWrong("Wrong in User Version Fetching");
+        }
+      }
+    },
+    async fetchUserDetails({ commit }) {
+      if (getToken()) {
+        try {
+          const response = await axios.get(`/api/user/version-details`, {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              Authorization: `Bearer ${getToken()}`,
+            },
+          });
+          const data = response.data;
+          if (response.data) {
+            commit("setUserDetails", data.versionDetails);
+            console.log(data.versionDetails, "response");
+          }
+        } catch (err) {
+          console.log(err);
+          somethingWentWrong("Wrong in User Version Details ");
         }
       }
     },

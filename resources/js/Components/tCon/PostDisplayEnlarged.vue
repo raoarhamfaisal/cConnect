@@ -1,5 +1,6 @@
 <script>
 import PostShowTheImage from "@/Components/tCon/tConSub/PostShowTheImage.vue";
+import DialogUpgradeToGoldPlatinum from "@/Components/DialogUpgradeToGoldPlatinum.vue";
 import tContractorWord from "@/Components/tCon/tContractorWord.vue";
 import StarRounded from "@/Components/Ratings/StarRounded.vue";
 import DialogContractorRating from "@/Components/Ratings/Contractor/DialogContractorRating.vue";
@@ -20,6 +21,7 @@ import InputError from "@/Components/InputError.vue";
 export default {
   components: {
     PostShowTheImage,
+    DialogUpgradeToGoldPlatinum,
     tContractorWord,
     StarRounded,
     WriteCommentFooter,
@@ -59,7 +61,7 @@ export default {
     return {
       commentTextError: "",
       commentText: "",
-      dialogRef: null,
+      repostDialogRef: null,
       customBgColor: "",
       postToEnlarge: this.postEnlarged,
       added: false,
@@ -324,7 +326,7 @@ export default {
       "pusherCommentToDelete",
       "pusherCommentPosted",
     ]),
-    ...mapGetters(["translations"]),
+    ...mapGetters(["translations", "userVersion"]),
     ...mapGetters("ratings", ["comment"]),
     // imageArray() {
     //   return this.postToEnlarge.image.split("|");
@@ -491,7 +493,7 @@ export default {
       });
     },
     openDialog() {
-      this.$refs.dialogRef.openDialog();
+      this.$refs.repostDialogRef.openDialog();
     },
     processUrls(body) {
       const urlRegex = /(https?:\/\/[^<\s]+|www\.[^<\s]+)/g;
@@ -622,7 +624,11 @@ export default {
       }
     },
     onOpenRepostAssuranceModel() {
-      this.$refs.repostDialogRef.openDialog();
+      if (this.userVersion !== 1) {
+        this.$refs.repostDialogRef.openDialog();
+      } else {
+        this.$refs.upgradeToGoldPlatinumDialogRef.openDialog();
+      }
     },
     async onRepost() {
       if (this.validate()) {
@@ -689,11 +695,11 @@ export default {
 
 <template>
   <DialogContractorRating
-    ref="dialogRef"
+    ref="repostDialogRef"
     :userId="profile.id"
     :contractorId="postToEnlarge.id"
   />
-
+  <DialogUpgradeToGoldPlatinum ref="upgradeToGoldPlatinumDialogRef" />
   <!-- Enlarged Post -->
   <!-- <div class="fixed z-40 inset-0 overflow-y-auto ease-out duration-400">
     <div class="relative flex items-start justify-center m-auto mt-0 mb-0 p-3"> -->

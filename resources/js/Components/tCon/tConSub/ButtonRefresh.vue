@@ -19,17 +19,17 @@ const RefreshPostings = () => {
 <template>
   <button
     @click="RefreshPostings"
-    class="xs:hidden flex-none items-center justify-center mt-0 mx-auto pr-1 py-1 font-bold text-lg tracking-tight sm:tracking-wide text-white capitalize transition-colors duration-300 transform rounded-lg hover:bg-green-800 focus:outline-none focus:ring focus:ring-green-300 focus:ring-opacity-80"
+    class="sm:hidden flex-none items-center justify-center mt-0 mx-auto x365:pr-1 py-1 font-bold text-lg tracking-tight sm:tracking-wide text-white capitalize transition-colors duration-300 transform rounded-lg hover:bg-green-800 focus:outline-none focus:ring focus:ring-green-300 focus:ring-opacity-80"
   >
     <img
       src="/images/icons/refresh.png"
-      class="w-6 h-6 x350:w-[30px] x350:h-[30px]"
+      class="w-6 h-6 xs:w-[30px] xs:h-[30px]"
     />
   </button>
 
   <button
     @click="RefreshPostings"
-    class="hidden xs:flex flex-shrink-0 items-center justify-center mt-0 mx-auto px-2 py-1 font-bold text-lg tracking-tight sm:tracking-wide text-white capitalize transition-colors duration-300 transform bg-green-600 rounded-lg hover:bg-green-800 focus:outline-none focus:ring focus:ring-green-300 focus:ring-opacity-80"
+    class="hidden sm:flex flex-shrink-0 items-center justify-center mt-0 mx-auto px-2 py-1 font-bold text-lg tracking-tight sm:tracking-wide text-white capitalize transition-colors duration-300 transform bg-green-600 rounded-lg hover:bg-green-800 focus:outline-none focus:ring focus:ring-green-300 focus:ring-opacity-80"
   >
     <img src="/images/icons/refresh.png" width="23" height="23" />
     <span class="mx-1">{{ translations && translations.refresh }}</span>
