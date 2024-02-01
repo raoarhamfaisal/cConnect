@@ -118,6 +118,7 @@ class DatabaseSeeder extends Seeder
             BadWordsTableSeeder::class,
             VersionDefaultsSeeder::class,
             TranslationSeeder::class,
+
         ]);
 
         \App\Models\User::factory()->create([
@@ -169,6 +170,12 @@ class DatabaseSeeder extends Seeder
         ]);
         // Associate random trades with the profile
         $randomTrades = Trade::inRandomOrder()->take(rand(1, 30))->get();
-        $profile->trades()->attach($randomTrades);        
+        $profile->trades()->attach($randomTrades);   
+        
+        
+        $this->call([
+            UserVersionDetailsSeeder::class,
+
+        ]);
     }
 }
