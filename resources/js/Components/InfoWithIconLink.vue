@@ -15,7 +15,7 @@
       </v-tooltip>
 
       <div :class="`hover:underline text-sm ${textClasses}`">
-        Follow us on {{ tooltipText }}
+        {{ translations && translations.follow_us_on }} {{ tooltipText }}
       </div>
     </div>
   </a>
@@ -23,6 +23,8 @@
 
 <script setup>
 import { Icon } from "@iconify/vue";
+import { computed } from "vue";
+import { useStore } from "vuex";
 
 const props = defineProps({
   icon: {
@@ -67,6 +69,8 @@ const absoluteUrl = (url) => {
     return `http://${url}`;
   }
 };
+const store = useStore();
+const translations = computed(() => store.getters.translations);
 </script>
 
 <style scoped>
