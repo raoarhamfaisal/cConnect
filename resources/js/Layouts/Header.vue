@@ -95,13 +95,6 @@ export default {
     };
   },
 
-  mounted() {
-    axios.post('/tokens/create').then(response => {
-        console.log(response)
-        
-    })
-  },
-
   methods: {
     saveItem(formData) {
       // Same method for update & create

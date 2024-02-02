@@ -175,6 +175,7 @@ import { ref, onMounted, watch, computed, onBeforeMount } from "vue";
 import { somethingWentWrong } from "@/helpers/utilities";
 import { useStore } from "vuex";
 import { Inertia } from "@inertiajs/inertia";
+import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 
 // State
 const { contractorDetails } = defineProps({
@@ -283,11 +284,7 @@ const fetchReviews = async (per_page = perPage.value, page = 1) => {
     disabled.value = true;
     const response = await axios.get(
       `/api/admin/${reviewResponseFilter.value}/${contractorId.value}/history?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+      getAxiosConfig()
     );
     contractorReviews.value = response.data.reviews;
     pagination.value = response.data.pagination;

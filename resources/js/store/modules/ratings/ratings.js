@@ -13,6 +13,7 @@ import {
   sendAcceptRequest,
   sendRejectRequest,
 } from "./adminActions";
+import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 export default {
   namespaced: true,
   state() {
@@ -56,7 +57,10 @@ export default {
       commit("setDisabled", true);
 
       try {
-        const response = await axios.delete(`/api/reviews/${reviewId}`);
+        const response = await axios.delete(
+          `/api/reviews/${reviewId}`,
+          getAxiosConfig()
+        );
         if (response.data) {
           changesSaved(response.message || "Review Successfully Deleted");
           setTimeout(() => {
@@ -76,7 +80,8 @@ export default {
 
       try {
         const response = await axios.delete(
-          `/api/review-responses/${responseId}`
+          `/api/review-responses/${responseId}`,
+          getAxiosConfig()
         );
         if (response.data) {
           changesSaved(
@@ -101,11 +106,7 @@ export default {
         const response = await axios.post(
           `/api/review-responses`,
           responseData,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
+          getAxiosConfig()
         );
         if (response.data) {
           changesSaved(
@@ -130,11 +131,7 @@ export default {
         const response = await axios.put(
           `/api/reviews/${payload.reviewId}`,
           payload.review,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
+          getAxiosConfig()
         );
         if (response.data) {
           changesSaved(response.message || "Review Successfully Upadated");
@@ -157,11 +154,7 @@ export default {
         const response = await axios.patch(
           `/api/review-responses`,
           responseData,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
+          getAxiosConfig()
         );
         if (response.data) {
           changesSaved(response.message || "Response Successfully Upadated");
@@ -184,11 +177,7 @@ export default {
         const response = await axios.post(
           `/api/reviews/${payload.reviewId}/appeal`,
           { on_appeal_reason: payload.on_appeal_reason },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
+          getAxiosConfig()
         );
         if (response.data) {
           changesSaved(response.message || "Appeal is Successfully Submitted");
@@ -211,11 +200,7 @@ export default {
         const response = await axios.post(
           `/api/reviews/${payload.reviewId}/off-appeal`,
           { off_appeal_reason: payload.off_appeal_reason },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
+          getAxiosConfig()
         );
         if (response.data) {
           changesSaved(

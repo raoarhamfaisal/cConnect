@@ -6,6 +6,7 @@ import { computed, onMounted } from "vue";
 import { usePage } from "@inertiajs/inertia-vue3";
 import { Icon } from "@iconify/vue";
 import { Inertia } from "@inertiajs/inertia";
+import { removeToken } from "@/helpers/localStorageHelper";
 defineProps({
   showit: Boolean,
 
@@ -40,6 +41,12 @@ function postClicked(isOpen) {
 const isAdminUrl = computed(() => {
   return usePage().props.value.auth.user.reviews_privileges === 1;
 });
+
+function handleLogout() {
+  removeToken();
+
+  Inertia.post("/logout");
+}
 </script>
 
 <template>
@@ -304,7 +311,14 @@ const isAdminUrl = computed(() => {
           </Link>
 
           <!-- LOG OUT -->
-          <Link
+          <button
+            @click="handleLogout"
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+          >
+            <img src="/images/icons/logout_bl.png" width="30" height="30" />
+            <span class="mx-4 font-medium">Log Out</span>
+          </button>
+          <!-- <Link
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
             :href="route('logout')"
             method="post"
@@ -312,7 +326,7 @@ const isAdminUrl = computed(() => {
           >
             <img src="/images/icons/logout_bl.png" width="30" height="30" />
             <span class="mx-4 font-medium">Log Out</span>
-          </Link>
+          </Link> -->
         </nav>
       </div>
 

@@ -1,4 +1,5 @@
 <script setup>
+import { removeToken } from "@/helpers/localStorageHelper";
 import { Icon } from "@iconify/vue";
 import { Inertia } from "@inertiajs/inertia";
 import { Link, usePage } from "@inertiajs/inertia-vue3";
@@ -36,6 +37,11 @@ const newPostSearchValue = () => {
 const isAdminUrl = computed(() => {
   return usePage().props.value.auth.user.reviews_privileges === 1;
 });
+function handleLogout() {
+  removeToken();
+
+  Inertia.post("/logout");
+}
 </script>
 
 <template>
@@ -265,7 +271,14 @@ const isAdminUrl = computed(() => {
           </Link>
 
           <!-- DropDown: LOGOUT -->
-          <Link
+          <button
+            @click="handleLogout"
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+          >
+            <img src="/images/icons/logout_bl.png" width="20" height="20" />
+            <span class="mx-4 font-medium">Log Out</span>
+          </button>
+          <!-- <Link
             :href="route('logout')"
             method="post"
             as="button"
@@ -273,7 +286,7 @@ const isAdminUrl = computed(() => {
           >
             <img src="/images/icons/logout_bl.png" width="20" height="20" />
             <span class="mx-4 font-medium">Log Out</span>
-          </Link>
+          </Link> -->
         </div>
       </div>
 

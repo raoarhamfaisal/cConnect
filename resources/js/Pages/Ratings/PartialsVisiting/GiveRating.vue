@@ -128,6 +128,7 @@ import { filterBadWords } from "@/helpers/utilities";
 import InputError from "@/Components/InputError.vue";
 import StarRatingEditable from "@/Components/Ratings/StarRatingEditable.vue";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
+import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 //Props
 
 const { profileId, contractorId } = defineProps({
@@ -234,11 +235,11 @@ const handleSubmit = async () => {
         is_under_appeal: false,
       };
 
-      const response = await axios.post(`/api/reviews`, review, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.post(
+        `/api/reviews`,
+        review,
+        getAxiosConfig()
+      );
       console.log(response, response.data);
       if (response.data) {
         changesSaved("Review Successfully Created");
