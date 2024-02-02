@@ -1,5 +1,7 @@
 import { somethingWentWrong, changesSaved } from "@/helpers/utilities";
-import axios from "axios";
+import axios from "axios"
+axios.defaults.withCredentials = true;
+
 
 export const getAllContractors = async ({ commit }, payload) => {
   commit("setLoading", true);
@@ -10,6 +12,8 @@ export const getAllContractors = async ({ commit }, payload) => {
       {
         headers: {
           "Content-Type": "application/json",
+          "Accept": "application/json",
+          "Authorization": "Bearer 1|NxEyKmPjKsXt9dbPyt5oXXmOnW9kTQGGrxHBqLqz0dc83778"
         },
       }
     );

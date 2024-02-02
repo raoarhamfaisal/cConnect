@@ -27,39 +27,52 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::post('/profile/company-logo', [ProfileController::class, 'updateCompanyLogo'])->name('profile.updateCompanyLogo');
 
 
-    // Review APIs
-    Route::post('/reviews', [ReviewController::class, 'store'])->name('review.store');
-    Route::get('/reviews/{contractor_id}', [ReviewController::class, 'index'])->name('review.all');
-    Route::put('reviews/{review}', [ReviewController::class, 'update']);
-    Route::post('reviews/{review}/appeal', [ReviewController::class, 'putOnAppeal']);
-    Route::post('reviews/{review}/off-appeal', [ReviewController::class, 'removeAppeal']);
-    Route::delete('reviews/{review}', [ReviewController::class, 'destroy']);
-    Route::post('/review-responses', [ReviewResponseController::class, 'store']);
-    Route::patch('/review-responses', [ReviewResponseController::class, 'update']);
-    Route::delete('/review-responses/{reviewResponse}', [ReviewResponseController::class, 'destroy']);
-
-    Route::get('/admin/all-contractors', [ReviewController::class, 'getContractorProfiles'])->name('review.allContractors');
-    Route::get('/admin/reviews/{contractor_id}', [ReviewController::class, 'contractorAllReviews'])->name('review.contractorAllReviews');
-
-
-    Route::get('/admin/all-appealed-reviews', [ReviewController::class, 'getAppealedReviews'])->name('review.getAppealedReviews');
-    Route::put('/admin/reviews/{review}', [ReviewController::class, 'updateFromAdmin']);
-    Route::delete('/admin/reviews/{review}', [ReviewController::class, 'destroyFromAdmin']);
-    Route::put('/admin/reviews/{review}/deactivate', [ReviewController::class, 'deactivate']);
-    Route::put('/admin/reviews/{review}/activate', [ReviewController::class, 'activate']);
-
-    Route::put('/admin/reviews/{review}/accept', [ReviewController::class, 'acceptAppeal']);
-    Route::put('/admin/reviews/{review}/reject', [ReviewController::class, 'rejectAppeal']);
-
-    Route::patch('/admin/review-responses', [ReviewResponseController::class, 'updateFromAdmin']);
-    Route::delete('/admin/review-responses/{reviewResponse}', [ReviewResponseController::class, 'destroyFromAdmin']);
-    Route::put('/admin/review-responses/{reviewResponse}/deactivate', [ReviewResponseController::class, 'deactivate']);
-    Route::put('/admin/review-responses/{reviewResponse}/activate', [ReviewResponseController::class, 'activate']);
-
-    Route::get('/admin/reviews/{id}/history', [ContractorRatingsAdminController::class, 'reviewsHistory']);
-
-    Route::get('/admin/responses/{id}/history', [ContractorRatingsAdminController::class, 'responsesHistory']);
-
-
-
-// });
+    
+    
+    
+    
+    
+    
+    // });
+    
+    
+    // Your authenticated routes here
+    Route::middleware('auth:sanctum')->group(function () {
+        // Review APIs
+        Route::post('/reviews', [ReviewController::class, 'store'])->name('review.store');
+        Route::get('/reviews/{contractor_id}', [ReviewController::class, 'index'])->name('review.all');
+        Route::put('reviews/{review}', [ReviewController::class, 'update']);
+        Route::post('reviews/{review}/appeal', [ReviewController::class, 'putOnAppeal']);
+        Route::post('reviews/{review}/off-appeal', [ReviewController::class, 'removeAppeal']);
+        Route::delete('reviews/{review}', [ReviewController::class, 'destroy']);
+        Route::post('/review-responses', [ReviewResponseController::class, 'store']);
+        Route::patch('/review-responses', [ReviewResponseController::class, 'update']);
+        Route::delete('/review-responses/{reviewResponse}', [ReviewResponseController::class, 'destroy']);
+        
+        Route::middleware('admin')->group(function () {
+            // Your admin-specific routes here
+            Route::get('/admin/search-contractor', [ContractorRatingsAdminController::class, 'searchContractor']);
+            // ... other admin routes
+            Route::get('/admin/all-contractors', [ReviewController::class, 'getContractorProfiles'])->name('review.allContractors');
+            Route::get('/admin/reviews/{contractor_id}', [ReviewController::class, 'contractorAllReviews'])->name('review.contractorAllReviews');
+        
+        
+            Route::get('/admin/all-appealed-reviews', [ReviewController::class, 'getAppealedReviews'])->name('review.getAppealedReviews');
+            Route::put('/admin/reviews/{review}', [ReviewController::class, 'updateFromAdmin']);
+            Route::delete('/admin/reviews/{review}', [ReviewController::class, 'destroyFromAdmin']);
+            Route::put('/admin/reviews/{review}/deactivate', [ReviewController::class, 'deactivate']);
+            Route::put('/admin/reviews/{review}/activate', [ReviewController::class, 'activate']);
+        
+            Route::put('/admin/reviews/{review}/accept', [ReviewController::class, 'acceptAppeal']);
+            Route::put('/admin/reviews/{review}/reject', [ReviewController::class, 'rejectAppeal']);
+        
+            Route::patch('/admin/review-responses', [ReviewResponseController::class, 'updateFromAdmin']);
+            Route::delete('/admin/review-responses/{reviewResponse}', [ReviewResponseController::class, 'destroyFromAdmin']);
+            Route::put('/admin/review-responses/{reviewResponse}/deactivate', [ReviewResponseController::class, 'deactivate']);
+            Route::put('/admin/review-responses/{reviewResponse}/activate', [ReviewResponseController::class, 'activate']);
+        
+            Route::get('/admin/reviews/{id}/history', [ContractorRatingsAdminController::class, 'reviewsHistory']);
+        
+            Route::get('/admin/responses/{id}/history', [ContractorRatingsAdminController::class, 'responsesHistory']);
+    });
+});

@@ -7,6 +7,8 @@ import ButtonPost from "@/Components/tCon/tConSub/ButtonPost.vue";
 import { Inertia } from "@inertiajs/inertia";
 import { Link } from "@inertiajs/inertia-vue3";
 import PostForm from "@/Components/tCon/PostForm.vue";
+import axios from 'axios';
+
 
 import { ref } from "vue";
 
@@ -91,6 +93,13 @@ export default {
       postSearch: null,
       postSearch: ref(this.postSearchFilters.postSearch),
     };
+  },
+
+  mounted() {
+    axios.post('/tokens/create').then(response => {
+        console.log(response)
+        
+    })
   },
 
   methods: {

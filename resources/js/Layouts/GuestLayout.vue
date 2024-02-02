@@ -2,6 +2,7 @@
 import { Link } from '@inertiajs/inertia-vue3';
 </script>
 
+
 <template>
     <div class="min-h-screen
                 flex
