@@ -1,11 +1,9 @@
 <script>
 import { mapGetters } from "vuex";
 import DialogUpgradeToPlatinum from "@/Components/DialogUpgradeToPlatinum.vue";
-import DialogUpgradeToGoldPlatinum from "@/Components/DialogUpgradeToGoldPlatinum.vue";
 
 export default {
   components: {
-    DialogUpgradeToGoldPlatinum,
     DialogUpgradeToPlatinum,
   },
   props: {
@@ -17,7 +15,7 @@ export default {
       console.log(this.userDetails.nf_ppm, this.userVersion, "userVersio");
       if (this.userDetails.nf_ppm === 0) {
         if (this.userVersion === 1) {
-          this.$refs.upgradeToGoldPlatinumDialogRef.openDialog();
+          this.$store.commit("setIsUpgradeToGoldPlatinumDialogOpen", true);
           return;
         } else if (this.userVersion === 2) {
           this.$refs.upgradeToPlatinumDialogRef.openDialog();
@@ -35,7 +33,7 @@ export default {
 
 <template>
   <DialogUpgradeToPlatinum ref="upgradeToPlatinumDialogRef" />
-  <DialogUpgradeToGoldPlatinum ref="upgradeToGoldPlatinumDialogRef" />
+
   <button
     @click="postClicked(isOpen)"
     class="flex flex-shrink-0 items-center justify-center mt-0 mx-auto px-2 py-1 font-bold text-sm x350:text-lg tracking-tight sm:tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-lg hover:bg-blue-800 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80"

@@ -17,6 +17,7 @@
     >
       <div class="py-4 border-t-2 border-b-2 border-gray-300">
         <Button
+          :alwaysFalse="userVersion === 1"
           @onSelect="handleResponse"
           :style="{
             boxShadow:
@@ -57,7 +58,7 @@
                 :disabled="disabled"
                 class="w-full flex justify-center gap-2"
               >
-                <div>Add</div>
+                <div>{{ translations && translations.add }}</div>
                 <img
                   v-show="loading"
                   src="/images/avatars/Spinner.gif"
@@ -166,8 +167,10 @@ const { review } = defineProps({
 
 const store = useStore();
 const response_text = ref("");
-const showResponseArea = ref(false);
+
 const showAppealArea = ref(false);
+const showResponseArea = ref(false);
+const toggleFalse = ref(false);
 
 const turnOffReason = ref("");
 
@@ -178,6 +181,7 @@ const turnOffReasonError = ref("");
 const translations = computed(() => store.getters.translations);
 const loading = computed(() => store.state.ratings.loading);
 const disabled = computed(() => store.state.ratings.disabled);
+const userVersion = computed(() => store.getters.userVersion);
 
 //Watch
 
@@ -248,11 +252,15 @@ const handleAppealSubmit = async () => {
 };
 
 const handleResponse = () => {
+  if (userVersion.value === 1) {
+    store.commit("setIsUpgradeToGoldPlatinumDialogOpen", true);
+    toggleFalse.value = false;
+    return;
+  }
+
   showResponseArea.value = !showResponseArea.value;
 };
-const handleAppeal = () => {
-  showAppealArea.value = !showAppealArea.value;
-};
+
 const textRef = ref();
 const insertTab = (event) => {
   if (event.key === "Tab") {

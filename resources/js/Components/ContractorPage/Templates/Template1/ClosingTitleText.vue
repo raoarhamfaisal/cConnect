@@ -87,6 +87,10 @@ const closingText = ref(decodeHtml(props.closing_text));
 const snackbarVisible = ref(false);
 
 const shareLink = () => {
+  if (userVersion.value !== 3) {
+    store.commit("setIsUpgradeToGoldPlatinumDialogOpen", true);
+    return;
+  }
   const success = copyToClipboard(window.location.href);
   if (success) {
     snackbarVisible.value = true; // Show the Snackbar on successful copy

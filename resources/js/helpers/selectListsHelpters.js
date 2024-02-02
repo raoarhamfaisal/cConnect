@@ -24,8 +24,6 @@ export const options = [
   { id: "trade23", name: "Tile Works, Kitchen & Bathrooms" },
   { id: "trade24", name: "Water/Fire & Mold Remediation" },
   { id: "trade25", name: "Handyman Services" },
-  { id: "trade26", name: "Architectural & Engineering" },
-  { id: "trade27", name: "Attorney, Public Adjuster & Appraisal Services" },
 ];
 export const subFinderOptions = [
   { id: "trade", name: "All" },

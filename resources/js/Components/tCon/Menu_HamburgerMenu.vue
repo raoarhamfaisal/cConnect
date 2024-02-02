@@ -49,6 +49,7 @@ const newPostSearchValue = () => {
   emit("submitPostSearch");
 };
 const translations = computed(() => store.getters.translations);
+const userVersion = computed(() => store.getters.userVersion);
 const isAdminUrl = computed(() => {
   return usePage().props.value.auth.user.appeals_privileges === 1;
 });
@@ -73,6 +74,14 @@ const onSelectLang = (lang) => {
   localStorage.setItem("lang", lang);
   selectedLanguage.value = lang;
   store.commit("setTranlations", lang);
+};
+
+const goToRedFlagPage = () => {
+  if (userVersion.value === 1) {
+    store.commit("setIsUpgradeToGoldPlatinumDialogOpen", true);
+  } else {
+    Inertia.visit("/red-flag");
+  }
 };
 </script>
 
@@ -267,8 +276,8 @@ const onSelectLang = (lang) => {
           </Link>
 
           <!-- DropDown: RED FLAG / SLIPPERY APPLES -->
-          <Link
-            href="/red-flag"
+          <div
+            @click="goToRedFlagPage"
             :class="`flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700 ${
               url === `/red-flag` && 'bg-gray-300 text-gray-700'
             }`"
@@ -277,7 +286,7 @@ const onSelectLang = (lang) => {
             <span class="mx-4 font-medium">{{
               translations && translations.red_flags
             }}</span>
-          </Link>
+          </div>
 
           <!-- DropDown: MENTORING -->
           <!-- <Link

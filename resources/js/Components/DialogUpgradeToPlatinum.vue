@@ -70,8 +70,19 @@ const onUpgrade = () => {
   Inertia.visit("/settings");
 };
 //Exposed
+let closeDialogTimeoutId;
 const openDialog = () => {
-  return dialogRef.value.openDialog();
+  dialogRef.value.openDialog();
+  if (closeDialogTimeoutId) {
+    clearTimeout(closeDialogTimeoutId);
+  }
+
+  // Set a new timeout to automatically close the dialog after 5 seconds
+  closeDialogTimeoutId = setTimeout(() => {
+    if (dialogRef.value) {
+      dialogRef.value.closeDialog();
+    }
+  }, 5000);
 };
 defineExpose({ openDialog });
 </script>

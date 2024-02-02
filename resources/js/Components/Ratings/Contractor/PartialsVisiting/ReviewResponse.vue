@@ -19,6 +19,7 @@
         <div class="py-4 border-t-2 border-b-2 border-gray-300">
           <Button
             @onSelect="handleResponse"
+            :alwaysFalse="userVersion === 1"
             :style="{
               boxShadow:
                 '0px 0px 3px rgba(0, 0, 0, 0.12), 0px 0px 2px rgba(0, 0, 0, 0.12)',
@@ -58,7 +59,7 @@
                   :disabled="disabled"
                   class="w-full flex justify-center gap-2"
                 >
-                  <div>Add</div>
+                  <div>{{ translations && translations.add }}</div>
                   <img
                     v-show="loading"
                     src="/images/avatars/Spinner.gif"
@@ -131,6 +132,7 @@ const emit = defineEmits(["responseAdded"]);
 
 const screenWidth = computed(() => store.getters.screenWidth);
 const translations = computed(() => store.getters.translations);
+const userVersion = computed(() => store.getters.userVersion);
 
 //Watch
 
@@ -201,6 +203,10 @@ const handleSubmit = async () => {
 };
 
 const handleResponse = () => {
+  if (userVersion.value === 1) {
+    store.commit("setIsUpgradeToGoldPlatinumDialogOpen", true);
+    return;
+  }
   showResponseArea.value = !showResponseArea.value;
 };
 

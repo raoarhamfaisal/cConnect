@@ -61,6 +61,8 @@ const average_rating = ref(null);
 const contractorProfile = ref({});
 const total_reviews = ref(0);
 
+const userVersion = computed(() => store.getters.userVersion);
+
 onMounted(() => {
   console.log("onMounted");
   localStorage.setItem("prevUrl", "/edit");
@@ -136,7 +138,13 @@ const fetchColors = async () => {
       getAxiosConfig()
     );
     if (responseColor.data) {
-      const colorSchemeList = [...responseColor.data.allColorSchemes];
+      const colorSchemes =
+        userVersion.value === 1
+          ? responseColor.data.allColorSchemes.slice(0, 1)
+          : userVersion.value === 2
+          ? responseColor.data.allColorSchemes.slice(0, 3)
+          : responseColor.data.allColorSchemes;
+      const colorSchemeList = [...colorSchemes];
       store.commit("contractor/setColorSchemeList", colorSchemeList);
       const selectedOption = colorSchemeList.find((item) => {
         return item.id === contractorProfile.value.color_scheme_id;
@@ -156,7 +164,12 @@ const fetchTemplates = async () => {
       getAxiosConfig()
     );
     if (response.data) {
-      templateList.value = response.data.allTemplates;
+      templateList.value =
+        userVersion.value === 1
+          ? response.data.allTemplates.slice(0, 1)
+          : userVersion.value === 2
+          ? response.data.allTemplates.slice(0, 3)
+          : response.data.allTemplates;
     }
   } catch (err) {
     somethingWentWrong();

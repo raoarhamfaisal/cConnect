@@ -96,7 +96,10 @@
     <Loader :loading="loading" background="" height="60vh"></Loader>
 
     <div v-if="regions" class="mb-4 sm:mb-0">
-      <InputLabel class="font-bold mb-1" :value="translations && translations.region" />
+      <InputLabel
+        class="font-bold mb-1"
+        :value="translations && translations.region"
+      />
       <SelectProfile
         :options="referenceList"
         :modelValue="selectedReferal"
@@ -109,7 +112,7 @@
         class="font-bold mb-3"
         :value="translations && translations.trades"
       />
-      <div class="flex items-center gap-4 mt-2 mb-5">
+      <div class="flex items-center gap-4 mt-2 mb-5" v-if="userVersion !== 1">
         <div class="switch-trades" @click="selectAllTrades">
           <div
             :class="[
@@ -226,11 +229,11 @@ const tradesPost = reactive({
   trade23: props.profile.trade23,
   trade24: props.profile.trade24,
   trade25: props.profile.trade25,
-  trade26: props.profile.trade26,
-  trade27: props.profile.trade27,
-  trade28: props.profile.trade28,
-  trade29: props.profile.trade29,
-  trade30: props.profile.trade30,
+  trade26: 1,
+  trade27: 1,
+  trade28: 1,
+  trade29: 1,
+  trade30: 1,
 
   // trade24: props.profile.trade24,
 });
@@ -260,12 +263,11 @@ const tempTradesPost = reactive({
   trade23: props.profile.trade23,
   trade24: props.profile.trade24,
   trade25: props.profile.trade25,
-  trade26: props.profile.trade26,
-  trade27: props.profile.trade27,
-  trade28: props.profile.trade28,
-  trade29: props.profile.trade29,
-  trade30: props.profile.trade30,
-  // trade24: props.profile.trade24,
+  trade26: 1,
+  trade27: 1,
+  trade28: 1,
+  trade29: 1,
+  trade30: 1,
 });
 
 // Computed
@@ -273,6 +275,7 @@ const tempTradesPost = reactive({
 const loading = computed(() => store.state.ratings.loading);
 const regions = computed(() => store.state.ratings.allRegions);
 const translations = computed(() => store.getters.translations);
+const userVersion = computed(() => store.getters.userVersion);
 
 //Watch
 watch(regions, (newVal) => {
@@ -296,9 +299,41 @@ onMounted(() => {
 
 //Methods
 const toggleSwitch = (field) => {
-  console.log(field, "refchanged");
-  console.log(tradesPost[field] === 1 ? 1 : 0);
-  tempTradesPost[field] = tempTradesPost[field] === 1 ? 0 : 1;
+  // Check if userVersion is 0 and if any 8 trades are set to 1
+  if (userVersion.value === 1 && tempTradesPost[field] !== 1) {
+    // Count how many trades are set to 1
+    const numberOfTradesSetToOne = Object.values(tempTradesPost).reduce(
+      (count, value) => count + (value === 1 ? 1 : 0),
+      0
+    );
+
+    // Check if 8 or more trades are set to 1
+    if (numberOfTradesSetToOne >= 8) {
+      store.commit("setIsUpgradeToGoldPlatinumDialogOpen", true);
+      return; // Return early to stop further execution
+    }
+  }
+
+  if (field === "trade1") {
+    const newValue = tempTradesPost[field] === 1 ? 0 : 1;
+    if (userVersion.value !== 1) {
+      for (let i = 1; i <= 24; i++) {
+        tempTradesPost[`trade${i}`] = newValue;
+      }
+    } else {
+      tempTradesPost[`trade${1}`] = newValue;
+    }
+  } else {
+    tempTradesPost[field] = tempTradesPost[field] === 1 ? 0 : 1;
+  }
+  const allSelected = Object.values(tempTradesPost).every(
+    (value) => value === 1
+  );
+  if (allSelected) {
+    selectAll.value = true;
+  } else {
+    selectAll.value = false;
+  }
 };
 const openDialog = () => {
   editDialogRef.value.openDialog();

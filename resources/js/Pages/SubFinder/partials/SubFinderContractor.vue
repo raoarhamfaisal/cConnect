@@ -5,6 +5,7 @@
     bgColor="#fff"
     :padding="screenWidth < 640 ? '7px' : '20px'"
   >
+    <!-- @checkIfNotUpgradeRequired="checkIfNotUpgradeRequired" -->
     <ContractorHeader :contractor="contractor" :region_name="region_name" />
     <div class="flex justify-between gap-2 mt-2 sm:mt-3">
       <!-- left sections -->
@@ -47,7 +48,7 @@
             </div>
             <!-- mobile View links -->
             <div
-              v-if="screenWidth <= 640"
+              v-if="screenWidth <= 640 && userVersion !== 1"
               class="flex flex-col gap-2 mr-8 mt-2"
             >
               <InfoWithIconLink
@@ -170,7 +171,7 @@
           </div>
           <!-- social and postings -->
           <div
-            v-if="screenWidth > 640"
+            v-if="screenWidth > 640 && userVersion !== 1"
             class="flex flex-col translate-y-[-2px] gap-2 mr-8"
           >
             <InfoWithIconLink
@@ -296,6 +297,7 @@
           @paste="adjustHeight"
           ref="textRef"
           @blur="stopTyping"
+          @click="checkIfNotUpgradeRequired"
           @keydown="insertTab"
           @input="saveNotes"
           :placeholder="translations && translations.type_your_notes"
@@ -389,14 +391,16 @@ const tradesPost = reactive({
   // trade24: props.profile.trade24,
 });
 
+const emit = defineEmits("opneUpgradeToGoldPlatinumDialog");
+
 const screenWidth = computed(() => store.getters.screenWidth);
 const translations = computed(() => store.getters.translations);
+const userVersion = computed(() => store.getters.userVersion);
 
 // methods
 
 const stopTyping = () => {
   isTyping.value = false;
-  editAdmitNoteText.value = false;
 };
 
 const adjustHeight = () => {
@@ -406,6 +410,9 @@ const adjustHeight = () => {
   });
 };
 const insertTab = (event) => {
+  if (userVersion.value === 1) {
+    return;
+  }
   if (event.key === "Tab") {
     event.preventDefault();
     const start = event.target.selectionStart;
@@ -424,7 +431,11 @@ const insertTab = (event) => {
 
 let saveTimeout = null;
 
-const saveNotes = () => {
+const saveNotes = (event) => {
+  if (userVersion.value === 1) {
+    note.value = props.contractor?.notes ?? "";
+    return;
+  }
   adjustHeight();
   isTyping.value = true;
   if (saveTimeout) {
@@ -504,6 +515,13 @@ const toggleButton = async (value) => {
     }
   } catch (err) {
     somethingWentWrong(err.response.data.message, "inherit");
+  }
+};
+
+const checkIfNotUpgradeRequired = () => {
+  if (userVersion.value === 1) {
+    emit("opneUpgradeToGoldPlatinumDialog");
+    return;
   }
 };
 </script>

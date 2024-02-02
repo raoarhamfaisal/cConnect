@@ -74,6 +74,10 @@ const closingText = ref(decodeHtml(props.closing_text));
 const snackbarVisible = ref(false);
 
 const shareLink = () => {
+  if (userVersion.value !== 3) {
+    store.commit("setIsUpgradeToGoldPlatinumDialogOpen", true);
+    return;
+  }
   const success = copyToClipboard(window.location.href);
   if (success) {
     snackbarVisible.value = true; // Show the Snackbar on successful copy
@@ -81,6 +85,8 @@ const shareLink = () => {
 };
 
 const translations = computed(() => store.getters.translations);
+const userVersion = computed(() => store.getters.userVersion);
+
 const processedClosingText = computed(() => {
   const parser = new DOMParser();
   const doc = parser.parseFromString(closingText.value, "text/html");

@@ -255,6 +255,10 @@ const openNotLoggedDialog = () => {
 };
 
 const shareLink = () => {
+  if (userVersion.value !== 3) {
+    store.commit("setIsUpgradeToGoldPlatinumDialogOpen", true);
+    return;
+  }
   const success = copyToClipboard(window.location.href);
   if (success) {
     snackbarVisible.value = true; // Show the Snackbar on successful copy
@@ -318,6 +322,8 @@ const state = ref(props.profile.state);
 
 //Computed
 const translations = computed(() => store.getters.translations);
+const userVersion = computed(() => store.getters.userVersion);
+
 const selectedColorScheme = computed(
   () => store.state.contractor.selectedColorScheme || template1Default
 );

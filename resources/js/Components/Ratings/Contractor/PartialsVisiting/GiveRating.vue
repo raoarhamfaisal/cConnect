@@ -105,7 +105,7 @@
       :options="referenceList"
       :modelValue="selectedReferal"
       @update:modelValue="changeReferal"
-      label="{{translations && translations.how_did_you_meet_this_contractor}}"
+      :label="translations && translations.how_did_you_meet_this_contractor"
     />
 
     <div class="flex items-center gap-4 mt-6 w-full">

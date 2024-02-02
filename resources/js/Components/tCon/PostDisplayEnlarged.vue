@@ -1,6 +1,6 @@
 <script>
 import PostShowTheImage from "@/Components/tCon/tConSub/PostShowTheImage.vue";
-import DialogUpgradeToGoldPlatinum from "@/Components/DialogUpgradeToGoldPlatinum.vue";
+
 import tContractorWord from "@/Components/tCon/tContractorWord.vue";
 import StarRounded from "@/Components/Ratings/StarRounded.vue";
 import DialogContractorRating from "@/Components/Ratings/Contractor/DialogContractorRating.vue";
@@ -21,7 +21,7 @@ import InputError from "@/Components/InputError.vue";
 export default {
   components: {
     PostShowTheImage,
-    DialogUpgradeToGoldPlatinum,
+
     tContractorWord,
     StarRounded,
     WriteCommentFooter,
@@ -627,7 +627,7 @@ export default {
       if (this.userVersion !== 1) {
         this.$refs.repostDialogRef.openDialog();
       } else {
-        this.$refs.upgradeToGoldPlatinumDialogRef.openDialog();
+        this.$store.commit("setIsUpgradeToGoldPlatinumDialogOpen", true);
       }
     },
     async onRepost() {
@@ -699,7 +699,7 @@ export default {
     :userId="profile.id"
     :contractorId="postToEnlarge.id"
   />
-  <DialogUpgradeToGoldPlatinum ref="upgradeToGoldPlatinumDialogRef" />
+
   <!-- Enlarged Post -->
   <!-- <div class="fixed z-40 inset-0 overflow-y-auto ease-out duration-400">
     <div class="relative flex items-start justify-center m-auto mt-0 mb-0 p-3"> -->

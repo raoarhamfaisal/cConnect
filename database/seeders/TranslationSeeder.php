@@ -692,9 +692,19 @@ class TranslationSeeder extends Seeder
              ['key' => 'this_feature_requires_the_platinum_version_to_access', 'english' => 'This feature requires the Platinum version to access!', 'mexican_spanish' => '¡Esta función requiere la versión Platinum para acceder!', 'created_at' => now(), 'updated_at' => now()],
              ['key' => 'upgrade_to_gold_version_for_15_images', 'english' => 'Upgrade to Gold version for 15 images', 'mexican_spanish' => 'Actualiza a la versión Gold para obtener 15 imágenes', 'created_at' => now(), 'updated_at' => now()],
              ['key' => 'upgrade_to_platinum_version_for_20_images', 'english' => 'Upgrade to Platinum version for 20 images', 'mexican_spanish' => 'Actualiza a la versión Platinum para obtener 20 imágenes', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'i_hired_contractor', 'english' => 'I Hired Contractor', 'mexican_spanish' => 'Contraté a un Contratista', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'contractor_hired_me', 'english' => 'Contractor hired me', 'mexican_spanish' => 'El Contratista me Contrató', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'paid_on_time', 'english' => 'Paid on time', 'mexican_spanish' => 'Pagado a Tiempo', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'give_full_payment', 'english' => 'Give full payment', 'mexican_spanish' => 'Realizar el Pago Completo', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'reviews', 'english' => 'Reviews', 'mexican_spanish' => 'Opiniones', 'created_at' => now(), 'updated_at' => now()],
 
 
+            ['key' => 'goodbye', 'english' => 'Follow us on', 'mexican_spanish' => 'Adiós', 'created_at' => now(), 'updated_at' => now()],
+            ['key' => 'goodbye', 'english' => 'Contact Info', 'mexican_spanish' => 'Adiós', 'created_at' => now(), 'updated_at' => now()],
+            ['key' => 'welcome', 'english' => 'Social Links', 'mexican_spanish' => 'Bienvenido', 'created_at' => now(), 'updated_at' => now()],
+            ['key' => 'goodbye', 'english' => 'Goodbye', 'mexican_spanish' => 'Adiós', 'created_at' => now(), 'updated_at' => now()],
 
+    
             
    
             // ['key' => 'goodbye', 'english' => 'Goodbye', 'mexican_spanish' => 'Adiós', 'created_at' => now(), 'updated_at' => now()],

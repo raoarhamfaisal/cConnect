@@ -22,10 +22,13 @@ export const store = createStore({
     englishTranslations: {},
     spanishTranslations: {},
     userDetails: {},
+    isUpgradeToGoldPlatinumDialogOpen: false,
   },
   getters: {
     screenWidth: (state) => state.screenWidth,
     userDetails: (state) => state.userDetails,
+    isUpgradeToGoldPlatinumDialogOpen: (state) =>
+      state.isUpgradeToGoldPlatinumDialogOpen,
     userVersion: (state) => state.userVersion,
     translations: (state) => state.translations,
   },
@@ -48,6 +51,13 @@ export const store = createStore({
     },
     setUserDetails(state, userDetails) {
       state.userDetails = userDetails;
+    },
+    setIsUpgradeToGoldPlatinumDialogOpen(
+      state,
+      isUpgradeToGoldPlatinumDialogOpen
+    ) {
+      state.isUpgradeToGoldPlatinumDialogOpen =
+        isUpgradeToGoldPlatinumDialogOpen;
     },
     SET_ENGLISH_TRANSLATIONS(state, translations) {
       state.englishTranslations = translations;
