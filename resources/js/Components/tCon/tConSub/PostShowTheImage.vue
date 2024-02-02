@@ -10,6 +10,7 @@ const props = defineProps({
   cropImage: Boolean,
 });
 
+const playVideo = ref(false);
 const dimensions = ref({}); // this is the object to hold dimensions
 // made reactive for watch()
 
@@ -22,11 +23,11 @@ function isVideo(img) {
   // determine if video
   let extension = img.split(".").pop();
   if ((extension == "mp4") | (extension == "mov")) {
-    this.playVideo = true;
+    playVideo.value = true;
   } else {
-    this.playVideo = false;
+    playVideo.value = false;
   }
-  return this.playVideo;
+  return playVideo.value;
 }
 
 // purpose id to get the image dimensions but must wait until newImg()
