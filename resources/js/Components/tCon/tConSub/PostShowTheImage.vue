@@ -1,6 +1,8 @@
 <script setup>
 import { ref, watch } from "vue";
 
+import { POSTS_IMAGES_FULL_PATH } from '../../../config/constants'
+
 const props = defineProps({
   image: String,
   numberOfImages: Number,
@@ -13,7 +15,7 @@ const dimensions = ref({}); // this is the object to hold dimensions
 
 function image_path(img) {
   // function adds the filepath
-  return "/uploads/posts/" + img;
+  return POSTS_IMAGES_FULL_PATH + img;
 }
 
 function isVideo(img) {
