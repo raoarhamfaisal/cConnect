@@ -71,7 +71,7 @@ function handleLogout() {
       <div v-if="showit" class="flex flex-col items-center mt-6 -mx-2">
         <img
           class="object-cover w-24 h-24 mx-2 rounded-full"
-          :src="profile.user_avatar"
+          :src="`/${profile.user_avatar}`"
           alt="avatar"
         />
 
