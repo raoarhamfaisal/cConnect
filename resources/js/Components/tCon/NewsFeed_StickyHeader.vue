@@ -60,7 +60,7 @@ export default {
       <div class="pt-1">
         <Link
           href="#"
-          class="font-medium text-xs sm:text-sm text-blue-800 dark:text-blue-400 hover:underline"
+          class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
         >
           <img src="/images/icons/news_view.png" width="40" height="40" />
         </Link>
@@ -70,7 +70,7 @@ export default {
       <div class="">
         <Link
           href="#"
-          class="font-medium text-xs sm:text-sm hover:underline text-blue-800 dark:text-blue-400"
+          class="font-medium text-xs sm:text-sm hover:underline text-blue-800"
         >
           <img
             src="/images/icons/contractorpage_b.png"
@@ -94,7 +94,7 @@ export default {
       <div class="-mr-2 flex items-center">
         <button
           @click="NavigationDropdown"
-          class="inline-flex items-center justify-center p-2 rounded-md text-black dark:text-white hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out"
+          class="inline-flex items-center justify-center p-2 rounded-md text-black hover:text-gray-500 hover:bg-gray-100 dfocus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
         >
           <svg
             class="h-6 w-6"

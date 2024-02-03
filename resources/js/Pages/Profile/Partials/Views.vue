@@ -44,14 +44,8 @@ const toggleSwitch = (field) => {
   <section>
     <header class="flex space-x-2">
       <div>
-        <h2
-          class="text-lg font-medium font-bold text-gray-900 dark:text-gray-100"
-        >
-          Views
-        </h2>
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-          Update your Views Information.
-        </p>
+        <h2 class="text-lg font-medium font-bold text-gray-900">Views</h2>
+        <p class="mt-1 text-sm text-gray-600">Update your Views Information.</p>
       </div>
     </header>
 
@@ -87,10 +81,7 @@ const toggleSwitch = (field) => {
           leave-to-class="opacity-0"
           class="transition ease-in-out"
         >
-          <p
-            v-if="form.recentlySuccessful"
-            class="text-sm text-gray-600 dark:text-gray-400"
-          >
+          <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">
             Saved.
           </p>
         </Transition>

@@ -6,7 +6,7 @@
       </div>
       <div class="flex flex-col justify-center">
         <!-- <h2
-          class="text-md xs:text-xl font-medium font-bold text-gray-900 dark:text-gray-100"
+          class="text-md xs:text-xl font-medium font-bold text-gray-900 "
         >
           {{ review.reviewer.first_name }} {{ review.reviewer.last_name }}
         </h2> -->
@@ -14,7 +14,7 @@
           :text="`${review.reviewer.first_name} ${review.reviewer.last_name}`"
           :applyTooltipLength="640"
           :textLengthToShow="20"
-          textClass="text-md xs:text-xl font-medium font-bold text-gray-900 dark:text-gray-100"
+          textClass="text-md xs:text-xl font-medium font-bold text-gray-900 "
         />
         <Tooltip
           :text="review.reviewer.company_name"
@@ -118,7 +118,7 @@
           type="text"
           :rows="3"
           v-if="review.is_under_appeal === 0"
-          class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+          class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
           required
           v-model="appealReason"
           placeholder="Type your reason for your appeal"

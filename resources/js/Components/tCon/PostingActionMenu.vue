@@ -43,7 +43,7 @@ export default {
         block: showingPostingActionMenu,
         hidden: !showingPostingActionMenu,
       }"
-      class="absolute flex top-8 right-0 sm:right-0 px-3 text-left border-b border-gray-400 rounded-xl bg-gray-100 dark:border-gray-700"
+      class="absolute flex top-8 right-0 sm:right-0 px-3 text-left border-b border-gray-400 rounded-xl bg-gray-100"
     >
       <div class="">
         <!-- HAMBURGER MENU OPTIONS -->
@@ -52,7 +52,7 @@ export default {
           <div v-if="currentUserId == postUserId">
             <!-- EDIT Posting Action Menu -->
             <button
-              class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+              class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
             >
               <img src="/images/icons/edit.png" width="20" height="20" />
               <span class="mx-4 font-medium">Edit Post</span>
@@ -60,7 +60,7 @@ export default {
 
             <!-- DELETE Posting Action Menu -->
             <button
-              class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+              class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
             >
               <img src="/images/icons/delete.png" width="20" height="20" />
               <span class="mx-4 font-medium">DELETE Post</span>
@@ -70,7 +70,7 @@ export default {
             <!-- Posting Action Menu: Report Post -->
             <Link
               :href="route('post')"
-              class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+              class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
             >
               <img src="/images/icons/Icon-report.png" width="20" height="20" />
               <span class="mx-4 font-medium">Report Post</span>
@@ -79,7 +79,7 @@ export default {
             <!-- DropDown: BLOCK THIS CONTACT -->
             <Link
               :href="route('post')"
-              class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+              class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
             >
               <img
                 src="/images/icons/Icon-blocked-red.png"
@@ -92,7 +92,7 @@ export default {
             <!-- DropDown: FOLLOW CONTACT -->
             <Link
               :href="route('post')"
-              class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+              class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
             >
               <img
                 src="/images/icons/Icon-person-blue.png"
@@ -105,7 +105,7 @@ export default {
             <!-- DropDown: UN-FOLLOW -->
             <Link
               :href="route('post')"
-              class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+              class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
             >
               <img
                 src="/images/icons/Icon-unfollow.png"
@@ -120,8 +120,8 @@ export default {
             class="flex items-center px-4 py-1
                 text-gray-600 transition-colors
                 duration-300 transform rounded-lg
-                dark:text-gray-400 hover:bg-gray-300
-                dark:hover:bg-gray-800 dark:hover:text-gray-200
+                 hover:bg-gray-300
+                 
                 hover:text-gray-700">
             <img src="/images/icons/save.png" width="20" height="20" />
             <span class="mx-4 font-medium">Save Post</span>

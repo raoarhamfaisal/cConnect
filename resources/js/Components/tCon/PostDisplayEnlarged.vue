@@ -136,7 +136,7 @@ const emit = defineEmits(["close-enlarged"]);
         <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
         <div
           v-show="postToEnlarge.body1"
-          class="flex flex-row justify-center items-center w-full px-2 text-lg xs:text-xl md:text-2xl dark:text-gray-300"
+          class="flex flex-row justify-center items-center w-full px-2 text-lg xs:text-xl md:text-2xl"
           :class="[
             body1Colors[postToEnlarge.body1ColorId],
             postToEnlarge.body1Bold ? 'font-bold' : 'font-normal',
@@ -164,7 +164,7 @@ const emit = defineEmits(["close-enlarged"]);
         <!-- Text Body2 LOWER -->
         <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
         <div
-          class="flex flex-row justify-center items-center w-full px-2 mt-0 mb-0 text-base xs:text-lg md:text-xl font-normal text-gray-900 dark:text-gray-300"
+          class="flex flex-row justify-center items-center w-full px-2 mt-0 mb-0 text-base xs:text-lg md:text-xl font-normal text-gray-900"
         >
           {{ postToEnlarge.body2 }}
         </div>
@@ -176,7 +176,7 @@ const emit = defineEmits(["close-enlarged"]);
           <div class="">
             <Link
               href="#"
-              class="font-medium text-xs sm:text-sm text-blue-800 dark:text-blue-400 hover:underline"
+              class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
             >
               <div class="flex flex-row justify-between items-center">
                 <div class="">
@@ -197,7 +197,7 @@ const emit = defineEmits(["close-enlarged"]);
           <div class="">
             <Link
               href="#"
-              class="font-medium text-xs sm:text-sm text-blue-800 dark:text-blue-400 hover:underline"
+              class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
             >
               <div class="flex flex-row justify-between items-center">
                 <div class="">
@@ -216,7 +216,7 @@ const emit = defineEmits(["close-enlarged"]);
           <div class="">
             <Link
               href="#"
-              class="font-medium text-xs sm:text-sm text-blue-800 dark:text-blue-400 hover:underline"
+              class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
             >
               <div class="flex flex-row justify-between items-center">
                 <div class="">
@@ -237,7 +237,7 @@ const emit = defineEmits(["close-enlarged"]);
           <div class="">
             <Link
               href="#"
-              class="font-medium text-xs sm:text-sm text-blue-800 dark:text-blue-400 hover:underline"
+              class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
             >
               <div class="flex flex-row justify-between items-center">
                 <div class="">

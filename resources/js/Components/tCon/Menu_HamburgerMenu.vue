@@ -53,11 +53,11 @@ function handleLogout() {
         block: showingNavigationDropdown,
         hidden: !showingNavigationDropdown,
       }"
-      class="lg:hidden absolute flex top-16 right-4 sm:right-6 lg:right-20 xl:right-32 2xl:right-80 z-20 px-3 text-left border-b border-gray-400 rounded-xl bg-gray-100 dark:border-gray-700"
+      class="lg:hidden absolute flex top-16 right-4 sm:right-6 lg:right-20 xl:right-32 2xl:right-80 z-20 px-3 text-left border-b border-gray-400 rounded-xl bg-gray-100"
     >
       <div class="">
         <div v-if="showit" class="pt-2 pb-0 ml-3">
-          <h4 class="mt-1 text-base font-bold text-gray-800 dark:text-gray-200">
+          <h4 class="mt-1 text-base font-bold text-gray-800">
             <!-- Tienary cuts off string if over 20 chrs and adds "..."
                                         the end  1st checks if combined string is over 20 chrs,
                                         if not display as normal '?' , if over do the else ':'
@@ -72,7 +72,7 @@ function handleLogout() {
             }}
           </h4>
 
-          <h4 class="text-base font-semibold text-gray-800 dark:text-gray-200">
+          <h4 class="text-base font-semibold text-gray-800">
             {{
               profile.company_name.length < 27
                 ? profile.company_name
@@ -83,7 +83,7 @@ function handleLogout() {
           <!-- <h4 class="
                                         text-sm font-semibold
                                         text-gray-700
-                                        dark:text-gray-400
+                                        
                                         ">
                                 Cell: {{ profile.phone_cell }}
                             </h4> -->
@@ -106,7 +106,7 @@ function handleLogout() {
                       :value="modelValue"
                       @input="$emit('update:modelValue', $event.target.value)"
                       @keypress.prevent.enter="newPostSearchValue"
-                      class="relative m-0 -mr-px block w-[1%] min-w-0 flex-auto bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 outline-none rounded-l-md border border-solid border-gray-600 dark:text-gray-300 dark:placeholder:text-gray-300 placeholder:italic placeholder:text-slate-500"
+                      class="relative m-0 -mr-px block w-[1%] min-w-0 flex-auto bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 outline-none rounded-l-md border border-solid border-gray-600 placeholder:italic placeholder:text-slate-500"
                       placeholder="Search..."
                     />
 
@@ -139,7 +139,7 @@ function handleLogout() {
           <Link
             v-if="isAdminUrl"
             href="/admin/ratings"
-            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
           >
             <Icon
               icon="ion:person-sharp"
@@ -153,7 +153,7 @@ function handleLogout() {
           <Link
             v-if="isAdminUrl"
             href="/admin/appealed"
-            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
           >
             <Icon
               icon="fluent-mdl2:review-request-solid"
@@ -163,15 +163,12 @@ function handleLogout() {
             />
             <span class="mx-4 font-medium">Appealed Reviews</span>
           </Link>
-          <div
-            v-if="isAdminUrl"
-            class="pt-1 border-t-2 border-gray-400 dark:border-gray-600"
-          ></div>
+          <div v-if="isAdminUrl" class="pt-1 border-t-2 border-gray-400"></div>
 
           <!-- DropDown: NEWS FEED -->
           <Link
             href="/ratings/contractor"
-            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
           >
             <Icon
               icon="material-symbols:reviews"
@@ -184,7 +181,7 @@ function handleLogout() {
           <Link
             v-if="Inertia.page.component != 'Postings'"
             :href="route('post')"
-            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
           >
             <img src="/images/icons/newsfeed.png" width="20" height="20" />
             <span class="mx-4 font-medium">News Feed</span>
@@ -193,7 +190,7 @@ function handleLogout() {
           <!-- DropDown: SUB FINDER -->
           <Link
             :href="route('post')"
-            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
           >
             <img src="/images/icons/contractor.png" width="20" height="20" />
             <span class="mx-4 font-medium">Sub Finder</span>
@@ -202,7 +199,7 @@ function handleLogout() {
           <!-- DropDown: RED FLAG / SLIPPERY APPLES -->
           <Link
             :href="route('post')"
-            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
           >
             <img src="/images/icons/redflag.png" width="20" height="20" />
             <span class="mx-4 font-medium">Red Flags</span>
@@ -211,7 +208,7 @@ function handleLogout() {
           <!-- DropDown: MENTORING -->
           <Link
             :href="route('post')"
-            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
           >
             <img src="/images/icons/mentor.png" width="20" height="20" />
             <span class="mx-4 font-medium">Mentoring</span>
@@ -220,7 +217,7 @@ function handleLogout() {
           <!-- DropDown: CONTRACTOR PAGE -->
           <Link
             :href="route('post')"
-            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
           >
             <img
               src="/images/icons/contractorpage_b.png"
@@ -230,14 +227,12 @@ function handleLogout() {
             <span class="mx-4 font-medium">Contractor page</span>
           </Link>
 
-          <div
-            class="pt-1 border-t-2 border-gray-400 dark:border-gray-600"
-          ></div>
+          <div class="pt-1 border-t-2 border-gray-400"></div>
 
           <!-- DropDown: VIEW SETTINGS -->
           <Link
             :href="route('post')"
-            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
           >
             <img src="/images/icons/news_view.png" width="20" height="20" />
             <span class="mx-4 font-medium">View Settings</span>
@@ -246,7 +241,7 @@ function handleLogout() {
           <!-- DropDown: My Profile -->
           <Link
             :href="route('profile.edit')"
-            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
           >
             <img src="/images/icons/profile.png" width="20" height="20" />
             <span class="mx-4 font-medium">My Profile</span>
@@ -255,7 +250,7 @@ function handleLogout() {
           <!-- DropDown: Settings -->
           <Link
             :href="route('post')"
-            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
           >
             <img src="/images/icons/settings_bl.png" width="20" height="20" />
             <span class="mx-4 font-medium">Settings</span>
@@ -264,7 +259,7 @@ function handleLogout() {
           <!-- DropDown: Contact Us -->
           <Link
             :href="route('post')"
-            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
           >
             <img src="/images/icons/contactus.png" width="20" height="20" />
             <span class="mx-4 font-medium">Contact Us</span>
@@ -273,7 +268,7 @@ function handleLogout() {
           <!-- DropDown: LOGOUT -->
           <button
             @click="handleLogout"
-            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
           >
             <img src="/images/icons/logout_bl.png" width="20" height="20" />
             <span class="mx-4 font-medium">Log Out</span>
@@ -282,7 +277,7 @@ function handleLogout() {
             :href="route('logout')"
             method="post"
             as="button"
-            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg  hover:bg-gray-300   hover:text-gray-700"
           >
             <img src="/images/icons/logout_bl.png" width="20" height="20" />
             <span class="mx-4 font-medium">Log Out</span>
@@ -292,7 +287,7 @@ function handleLogout() {
 
       <button
         @click="NavigationDropdown"
-        class="inline-flex items-start justify-center p-2 rounded-md text-black dark:text-white hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out"
+        class="inline-flex items-start justify-center p-2 rounded-md text-black hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
       >
         <svg
           class="h-6 w-6"

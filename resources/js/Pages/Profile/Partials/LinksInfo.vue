@@ -22,12 +22,10 @@ const form = useForm({
   <section>
     <header class="flex space-x-2">
       <div>
-        <h2
-          class="text-lg font-medium font-bold text-gray-900 dark:text-gray-100"
-        >
+        <h2 class="text-lg font-medium font-bold text-gray-900">
           Submit Your Links
         </h2>
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+        <p class="mt-1 text-sm text-gray-600">
           Please enter the relevant links for the following platforms. This
           helps us to better understand and connect with your online presence.
         </p>
@@ -115,10 +113,7 @@ const form = useForm({
           leave-to-class="opacity-0"
           class="transition ease-in-out"
         >
-          <p
-            v-if="form.recentlySuccessful"
-            class="text-sm text-gray-600 dark:text-gray-400"
-          >
+          <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">
             Saved.
           </p>
         </Transition>

@@ -1,1 +1,1937 @@
-import{f as l,h as c,A,D as H,u as R,Z as T,i as o,j as d,H as E,l as a,L as b,B as F,m as i,n as e,p as t,z as j,F as M,r as k,I as $,J as C,k as m,$ as g}from"./app.9755ce2a.js";import{_ as P}from"./Checkbox.544d2159.js";import{_ as S}from"./InputError.ec8a5011.js";import{_ as B}from"./InputLabel.aa21d361.js";import{_ as V}from"./PrimaryButton.bb59afa8.js";import{_ as L}from"./TextInput.0d7f8fae.js";import{t as y}from"./tContractorWord.dc451942.js";import{_ as N}from"./_plugin-vue_export-helper.cdc0426e.js";import"./compiler-core.esm-bundler.9cdafd63.js";import{_}from"./ResponsiveNavLink.9bd1f854.js";const W={props:["href"],methods:{scroll(){document.querySelector(this.href).scrollIntoView({behavior:"smooth"})}}},I=["href"];function O(u,r,s,x,p,h){return l(),c("a",{href:s.href,onClick:r[0]||(r[0]=H((...f)=>h.scroll&&h.scroll(...f),["prevent"]))},[A(u.$slots,"default")],8,I)}const w=N(W,[["render",O]]),D=e("span",{class:"text-green-500 italic font-serif"},"t",-1),G=e("span",{class:"text-indigo-900 font-extrabold font-sans"},"C",-1),U=e("span",{class:"text-indigo-900 font-bold font-sans"},"ontractor",-1),q={key:0,class:"mb-4 font-medium text-sm text-green-600"},Y=["onSubmit"],J={class:"mt-4"},K={class:"block mt-4"},Q={class:"flex items-center"},Z=e("span",{class:"ml-2 text-sm text-gray-600 dark:text-gray-400"},"Remember me",-1),X={class:"flex items-center justify-end mt-4"},ee={__name:"TC_LoginForm",props:{canResetPassword:Boolean,status:String,canLogin:Boolean,canRegister:Boolean,laravelVersion:String,phpVersion:String},setup(u){const r=R(),s=T({email:"",password:"",remember:!1}),x=()=>{console.log("here"),s.post(route("login"),{onSuccess:async()=>{console.log("here2"),await r.dispatch("getToken")},onFinish:()=>s.reset("password")})};return(p,h)=>(l(),c(M,null,[o(d(E),{title:"Log in"}),o(d(b),{href:"/",class:"text-2xl sm:text-3xl md:text-3xl font-bold tracking-wide text-center"},{default:a(()=>[D,G,U]),_:1}),u.status?(l(),c("div",q,F(u.status),1)):i("",!0),e("form",{onSubmit:H(x,["prevent"])},[e("div",null,[o(B,{for:"email",value:"Email"}),o(L,{id:"email",type:"email",class:"mt-1 block w-full",modelValue:d(s).email,"onUpdate:modelValue":h[0]||(h[0]=f=>d(s).email=f),required:"",autofocus:"",autocomplete:"username"},null,8,["modelValue"]),o(S,{class:"mt-2",message:d(s).errors.email},null,8,["message"])]),e("div",J,[o(B,{for:"password",value:"Password"}),o(L,{id:"password",type:"password",class:"mt-1 block w-full",modelValue:d(s).password,"onUpdate:modelValue":h[1]||(h[1]=f=>d(s).password=f),required:"",autocomplete:"current-password"},null,8,["modelValue"]),o(S,{class:"mt-2",message:d(s).errors.password},null,8,["message"])]),e("div",K,[e("label",Q,[o(P,{name:"remember",checked:d(s).remember,"onUpdate:checked":h[2]||(h[2]=f=>d(s).remember=f)},null,8,["checked"]),Z])]),e("div",X,[o(d(b),{href:p.route("password.request"),class:"underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"},{default:a(()=>[t(" Forgot your password? ")]),_:1},8,["href"]),o(V,{class:j(["ml-4",{"opacity-25":d(s).processing}]),disabled:d(s).processing},{default:a(()=>[t(" Log in ")]),_:1},8,["class","disabled"])])],40,Y)],64))}},te={},se=e("span",{class:"text-green-rgba font-extrabold italic font-serif normal-case"},"t",-1),oe=e("span",{class:"text-white font-extrabold font-sans"},"C",-1),le=e("span",{class:"text-white font-bold font-sans"},"ontractor",-1);function re(u,r){return l(),c(M,null,[se,oe,le],64)}const z=N(te,[["render",re]]),ae={class:"bg-white dark:bg-gray-900"},ie={class:"container px-6 py-10 mx-auto"},ne=e("h1",{class:"text-3xl font-semibold text-gray-800 capitalize lg:text-4xl dark:text-white"},[t(" explore our "),e("br"),e("span",{class:"underline underline-offset-8 decoration-blue-rgba"}," Game-Changing Tools ")],-1),de=e("p",{class:"text-2xl capitalize mt-4 text-gray-600 xl:mt-6 dark:text-gray-300"}," more business - more profit - less hassles ",-1),ce={class:"grid grid-cols-1 gap-8 mt-8 xl:mt-12 xl:gap-16 md:grid-cols-2 xl:grid-cols-3"},ue={class:"",id:"newsFeedFeature"},xe=g('<div class="flex flex-row justify-start items-center"><div class="inline-block p-3 text-blue-500 bg-blue-100 rounded-full dark:text-white dark:bg-blue-500"><img src="/images/icons/news_view.png" width="40" height="40"></div><div class="flex w-4/5 flex-col justify-center items-start"><h1 class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase dark:text-white"> news feed </h1></div></div>',1),he={class:"flex flex-row justify-start items-start"},fe=e("div",{class:"w-1/5"},null,-1),pe={class:"flex w-4/5 flex-col justify-start"},me=e("div",{class:"pl-4 text-xl text-black font-semibold capitalize tracking-tight"},[e("h2",null,"Want To BID on JOBS?"),e("h2",{class:"pl-4"},"Looking For WORK?"),e("h2",{class:"pl-8"},"...For SUBS? ...INFO?")],-1),ge=e("p",{class:"mt-1 text-xl font-bold italic tracking-tighter text-red-600 uppercase"}," The ACTION Starts Here! ",-1),ve=g('<p class="pt-2 font-semibold text-slate-700 capitalize"> See postings from other contractors, locally, city wide or the region! </p><p class="pt-2 font-semibold text-blue-700 capitalize"> See what jobs you can bid on, who to hire or not, and who to stay away from! looking for work, you&#39;ll find plenty of opportunities here! </p><p class="pt-2 font-semibold text-slate-700 capitalize"> Hear and see the latest &quot;happenings&quot; from other contractors, in your locale area or from around the country! </p><p class="pt-2 font-semibold text-slate-700 capitalize"> Got Some Questions on tough projects? Put it on the FEED, Find out from other experts what may be the best route for you! </p><p class="-ml-4 pt-2 text-lg font-bold italic text-red-600 capitalize"> Visit Often - Hourly/Daily </p><p class="pt-2 text-lg font-bold italic text-blue-rgba capitalize text-center"> Private - For Members Only! </p>',6),be=[ve],_e=e("svg",{class:"w-4 h-4 mx-1 rtl:-scale-x-100",fill:"currentColor",viewBox:"0 0 20 20",xmlns:"http://www.w3.org/2000/svg"},[e("path",{"fill-rule":"evenodd",d:"M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z","clip-rule":"evenodd"})],-1),we=e("svg",{class:"w-4 h-4 mx-1 rtl:-scale-x-100",fill:"currentColor",viewBox:"0 0 20 20",xmlns:"http://www.w3.org/2000/svg"},[e("path",{"fill-rule":"evenodd",transform:"scale(-1,-1) translate(-24,-20)",d:"M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z","clip-rule":"evenodd"})],-1),ye={class:"",id:"subFinderFeature"},ke=g('<div class="flex flex-row justify-start items-center"><div class="inline-block p-3 text-blue-500 bg-blue-100 rounded-full dark:text-white dark:bg-blue-500"><img src="/images/icons/contractor.png" width="40" height="40"></div><div class="flex w-4/5 flex-col justify-center items-start"><h1 class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase dark:text-white"> sub finder </h1></div></div>',1),$e={class:"flex flex-row justify-start items-start"},Ce=e("div",{class:"w-1/5"},null,-1),je={class:"flex w-4/5 flex-col justify-start"},ze=e("div",{class:"pl-4 text-xl text-black font-semibold capitalize tracking-tight"},[e("h2",null,"Need To Hire Someone?"),e("h2",{class:"pl-4"},"Hire with confidence!"),e("h2",{class:"pl-8 text-lg"}," Subs, Contractors, Talent, Engineers & Temps ")],-1),Fe=e("p",{class:"mt-1 text-xl font-bold italic tracking-tighter text-red-600 uppercase"}," Rated By Their Peers! ",-1),Me=e("ul",{class:"pt-2 text-md font-semibold text-slate-700 capitalize list-disc"},[e("li",null,"Con't find a contractor or a sub?"),e("li",null,"Who do you trust?"),e("li",null," Ever hire a sub only to have them try and renegotiate the deal... or disappear? "),e("li",null,"Ever hire a contractor who just did a bad job?"),e("li",null,"Ever got stiffed by someone who hired you?"),e("li",null,"Who do you trust to represent your name?")],-1),Se=e("span",{class:"pt-2 text-blue-700 font-bold -ml-4"},[t("Do you want to be"),e("br")],-1),Be=e("span",{class:"text-blue-700 font-bold -ml-4"},"confident in your next hire?",-1),Le={class:"text-md font-semibold text-blue-700 capitalize list-disc"},He=e("li",null," Hire A Contractor Reviewed By Your Peers! Not Bogus review companies or even their buddies! ",-1),Te=e("li",null," Hire a Sub who has demonstrated integrity, gets the job done - the right way - the first time, at the price agreed! ",-1),Ee=e("span",{class:"font-bold underline"},"No fake ratings Here!",-1),Ne=e("li",null," Need to find a sub, electrician, plumber for a job across town ",-1),Ae=g('<p class="pt-2 text-center font-bold text-red-600 uppercase"> Hiring with confidence makes all the difference in the world! </p><p class="text-center font-semibold text-red-600 capitalize"> Saves Time, Saves Headaches </p><p class="text-center font-semibold text-red-600 capitalize"> Allows Time To Take On More Jobs </p><p class="text-center font-semibold text-red-600 capitalize"> When Your subs do a great job.. you both look great and you make more money! </p><p class="text-center font-bold text-red-600 uppercase"> GET peace of mind &amp; higher profits </p>',5),Re=e("svg",{class:"w-4 h-4 mx-1 rtl:-scale-x-100",fill:"currentColor",viewBox:"0 0 20 20",xmlns:"http://www.w3.org/2000/svg"},[e("path",{"fill-rule":"evenodd",d:"M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z","clip-rule":"evenodd"})],-1),Pe=e("svg",{class:"w-4 h-4 mx-1 rtl:-scale-x-100",fill:"currentColor",viewBox:"0 0 20 20",xmlns:"http://www.w3.org/2000/svg"},[e("path",{"fill-rule":"evenodd",transform:"scale(-1,-1) translate(-24,-20)",d:"M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z","clip-rule":"evenodd"})],-1),Ve={class:"",id:"customerCheckFeature"},We=g('<div class="flex flex-row justify-start items-center"><div class="inline-block p-3 text-blue-500 bg-blue-100 rounded-full dark:text-white dark:bg-blue-500"><img src="/images/icons/redflag.png" width="40" height="40"></div><div class="flex w-4/5 flex-col justify-center items-start"><h1 class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase dark:text-white"> Red Flag Customers </h1></div></div>',1),Ie={class:"flex flex-row justify-start items-start"},Oe=e("div",{class:"w-1/5"},null,-1),De={class:"flex w-4/5 flex-col justify-start"},Ge=e("div",{class:"pl-4 text-xl text-blue-700 text-center font-bold uppercase tracking-tight"},[e("h2",null,[t("The Customer Is"),e("br"),t("Always Right")]),e("h2",{class:"capitalize text-black"},[t(" All Customers are"),e("br"),t("Great... RIGHT? ")])],-1),Ue=e("p",{class:"mt-1 text-3xl text-center font-bold italic tracking-tighter text-red-600 uppercase"}," not! ",-1),qe=g('<ul class="pt-2 text-md font-semibold text-slate-700 capitalize list-disc"><li> Ever had one of those customer&#39;s from <i>&quot;You Know Where&quot;</i>? </li><li> How about the customer who insist on renegotiating after the deal... after the work is completed? </li><li>How about slow-payers... never pay customers?</li><li>Unfair reviewers... and those Hostage Reviews?</li><li>Ever had an Unrealistic or difficult customers?</li></ul><p class="-ml-4 pt-3 text-blue-700 font-bold capitalize"> We&#39;ve all had those good customers, even great customers! THIS LIST IS NOT FOR THEM. <span class="text-red-700">This List Is for those customers you would not wish on your worst enemy... those customers that take advantage of you more than most... </span></p><p class="pt-3 text-blue-700 font-bold capitalize"> We call these people </p><p class="text-red-800 text-2xl text-center uppercase font-extrabold"> &quot;RED FLAGS&quot; </p><p class="-ml-4 pt-3 text-blue-700 font-bold capitalize"> if you&#39;ve been in business long enough, you know that <span class="text-red-700"> NOT all customers</span> are good for you. </p><p class="pt-2 font-medium -ml-4 capitalize"> As a contractor, you&#39;re always under review, now here&#39;s your chance to <span class="text-red-700 font-bold">Keep them accountable for their underhanded play - review them yourselves!</span></p><p class="-ml-4 pt-4 text-blue-rgba text-center uppercase font-extrabold"> Don&#39;t Loose Money or your reputation... Make More Money &amp; Better Peace of Mind... </p><p class="-ml-4 pt-3 text-xl text-rose-700 text-center uppercase font-extrabold"> Check your prospective customer out before agreeing to a deal! </p>',8),Ye=[qe],Je=e("svg",{class:"w-4 h-4 mx-1 rtl:-scale-x-100",fill:"currentColor",viewBox:"0 0 20 20",xmlns:"http://www.w3.org/2000/svg"},[e("path",{"fill-rule":"evenodd",d:"M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z","clip-rule":"evenodd"})],-1),Ke=e("svg",{class:"w-4 h-4 mx-1 rtl:-scale-x-100",fill:"currentColor",viewBox:"0 0 20 20",xmlns:"http://www.w3.org/2000/svg"},[e("path",{"fill-rule":"evenodd",transform:"scale(-1,-1) translate(-24,-20)",d:"M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z","clip-rule":"evenodd"})],-1),Qe={class:"",id:"contractorPageFeature"},Ze=g('<div class="flex flex-row justify-start items-center"><div class="inline-block p-3 text-blue-500 bg-blue-100 rounded-full dark:text-white dark:bg-blue-500"><img src="/images/icons/contractorpage.png" width="40" height="40"></div><div class="flex w-4/5 flex-col justify-center items-start"><h1 class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase dark:text-white"> Contractor Page </h1></div></div>',1),Xe={class:"flex flex-row justify-start items-start"},et=e("div",{class:"w-1/5"},null,-1),tt={class:"flex w-4/5 flex-col justify-start"},st=e("div",{class:"pl-4 text-xl text-black font-semibold capitalize tracking-tight"},[e("h2",null,[t("Help other contractors"),e("br"),t("find you")]),e("h2",{class:"pl-4"},"Free Advertisement!"),e("h2",{class:"pl-8"},"Quick & Easy!")],-1),ot=e("p",{class:"mt-1 text-xl font-bold italic tracking-tighter text-red-600 uppercase"}," be a show off here! ",-1),lt=e("ul",{class:"pt-2 text-md font-semibold text-slate-700 capitalize list-disc"},[e("li",null," Advertise your services to other contractors looking to hire or sub out! "),e("li",null,"Show off your work through images & video."),e("li",null,"quick and easy setup!")],-1),rt=e("p",{class:"-ml-4 pt-3 text-blue-rgba text-center uppercase font-extrabold"}," FREE advertisement to your local areas ",-1),at=e("p",{class:"-ml-4 pt-4 text-xl text-rose-700 text-center uppercase font-extrabold"}," ridiculously low cost advertisement! ",-1),it=e("p",{class:"-ml-4 text-lg text-blue-rgba text-center capitalize font-extrabold"}," ... As low as $5 bucks for larger advertisement areas ",-1),nt=[lt,rt,at,it],dt=e("svg",{class:"w-4 h-4 mx-1 rtl:-scale-x-100",fill:"currentColor",viewBox:"0 0 20 20",xmlns:"http://www.w3.org/2000/svg"},[e("path",{"fill-rule":"evenodd",d:"M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z","clip-rule":"evenodd"})],-1),ct=e("svg",{class:"w-4 h-4 mx-1 rtl:-scale-x-100",fill:"currentColor",viewBox:"0 0 20 20",xmlns:"http://www.w3.org/2000/svg"},[e("path",{"fill-rule":"evenodd",transform:"scale(-1,-1) translate(-24,-20)",d:"M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z","clip-rule":"evenodd"})],-1),ut={class:"",id:"mentoringFeature"},xt=g('<div class="flex flex-row justify-start items-center"><div class="inline-block p-3 text-blue-500 bg-blue-100 rounded-full dark:text-white dark:bg-blue-500"><img src="/images/icons/mentor.png" width="40" height="40"></div><div class="flex w-4/5 flex-col justify-center items-start"><h1 class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase dark:text-white"> Mentoring </h1></div></div>',1),ht={class:"flex flex-row justify-start items-start"},ft=e("div",{class:"w-1/5"},null,-1),pt={class:"flex w-4/5 flex-col justify-start"},mt=e("div",{class:"pl-4 text-xl text-blue-700 text-center font-semibold uppercase tracking-tight"},[e("h2",null,"Don't Fool Yourselves"),e("h2",{class:"capitalize text-black"},[t(" ... Even the best companies & business managers can ALWAYS use a little "),e("br"),e("i",null,"(or alot)"),t(" of mentoring! ")])],-1),gt=e("p",{class:"mt-1 text-lg text-center font-bold italic tracking-tighter text-red-600 uppercase"}," Free & Valuable Service ",-1),vt=e("p",{class:"-ml-4 pt-3 text-blue-rgba uppercase font-extrabold"}," tContractor provides this Free service by a renowned Master business strategist ",-1),bt=e("ul",{class:"ml-2 pt-2 pl-3 text-md font-semibold text-slate-700 capitalize list-disc"},[e("li",{class:""},"Daily Motivations & Encouragements."),e("li",null,"Sales Insights."),e("li",null,"Sales Techniques."),e("li",null,"Best Practices & Habits.")],-1),_t=e("p",{class:"-ml-4 pt-4 text-xl text-rose-700 text-center uppercase font-extrabold"}," Better Business = Higher Profits & Peace Of Mind! ",-1),wt=[vt,bt,_t],yt=e("svg",{class:"w-4 h-4 mx-1 rtl:-scale-x-100",fill:"currentColor",viewBox:"0 0 20 20",xmlns:"http://www.w3.org/2000/svg"},[e("path",{"fill-rule":"evenodd",d:"M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z","clip-rule":"evenodd"})],-1),kt=e("svg",{class:"w-4 h-4 mx-1 rtl:-scale-x-100",fill:"currentColor",viewBox:"0 0 20 20",xmlns:"http://www.w3.org/2000/svg"},[e("path",{"fill-rule":"evenodd",transform:"scale(-1,-1) translate(-24,-20)",d:"M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z","clip-rule":"evenodd"})],-1),$t={class:"",id:"newFeatures"},Ct=g('<div class="flex flex-row justify-start items-center"><div class="inline-block p-3 text-blue-500 bg-blue-100 rounded-full dark:text-white dark:bg-blue-500"><img src="/images/icons/under_construc.png" width="40" height="40"></div><div class="flex w-4/5 flex-col justify-center items-start"><h1 class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase dark:text-white"> NEW FEATURES<br>COMING SOON! </h1></div></div>',1),jt={class:"flex flex-row justify-start items-start"},zt=e("div",{class:"w-1/5"},null,-1),Ft={class:"flex w-4/5 flex-col justify-start"},Mt={class:"pl-4 text-xl text-blue-700 text-center font-bold capitalize tracking-tight"},St=e("br",null,null,-1),Bt=e("p",{class:"mt-1 text-lg text-center font-bold italic tracking-tighter text-red-600 uppercase"},[t(" Always Free"),e("br"),t("Never an upcharge! ")],-1),Lt=e("h2",{class:"capitalize text-black"}," tContractor is always adding new features ",-1),Ht={class:"-ml-4 pt-3 text-blue-rgba capitalize font-extrabold"},Tt=e("span",{class:"uppercase text-rose-700"},"better contruction business!",-1),Et=e("p",{class:"-ml-4 pt-4 text-xl text-rose-700 text-center uppercase font-extrabold"}," NEVER AN UPCHARGE FOR NEW FEATURES ",-1),Nt=e("svg",{class:"w-4 h-4 mx-1 rtl:-scale-x-100",fill:"currentColor",viewBox:"0 0 20 20",xmlns:"http://www.w3.org/2000/svg"},[e("path",{"fill-rule":"evenodd",d:"M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z","clip-rule":"evenodd"})],-1),At=e("svg",{class:"w-4 h-4 mx-1 rtl:-scale-x-100",fill:"currentColor",viewBox:"0 0 20 20",xmlns:"http://www.w3.org/2000/svg"},[e("path",{"fill-rule":"evenodd",transform:"scale(-1,-1) translate(-24,-20)",d:"M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z","clip-rule":"evenodd"})],-1),Rt={__name:"FeaturesGrid",setup(u){const r=k(!1),s=k(!1),x=k(!1),p=k(!1),h=k(!1),f=k(!1);return(uo,n)=>(l(),c("section",ae,[e("div",ie,[ne,de,e("div",ce,[e("div",ue,[xe,e("div",he,[fe,e("div",pe,[me,ge,$(e("div",null,be,512),[[C,r.value]]),r.value?i("",!0):(l(),c("button",{key:0,onClick:n[0]||(n[0]=v=>r.value=!r.value),class:"inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform dark:text-blue-400 hover:underline hover:text-blue-600 dark:hover:text-blue-500"},[t(" More "),_e])),r.value?(l(),m(w,{key:1,href:"#newsFeedFeature",onClick:n[1]||(n[1]=v=>r.value=!r.value),class:"inline-flex items-center -mx-1 text-md text-teal-500 capitalize transition-colors duration-300 transform dark:text-teal-400 hover:underline hover:text-teal-600 dark:hover:text-teal-500"},{default:a(()=>[we,t(" Less ")]),_:1})):i("",!0)])])]),e("div",ye,[ke,e("div",$e,[Ce,e("div",je,[ze,Fe,$(e("div",null,[Me,Se,Be,e("ul",Le,[He,Te,e("li",null,[o(y),t(" has it's own private rating system! "),Ee,t(" Know what your getting into! ")]),Ne]),Ae],512),[[C,s.value]]),s.value?i("",!0):(l(),c("button",{key:0,onClick:n[2]||(n[2]=v=>s.value=!s.value),class:"inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform dark:text-blue-400 hover:underline hover:text-blue-600 dark:hover:text-blue-500"},[t(" More "),Re])),s.value?(l(),m(w,{key:1,href:"#subFinderFeature",onClick:n[3]||(n[3]=v=>s.value=!s.value),class:"inline-flex items-center -mx-1 text-md text-teal-500 capitalize transition-colors duration-300 transform dark:text-teal-400 hover:underline hover:text-teal-600 dark:hover:text-teal-500"},{default:a(()=>[Pe,t(" Less ")]),_:1})):i("",!0)])])]),e("div",Ve,[We,e("div",Ie,[Oe,e("div",De,[Ge,Ue,$(e("div",null,Ye,512),[[C,x.value]]),x.value?i("",!0):(l(),c("button",{key:0,onClick:n[4]||(n[4]=v=>x.value=!x.value),class:"inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform dark:text-blue-400 hover:underline hover:text-blue-600 dark:hover:text-blue-500"},[t(" More "),Je])),x.value?(l(),m(w,{key:1,href:"#customerCheckFeature",onClick:n[5]||(n[5]=v=>x.value=!x.value),class:"inline-flex items-center -mx-1 text-md text-teal-500 capitalize transition-colors duration-300 transform dark:text-teal-400 hover:underline hover:text-teal-600 dark:hover:text-teal-500"},{default:a(()=>[Ke,t(" Less ")]),_:1})):i("",!0)])])]),e("div",Qe,[Ze,e("div",Xe,[et,e("div",tt,[st,ot,$(e("div",null,nt,512),[[C,p.value]]),p.value?i("",!0):(l(),c("button",{key:0,onClick:n[6]||(n[6]=v=>p.value=!p.value),class:"inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform dark:text-blue-400 hover:underline hover:text-blue-600 dark:hover:text-blue-500"},[t(" More "),dt])),p.value?(l(),m(w,{key:1,href:"#contractorPageFeature",onClick:n[7]||(n[7]=v=>p.value=!p.value),class:"inline-flex items-center -mx-1 text-md text-teal-500 capitalize transition-colors duration-300 transform dark:text-teal-400 hover:underline hover:text-teal-600 dark:hover:text-teal-500"},{default:a(()=>[ct,t(" Less ")]),_:1})):i("",!0)])])]),e("div",ut,[xt,e("div",ht,[ft,e("div",pt,[mt,gt,$(e("div",null,wt,512),[[C,h.value]]),h.value?i("",!0):(l(),c("button",{key:0,onClick:n[8]||(n[8]=v=>h.value=!h.value),class:"inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform dark:text-blue-400 hover:underline hover:text-blue-600 dark:hover:text-blue-500"},[t(" More "),yt])),h.value?(l(),m(w,{key:1,href:"#mentoringFeature",onClick:n[9]||(n[9]=v=>h.value=!h.value),class:"inline-flex items-center -mx-1 text-md text-teal-500 capitalize transition-colors duration-300 transform dark:text-teal-400 hover:underline hover:text-teal-600 dark:hover:text-teal-500"},{default:a(()=>[kt,t(" Less ")]),_:1})):i("",!0)])])]),e("div",$t,[Ct,e("div",jt,[zt,e("div",Ft,[e("div",Mt,[e("h2",null,[o(y),t(" is built & managed by contractors,"),St,t("for contractors & sub-contractors! ")])]),Bt,$(e("div",null,[Lt,e("p",Ht,[o(y),t(" wants to be the most important tool in the toolbox! We are always looking to improve, upgrade our services to you for a "),Tt]),Et],512),[[C,f.value]]),f.value?i("",!0):(l(),c("button",{key:0,onClick:n[10]||(n[10]=v=>f.value=!f.value),class:"inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform dark:text-blue-400 hover:underline hover:text-blue-600 dark:hover:text-blue-500"},[t(" More "),Nt])),f.value?(l(),m(w,{key:1,href:"#newFeatures",onClick:n[11]||(n[11]=v=>f.value=!f.value),class:"inline-flex items-center -mx-1 text-md text-teal-500 capitalize transition-colors duration-300 transform dark:text-teal-400 hover:underline hover:text-teal-600 dark:hover:text-teal-500"},{default:a(()=>[At,t(" Less ")]),_:1})):i("",!0)])])])])])]))}};const Pt={class:"relative h-screen bg-white"},Vt=e("img",{src:"/images/pages/bg_a_xl_white.jpg",class:"absolute object-cover w-full h-full"},null,-1),Wt={class:"absolute top-0 left-0 right-0 z-20 bg-blue-30-rgba"},It={class:"container max-w-7xl px-6 py-2 mx-auto md:px-12"},Ot={class:"flex items-center justify-between"},Dt={class:"flex items-center justify-start"},Gt={class:"flex items-baseline justify-end"},Ut={key:0},qt={key:1},Yt={class:"-mr-2 flex items-center"},Jt={class:"h-6 w-6",stroke:"currentColor",fill:"none",viewBox:"0 0 24 24"},Kt={class:""},Qt={class:"pt-4 pb-2 ml-3 border-b-2 border-gray-400 dark:border-gray-600"},Zt={class:"font-bold text-base text-gray-800 dark:text-gray-200"},Xt={key:0},es={key:1},ts={key:0,class:"font-medium text-sm text-gray-500"},ss={class:"pt-2 pb-3 space-y-1"},os={class:"pt-4 pb-1 border-t-2 border-gray-400 dark:border-gray-600"},ls={class:"mt-3 space-y-1"},rs={class:"h-6 w-6",stroke:"currentColor",fill:"none",viewBox:"0 0 24 24"},as={class:"container relative max-w-7xl z-10 flex items-center px-6 pt-32 pb-5 mx-auto md:px-10 xl:py-30"},is={class:"relative z-10 flex flex-col items-start min-[500px]:w-3/5 md:w-3/5 xl:w-2/5 bg-blue-30-rgba rounded-xl border border-blue-rgba shadow-lg p-2 py-4 px-4"},ns={class:"sm:hidden text-4xl font-bold tracking-wide text-center"},ds=e("span",{class:"font-bold text-slate-300 uppercase"}," Better Construction! ",-1),cs=e("h1",{class:"mt-4 text-4xl sm:text-5xl font-bold text-white tracking-tighter capitalize"}," Want access to the most powerful tool in construction? ",-1),us=e("span",{class:"text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500"}," Get Started ",-1),xs=e("span",{class:"ml-4 flex-shrink-0 rounded-full border border-current bg-white p-2 text-indigo-600 group-active:text-indigo-500"},[e("svg",{class:"h-5 w-5",xmlns:"http://www.w3.org/2000/svg",fill:"none",viewBox:"0 0 24 24",stroke:"currentColor"},[e("path",{"stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2",d:"M17 8l4 4m0 0l-4 4m4-4H3"})])],-1),hs={class:"relative"},fs={class:"container lg:max-w-4xl xl:max-w-7xl z-20 mx-auto mt-4 md:px-12 py-10 sm:px-20 lg:px-8 bg-slate-30-rgba text-gray-700 rounded-xl"},ps={key:0,class:"max-w-lg"},ms={class:"text-3xl font-bold sm:text-4xl"},gs=e("br",null,null,-1),vs={class:"text-center text-4xl sm:text-6xl"},bs=e("p",{class:"mt-4 text-center text-3xl sm:text-4xl font-extrabold text-slate-900"}," To Increase Your Bottom Line & Peace of Mind! ",-1),_s=e("p",{class:"mt-4 text-center text-2xl font-semibold text-gray-800"},[t(" From Searching for Locally Vetted Sub-Contractors, to Finding Jobs, Getting Bids... "),e("br"),t("to Free Advertising. ")],-1),ws={key:1,id:"loginHere",class:"grid grid-cols-1 md:grid-cols-2 mt-0 md:mt-0 gap-6 md:gap-2"},ys={class:"flex flex-col flex-shrink-0 justify-center items-center"},ks={class:"text-3xl font-bold sm:text-4xl md:max-lg:text-3xl"},$s=e("br",null,null,-1),Cs={class:"text-center text-4xl sm:text-6xl md:max-lg:text-4xl"},js=e("p",{class:"mt-4 text-center text-3xl sm:text-4xl font-extrabold text-slate-900"}," To Increase Your Bottom Line & Peace of Mind! ",-1),zs=e("p",{class:"mt-4 text-center text-2xl font-semibold text-gray-800"},[t(" From Searching for Locally Vetted Sub-Contractors, to Finding Jobs, Getting Bids... "),e("br"),t("to Free Advertising. ")],-1),Fs={class:"flex flex-col flex-shrink-0 justify-center items-center p-3 bg-stone-100 border-2 border-blue-rgba rounded-xl shadow-xl"},Ms=e("div",{class:"mx-auto pt-0"},[e("p",{class:"text-green-800 text-center font-bold pb-2 text-xl"}," Login in to Join The Private Community For the Construction Trades! ")],-1),Ss={class:"relative z-20 bg-white dark:bg-gray-900 md:mt-24 lg:mt-28 xl:mt-32 2xl:mt-40",id:"whytContractor"},Bs={id:"cta",class:"relative bg-red-600"},Ls={class:""},Hs={class:"container flex flex-col-reverse md:flex-row items-center justify-around mx-auto my-0 p-6 space-y-10"},Ts={class:"flex flex-col space-y-2 pt-6 md:pt-0 px-4 md:px-0"},Es={class:""},Ns={class:"capitalize text-xl font-semibold tracking-tighter list-disc"},As=e("li",null,"Locate subs to hire",-1),Rs=e("li",null,"Find local work & job bids",-1),Ps=e("li",null,"Be aware of whats up in your area!",-1),Vs=e("li",null,"Check for slippery customers!",-1),Ws=e("li",null,"Questions & Answers!",-1),Is=e("li",null,"Low cost targeted advertising!",-1),Os=e("li",null,"Mentoring: go the next level with Mentoring!",-1),Ds={class:"lg:max-w-md"},Gs=e("span",{class:"font-bold italic"},'"No-Brainer Pricing"',-1),Us={class:"font-extrabold text-white normal-case"},qs={class:"flex flex-col justify-center"},Ys=g('<div class="text-3xl text-black font-bold"><p class="tracking-tight">Your Top Tool For Only</p></div><div class="flex flex-row justify-center"><div class="flex text-5xl justify-start font-extrabold text-green-rgba"><span class="pt-10">$</span></div><div class="price"><span>29</span></div><div class="flex text-xl justify-end items-end italic text-blue-rgba pb-10"><span>/month</span></div></div>',2),Js={class:"flex justify-center items-end"},Ks={class:"bg-blue-rgba"},Qs={class:"container flex flex-col-reverse md:flex-row justify-between py-12 px-6 mx-auto gap-x-3 md:gap-x-5 space-y-8 md:space-y-0"},Zs={class:"flex flex-col-reverse items-center justify-between space-y-12 md:flex-col md:space-y-0 md:items-start"},Xs=e("div",{class:"mx-auto my-6 text-center first-letter: text-white md:hidden"}," Copyright \xA9 2023, All Rights Reserved ",-1),eo=g('<div class="flex justify-center space-x-4"><a href="#"><img src="/images/icons/icon-facebook.svg" alt="" class="h-8"></a><a href="#"><img src="/images/icons/icon-twitter.svg" alt="" class="h-8"></a><a href="#"><img src="/images/icons/icon-instagram.svg" alt="" class="h-8"></a></div>',1),to=g('<div class="flex justify-evenly space-x-10"><div class="flex flex-col space-y-3 text-white"><a href="#" class="hover:text-blue-400">Home</a><a href="#" class="hover:text-blue-400">Pricing</a><a href="#" class="hover:text-blue-400">Contact Us</a></div><div class="flex flex-col space-y-3 text-white"><a href="#" class="hover:text-blue-400"> Careers</a><a href="#" class="hover:text-blue-400"> Terms of Service</a><a href="#" class="hover:text-blue-400"> Privacy Policy</a></div></div>',1),so={class:"flex flex-col justify-between"},oo={key:0,class:"flex justify-center space-x-3"},lo=e("span",{class:"text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500"}," Get Started ",-1),ro=e("span",{class:"ml-4 flex-shrink-0 rounded-full border border-current bg-white p-2 text-indigo-600 group-active:text-indigo-500"},[e("svg",{class:"h-5 w-5",xmlns:"http://www.w3.org/2000/svg",fill:"none",viewBox:"0 0 24 24",stroke:"currentColor"},[e("path",{"stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2",d:"M17 8l4 4m0 0l-4 4m4-4H3"})])],-1),ao={key:1,class:"flex justify-center space-x-3"},io=e("span",{class:"text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500"}," News Feed ",-1),no=e("span",{class:"ml-4 flex-shrink-0 rounded-full border border-current bg-white p-2 text-indigo-600 group-active:text-indigo-500"},[e("svg",{class:"h-5 w-5",xmlns:"http://www.w3.org/2000/svg",fill:"none",viewBox:"0 0 24 24",stroke:"currentColor"},[e("path",{"stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2",d:"M17 8l4 4m0 0l-4 4m4-4H3"})])],-1),co=e("div",{class:"hidden text-white md:block mx-auto my-6 text-center first-letter:"}," Copyright \xA9 2023, All Rights Reserved ",-1),yo={__name:"index",props:{canResetPassword:Boolean,status:String,canLogin:Boolean,canRegister:Boolean,laravelVersion:String,phpVersion:String,showit:Boolean},setup(u){const r=k(!1);return T({email:"",password:"",remember:!1}),(s,x)=>(l(),c(M,null,[o(d(E),{title:"Welcome"}),e("div",Pt,[Vt,e("header",Wt,[e("nav",It,[e("div",Ot,[e("div",Dt,[o(d(b),{href:"/",class:"text-2xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center"},{default:a(()=>[o(y)]),_:1})]),e("div",Gt,[o(w,{href:"#whytContractor",class:"hidden md:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8"},{default:a(()=>[t(" Why tContractor ")]),_:1}),o(d(b),{href:"#",class:"hidden lg:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8"},{default:a(()=>[t(" Contact Us ")]),_:1}),u.showit?(l(),c("div",Ut,[o(d(b),{href:s.route("post"),class:"block mt-3 mr-2 p-3 px-6 pt-2 font-bold rounded-xl text-white bg-green-600 hover:bg-green-800 border-green-600"},{default:a(()=>[t(" News Feed ")]),_:1},8,["href"])])):i("",!0),u.showit?i("",!0):(l(),c("div",qt,[o(w,{href:"#loginHere",class:"block mt-3 mr-2 p-3 px-6 pt-2 font-bold rounded-xl text-white bg-blue-800 hover:bg-green-800 border-2 shadow-lg border-green-600"},{default:a(()=>[t(" Login ")]),_:1})])),e("div",Yt,[e("button",{onClick:x[0]||(x[0]=p=>r.value=!r.value),class:"inline-flex items-center justify-center p-2 rounded-md text-black dark:text-white hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out"},[(l(),c("svg",Jt,[e("path",{class:j({hidden:r.value,"inline-flex":!r.value}),"stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2",d:"M4 6h16M4 12h16M4 18h16"},null,2),e("path",{class:j({hidden:!r.value,"inline-flex":r.value}),"stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2",d:"M6 18L18 6M6 6l12 12"},null,2)]))])])])]),e("div",{class:j([{block:r.value,hidden:!r.value},"absolute top-16 right-4 sm:right-6 lg:right-20 xl:right-32 2xl:right-80 z-30 px-3 text-left border-b border-gray-400 rounded-xl bg-gray-100 dark:border-gray-700 flex"])},[e("div",Kt,[e("div",Qt,[e("div",Zt,[u.showit?(l(),c("div",Xt,F(s.$page.props.auth.user.name),1)):i("",!0),u.showit?i("",!0):(l(),c("div",es,"Not Logged In"))]),u.showit?(l(),c("div",ts,F(s.$page.props.auth.user.email),1)):i("",!0)]),e("div",ss,[o(_,{href:"#whytContractor"},{default:a(()=>[t(" Why "),o(y)]),_:1}),u.showit?(l(),m(_,{key:0,href:s.route("post"),active:s.route().current("post"),class:"font-bold"},{default:a(()=>[t(" News Feed ")]),_:1},8,["href","active"])):i("",!0),o(_,{href:s.route("index")},{default:a(()=>[t(" Contact Us ")]),_:1},8,["href"]),o(_,{href:s.route("index")},{default:a(()=>[t(" About Us ")]),_:1},8,["href"])]),e("div",os,[e("div",ls,[u.showit?(l(),m(_,{key:0,href:s.route("profile.edit")},{default:a(()=>[t(" Profile ")]),_:1},8,["href"])):i("",!0),u.showit?(l(),m(_,{key:1,href:s.route("post"),active:s.route().current("post")},{default:a(()=>[t(" View Settings ")]),_:1},8,["href","active"])):i("",!0),u.showit?(l(),m(_,{key:2,href:s.route("logout"),method:"post",as:"button",onClick:x[1]||(x[1]=p=>r.value=!r.value)},{default:a(()=>[t(" Log Out ")]),_:1},8,["href"])):i("",!0),u.showit?i("",!0):(l(),m(_,{key:3,href:s.route("signup"),as:"button",class:"text-blue-rgba font-bold"},{default:a(()=>[t(" Sign Up ")]),_:1},8,["href"])),u.showit?i("",!0):(l(),m(_,{key:4,href:"#loginHere",as:"button",onClick:x[2]||(x[2]=p=>r.value=!r.value)},{default:a(()=>[t(" Log In ")]),_:1}))])])]),e("button",{onClick:x[3]||(x[3]=p=>r.value=!r.value),class:"inline-flex items-start justify-center p-2 rounded-md text-black dark:text-white hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out"},[(l(),c("svg",rs,[e("path",{class:j({hidden:!r.value,"inline-flex":r.value}),"stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2",d:"M6 18L18 6M6 6l12 12"},null,2)]))])],2)])]),e("section",null,[e("div",as,[e("div",is,[e("h2",ns,[o(y)]),ds,cs,o(d(b),{class:"group flex items-center justify-between rounded-xl border border-red-500 bg-red-500 px-5 py-3 mt-8 transition-colors hover:bg-red-800 focus:outline-none focus:ring",href:s.route("signup")},{default:a(()=>[us,xs]),_:1},8,["href"])])])]),e("section",hs,[e("div",fs,[u.showit?(l(),c("div",ps,[e("h2",ms,[t(" Why Do You need "),gs,e("span",vs,[o(y),t(" ?")])]),bs,_s])):i("",!0),u.showit?i("",!0):(l(),c("div",ws,[e("div",ys,[e("h2",ks,[t(" Why Do You need "),$s,e("span",Cs,[o(y),t(" ? ")])]),js,zs]),e("div",Fs,[Ms,o(ee)])]))])]),e("section",Ss,[o(Rt)]),e("section",Bs,[e("div",Ls,[e("div",Hs,[e("div",Ts,[e("div",Es,[o(d(b),{href:"/",class:"text-5xl md:text-6xl font-bold tracking-wide text-center"},{default:a(()=>[o(z)]),_:1})]),e("div",null,[e("ul",Ns,[As,Rs,Ps,Vs,Ws,Is,Os,e("li",Ds,[Gs,t(" \xA0- As contractors ourselves, seems like everyone is trying to sell us something at super - exorbitant prices! "),e("span",Us,[t("\xA0Not Here at\xA0 "),o(z)]),t("\xA0... useful tools, decently priced! ")])])])]),e("div",qs,[Ys,e("div",Js,[o(d(b),{href:s.route("signup"),class:"p-3 px-6 pt-2 text-red bg-white rounded-lg border-white border-spacing-3 shadow-2xl shadow-black align-baseline hover:text-white hover:bg-blue-30-rgba"},{default:a(()=>[t("Get Started ")]),_:1},8,["href"])])])])])]),e("footer",Ks,[e("div",Qs,[e("div",Zs,[Xs,e("div",null,[o(d(b),{href:"/",class:"text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center"},{default:a(()=>[o(z)]),_:1})]),eo]),to,e("div",so,[u.showit?i("",!0):(l(),c("div",oo,[o(d(b),{class:"group flex items-center justify-between rounded-xl border border-red-500 bg-red-500 px-5 py-3 mt-8 transition-colors hover:bg-red-800 focus:outline-none focus:ring",href:s.route("signup")},{default:a(()=>[lo,ro]),_:1},8,["href"])])),u.showit?(l(),c("div",ao,[o(d(b),{href:s.route("post"),class:"group flex items-center justify-between rounded-xl border border-green-600 bg-green-600 hover:bg-green-800 px-5 py-3 mt-8 transition-colors focus:outline-none focus:ring","preserve-scroll":""},{default:a(()=>[io,no]),_:1},8,["href"])])):i("",!0),co])])])])],64))}};export{yo as default};
+import {
+  f as l,
+  h as c,
+  A,
+  D as H,
+  u as R,
+  Z as T,
+  i as o,
+  j as d,
+  H as E,
+  l as a,
+  L as b,
+  B as F,
+  m as i,
+  n as e,
+  p as t,
+  z as j,
+  F as M,
+  r as k,
+  I as $,
+  J as C,
+  k as m,
+  $ as g,
+} from "./app.9755ce2a.js";
+import { _ as P } from "./Checkbox.544d2159.js";
+import { _ as S } from "./InputError.ec8a5011.js";
+import { _ as B } from "./InputLabel.aa21d361.js";
+import { _ as V } from "./PrimaryButton.bb59afa8.js";
+import { _ as L } from "./TextInput.0d7f8fae.js";
+import { t as y } from "./tContractorWord.dc451942.js";
+import { _ as N } from "./_plugin-vue_export-helper.cdc0426e.js";
+import "./compiler-core.esm-bundler.9cdafd63.js";
+import { _ } from "./ResponsiveNavLink.9bd1f854.js";
+const W = {
+    props: ["href"],
+    methods: {
+      scroll() {
+        document
+          .querySelector(this.href)
+          .scrollIntoView({ behavior: "smooth" });
+      },
+    },
+  },
+  I = ["href"];
+function O(u, r, s, x, p, h) {
+  return (
+    l(),
+    c(
+      "a",
+      {
+        href: s.href,
+        onClick:
+          r[0] || (r[0] = H((...f) => h.scroll && h.scroll(...f), ["prevent"])),
+      },
+      [A(u.$slots, "default")],
+      8,
+      I
+    )
+  );
+}
+const w = N(W, [["render", O]]),
+  D = e("span", { class: "text-green-500 italic font-serif" }, "t", -1),
+  G = e("span", { class: "text-indigo-900 font-extrabold font-sans" }, "C", -1),
+  U = e(
+    "span",
+    { class: "text-indigo-900 font-bold font-sans" },
+    "ontractor",
+    -1
+  ),
+  q = { key: 0, class: "mb-4 font-medium text-sm text-green-600" },
+  Y = ["onSubmit"],
+  J = { class: "mt-4" },
+  K = { class: "block mt-4" },
+  Q = { class: "flex items-center" },
+  Z = e("span", { class: "ml-2 text-sm text-gray-600 " }, "Remember me", -1),
+  X = { class: "flex items-center justify-end mt-4" },
+  ee = {
+    __name: "TC_LoginForm",
+    props: {
+      canResetPassword: Boolean,
+      status: String,
+      canLogin: Boolean,
+      canRegister: Boolean,
+      laravelVersion: String,
+      phpVersion: String,
+    },
+    setup(u) {
+      const r = R(),
+        s = T({ email: "", password: "", remember: !1 }),
+        x = () => {
+          console.log("here"),
+            s.post(route("login"), {
+              onSuccess: async () => {
+                console.log("here2"), await r.dispatch("getToken");
+              },
+              onFinish: () => s.reset("password"),
+            });
+        };
+      return (p, h) => (
+        l(),
+        c(
+          M,
+          null,
+          [
+            o(d(E), { title: "Log in" }),
+            o(
+              d(b),
+              {
+                href: "/",
+                class:
+                  "text-2xl sm:text-3xl md:text-3xl font-bold tracking-wide text-center",
+              },
+              { default: a(() => [D, G, U]), _: 1 }
+            ),
+            u.status ? (l(), c("div", q, F(u.status), 1)) : i("", !0),
+            e(
+              "form",
+              { onSubmit: H(x, ["prevent"]) },
+              [
+                e("div", null, [
+                  o(B, { for: "email", value: "Email" }),
+                  o(
+                    L,
+                    {
+                      id: "email",
+                      type: "email",
+                      class: "mt-1 block w-full",
+                      modelValue: d(s).email,
+                      "onUpdate:modelValue":
+                        h[0] || (h[0] = (f) => (d(s).email = f)),
+                      required: "",
+                      autofocus: "",
+                      autocomplete: "username",
+                    },
+                    null,
+                    8,
+                    ["modelValue"]
+                  ),
+                  o(S, { class: "mt-2", message: d(s).errors.email }, null, 8, [
+                    "message",
+                  ]),
+                ]),
+                e("div", J, [
+                  o(B, { for: "password", value: "Password" }),
+                  o(
+                    L,
+                    {
+                      id: "password",
+                      type: "password",
+                      class: "mt-1 block w-full",
+                      modelValue: d(s).password,
+                      "onUpdate:modelValue":
+                        h[1] || (h[1] = (f) => (d(s).password = f)),
+                      required: "",
+                      autocomplete: "current-password",
+                    },
+                    null,
+                    8,
+                    ["modelValue"]
+                  ),
+                  o(
+                    S,
+                    { class: "mt-2", message: d(s).errors.password },
+                    null,
+                    8,
+                    ["message"]
+                  ),
+                ]),
+                e("div", K, [
+                  e("label", Q, [
+                    o(
+                      P,
+                      {
+                        name: "remember",
+                        checked: d(s).remember,
+                        "onUpdate:checked":
+                          h[2] || (h[2] = (f) => (d(s).remember = f)),
+                      },
+                      null,
+                      8,
+                      ["checked"]
+                    ),
+                    Z,
+                  ]),
+                ]),
+                e("div", X, [
+                  o(
+                    d(b),
+                    {
+                      href: p.route("password.request"),
+                      class:
+                        "underline text-sm text-gray-600  hover:text-gray-900  rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ",
+                    },
+                    { default: a(() => [t(" Forgot your password? ")]), _: 1 },
+                    8,
+                    ["href"]
+                  ),
+                  o(
+                    V,
+                    {
+                      class: j(["ml-4", { "opacity-25": d(s).processing }]),
+                      disabled: d(s).processing,
+                    },
+                    { default: a(() => [t(" Log in ")]), _: 1 },
+                    8,
+                    ["class", "disabled"]
+                  ),
+                ]),
+              ],
+              40,
+              Y
+            ),
+          ],
+          64
+        )
+      );
+    },
+  },
+  te = {},
+  se = e(
+    "span",
+    { class: "text-green-rgba font-extrabold italic font-serif normal-case" },
+    "t",
+    -1
+  ),
+  oe = e("span", { class: "text-white font-extrabold font-sans" }, "C", -1),
+  le = e("span", { class: "text-white font-bold font-sans" }, "ontractor", -1);
+function re(u, r) {
+  return l(), c(M, null, [se, oe, le], 64);
+}
+const z = N(te, [["render", re]]),
+  ae = { class: "bg-white " },
+  ie = { class: "container px-6 py-10 mx-auto" },
+  ne = e(
+    "h1",
+    {
+      class: "text-3xl font-semibold text-gray-800 capitalize lg:text-4xl ",
+    },
+    [
+      t(" explore our "),
+      e("br"),
+      e(
+        "span",
+        { class: "underline underline-offset-8 decoration-blue-rgba" },
+        " Game-Changing Tools "
+      ),
+    ],
+    -1
+  ),
+  de = e(
+    "p",
+    {
+      class: "text-2xl capitalize mt-4 text-gray-600 xl:mt-6 ",
+    },
+    " more business - more profit - less hassles ",
+    -1
+  ),
+  ce = {
+    class:
+      "grid grid-cols-1 gap-8 mt-8 xl:mt-12 xl:gap-16 md:grid-cols-2 xl:grid-cols-3",
+  },
+  ue = { class: "", id: "newsFeedFeature" },
+  xe = g(
+    '<div class="flex flex-row justify-start items-center"><div class="inline-block p-3 text-blue-500 bg-blue-100 rounded-full  "><img src="/images/icons/news_view.png" width="40" height="40"></div><div class="flex w-4/5 flex-col justify-center items-start"><h1 class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase "> news feed </h1></div></div>',
+    1
+  ),
+  he = { class: "flex flex-row justify-start items-start" },
+  fe = e("div", { class: "w-1/5" }, null, -1),
+  pe = { class: "flex w-4/5 flex-col justify-start" },
+  me = e(
+    "div",
+    {
+      class: "pl-4 text-xl text-black font-semibold capitalize tracking-tight",
+    },
+    [
+      e("h2", null, "Want To BID on JOBS?"),
+      e("h2", { class: "pl-4" }, "Looking For WORK?"),
+      e("h2", { class: "pl-8" }, "...For SUBS? ...INFO?"),
+    ],
+    -1
+  ),
+  ge = e(
+    "p",
+    {
+      class:
+        "mt-1 text-xl font-bold italic tracking-tighter text-red-600 uppercase",
+    },
+    " The ACTION Starts Here! ",
+    -1
+  ),
+  ve = g(
+    '<p class="pt-2 font-semibold text-slate-700 capitalize"> See postings from other contractors, locally, city wide or the region! </p><p class="pt-2 font-semibold text-blue-700 capitalize"> See what jobs you can bid on, who to hire or not, and who to stay away from! looking for work, you&#39;ll find plenty of opportunities here! </p><p class="pt-2 font-semibold text-slate-700 capitalize"> Hear and see the latest &quot;happenings&quot; from other contractors, in your locale area or from around the country! </p><p class="pt-2 font-semibold text-slate-700 capitalize"> Got Some Questions on tough projects? Put it on the FEED, Find out from other experts what may be the best route for you! </p><p class="-ml-4 pt-2 text-lg font-bold italic text-red-600 capitalize"> Visit Often - Hourly/Daily </p><p class="pt-2 text-lg font-bold italic text-blue-rgba capitalize text-center"> Private - For Members Only! </p>',
+    6
+  ),
+  be = [ve],
+  _e = e(
+    "svg",
+    {
+      class: "w-4 h-4 mx-1 rtl:-scale-x-100",
+      fill: "currentColor",
+      viewBox: "0 0 20 20",
+      xmlns: "http://www.w3.org/2000/svg",
+    },
+    [
+      e("path", {
+        "fill-rule": "evenodd",
+        d: "M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z",
+        "clip-rule": "evenodd",
+      }),
+    ],
+    -1
+  ),
+  we = e(
+    "svg",
+    {
+      class: "w-4 h-4 mx-1 rtl:-scale-x-100",
+      fill: "currentColor",
+      viewBox: "0 0 20 20",
+      xmlns: "http://www.w3.org/2000/svg",
+    },
+    [
+      e("path", {
+        "fill-rule": "evenodd",
+        transform: "scale(-1,-1) translate(-24,-20)",
+        d: "M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z",
+        "clip-rule": "evenodd",
+      }),
+    ],
+    -1
+  ),
+  ye = { class: "", id: "subFinderFeature" },
+  ke = g(
+    '<div class="flex flex-row justify-start items-center"><div class="inline-block p-3 text-blue-500 bg-blue-100 rounded-full  "><img src="/images/icons/contractor.png" width="40" height="40"></div><div class="flex w-4/5 flex-col justify-center items-start"><h1 class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase "> sub finder </h1></div></div>',
+    1
+  ),
+  $e = { class: "flex flex-row justify-start items-start" },
+  Ce = e("div", { class: "w-1/5" }, null, -1),
+  je = { class: "flex w-4/5 flex-col justify-start" },
+  ze = e(
+    "div",
+    {
+      class: "pl-4 text-xl text-black font-semibold capitalize tracking-tight",
+    },
+    [
+      e("h2", null, "Need To Hire Someone?"),
+      e("h2", { class: "pl-4" }, "Hire with confidence!"),
+      e(
+        "h2",
+        { class: "pl-8 text-lg" },
+        " Subs, Contractors, Talent, Engineers & Temps "
+      ),
+    ],
+    -1
+  ),
+  Fe = e(
+    "p",
+    {
+      class:
+        "mt-1 text-xl font-bold italic tracking-tighter text-red-600 uppercase",
+    },
+    " Rated By Their Peers! ",
+    -1
+  ),
+  Me = e(
+    "ul",
+    { class: "pt-2 text-md font-semibold text-slate-700 capitalize list-disc" },
+    [
+      e("li", null, "Con't find a contractor or a sub?"),
+      e("li", null, "Who do you trust?"),
+      e(
+        "li",
+        null,
+        " Ever hire a sub only to have them try and renegotiate the deal... or disappear? "
+      ),
+      e("li", null, "Ever hire a contractor who just did a bad job?"),
+      e("li", null, "Ever got stiffed by someone who hired you?"),
+      e("li", null, "Who do you trust to represent your name?"),
+    ],
+    -1
+  ),
+  Se = e(
+    "span",
+    { class: "pt-2 text-blue-700 font-bold -ml-4" },
+    [t("Do you want to be"), e("br")],
+    -1
+  ),
+  Be = e(
+    "span",
+    { class: "text-blue-700 font-bold -ml-4" },
+    "confident in your next hire?",
+    -1
+  ),
+  Le = { class: "text-md font-semibold text-blue-700 capitalize list-disc" },
+  He = e(
+    "li",
+    null,
+    " Hire A Contractor Reviewed By Your Peers! Not Bogus review companies or even their buddies! ",
+    -1
+  ),
+  Te = e(
+    "li",
+    null,
+    " Hire a Sub who has demonstrated integrity, gets the job done - the right way - the first time, at the price agreed! ",
+    -1
+  ),
+  Ee = e("span", { class: "font-bold underline" }, "No fake ratings Here!", -1),
+  Ne = e(
+    "li",
+    null,
+    " Need to find a sub, electrician, plumber for a job across town ",
+    -1
+  ),
+  Ae = g(
+    '<p class="pt-2 text-center font-bold text-red-600 uppercase"> Hiring with confidence makes all the difference in the world! </p><p class="text-center font-semibold text-red-600 capitalize"> Saves Time, Saves Headaches </p><p class="text-center font-semibold text-red-600 capitalize"> Allows Time To Take On More Jobs </p><p class="text-center font-semibold text-red-600 capitalize"> When Your subs do a great job.. you both look great and you make more money! </p><p class="text-center font-bold text-red-600 uppercase"> GET peace of mind &amp; higher profits </p>',
+    5
+  ),
+  Re = e(
+    "svg",
+    {
+      class: "w-4 h-4 mx-1 rtl:-scale-x-100",
+      fill: "currentColor",
+      viewBox: "0 0 20 20",
+      xmlns: "http://www.w3.org/2000/svg",
+    },
+    [
+      e("path", {
+        "fill-rule": "evenodd",
+        d: "M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z",
+        "clip-rule": "evenodd",
+      }),
+    ],
+    -1
+  ),
+  Pe = e(
+    "svg",
+    {
+      class: "w-4 h-4 mx-1 rtl:-scale-x-100",
+      fill: "currentColor",
+      viewBox: "0 0 20 20",
+      xmlns: "http://www.w3.org/2000/svg",
+    },
+    [
+      e("path", {
+        "fill-rule": "evenodd",
+        transform: "scale(-1,-1) translate(-24,-20)",
+        d: "M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z",
+        "clip-rule": "evenodd",
+      }),
+    ],
+    -1
+  ),
+  Ve = { class: "", id: "customerCheckFeature" },
+  We = g(
+    '<div class="flex flex-row justify-start items-center"><div class="inline-block p-3 text-blue-500 bg-blue-100 rounded-full  "><img src="/images/icons/redflag.png" width="40" height="40"></div><div class="flex w-4/5 flex-col justify-center items-start"><h1 class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase "> Red Flag Customers </h1></div></div>',
+    1
+  ),
+  Ie = { class: "flex flex-row justify-start items-start" },
+  Oe = e("div", { class: "w-1/5" }, null, -1),
+  De = { class: "flex w-4/5 flex-col justify-start" },
+  Ge = e(
+    "div",
+    {
+      class:
+        "pl-4 text-xl text-blue-700 text-center font-bold uppercase tracking-tight",
+    },
+    [
+      e("h2", null, [t("The Customer Is"), e("br"), t("Always Right")]),
+      e("h2", { class: "capitalize text-black" }, [
+        t(" All Customers are"),
+        e("br"),
+        t("Great... RIGHT? "),
+      ]),
+    ],
+    -1
+  ),
+  Ue = e(
+    "p",
+    {
+      class:
+        "mt-1 text-3xl text-center font-bold italic tracking-tighter text-red-600 uppercase",
+    },
+    " not! ",
+    -1
+  ),
+  qe = g(
+    '<ul class="pt-2 text-md font-semibold text-slate-700 capitalize list-disc"><li> Ever had one of those customer&#39;s from <i>&quot;You Know Where&quot;</i>? </li><li> How about the customer who insist on renegotiating after the deal... after the work is completed? </li><li>How about slow-payers... never pay customers?</li><li>Unfair reviewers... and those Hostage Reviews?</li><li>Ever had an Unrealistic or difficult customers?</li></ul><p class="-ml-4 pt-3 text-blue-700 font-bold capitalize"> We&#39;ve all had those good customers, even great customers! THIS LIST IS NOT FOR THEM. <span class="text-red-700">This List Is for those customers you would not wish on your worst enemy... those customers that take advantage of you more than most... </span></p><p class="pt-3 text-blue-700 font-bold capitalize"> We call these people </p><p class="text-red-800 text-2xl text-center uppercase font-extrabold"> &quot;RED FLAGS&quot; </p><p class="-ml-4 pt-3 text-blue-700 font-bold capitalize"> if you&#39;ve been in business long enough, you know that <span class="text-red-700"> NOT all customers</span> are good for you. </p><p class="pt-2 font-medium -ml-4 capitalize"> As a contractor, you&#39;re always under review, now here&#39;s your chance to <span class="text-red-700 font-bold">Keep them accountable for their underhanded play - review them yourselves!</span></p><p class="-ml-4 pt-4 text-blue-rgba text-center uppercase font-extrabold"> Don&#39;t Loose Money or your reputation... Make More Money &amp; Better Peace of Mind... </p><p class="-ml-4 pt-3 text-xl text-rose-700 text-center uppercase font-extrabold"> Check your prospective customer out before agreeing to a deal! </p>',
+    8
+  ),
+  Ye = [qe],
+  Je = e(
+    "svg",
+    {
+      class: "w-4 h-4 mx-1 rtl:-scale-x-100",
+      fill: "currentColor",
+      viewBox: "0 0 20 20",
+      xmlns: "http://www.w3.org/2000/svg",
+    },
+    [
+      e("path", {
+        "fill-rule": "evenodd",
+        d: "M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z",
+        "clip-rule": "evenodd",
+      }),
+    ],
+    -1
+  ),
+  Ke = e(
+    "svg",
+    {
+      class: "w-4 h-4 mx-1 rtl:-scale-x-100",
+      fill: "currentColor",
+      viewBox: "0 0 20 20",
+      xmlns: "http://www.w3.org/2000/svg",
+    },
+    [
+      e("path", {
+        "fill-rule": "evenodd",
+        transform: "scale(-1,-1) translate(-24,-20)",
+        d: "M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z",
+        "clip-rule": "evenodd",
+      }),
+    ],
+    -1
+  ),
+  Qe = { class: "", id: "contractorPageFeature" },
+  Ze = g(
+    '<div class="flex flex-row justify-start items-center"><div class="inline-block p-3 text-blue-500 bg-blue-100 rounded-full  "><img src="/images/icons/contractorpage.png" width="40" height="40"></div><div class="flex w-4/5 flex-col justify-center items-start"><h1 class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase "> Contractor Page </h1></div></div>',
+    1
+  ),
+  Xe = { class: "flex flex-row justify-start items-start" },
+  et = e("div", { class: "w-1/5" }, null, -1),
+  tt = { class: "flex w-4/5 flex-col justify-start" },
+  st = e(
+    "div",
+    {
+      class: "pl-4 text-xl text-black font-semibold capitalize tracking-tight",
+    },
+    [
+      e("h2", null, [t("Help other contractors"), e("br"), t("find you")]),
+      e("h2", { class: "pl-4" }, "Free Advertisement!"),
+      e("h2", { class: "pl-8" }, "Quick & Easy!"),
+    ],
+    -1
+  ),
+  ot = e(
+    "p",
+    {
+      class:
+        "mt-1 text-xl font-bold italic tracking-tighter text-red-600 uppercase",
+    },
+    " be a show off here! ",
+    -1
+  ),
+  lt = e(
+    "ul",
+    { class: "pt-2 text-md font-semibold text-slate-700 capitalize list-disc" },
+    [
+      e(
+        "li",
+        null,
+        " Advertise your services to other contractors looking to hire or sub out! "
+      ),
+      e("li", null, "Show off your work through images & video."),
+      e("li", null, "quick and easy setup!"),
+    ],
+    -1
+  ),
+  rt = e(
+    "p",
+    { class: "-ml-4 pt-3 text-blue-rgba text-center uppercase font-extrabold" },
+    " FREE advertisement to your local areas ",
+    -1
+  ),
+  at = e(
+    "p",
+    {
+      class:
+        "-ml-4 pt-4 text-xl text-rose-700 text-center uppercase font-extrabold",
+    },
+    " ridiculously low cost advertisement! ",
+    -1
+  ),
+  it = e(
+    "p",
+    {
+      class:
+        "-ml-4 text-lg text-blue-rgba text-center capitalize font-extrabold",
+    },
+    " ... As low as $5 bucks for larger advertisement areas ",
+    -1
+  ),
+  nt = [lt, rt, at, it],
+  dt = e(
+    "svg",
+    {
+      class: "w-4 h-4 mx-1 rtl:-scale-x-100",
+      fill: "currentColor",
+      viewBox: "0 0 20 20",
+      xmlns: "http://www.w3.org/2000/svg",
+    },
+    [
+      e("path", {
+        "fill-rule": "evenodd",
+        d: "M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z",
+        "clip-rule": "evenodd",
+      }),
+    ],
+    -1
+  ),
+  ct = e(
+    "svg",
+    {
+      class: "w-4 h-4 mx-1 rtl:-scale-x-100",
+      fill: "currentColor",
+      viewBox: "0 0 20 20",
+      xmlns: "http://www.w3.org/2000/svg",
+    },
+    [
+      e("path", {
+        "fill-rule": "evenodd",
+        transform: "scale(-1,-1) translate(-24,-20)",
+        d: "M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z",
+        "clip-rule": "evenodd",
+      }),
+    ],
+    -1
+  ),
+  ut = { class: "", id: "mentoringFeature" },
+  xt = g(
+    '<div class="flex flex-row justify-start items-center"><div class="inline-block p-3 text-blue-500 bg-blue-100 rounded-full  "><img src="/images/icons/mentor.png" width="40" height="40"></div><div class="flex w-4/5 flex-col justify-center items-start"><h1 class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase "> Mentoring </h1></div></div>',
+    1
+  ),
+  ht = { class: "flex flex-row justify-start items-start" },
+  ft = e("div", { class: "w-1/5" }, null, -1),
+  pt = { class: "flex w-4/5 flex-col justify-start" },
+  mt = e(
+    "div",
+    {
+      class:
+        "pl-4 text-xl text-blue-700 text-center font-semibold uppercase tracking-tight",
+    },
+    [
+      e("h2", null, "Don't Fool Yourselves"),
+      e("h2", { class: "capitalize text-black" }, [
+        t(
+          " ... Even the best companies & business managers can ALWAYS use a little "
+        ),
+        e("br"),
+        e("i", null, "(or alot)"),
+        t(" of mentoring! "),
+      ]),
+    ],
+    -1
+  ),
+  gt = e(
+    "p",
+    {
+      class:
+        "mt-1 text-lg text-center font-bold italic tracking-tighter text-red-600 uppercase",
+    },
+    " Free & Valuable Service ",
+    -1
+  ),
+  vt = e(
+    "p",
+    { class: "-ml-4 pt-3 text-blue-rgba uppercase font-extrabold" },
+    " tContractor provides this Free service by a renowned Master business strategist ",
+    -1
+  ),
+  bt = e(
+    "ul",
+    {
+      class:
+        "ml-2 pt-2 pl-3 text-md font-semibold text-slate-700 capitalize list-disc",
+    },
+    [
+      e("li", { class: "" }, "Daily Motivations & Encouragements."),
+      e("li", null, "Sales Insights."),
+      e("li", null, "Sales Techniques."),
+      e("li", null, "Best Practices & Habits."),
+    ],
+    -1
+  ),
+  _t = e(
+    "p",
+    {
+      class:
+        "-ml-4 pt-4 text-xl text-rose-700 text-center uppercase font-extrabold",
+    },
+    " Better Business = Higher Profits & Peace Of Mind! ",
+    -1
+  ),
+  wt = [vt, bt, _t],
+  yt = e(
+    "svg",
+    {
+      class: "w-4 h-4 mx-1 rtl:-scale-x-100",
+      fill: "currentColor",
+      viewBox: "0 0 20 20",
+      xmlns: "http://www.w3.org/2000/svg",
+    },
+    [
+      e("path", {
+        "fill-rule": "evenodd",
+        d: "M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z",
+        "clip-rule": "evenodd",
+      }),
+    ],
+    -1
+  ),
+  kt = e(
+    "svg",
+    {
+      class: "w-4 h-4 mx-1 rtl:-scale-x-100",
+      fill: "currentColor",
+      viewBox: "0 0 20 20",
+      xmlns: "http://www.w3.org/2000/svg",
+    },
+    [
+      e("path", {
+        "fill-rule": "evenodd",
+        transform: "scale(-1,-1) translate(-24,-20)",
+        d: "M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z",
+        "clip-rule": "evenodd",
+      }),
+    ],
+    -1
+  ),
+  $t = { class: "", id: "newFeatures" },
+  Ct = g(
+    '<div class="flex flex-row justify-start items-center"><div class="inline-block p-3 text-blue-500 bg-blue-100 rounded-full  "><img src="/images/icons/under_construc.png" width="40" height="40"></div><div class="flex w-4/5 flex-col justify-center items-start"><h1 class="pl-2 text-2xl min-[450px]:text-3xl sm:text-3xl font-bold text-gray-700 uppercase "> NEW FEATURES<br>COMING SOON! </h1></div></div>',
+    1
+  ),
+  jt = { class: "flex flex-row justify-start items-start" },
+  zt = e("div", { class: "w-1/5" }, null, -1),
+  Ft = { class: "flex w-4/5 flex-col justify-start" },
+  Mt = {
+    class:
+      "pl-4 text-xl text-blue-700 text-center font-bold capitalize tracking-tight",
+  },
+  St = e("br", null, null, -1),
+  Bt = e(
+    "p",
+    {
+      class:
+        "mt-1 text-lg text-center font-bold italic tracking-tighter text-red-600 uppercase",
+    },
+    [t(" Always Free"), e("br"), t("Never an upcharge! ")],
+    -1
+  ),
+  Lt = e(
+    "h2",
+    { class: "capitalize text-black" },
+    " tContractor is always adding new features ",
+    -1
+  ),
+  Ht = { class: "-ml-4 pt-3 text-blue-rgba capitalize font-extrabold" },
+  Tt = e(
+    "span",
+    { class: "uppercase text-rose-700" },
+    "better contruction business!",
+    -1
+  ),
+  Et = e(
+    "p",
+    {
+      class:
+        "-ml-4 pt-4 text-xl text-rose-700 text-center uppercase font-extrabold",
+    },
+    " NEVER AN UPCHARGE FOR NEW FEATURES ",
+    -1
+  ),
+  Nt = e(
+    "svg",
+    {
+      class: "w-4 h-4 mx-1 rtl:-scale-x-100",
+      fill: "currentColor",
+      viewBox: "0 0 20 20",
+      xmlns: "http://www.w3.org/2000/svg",
+    },
+    [
+      e("path", {
+        "fill-rule": "evenodd",
+        d: "M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z",
+        "clip-rule": "evenodd",
+      }),
+    ],
+    -1
+  ),
+  At = e(
+    "svg",
+    {
+      class: "w-4 h-4 mx-1 rtl:-scale-x-100",
+      fill: "currentColor",
+      viewBox: "0 0 20 20",
+      xmlns: "http://www.w3.org/2000/svg",
+    },
+    [
+      e("path", {
+        "fill-rule": "evenodd",
+        transform: "scale(-1,-1) translate(-24,-20)",
+        d: "M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z",
+        "clip-rule": "evenodd",
+      }),
+    ],
+    -1
+  ),
+  Rt = {
+    __name: "FeaturesGrid",
+    setup(u) {
+      const r = k(!1),
+        s = k(!1),
+        x = k(!1),
+        p = k(!1),
+        h = k(!1),
+        f = k(!1);
+      return (uo, n) => (
+        l(),
+        c("section", ae, [
+          e("div", ie, [
+            ne,
+            de,
+            e("div", ce, [
+              e("div", ue, [
+                xe,
+                e("div", he, [
+                  fe,
+                  e("div", pe, [
+                    me,
+                    ge,
+                    $(e("div", null, be, 512), [[C, r.value]]),
+                    r.value
+                      ? i("", !0)
+                      : (l(),
+                        c(
+                          "button",
+                          {
+                            key: 0,
+                            onClick:
+                              n[0] || (n[0] = (v) => (r.value = !r.value)),
+                            class:
+                              "inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform  hover:underline hover:text-blue-600 ",
+                          },
+                          [t(" More "), _e]
+                        )),
+                    r.value
+                      ? (l(),
+                        m(
+                          w,
+                          {
+                            key: 1,
+                            href: "#newsFeedFeature",
+                            onClick:
+                              n[1] || (n[1] = (v) => (r.value = !r.value)),
+                            class:
+                              "inline-flex items-center -mx-1 text-md text-teal-500 capitalize transition-colors duration-300 transform  hover:underline hover:text-teal-600 ",
+                          },
+                          { default: a(() => [we, t(" Less ")]), _: 1 }
+                        ))
+                      : i("", !0),
+                  ]),
+                ]),
+              ]),
+              e("div", ye, [
+                ke,
+                e("div", $e, [
+                  Ce,
+                  e("div", je, [
+                    ze,
+                    Fe,
+                    $(
+                      e(
+                        "div",
+                        null,
+                        [
+                          Me,
+                          Se,
+                          Be,
+                          e("ul", Le, [
+                            He,
+                            Te,
+                            e("li", null, [
+                              o(y),
+                              t(" has it's own private rating system! "),
+                              Ee,
+                              t(" Know what your getting into! "),
+                            ]),
+                            Ne,
+                          ]),
+                          Ae,
+                        ],
+                        512
+                      ),
+                      [[C, s.value]]
+                    ),
+                    s.value
+                      ? i("", !0)
+                      : (l(),
+                        c(
+                          "button",
+                          {
+                            key: 0,
+                            onClick:
+                              n[2] || (n[2] = (v) => (s.value = !s.value)),
+                            class:
+                              "inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform  hover:underline hover:text-blue-600 ",
+                          },
+                          [t(" More "), Re]
+                        )),
+                    s.value
+                      ? (l(),
+                        m(
+                          w,
+                          {
+                            key: 1,
+                            href: "#subFinderFeature",
+                            onClick:
+                              n[3] || (n[3] = (v) => (s.value = !s.value)),
+                            class:
+                              "inline-flex items-center -mx-1 text-md text-teal-500 capitalize transition-colors duration-300 transform  hover:underline hover:text-teal-600 ",
+                          },
+                          { default: a(() => [Pe, t(" Less ")]), _: 1 }
+                        ))
+                      : i("", !0),
+                  ]),
+                ]),
+              ]),
+              e("div", Ve, [
+                We,
+                e("div", Ie, [
+                  Oe,
+                  e("div", De, [
+                    Ge,
+                    Ue,
+                    $(e("div", null, Ye, 512), [[C, x.value]]),
+                    x.value
+                      ? i("", !0)
+                      : (l(),
+                        c(
+                          "button",
+                          {
+                            key: 0,
+                            onClick:
+                              n[4] || (n[4] = (v) => (x.value = !x.value)),
+                            class:
+                              "inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform  hover:underline hover:text-blue-600 ",
+                          },
+                          [t(" More "), Je]
+                        )),
+                    x.value
+                      ? (l(),
+                        m(
+                          w,
+                          {
+                            key: 1,
+                            href: "#customerCheckFeature",
+                            onClick:
+                              n[5] || (n[5] = (v) => (x.value = !x.value)),
+                            class:
+                              "inline-flex items-center -mx-1 text-md text-teal-500 capitalize transition-colors duration-300 transform  hover:underline hover:text-teal-600 ",
+                          },
+                          { default: a(() => [Ke, t(" Less ")]), _: 1 }
+                        ))
+                      : i("", !0),
+                  ]),
+                ]),
+              ]),
+              e("div", Qe, [
+                Ze,
+                e("div", Xe, [
+                  et,
+                  e("div", tt, [
+                    st,
+                    ot,
+                    $(e("div", null, nt, 512), [[C, p.value]]),
+                    p.value
+                      ? i("", !0)
+                      : (l(),
+                        c(
+                          "button",
+                          {
+                            key: 0,
+                            onClick:
+                              n[6] || (n[6] = (v) => (p.value = !p.value)),
+                            class:
+                              "inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform  hover:underline hover:text-blue-600 ",
+                          },
+                          [t(" More "), dt]
+                        )),
+                    p.value
+                      ? (l(),
+                        m(
+                          w,
+                          {
+                            key: 1,
+                            href: "#contractorPageFeature",
+                            onClick:
+                              n[7] || (n[7] = (v) => (p.value = !p.value)),
+                            class:
+                              "inline-flex items-center -mx-1 text-md text-teal-500 capitalize transition-colors duration-300 transform  hover:underline hover:text-teal-600 ",
+                          },
+                          { default: a(() => [ct, t(" Less ")]), _: 1 }
+                        ))
+                      : i("", !0),
+                  ]),
+                ]),
+              ]),
+              e("div", ut, [
+                xt,
+                e("div", ht, [
+                  ft,
+                  e("div", pt, [
+                    mt,
+                    gt,
+                    $(e("div", null, wt, 512), [[C, h.value]]),
+                    h.value
+                      ? i("", !0)
+                      : (l(),
+                        c(
+                          "button",
+                          {
+                            key: 0,
+                            onClick:
+                              n[8] || (n[8] = (v) => (h.value = !h.value)),
+                            class:
+                              "inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform  hover:underline hover:text-blue-600 ",
+                          },
+                          [t(" More "), yt]
+                        )),
+                    h.value
+                      ? (l(),
+                        m(
+                          w,
+                          {
+                            key: 1,
+                            href: "#mentoringFeature",
+                            onClick:
+                              n[9] || (n[9] = (v) => (h.value = !h.value)),
+                            class:
+                              "inline-flex items-center -mx-1 text-md text-teal-500 capitalize transition-colors duration-300 transform  hover:underline hover:text-teal-600 ",
+                          },
+                          { default: a(() => [kt, t(" Less ")]), _: 1 }
+                        ))
+                      : i("", !0),
+                  ]),
+                ]),
+              ]),
+              e("div", $t, [
+                Ct,
+                e("div", jt, [
+                  zt,
+                  e("div", Ft, [
+                    e("div", Mt, [
+                      e("h2", null, [
+                        o(y),
+                        t(" is built & managed by contractors,"),
+                        St,
+                        t("for contractors & sub-contractors! "),
+                      ]),
+                    ]),
+                    Bt,
+                    $(
+                      e(
+                        "div",
+                        null,
+                        [
+                          Lt,
+                          e("p", Ht, [
+                            o(y),
+                            t(
+                              " wants to be the most important tool in the toolbox! We are always looking to improve, upgrade our services to you for a "
+                            ),
+                            Tt,
+                          ]),
+                          Et,
+                        ],
+                        512
+                      ),
+                      [[C, f.value]]
+                    ),
+                    f.value
+                      ? i("", !0)
+                      : (l(),
+                        c(
+                          "button",
+                          {
+                            key: 0,
+                            onClick:
+                              n[10] || (n[10] = (v) => (f.value = !f.value)),
+                            class:
+                              "inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform  hover:underline hover:text-blue-600 ",
+                          },
+                          [t(" More "), Nt]
+                        )),
+                    f.value
+                      ? (l(),
+                        m(
+                          w,
+                          {
+                            key: 1,
+                            href: "#newFeatures",
+                            onClick:
+                              n[11] || (n[11] = (v) => (f.value = !f.value)),
+                            class:
+                              "inline-flex items-center -mx-1 text-md text-teal-500 capitalize transition-colors duration-300 transform  hover:underline hover:text-teal-600 ",
+                          },
+                          { default: a(() => [At, t(" Less ")]), _: 1 }
+                        ))
+                      : i("", !0),
+                  ]),
+                ]),
+              ]),
+            ]),
+          ]),
+        ])
+      );
+    },
+  };
+const Pt = { class: "relative h-screen bg-white" },
+  Vt = e(
+    "img",
+    {
+      src: "/images/pages/bg_a_xl_white.jpg",
+      class: "absolute object-cover w-full h-full",
+    },
+    null,
+    -1
+  ),
+  Wt = { class: "absolute top-0 left-0 right-0 z-20 bg-blue-30-rgba" },
+  It = { class: "container max-w-7xl px-6 py-2 mx-auto md:px-12" },
+  Ot = { class: "flex items-center justify-between" },
+  Dt = { class: "flex items-center justify-start" },
+  Gt = { class: "flex items-baseline justify-end" },
+  Ut = { key: 0 },
+  qt = { key: 1 },
+  Yt = { class: "-mr-2 flex items-center" },
+  Jt = {
+    class: "h-6 w-6",
+    stroke: "currentColor",
+    fill: "none",
+    viewBox: "0 0 24 24",
+  },
+  Kt = { class: "" },
+  Qt = {
+    class: "pt-4 pb-2 ml-3 border-b-2 border-gray-400 ",
+  },
+  Zt = { class: "font-bold text-base text-gray-800 " },
+  Xt = { key: 0 },
+  es = { key: 1 },
+  ts = { key: 0, class: "font-medium text-sm text-gray-500" },
+  ss = { class: "pt-2 pb-3 space-y-1" },
+  os = { class: "pt-4 pb-1 border-t-2 border-gray-400 " },
+  ls = { class: "mt-3 space-y-1" },
+  rs = {
+    class: "h-6 w-6",
+    stroke: "currentColor",
+    fill: "none",
+    viewBox: "0 0 24 24",
+  },
+  as = {
+    class:
+      "container relative max-w-7xl z-10 flex items-center px-6 pt-32 pb-5 mx-auto md:px-10 xl:py-30",
+  },
+  is = {
+    class:
+      "relative z-10 flex flex-col items-start min-[500px]:w-3/5 md:w-3/5 xl:w-2/5 bg-blue-30-rgba rounded-xl border border-blue-rgba shadow-lg p-2 py-4 px-4",
+  },
+  ns = { class: "sm:hidden text-4xl font-bold tracking-wide text-center" },
+  ds = e(
+    "span",
+    { class: "font-bold text-slate-300 uppercase" },
+    " Better Construction! ",
+    -1
+  ),
+  cs = e(
+    "h1",
+    {
+      class:
+        "mt-4 text-4xl sm:text-5xl font-bold text-white tracking-tighter capitalize",
+    },
+    " Want access to the most powerful tool in construction? ",
+    -1
+  ),
+  us = e(
+    "span",
+    {
+      class:
+        "text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500",
+    },
+    " Get Started ",
+    -1
+  ),
+  xs = e(
+    "span",
+    {
+      class:
+        "ml-4 flex-shrink-0 rounded-full border border-current bg-white p-2 text-indigo-600 group-active:text-indigo-500",
+    },
+    [
+      e(
+        "svg",
+        {
+          class: "h-5 w-5",
+          xmlns: "http://www.w3.org/2000/svg",
+          fill: "none",
+          viewBox: "0 0 24 24",
+          stroke: "currentColor",
+        },
+        [
+          e("path", {
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+            "stroke-width": "2",
+            d: "M17 8l4 4m0 0l-4 4m4-4H3",
+          }),
+        ]
+      ),
+    ],
+    -1
+  ),
+  hs = { class: "relative" },
+  fs = {
+    class:
+      "container lg:max-w-4xl xl:max-w-7xl z-20 mx-auto mt-4 md:px-12 py-10 sm:px-20 lg:px-8 bg-slate-30-rgba text-gray-700 rounded-xl",
+  },
+  ps = { key: 0, class: "max-w-lg" },
+  ms = { class: "text-3xl font-bold sm:text-4xl" },
+  gs = e("br", null, null, -1),
+  vs = { class: "text-center text-4xl sm:text-6xl" },
+  bs = e(
+    "p",
+    {
+      class:
+        "mt-4 text-center text-3xl sm:text-4xl font-extrabold text-slate-900",
+    },
+    " To Increase Your Bottom Line & Peace of Mind! ",
+    -1
+  ),
+  _s = e(
+    "p",
+    { class: "mt-4 text-center text-2xl font-semibold text-gray-800" },
+    [
+      t(
+        " From Searching for Locally Vetted Sub-Contractors, to Finding Jobs, Getting Bids... "
+      ),
+      e("br"),
+      t("to Free Advertising. "),
+    ],
+    -1
+  ),
+  ws = {
+    key: 1,
+    id: "loginHere",
+    class: "grid grid-cols-1 md:grid-cols-2 mt-0 md:mt-0 gap-6 md:gap-2",
+  },
+  ys = { class: "flex flex-col flex-shrink-0 justify-center items-center" },
+  ks = { class: "text-3xl font-bold sm:text-4xl md:max-lg:text-3xl" },
+  $s = e("br", null, null, -1),
+  Cs = { class: "text-center text-4xl sm:text-6xl md:max-lg:text-4xl" },
+  js = e(
+    "p",
+    {
+      class:
+        "mt-4 text-center text-3xl sm:text-4xl font-extrabold text-slate-900",
+    },
+    " To Increase Your Bottom Line & Peace of Mind! ",
+    -1
+  ),
+  zs = e(
+    "p",
+    { class: "mt-4 text-center text-2xl font-semibold text-gray-800" },
+    [
+      t(
+        " From Searching for Locally Vetted Sub-Contractors, to Finding Jobs, Getting Bids... "
+      ),
+      e("br"),
+      t("to Free Advertising. "),
+    ],
+    -1
+  ),
+  Fs = {
+    class:
+      "flex flex-col flex-shrink-0 justify-center items-center p-3 bg-stone-100 border-2 border-blue-rgba rounded-xl shadow-xl",
+  },
+  Ms = e(
+    "div",
+    { class: "mx-auto pt-0" },
+    [
+      e(
+        "p",
+        { class: "text-green-800 text-center font-bold pb-2 text-xl" },
+        " Login in to Join The Private Community For the Construction Trades! "
+      ),
+    ],
+    -1
+  ),
+  Ss = {
+    class: "relative z-20 bg-white  md:mt-24 lg:mt-28 xl:mt-32 2xl:mt-40",
+    id: "whytContractor",
+  },
+  Bs = { id: "cta", class: "relative bg-red-600" },
+  Ls = { class: "" },
+  Hs = {
+    class:
+      "container flex flex-col-reverse md:flex-row items-center justify-around mx-auto my-0 p-6 space-y-10",
+  },
+  Ts = { class: "flex flex-col space-y-2 pt-6 md:pt-0 px-4 md:px-0" },
+  Es = { class: "" },
+  Ns = { class: "capitalize text-xl font-semibold tracking-tighter list-disc" },
+  As = e("li", null, "Locate subs to hire", -1),
+  Rs = e("li", null, "Find local work & job bids", -1),
+  Ps = e("li", null, "Be aware of whats up in your area!", -1),
+  Vs = e("li", null, "Check for slippery customers!", -1),
+  Ws = e("li", null, "Questions & Answers!", -1),
+  Is = e("li", null, "Low cost targeted advertising!", -1),
+  Os = e("li", null, "Mentoring: go the next level with Mentoring!", -1),
+  Ds = { class: "lg:max-w-md" },
+  Gs = e("span", { class: "font-bold italic" }, '"No-Brainer Pricing"', -1),
+  Us = { class: "font-extrabold text-white normal-case" },
+  qs = { class: "flex flex-col justify-center" },
+  Ys = g(
+    '<div class="text-3xl text-black font-bold"><p class="tracking-tight">Your Top Tool For Only</p></div><div class="flex flex-row justify-center"><div class="flex text-5xl justify-start font-extrabold text-green-rgba"><span class="pt-10">$</span></div><div class="price"><span>29</span></div><div class="flex text-xl justify-end items-end italic text-blue-rgba pb-10"><span>/month</span></div></div>',
+    2
+  ),
+  Js = { class: "flex justify-center items-end" },
+  Ks = { class: "bg-blue-rgba" },
+  Qs = {
+    class:
+      "container flex flex-col-reverse md:flex-row justify-between py-12 px-6 mx-auto gap-x-3 md:gap-x-5 space-y-8 md:space-y-0",
+  },
+  Zs = {
+    class:
+      "flex flex-col-reverse items-center justify-between space-y-12 md:flex-col md:space-y-0 md:items-start",
+  },
+  Xs = e(
+    "div",
+    { class: "mx-auto my-6 text-center first-letter: text-white md:hidden" },
+    " Copyright \xA9 2023, All Rights Reserved ",
+    -1
+  ),
+  eo = g(
+    '<div class="flex justify-center space-x-4"><a href="#"><img src="/images/icons/icon-facebook.svg" alt="" class="h-8"></a><a href="#"><img src="/images/icons/icon-twitter.svg" alt="" class="h-8"></a><a href="#"><img src="/images/icons/icon-instagram.svg" alt="" class="h-8"></a></div>',
+    1
+  ),
+  to = g(
+    '<div class="flex justify-evenly space-x-10"><div class="flex flex-col space-y-3 text-white"><a href="#" class="hover:text-blue-400">Home</a><a href="#" class="hover:text-blue-400">Pricing</a><a href="#" class="hover:text-blue-400">Contact Us</a></div><div class="flex flex-col space-y-3 text-white"><a href="#" class="hover:text-blue-400"> Careers</a><a href="#" class="hover:text-blue-400"> Terms of Service</a><a href="#" class="hover:text-blue-400"> Privacy Policy</a></div></div>',
+    1
+  ),
+  so = { class: "flex flex-col justify-between" },
+  oo = { key: 0, class: "flex justify-center space-x-3" },
+  lo = e(
+    "span",
+    {
+      class:
+        "text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500",
+    },
+    " Get Started ",
+    -1
+  ),
+  ro = e(
+    "span",
+    {
+      class:
+        "ml-4 flex-shrink-0 rounded-full border border-current bg-white p-2 text-indigo-600 group-active:text-indigo-500",
+    },
+    [
+      e(
+        "svg",
+        {
+          class: "h-5 w-5",
+          xmlns: "http://www.w3.org/2000/svg",
+          fill: "none",
+          viewBox: "0 0 24 24",
+          stroke: "currentColor",
+        },
+        [
+          e("path", {
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+            "stroke-width": "2",
+            d: "M17 8l4 4m0 0l-4 4m4-4H3",
+          }),
+        ]
+      ),
+    ],
+    -1
+  ),
+  ao = { key: 1, class: "flex justify-center space-x-3" },
+  io = e(
+    "span",
+    {
+      class:
+        "text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500",
+    },
+    " News Feed ",
+    -1
+  ),
+  no = e(
+    "span",
+    {
+      class:
+        "ml-4 flex-shrink-0 rounded-full border border-current bg-white p-2 text-indigo-600 group-active:text-indigo-500",
+    },
+    [
+      e(
+        "svg",
+        {
+          class: "h-5 w-5",
+          xmlns: "http://www.w3.org/2000/svg",
+          fill: "none",
+          viewBox: "0 0 24 24",
+          stroke: "currentColor",
+        },
+        [
+          e("path", {
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+            "stroke-width": "2",
+            d: "M17 8l4 4m0 0l-4 4m4-4H3",
+          }),
+        ]
+      ),
+    ],
+    -1
+  ),
+  co = e(
+    "div",
+    {
+      class:
+        "hidden text-white md:block mx-auto my-6 text-center first-letter:",
+    },
+    " Copyright \xA9 2023, All Rights Reserved ",
+    -1
+  ),
+  yo = {
+    __name: "index",
+    props: {
+      canResetPassword: Boolean,
+      status: String,
+      canLogin: Boolean,
+      canRegister: Boolean,
+      laravelVersion: String,
+      phpVersion: String,
+      showit: Boolean,
+    },
+    setup(u) {
+      const r = k(!1);
+      return (
+        T({ email: "", password: "", remember: !1 }),
+        (s, x) => (
+          l(),
+          c(
+            M,
+            null,
+            [
+              o(d(E), { title: "Welcome" }),
+              e("div", Pt, [
+                Vt,
+                e("header", Wt, [
+                  e("nav", It, [
+                    e("div", Ot, [
+                      e("div", Dt, [
+                        o(
+                          d(b),
+                          {
+                            href: "/",
+                            class:
+                              "text-2xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center",
+                          },
+                          { default: a(() => [o(y)]), _: 1 }
+                        ),
+                      ]),
+                      e("div", Gt, [
+                        o(
+                          w,
+                          {
+                            href: "#whytContractor",
+                            class:
+                              "hidden md:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8",
+                          },
+                          { default: a(() => [t(" Why tContractor ")]), _: 1 }
+                        ),
+                        o(
+                          d(b),
+                          {
+                            href: "#",
+                            class:
+                              "hidden lg:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8",
+                          },
+                          { default: a(() => [t(" Contact Us ")]), _: 1 }
+                        ),
+                        u.showit
+                          ? (l(),
+                            c("div", Ut, [
+                              o(
+                                d(b),
+                                {
+                                  href: s.route("post"),
+                                  class:
+                                    "block mt-3 mr-2 p-3 px-6 pt-2 font-bold rounded-xl text-white bg-green-600 hover:bg-green-800 border-green-600",
+                                },
+                                { default: a(() => [t(" News Feed ")]), _: 1 },
+                                8,
+                                ["href"]
+                              ),
+                            ]))
+                          : i("", !0),
+                        u.showit
+                          ? i("", !0)
+                          : (l(),
+                            c("div", qt, [
+                              o(
+                                w,
+                                {
+                                  href: "#loginHere",
+                                  class:
+                                    "block mt-3 mr-2 p-3 px-6 pt-2 font-bold rounded-xl text-white bg-blue-800 hover:bg-green-800 border-2 shadow-lg border-green-600",
+                                },
+                                { default: a(() => [t(" Login ")]), _: 1 }
+                              ),
+                            ])),
+                        e("div", Yt, [
+                          e(
+                            "button",
+                            {
+                              onClick:
+                                x[0] || (x[0] = (p) => (r.value = !r.value)),
+                              class:
+                                "inline-flex items-center justify-center p-2 rounded-md text-black  hover:text-gray-500  hover:bg-gray-100  focus:outline-none focus:bg-gray-100  focus:text-gray-500  transition duration-150 ease-in-out",
+                            },
+                            [
+                              (l(),
+                              c("svg", Jt, [
+                                e(
+                                  "path",
+                                  {
+                                    class: j({
+                                      hidden: r.value,
+                                      "inline-flex": !r.value,
+                                    }),
+                                    "stroke-linecap": "round",
+                                    "stroke-linejoin": "round",
+                                    "stroke-width": "2",
+                                    d: "M4 6h16M4 12h16M4 18h16",
+                                  },
+                                  null,
+                                  2
+                                ),
+                                e(
+                                  "path",
+                                  {
+                                    class: j({
+                                      hidden: !r.value,
+                                      "inline-flex": r.value,
+                                    }),
+                                    "stroke-linecap": "round",
+                                    "stroke-linejoin": "round",
+                                    "stroke-width": "2",
+                                    d: "M6 18L18 6M6 6l12 12",
+                                  },
+                                  null,
+                                  2
+                                ),
+                              ])),
+                            ]
+                          ),
+                        ]),
+                      ]),
+                    ]),
+                    e(
+                      "div",
+                      {
+                        class: j([
+                          { block: r.value, hidden: !r.value },
+                          "absolute top-16 right-4 sm:right-6 lg:right-20 xl:right-32 2xl:right-80 z-30 px-3 text-left border-b border-gray-400 rounded-xl bg-gray-100  flex",
+                        ]),
+                      },
+                      [
+                        e("div", Kt, [
+                          e("div", Qt, [
+                            e("div", Zt, [
+                              u.showit
+                                ? (l(),
+                                  c(
+                                    "div",
+                                    Xt,
+                                    F(s.$page.props.auth.user.name),
+                                    1
+                                  ))
+                                : i("", !0),
+                              u.showit
+                                ? i("", !0)
+                                : (l(), c("div", es, "Not Logged In")),
+                            ]),
+                            u.showit
+                              ? (l(),
+                                c(
+                                  "div",
+                                  ts,
+                                  F(s.$page.props.auth.user.email),
+                                  1
+                                ))
+                              : i("", !0),
+                          ]),
+                          e("div", ss, [
+                            o(
+                              _,
+                              { href: "#whytContractor" },
+                              { default: a(() => [t(" Why "), o(y)]), _: 1 }
+                            ),
+                            u.showit
+                              ? (l(),
+                                m(
+                                  _,
+                                  {
+                                    key: 0,
+                                    href: s.route("post"),
+                                    active: s.route().current("post"),
+                                    class: "font-bold",
+                                  },
+                                  {
+                                    default: a(() => [t(" News Feed ")]),
+                                    _: 1,
+                                  },
+                                  8,
+                                  ["href", "active"]
+                                ))
+                              : i("", !0),
+                            o(
+                              _,
+                              { href: s.route("index") },
+                              { default: a(() => [t(" Contact Us ")]), _: 1 },
+                              8,
+                              ["href"]
+                            ),
+                            o(
+                              _,
+                              { href: s.route("index") },
+                              { default: a(() => [t(" About Us ")]), _: 1 },
+                              8,
+                              ["href"]
+                            ),
+                          ]),
+                          e("div", os, [
+                            e("div", ls, [
+                              u.showit
+                                ? (l(),
+                                  m(
+                                    _,
+                                    { key: 0, href: s.route("profile.edit") },
+                                    {
+                                      default: a(() => [t(" Profile ")]),
+                                      _: 1,
+                                    },
+                                    8,
+                                    ["href"]
+                                  ))
+                                : i("", !0),
+                              u.showit
+                                ? (l(),
+                                  m(
+                                    _,
+                                    {
+                                      key: 1,
+                                      href: s.route("post"),
+                                      active: s.route().current("post"),
+                                    },
+                                    {
+                                      default: a(() => [t(" View Settings ")]),
+                                      _: 1,
+                                    },
+                                    8,
+                                    ["href", "active"]
+                                  ))
+                                : i("", !0),
+                              u.showit
+                                ? (l(),
+                                  m(
+                                    _,
+                                    {
+                                      key: 2,
+                                      href: s.route("logout"),
+                                      method: "post",
+                                      as: "button",
+                                      onClick:
+                                        x[1] ||
+                                        (x[1] = (p) => (r.value = !r.value)),
+                                    },
+                                    {
+                                      default: a(() => [t(" Log Out ")]),
+                                      _: 1,
+                                    },
+                                    8,
+                                    ["href"]
+                                  ))
+                                : i("", !0),
+                              u.showit
+                                ? i("", !0)
+                                : (l(),
+                                  m(
+                                    _,
+                                    {
+                                      key: 3,
+                                      href: s.route("signup"),
+                                      as: "button",
+                                      class: "text-blue-rgba font-bold",
+                                    },
+                                    {
+                                      default: a(() => [t(" Sign Up ")]),
+                                      _: 1,
+                                    },
+                                    8,
+                                    ["href"]
+                                  )),
+                              u.showit
+                                ? i("", !0)
+                                : (l(),
+                                  m(
+                                    _,
+                                    {
+                                      key: 4,
+                                      href: "#loginHere",
+                                      as: "button",
+                                      onClick:
+                                        x[2] ||
+                                        (x[2] = (p) => (r.value = !r.value)),
+                                    },
+                                    { default: a(() => [t(" Log In ")]), _: 1 }
+                                  )),
+                            ]),
+                          ]),
+                        ]),
+                        e(
+                          "button",
+                          {
+                            onClick:
+                              x[3] || (x[3] = (p) => (r.value = !r.value)),
+                            class:
+                              "inline-flex items-start justify-center p-2 rounded-md text-black  hover:text-gray-500  hover:bg-gray-100  focus:outline-none focus:bg-gray-100  focus:text-gray-500  transition duration-150 ease-in-out",
+                          },
+                          [
+                            (l(),
+                            c("svg", rs, [
+                              e(
+                                "path",
+                                {
+                                  class: j({
+                                    hidden: !r.value,
+                                    "inline-flex": r.value,
+                                  }),
+                                  "stroke-linecap": "round",
+                                  "stroke-linejoin": "round",
+                                  "stroke-width": "2",
+                                  d: "M6 18L18 6M6 6l12 12",
+                                },
+                                null,
+                                2
+                              ),
+                            ])),
+                          ]
+                        ),
+                      ],
+                      2
+                    ),
+                  ]),
+                ]),
+                e("section", null, [
+                  e("div", as, [
+                    e("div", is, [
+                      e("h2", ns, [o(y)]),
+                      ds,
+                      cs,
+                      o(
+                        d(b),
+                        {
+                          class:
+                            "group flex items-center justify-between rounded-xl border border-red-500 bg-red-500 px-5 py-3 mt-8 transition-colors hover:bg-red-800 focus:outline-none focus:ring",
+                          href: s.route("signup"),
+                        },
+                        { default: a(() => [us, xs]), _: 1 },
+                        8,
+                        ["href"]
+                      ),
+                    ]),
+                  ]),
+                ]),
+                e("section", hs, [
+                  e("div", fs, [
+                    u.showit
+                      ? (l(),
+                        c("div", ps, [
+                          e("h2", ms, [
+                            t(" Why Do You need "),
+                            gs,
+                            e("span", vs, [o(y), t(" ?")]),
+                          ]),
+                          bs,
+                          _s,
+                        ]))
+                      : i("", !0),
+                    u.showit
+                      ? i("", !0)
+                      : (l(),
+                        c("div", ws, [
+                          e("div", ys, [
+                            e("h2", ks, [
+                              t(" Why Do You need "),
+                              $s,
+                              e("span", Cs, [o(y), t(" ? ")]),
+                            ]),
+                            js,
+                            zs,
+                          ]),
+                          e("div", Fs, [Ms, o(ee)]),
+                        ])),
+                  ]),
+                ]),
+                e("section", Ss, [o(Rt)]),
+                e("section", Bs, [
+                  e("div", Ls, [
+                    e("div", Hs, [
+                      e("div", Ts, [
+                        e("div", Es, [
+                          o(
+                            d(b),
+                            {
+                              href: "/",
+                              class:
+                                "text-5xl md:text-6xl font-bold tracking-wide text-center",
+                            },
+                            { default: a(() => [o(z)]), _: 1 }
+                          ),
+                        ]),
+                        e("div", null, [
+                          e("ul", Ns, [
+                            As,
+                            Rs,
+                            Ps,
+                            Vs,
+                            Ws,
+                            Is,
+                            Os,
+                            e("li", Ds, [
+                              Gs,
+                              t(
+                                " \xA0- As contractors ourselves, seems like everyone is trying to sell us something at super - exorbitant prices! "
+                              ),
+                              e("span", Us, [t("\xA0Not Here at\xA0 "), o(z)]),
+                              t("\xA0... useful tools, decently priced! "),
+                            ]),
+                          ]),
+                        ]),
+                      ]),
+                      e("div", qs, [
+                        Ys,
+                        e("div", Js, [
+                          o(
+                            d(b),
+                            {
+                              href: s.route("signup"),
+                              class:
+                                "p-3 px-6 pt-2 text-red bg-white rounded-lg border-white border-spacing-3 shadow-2xl shadow-black align-baseline hover:text-white hover:bg-blue-30-rgba",
+                            },
+                            { default: a(() => [t("Get Started ")]), _: 1 },
+                            8,
+                            ["href"]
+                          ),
+                        ]),
+                      ]),
+                    ]),
+                  ]),
+                ]),
+                e("footer", Ks, [
+                  e("div", Qs, [
+                    e("div", Zs, [
+                      Xs,
+                      e("div", null, [
+                        o(
+                          d(b),
+                          {
+                            href: "/",
+                            class:
+                              "text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center",
+                          },
+                          { default: a(() => [o(z)]), _: 1 }
+                        ),
+                      ]),
+                      eo,
+                    ]),
+                    to,
+                    e("div", so, [
+                      u.showit
+                        ? i("", !0)
+                        : (l(),
+                          c("div", oo, [
+                            o(
+                              d(b),
+                              {
+                                class:
+                                  "group flex items-center justify-between rounded-xl border border-red-500 bg-red-500 px-5 py-3 mt-8 transition-colors hover:bg-red-800 focus:outline-none focus:ring",
+                                href: s.route("signup"),
+                              },
+                              { default: a(() => [lo, ro]), _: 1 },
+                              8,
+                              ["href"]
+                            ),
+                          ])),
+                      u.showit
+                        ? (l(),
+                          c("div", ao, [
+                            o(
+                              d(b),
+                              {
+                                href: s.route("post"),
+                                class:
+                                  "group flex items-center justify-between rounded-xl border border-green-600 bg-green-600 hover:bg-green-800 px-5 py-3 mt-8 transition-colors focus:outline-none focus:ring",
+                                "preserve-scroll": "",
+                              },
+                              { default: a(() => [io, no]), _: 1 },
+                              8,
+                              ["href"]
+                            ),
+                          ]))
+                        : i("", !0),
+                      co,
+                    ]),
+                  ]),
+                ]),
+              ]),
+            ],
+            64
+          )
+        )
+      );
+    },
+  };
+export { yo as default };

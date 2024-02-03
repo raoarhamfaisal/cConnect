@@ -21,7 +21,7 @@
     </div>
 
     <div
-      class="border-8 p-2 border-white rounded-t-lg sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
+      class="border-8 p-2 border-white rounded-t-lg sm:p-8 bg-white shadow sm:rounded-lg"
     >
       <slot :activeTab="activeTab"></slot>
     </div>
