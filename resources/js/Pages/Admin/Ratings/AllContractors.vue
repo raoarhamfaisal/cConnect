@@ -16,6 +16,12 @@
         bgColor="white"
         :padding="screenWidth < 640 ? '7px' : '20px'"
       >
+        <SearchInput
+          class="mb-12"
+          barWidth="30"
+          icon="iconamoon:search"
+          @search-clicked="onSearch"
+        />
         <heading-card heading="All Contractors" class="mt-3 mb-6" />
         <div
           class="flex flex-col"
@@ -78,6 +84,7 @@ import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import { computed, ref, onMounted, onBeforeMount } from "vue";
 import { useStore } from "vuex";
 import { Inertia } from "@inertiajs/inertia";
+import SearchInput from "@/Components/Ratings/SearchInput.vue";
 // States
 defineProps({
   profile: Object,
@@ -105,6 +112,12 @@ const pagination = computed(() => store.state.ratings.pagination);
 onMounted(() => {
   fetchContractors();
 });
+
+onBeforeMount(() => {
+  if (!isAdminUrl && window.location.pathname !== "/post") {
+    Inertia.visit("/post");
+  }
+});
 //Methods
 const fetchContractors = async (page = 1) => {
   await store.dispatch("ratings/getAllContractors", {
@@ -116,9 +129,8 @@ const fetchContractors = async (page = 1) => {
 const onClickHandler = (page) => {
   fetchContractors(page);
 };
-onBeforeMount(() => {
-  if (!isAdminUrl && window.location.pathname !== "/post") {
-    Inertia.visit("/post");
-  }
-});
+
+const onSearch = (searchTerm) => {
+  console.log("Search clicked with term:", searchTerm);
+};
 </script>
