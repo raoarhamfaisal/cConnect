@@ -2,7 +2,7 @@
   <div class="relative">
     <input
       v-model="searchInput"
-      @input="onInput"
+      @input="onClickSearchIcon"
       @keyup.enter="onClickSearchIcon"
       :style="{
         width: barWidth ? `${barWidth}%` : '',
@@ -36,8 +36,6 @@ const onInput = () => {
 };
 
 const onClickSearchIcon = () => {
-  if (searchInput.value.trim()) {
-    emit("search-clicked", searchInput.value);
-  }
+  emit("search-clicked", searchInput.value);
 };
 </script>

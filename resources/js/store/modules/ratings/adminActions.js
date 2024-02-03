@@ -8,7 +8,7 @@ export const getAllContractors = async ({ commit }, payload) => {
 
   try {
     const response = await axios.get(
-      `/api/admin/all-contractors?per_page=${payload.perPage}&page=${payload.page}`,
+      `/api/admin/search-contractor?search=${payload.searchTerm}&per_page=${payload.perPage}&page=${payload.page}`,
       getAxiosConfig()
     );
     if (response.data) {
