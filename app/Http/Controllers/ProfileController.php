@@ -170,11 +170,11 @@ class ProfileController extends Controller
         if($profile) {
 
             $data = $request->validate([
-                'website_url' => 'nullable|string|max:50',
-                'facebook' => 'nullable|string|max:50',
-                'twitter' => 'nullable|string|max:50',
-                'tiktok' => 'nullable|string|max:50',
-                'instagram' => 'nullable|string|max:50'
+                'website_url' => 'nullable|string',
+                'facebook' => 'nullable|string',
+                'twitter' => 'nullable|string',
+                'tiktok' => 'nullable|string',
+                'instagram' => 'nullable|string'
             ]);
 
             $profile->update($data);
@@ -204,7 +204,7 @@ class ProfileController extends Controller
         if($profile) {
 
             $data = $request->validate([
-                'company_name' => 'nullable|string|max:30',
+                'company_name' => 'nullable|string',
                 'phone_office' => 'nullable|string|max:13|unique:profiles,phone_cell,'.$userID,
             ]);
 
