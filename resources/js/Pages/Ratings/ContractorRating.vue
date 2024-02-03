@@ -116,7 +116,7 @@
             />
           </div>
           <div
-            v-if="contractorDetails.id !== paramId"
+            v-if="parseInt(user.id) !== parseInt(paramId)"
             class="py-4 border-t-2 border-b-2 border-gray-300"
           >
             <Button
@@ -173,6 +173,8 @@ import { ref, nextTick, onMounted, watch, computed } from "vue";
 import { somethingWentWrong } from "@/helpers/utilities";
 import { useStore } from "vuex";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
+
+const user = usePage().props.value.auth.user;
 
 // State
 const { contractorDetails } = defineProps({

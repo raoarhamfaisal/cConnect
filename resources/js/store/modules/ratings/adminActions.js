@@ -235,6 +235,7 @@ export const sendAcceptRequest = async ({ commit }, payload) => {
   try {
     const response = await axios.put(
       `/api/admin/reviews/${payload.reviewId}/accept`,
+      {},
       getAxiosConfig()
     );
     if (response.data) {
@@ -257,6 +258,7 @@ export const sendRejectRequest = async ({ commit }, payload) => {
   try {
     const response = await axios.put(
       `/api/admin/reviews/${payload.reviewId}/reject`,
+      {},
       getAxiosConfig()
     );
     if (response.data) {
