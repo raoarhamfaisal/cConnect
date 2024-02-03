@@ -2,7 +2,7 @@
   <div class="flex space-x-2 justify-between">
     <div class="flex justify-center items-center space-x-2">
       <div>
-        <Avatar :imageSrc="review.reviewer.user_avatar" />
+        <Avatar :imageSrc="`/${review.reviewer.user_avatar}`" />
       </div>
       <div class="flex flex-col justify-center">
         <!-- <h2
