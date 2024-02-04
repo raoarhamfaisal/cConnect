@@ -134,7 +134,11 @@ export default {
 </script>
 
 <template>
-  <DialogContractorRating ref="dialogRef" :userId="post.user_id" />
+  <DialogContractorRating
+    ref="dialogRef"
+    :userId="profile.user_id"
+    :contractorId="post.user_id"
+  />
   <div
     v-if="post.view"
     class="z-48 flex flex-col items-center justify-start my-2 py-1 lg:py-1 px-2 bg-gray-200 border-2 border-gray-300 rounded-lg drop-shadow-lg"
