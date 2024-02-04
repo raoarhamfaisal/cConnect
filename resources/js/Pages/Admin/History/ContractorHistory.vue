@@ -162,8 +162,8 @@ import Header from "@/Layouts/Header.vue";
 import { Head, usePage } from "@inertiajs/inertia-vue3";
 import Button from "@/Components/Ratings/Button.vue";
 import CustomPagination from "@/Components/Ratings/CustomPagination.vue";
-import AverageRating from "@/Pages/Ratings/PartialsVisiting/AverageRating.vue";
-import ContractorInfo from "@/Pages/Ratings/PartialsVisiting/ContractorInfo.vue";
+import AverageRating from "@/Components/Ratings/Contractor/PartialsVisiting/AverageRating.vue";
+import ContractorInfo from "@/Components/Ratings/Contractor/PartialsVisiting/ContractorInfo.vue";
 import axios from "axios";
 import HistoryReviewResponse from "@/Pages/Admin/History/partials/HistoryReviewResponse.vue";
 
