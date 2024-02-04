@@ -97,6 +97,8 @@ export default {
       .listen("PostCountersChanged", (data) => {
         console.log("data", data);
         const post = data.post;
+
+        console.log("postContersChanged", post.repost);
         const index = this.allPosts.findIndex(
           (post_allPosts) => post.id === post_allPosts.id
         );
@@ -286,6 +288,7 @@ export default {
             onSuccess: () => {
               // takes the object posts and appends it to allpost
               this.allPosts = [...this.posts.data];
+              conosle.log(this.posts.data, "posts", this.allPosts);
               this.loadingPosts = false;
               // 'this.initialUrl' is set in script data
               window.history.replaceState(
@@ -481,8 +484,24 @@ export default {
           // not the whole payload. Make sure lazy load is used in controller
           only: ["posts"],
           onSuccess: () => {
-            // takes the object posts and appends it to allpost
-            this.allPosts.unshift(this.posts.data[0]);
+            // Temporarily store updated posts to avoid direct mutation
+            let updatedPosts = [...this.allPosts];
+
+            this.posts.data.forEach((postDataItem) => {
+              const existingIndex = updatedPosts.findIndex(
+                (ap) => ap.id === postDataItem.id
+              );
+              if (existingIndex > -1) {
+                // If the post exists, update it
+                updatedPosts[existingIndex] = postDataItem;
+              } else {
+                // If the post doesn't exist, prepend it to the start of the array
+                updatedPosts = [postDataItem, ...updatedPosts];
+              }
+            });
+
+            // Replace the allPosts with the updatedPosts
+            this.allPosts = updatedPosts;
             this.loadingPosts = false;
             // 'this.initialUrl' is set in script data
             window.history.replaceState({}, this.$page.title, this.initialUrl);

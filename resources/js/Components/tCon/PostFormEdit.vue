@@ -484,11 +484,6 @@ export default {
     async fetchPostTrades() {
       this.loadingPostTrades = true;
 
-      // Resetting tradesPost object to all false
-      // for (let key in this.tradesPost) {
-      //   this.tradesPost[key] = false;
-      // }
-
       try {
         const response = await axios.get(
           `/api/posts/${this.form.id}/trades`,
@@ -500,10 +495,6 @@ export default {
           this.postTrades.forEach((postTradeNum) => {
             this.tradesPost[`trade${postTradeNum}`] = true;
           });
-
-          this.tradesPost["trade28"] = true;
-          this.tradesPost["trade29"] = true;
-          this.tradesPost["trade30"] = true;
 
           const allSelected = Object.values(this.tradesPost).every(
             (value) => value === 1 || value === true
