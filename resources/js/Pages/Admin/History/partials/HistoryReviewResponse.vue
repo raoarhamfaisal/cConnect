@@ -11,7 +11,9 @@
       :contractorId="contractorId"
       :showContactDetails="showContactDetails"
     />
-    <div v-if="review.rating_reasons.length > 0">
+    <div
+      v-if="review && review.rating_reasons && review.rating_reasons.length > 0"
+    >
       <template v-for="(note, index) in review.rating_reasons" :key="index">
         <AdminNote
           v-if="note.type === 'updated_review'"
@@ -64,8 +66,19 @@
         :profileId="profileId"
       />
     </div>
-    <div class="mt-2" v-if="review.review_response.response_reasons.length > 0">
-      <template v-for="(note, index) in review.review_response.response_reasons" :key="index">
+    <div
+      class="mt-2"
+      v-if="
+        review &&
+        review.review_response &&
+        review.review_response.response_reasons &&
+        review.review_response.response_reasons.length > 0
+      "
+    >
+      <template
+        v-for="(note, index) in review.review_response.response_reasons"
+        :key="index"
+      >
         <AdminNote
           v-if="note.type === 'updated_review_response'"
           icon="dashicons:update"

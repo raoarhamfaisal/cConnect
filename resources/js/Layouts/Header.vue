@@ -189,7 +189,7 @@ export default {
 <template>
   <section class="bg-gray-100">
     <!-- Section Container -->
-    <div class="relative mx-auto mt-0 lg:mt-2 pt-10 lg:pt-0 h-screen">
+    <div class="relative mx-auto mt-0 pt-10 lg:pt-0 h-screen">
       <div
         class="flex lg:flex-row lg:justify-center lg:items-start lg:gap-x-5 bg-gray-100"
       >
