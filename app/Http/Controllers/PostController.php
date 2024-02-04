@@ -789,16 +789,20 @@ class PostController extends Controller
         
         // Set the current user as the poster and link to the original post and user
         $repost->user_id = Auth::id();
-        $repost->original_post_id = $post->id;
-        $repost->original_user_id = $post->user_id; // Save the original user's ID
-        $repost->repost = 1;
+        $repost->original_post_id = $post->original_post_id ? $post->original_post_id : $post->id;
+        $repost->original_user_id = $post->original_user_id ? $post->original_user_id : $post->user_id; // Save the original user's ID
+        $repost->parent_post_id = $post->id; // Set the immediate parent post ID
+        $repost->parent_user_id = $post->user_id; // Set the immediate parent user ID
+        $repost->repost = 0;
         $repost->repost_comment = $repostComment; // Assign the repost comment
 
-
-        $post->repost++;
-
+        
+        // $post->repost++;
+        
         $repost->save();
-        $post->save();
+        // $post->save();
+        
+        $this->updateRepostCounters($repost->id);
 
 
         // Get trades associated with the original post
@@ -818,6 +822,30 @@ class PostController extends Controller
 
         return response()->json($repost, 201);
     }
+
+    private function updateRepostCounters($repostedPostId)
+    {
+        $currentPost = Post::find($repostedPostId);
+        
+        while ($currentPost) {
+            // Increment repost count for the current post
+            $currentPost->repost++;
+            $currentPost->save();
+    
+            // Move to the next ancestor (the post this one was reposted from)
+            if ($currentPost->parent_post_id) {
+                $currentPost = Post::find($currentPost->parent_post_id);
+            } else {
+                $currentPost = null; // End loop if there's no parent post
+            }
+        }
+
+        $currentPost = Post::find($repostedPostId);
+        $currentPost->repost = 0;
+        $currentPost->save();
+    
+    }
+    
 
     public function editRepost(HttpRequest $request, Post $post)
     {
