@@ -409,23 +409,24 @@ class PostController extends Controller
         InsertPostProfileService $InsertPostProfileService,
         ProcessImageService $processImageService
     ) {
+
         $user = Auth::user();
         $userVersion = $user->profile->version; // Fetch the version identifier from the user's profile
-    
+        
         // Fetch version defaults based on the user's version
         $versionDefault = VersionDefault::find($userVersion);
         if (!$versionDefault) {
             return redirect()->back()->with('error', 'Version defaults not found for your account.');
         }
-    
+        
         // Convert 'nf_ppm' to PHP_INT_MAX if it's 99
         $postsLimit = $versionDefault->nf_ppm == 99 ? PHP_INT_MAX : $versionDefault->nf_ppm;
-    
+        
         $currentMonthPosts = Post::where('user_id', $user->id)
-                                 ->whereMonth('created_at', now()->month)
-                                 ->whereYear('created_at', now()->year)
-                                 ->count();
-    
+        ->whereMonth('created_at', now()->month)
+        ->whereYear('created_at', now()->year)
+        ->count();
+        
         // Check if user has exceeded their posting limit
         if ($currentMonthPosts >= $postsLimit) {
             return redirect()->back()->with('error', 'You have reached your posting limit for this month.');
@@ -526,10 +527,10 @@ class PostController extends Controller
             $postCreated->trades()->sync($trades);
         }
 
-        $userVersionDetail = $user->versionDetail()->firstOrCreate([
+        $userVersionDetail = $user->versionDetail()->updateOrCreate([
             'user_id' => $user->id,
         ], [
-            'nf_ppm' => $currentMonthPosts + 1
+            'nf_ppm' => $versionDefault->nf_ppm == 99 ? 99 : $versionDefault->nf_ppm - $currentMonthPosts - 1
         ]);
 
         return redirect()->back()

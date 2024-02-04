@@ -21,6 +21,10 @@ use App\Mail\SubscriptionFailedMail;
 use App\Mail\SubscriptionSuccessMail;
 use App\Mail\UpdatedSubscriptionMail;
 use App\Mail\SubscriptionCancelledMail;
+use App\Models\SessionTrade;
+use App\Models\ProfileTrade;
+use App\Models\ContractorProfile;
+
 
 use App\Helpers\SubscriptionHelper;
 
@@ -168,6 +172,8 @@ class PaymentController extends Controller
                     'version' => $request->version,
                     'was_successful' => false
                 ]);
+
+                // dd($subscriptionResponse);
 
                 // echo "ERROR :  Invalid subscriptionResponse\n";
                 $errorMessages = $subscriptionResponse->getMessages()->getMessage();
@@ -337,10 +343,14 @@ class PaymentController extends Controller
 
         $versionDefault = VersionDefault::find($request->version);
     
+        \Log::error('sf_last_search_month: ' . now());
+        \Log::error('sf_last_search_month: ' . now()->month);
+        
+
 
         // Update or create user version details with the fetched version defaults
         $userVersionDetail = UserVersionDetail::updateOrCreate(
-            ['user_id' => $userID], // Conditions to find the record
+            ['user_id' => $userId], // Conditions to find the record
             [ // Values to update or create
                 'nf_ppm' => $versionDefault->nf_ppm,
                 'nf_ipp' => $versionDefault->nf_ipp,
@@ -391,6 +401,65 @@ class PaymentController extends Controller
                 // Add other fields from $versionDefault as needed
             ]
         );
+
+
+
+        if($request->version === 1) {
+            // Start a database transaction
+            DB::beginTransaction();
+
+            try {
+                $profile = Profile::where('user_id', $userID)->first();
+
+                if ($profile) {
+                    // For profile_trade
+                    $profileTrades = ProfileTrade::where('profile_id', $profile->id)->get();
+
+                    if ($profileTrades->count() > 3) {
+                        // Assuming you want to keep the latest 3 trades
+                        $tradesToKeep = $profileTrades->sortByDesc('created_at')->take(3)->pluck('trade_id');
+                        ProfileTrade::where('profile_id', $profile->id)->whereNotIn('trade_id', $tradesToKeep)->delete();
+                    }
+
+                    // For session_trades
+                    $sessionTrades = SessionTrade::where('profile_id', $profile->id)->get();
+
+                    if ($sessionTrades->count() > 3) {
+                        // Assuming you want to keep the latest 3 trades
+                        $tradesToKeep = $sessionTrades->sortByDesc('created_at')->take(3)->pluck('trade_id');
+                        SessionTrade::where('profile_id', $profile->id)->whereNotIn('trade_id', $tradesToKeep)->delete();
+                    }
+                }
+
+                // Commit the transaction
+                DB::commit();
+            } catch (\Exception $e) {
+                \Log::error('Err: ' . $e->getMessage());
+
+                // Rollback the transaction in case of an error
+                DB::rollback();
+                // Handle error (log it, return a response, etc.)
+            }
+        }
+
+
+        $contractProfile = ContractorProfile::where('user_id', $userId)->first();
+
+        if ($request->version === 2) {
+            // Randomly select template_id and color_scheme_id from a set of predefined IDs
+            $contractProfile->template_id = rand(1, 3); // Randomly between 1, 2, or 3
+            $contractProfile->color_scheme_id = rand(1, 3); // Randomly between 1, 2, or 3
+            $contractProfile->save();
+        } elseif ($request->version === 3) {
+            // Fetch all available template IDs and color scheme IDs
+            $templateIds = DB::table('templates')->pluck('id')->toArray();
+            $colorSchemeIds = DB::table('color_schemes')->pluck('id')->toArray();
+    
+            // Randomly select template_id and color_scheme_id from all available IDs
+            $contractProfile->template_id = $templateIds[array_rand($templateIds)]; // Randomly from available template IDs
+            $contractProfile->color_scheme_id = $colorSchemeIds[array_rand($colorSchemeIds)]; // Randomly from available color scheme IDs
+            $contractProfile->save();
+        }
 
         $endsAt = Carbon::now();
 
@@ -668,36 +737,107 @@ class PaymentController extends Controller
     {
         // Validate the request data
         $validatedData = $request->validate([
-            'customerProfileId' => 'required|string',
-            'customerPaymentProfileId' => 'required|string',
-            'cardNumber' => 'required|string',
-            'expirationDate' => 'required|date_format:Y-m',
+            'userId' => 'required|integer',
+            'card_number' => 'required|string',
+            'expiration_date' => 'required|date_format:Y-m',
             'cvv' => 'required|string',
-            'firstName' => 'required|string',
-            'lastName' => 'required|string',
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
             'address' => 'required|string',
             'city' => 'required|string',
             'state' => 'required|string',
             'zip' => 'required|string',
             'country' => 'required|string'
         ]);
-
-        // Call the function to update the customer payment profile
-        $response = $this->updateCustomerPaymentProfile(
-            $validatedData['customerProfileId'],
-            $validatedData['customerPaymentProfileId'],
-            $validatedData['cardNumber'],
-            $validatedData['expirationDate'],
+    
+        // Retrieve the UpcomingSubscription for the provided userId
+        $subscription = UpcomingSubscription::where('is_subscription_active', 1)
+            ->where('user_id', $validatedData['userId'])
+            ->first();
+    
+        if (!$subscription) {
+            return response()->json(['error' => 'Subscription not found for the provided user ID.'], 404);
+        }
+    
+        // Call the function to update the customer payment profile with the fetched subscription
+        $response = $this->updateAuthorizeNetSubscription(
+            $subscription,
             $validatedData
         );
-
+    
         // Check response and return appropriate message
         if ($response && $response->getMessages()->getResultCode() == "Ok") {
+            // Extract the last four digits of the card number
+            $last4Digits = substr($validatedData['card_number'], -4);
+    
+            // Update the last_4_digits_of_card in the subscriptions table for this user
+            Subscription::where('user_id', $validatedData['userId'])
+                        ->update(['last_4_digits_of_card' => $last4Digits]);
+    
             return response()->json(['message' => 'Payment method updated successfully.']);
         } else {
             $errorMessages = $response->getMessages()->getMessage();
             return response()->json(['error' => $errorMessages[0]->getText()], 500);
         }
+    }
+    
+
+
+    private function updateAuthorizeNetSubscription($subscription, $validatedData)
+    {
+        
+        /* Create a merchantAuthenticationType object with authentication details
+        retrieved from the constants file */
+        $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+        $merchantAuthentication->setName("5KP3u95bQpv");
+        $merchantAuthentication->setTransactionKey("346HZ32z3fP4hTG2");
+        
+        // Set the transaction's refId
+        $refId = 'ref' . time();
+
+        $authorizeNetSubscription = new AnetAPI\ARBSubscriptionType();            
+
+        // $authorizeNetSubscription->setAmount(round(floatval($amountToCharge), 2));
+
+
+        // Define the payment type based on user's data from the request
+        $creditCard = new AnetAPI\CreditCardType();
+        $creditCard->setCardNumber($validatedData['card_number']);
+        $creditCard->setExpirationDate($validatedData['expiration_date']);
+        $creditCard->setCardCode($validatedData['cvv']);
+
+        $payment = new AnetAPI\PaymentType();
+        $payment->setCreditCard($creditCard);
+
+        // Set customer billing information
+        $billto = new AnetAPI\NameAndAddressType();
+        $billto->setFirstName($validatedData['first_name']);
+        $billto->setLastName($validatedData['last_name']);
+        $billto->setAddress($validatedData['address']);
+        $billto->setCity($validatedData['city']);
+        $billto->setState($validatedData['state']);
+        $billto->setZip($validatedData['zip']);
+        $billto->setCountry($validatedData['country']);
+
+        $authorizeNetSubscription->setBillTo($billto);
+        $authorizeNetSubscription->setPayment($payment);
+
+        
+        $request = new AnetAPI\ARBUpdateSubscriptionRequest();
+        $request->setMerchantAuthentication($merchantAuthentication);
+        $request->setRefId($refId);
+        $request->setSubscriptionId($subscription->subscription_id);
+        $request->setSubscription($authorizeNetSubscription);
+
+        $controller = new AnetController\ARBUpdateSubscriptionController($request);
+
+
+        $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+
+        
+        return $response;
+
+
     }
 
     private function updateCustomerPaymentProfile($customerProfileId, $customerPaymentProfileId, $cardNumber, $expirationDate, $billingDetails)
