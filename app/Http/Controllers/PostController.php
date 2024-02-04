@@ -31,7 +31,6 @@ class PostController extends Controller
     public function index()
     {
         return Inertia::render('Postings', [
-    
             'showit' => Auth::check(),
             'userID' => Auth()->user() ? Auth()->user()->id : null,
             'profile' => Auth::check() ? Profile::where('user_id', Auth()->user()->id)
@@ -59,7 +58,8 @@ class PostController extends Controller
                     'profiles.city',
                     'profiles.state',
                     'profiles.user_avatar',
-                    DB::raw('(SELECT AVG(reviews.rating) FROM reviews WHERE reviews.contractor_id = profiles.id) as average_rating')
+                    DB::raw('(SELECT AVG(reviews.rating) FROM reviews WHERE reviews.contractor_id = profiles.id) as average_rating'),
+                    DB::raw('(SELECT COUNT(*) FROM reviews WHERE reviews.contractor_id = profiles.id) as total_reviews')
                 ])
                 ->leftJoin('profiles', 'posts.user_id', '=', 'profiles.user_id')
                 ->orderBy('posts.id', 'DESC')
@@ -86,7 +86,8 @@ class PostController extends Controller
                     'city' => $post->city,
                     'state' => $post->state,
                     'user_avatar' => $post->user_avatar,
-                    'average_rating' => $post->average_rating
+                    'average_rating' => $post->average_rating,
+                    'total_reviews' => $post->total_reviews
                 ]),
     
             'postSearchFilters' => Request::only(['postSearch']),

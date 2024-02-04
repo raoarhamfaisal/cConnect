@@ -25,6 +25,7 @@ export default {
       isInactive: false,
       allContractors: [],
       pagination: {},
+      contractorDetails:{},
     };
   },
   mutations: {
@@ -36,6 +37,9 @@ export default {
     },
     setIsFetchReviews(state, payload) {
       state.isFetchReviews = payload;
+    },
+    setContractorDetails(state, payload) {
+      state.contractorDetails = payload;
     },
     setIsDeleted(state, payload) {
       state.isDeleted = payload;
@@ -52,6 +56,23 @@ export default {
     // ... other mutations ...
   },
   actions: {
+    async getContractorInfo({ commit }, contractorId) {
+      commit("setLoading", true);
+
+      try {
+        const response = await axios.get(
+          `/api/contractor/${contractorId}`,
+          getAxiosConfig()
+        );
+        if (response.data) {
+          commit("setContractorDetails", response.data.contractor);
+        }
+      } catch (err) {
+        somethingWentWrong();
+      } finally {
+        commit("setLoading", false);
+      }
+    },
     async deleteReview({ commit }, reviewId) {
       commit("setLoading", true);
       commit("setDisabled", true);

@@ -41,6 +41,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         // Review APIs
         Route::post('/reviews', [ReviewController::class, 'store'])->name('review.store');
         Route::get('/reviews/{contractor_id}', [ReviewController::class, 'index'])->name('review.all');
+        Route::get('/contractor/{contractor_id}', [ReviewController::class, 'getContractorInfo'])->name('review.contractor');
         Route::put('reviews/{review}', [ReviewController::class, 'update']);
         Route::post('reviews/{review}/appeal', [ReviewController::class, 'putOnAppeal']);
         Route::post('reviews/{review}/off-appeal', [ReviewController::class, 'removeAppeal']);

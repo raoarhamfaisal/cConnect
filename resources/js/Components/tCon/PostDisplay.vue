@@ -1,6 +1,9 @@
 <script>
 // SCRIPT UP TOP BECAUSE I LIKE IT HERE!
 import { InertiaLink } from "@inertiajs/inertia-vue3";
+import Avatar from "@/Components/Ratings/Avatar.vue";
+import StarRating from "@/Components/Ratings/StarRating.vue";
+
 import tContractorWord from "@/Components/tCon/tContractorWord.vue";
 import ButtonPost from "@/Components/tCon/tConSub/ButtonPost.vue";
 import ButtonRefresh from "@/Components/tCon/tConSub/ButtonRefresh.vue";
@@ -10,18 +13,23 @@ import throttle from "lodash/throttle";
 
 import { Link } from "@inertiajs/inertia-vue3";
 import { ref } from "vue";
+import { mapGetters } from "vuex";
+import DialogContractorRating from "@/Components/Ratings/Contractor/DialogContractorRating.vue";
 
 export default {
   components: {
+    StarRating,
     InertiaLink,
     tContractorWord,
     ButtonPost,
     ButtonRefresh,
     PostingActionMenu,
+    Avatar,
     PostImageDisplay,
     Link,
     ref,
     throttle,
+    DialogContractorRating,
   },
 
   mounted() {
@@ -75,10 +83,12 @@ export default {
   data() {
     return {
       showingPostingActionMenu: ref(false),
+      dialogRef: ref(),
     };
   },
 
   computed: {
+    ...mapGetters(["screenWidth"]),
     numberOfImages: {
       // Gets the number of images in post.image string
       // passed as prop to PostImageDisplay.vue
@@ -116,11 +126,15 @@ export default {
     HidePostingActionMenu(showingPostingActionMenu) {
       this.showingPostingActionMenu = false;
     },
+    openDialog() {
+      this.$refs.dialogRef.openDialog();
+    },
   },
 };
 </script>
 
 <template>
+  <DialogContractorRating ref="dialogRef" :userId="post.user_id" />
   <div
     v-if="post.view"
     class="z-48 flex flex-col items-center justify-start my-2 py-1 lg:py-1 px-2 bg-gray-200 border-2 border-gray-300 rounded-lg drop-shadow-lg"
@@ -131,33 +145,63 @@ export default {
         TOP ROW MENUS
         POST ACTIONS MENU -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-    <div class="flex flex-row justify-between items-center w-full mb-2">
+    <div class="flex flex-row justify-between items-center w-full mb-2 mt-2">
       <!-- User Avatar & User /// INDIVIDUAL POST: TOP POSTING ROW -->
-      <div class="flex flex-row justify-start items-center">
+      <div class="flex flex-row gap-2 justify-start items-center">
         <!-- Avatar -->
-        <div class="flex justify-start items-start flex-none mt-2 w=16">
+        <div
+          @click="openDialog"
+          class="cursor-pointer flex justify-start items-start flex-none w=16"
+        >
           <!-- <Link :href="route('post.show')" class="block "> -->
-          <Link href="#" class="block">
-            <img
-              class="object-cover w-14 h-14 mx-2 rounded-full"
-              src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
-              alt="avatar"
+          <div class="block">
+            <Avatar
+              :style="{
+                width: screenWidth >= 640 ? '4.5rem' : '3.7rem',
+                height: screenWidth >= 640 ? '4.5rem' : '3.7rem',
+              }"
+              :imageSrc="post.user_avatar"
             />
-          </Link>
+          </div>
         </div>
         <!-- User Info -->
-        <div class="flex flex-wrap ml-1">
+        <div class="flex flex-col justify-center ml-1">
           <h2
-            class="font-bold text-xl xs:text-2xl md:text-3xl"
+            class="font-bold text-lg sm:text-xl"
+            style="line-height: 1.5rem"
             @click="$emit('enlarge-post', post)"
           >
             {{ post.id }}: {{ post.title }}
           </h2>
+          <StarRating
+            @click="openDialog"
+            :starWidth="17"
+            class="h-4 mt-1 cursor-pointer"
+            indicatorClasses="text-small h-4"
+            :starHeight="17"
+            :rating="
+              Number(
+                parseFloat(
+                  post.average_rating ? post.average_rating : 0.0
+                ).toFixed(1)
+              )
+            "
+            :isIndicatorActive="true"
+          />
+          <div
+            @click="openDialog"
+            class="mt-1 justify-start cursor-pointer font-mono flex items-center"
+            style="font-size: 13px"
+          >
+            {{ post.total_reviews }} reviews
+          </div>
         </div>
       </div>
 
       <!-- Ratings / post action menu / posting date -->
-      <div class="flex flex-row justify-end items-center flex-none w-28">
+      <div
+        class="flex flex-row justify-end items-center self-start flex-none w-28"
+      >
         <!-- User RATINGS /// INDIVIDUAL POST: TOP POSTING ROW -->
         <div class="flex flex-row flex-none justify-end items-center px-2">
           <!-- Premium Marking -->
@@ -365,3 +409,5 @@ export default {
     </PostingActionMenu>
   </div>
 </template>
+
+

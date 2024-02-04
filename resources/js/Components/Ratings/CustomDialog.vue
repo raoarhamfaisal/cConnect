@@ -38,7 +38,7 @@
           <slot></slot>
         </div>
 
-        <div class="flex justify-between p-4">
+        <div class="flex justify-between p-4" v-if="showFooter">
           <button
             @click="closeDialog"
             class="px-4 py-2 rounded text-white bg-[#364fc7]"
@@ -77,6 +77,10 @@ const props = defineProps({
   submitText: {
     type: String,
     default: "Submit",
+  },
+  showFooter: {
+    type: Boolean,
+    default: true,
   },
   dialogWidth: {
     type: String,
@@ -120,5 +124,13 @@ defineExpose({ openDialog, closeDialog });
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+.width-75 {
+  width: 80%;
+}
+@media (max-width: 640px) {
+  .width-75 {
+    width: 100%;
+  }
 }
 </style>

@@ -205,4 +205,8 @@ export default {
 .star-container:not(:last-child) {
   margin-right: 5px;
 }
+.text-small {
+  font-size: 1rem;
+  padding-bottom: 1px;
+}
 </style>
