@@ -156,6 +156,7 @@ export default {
       "pusherComment",
       "pusherCommentToDelete",
       "pusherCommentPosted",
+      "isCommentAdded",
     ]),
     ...mapGetters("ratings", ["comment"]),
     ...mapGetters(["translations", "userVersion"]),
@@ -343,6 +344,14 @@ export default {
     commentText(newVal) {
       if (newVal) {
         this.commentTextError = "";
+      }
+    },
+    isCommentAdded(newVal) {
+      console.log("commentAdded");
+      if (newVal) {
+        this.total_number_of_comments_with_replies =
+          this.total_number_of_comments_with_replies + 1;
+        this.$store.commit("profile/setIsCommentAdded", false);
       }
     },
     post: {

@@ -55,7 +55,9 @@
       <div class="text-white">
         {{ translations && translations.updating }}
         {{
-          isReply ? translations && translations.reply_first_cap : "Comment"
+          isReply
+            ? translations && translations.reply_first_cap
+            : translations && translations.comment
         }}...
       </div>
       <v-progress-linear

@@ -710,6 +710,8 @@ class TranslationSeeder extends Seeder
              ['key' => 'to_replace', 'english' => 'to replace', 'mexican_spanish' => 'para reemplazar', 'created_at' => now(), 'updated_at' => now()],
              ['key' => 'address', 'english' => 'Address', 'mexican_spanish' => 'Dirección', 'created_at' => now(), 'updated_at' => now()],
              ['key' => 'nothing_found', 'english' => 'Nothing Found', 'mexican_spanish' => 'Nada Encontrado', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'write_your_reply', 'english' => 'Write your reply...', 'mexican_spanish' => 'Escribe tu respuesta...', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'successfully_added', 'english' => 'Successfully added', 'mexican_spanish' => 'Añadido exitosamente', 'created_at' => now(), 'updated_at' => now()],
     
             
    
