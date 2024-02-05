@@ -64,6 +64,19 @@ class ProfileController extends Controller
         'postSearchFilters' => FacadeRequest::only(['postSearch']),
         ]);
     }
+
+
+    public function getProfileInfo(Request $request)
+    {
+
+        // Construct the response for profile
+        $response = [
+            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+            'status' => session('status'),
+        ];
+
+        return response()->json($response);
+    }
     /**
      * Update the user's profile information.
      *

@@ -191,7 +191,7 @@ export default {
     <!-- Section Container -->
     <div class="relative mx-auto mt-0 pt-10 lg:pt-0 h-screen">
       <div
-        class="flex lg:flex-row lg:justify-center lg:items-start lg:gap-x-5 bg-gray-100"
+        class="flex lg:flex-row lg:justify-center pageContainer lg:items-start lg:gap-x-5 bg-gray-100"
       >
         <!-- MAIN SIDE MENU -->
         <!-- ******************************************************* -->
@@ -211,24 +211,23 @@ export default {
         <!-- ******************************************************* -->
 
         <div
-          class="flex flex-col items-center justify-start mx-auto lg:mx-1 lg:mt-0 h-full overflow-x-hidden bg-gray-400"
+          class="flex flex-col items-center justify-start mx-auto lg:mt-0 h-full overflow-x-hidden bg-gray-200"
           :style="{
             backgroundColor: `${color}`,
-            flexGrow: 1,
+            width: '100%',
           }"
         >
           <div
             id="NewsFeedScroll"
             class="h-screen"
             :style="{
-              flexGrow: 1,
               width: '100%',
             }"
           >
             <!-- FIXED TOP HEADER -->
             <!-- ONLY ON MOBILE       -->
             <header
-              class="lg:hidden fixed top-0 left-0 right-0 z-10 h-14 sm:h-16 bg-gray-400"
+              class="lg:hidden fixed top-0 left-0 right-0 z-10 h-14 sm:h-16 bg-gray-200"
             >
               <nav class="container max-w-7xl px-1 py-1 pt-2 mx-auto md:px-12">
                 <div class="flex items-center justify-between">
@@ -357,3 +356,10 @@ export default {
     <!-- Section Container -->
   </section>
 </template>
+
+<style scoped>
+.pageContainer {
+  max-width: 1440px;
+  margin: auto;
+}
+</style>

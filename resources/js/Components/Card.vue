@@ -3,7 +3,7 @@
 <template>
   <div
     :class="{
-      'max-w-7xl mx-auto sm:px-6 md:px-6 sm:px-2 lg:px-8 space-y-6': !isInside,
+      'w-full mx-auto sm:px-6 md:px-6 sm:px-2 lg:px-8 space-y-6': !isInside,
     }"
   >
     <div class="card p-3 xs:p-5" :style="cardStyles">
@@ -39,8 +39,8 @@ export default {
       "none", // Level 0 (No shadow)
       "0px 0px 3px rgba(0, 0, 0, 0.12), 0px 0px 2px rgba(0, 0, 0, 0.24)", // Level 1
       "0px 0px 4px rgba(0, 0, 0, 0.12), 0px 0px 3px rgba(0, 0, 0, 0.24)", // Level 2
-      "3px 3px 6px rgba(0, 0, 0, 0.12), 3px 3px 5px rgba(0, 0, 0, 0.24)", // Level 3
-      "4px 4px 8px rgba(0, 0, 0, 0.12), 4px 4px 6px rgba(0, 0, 0, 0.24)", // Level 4
+      "0px 0px 5px rgba(0, 0, 0, 0.12), 0px 0px 5px rgba(0, 0, 0, 0.24)", // Level 3
+      "0px 0px 6px rgba(0, 0, 0, 0.12), 0px 0px 6px rgba(0, 0, 0, 0.24)", // Level 4
       "5px 5px 10px rgba(0, 0, 0, 0.12), 5px 5px 8px rgba(0, 0, 0, 0.24)", // Level 5
       "6px 6px 12px rgba(0, 0, 0, 0.12), 6px 6px 10px rgba(0, 0, 0, 0.24)", // Level 6
       "7px 7px 14px rgba(0, 0, 0, 0.12), 7px 7px 12px rgba(0, 0, 0, 0.24)", // Level 7

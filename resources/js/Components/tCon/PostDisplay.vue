@@ -2,7 +2,7 @@
 // SCRIPT UP TOP BECAUSE I LIKE IT HERE!
 import { InertiaLink } from "@inertiajs/inertia-vue3";
 import Avatar from "@/Components/Ratings/Avatar.vue";
-import StarRating from "@/Components/Ratings/StarRating.vue";
+import StarRounded from "@/Components/Ratings/StarRounded.vue";
 
 import tContractorWord from "@/Components/tCon/tContractorWord.vue";
 import ButtonPost from "@/Components/tCon/tConSub/ButtonPost.vue";
@@ -18,11 +18,11 @@ import DialogContractorRating from "@/Components/Ratings/Contractor/DialogContra
 
 export default {
   components: {
-    StarRating,
     InertiaLink,
     tContractorWord,
     ButtonPost,
     ButtonRefresh,
+    StarRounded,
     PostingActionMenu,
     Avatar,
     PostImageDisplay,
@@ -177,27 +177,14 @@ export default {
           >
             {{ post.id }}: {{ post.title }}
           </h2>
-          <StarRating
-            @click="openDialog"
-            :starWidth="17"
-            class="h-4 mt-1 cursor-pointer"
-            indicatorClasses="text-small h-4"
-            :starHeight="17"
-            :rating="
-              Number(
-                parseFloat(
-                  post.average_rating ? post.average_rating : 0.0
-                ).toFixed(1)
-              )
-            "
-            :isIndicatorActive="true"
-          />
-          <div
-            @click="openDialog"
-            class="mt-1 justify-start cursor-pointer font-mono flex items-center"
-            style="font-size: 13px"
-          >
-            {{ post.total_reviews }} reviews
+          <div class="">
+            {{ post.company_name }}
+          </div>
+
+          <div class="">
+            <h2 class="font-light text-sm overflow-hidden">
+              {{ post.city }} {{ post.state }}
+            </h2>
           </div>
         </div>
       </div>
@@ -213,13 +200,36 @@ export default {
             <img src="/images/icons/pre-diamond.png" width="20" height="30" />
           </div>
           <!-- ratings & how many -->
-          <div class="flex flex-col justify-center items-center">
+          <!-- <div class="flex flex-col justify-center items-center">
             <div class="">
               <img src="/images/icons/Stars4_icon.png" width="40" height="40" />
             </div>
             <div class="">
               <h2 class="font-light text-xs overflow-hidden tracking-tighter">
                 5555
+              </h2>
+            </div>
+          </div> -->
+          <div class="flex flex-col justify-center items-center">
+            <StarRounded
+              @click="openDialog"
+              :starWidth="15"
+              class="h-4 cursor-pointer"
+              indicatorClasses="text-small h-4"
+              :starHeight="15"
+              :rating="
+                Number(
+                  parseFloat(
+                    post.average_rating ? post.average_rating : 0.0
+                  ).toFixed(1)
+                )
+              "
+              :isIndicatorActive="false"
+            />
+
+            <div class="">
+              <h2 class="font-light text-xs overflow-hidden tracking-tighter">
+                {{ post.total_reviews }}
               </h2>
             </div>
           </div>

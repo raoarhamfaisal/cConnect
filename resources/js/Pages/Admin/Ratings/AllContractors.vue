@@ -16,13 +16,15 @@
         bgColor="white"
         :padding="screenWidth < 640 ? '7px' : '20px'"
       >
+        <PageTitle linkUrl="/post" pageTitle="All Contractors" />
+
         <SearchInput
           class="mb-12"
-          barWidth="30"
+          :barWidth="screenWidth < 640 ? 50 : 35"
           icon="iconamoon:search"
           @search-clicked="onSearch"
         />
-        <heading-card heading="All Contractors" class="mt-3 mb-6" />
+
         <div
           class="flex flex-col"
           v-if="allContractors && !loading && allContractors.length > 0"
@@ -85,6 +87,7 @@ import { computed, ref, onMounted, onBeforeMount } from "vue";
 import { useStore } from "vuex";
 import { Inertia } from "@inertiajs/inertia";
 import SearchInput from "@/Components/Ratings/SearchInput.vue";
+import PageTitle from "@/Components/PageTitle.vue";
 // States
 defineProps({
   profile: Object,

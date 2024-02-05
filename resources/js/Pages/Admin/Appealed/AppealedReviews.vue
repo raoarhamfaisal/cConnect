@@ -1,5 +1,5 @@
 <template>
-  <Head title="Ratings" />
+  <Head title="Appealed Reviews" />
 
   <Header
     v-if="isAdminUrl"
@@ -10,12 +10,22 @@
     :show-post-buttons="true"
     color="rgb(229 231 235 / var(--tw-bg-opacity))"
   >
-    <div v-if="!loading" class="bg-gray-200 mt-10">
+    <Card
+      v-if="loading"
+      :shadowLevel="2"
+      bgColor="white"
+      :padding="screenWidth < 640 ? '7px' : '20px'"
+    >
+      <Loader :loading="loading" background="" height="100vh"></Loader>
+    </Card>
+    <div v-if="!loading" class="bg-gray-200 mt-10 flex flex-col gap-10">
       <Card
         :shadowLevel="2"
         bgColor="white"
         :padding="screenWidth < 640 ? '7px' : '20px'"
       >
+        <PageTitle linkUrl="/post" pageTitle="Appealed Reviews" />
+
         <!-- Filters -->
         <div class="border-gray-300">
           <heading-card class="mt-6" heading="Order Reviews By" />
@@ -60,7 +70,13 @@
             </div>
           </div>
         </div>
-        <div class="xs:mb-12 mb-6 xs:mt-12 mt-7 border-t-2 border-gray-300">
+      </Card>
+      <Card
+        :shadowLevel="2"
+        bgColor="#fff"
+        :padding="screenWidth < 640 ? '7px' : '20px'"
+      >
+        <div class="xs:mb-12 mb-6 border-gray-300">
           <heading-card heading="Reviews" class="mt-6 mb-12" />
 
           <div v-if="appealedReviews?.length > 0" class="flex gap-8 flex-col">
@@ -102,7 +118,6 @@
         </div>
       </Card>
     </div>
-    <Loader :loading="loading" background="white" height="100vh"></Loader>
   </Header>
 </template>
 
@@ -123,6 +138,7 @@ import { somethingWentWrong } from "@/helpers/utilities";
 import { useStore } from "vuex";
 import { Inertia } from "@inertiajs/inertia";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
+import PageTitle from "@/Components/PageTitle.vue";
 
 // State
 defineProps({

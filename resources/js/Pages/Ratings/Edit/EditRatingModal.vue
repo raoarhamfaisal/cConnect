@@ -109,7 +109,7 @@ const form = toRefs(state);
 
 const dialogRef = ref();
 const referenceList = [
-  "Contractor Referral",
+  "tContractor Referral",
   "Friend Referral",
   "Other Contractor",
   "Job Site",

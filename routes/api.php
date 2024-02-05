@@ -40,6 +40,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::middleware('auth:sanctum')->group(function () {
         // Review APIs
         Route::post('/reviews', [ReviewController::class, 'store'])->name('review.store');
+        Route::get('/profileInfo', [ProfileController::class, 'getProfileInfo'])->name('profile.getDetails');
         Route::get('/reviews/{contractor_id}', [ReviewController::class, 'index'])->name('review.all');
         Route::get('/contractor/{contractor_id}', [ReviewController::class, 'getContractorInfo'])->name('review.contractor');
         Route::put('reviews/{review}', [ReviewController::class, 'update']);
@@ -47,7 +48,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         Route::post('reviews/{review}/off-appeal', [ReviewController::class, 'removeAppeal']);
         Route::delete('reviews/{review}', [ReviewController::class, 'destroy']);
         Route::post('/review-responses', [ReviewResponseController::class, 'store']);
-        Route::patch('/review-responses', [ReviewResponseController::class, 'update']);
         Route::delete('/review-responses/{reviewResponse}', [ReviewResponseController::class, 'destroy']);
         
         Route::middleware('admin')->group(function () {

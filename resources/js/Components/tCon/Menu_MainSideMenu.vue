@@ -1,12 +1,14 @@
 <script setup>
 import tContractorWord from "@/Components/tCon/tContractorWord.vue";
 import ButtonPost from "@/Components/tCon/tConSub/ButtonPost.vue";
+import DialogProfileTabs from "@/Pages/Profile/Partials/main/DialogProfileTabs.vue";
 import ButtonRefresh from "@/Components/tCon/tConSub/ButtonRefresh.vue";
-import { computed, onMounted } from "vue";
+import { computed, ref } from "vue";
 import { usePage } from "@inertiajs/inertia-vue3";
 import { Icon } from "@iconify/vue";
 import { Inertia } from "@inertiajs/inertia";
 import { removeToken } from "@/helpers/localStorageHelper";
+import { useStore } from "vuex";
 defineProps({
   showit: Boolean,
 
@@ -29,6 +31,8 @@ const emit = defineEmits([
   "submitPostSearch",
   "postClicked",
 ]);
+const store = useStore();
+const dialogRef = ref();
 
 const newPostSearchValue = () => {
   emit("submitPostSearch");
@@ -47,16 +51,27 @@ function handleLogout() {
 
   Inertia.post("/logout");
 }
+
+const openProfileModal = () => {
+  store.commit("profile/setActiveTab", 3);
+  if (usePage().url.value !== "/profile") {
+    dialogRef.value.openDialog();
+  }
+};
 </script>
 
 <template>
+  <DialogProfileTabs ref="dialogRef" :profile="profile" />
+
   <!-- MAIN SIDE MENU  SELECTION CHOICES ONLY -->
   <!-- ******************************************************* -->
+
   <div
-    class="hidden lg:flex lg:flex-col items-center justify-start transition-all duration-700 ease-in-out h-screen overflow-scroll"
+    style="width: 650px"
+    class="hidden lg:flex lg:flex-col bg-gray-200 items-center justify-start transition-all duration-700 ease-in-out h-screen overflow-y-scroll"
   >
     <div
-      class="hidden lg:flex lg:flex-col justify-start items-center w-[32rem] px-4 py-2 rounded-lg bg-gray-200"
+      class="hidden lg:flex lg:flex-col justify-start items-center px-4 py-2 rounded-lg bg-gray-200"
     >
       <Link
         href="/"
@@ -270,13 +285,13 @@ function handleLogout() {
           <hr class="mt-4 ml-6 mr-6 pt-4 pb-1 border-t-2 border-gray-400" />
 
           <!-- VIEW SETTINGS -->
-          <Link
+          <button
+            @click="openProfileModal"
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
-            href="#"
           >
             <img src="/images/icons/news_view.png" width="30" height="30" />
             <span class="mx-4 font-medium text-cyan-600">View Settings</span>
-          </Link>
+          </button>
 
           <!-- PROFILE -->
           <Link
