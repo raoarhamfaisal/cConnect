@@ -139,11 +139,11 @@ class PaymentController extends Controller
 
             // Authentication with Authorize.Net's credentials
             $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
-            // $merchantAuthentication->setName(env('MERCHANT_LOGIN_ID'));
-            // $merchantAuthentication->setTransactionKey(env('MERCHANT_TRANSACTION_KEY'));
+            $merchantAuthentication->setName(env('MERCHANT_LOGIN_ID'));
+            $merchantAuthentication->setTransactionKey(env('MERCHANT_TRANSACTION_KEY'));
 
-            $merchantAuthentication->setName("5KP3u95bQpv");
-            $merchantAuthentication->setTransactionKey("346HZ32z3fP4hTG2");
+            // $merchantAuthentication->setName("5KP3u95bQpv");
+            // $merchantAuthentication->setTransactionKey("346HZ32z3fP4hTG2");
 
             $apiRequest = new AnetAPI\ARBCreateSubscriptionRequest();
             $apiRequest->setmerchantAuthentication($merchantAuthentication);
@@ -153,7 +153,7 @@ class PaymentController extends Controller
 
             // dd(env('MERCHANT_LOGIN_ID'));
 
-            $subscriptionResponse = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::SANDBOX);
+            $subscriptionResponse = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 
             if($subscriptionResponse && $subscriptionResponse->getMessages()->getResultCode() == "Ok") {
                 // 3. Handle successful payments
@@ -617,11 +617,11 @@ class PaymentController extends Controller
             /* Create a merchantAuthenticationType object with authentication details
            retrieved from the constants file */
            $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
-        //    $merchantAuthentication->setName(env('MERCHANT_LOGIN_ID'));
-        //    $merchantAuthentication->setTransactionKey(env('MERCHANT_TRANSACTION_KEY'));
+           $merchantAuthentication->setName(env('MERCHANT_LOGIN_ID'));
+           $merchantAuthentication->setTransactionKey(env('MERCHANT_TRANSACTION_KEY'));
 
-            $merchantAuthentication->setName("5KP3u95bQpv");
-            $merchantAuthentication->setTransactionKey("346HZ32z3fP4hTG2");
+            // $merchantAuthentication->setName("5KP3u95bQpv");
+            // $merchantAuthentication->setTransactionKey("346HZ32z3fP4hTG2");
           
            // Set the transaction's refId
            $refId = 'ref' . time();
@@ -633,7 +633,7 @@ class PaymentController extends Controller
        
            $controller = new AnetController\ARBCancelSubscriptionController($subscriptionRequest);
        
-           $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+           $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
        
            if (($response != null) && ($response->getMessages()->getResultCode() == "Ok"))
            {
@@ -789,8 +789,10 @@ class PaymentController extends Controller
         /* Create a merchantAuthenticationType object with authentication details
         retrieved from the constants file */
         $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
-        $merchantAuthentication->setName("5KP3u95bQpv");
-        $merchantAuthentication->setTransactionKey("346HZ32z3fP4hTG2");
+        $merchantAuthentication->setName(env('MERCHANT_LOGIN_ID'));
+        $merchantAuthentication->setTransactionKey(env('MERCHANT_TRANSACTION_KEY'));
+        // $merchantAuthentication->setName("5KP3u95bQpv");
+        // $merchantAuthentication->setTransactionKey("346HZ32z3fP4hTG2");
         
         // Set the transaction's refId
         $refId = 'ref' . time();
@@ -832,7 +834,7 @@ class PaymentController extends Controller
         $controller = new AnetController\ARBUpdateSubscriptionController($request);
 
 
-        $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+        $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 
         
         return $response;
@@ -844,8 +846,10 @@ class PaymentController extends Controller
     {
         // Setup merchant authentication
         $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
-        $merchantAuthentication->setName("5KP3u95bQpv");
-        $merchantAuthentication->setTransactionKey("346HZ32z3fP4hTG2");
+        $merchantAuthentication->setName(env('MERCHANT_LOGIN_ID'));
+        $merchantAuthentication->setTransactionKey(env('MERCHANT_TRANSACTION_KEY'));
+        // $merchantAuthentication->setName("5KP3u95bQpv");
+        // $merchantAuthentication->setTransactionKey("346HZ32z3fP4hTG2");
 
         // Set the transaction's refId
         $refId = 'ref' . time();
@@ -884,7 +888,7 @@ class PaymentController extends Controller
 
         // Create the controller and get the response
         $controller = new AnetController\UpdateCustomerPaymentProfileController($paymentprofileRequest);
-        $response = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::SANDBOX); // or PRODUCTION
+        $response = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::PRODUCTION); // or PRODUCTION
 
         return $response;
     }
