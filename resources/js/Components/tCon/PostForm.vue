@@ -641,6 +641,11 @@ Array.prototype.remove = function () {
                   imageResizeUpscale="true"
                   :maxFiles="maxImages"
                   credits="false"
+                  :labelIdle="`${
+                    translations && translations.drag_and_drop_files_or
+                  } <span class='filepond--label-action'> ${
+                    translations && translations.browse
+                  } </span>`"
                   v-bind:server="{
                     url: '',
                     timeout: 7000,

@@ -72,6 +72,10 @@ export default {
       type: Boolean,
       required: false,
     },
+    shouldFetchUserVersion: {
+      type: Boolean,
+      required: false,
+    },
 
     // get existing search filters on page
     // from PostController.php
@@ -177,11 +181,14 @@ export default {
     if (this.shouldFetchUserDetails) {
       this.fetchUserDetails();
     }
+    if (this.shouldFetchUserVersion) {
+      this.fetchUserVersion();
+    }
   },
 
   methods: {
     ...mapActions("profile", ["fetchProfile"]),
-    ...mapActions(["fetchUserDetails"]),
+    ...mapActions(["fetchUserDetails","fetchUserVersion"]),
     async saveItem(formData) {
       this.success = false;
 

@@ -74,8 +74,10 @@
     @submit="handleSubmit"
     ref="dialogRef"
     :title="`${
-      editMode ? translations && translations.edit : 'Add'
-    } Brag Section`"
+      editMode
+        ? translations && translations.edit
+        : translations && translations.add
+    } ${translations && translations.brag_section}`"
   >
     <div v-if="isNotFile" class="bg-[#222]">
       <img
@@ -105,13 +107,22 @@
       @addfilestart="handleProcessStart"
       @addfile="handleProcessEnd"
       @error="handleProcessEnd"
-      :labelIdle="`Drag & Drop ${
-        editMode ? 'to replace ' : ''
-      }your image or <span class='filepond--label-action'> Browse </span>`"
+      :labelIdle="`${translations && translations.drag_and_drop} ${
+        editMode ? translations && translations.to_replace : ''
+      } ${
+        translations && translations.your_image_or
+      } <span class='filepond--label-action'> ${
+        translations && translations.browse
+      } </span>`"
     />
 
     <!-- Textarea -->
-    <label for="text_section" class="font-bold">Title(max 150char)</label>
+    <label for="text_section" class="font-bold"
+      >{{ translations && translations.title }}({{
+        translations && translations.max
+      }}
+      150char)</label
+    >
     <textarea
       v-model="tempSection.section_text"
       id="text_section"
@@ -119,7 +130,7 @@
       type="text"
       :rows="screenWidth > 760 ? 2 : 3"
       class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-      placeholder="Type your description..."
+      :placeholder="translations && translations.type_your_description"
     ></textarea>
     <div v-if="textError" class="text-red-500 mt-2">
       {{ textError }}

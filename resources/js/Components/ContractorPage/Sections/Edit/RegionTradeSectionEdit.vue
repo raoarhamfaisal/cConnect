@@ -65,7 +65,7 @@
     class="flex items-center justify-between w-full gap-2 xs:gap-4 mt-2 sm:mt-0"
   >
     <div class="flex items-center">
-      <v-tooltip text="Region" location="top">
+      <v-tooltip :text="translations && translations.region" location="top">
         <template v-slot:activator="{ props }">
           <Icon
             v-bind="props"
@@ -76,7 +76,7 @@
         </template>
       </v-tooltip>
       <div class="font-bold text-sm xs:text-base sm:text-lg ml-1 xs:ml-2">
-        Region :
+        {{ translations && translations.region }} :
       </div>
       <div class="text-xs xs:text-sm sm:text-base translate-y-[0px] ml-2">
         {{ region_name }}

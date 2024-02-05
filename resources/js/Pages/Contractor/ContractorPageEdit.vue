@@ -1,5 +1,11 @@
 <template>
-  <Head :title="translations && translations.contractor_page" />
+  <Head
+    :title="
+      translations &&
+      translations.edit + ' ' + translations &&
+      translations.contractor_page
+    "
+  />
 
   <Header
     :profile="profile"
@@ -62,6 +68,7 @@ const contractorProfile = ref({});
 const total_reviews = ref(0);
 
 const userVersion = computed(() => store.getters.userVersion);
+const translations = computed(() => store.getters.translations);
 
 onMounted(() => {
   console.log("onMounted");

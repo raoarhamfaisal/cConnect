@@ -333,14 +333,7 @@ export default {
       this.isUploading = false;
       // this.showBackroundColor = true;
     },
-    changeReferal(value) {
-      this.selectedReferal = value;
-      this.regions.forEach((item) => {
-        if (value === item.name) {
-          this.form.region_id = item.id.toString();
-        }
-      });
-    },
+
     // called when plugin is initialized
     handleFilePondInit() {
       this.myFiles = [];
@@ -789,6 +782,11 @@ Array.prototype.remove = function () {
                   v-on:removefile="handleFilePondProcessEnd"
                   v-on:reorderfiles="handleFileReorder"
                   v-on:processfilerevert="handleFilePondRevertedEnd"
+                  :labelIdle="`${
+                    translations && translations.drag_and_drop_files_or
+                  } <span class='filepond--label-action'> ${
+                    translations && translations.browse
+                  } </span>`"
                 >
                 </file-pond>
               </div>

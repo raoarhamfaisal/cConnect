@@ -346,7 +346,7 @@
                       <InputLabel
                         class="font-bold"
                         for="address"
-                        value="Address*"
+                        :value="`${translations && translations.address}*`"
                       />
                       <GoogleAddressAutocomplete
                         id="address"

@@ -21,7 +21,10 @@
                 class="flex items-center w-full gap-2 text-gray-700 xs:gap-4 mt-2 sm:mt-0"
               >
                 <div class="flex items-center">
-                  <v-tooltip text="Region" location="top">
+                  <v-tooltip
+                    :text="translations && translations.region"
+                    location="top"
+                  >
                     <template v-slot:activator="{ props }">
                       <Icon
                         v-bind="props"
@@ -34,7 +37,7 @@
                   <div
                     class="font-bold text-sm xs:text-base sm:text-lg ml-1 xs:ml-2"
                   >
-                    Region :
+                    {{ translations && translations.region }} :
                   </div>
                   <div
                     class="text-xs xs:text-sm sm:translate-y-[1px] sm:text-base ml-2"
@@ -471,22 +474,22 @@ const openPostDialog = () => {
 const contractorSelectedDisplayChoiceButtons = ref([
   {
     value: "Preferred",
-    label: "Preferred",
+    label: translations.value && translations.value.preferred,
     selectedClass: "bg-green-500 text-white border-green-500",
   },
   {
     value: "Back-Up",
-    label: "Back-Up",
+    label: translations.value && translations.value.back_up,
     selectedClass: "bg-blue-500 text-white border-blue-500",
   },
   {
     value: "Possible",
-    label: "Possible",
+    label: translations.value && translations.value.possible,
     selectedClass: "bg-yellow-500 text-white border-yellow-500",
   },
   {
     value: "Rejected",
-    label: "Rejected",
+    label: translations.value && translations.value.rejected,
     selectedClass: "bg-red-500 text-white border-red-500",
   },
 ]);
