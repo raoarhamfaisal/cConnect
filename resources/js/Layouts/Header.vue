@@ -7,7 +7,6 @@ import ButtonPost from "@/Components/tCon/tConSub/ButtonPost.vue";
 import { Inertia } from "@inertiajs/inertia";
 import { Link } from "@inertiajs/inertia-vue3";
 import PostForm from "@/Components/tCon/PostForm.vue";
-import axios from "axios";
 
 import { ref } from "vue";
 

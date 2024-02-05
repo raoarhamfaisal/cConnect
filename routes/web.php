@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile/trades', [ProfileController::class, 'updateTrades'])->name('profile.updateTrades');
     Route::patch('/profile/links', [ProfileController::class, 'updateLinks'])->name('profile.updateLinks');
     Route::patch('/profile/views', [ProfileController::class, 'updateViews'])->name('profile.updateViews');
+    Route::patch('/profile/views', [ProfileController::class, 'updateViewsApi'])->name('profile.updateViewsApi');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/admin/ratings/contractor/{id}/history', [ContractorRatingsAdminController::class, 'historyPage'])->name('admin.history');

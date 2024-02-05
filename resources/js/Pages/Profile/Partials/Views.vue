@@ -3,6 +3,10 @@ import { somethingWentWrong } from "@/helpers/utilities";
 import { useForm } from "@inertiajs/inertia-vue3";
 const props = defineProps({
   profile: Object,
+  byApi: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const form = useForm({
@@ -36,13 +40,23 @@ const labels = [
 
 const toggleSwitch = (field) => {
   form[field] = form[field] === 1 ? 0 : 1;
-  form.patch(route("profile.updateViews"), {
-    preserveScroll: true,
-    // onSuccess: () => form.reset("password"),
-    onError: () => {
-      somethingWentWrong();
-    },
-  });
+  if (props.byApi) {
+    form.patch(route("profile.updateViewsApi"), {
+      preserveScroll: true,
+      // onSuccess: () => form.reset("password"),
+      onError: () => {
+        somethingWentWrong();
+      },
+    });
+  } else {
+    form.patch(route("profile.updateViews"), {
+      preserveScroll: true,
+      // onSuccess: () => form.reset("password"),
+      onError: () => {
+        somethingWentWrong();
+      },
+    });
+  }
 };
 </script>
 
