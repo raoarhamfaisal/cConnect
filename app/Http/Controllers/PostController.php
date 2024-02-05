@@ -225,7 +225,9 @@ class PostController extends Controller
                     'original_user_id' => $post->original_user_id,
                     'original_user_average_rating' => $post->original_user_average_rating,
                     'original_user_total_reviews' => $post->original_user_total_reviews,
-                    'created_at' => $post->created_at,
+                    'created_at' => $post->created_at, 
+                    'updated_at' => $post->updated_at, 
+
                     'region_id' => $post->region_id
                 
                 ]),
