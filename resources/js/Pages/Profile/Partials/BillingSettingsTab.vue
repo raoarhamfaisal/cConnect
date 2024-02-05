@@ -315,7 +315,7 @@ const fetchPaymentHistoryDetails = async () => {
                       }}
                     </h2>
                     <div
-                      class="price-tag bg-white w-40 h-40 sm:w-40 sm:h-40 border-2 rounded-full flex items-center justify-center"
+                      class="price-tag w-40 h-40 sm:w-40 sm:h-40 border-2 rounded-full flex items-center justify-center"
                       :class="{
                         'bg-[#4169E1] border-[#4169E1] text-white': planType,
                         'bg-white border-black text-black': !planType,

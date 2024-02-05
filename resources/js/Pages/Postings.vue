@@ -16,7 +16,7 @@ import Loader from "@/Components/Ratings/Loader.vue";
 
 import { ref } from "vue";
 import PostDisplayEnlarged from "@/Components/tCon/PostDisplayEnlarged.vue";
-import { mapGetters, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { somethingWentWrong } from "@/helpers/utilities";
 
@@ -341,6 +341,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["fetchUserDetails"]),
     onRepostEdit(repostedComment, postId) {
       const postIndex = this.allPosts.findIndex((post) => post.id === postId);
       this.allPosts[postIndex].repost_comment = repostedComment;
@@ -473,6 +474,7 @@ export default {
     },
     onRespost() {
       this.dontTakeFirstPostOnRepost = true;
+      this.fetchUserDetails();
       this.$inertia.get(
         this.posts.first_page_url,
         {},
@@ -726,6 +728,7 @@ export default {
               :backgroundColors="backgroundColors"
               :body1Colors="body1Colors"
               @close-enlarged="EnLargedPostClosed"
+              @onRepost="onRespost"
               @onAddingEnlargeComment="onAddingEnlargeComment"
             >
             </PostDisplayEnlarged>

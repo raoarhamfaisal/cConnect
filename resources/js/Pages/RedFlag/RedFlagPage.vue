@@ -433,7 +433,9 @@ const determineBorderVisibility = (index) => {
               v-model="searchTerm"
               @input="submitSearchTerm"
               class="relative m-0 flex-grow block w-full h-[45px] px-3 py-1.5 text-base font-normal text-gray-700 outline-none rounded-md border-solid border-gray-600 placeholder:italic placeholder:text-slate-500 pr-12"
-              placeholder="Search Name..."
+              :placeholder="`${translations && translations.search} ${
+                translations && translations.name
+              }...`"
             />
           </div>
           <!-- buttons -->
@@ -464,7 +466,10 @@ const determineBorderVisibility = (index) => {
 
           <div class="w-full">
             <div class="mb-2 max-sm:mt-2">
-              <InputLabel class="font-bold text-base mb-2" value="Search By:" />
+              <InputLabel
+                class="font-bold text-base mb-2"
+                :value="translations && translations.search_by"
+              />
               <div class="w-full flex flex-col gap-1 ml-3">
                 <div class="flex gap-2 items-center h-8">
                   <v-checkbox
@@ -512,7 +517,7 @@ const determineBorderVisibility = (index) => {
             <div class="mb-4 sm:mb-0">
               <InputLabel
                 class="font-bold text-base mb-1"
-                value="Select Region:"
+                :value="translations && translations.select_region"
               />
               <SelectProfile
                 class="bg-white rounded"
@@ -771,7 +776,7 @@ const determineBorderVisibility = (index) => {
           <div class="">
             <InputLabel
               class="font-bold text-base mb-1"
-              value="Select Region:"
+              :value="translations && translations.select_region"
             />
             <SelectProfile
               class="bg-white rounded"

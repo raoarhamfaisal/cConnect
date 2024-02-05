@@ -304,11 +304,17 @@ const verifyCouponCode = () => {
       if (response.data) {
         // console.log(response.data, "response");
         // changesSaved(response.data.message);
-        couponApiSuccessMsg.value = response.data.message;
+        couponApiSuccessMsg.value = couponApiError.value =
+          err.response.data.message === "Coupon is valid."
+            ? translations.value && translations.value.coupon_is_valid
+            : response.data.message;
         coupon.value = response.data.coupon;
       }
     } catch (err) {
-      couponApiError.value = err.response.data.message;
+      couponApiError.value =
+        err.response.data.message === "Coupon not found."
+          ? translations.value && translations.value.coupon_not_found
+          : err.response.data.message;
     } finally {
       loadingCoupon.value = false;
     }

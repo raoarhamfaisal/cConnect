@@ -54,7 +54,7 @@
                 :open-on-focus="true"
                 v-model="tooltip"
                 max-width="300px"
-                text="Edit or Delete the comment"
+                :text="translations && translations.edit_or_delete_comment"
                 location="top"
               >
                 <template v-slot:activator="{ props }">
@@ -85,27 +85,27 @@
         </div>
       </div>
       <div
-        class="text-xs flex gap-2 x350:gap-3 xs:gap-4 items-center mt-[3px] ml-2 text-[#65676B]"
+        class="text-[10px] x350:text-[12px] flex gap-2 x350:gap-3 xs:gap-4 items-center mt-[3px] ml-2 text-[#65676B]"
       >
         <div>
           {{ timeAgo(comment.updated_at) }}
         </div>
         <div
           @click="onLike"
-          class="font-bold hover:underline hover:text-[#16a34a] cursor-pointer"
+          class="text-[10px] x350:text-[12px] font-bold hover:underline hover:text-[#16a34a] cursor-pointer"
           :class="`${your_reaction === 'like' ? 'text-[#16a34a]' : ''}`"
         >
           {{ translations && translations.like }}
         </div>
         <div
           @click="onDislike"
-          class="font-bold hover:underline cursor-pointer hover:text-[#c40516]"
+          class="text-[10px] x350:text-[12px] font-bold hover:underline cursor-pointer hover:text-[#c40516]"
           :class="`${your_reaction === 'dislike' ? 'text-[#c40516]' : ''}`"
         >
           {{ translations && translations.dislike }}
         </div>
         <div
-          class="font-bold hover:underline cursor-pointer"
+          class="text-[10px] x350:text-[12px] font-bold hover:underline cursor-pointer"
           @click="showReplyBox"
         >
           {{ translations && translations.reply_first_cap }}
@@ -121,13 +121,11 @@
           >
             <Icon
               icon="emojione-monotone:up-arrow"
-              :class="`  text-[#16a34a]`"
-              width="14"
+              :class="`  w-[12px] x350:w-[14px] text-[#16a34a]`"
             />
           </div>
           <div
-            class="translate-y-[0.5px] md:translate-y-[1px]"
-            style="font-size: 12px"
+            class="text-[10px] x350:text-[12px] translate-y-[0.5px] md:translate-y-[1px]"
           >
             {{ likes_count }}
           </div>
@@ -143,14 +141,12 @@
           >
             <Icon
               icon="emojione-monotone:up-arrow"
-              :class="`  text-[#c40516]`"
-              width="14"
+              :class="`w-[12px] x350:w-[14px] text-[#c40516]`"
               :rotate="2"
             />
           </div>
           <div
-            style="font-size: 12px"
-            class="translate-y-[0.5px] md:translate-y-[1px]"
+            class="text-[10px] x350:text-[12px] translate-y-[0.5px] md:translate-y-[1px]"
           >
             {{ dislikes_count }}
           </div>
