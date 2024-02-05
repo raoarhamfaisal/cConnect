@@ -763,6 +763,30 @@ class PostController extends Controller
 
     public function repost(Post $post, HttpRequest $request)
     {
+
+
+        $user = Auth::user();
+        $userVersion = $user->profile->version; // Fetch the version identifier from the user's profile
+        
+        // Fetch version defaults based on the user's version
+        $versionDefault = VersionDefault::find($userVersion);
+        if (!$versionDefault) {
+            return redirect()->back()->with('error', 'Version defaults not found for your account.');
+        }
+        
+        // Convert 'nf_ppm' to PHP_INT_MAX if it's 99
+        $postsLimit = $versionDefault->nf_ppm == 99 ? PHP_INT_MAX : $versionDefault->nf_ppm;
+        
+        $currentMonthPosts = Post::where('user_id', $user->id)
+        ->whereMonth('created_at', now()->month)
+        ->whereYear('created_at', now()->year)
+        ->count();
+        
+        // Check if user has exceeded their posting limit
+        if ($currentMonthPosts >= $postsLimit) {
+            return redirect()->back()->with('error', 'You have reached your posting limit for this month.');
+        }
+
         // Check if the current user has already reposted this post
         $existingRepost = Post::where('original_post_id', $post->id)
                             ->where('user_id', Auth::id())
@@ -818,7 +842,11 @@ class PostController extends Controller
             // Optionally, handle the error further if needed
         }
 
-
+        $userVersionDetail = $user->versionDetail()->updateOrCreate([
+            'user_id' => $user->id,
+        ], [
+            'nf_ppm' => $versionDefault->nf_ppm == 99 ? 99 : $versionDefault->nf_ppm - $currentMonthPosts - 1
+        ]);
 
         return response()->json($repost, 201);
     }
@@ -831,6 +859,13 @@ class PostController extends Controller
             // Increment repost count for the current post
             $currentPost->repost++;
             $currentPost->save();
+
+            try {
+                broadcast(new PostCountersChanged($currentPost));
+            } catch (\Exception $e) {
+                \Log::error('Error broadcasting PostCountersChanged event: ' . $e->getMessage());
+                // Optionally, handle the error further if needed
+            }
     
             // Move to the next ancestor (the post this one was reposted from)
             if ($currentPost->parent_post_id) {
