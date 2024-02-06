@@ -185,7 +185,7 @@ const submit = () => {
               v-if="isAdminUrl && showit"
               class="pt-2 pb-3 space-y-1 border-b-2 border-gray-400"
             >
-              <ResponsiveNavLink href="/admin/ratings">
+              <ResponsiveNavLink href="/admin/regions">
                 All Contractors
               </ResponsiveNavLink>
               <ResponsiveNavLink href="/admin/appealed">

@@ -20,7 +20,7 @@ class ContractorRatingsAdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getContractorReviews($contractor_id)
+    public function getContractorReviews($region_id,$contractor_id)
     {
           // Get current user id
       $userID = Auth()->user('')->id;
@@ -79,6 +79,7 @@ class ContractorRatingsAdminController extends Controller
       }
         return Inertia::render('Admin/Ratings/SingleContractor', [
             'profile' => $profile,
+            'region_id' => $region_id,
             'showit' => Auth::check(),
             'posts' => Post::query()
             ->orderBy('id', 'DESC')

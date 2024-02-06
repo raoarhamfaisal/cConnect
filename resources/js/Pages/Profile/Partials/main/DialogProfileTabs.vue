@@ -1,6 +1,5 @@
 <template>
   <CustomDialog
-    @submit="handleSubmit"
     ref="dialogRef"
     :showFooter="false"
     dialogWidth="width-75"
@@ -30,10 +29,6 @@ const store = useStore();
 
 const dialogRef = ref();
 const loading = computed(() => store.getters["profile/loading"]);
-const status = computed(() => store.getters["profile/status"]);
-const mustVerifyEmail = computed(
-  () => store.getters["profile/mustVerifyEmail"]
-);
 
 const openDialog = () => {
   store.dispatch("profile/getProfileInfo");

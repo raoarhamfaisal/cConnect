@@ -262,9 +262,9 @@ class ProfileController extends Controller
         if($profile) {
 
             $data = $request->validate([
-                'region_id' => 'required|number',
-                'address_1' => 'nullable|string|max:30',
-                'address_2' => 'nullable|string|max:30',
+                'region_id' => 'required|string',
+                'address_1' => 'nullable|string|max:200',
+                'address_2' => 'nullable|string|max:200',
                 'city' => 'nullable|string|max:30',
                 'state' => 'nullable|string|max:30',
                 'zipcode' => 'nullable|string|max:30',
