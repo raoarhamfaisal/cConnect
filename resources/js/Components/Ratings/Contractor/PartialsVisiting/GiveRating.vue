@@ -159,7 +159,7 @@ const state = reactive({
 });
 
 const form = toRefs(state);
-const selectedReferal = ref("Contractor Referral");
+const selectedReferal = ref("tContractor Referral");
 const loading = ref(false);
 const disabled = ref(false);
 

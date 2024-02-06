@@ -26,7 +26,6 @@ export const changesSaved = (
     showConfirmButton: false,
     timer: 2000,
     width: 300,
-    height: 200,
     padding: 10,
   });
 };

@@ -1,9 +1,9 @@
 <script setup>
 import TC_LoginForm from "@/Components/TC_LoginForm.vue";
-import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
+import { Head, Link, useForm, usePage } from "@inertiajs/inertia-vue3";
 import tContractorWord from "@/Components/tCon/tContractorWord.vue";
 import tContractorWhite from "@/Components/tCon/tContractorWhite.vue";
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import ScrollToLinkVue from "@/Components/tCon/ScrollToLink.vue";
 import FeaturesGrid from "@/Components/tCon/FeaturesGrid.vue";
@@ -27,8 +27,18 @@ const form = useForm({
 });
 const dropdownMenu = ref(null);
 
+//Computed
+
+const isAdminUrl = computed(() => {
+  if (usePage().props.value.auth.user) {
+    return usePage().props.value.auth.user.reviews_privileges === 1;
+  }
+  return false;
+});
+
+// Methods
+
 const handleOutsideClick = (e) => {
-  console.log(dropdownMenu.value, "target");
   if (dropdownMenu.value && !dropdownMenu.value.contains(e.target)) {
     showingNavigationDropdown.value = false;
   }
@@ -162,7 +172,7 @@ const submit = () => {
           class="absolute top-16 right-4 sm:right-6 lg:right-20 xl:right-32 2xl:right-80 z-30 px-3 text-left border-b border-gray-400 rounded-xl bg-gray-100 flex"
         >
           <div class="">
-            <div class="pt-4 pb-2 ml-3 border-b-2 border-gray-400">
+            <div class="pt-4 pb-2 pl-3 border-b-2 border-gray-400">
               <div class="font-bold text-base text-gray-800">
                 <div v-if="showit">{{ $page.props.auth.user.name }}</div>
                 <div v-if="!showit">Not Logged In</div>
@@ -171,9 +181,23 @@ const submit = () => {
                 {{ $page.props.auth.user.email }}
               </div>
             </div>
+            <div
+              v-if="isAdminUrl && showit"
+              class="pt-2 pb-3 space-y-1 border-b-2 border-gray-400"
+            >
+              <ResponsiveNavLink href="/admin/ratings">
+                All Contractors
+              </ResponsiveNavLink>
+              <ResponsiveNavLink href="/admin/appealed">
+                Appealed Reviews
+              </ResponsiveNavLink>
+            </div>
             <div class="pt-2 pb-3 space-y-1">
               <ResponsiveNavLink href="#whytContractor">
                 Why <tContractorWord></tContractorWord>
+              </ResponsiveNavLink>
+              <ResponsiveNavLink v-if="showit" href="/ratings/contractor">
+                Your Ratings
               </ResponsiveNavLink>
 
               <ResponsiveNavLink

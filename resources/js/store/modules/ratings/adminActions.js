@@ -26,13 +26,12 @@ export const deleteReviewAdmin = async ({ commit }, payload) => {
   commit("setDisabled", true);
   console.log(payload);
   try {
-    const response = await axios.delete(
-      `/api/admin/reviews/${payload.reviewId}`,
-      {
-        data: { reason: payload.reason },
-      },
-      getAxiosConfig()
-    );
+    const response = await axios.request({
+      method: "delete",
+      url: `/api/admin/reviews/${payload.reviewId}`,
+      data: { reason: payload.reason },
+      ...getAxiosConfig(),
+    });
     if (response.data) {
       changesSaved(response.message || "Review Successfully Deleted");
       setTimeout(() => {
@@ -51,13 +50,12 @@ export const deleteResponseAdmin = async ({ commit }, payload) => {
   commit("setDisabled", true);
   console.log(payload);
   try {
-    const response = await axios.delete(
-      `/api/admin/review-responses/${payload.responseId}`,
-      {
-        data: { reason: payload.reason },
-      },
-      getAxiosConfig()
-    );
+    const response = await axios.request({
+      method: "delete",
+      url: `/api/admin/review-responses/${payload.responseId}`,
+      data: { reason: payload.reason },
+      ...getAxiosConfig(),
+    });
     if (response.data) {
       changesSaved(response.message || "Response Successfully Deleted");
       setTimeout(() => {
