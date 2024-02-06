@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Review;
 use App\Models\Profile;
+use App\Models\Region;
 use App\Models\RatingReason;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -996,6 +997,13 @@ class ReviewController extends Controller
 
         return response()->json(['message' => 'Appeal is successfully rejected!', 'review' => $review], 200);
      }
+
+
+    //  Get All the Regions
+    public function regions(Request $request) {
+        $regions = Region::all();
+        return response()->json(['message' => 'Region successfully got!', 'regions' => $regions], 200);
+    }
  
 
 

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Request as FacadeRequest;
 use Inertia\Inertia;
 use App\Models\Post;
 use App\Models\Profile;
+use App\Models\Region;
 use App\Models\Review;
 use Illuminate\Support\Facades\DB;
 
@@ -444,7 +445,7 @@ class ContractorRatingsAdminController extends Controller
 
 
     // Search the Contractor
-    public function searchContractor(Request $request)
+    public function searchContractor(Request $request, Region $region)
     {
         // Determine pagination parameters from the request's query parameters
         $perPage = $request->query('per_page', 15); // Default to 15 if not provided
@@ -467,6 +468,8 @@ class ContractorRatingsAdminController extends Controller
             'profiles.phone_cell',
             DB::raw('AVG(reviews.rating) as average_rating')
         ]);
+
+        $query->where('region_id', $region->id);
     
         $searchTerm = $request->get('search');
     

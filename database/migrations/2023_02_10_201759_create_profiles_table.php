@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('region_id');
             $table->unsignedBigInteger('user_id');
             $table->boolean('active_user')->default(1);
             $table->string('first_name', 30)->nullable();
@@ -87,6 +88,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('region_id')->references('id')->on('regions');
 
         });
     }

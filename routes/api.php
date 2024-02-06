@@ -26,6 +26,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::post('/profile/user-avatar', [ProfileController::class, 'updateUserAvatar'])->name('profile.updateUserAvatar');
     Route::post('/profile/company-logo', [ProfileController::class, 'updateCompanyLogo'])->name('profile.updateCompanyLogo');
 
+    Route::get('/regions', [ReviewController::class, 'regions'])->name('review.getRegions');
+
 
     
     
@@ -55,7 +57,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
             // ... other admin routes
             Route::get('/admin/all-contractors', [ReviewController::class, 'getContractorProfiles'])->name('review.allContractors');
             Route::get('/admin/reviews/{contractor_id}', [ReviewController::class, 'contractorAllReviews'])->name('review.contractorAllReviews');
-            Route::get('/admin/search-contractor', [ContractorRatingsAdminController::class, 'searchContractor']);
+            Route::get('/admin/{region}/search-contractor', [ContractorRatingsAdminController::class, 'searchContractor']);
         
         
             Route::get('/admin/all-appealed-reviews', [ReviewController::class, 'getAppealedReviews'])->name('review.getAppealedReviews');
