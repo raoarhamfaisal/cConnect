@@ -55,9 +55,9 @@
           <a href="/pricing" class="hover:text-blue-400">{{
             translations && translations.pricing
           }}</a>
-          <a href="/pricing#faqs" class="hover:text-blue-400">{{
+          <Link href="/pricing#faqs" class="hover:text-blue-400">{{
             translations && translations.faqs
-          }}</a>
+          }}</Link>
 
           <a href="/about-us#contactUs" class="hover:text-blue-400">{{
             translations && translations.contact_us

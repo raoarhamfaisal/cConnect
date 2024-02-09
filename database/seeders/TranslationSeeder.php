@@ -144,7 +144,7 @@ class TranslationSeeder extends Seeder
             ['key' => 'building_community', 'english' => "At tContractor, we're building a community where contractors help each other succeed. Whether you're looking to hire, seek guidance, or find new opportunities, you're in the right place. Our platform connects contractors with customers seeking contractor services, allowing contractors to advertise their services, create profiles, and communicate with potential clients.", 'mexican_spanish' => 'En tContractor, estamos construyendo una comunidad donde los contratistas se ayudan mutuamente a tener éxito. Ya sea que esté buscando contratar, buscar orientación o encontrar nuevas oportunidades, está en el lugar correcto. Nuestra plataforma conecta a contratistas con clientes que buscan servicios de contratistas, permitiéndoles anunciar sus servicios, crear perfiles y comunicarse con clientes potenciales.', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'mission_empower_contractors', 'english' => 'At tContractor,our mission is to empower contractors, helping them connect, collaborate, and succeed. Our platform serves as a bridge between contractors and clients, ensuring that every project is a success story waiting to be told. From small tasks to large projects, our community thrives on mutual support and collaboration.', 'mexican_spanish' => 'En tContractor, nuestra misión es empoderar a los contratistas, ayudándolos a conectarse, colaborar y tener éxito. Nuestra plataforma sirve como puente entre contratistas y clientes, asegurando que cada proyecto sea una historia de éxito esperando ser contada. Desde pequeñas tareas hasta grandes proyectos, nuestra comunidad prospera gracias al apoyo mutuo y la colaboración.', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'power_of_community', 'english' => 'We believe in the power of community, and at tContractor, every member plays a pivotal role in shaping our collective future. Join us and be a part of our ever-growing family.', 'mexican_spanish' => 'Creemos en el poder de la comunidad y, en tContractor, cada miembro desempeña un papel fundamental en la configuración de nuestro futuro colectivo. Únase a nosotros y sea parte de nuestra familia en constante crecimiento.', 'created_at' => now(), 'updated_at' => now()],
-            ['key' => 'always_here_to_help', 'english' => "We're always here to help. Whether you have a question, feedback, or just want to chat, our team is just an email away. We value our community and are committed to ensuring that every experience with tContractor is a positive one.", 'mexican_spanish' => 'Siempre estamos aquí para ayudar. Ya sea que tenga una pregunta, un comentario o simplemente quiera chatear, nuestro equipo está a solo un correo electrónico de distancia. Valoramos nuestra comunidad y estamos comprometidos a garantizar que cada experiencia con tContractor sea positiva.', 'created_at' => now(), 'updated_at' => now()],
+            ['key' => 'always_here_to_help', 'english' => "We're always here to help. Whether you have a question, feedback, or just want to chat, our team is there to help you. We value our community and are committed to ensuring that every experience with tContractor is a positive one.", 'mexican_spanish' => 'Siempre estamos aquí para ayudar. Ya sea que tenga una pregunta, un comentario o simplemente quiera conversar, nuestro equipo está ahí para ayudarlo. Valoramos nuestra comunidad y estamos comprometidos a garantizar que cada experiencia con tContractor sea positiva.', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'reach_out_to_us', 'english' => 'Reach out to us at', 'mexican_spanish' => 'Llegar a nosotros en', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'get_back_to_you', 'english' => "and we'll get back to you as soon as possible.", 'mexican_spanish' => 'y nos comunicaremos con usted lo antes posible.', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'information_we_collect', 'english' => 'Information We Collect', 'mexican_spanish' => 'Información que Recopilamos', 'created_at' => now(), 'updated_at' => now()],
@@ -718,7 +718,25 @@ class TranslationSeeder extends Seeder
              ['key' => 'coupon_is_valid', 'english' => 'Coupon is valid.', 'mexican_spanish' => 'El cupón es válido.', 'created_at' => now(), 'updated_at' => now()],
              ['key' => 'name', 'english' => 'Name', 'mexican_spanish' => 'Nombre', 'created_at' => now(), 'updated_at' => now()],
              ['key' => 'edit_or_delete_comment', 'english' => 'Edit or Delete the comment', 'mexican_spanish' => 'Editar o eliminar el comentario', 'created_at' => now(), 'updated_at' => now()],
-    
+             ['key' => 'we_provide', 'english' => 'We Provide', 'mexican_spanish' => 'Nosotros Proporcionamos', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'not_here_at', 'english' => 'Not Here at', 'mexican_spanish' => 'No Aquí en', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'faqs_learn_more_about_tcontractor', 'english' => 'FAQs - Learn more about tContractor', 'mexican_spanish' => 'Preguntas frecuentes: obtenga más información sobre tContractor', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'more_information', 'english' => 'More Information', 'mexican_spanish' => 'Más información', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'message', 'english' => 'Message', 'mexican_spanish' => 'Mensaje', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'is_required', 'english' => 'is required', 'mexican_spanish' => 'es obligatorio', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'sent_succssfully', 'english' => 'Sent Successfully', 'mexican_spanish' => 'Enviado correctamente', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'department', 'english' => 'Department', 'mexican_spanish' => 'Departamento', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'rating_should_be_greate_than_zero', 'english' => 'Rating should be greater than 0.', 'mexican_spanish' => 'La calificación debe ser mayor que 0.', 'created_at' => now(), 'updated_at' => now()],
+              ['key' => 'rating_should_not_be_empty', 'english' => 'Rating reason should not be empty.', 'mexican_spanish' => 'El motivo de la calificación no debe estar vacío.', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'gold', 'english' => 'Gold', 'mexican_spanish' => 'Oro', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'platinum', 'english' => 'Platinum', 'mexican_spanish' => 'Platino', 'created_at' => now(), 'updated_at' => now()],
+
+
+            
+
+
+            
+            
     
     
     

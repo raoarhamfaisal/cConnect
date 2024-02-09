@@ -52,8 +52,13 @@ export const subFinderOptions = [
   { id: "trade23", name: "Tile Works, Kitchen & Bathrooms" },
   { id: "trade24", name: "Water/Fire & Mold Remediation" },
   { id: "trade25", name: "Handyman Services" },
-  { id: "trade26", name: "Architectural & Engineering" },
-  { id: "trade27", name: "Attorney, Public Adjuster & Appraisal Services" },
+  // { id: "trade26", name: "Architectural & Engineering" },
+  // { id: "trade27", name: "Attorney, Public Adjuster & Appraisal Services" },
+];
+export const contactUsDepartments = [
+  { id: 1, name: "Billing Department" },
+  { id: 2, name: "Help Desk" },
+  { id: 3, name: "Request Feature" },
 ];
 
 export const stateList = [

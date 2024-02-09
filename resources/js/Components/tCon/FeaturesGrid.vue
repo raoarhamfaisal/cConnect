@@ -3,6 +3,8 @@ import { ref, reactive, computed } from "vue";
 import tContractorWord from "@/Components/tCon/tContractorWord.vue";
 import ScrollToLinkVue from "@/Components/tCon/ScrollToLink.vue";
 import { useStore } from "vuex";
+import { Icon } from "@iconify/vue";
+import { Inertia } from "@inertiajs/inertia";
 
 const showMore1 = ref(false);
 const showMore2 = ref(false);
@@ -20,7 +22,7 @@ const translations = computed(() => store.getters.translations);
 
 <template>
   <section class="bg-white">
-    <div class="container px-6 py-10 mx-auto">
+    <div class="container px-2 sm:px-6 py-10 mx-auto">
       <h1 class="text-3xl font-semibold text-gray-800 capitalize lg:text-4xl">
         {{ translations && translations.explore_our }} <br />
         <span class="underline underline-offset-8 decoration-blue-rgba">
@@ -726,7 +728,30 @@ const translations = computed(() => store.getters.translations);
               </h1>
             </div>
           </div>
-
+          <div class="flex flex-row justify-start items-start">
+            <div class="w-1/5 sm:w-1/6"></div>
+            <div class="w-4/5 sm:w-5/6">
+              <div class="flex gap-1">
+                <Icon width="26" height="26" icon="mdi:faq" />
+                <div class="text-lg sm:text-xl font-bold text-blue-700">
+                  {{
+                    translations &&
+                    translations.faqs_learn_more_about_tcontractor
+                  }}
+                </div>
+              </div>
+              <div
+                @click="
+                  () => {
+                    Inertia.visit('/pricing');
+                  }
+                "
+                class="inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform underline hover:text-blue-600 cursor-pointer pl-1"
+              >
+                {{ translations && translations.more_information }}
+              </div>
+            </div>
+          </div>
           <div class="flex flex-row justify-start items-start">
             <div class="w-1/5"></div>
 

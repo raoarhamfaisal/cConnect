@@ -79,13 +79,14 @@ const validateForm = () => {
   }
 
   if (!form.email.trim()) {
-    errors.email = "Email is required";
+    errors.email = translations.value && translations.value.email_is_required;
     isValid = false;
   } else if (
     !/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(form.email) ||
     !form.email.includes(".")
   ) {
-    errors.email = "Invalid email format";
+    errors.email =
+      translations.value && translations.value.invalid_email_format;
     isValid = false;
   }
 
@@ -138,6 +139,7 @@ const submitVerificationCode = async () => {
       setTimeout(() => {
         removeToken();
 
+        store.commit("setUserVersion", 0);
         Inertia.post("/logout");
       }, 2000);
     }

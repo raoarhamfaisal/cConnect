@@ -148,7 +148,7 @@ const continueSignup = () => {
 };
 function handleLogout() {
   removeToken();
-
+  store.commit("setUserVersion", 0);
   Inertia.post("/logout");
 }
 </script>

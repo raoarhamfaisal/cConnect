@@ -1,11 +1,12 @@
 <script setup>
-import { computed, onMounted, onUnmounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import PricingFeature from "@/Components/Pricing/PricingFeature.vue";
 import FAQS from "@/Components/Pricing/FAQS.vue";
 import { useStore } from "vuex";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { Inertia } from "@inertiajs/inertia";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
+import { usePage } from "@inertiajs/inertia-vue3";
 
 const props = defineProps({
   showRightVersionText: {
@@ -75,6 +76,7 @@ const fetchDefaultVersionValues = async () => {
         }
       });
     }
+    scrollToFAQs();
   } catch (err) {
     somethingWentWrong();
   } finally {
@@ -145,6 +147,7 @@ const fetchPricingCardDetails = async () => {
     if (response.data) {
       pricingPlan.value = { ...response.data.paymentInfo };
     }
+    scrollToFAQs();
   } catch (err) {
     somethingWentWrong();
   } finally {
@@ -220,6 +223,12 @@ const onPlatinumSelect = () => {
   configurePrevUrlPricingPlan();
   localStorage.setItem("choosedVersion", "platinum");
   configureUrlToVisit();
+};
+
+const scrollToFAQs = () => {
+  if (usePage().url.value.includes("#faqs")) {
+    faqsRef.value.scrollIntoView({ behavior: "auto", block: "start" });
+  }
 };
 </script>
 <template>
@@ -346,7 +355,7 @@ const onPlatinumSelect = () => {
   >
     <div
       v-if="loading"
-      class="h-full h-[30vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4"
+      class="h-[30vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4"
     >
       <div class="text-center text-xl">
         {{ translations && translations.loading }}
@@ -511,12 +520,8 @@ const onPlatinumSelect = () => {
         <!-- Gold -->
         <div>
           <div class="flex flex-col justify-start items-center h-full">
-            <div
-              :class="`text-black text-lg font-bold ${
-                screenWidth < 458 && userVersion === 1 && 'h-[56px]'
-              }`"
-            >
-              {{ translations && translations.gold_package }}
+            <div :class="`text-black text-lg font-bold `">
+              {{ translations && translations.gold }}
             </div>
             <div class="flex text-green-rgba font-extrabold mt-1">
               <div class="text-lg self-center mt-[-30px]">$</div>
@@ -540,7 +545,7 @@ const onPlatinumSelect = () => {
         <div>
           <div class="flex flex-col justify-center items-center h-full">
             <div class="text-black text-lg font-bold">
-              {{ translations && translations.platinum_package }}
+              {{ translations && translations.platinum }}
             </div>
             <div class="flex text-blue-rgba font-extrabold mt-1">
               <div class="text-lg self-center mt-[-30px]">$</div>
@@ -868,7 +873,7 @@ const onPlatinumSelect = () => {
       </div>
     </section>
   </div>
-  <div class="faqs" ref="faqsRef">
+  <div loadingclass="faqs" ref="faqsRef">
     <FAQS />
   </div>
 
@@ -904,12 +909,8 @@ const onPlatinumSelect = () => {
     <!-- Gold -->
     <div>
       <div class="flex flex-col justify-start items-center h-full">
-        <div
-          :class="`text-black text-lg font-bold ${
-            screenWidth < 458 && userVersion === 1 && 'h-[56px]'
-          }`"
-        >
-          {{ translations && translations.gold_package }}
+        <div :class="`text-black text-lg font-bold `">
+          {{ translations && translations.gold }}
         </div>
         <div class="flex text-green-rgba font-extrabold mt-1">
           <div class="text-lg self-center mt-[-30px]">$</div>
@@ -933,7 +934,7 @@ const onPlatinumSelect = () => {
     <div>
       <div class="flex flex-col justify-center items-center h-full">
         <div class="text-black text-lg font-bold">
-          {{ translations && translations.platinum_package }}
+          {{ translations && translations.platinum }}
         </div>
         <div class="flex text-blue-rgba font-extrabold mt-1">
           <div class="text-lg self-center mt-[-30px]">$</div>

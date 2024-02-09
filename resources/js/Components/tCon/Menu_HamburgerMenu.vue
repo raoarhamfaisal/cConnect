@@ -57,6 +57,7 @@ function handleLogout() {
   removeToken();
 
   Inertia.post("/logout");
+  store.commit("setUserVersion", 0);
 }
 const openProfileModal = () => {
   dialogRef.value.openDialog();
