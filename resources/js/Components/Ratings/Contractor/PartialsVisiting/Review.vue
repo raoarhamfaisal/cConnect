@@ -1,6 +1,11 @@
 <template>
   <div class="flex space-x-2 justify-between">
-    <div class="flex justify-center items-center space-x-2">
+    <div
+      class="flex justify-center items-center space-x-2"
+      :style="{
+        flexGrow: screenWidth > 900 ? 0 : 1,
+      }"
+    >
       <div>
         <Avatar :imageSrc="`/${review.reviewer.user_avatar}`" />
       </div>
@@ -12,21 +17,21 @@
         </h2> -->
         <Tooltip
           :text="`${review.reviewer.first_name} ${review.reviewer.last_name}`"
-          :applyTooltipLength="640"
-          :textLengthToShow="20"
+          :applyTooltipLength="1260"
+          :textLengthToShow="screenWidth < 380 ? 18 : 20"
           textClass="text-md xs:text-xl font-medium font-bold text-gray-900 "
         />
         <Tooltip
           :text="review.reviewer.company_name"
-          :applyTooltipLength="640"
-          :textLengthToShow="23"
+          :applyTooltipLength="1260"
+          :textLengthToShow="screenWidth < 380 ? 20 : 23"
           textClass="text-sm xs:text-lg"
         />
         <Tooltip
           v-if="review.reviewer.city || review.reviewer.state"
           :text="`${review.reviewer.city} ${review.reviewer.state}`"
-          :applyTooltipLength="640"
-          :textLengthToShow="23"
+          :applyTooltipLength="1260"
+          :textLengthToShow="screenWidth < 380 ? 20 : 23"
           textClass="text-xs xs:text-lg"
         />
         <!-- <div class="text-sm xs:text-lg">{{ review.reviewer.company_name }}</div>
@@ -37,33 +42,61 @@
         > -->
       </div>
       <div
-        v-if="screenWidth >= 1260"
-        class="flex flex-col self-start ml-12"
+        class="flex flex-col self-start"
         :style="{
-          marginLeft: '20px',
+          marginLeft: screenWidth > 1260 ? '20px' : '8px',
+          flexGrow: screenWidth > 900 ? 0 : 1,
         }"
       >
-        <StarRating
-          :rating="Number(parseFloat(review.rating).toFixed(1))"
-          :isIndicatorActive="true"
-        />
-        <div
-          class="font-bold flex items-center text-md"
-          :style="{
-            transform: 'translateY(2px)',
-          }"
-        >
-          {{ convertDateFormat(review.rating_date) }}
+        <div class="flex flex-col">
+          <StarRating
+            :rating="Number(parseFloat(review.rating).toFixed(1))"
+            :isIndicatorActive="true"
+            :starWidth="screenWidth > 500 ? 24 : screenWidth > 390 ? 18 : 14"
+            :indicator-classes="screenWidth < 460 && 'text-small'"
+            :style="{
+              transform:
+                screenWidth > 460
+                  ? 'translateY(0px)'
+                  : screenWidth > 390
+                  ? 'translateY(2px)'
+                  : 'translateY(4px)',
+              height: screenWidth <= 390 ? '27px' : 'initial',
+            }"
+          />
+          <div
+            class="font-bold flex items-center text-xs xs:text-sm sm:text-md"
+            :style="{
+              transform:
+                screenWidth > 460 ? 'translateY(4px)' : 'translateY(0px)',
+            }"
+          >
+            {{ convertDateFormat(review.rating_date) }}
+          </div>
         </div>
+        <Badge
+          class="bg-orange-500 self-end"
+          v-if="review.is_under_appeal === 1 && screenWidth < 900"
+          :style="{
+            transform:
+              screenWidth < 640 && screenWidth > 460
+                ? 'translateY(9px)'
+                : 'translateY(0px)',
+          }"
+          >Under Appeal</Badge
+        >
       </div>
     </div>
 
     <!-- Edit delete with under appeal -->
-    <div class="flex flex-col justify-between items-end">
+    <div
+      v-if="screenWidth > 900"
+      class="flex flex-col justify-between items-end"
+    >
       <div
         class="flex gap-2"
         v-if="
-          screenWidth >= 600 &&
+          screenWidth >= 1260 &&
           nonEditableReview === false &&
           profileId === review.reviewer_id
         "
@@ -175,7 +208,7 @@
   <div
     class="grid grid-cols-2 gap-4 mt-3"
     v-if="
-      screenWidth < 600 &&
+      screenWidth < 1260 &&
       nonEditableReview === false &&
       profileId === review.reviewer_id
     "
@@ -215,7 +248,7 @@
       >
     </template>
     <!-- mobile veiw stars -->
-    <div
+    <!-- <div
       v-if="screenWidth < 1260"
       class="mt-3 mb-2 ml-1 flex items-center space-x-4"
     >
@@ -228,7 +261,7 @@
       >
         {{ convertDateFormat(review.rating_date) }}
       </div>
-    </div>
+    </div> -->
     <!-- qulifying questions -->
 
     <QualifyingQuestions

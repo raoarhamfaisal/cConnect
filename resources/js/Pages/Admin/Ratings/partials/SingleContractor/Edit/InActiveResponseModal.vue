@@ -2,20 +2,20 @@
   <!-- ConfirmDialog -->
 
   <CustomDialog
-    :submitText="isActive ? 'Inactivate' : 'Activate'"
+    :submitText="isActive ? 'Deactivate' : 'Activate'"
     @submit="handleSubmit"
     ref="inActiveDialogRef"
     :loading="loading"
     :disabled="disabled"
     errorIcon
     :title="`Are you sure? You want to ${
-      isActive ? 'inactivate' : 'activate'
+      isActive ? 'deactivate' : 'activate'
     } this response?`"
   >
     <!-- review reason -->
     <div class="mb-4">
       <div class="text-md font-bold text-gray-600 mt-3 mb-2">
-        Reason for {{ isActive ? "inactivating" : "activiting" }} this response
+        Reason for {{ isActive ? "Deactivating" : "activiting" }} this response
       </div>
       <textarea
         id="inactivating_reason"
@@ -25,7 +25,7 @@
         required
         v-model="editing_reason"
         :placeholder="`Type your reason for ${
-          isActive ? 'inactivating' : 'activiting'
+          isActive ? 'Deactivating' : 'activiting'
         } this response`"
       />
       <InputError

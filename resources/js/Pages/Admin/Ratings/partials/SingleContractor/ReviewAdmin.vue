@@ -28,9 +28,9 @@
       <!-- star and date -->
       <div
         v-if="screenWidth >= 1260"
-        class="flex flex-col self-start ml-12"
+        class="flex flex-col self-start"
         :style="{
-          marginLeft: '25px',
+          marginLeft: '10px',
         }"
       >
         <StarRating
@@ -89,7 +89,10 @@
       <!-- Edit buttons -->
       <div
         v-if="screenWidth >= 768 && !review.deleted_at"
-        class="grid grid-cols-3 gap-2"
+        class="grid gap-2"
+        :style="{
+          'grid-template-columns': '32fr 36fr 32fr',
+        }"
       >
         <!-- edit -->
         <ButtonRatings
@@ -104,7 +107,7 @@
           :icon="review.is_review_active === 1 ? 'mdi:hide' : 'mdi:show'"
           @click="openInActiveDialog"
           >{{
-            review.is_review_active === 1 ? "Inactive" : "Active"
+            review.is_review_active === 1 ? "Deactivate" : "Activate"
           }}</ButtonRatings
         >
         <!-- delete -->
@@ -148,7 +151,10 @@
   <!-- for mobile view icons edit inactive delete-->
   <div
     v-if="screenWidth < 768 && !review.deleted_at"
-    class="grid grid-cols-3 gap-2 mt-3"
+    class="grid gap-2 mt-3"
+    :style="{
+      'grid-template-columns': '32fr 36fr 32fr',
+    }"
   >
     <ButtonRatings
       bgColor="bg-lime-700"
@@ -162,7 +168,7 @@
       :icon="review.is_review_active === 1 ? 'mdi:hide' : 'mdi:show'"
       @click="openInActiveDialog"
       >{{
-        review.is_review_active === 1 ? "Inactive" : "Active"
+        review.is_review_active === 1 ? "Deactivate" : "Activate"
       }}</ButtonRatings
     >
 

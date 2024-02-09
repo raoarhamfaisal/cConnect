@@ -2,7 +2,7 @@
   <CustomDialog
     ref="dialogRef"
     :showFooter="false"
-    dialogWidth="width-75"
+    dialogWidth="width-75 contractorDialog"
     title="Contractor Ratings"
   >
     <Loader :loading="loading" background="white" height="70vh"></Loader>

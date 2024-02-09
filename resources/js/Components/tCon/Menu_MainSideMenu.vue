@@ -188,39 +188,17 @@ const openProfileModal = () => {
       <div class="flex flex-col justify-between flex-1 mt-6">
         <nav>
           <!-- all contractors -->
-          <Link
-            v-if="isAdminUrl"
-            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
-            href="/admin/regions"
-          >
-            <Icon
-              icon="ion:person-sharp"
-              color="#1098ad"
-              width="30"
-              height="30"
-            />
-            <span class="mx-4 font-medium">All Contractors</span>
-          </Link>
-          <!-- Appealed Reviews -->
-          <Link
-            v-if="isAdminUrl"
-            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
-            href="/admin/appealed"
-          >
-            <Icon
-              icon="fluent-mdl2:review-request-solid"
-              color="#1098ad"
-              width="30"
-              height="30"
-            />
-            <span class="mx-4 font-medium">Appealed Reviews</span>
-          </Link>
-          <hr
-            v-if="isAdminUrl"
-            class="mt-4 ml-6 mr-6 pt-4 pb-1 border-t-2 border-gray-400"
-          />
 
           <!-- MENU ITEMS -->
+
+          <Link
+            v-if="Inertia.page.component != 'Postings'"
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
+            :href="route('post')"
+          >
+            <img src="/images/icons/newsfeed.png" width="30" height="30" />
+            <span class="mx-4 font-medium">News Feed</span>
+          </Link>
           <!-- Your Reviews -->
           <Link
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
@@ -233,13 +211,6 @@ const openProfileModal = () => {
               height="30"
             />
             <span class="mx-4 font-medium">Your Ratings</span>
-          </Link>
-          <Link
-            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
-            :href="route('post')"
-          >
-            <img src="/images/icons/newsfeed.png" width="30" height="30" />
-            <span class="mx-4 font-medium">News Feed</span>
           </Link>
 
           <!-- SUB-FINDER SEARCH -->
@@ -319,6 +290,43 @@ const openProfileModal = () => {
             <img src="/images/icons/contactus.png" width="30" height="30" />
             <span class="mx-4 font-medium">Contact Us</span>
           </Link>
+
+          <!-- admin section -->
+          <hr
+            v-if="isAdminUrl"
+            class="mt-4 ml-6 mr-6 pt-4 pb-1 border-t-2 border-gray-400"
+          />
+          <Link
+            v-if="isAdminUrl"
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
+            href="/admin/regions"
+          >
+            <Icon
+              icon="ion:person-sharp"
+              color="#1098ad"
+              width="30"
+              height="30"
+            />
+            <span class="mx-4 font-medium">All Contractors</span>
+          </Link>
+          <!-- Appealed Reviews -->
+          <Link
+            v-if="isAdminUrl"
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
+            href="/admin/appealed"
+          >
+            <Icon
+              icon="fluent-mdl2:review-request-solid"
+              color="#1098ad"
+              width="30"
+              height="30"
+            />
+            <span class="mx-4 font-medium">Appealed Reviews</span>
+          </Link>
+          <hr
+            v-if="isAdminUrl"
+            class="mt-4 ml-6 mr-6 pt-4 pb-1 border-t-2 border-gray-400"
+          />
 
           <!-- LOG OUT -->
           <button

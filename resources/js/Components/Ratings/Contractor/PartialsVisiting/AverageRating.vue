@@ -41,11 +41,11 @@ import StarRating from "@/Components/Ratings/StarRating.vue";
 defineProps({
   averageRating: {
     type: Number,
-    default: 2,
+    default: 0,
   },
   length: {
     type: Number,
-    default: 2,
+    default: 0,
   },
   starPercentages: {
     type: Array,

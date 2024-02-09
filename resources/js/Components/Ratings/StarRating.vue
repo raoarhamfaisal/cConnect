@@ -48,7 +48,7 @@
       v-if="isIndicatorActive"
       :class="`indicator font-mono font-semibold flex justify-center items-center ${indicatorClasses} text-xl `"
       :style="{
-        transform: 'translateY(2px)',
+        transform: indicatorClasses ? 'translateY(0px)' : 'translateY(2px)',
       }"
     >
       {{ rating }}
@@ -226,5 +226,11 @@ export default {
 .text-small {
   font-size: 1rem;
   padding-bottom: 1px;
+}
+@media (max-width: 390px) {
+  .text-small {
+    font-size: 0.75rem;
+    padding-bottom: 8px;
+  }
 }
 </style>

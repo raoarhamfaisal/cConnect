@@ -40,7 +40,7 @@
         </div>
 
         <!-- Slot Content - Scrollable -->
-        <div :class="`flex-1 overflow-y-auto p-4 ${contentClasses}`">
+        <div :class="`flex-1 overflow-y-auto p-2 sm:p-4 ${contentClasses}`">
           <slot></slot>
         </div>
 
@@ -76,7 +76,8 @@
 
 <script setup>
 import { Icon } from "@iconify/vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import { useStore } from "vuex";
 
 const props = defineProps({
   title: String,
@@ -113,12 +114,22 @@ const emit = defineEmits(["submit"]);
 const submit = () => {
   emit("submit");
 };
-
+const store = useStore();
 const isVisible = ref(false);
 
+//Computed
+
+const shouldFetchPostsOnClose = computed(
+  () => store.state.ratings.shouldFetchPostsOnClose
+);
+//Methods
 const closeDialog = () => {
-  console.log("itsClicked");
   isVisible.value = false;
+  if (shouldFetchPostsOnClose) {
+    console.log("inDialog");
+    store.commit("ratings/setShouldLoadPosts", true);
+    store.commit("ratings/setShouldFetchPostsOnClose", false);
+  }
 };
 
 const openDialog = () => {
@@ -138,6 +149,11 @@ defineExpose({ openDialog, closeDialog });
 }
 .width-75 {
   width: 80%;
+}
+@media (max-width: 750px) {
+  .width-75.contractorDialog {
+    width: 100%;
+  }
 }
 @media (max-width: 640px) {
   .width-75 {

@@ -8,7 +8,6 @@
       'items-center',
       'justify-center',
       'px-3',
-      'xs:w-22',
       'py-2',
       'text-xs',
       'xs:text-xs',

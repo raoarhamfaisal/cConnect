@@ -52,6 +52,7 @@ class PostController extends Controller
                     'profiles.city',
                     'profiles.state',
                     'profiles.user_avatar',
+                    'profiles.id',
                     DB::raw('(SELECT AVG(reviews.rating) FROM reviews WHERE reviews.contractor_id = profiles.id) as average_rating'),
                     DB::raw('(SELECT COUNT(*) FROM reviews WHERE reviews.contractor_id = profiles.id) as total_reviews')
                 ])

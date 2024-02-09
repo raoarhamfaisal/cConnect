@@ -44,8 +44,22 @@ export const somethingWentWrong = (
   });
 };
 
-// convert UtC 2023-09-04T10:00:35.000000Z to DAte 23/09/2022
+// convert UtC 2023-09-04T10:00:35.000000Z to DAte 09/23/2022
 export function convertDateFormat(dateString) {
+  // Create a new date object from the input string
+  const date = new Date(dateString);
+
+  // Extract the day, month, and year from the date object
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Note: Months are 0-based
+  const year = date.getFullYear();
+
+  // Return the desired format
+  return `${month}/${day}/${year}`;
+}
+
+// convert UtC 2023-09-04T10:00:35.000000Z to DAte 23/09/2022
+export function convertDateFormatToDMY(dateString) {
   // Create a new date object from the input string
   const date = new Date(dateString);
 
@@ -69,6 +83,7 @@ export const filterTextFromBadWords = (textRef) => {
 
   textRef.value = filteredWords.join(" ");
 };
+
 // fromat 2004-12-07 06:34:58 to this 04 Sep 2023, 9:14AM
 export const formatDateTime = (dateTime) => {
   // Extract the date and time parts from the input string

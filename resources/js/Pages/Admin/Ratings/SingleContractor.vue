@@ -4,7 +4,6 @@
   <Header
     v-if="isAdminUrl"
     :profile="profile"
-    :posts="posts"
     :post-search-filters="postSearchFilters"
     :showit="showit"
     :show-post-buttons="true"
@@ -158,7 +157,6 @@ const { contractorDetails } = defineProps({
   profile: Object,
   region_id: [String, Number],
   contractorDetails: Object,
-  posts: Object,
   showit: Boolean,
   postSearchFilters: {
     type: Object,
