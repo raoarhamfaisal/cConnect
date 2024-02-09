@@ -17,6 +17,7 @@ return new class extends Migration
 
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('region_id');
             $table->boolean('view')->default(1);
             $table->string('title')->nullable();
             $table->string('image')->nullable();
@@ -63,6 +64,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('region_id')->references('id')->on('regions');
 
         });
     }
