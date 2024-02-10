@@ -1230,101 +1230,101 @@
       "assets/index.7337ff26.css"
     ]
   },
-  "resources/js/Pages/Admin/Ratings/partials/AllContractors/Contractor.css": {
-    "file": "assets/Contractor.a8598b83.css",
-    "src": "resources/js/Pages/Admin/Ratings/partials/AllContractors/Contractor.css"
-  },
-  "StarRating.css": {
-    "file": "assets/StarRating.01cdafec.css",
-    "src": "StarRating.css"
-  },
-  "CustomPagination.css": {
-    "file": "assets/CustomPagination.0985299c.css",
-    "src": "CustomPagination.css"
-  },
-  "DialogProfileTabs.css": {
-    "file": "assets/DialogProfileTabs.679bd2d4.css",
-    "src": "DialogProfileTabs.css"
+  "resources/js/Pages/Admin/Appealed/AppealedReviews.css": {
+    "file": "assets/AppealedReviews.06f78bee.css",
+    "src": "resources/js/Pages/Admin/Appealed/AppealedReviews.css"
   },
   "resources/js/Pages/Postingssetup.css": {
     "file": "assets/Postingssetup.3d81a95e.css",
     "src": "resources/js/Pages/Postingssetup.css"
   },
-  "StarRatingEditable.css": {
-    "file": "assets/StarRatingEditable.c338b43f.css",
-    "src": "StarRatingEditable.css"
-  },
-  "Button.css": {
-    "file": "assets/Button.75e085fc.css",
-    "src": "Button.css"
-  },
-  "resources/js/Pages/Profile/Partials/AddressInfo.css": {
-    "file": "assets/AddressInfo.9e267209.css",
-    "src": "resources/js/Pages/Profile/Partials/AddressInfo.css"
-  },
-  "CustomDialog.css": {
-    "file": "assets/CustomDialog.bb24ffc7.css",
-    "src": "CustomDialog.css"
-  },
-  "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ReviewAdmin.css": {
-    "file": "assets/ReviewAdmin.e0f32364.css",
-    "src": "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ReviewAdmin.css"
-  },
-  "Review.css": {
-    "file": "assets/Review.e8bbab40.css",
-    "src": "Review.css"
-  },
-  "resources/js/Pages/Admin/Appealed/AppealedReviews.css": {
-    "file": "assets/AppealedReviews.06f78bee.css",
-    "src": "resources/js/Pages/Admin/Appealed/AppealedReviews.css"
-  },
   "Card.css": {
     "file": "assets/Card.10899156.css",
     "src": "Card.css"
-  },
-  "Header.css": {
-    "file": "assets/Header.a02675bb.css",
-    "src": "Header.css"
-  },
-  "ContractorInfo.css": {
-    "file": "assets/ContractorInfo.bd06fda0.css",
-    "src": "ContractorInfo.css"
-  },
-  "PageTitle.css": {
-    "file": "assets/PageTitle.e3b0c442.css",
-    "src": "PageTitle.css"
-  },
-  "resources/js/Pages/Ratings/Contractor/ContractorPersonal.css": {
-    "file": "assets/ContractorPersonal.6b2cfbe6.css",
-    "src": "resources/js/Pages/Ratings/Contractor/ContractorPersonal.css"
-  },
-  "resources/js/Pages/index.css": {
-    "file": "assets/index.7337ff26.css",
-    "src": "resources/js/Pages/index.css"
-  },
-  "resources/js/Pages/Admin/History/ContractorHistory.css": {
-    "file": "assets/ContractorHistory.797e5e01.css",
-    "src": "resources/js/Pages/Admin/History/ContractorHistory.css"
-  },
-  "resources/js/Pages/Profile/Partials/Views.css": {
-    "file": "assets/Views.15362141.css",
-    "src": "resources/js/Pages/Profile/Partials/Views.css"
-  },
-  "resources/js/Pages/Admin/History/partials/AdminNote.css": {
-    "file": "assets/AdminNote.cca2b14e.css",
-    "src": "resources/js/Pages/Admin/History/partials/AdminNote.css"
   },
   "Tooltip.css": {
     "file": "assets/Tooltip.6ac14641.css",
     "src": "Tooltip.css"
   },
+  "resources/js/Pages/Admin/History/partials/AdminNote.css": {
+    "file": "assets/AdminNote.cca2b14e.css",
+    "src": "resources/js/Pages/Admin/History/partials/AdminNote.css"
+  },
+  "StarRatingEditable.css": {
+    "file": "assets/StarRatingEditable.c338b43f.css",
+    "src": "StarRatingEditable.css"
+  },
+  "resources/js/Pages/Admin/Ratings/partials/AllContractors/Contractor.css": {
+    "file": "assets/Contractor.a8598b83.css",
+    "src": "resources/js/Pages/Admin/Ratings/partials/AllContractors/Contractor.css"
+  },
+  "resources/js/Pages/Profile/Partials/Views.css": {
+    "file": "assets/Views.15362141.css",
+    "src": "resources/js/Pages/Profile/Partials/Views.css"
+  },
   "PostDisplay.css": {
     "file": "assets/PostDisplay.14daf3cf.css",
     "src": "PostDisplay.css"
   },
+  "ContractorInfo.css": {
+    "file": "assets/ContractorInfo.bd06fda0.css",
+    "src": "ContractorInfo.css"
+  },
+  "Button.css": {
+    "file": "assets/Button.75e085fc.css",
+    "src": "Button.css"
+  },
+  "StarRating.css": {
+    "file": "assets/StarRating.01cdafec.css",
+    "src": "StarRating.css"
+  },
+  "resources/js/Pages/Admin/History/ContractorHistory.css": {
+    "file": "assets/ContractorHistory.797e5e01.css",
+    "src": "resources/js/Pages/Admin/History/ContractorHistory.css"
+  },
   "resources/js/Pages/Profile/components/UserAvatar.css": {
     "file": "assets/UserAvatar.1ef6b509.css",
     "src": "resources/js/Pages/Profile/components/UserAvatar.css"
+  },
+  "resources/js/Pages/index.css": {
+    "file": "assets/index.7337ff26.css",
+    "src": "resources/js/Pages/index.css"
+  },
+  "CustomPagination.css": {
+    "file": "assets/CustomPagination.0985299c.css",
+    "src": "CustomPagination.css"
+  },
+  "Header.css": {
+    "file": "assets/Header.a02675bb.css",
+    "src": "Header.css"
+  },
+  "resources/js/Pages/Profile/Partials/AddressInfo.css": {
+    "file": "assets/AddressInfo.9e267209.css",
+    "src": "resources/js/Pages/Profile/Partials/AddressInfo.css"
+  },
+  "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ReviewAdmin.css": {
+    "file": "assets/ReviewAdmin.e0f32364.css",
+    "src": "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ReviewAdmin.css"
+  },
+  "CustomDialog.css": {
+    "file": "assets/CustomDialog.bb24ffc7.css",
+    "src": "CustomDialog.css"
+  },
+  "DialogProfileTabs.css": {
+    "file": "assets/DialogProfileTabs.679bd2d4.css",
+    "src": "DialogProfileTabs.css"
+  },
+  "Review.css": {
+    "file": "assets/Review.e8bbab40.css",
+    "src": "Review.css"
+  },
+  "resources/js/Pages/Ratings/Contractor/ContractorPersonal.css": {
+    "file": "assets/ContractorPersonal.6b2cfbe6.css",
+    "src": "resources/js/Pages/Ratings/Contractor/ContractorPersonal.css"
+  },
+  "PageTitle.css": {
+    "file": "assets/PageTitle.e3b0c442.css",
+    "src": "PageTitle.css"
   },
   "PostForm.css": {
     "file": "assets/PostForm.454c5c94.css",
