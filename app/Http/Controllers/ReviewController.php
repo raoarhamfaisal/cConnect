@@ -29,55 +29,30 @@ class ReviewController extends Controller
      */
     public function getContractorInfo(Request $request, $contractor_id)
     {
-
         $contractorDetails = Profile::where('id', $contractor_id)
-        ->select([
-            'id',
-            'user_id',
-            'email',
-            'phone_cell',            
-            'first_name',
-            'last_name',
-            'phone_cell','email',
-            'company_name',
-            'city',
-            'state',
-            'user_avatar',
-            'company_logo',
-            'trade1',
-            'trade2',
-            'trade3',
-            'trade4',
-            'trade5',
-            'trade6',
-            'trade7',
-            'trade8',
-            'trade9',
-            'trade10',
-            'trade11',
-            'trade12',
-            'trade13',
-            'trade14',
-            'trade15',
-            'trade16',
-            'trade17',
-            'trade18',
-            'trade19',
-            'trade20',
-            'trade21',
-            'trade22',
-            'trade23',
-            'trade24',
-            'trade25',
-            'trade26',
-            'trade27',
-            'trade28',
-            'trade29',
-            'trade30'
-        ])
-        ->first();
-
-
+            ->select([
+                'id',
+                'user_id',
+                'email',
+                'phone_cell',            
+                'first_name',
+                'last_name',
+                'phone_cell',
+                'email',
+                'company_name',
+                'city',
+                'state',
+                'user_avatar',
+                'company_logo'
+            ])
+            ->with('trades:id')
+            ->first();
+    
+        // Convert the trades to the old structure for contractorDetails
+        if ($contractorDetails) {
+            $contractorTrades = $this->convertTradesToOldStructure($contractorDetails->trades);
+            $contractorDetails = array_merge($contractorDetails->toArray(), $contractorTrades);
+        }
     
         // Construct the response
         $response = [
@@ -86,6 +61,18 @@ class ReviewController extends Controller
     
         return response()->json($response);
     }
+    
+    private function convertTradesToOldStructure($trades) 
+    {
+        $oldStructure = [];
+        for ($i = 1; $i <= 30; $i++) {
+            $oldStructure["trade{$i}"] = $trades->contains('id', $i) ? 1 : 0;
+        }
+        return $oldStructure;
+    }
+    
+
+
     public function index(Request $request, $contractor_id)
     {
         // Determine pagination parameters from the request's query parameters
@@ -102,8 +89,6 @@ class ReviewController extends Controller
         $threeStars = $allReviews->whereBetween('rating', [2.5, 3.4])->count();
         $twoStars = $allReviews->whereBetween('rating', [1.5, 2.4])->count();
         $oneStar = $allReviews->whereBetween('rating', [0.0, 1.4])->count();
-
-
     
         // Build the review query with filtering options
         $reviewsQuery = Review::with(['reviewer' => function($query) {
@@ -118,44 +103,14 @@ class ReviewController extends Controller
                 'city',
                 'state',
                 'user_avatar',
-                'company_logo',
-                'trade1',
-                'trade2',
-                'trade3',
-                'trade4',
-                'trade5',
-                'trade6',
-                'trade7',
-                'trade8',
-                'trade9',
-                'trade10',
-                'trade11',
-                'trade12',
-                'trade13',
-                'trade14',
-                'trade15',
-                'trade16',
-                'trade17',
-                'trade18',
-                'trade19',
-                'trade20',
-                'trade21',
-                'trade22',
-                'trade23',
-                'trade24',
-                'trade25',
-                'trade26',
-                'trade27',
-                'trade28',
-                'trade29',
-                'trade30'
-            ]);
+                'company_logo'
+            ])->with('trades:id');
         }, 'review_response'])->where('contractor_id', $contractor_id)->where('is_review_active', 1);
     
         // Apply sorting based on filters
         $sortByDate = $request->query('sort_by_date', '');
         $sortByRating = $request->query('sort_by_rating', '');
-        
+    
         switch ($sortByRating) {
             case 'highest':
                 $reviewsQuery = $reviewsQuery->orderByDesc('rating');
@@ -174,10 +129,16 @@ class ReviewController extends Controller
             $reviewsQuery = $reviewsQuery->latest('rating_date');
         }
     
-    
         // Fetch paginated reviews
         $reviews = $reviewsQuery->paginate($perPage, ['*'], 'page', $page);
     
+        // Convert trades to the old structure for each reviewer
+        foreach ($reviews->items() as $review) {
+            if ($review->reviewer) {
+                $reviewerTrades = $this->convertTradesToOldStructure($review->reviewer->trades);
+                $review->reviewer = array_merge($review->reviewer->toArray(), $reviewerTrades);
+            }
+        }
     
         // Construct the response
         $response = [
@@ -198,7 +159,6 @@ class ReviewController extends Controller
     
         return response()->json($response);
     }
-    
     
 
     /**
@@ -488,38 +448,8 @@ class ReviewController extends Controller
                 'city',
                 'state',
                 'user_avatar',
-                'company_logo',
-                'trade1',
-                'trade2',
-                'trade3',
-                'trade4',
-                'trade5',
-                'trade6',
-                'trade7',
-                'trade8',
-                'trade9',
-                'trade10',
-                'trade11',
-                'trade12',
-                'trade13',
-                'trade14',
-                'trade15',
-                'trade16',
-                'trade17',
-                'trade18',
-                'trade19',
-                'trade20',
-                'trade21',
-                'trade22',
-                'trade23',
-                'trade24',
-                'trade25',
-                'trade26',
-                'trade27',
-                'trade28',
-                'trade29',
-                'trade30'
-            ]);
+                'company_logo'
+            ])->with('trades:id');
         }, 'contractor' => function($query) {
             $query->select([
                 'id',
@@ -532,38 +462,8 @@ class ReviewController extends Controller
                 'city',
                 'state',
                 'user_avatar',
-                'company_logo',
-                'trade1',
-                'trade2',
-                'trade3',
-                'trade4',
-                'trade5',
-                'trade6',
-                'trade7',
-                'trade8',
-                'trade9',
-                'trade10',
-                'trade11',
-                'trade12',
-                'trade13',
-                'trade14',
-                'trade15',
-                'trade16',
-                'trade17',
-                'trade18',
-                'trade19',
-                'trade20',
-                'trade21',
-                'trade22',
-                'trade23',
-                'trade24',
-                'trade25',
-                'trade26',
-                'trade27',
-                'trade28',
-                'trade29',
-                'trade30'
-            ]);
+                'company_logo'
+            ])->with('trades:id');
         }, 'ratingReasons',  // Attach rating reasons related to the review
         'review_response.responseReasons','review_response'])->withTrashed()->where('is_under_appeal', 1);
     
@@ -592,6 +492,18 @@ class ReviewController extends Controller
         // Fetch paginated results
         $reviews = $query->paginate($perPage, ['*'], 'page', $page);
     
+        // Convert trades to the old structure for each reviewer and contractor
+        foreach ($reviews->items() as $review) {
+            if ($review->reviewer) {
+                $reviewerTrades = $this->convertTradesToOldStructure($review->reviewer->trades);
+                $review->reviewer = array_merge($review->reviewer->toArray(), $reviewerTrades);
+            }
+            if ($review->contractor) {
+                $contractorTrades = $this->convertTradesToOldStructure($review->contractor->trades);
+                $review->contractor = array_merge($review->contractor->toArray(), $contractorTrades);
+            }
+        }
+    
         // Construct the response
         $response = [
             'reviews' => $reviews->items(),
@@ -605,7 +517,8 @@ class ReviewController extends Controller
     
         return response()->json($response);
     }
-
+    
+    
 
     /**
      * Deactivate the review
@@ -692,8 +605,6 @@ class ReviewController extends Controller
         $threeStars = $allReviews->whereBetween('rating', [2.5, 3.4])->count();
         $twoStars = $allReviews->whereBetween('rating', [1.5, 2.4])->count();
         $oneStar = $allReviews->whereBetween('rating', [0.0, 1.4])->count();
-
-
     
         // Build the review query with filtering options
         $reviewsQuery = Review::with(['reviewer' => function($query) {
@@ -708,38 +619,8 @@ class ReviewController extends Controller
                 'city',
                 'state',
                 'user_avatar',
-                'company_logo',
-                'trade1',
-                'trade2',
-                'trade3',
-                'trade4',
-                'trade5',
-                'trade6',
-                'trade7',
-                'trade8',
-                'trade9',
-                'trade10',
-                'trade11',
-                'trade12',
-                'trade13',
-                'trade14',
-                'trade15',
-                'trade16',
-                'trade17',
-                'trade18',
-                'trade19',
-                'trade20',
-                'trade21',
-                'trade22',
-                'trade23',
-                'trade24',
-                'trade25',
-                'trade26',
-                'trade27',
-                'trade28',
-                'trade29',
-                'trade30'
-            ]);
+                'company_logo'
+            ])->with('trades:id');
         },  'ratingReasons',  // Attach rating reasons related to the review
         'review_response.responseReasons','review_response'])->withTrashed()->where('contractor_id', $contractor_id);
     
@@ -747,6 +628,12 @@ class ReviewController extends Controller
         $sortByDate = $request->query('sort_by_date', '');
         $sortByRating = $request->query('sort_by_rating', '');
         
+        if ($sortByDate === 'oldest') {
+            $reviewsQuery = $reviewsQuery->oldest('rating_date');
+        } else if($sortByDate === 'latest') {
+            $reviewsQuery = $reviewsQuery->latest('rating_date');
+        }
+
         switch ($sortByRating) {
             case 'highest':
                 $reviewsQuery = $reviewsQuery->orderByDesc('rating');
@@ -759,15 +646,16 @@ class ReviewController extends Controller
                 break;
         }
     
-        if ($sortByDate === 'oldest') {
-            $reviewsQuery = $reviewsQuery->oldest('rating_date');
-        } else if($sortByDate === 'latest') {
-            $reviewsQuery = $reviewsQuery->latest('rating_date');
-        }
-    
-    
         // Fetch paginated reviews
         $reviews = $reviewsQuery->paginate($perPage, ['*'], 'page', $page);
+    
+        // Convert trades to the old structure for each reviewer
+        foreach ($reviews->items() as $review) {
+            if ($review->reviewer) {
+                $reviewerTrades = $this->convertTradesToOldStructure($review->reviewer->trades);
+                $review->reviewer = array_merge($review->reviewer->toArray(), $reviewerTrades);
+            }
+        }
     
         // Retrieve the contractor details from the Profile table
         $contractorDetails = Profile::where('id', $contractor_id)
@@ -782,39 +670,13 @@ class ReviewController extends Controller
                                         'city',
                                         'state',
                                         'user_avatar',
-                                        'company_logo',
-                                        'trade1',
-                                        'trade2',
-                                        'trade3',
-                                        'trade4',
-                                        'trade5',
-                                        'trade6',
-                                        'trade7',
-                                        'trade8',
-                                        'trade9',
-                                        'trade10',
-                                        'trade11',
-                                        'trade12',
-                                        'trade13',
-                                        'trade14',
-                                        'trade15',
-                                        'trade16',
-                                        'trade17',
-                                        'trade18',
-                                        'trade19',
-                                        'trade20',
-                                        'trade21',
-                                        'trade22',
-                                        'trade23',
-                                        'trade24',
-                                        'trade25',
-                                        'trade26',
-                                        'trade27',
-                                        'trade28',
-                                        'trade29',
-                                        'trade30'
+                                        'company_logo'
                                     ])
+                                    ->with('trades:id')
                                     ->first();
+    
+        $contractorTrades = $this->convertTradesToOldStructure($contractorDetails->trades);
+        $contractorDetails = array_merge($contractorDetails->toArray(), $contractorTrades);
     
         // Construct the response
         $response = [
@@ -836,8 +698,8 @@ class ReviewController extends Controller
     
         return response()->json($response);
     }
-
-
+    
+    
     /**
      * Update the specified resource for Admin in storage.
      *

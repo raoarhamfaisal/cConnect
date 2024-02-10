@@ -18,63 +18,39 @@ class ContractorRatingController extends Controller
      */
     public function index()
     {
-      // Get current user id
-      $userID = Auth()->user('')->id;
-      $profile = null;
-
-
-      // Get the profile information if the user id exists
-      if($userID) {
-          $profile = Profile::where('user_id', $userID)->first();
-        // Retrieve the contractor details from the Profile table
-        $contractorDetails = Profile::where('id', $profile->id)
-                                    ->select([
-                                        'id',
-                                        'user_id',
-                                        'first_name',
-                                        'last_name',
-                                        'company_name',
-                                        'city',
-                                        'state',
-                                        'user_avatar',
-                                        'company_logo',
-                                        'trade1',
-                                        'trade2',
-                                        'trade3',
-                                        'trade4',
-                                        'trade5',
-                                        'trade6',
-                                        'trade7',
-                                        'trade8',
-                                        'trade9',
-                                        'trade10',
-                                        'trade11',
-                                        'trade12',
-                                        'trade13',
-                                        'trade14',
-                                        'trade15',
-                                        'trade16',
-                                        'trade17',
-                                        'trade18',
-                                        'trade19',
-                                        'trade20',
-                                        'trade21',
-                                        'trade22',
-                                        'trade23',
-                                        'trade24',
-                                        'trade25',
-                                        'trade26',
-                                        'trade27',
-                                        'trade28',
-                                        'trade29',
-                                        'trade30'
-                                    ])
-                                    ->first();
-  
-      }
+        // Get current user id
+        $userID = Auth()->user('')->id;
+        $profile = null;
+        $contractorDetails = null;
+    
+        // Get the profile information if the user id exists
+        if($userID) {
+            $profile = Profile::where('user_id', $userID)
+                        ->with('trades')
+                        ->first();
+    
+            if ($profile) {
+                $contractorDetails = $profile->only([
+                    'id',
+                    'user_id',
+                    'first_name',
+                    'last_name',
+                    'company_name',
+                    'city',
+                    'state',
+                    'user_avatar',
+                    'company_logo',
+                ]);
+    
+                // Convert trades to old structure
+                $tradesOldStructure = $this->convertTradesToOldStructure($profile->trades);
+                $contractorDetails = array_merge($contractorDetails, $tradesOldStructure);
+            }
+        }
+    
         return Inertia::render('Ratings/Contractor/ContractorPersonal', [
             'contractorDetails' => $contractorDetails,
-            'profile' => $profile,
+            'profile' => array_merge($profile->toArray(), $tradesOldStructure),
             'showit' => Auth::check(),
             'posts' => Post::query()
             ->orderBy('id', 'DESC')
@@ -96,13 +72,21 @@ class ContractorRatingController extends Controller
                 'repost' => $post->repost,
                 'shares' => $post->shares,
             ]),
-        // pass on any existing search filters that exist
-        // along with data
-        'postSearchFilters' => FacadeRequest::only(['postSearch']),
-    
-    ]);
+            // pass on any existing search filters that exist
+            // along with data
+            'postSearchFilters' => FacadeRequest::only(['postSearch']),
+        ]);
     }
-
+    
+    private function convertTradesToOldStructure($trades) 
+    {
+        $oldStructure = [];
+        for ($i = 1; $i <= 30; $i++) {
+            $oldStructure["trade{$i}"] = $trades->contains('id', $i) ? 1 : 0;
+        }
+        return $oldStructure;
+    }
+    
     /**
      * Show the form for creating a new resource.
      *
