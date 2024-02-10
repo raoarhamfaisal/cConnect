@@ -190,8 +190,9 @@ const handleSubmit = async () => {
       reviewId: review.id,
       review: updateReview,
     });
-
     editDialogRef.value.closeDialog();
+    store.commit("ratings/setShouldLoadPosts", false);
+    store.commit("ratings/setShouldFetchPostsOnClose", true);
   }
 };
 
