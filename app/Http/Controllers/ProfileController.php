@@ -31,14 +31,16 @@ class ProfileController extends Controller
 
         // Get the profile information if the user id exists
         if($userID) {
-            $profile = Profile::where('user_id', $userID)->first();
+            $profile = Profile::where('user_id', $userID)->with('trades')->first();
         }
 
         $regions = Region::all();
 
+        $tradesOldStructure = $this->convertTradesToOldStructure($profile->trades);
+
         return Inertia::render('Profile/Edit', [
             'regions' => $regions,
-            'profile' => $profile,
+            'profile' => array_merge($profile->toArray(), $tradesOldStructure),
             'showit' => Auth::check(),
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
@@ -291,31 +293,28 @@ class ProfileController extends Controller
         // Get current user id
         $userID = Auth()->user('')->id;
         $profile = null;
-
+    
         // Get the profile information if the user id exists
         if($userID) {
             $profile = Profile::where('user_id', $userID)->first();
         }
-
+    
         if($profile) {
-
-
-            $validationRules = [];
-
-            for ($i = 1; $i <= 24; $i++) {
-                $tradeKey = "trade{$i}";
-                $validationRules[$tradeKey] = 'nullable|boolean';
+            $selectedTrades = [];
+    
+            for ($i = 1; $i <= 30; $i++) {
+                if ($request->input("trade{$i}")) {
+                    $selectedTrades[] = $i;  // Assuming trade IDs are sequential from 1 to 30
+                }
             }
             
-            $data = $request->validate($validationRules);
-            $profile->update($data);
-         
-            
+            // Sync the selected trades with the profile
+            $profile->trades()->sync($selectedTrades);
         }
+    
         return Redirect::route('profile.edit');
-
     }
-
+    
     /**
      * Update the user's Veiws information.
      *
@@ -515,5 +514,14 @@ class ProfileController extends Controller
                 'company_logo' => $url,
             ]);    
         }
-    
+
+        // A helper function to convert the trades to old structure coming from proffile table in trade1, trade2 format
+        private function convertTradesToOldStructure($trades) {
+            $oldStructure = [];
+            for ($i = 1; $i <= 30; $i++) {
+                $oldStructure["trade{$i}"] = $trades->contains('id', $i) ? 1 : 0;
+            }
+            return $oldStructure;
+        }
+            
 }

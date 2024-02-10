@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
+use App\Models\Trade;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,6 +18,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RegionSeeder::class,
+            TradeSeeder::class,
             UserSeeder::class,
             PostSeeder::class,
             ProfileSeeder::class,
@@ -38,8 +40,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-        \App\Models\Profile::factory()->create([
+        $profile = \App\Models\Profile::factory()->create([
             'user_id' => 11,
+            'region_id' => 1,
             'active_user' => fake()->numberBetween(0, 1),
             'first_name' => fake()->name(),
             'last_name' => fake()->name(),
@@ -69,38 +72,11 @@ class DatabaseSeeder extends Seeder
             'view_nationwide' => fake()->numberBetween(0, 1),
             'view_following' => fake()->numberBetween(0, 1),
             'view_groups' => fake()->numberBetween(0, 1),
-            'trade1' => fake()->numberBetween(0, 1),
-            'trade2' => fake()->numberBetween(0, 1),
-            'trade3' => fake()->numberBetween(0, 1),
-            'trade4' => fake()->numberBetween(0, 1),
-            'trade5' => fake()->numberBetween(0, 1),
-            'trade6' => fake()->numberBetween(0, 1),
-            'trade7' => fake()->numberBetween(0, 1),
-            'trade8' => fake()->numberBetween(0, 1),
-            'trade9' => fake()->numberBetween(0, 1),
-            'trade10' => fake()->numberBetween(0, 1),
-            'trade11' => fake()->numberBetween(0, 1),
-            'trade12' => fake()->numberBetween(0, 1),
-            'trade13' => fake()->numberBetween(0, 1),
-            'trade14' => fake()->numberBetween(0, 1),
-            'trade15' => fake()->numberBetween(0, 1),
-            'trade16' => fake()->numberBetween(0, 1),
-            'trade17' => fake()->numberBetween(0, 1),
-            'trade18' => fake()->numberBetween(0, 1),
-            'trade19' => fake()->numberBetween(0, 1),
-            'trade20' => fake()->numberBetween(0, 1),
-            'trade21' => fake()->numberBetween(0, 1),
-            'trade22' => fake()->numberBetween(0, 1),
-            'trade23' => fake()->numberBetween(0, 1),
-            'trade24' => fake()->numberBetween(0, 1),
-            'trade25' => fake()->numberBetween(0, 1),
-            'trade26' => fake()->numberBetween(0, 1),
-            'trade27' => fake()->numberBetween(0, 1),
-            'trade28' => fake()->numberBetween(0, 1),
-            'trade29' => fake()->numberBetween(0, 1),
-            'trade30' => fake()->numberBetween(0, 1),
             'longitude' => fake()->longitude(),
             'latitude' => fake()->latitude()
         ]);
+        // Associate random trades with the profile
+        $randomTrades = Trade::inRandomOrder()->take(rand(1, 30))->get();
+        $profile->trades()->attach($randomTrades);        
     }
 }

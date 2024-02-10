@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Trade;
 
 class Post extends Model
 {
@@ -55,4 +56,11 @@ class Post extends Model
         'latitude',
 
     ];
+
+
+    public function trades()
+    {
+        return $this->belongsToMany(Trade::class, 'post_trade');
+    }
+
 }

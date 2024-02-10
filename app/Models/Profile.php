@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Trade;
 
 class profile extends Model
 {
@@ -72,4 +73,9 @@ class profile extends Model
         'trade30', //  Open
 
     ];
+
+    public function trades()
+    {
+        return $this->belongsToMany(Trade::class, 'profile_trade');
+    }
 }

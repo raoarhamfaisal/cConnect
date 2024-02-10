@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Profile;
+use App\Models\Trade;
 
 class ProfileSeeder extends Seeder
 {
@@ -19,9 +20,13 @@ class ProfileSeeder extends Seeder
         $users = User::all();
 
         foreach ($users as $user) {
-            Profile::factory()->create([
+            $profile = Profile::factory()->create([
                 'user_id' => $user->id,
             ]);
+
+            // Associate random trades with the profile
+            $randomTrades = Trade::inRandomOrder()->take(rand(1, 30))->get();
+            $profile->trades()->attach($randomTrades);        
         }
     }
 }
