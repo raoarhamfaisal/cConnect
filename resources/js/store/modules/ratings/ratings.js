@@ -23,9 +23,12 @@ export default {
       loadingSending: false,
       shouldFetchPostsOnClose: false,
       shouldLoadPosts: false,
+      reviewId: null,
+      responseId: null,
       disabledSending: false,
       index: 0,
       disabled: false,
+      updatedReview: null,
       isFetchReviews: false,
       isDeleted: false,
       isInactive: false,
@@ -43,6 +46,16 @@ export default {
     setLoading(state, payload) {
       state.loading = payload;
     },
+    setReviewId(state, payload) {
+      state.reviewId = payload;
+    },
+    setResponseId(state, payload) {
+      state.responseId = payload;
+    },
+    setUpdatedReview(state, payload) {
+      state.updatedReview = payload;
+    },
+
     setIndex(state, payload) {
       state.index = payload;
     },
@@ -113,9 +126,7 @@ export default {
         );
         if (response.data) {
           changesSaved(response.data.message || "Review Successfully Deleted");
-          setTimeout(() => {
-            commit("setIsDeleted", true);
-          }, 2000);
+          commit("setReviewId", reviewId);
         }
       } catch (err) {
         somethingWentWrong();
@@ -137,9 +148,7 @@ export default {
           changesSaved(
             response.data.message || "Review response deleted successfully!"
           );
-          setTimeout(() => {
-            commit("setIsDeleted", true);
-          }, 2000);
+          commit("setResponseId", responseId);
         }
       } catch (err) {
         somethingWentWrong();
@@ -185,9 +194,8 @@ export default {
         );
         if (response.data) {
           changesSaved(response.data.message || "Review Successfully Upadated");
-          setTimeout(() => {
-            commit("setIsFetchReviews", true);
-          }, 2000);
+
+          commit("setUpdatedReview", response.data.review);
         }
       } catch (err) {
         somethingWentWrong();

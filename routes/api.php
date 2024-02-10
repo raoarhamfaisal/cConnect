@@ -50,6 +50,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         Route::post('reviews/{review}/off-appeal', [ReviewController::class, 'removeAppeal']);
         Route::delete('reviews/{review}', [ReviewController::class, 'destroy']);
         Route::post('/review-responses', [ReviewResponseController::class, 'store']);
+        Route::patch('/review-responses', [ReviewResponseController::class, 'update']);
         Route::delete('/review-responses/{reviewResponse}', [ReviewResponseController::class, 'destroy']);
         
         Route::middleware('admin')->group(function () {

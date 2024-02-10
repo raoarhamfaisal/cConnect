@@ -2,13 +2,12 @@
   <div
     class="loading-screen"
     v-show="loading"
-    :class="classes"
     :style="{ backgroundColor: bc, height: loaderHeight }"
   >
     <component v-if="customLoader" :is="customLoader"></component>
-    <div v-else>
-      <div class="loading-circle"></div>
-      <p class="loading-text">{{ text }}</p>
+    <div v-else :class="classes">
+      <div :class="`loading-circle ${circleClasses}`"></div>
+      <p :class="`loading-text ${textClasses}`">{{ text }}</p>
     </div>
   </div>
 </template>
@@ -27,6 +26,11 @@ export default {
       default: false,
     },
     classes: String,
+    circleClasses: String,
+    textClasses: {
+      type: String,
+      required: false,
+    },
     loading: {
       type: Boolean,
       default: false,
@@ -88,6 +92,14 @@ export default {
   border: 2px solid transparent;
   border-left-color: #241e6d;
   animation: circleanimation 0.45s linear infinite;
+}
+div.small-circle {
+  width: 40px;
+  height: 40px;
+}
+p.small-text {
+  margin-top: 10px;
+  font-weight: 500;
 }
 .loading-text {
   margin-top: 15px;
