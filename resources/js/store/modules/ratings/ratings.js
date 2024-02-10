@@ -37,6 +37,7 @@ export default {
   },
   getters: {
     shouldFetchPostsOnClose: (state) => state.shouldFetchPostsOnClose,
+    shouldLoadPosts: (state) => state.shouldLoadPosts,
   },
   mutations: {
     setLoading(state, payload) {
