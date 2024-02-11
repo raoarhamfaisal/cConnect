@@ -252,30 +252,36 @@ class ContractorRatingsAdminController extends Controller
         // Fetch paginated reviews
         $reviews = $reviewsByContractIDQuery->paginate($reviewsPerPage, ['*'], 'page', $reviewsPage);
 
-        // Convert trades to old structure for each reviewer
-        foreach ($reviews as $review) {
-            if (isset($review->reviewer)) {
-                $reviewerTrades = $this->convertTradesToOldStructure($review->reviewer->trades);
-                $review->reviewer = array_merge($review->reviewer->toArray(), $reviewerTrades);
+        // Convert the paginated results to arrays
+        $reviewsArray = $reviews->toArray();
+
+        // Transform the trades data for each reviewer
+        foreach ($reviewsArray['data'] as &$review) {
+            if (isset($review['reviewer']) && isset($review['reviewer']['trades'])) {
+                $trades = $review['reviewer']['trades'];
+                $transformedTrades = $this->convertTradesToOldStructure(collect($trades));
+                $review['reviewer'] = array_merge($review['reviewer'], $transformedTrades);
             }
         }
-    
 
+        
+        
+        // Construct the response
         $response = [
-                'reviews' => $reviews->items(),
-                'pagination' => [
-                    'current_page' => $reviews->currentPage(),
-                    'last_page' => $reviews->lastPage(),
-                    'per_page' => $reviews->perPage(),
-                    'total' => $reviews->total(),
-                ],
-                'average_rating' => $avgReview,
-                'five_stars_count' => $fiveStars,
-                'four_stars_count' => $fourStars,
-                'three_stars_count' => $threeStars,
-                'two_stars_count' => $twoStars,
-                'one_star_count' => $oneStar
-            ];
+            'reviews' => $reviewsArray['data'],
+            'pagination' => [
+                'current_page' => $reviews->currentPage(),
+                'last_page' => $reviews->lastPage(),
+                'per_page' => $reviews->perPage(),
+                'total' => $reviews->total(),
+            ],
+            'average_rating' => $avgReview,
+            'five_stars_count' => $fiveStars,
+            'four_stars_count' => $fourStars,
+            'three_stars_count' => $threeStars,
+            'two_stars_count' => $twoStars,
+            'one_star_count' => $oneStar
+        ];
 
         return response()->json($response);
     }
@@ -284,9 +290,6 @@ class ContractorRatingsAdminController extends Controller
     
     public function responsesHistory(Request $request, $id)
     {
-
-        // Get all the reviews of the selected Contractor which other contractors have given him
-
         // Determine pagination parameters from the request's query parameters
         $perPage = $request->query('per_page', 15);  // default to 15 if not provided
         $page = $request->query('page', 1);          // default to page 1 if not provided
@@ -301,39 +304,36 @@ class ContractorRatingsAdminController extends Controller
         $threeStars = $allReviews->whereBetween('rating', [2.5, 3.4])->count();
         $twoStars = $allReviews->whereBetween('rating', [1.5, 2.4])->count();
         $oneStar = $allReviews->whereBetween('rating', [0.0, 1.4])->count();
-
-
     
         // Build the review query with filtering options
         $reviewsForContractIDQuery = Review::where('contractor_id', $id)
-        ->withTrashed()
-        ->with([
-            'reviewer' => function($query) {
-                $query->with('trades')  // Include the trades relationship
-                      ->select([
-                          'id',
-                          'user_id',
-                          'email',
-                          'phone_cell',
-                          'first_name',
-                          'last_name',
-                          'company_name',
-                          'city',
-                          'state',
-                          'user_avatar',
-                          'company_logo'
-                      ]);
-            }, 
-            'ratingReasons',  
-            'review_response.responseReasons',        
-            'review_response', 
-        ]);
-        
-        
+            ->withTrashed()
+            ->with([
+                'reviewer' => function($query) {
+                    $query->with('trades:id')  // Include the trades relationship with just the id
+                          ->select([
+                              'id',
+                              'user_id',
+                              'email',
+                              'phone_cell',
+                              'first_name',
+                              'last_name',
+                              'company_name',
+                              'city',
+                              'state',
+                              'user_avatar',
+                              'company_logo'
+                          ]);
+                }, 
+                'ratingReasons',  
+                'review_response.responseReasons',        
+                'review_response', 
+            ]);
+    
         // Apply sorting based on filters
         $sortByDate = $request->query('sort_by_date', '');
         $sortByRating = $request->query('sort_by_rating', '');
-        
+    
         switch ($sortByRating) {
             case 'highest':
                 $reviewsForContractIDQuery = $reviewsForContractIDQuery->orderByDesc('rating');
@@ -352,42 +352,48 @@ class ContractorRatingsAdminController extends Controller
             $reviewsForContractIDQuery = $reviewsForContractIDQuery->latest('rating_date');
         }
     
-    
         // Fetch paginated reviews
         $responses = $reviewsForContractIDQuery->paginate($perPage, ['*'], 'page', $page);
+    
+        // // Convert trades to the old structure for each reviewer
+        // foreach ($responses as $response) {
+        //     if (isset($response->reviewer)) {
+        //         $reviewerTrades = $this->convertTradesToOldStructure($response->reviewer->trades);
+        //         $response->reviewer = array_merge($response->reviewer->toArray(), $reviewerTrades);
+        //     }
+        // }
 
-        // Convert trades to old structure for each reviewer
-        foreach ($responses as $response) {
-            if (isset($response->reviewer)) {
-                $reviewerTrades = $this->convertTradesToOldStructure($response->reviewer->trades);
-                $response->reviewer = array_merge($response->reviewer->toArray(), $reviewerTrades);
+        // Convert the paginated results to arrays
+        $responsesArray = $responses->toArray();
+
+        // Transform the trades data for each reviewer
+        foreach ($responsesArray['data'] as &$review) {
+            if (isset($review['reviewer']) && isset($review['reviewer']['trades'])) {
+                $trades = $review['reviewer']['trades'];
+                $transformedTrades = $this->convertTradesToOldStructure(collect($trades));
+                $review['reviewer'] = array_merge($review['reviewer'], $transformedTrades);
             }
         }
-
-
     
-    
-
         $response = [
-                'reviews' => $responses->items(),
-                'pagination' => [
-                    'current_page' => $responses->currentPage(),
-                    'last_page' => $responses->lastPage(),
-                    'per_page' => $responses->perPage(),
-                    'total' => $responses->total(),
-                ],
-                'average_rating' => $avgReview,
-                'five_stars_count' => $fiveStars,
-                'four_stars_count' => $fourStars,
-                'three_stars_count' => $threeStars,
-                'two_stars_count' => $twoStars,
-                'one_star_count' => $oneStar
-            ];
-
+            'reviews' => $responsesArray['data'],
+            'pagination' => [
+                'current_page' => $responses->currentPage(),
+                'last_page' => $responses->lastPage(),
+                'per_page' => $responses->perPage(),
+                'total' => $responses->total(),
+            ],
+            'average_rating' => $avgReview,
+            'five_stars_count' => $fiveStars,
+            'four_stars_count' => $fourStars,
+            'three_stars_count' => $threeStars,
+            'two_stars_count' => $twoStars,
+            'one_star_count' => $oneStar
+        ];
+    
         return response()->json($response);
     }
-
-
+    
     // Search the Contractor
     public function searchContractor(Request $request, Region $region)
     {

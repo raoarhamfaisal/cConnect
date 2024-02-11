@@ -105,7 +105,7 @@ class ReviewController extends Controller
                 'user_avatar',
                 'company_logo'
             ])->with('trades:id');
-        }, 'review_response'])->where('contractor_id', $contractor_id)->where('is_review_active', 1);
+        },'reviewer.trades', 'review_response'])->where('contractor_id', $contractor_id)->where('is_review_active', 1);
     
         // Apply sorting based on filters
         $sortByDate = $request->query('sort_by_date', '');
@@ -132,17 +132,23 @@ class ReviewController extends Controller
         // Fetch paginated reviews
         $reviews = $reviewsQuery->paginate($perPage, ['*'], 'page', $page);
     
-        // Convert trades to the old structure for each reviewer
-        foreach ($reviews->items() as $review) {
-            if ($review->reviewer) {
-                $reviewerTrades = $this->convertTradesToOldStructure($review->reviewer->trades);
-                $review->reviewer = array_merge($review->reviewer->toArray(), $reviewerTrades);
+        // Convert the paginated results to arrays
+        $reviewsArray = $reviews->toArray();
+
+        // Transform the trades data for each reviewer
+        foreach ($reviewsArray['data'] as &$review) {
+            if (isset($review['reviewer']) && isset($review['reviewer']['trades'])) {
+                $trades = $review['reviewer']['trades'];
+                $transformedTrades = $this->convertTradesToOldStructure(collect($trades));
+                $review['reviewer'] = array_merge($review['reviewer'], $transformedTrades);
             }
         }
-    
+
+        
+        
         // Construct the response
         $response = [
-            'reviews' => $reviews->items(),
+            'reviews' => $reviewsArray['data'],
             'pagination' => [
                 'current_page' => $reviews->currentPage(),
                 'last_page' => $reviews->lastPage(),
@@ -436,37 +442,42 @@ class ReviewController extends Controller
         $page = $request->query('page', 1);          // Default to page 1 if not provided
     
         // Initialize query builder
-        $query = Review::with(['reviewer' => function($query) {
-            $query->select([
-                'id',
-                'user_id',
-                'email',
-                'phone_cell',
-                'first_name',
-                'last_name',
-                'company_name',
-                'city',
-                'state',
-                'user_avatar',
-                'company_logo'
-            ])->with('trades:id');
-        }, 'contractor' => function($query) {
-            $query->select([
-                'id',
-                'user_id',
-                'email',
-                'phone_cell',
-                'first_name',
-                'last_name',
-                'company_name',
-                'city',
-                'state',
-                'user_avatar',
-                'company_logo'
-            ])->with('trades:id');
-        }, 'ratingReasons',  // Attach rating reasons related to the review
-        'review_response.responseReasons','review_response'])->withTrashed()->where('is_under_appeal', 1);
-    
+        $query = Review::with([
+            'reviewer' => function ($query) {
+                $query->select([
+                    'id',
+                    'user_id',
+                    'email',
+                    'phone_cell',
+                    'first_name',
+                    'last_name',
+                    'company_name',
+                    'city',
+                    'state',
+                    'user_avatar',
+                    'company_logo'
+                ])->with('trades:id');
+            },
+            'contractor' => function ($query) {
+                $query->select([
+                    'id',
+                    'user_id',
+                    'email',
+                    'phone_cell',
+                    'first_name',
+                    'last_name',
+                    'company_name',
+                    'city',
+                    'state',
+                    'user_avatar',
+                    'company_logo'
+                ])->with('trades:id');
+            },
+            'ratingReasons',
+            'review_response.responseReasons',
+            'review_response'
+        ])->withTrashed()->where('is_under_appeal', 1);
+
         // Apply sorting based on filters
         $sortByDate = $request->query('sort_by_date', ''); // Default to latest
         $sortByRating = $request->query('sort_by_rating', ''); // Default to highest
@@ -492,21 +503,26 @@ class ReviewController extends Controller
         // Fetch paginated results
         $reviews = $query->paginate($perPage, ['*'], 'page', $page);
     
-        // Convert trades to the old structure for each reviewer and contractor
-        foreach ($reviews->items() as $review) {
-            if ($review->reviewer) {
-                $reviewerTrades = $this->convertTradesToOldStructure($review->reviewer->trades);
-                $review->reviewer = array_merge($review->reviewer->toArray(), $reviewerTrades);
+        // Convert the paginated results to arrays
+        $reviewsArray = $reviews->toArray();
+
+        // Transform the trades data for each reviewer and contractor
+        foreach ($reviewsArray['data'] as &$review) {
+            if (isset($review['reviewer']) && isset($review['reviewer']['trades'])) {
+                $trades = $review['reviewer']['trades'];
+                $transformedTrades = $this->convertTradesToOldStructure(collect($trades));
+                $review['reviewer'] = array_merge($review['reviewer'], $transformedTrades);
             }
-            if ($review->contractor) {
-                $contractorTrades = $this->convertTradesToOldStructure($review->contractor->trades);
-                $review->contractor = array_merge($review->contractor->toArray(), $contractorTrades);
+            if (isset($review['contractor']) && isset($review['contractor']['trades'])) {
+                $trades = $review['contractor']['trades'];
+                $transformedTrades = $this->convertTradesToOldStructure(collect($trades));
+                $review['contractor'] = array_merge($review['contractor'], $transformedTrades);
             }
         }
-    
+
         // Construct the response
         $response = [
-            'reviews' => $reviews->items(),
+            'reviews' => $reviewsArray['data'],
             'pagination' => [
                 'current_page' => $reviews->currentPage(),
                 'last_page' => $reviews->lastPage(),
@@ -649,11 +665,15 @@ class ReviewController extends Controller
         // Fetch paginated reviews
         $reviews = $reviewsQuery->paginate($perPage, ['*'], 'page', $page);
     
-        // Convert trades to the old structure for each reviewer
-        foreach ($reviews->items() as $review) {
-            if ($review->reviewer) {
-                $reviewerTrades = $this->convertTradesToOldStructure($review->reviewer->trades);
-                $review->reviewer = array_merge($review->reviewer->toArray(), $reviewerTrades);
+        // Convert the paginated results to arrays
+        $reviewsArray = $reviews->toArray();
+
+        // Transform the trades data for each reviewer
+        foreach ($reviewsArray['data'] as &$review) {
+            if (isset($review['reviewer']) && isset($review['reviewer']['trades'])) {
+                $trades = $review['reviewer']['trades'];
+                $transformedTrades = $this->convertTradesToOldStructure(collect($trades));
+                $review['reviewer'] = array_merge($review['reviewer'], $transformedTrades);
             }
         }
     
@@ -681,7 +701,7 @@ class ReviewController extends Controller
         // Construct the response
         $response = [
             'contractor' => $contractorDetails,
-            'reviews' => $reviews->items(),
+            'reviews' => $reviewsArray['data'],
             'pagination' => [
                 'current_page' => $reviews->currentPage(),
                 'last_page' => $reviews->lastPage(),
