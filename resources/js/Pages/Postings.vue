@@ -434,17 +434,21 @@ export default {
           <div class="px-5 text-gray-300 mb-8 mt-8">LOADING MORE POSTS!</div>
         </AppSpinner> -->
 
-        <div v-show="posts.next_page_url" class="flex">
-          <Loader
+        <div v-show="posts.next_page_url" class="flex mb-8 mt-8">
+          <!-- <Loader
             classes="flex gap-2"
             :loading="loadingPosts"
             circleClasses="small-circle"
             textClasses="small-text"
-            background="#ccc"
+            background="transparent"
             height="70px"
-          ></Loader>
+          ></Loader> -->
 
-          <div class="px-5 text-gray-300 mb-8 mt-8">LOADING MORE POSTS!</div>
+          <!-- <AppSpinner :showSpinText="true">
+            <div class="px-5 text-gray-300 mb-8 mt-8">LOADING MORE POSTS!</div>
+          </AppSpinner> -->
+          <div class="loader"></div>
+          <div class="px-5 text-gray-300">LOADING MORE POSTS!</div>
         </div>
 
         <div class="h-5"></div>
@@ -485,3 +489,26 @@ export default {
     <!-- END POSTING CONTAINER -->
   </Header>
 </template>
+
+<style>
+.loader {
+    border: 3px solid #f3f3f3;
+    /* Light grey */
+    border-top: 3px solid #024673;
+    /* Blue */
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+</style>
