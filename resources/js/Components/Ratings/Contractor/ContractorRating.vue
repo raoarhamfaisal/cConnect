@@ -94,7 +94,7 @@
                   <GiveRating
                     :profileId="profileId"
                     :contractorId="contractor.id"
-                    @addReview="refreshPage"
+                    @addReview="refreshPageOnAdd"
                   />
                 </transition>
               </Card>
@@ -222,7 +222,7 @@ onMounted(async () => {
     });
 
     observer.observe(loadMoreIntersect.value);
-  }, 2000);
+  }, 1000);
 });
 
 //Computed
@@ -236,12 +236,13 @@ const responseId = computed(() => store.state.ratings.responseId);
 //Watch
 watch(updatedReview, (newVal) => {
   if (newVal && newVal.id) {
-    const reviewToUpdate = contractorReviews.value.find(
-      (review) => review.response_id === newVal.id
+    const reviewIndex = contractorReviews.value.findIndex(
+      (review) => review.id === newVal.id
     );
 
-    if (reviewToUpdate) {
-      Object.assign(reviewToUpdate, newVal);
+    if (reviewIndex !== -1) {
+      // Update the existing review with the new data
+      Object.assign(contractorReviews.value[reviewIndex], newVal);
     }
   }
 });
@@ -284,7 +285,6 @@ watch(responseId, (newVal) => {
 const loadMoreReviews = async () => {
   loadingNextPage.value = true;
   currentPage.value = currentPage.value + 1;
-  console.log(loadingNextPage.value, currentPage.value, "loading next page");
   await fetchReviews(perPage.value, currentPage.value);
   loadingNextPage.value = false;
 };
@@ -295,7 +295,7 @@ const handleDate = (selected, sortByString) => {
   } else if (!selected) {
     sortByDate.value = "";
   }
-  fetchReviews(perPage.value, currentPage.value);
+  fetchReveiwsWithLoading();
 };
 const handleRating = (selected, sortByRate) => {
   if (selected) {
@@ -303,7 +303,12 @@ const handleRating = (selected, sortByRate) => {
   } else if (!selected) {
     sortByRating.value = "";
   }
-  fetchReviews(perPage.value, currentPage.value);
+  fetchReveiwsWithLoading();
+};
+const fetchReveiwsWithLoading = async () => {
+  loading.value = true;
+  await fetchReviews(perPage.value, currentPage.value, false);
+  loading.value = false;
 };
 
 // Fetch REviews
@@ -381,7 +386,7 @@ const handleSelect = async () => {
     }, 250);
   }
 };
-const refreshPage = async () => {
+const refreshPageOnAdd = async () => {
   loading.value = true;
 
   currentPage.value = 1;

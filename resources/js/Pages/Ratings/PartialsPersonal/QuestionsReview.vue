@@ -66,8 +66,8 @@
 
     <!-- Turn off appeal -->
     <div
-      v-if="review.is_under_appeal === 1 && !review.off_appeal_reason"
-      class="py-4 border-b-2 border-gray-300"
+      v-if="review.is_under_appeal && !review.off_appeal_reason"
+      class="py-4 border-y-2 border-gray-300"
     >
       <Button
         @onSelect="handleAppeal"
@@ -86,7 +86,7 @@
               id="appealReason"
               type="text"
               :rows="3"
-              v-if="review.is_under_appeal === 1"
+              v-if="review.is_under_appeal"
               class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
               required
               v-model="turnOffReason"
@@ -226,7 +226,7 @@ const handleSubmit = async () => {
   }
 };
 const handleAppealSubmit = async () => {
-  if (review.is_under_appeal === 1) {
+  if (review.is_under_appeal) {
     if (validateTurnOffReason()) {
       const appealTurnOffData = {
         off_appeal_reason: filterBadWords(turnOffReason),

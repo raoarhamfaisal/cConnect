@@ -15,7 +15,11 @@
         :padding="screenWidth < 640 ? '7px' : '20px'"
       >
         <PageTitle linkUrl="/post" pageTitle="Your Ratings" />
-        <ContractorInfo :contractor="contractor" />
+        <ContractorInfo
+          v-if="Object.keys(contractor).length > 0"
+          :contractor="contractor"
+        />
+        <Loader :loading="loading" background="" height="60vh"></Loader>
         <div v-if="!loading">
           <heading-card
             v-if="average_rating && starPercentages"
@@ -96,28 +100,30 @@
               </div>
             </div>
           </div>
-          <div
-            v-if="
-              pagination &&
-              Object.keys(pagination).length > 0 &&
-              pagination.last_page > 1 &&
-              contractorReviews &&
-              contractorReviews.length > 0
-            "
-            class="flex items-center justify-center mb-4"
-          >
-            <CustomPagination
-              :total-items="pagination.total"
-              :current-page="pagination.current_page"
-              :items-per-page="pagination.per_page"
-              v-model="currentPage"
-              :max-pages-shown="3"
-              :on-click="onClickHandler"
-            />
-          </div>
         </div>
-
-        <Loader :loading="loading" background="white" height="70vh"></Loader>
+        <div
+          v-show="+currentPage !== +pagination.last_page"
+          ref="loadMoreIntersect"
+          style="width: 5px; height: 5px"
+        ></div>
+        <div
+          v-show="
+            currentPage > 1 &&
+            !loadingNextPage &&
+            +currentPage === +pagination.last_page
+          "
+          class="text-center font-bold"
+        >
+          No More Reviews to Load
+        </div>
+        <Loader
+          classes="flex gap-2"
+          :loading="loadingNextPage"
+          circleClasses="small-circle"
+          textClasses="small-text"
+          background=""
+          height="70px"
+        ></Loader>
       </Card>
     </div>
   </Header>
@@ -131,7 +137,6 @@ import AverageRating from "@/Components/Ratings/Contractor/PartialsVisiting/Aver
 import QuestionsReview from "../PartialsPersonal/QuestionsReview.vue";
 
 import Button from "@/Components/Ratings/Button.vue";
-import CustomPagination from "@/Components/Ratings/CustomPagination.vue";
 import axios from "axios";
 
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
@@ -169,40 +174,98 @@ const sortByDate = ref("latest");
 const sortByRating = ref("");
 const pagination = ref(0);
 const perPage = ref(15);
+const loadingNextPage = ref(false);
+const loadMoreIntersect = ref();
 
 // Mounted
-onMounted(() => {
-  fetchReviews();
+onMounted(async () => {
+  loading.value = true;
+  await fetchReviews();
+  loading.value = false;
   contractor.value = contractorDetails;
-  console.log(contractor.value);
+  setTimeout(() => {
+    const observerCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          loadMoreReviews();
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, {
+      rootMargin: "0px 0px 0px 0px",
+      threshold: 0,
+    });
+
+    observer.observe(loadMoreIntersect.value);
+  }, 1000);
 });
 
 //Computed
-
-const isFetchReviews = computed(() => store.state.ratings.isFetchReviews);
+const updatedReview = computed(() => store.state.ratings.updatedReview);
+const updatedResponse = computed(() => store.state.ratings.updatedResponse);
 const screenWidth = computed(() => store.getters.screenWidth);
-const isDeleted = computed(() => store.state.ratings.isDeleted);
+const reviewId = computed(() => store.state.ratings.reviewId);
+const responseId = computed(() => store.state.ratings.responseId);
 
 //Watch
-watch(isFetchReviews, (newVal) => {
-  if (newVal) {
-    fetchReviews(perPage.value, currentPage.value);
-    store.commit("ratings/setIsFetchReviews", false);
+watch(updatedReview, (newVal) => {
+  if (newVal && newVal.id) {
+    const reviewIndex = contractorReviews.value.findIndex(
+      (review) => review.id === newVal.id
+    );
+
+    if (reviewIndex !== -1) {
+      // Update the existing review with the new data
+      Object.assign(contractorReviews.value[reviewIndex], newVal);
+    }
   }
 });
-watch(isDeleted, (newVal) => {
-  if (newVal) {
-    if (pagination.value.total % pagination.value.per_page === 1) {
-      if (pagination.value.last_page === currentPage.value) {
-        currentPage.value = currentPage.value - 1;
-      }
+watch(updatedResponse, (newVal) => {
+  if (newVal && newVal.id) {
+    console.log(newVal, "newVal", contractorReviews);
+    const reviewToUpdate = contractorReviews.value.find(
+      (review) => review.id === newVal.review_id
+    );
+
+    if (reviewToUpdate) {
+      reviewToUpdate.review_response = newVal;
     }
-    fetchReviews(perPage.value, currentPage.value);
-    store.commit("ratings/setIsDeleted", false);
+  }
+});
+watch(reviewId, (newVal) => {
+  if (newVal) {
+    const index = contractorReviews.value.findIndex(
+      (review) => review.id === newVal
+    );
+
+    if (index !== -1) {
+      contractorReviews.value.splice(index, 1);
+    }
+  }
+});
+watch(responseId, (newVal) => {
+  if (newVal) {
+    const index = contractorReviews.value.findIndex(
+      (review) => review.response_id === newVal
+    );
+
+    if (index !== -1) {
+      delete contractorReviews.value[index].review_response;
+    }
   }
 });
 
 // Methods
+const loadMoreReviews = async () => {
+  if (!loading.value) {
+    loadingNextPage.value = true;
+    currentPage.value = currentPage.value + 1;
+    console.log("inloadMoreReviews");
+    await fetchReviews(perPage.value, currentPage.value);
+    loadingNextPage.value = false;
+  }
+};
 
 const handleDate = (selected, sortByString) => {
   if (selected) {
@@ -210,7 +273,7 @@ const handleDate = (selected, sortByString) => {
   } else if (!selected) {
     sortByDate.value = "";
   }
-  fetchReviews(perPage.value, currentPage.value);
+  fetchReveiwsWithLoading();
 };
 const handleRating = (selected, sortByRate) => {
   if (selected) {
@@ -218,19 +281,32 @@ const handleRating = (selected, sortByRate) => {
   } else if (!selected) {
     sortByRating.value = "";
   }
-  fetchReviews(perPage.value, currentPage.value);
+  fetchReveiwsWithLoading();
 };
-
+const fetchReveiwsWithLoading = async () => {
+  loading.value = true;
+  await fetchReviews(perPage.value, currentPage.value, false);
+  loading.value = false;
+};
 // Fetch REviews
-const fetchReviews = async (per_page = perPage.value, page = 1) => {
+const fetchReviews = async (
+  per_page = perPage.value,
+  page = 1,
+  append = true
+) => {
   try {
-    loading.value = true;
-
     const response = await axios.get(
-      `/api/reviews/${profile.id}?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
+      `/api/reviews/${contractorDetails.id}?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
       getAxiosConfig()
     );
-    contractorReviews.value = response.data.reviews;
+    if (append) {
+      contractorReviews.value = [
+        ...contractorReviews.value,
+        ...response.data.reviews,
+      ];
+    } else {
+      contractorReviews.value = [...response.data.reviews];
+    }
     pagination.value = response.data.pagination;
     average_rating.value = response.data.average_rating;
     // Extracting the star counts
@@ -259,13 +335,7 @@ const fetchReviews = async (per_page = perPage.value, page = 1) => {
     ];
   } catch (err) {
     somethingWentWrong();
-  } finally {
-    loading.value = false;
   }
-};
-
-const onClickHandler = (page) => {
-  fetchReviews(perPage.value, page);
 };
 </script>
 

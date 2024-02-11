@@ -122,6 +122,13 @@ export default {
       );
     },
   },
+  watch: {
+    rating(newRating) {
+      // Recompute the stars when the rating prop changes
+      this.initStars();
+      this.setStars();
+    },
+  },
   methods: {
     calcStarPoints(
       centerX,
@@ -145,6 +152,7 @@ export default {
       return points;
     },
     initStars() {
+      this.stars = []; // Reset the stars array
       for (let i = 0; i < this.totalStars; i++) {
         this.stars.push({
           raw: this.emptyStar,

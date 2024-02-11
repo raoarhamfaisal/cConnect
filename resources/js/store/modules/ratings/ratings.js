@@ -131,9 +131,6 @@ export default {
         if (response.data) {
           changesSaved(response.data.message || "Review Successfully Deleted");
           commit("setReviewId", reviewId);
-          setTimeout(() => {
-            commit("setIsFetchReviews", true);
-          }, 2000);
         }
       } catch (err) {
         somethingWentWrong();
@@ -156,9 +153,6 @@ export default {
             response.data.message || "Review response deleted successfully!"
           );
           commit("setResponseId", responseId);
-          setTimeout(() => {
-            commit("setIsDeleted", true);
-          }, 2000);
         }
       } catch (err) {
         somethingWentWrong();
@@ -181,9 +175,7 @@ export default {
           changesSaved(
             response.data.message || "Review response added successfully!"
           );
-          setTimeout(() => {
-            commit("setIsDeleted", true);
-          }, 2000);
+          commit("setUpdatedResponse", response.data.review_response);
         }
       } catch (err) {
         somethingWentWrong();
@@ -206,9 +198,6 @@ export default {
           changesSaved(response.data.message || "Review Successfully Upadated");
 
           commit("setUpdatedReview", response.data.review);
-          setTimeout(() => {
-            commit("setIsFetchReviews", true);
-          }, 2000);
         }
       } catch (err) {
         somethingWentWrong();
@@ -232,9 +221,6 @@ export default {
             response.data.message || "Response Successfully Upadated"
           );
           commit("setUpdatedResponse", response.data.review_response);
-          setTimeout(() => {
-            commit("setIsFetchReviews", true);
-          }, 2000);
         }
       } catch (err) {
         somethingWentWrong();
@@ -257,9 +243,7 @@ export default {
           changesSaved(
             response.data.message || "Appeal is Successfully Submitted"
           );
-          setTimeout(() => {
-            commit("setIsFetchReviews", true);
-          }, 2000);
+          commit("setUpdatedReview", response.data.review);
         }
       } catch (err) {
         somethingWentWrong();
@@ -282,9 +266,7 @@ export default {
           changesSaved(
             response.data.message || "Turn off Appeal is Successfully Submitted"
           );
-          setTimeout(() => {
-            commit("setIsFetchReviews", true);
-          }, 2000);
+          commit("setUpdatedReview", response.data.review);
         }
       } catch (err) {
         somethingWentWrong();
