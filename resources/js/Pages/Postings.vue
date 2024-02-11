@@ -411,7 +411,7 @@ export default {
 
         <!-- Makes call to load more posts calling the script
                              observer.observe(this.$refs.loadMoreIntersect) -->
-        <div ref="loadMoreIntersect" style="width: 5px; height: 5px" />
+        <!-- <div ref="loadMoreIntersect" style="width: 5px; height: 5px" />
         <Loader
           classes="flex gap-2"
           :loading="loadingPosts"
@@ -422,7 +422,30 @@ export default {
         ></Loader>
         <AppSpinner v-show="loadingPosts" :showSpinText="true">
           <div class="px-5 text-gray-300 mb-8">LOADING MORE POSTS!</div>
-        </AppSpinner>
+        </AppSpinner> -->
+
+        <!-- Makes call to load more posts calling the script
+                             observer.observe(this.$refs.loadMoreIntersect) -->
+        <span ref="loadMoreIntersect" style="width: 5px; height: 5px;" />
+
+        <!-- {{ posts.next_page_url }} -->
+
+        <!-- <AppSpinner v-show="posts.next_page_url" :showSpinText="true">
+          <div class="px-5 text-gray-300 mb-8 mt-8">LOADING MORE POSTS!</div>
+        </AppSpinner> -->
+
+        <div v-show="posts.next_page_url" class="flex">
+          <Loader
+            classes="flex gap-2"
+            :loading="loadingPosts"
+            circleClasses="small-circle"
+            textClasses="small-text"
+            background="#ccc"
+            height="70px"
+          ></Loader>
+
+          <div class="px-5 text-gray-300 mb-8 mt-8">LOADING MORE POSTS!</div>
+        </div>
 
         <div class="h-5"></div>
 
