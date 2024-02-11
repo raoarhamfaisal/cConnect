@@ -12,6 +12,8 @@ import MainSideMenu from "@/Components/tCon/Menu_MainSideMenu.vue";
 import Menu_Hamburger from "@/Components/tCon/Menu_HamburgerMenu.vue";
 import PostDisplay from "@/Components/tCon/PostDisplay.vue";
 import PostForm from "@/Components/tCon/PostForm.vue";
+import Loader from "@/Components/Ratings/Loader.vue";
+
 import { Head, Link } from "@inertiajs/inertia-vue3";
 import { ref } from "vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
@@ -37,6 +39,7 @@ export default {
     AppSpinner,
     tContractorWord,
     Header,
+    Loader,
     ResponsiveNavLink,
     ButtonPost,
     ButtonRefresh,
@@ -79,7 +82,7 @@ export default {
       });
 
       observer.observe(this.$refs.loadMoreIntersect);
-    }, 3000);
+    }, 1000);
   },
 
   // unmounted() {
@@ -408,9 +411,16 @@ export default {
 
         <!-- Makes call to load more posts calling the script
                              observer.observe(this.$refs.loadMoreIntersect) -->
-        <span ref="loadMoreIntersect" style="width: 5px; height: 5px" />
-
-        <AppSpinner v-show="posts.next_page_url" :showSpinText="true">
+        <div ref="loadMoreIntersect" style="width: 5px; height: 5px" />
+        <Loader
+          classes="flex gap-2"
+          :loading="loadingPosts"
+          circleClasses="small-circle"
+          textClasses="small-text"
+          background="#ccc"
+          height="70px"
+        ></Loader>
+        <AppSpinner v-show="loadingPosts" :showSpinText="true">
           <div class="px-5 text-gray-300 mb-8">LOADING MORE POSTS!</div>
         </AppSpinner>
 
