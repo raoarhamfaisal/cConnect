@@ -176,6 +176,7 @@ export default {
             style="line-height: 1.5rem"
             @click="$emit('enlarge-post', post)"
           >
+          <!-- {{  post }} -->
             {{ post.id }}: {{ post.title }}
           </h2>
           <div class="">

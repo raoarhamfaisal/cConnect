@@ -31,7 +31,7 @@ class InsertPostProfileService
         // Load trades for the user's profile
         $profile = Profile::where('user_id', $userID)->with('trades:id')->first();
         $trades = $this->convertTradesToOldStructure($profile->trades);
-        $postersProfile = array_merge($postersProfile->toArray(), $trades);
+        $postersProfile = array_merge($postersProfile, $trades);
     
         // Populate the $validatedInput with the profile's data
         $viewFields = [

@@ -231,7 +231,7 @@ const plusImages = true;    // tells PostShowTheImage.vue to
                         <PostShowTheImage :image="imageArray[4]"
                                           :numberImages="numberOfImages"
                                           :cropImage="true"
-                                          :plusImages="true"
+                                          :plusImages="false"
                         />
                     </div>
                 </div>
