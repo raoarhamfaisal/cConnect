@@ -55,15 +55,31 @@ export default {
     // entries & entry defined by browser as object enters viewing area
     // 'IntersectionObserver' allows us to execute code when something
     // enters or leaves the browser viewport
-    const observer = new IntersectionObserver((entries) =>
-      entries.forEach((entry) => entry.isIntersecting && this.loadMorePosts(), {
+    // const observer = new IntersectionObserver((entries) =>
+    //   entries.forEach((entry) => entry.isIntersecting && this.loadMorePosts(), {
+    //     rootMargin: "0px 0px 0px 0px",
+    //     threshold: 0,
+    //   })
+    // );
+    // // rootMargin: "-500px 0px -500px 0px",   top right bottom left
+
+    // observer.observe(this.$refs.loadMoreIntersect);
+    setTimeout(() => {
+      const observerCallback = (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            this.loadMorePosts();
+          }
+        });
+      };
+
+      const observer = new IntersectionObserver(observerCallback, {
         rootMargin: "0px 0px 0px 0px",
         threshold: 0,
-      })
-    );
-    // rootMargin: "-500px 0px -500px 0px",   top right bottom left
+      });
 
-    observer.observe(this.$refs.loadMoreIntersect);
+      observer.observe(this.$refs.loadMoreIntersect);
+    }, 3000);
   },
 
   // unmounted() {
@@ -105,6 +121,7 @@ export default {
       previousRatio: 0,
       showSpinText: false,
       showingNavigationDropdown: ref(false),
+      loadingPosts: ref(false),
 
       // SHow fullpage individual post
       postDisplayEnlarged: false,
@@ -182,6 +199,7 @@ export default {
       // if more pages, use the inertia class to lad url with page #
       // inertia is going to treat this as a data reload, not completely
       // switching component out
+      this.loadingPosts = true;
       this.$inertia.get(
         this.posts.next_page_url,
         {},
@@ -195,6 +213,7 @@ export default {
           onSuccess: () => {
             // takes the object posts and appends it to allpost
             this.allPosts = [...this.allPosts, ...this.posts.data];
+            this.loadingPosts = false;
             // 'this.initialUrl' is set in script data
             window.history.replaceState({}, this.$page.title, this.initialUrl);
           },
@@ -389,17 +408,17 @@ export default {
 
         <!-- Makes call to load more posts calling the script
                              observer.observe(this.$refs.loadMoreIntersect) -->
-        <span ref="loadMoreIntersect" />
+        <span ref="loadMoreIntersect" style="width: 5px; height: 5px" />
 
         <AppSpinner v-show="posts.next_page_url" :showSpinText="true">
-          <div class="px-5 text-gray-300">LOADING MORE POSTS!</div>
+          <div class="px-5 text-gray-300 mb-8">LOADING MORE POSTS!</div>
         </AppSpinner>
 
         <div class="h-5"></div>
 
         <!-- 'next_page_url' is set to null in script -->
-        <div v-if="posts.next_page_url === null" class="mt-12">
-          <div class="mx-auto text-gray-300 w-60 sm:w-72 md:w-96">
+        <div v-if="posts.next_page_url === null" class="my-6">
+          <div class="mx-auto text-gray-300 inline text-center">
             You're all up to date! 🥳
           </div>
         </div>

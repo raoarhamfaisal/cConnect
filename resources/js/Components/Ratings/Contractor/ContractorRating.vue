@@ -222,7 +222,7 @@ onMounted(async () => {
     });
 
     observer.observe(loadMoreIntersect.value);
-  }, 3000);
+  }, 2000);
 });
 
 //Computed
