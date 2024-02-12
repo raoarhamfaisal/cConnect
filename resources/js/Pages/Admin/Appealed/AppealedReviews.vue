@@ -17,6 +17,7 @@
     >
       <Loader :loading="loading" background="" height="100vh"></Loader>
     </Card>
+
     <div v-if="!loading" class="bg-gray-200 mt-10 flex flex-col gap-10">
       <Card
         :shadowLevel="2"
@@ -78,7 +79,29 @@
         bgColor="#fff"
         :padding="screenWidth < 640 ? '7px' : '20px'"
       >
-        <div class="xs:mb-12 mb-6 border-gray-300">
+        <v-tabs
+          bg-color="transparent"
+          v-model="activeTab"
+          color="#241e6d"
+          center-active
+        >
+          <v-tab :value="0">
+            <span class="font-bold text-md" style="font-size: 16px">New </span
+            ><v-badge color="info" content="12" inline></v-badge>
+          </v-tab>
+          <v-tab :value="1"
+            ><span class="font-bold text-md" style="font-size: 16px"
+              >Waiting</span
+            ><v-badge color="info" content="12" inline></v-badge>
+          </v-tab>
+          <v-tab :value="2"
+            ><span class="font-bold text-md" style="font-size: 16px"
+              >Completed</span
+            ><v-badge color="info" content="12" inline></v-badge>
+          </v-tab>
+        </v-tabs>
+
+        <div v-if="activeTab === 0" class="xs:mb-12 mb-6 border-gray-300">
           <heading-card heading="Reviews" class="mt-6 mb-12" />
 
           <div v-if="appealedReviews?.length > 0" class="flex gap-8 flex-col">
@@ -99,6 +122,9 @@
             </div>
           </div>
         </div>
+        <div v-if="activeTab === 1">waiting</div>
+        <div v-if="activeTab === 2">Completed</div>
+
         <div
           v-if="
             pagination &&
@@ -164,6 +190,7 @@ const sortByDate = ref("latest");
 const sortByRating = ref("");
 const perPage = ref(15);
 const pagination = ref(0);
+const activeTab = ref(0);
 
 // Mounted
 onMounted(() => {
@@ -250,19 +277,5 @@ const onClickHandler = (page) => {
 };
 </script>
 
-<style scoped>
-.accordion-enter-active,
-.accordion-leave-active {
-  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
-}
-.accordion-enter-from, .accordion-leave-to /* .accordion-leave-active in <2.1.8 */ {
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-}
-.accordion-enter-to,
-.accordion-leave-from {
-  max-height: 300px; /* This value might need to be adjusted depending on the expected max height of your content */
-  opacity: 1;
-}
+<style >
 </style>
