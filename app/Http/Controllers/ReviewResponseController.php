@@ -42,7 +42,7 @@ class ReviewResponseController extends Controller
         // Get the currently authenticated user
         $user = Auth::user();
         // Check if the user is the original contractor or has admin privileges
-        if ($user->id === $review->contractor_id || $user->reviews_privileges) {
+        if ($user->id === $review->contractor_id || $user->posts_privileges) {
 
             if ($review->response_id) {
                 return response()->json(['message' => 'Sorry a response is already given to this review'], 403);
@@ -103,7 +103,7 @@ class ReviewResponseController extends Controller
         // Get the currently authenticated user
         $user = Auth::user();
         // Check if the user is the original contractor or has admin privileges
-        if ($user->id === $review->contractor_id || $user->reviews_privileges) {
+        if ($user->id === $review->contractor_id || $user->posts_privileges) {
             // Update the response_text
             $reviewResponse->response_text = $data['response_text'];
             $reviewResponse->save();
@@ -128,7 +128,7 @@ class ReviewResponseController extends Controller
         // Get the currently authenticated user
         $user = Auth::user();
         // Check if the user is the original contractor or has admin privileges
-        if ($user->id === $review->contractor_id || $user->reviews_privileges) {
+        if ($user->id === $review->contractor_id || $user->appeals_privileges || $user->posts_privileges) {
     
             // If the review exists, set its response_id to null
             if ($review) {

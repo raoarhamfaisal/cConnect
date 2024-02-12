@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('posts_privileges')->default(0);
-            $table->boolean('reviews_privileges')->default(0);
+            $table->boolean('appeals_privileges')->default(0);
             $table->boolean('users_privileges')->default(0);
             $table->boolean('payments_privileges')->default(0);
             $table->rememberToken();

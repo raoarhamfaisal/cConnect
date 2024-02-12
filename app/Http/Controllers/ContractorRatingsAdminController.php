@@ -486,7 +486,7 @@ class ContractorRatingsAdminController extends Controller
             'profiles.company_logo',
             'profiles.email',
             'profiles.phone_cell',
-            DB::raw('AVG(reviews.rating) as average_rating')
+            DB::raw('AVG(CASE WHEN reviews.is_review_active = 1 THEN reviews.rating ELSE NULL END) as average_rating')
         ]);
 
         $query->where('region_id', $region->id);
@@ -504,9 +504,12 @@ class ContractorRatingsAdminController extends Controller
             });
         }
     
-        $contractors = $query->leftJoin('reviews', 'profiles.id', '=', 'reviews.contractor_id')
-                              ->groupBy('profiles.id')
-                              ->paginate($perPage, ['*'], 'page', $page);
+        $contractors = $query->leftJoin('reviews', function($join) {
+            $join->on('profiles.id', '=', 'reviews.contractor_id')
+            ->where('reviews.is_review_active', 1);
+        })
+        ->groupBy('profiles.id')
+        ->paginate($perPage, ['*'], 'page', $page);
     
         // Construct the response
         $response = [

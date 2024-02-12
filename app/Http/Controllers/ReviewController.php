@@ -80,7 +80,7 @@ class ReviewController extends Controller
         $page = $request->query('page', 1);          // default to page 1 if not provided
     
         // Fetch all reviews for calculating ratings and counts
-        $allReviews = Review::where('contractor_id', $contractor_id)->get();
+        $allReviews = Review::where('contractor_id', $contractor_id)->where('is_review_active', 1)->get();
     
         // Calculate the average rating and counts
         $avgReview = $allReviews->avg('rating');
@@ -255,7 +255,7 @@ class ReviewController extends Controller
         // Get the currently authenticated user
         $user = Auth::user();
         // Check if the user is the original reviewer or has admin privileges
-        if ($user->id === $data['reviewer_id'] || $user->reviews_privileges) {
+        if ($user->id === $data['reviewer_id'] || $user->posts_privileges) {
         
             $review->is_appeal_already_accepted_or_rejected = false;
             $review->is_under_appeal = false;
@@ -285,7 +285,7 @@ class ReviewController extends Controller
         // Get the currently authenticated user
         $user = Auth::user();
         // Check if the user is the original reviewer or has admin privileges
-        if ($user->id === $review->reviewer_id || $user->reviews_privileges) {
+        if ($user->id === $review->reviewer_id || $user->appeals_privileges || $user->posts_privileges) {
             $review->is_appeal_already_accepted_or_rejected = false;
             $review->is_under_appeal = false;
             $review->on_appeal_reason_date = null;    
@@ -324,7 +324,7 @@ class ReviewController extends Controller
         // Get the currently authenticated user
         $user = Auth::user();
         // Check if the user is the original reviewer or has admin privileges
-        if ($user->id === $review->contractor_id || $user->reviews_privileges) {
+        if ($user->id === $review->contractor_id || $user->appeals_privileges) {
 
             // Set the review to be under appeal and add the current datetime
             $review->is_under_appeal = true;
@@ -367,7 +367,7 @@ class ReviewController extends Controller
         // Get the currently authenticated user
         $user = Auth::user();
         // Check if the user is the original reviewer or has admin privileges
-        if ($user->id === $review->contractor_id || $user->reviews_privileges) {
+        if ($user->id === $review->contractor_id || $user->appeals_privileges) {
 
             // Set the review's appeal status to off and add the current datetime
             $review->off_appeal_reason_date = Carbon::now();
@@ -614,7 +614,7 @@ class ReviewController extends Controller
         $page = $request->query('page', 1);          // default to page 1 if not provided
     
         // Fetch all reviews for calculating ratings and counts
-        $allReviews = Review::where('contractor_id', $contractor_id)->get();
+        $allReviews = Review::where('contractor_id', $contractor_id)->where('is_review_active', 1)->get();
     
         // Calculate the average rating and counts
         $avgReview = $allReviews->avg('rating');
@@ -748,13 +748,74 @@ class ReviewController extends Controller
             'how_did_you_meet_this_contractor' => 'nullable|string|max:255',
         ]);
 
+
+        // Get the old values
+        $oldValues = [
+            'old_is_review_active' => $review->is_review_active,
+            'old_response_id' => $review->response_id,
+            'old_reviewer_id' => $review->reviewer_id,
+            'old_contractor_id' => $review->contractor_id,
+            'old_rating' => $review->rating,
+            'old_rating_text' => $review->rating_text,
+            'old_rating_date' => $review->rating_date,
+            'old_on_appeal_reason' => $review->on_appeal_reason,
+            'old_on_appeal_reason_date' => $review->on_appeal_reason_date,
+            'old_off_appeal_reason' => $review->off_appeal_reason,
+            'old_off_appeal_reason_date' => $review->off_appeal_reason_date,
+            'old_is_under_appeal' => $review->is_under_appeal,
+            'old_is_appeal_already_accepted_or_rejected' => $review->is_appeal_already_accepted_or_rejected,
+            'old_hired_by_contractor' => $review->hired_by_contractor,
+            'old_paid_on_time' => $review->paid_on_time,
+            'old_hired_contractor' => $review->hired_contractor,
+            'old_give_full_payment' => $review->give_full_payment,
+            'old_how_did_you_meet_this_contractor' => $review->how_did_you_meet_this_contractor,
+        ];
+
+
+
+
+
         $review->is_appeal_already_accepted_or_rejected = true;
         $review->update($data);
 
+
+        
+        
         // Assuming 'reason' comes in from the request as well
         $reasonData = $request->validate([
             'reason' => 'required|string|max:1000'
         ]);
+
+
+        // Get the new values
+        $newValues = [
+            'new_is_review_active' => $review->is_review_active,
+            'new_response_id' => $review->response_id,
+            'new_reviewer_id' => $review->reviewer_id,
+            'new_contractor_id' => $review->contractor_id,
+            'new_rating' => $review->rating,
+            'new_rating_text' => $review->rating_text,
+            'new_rating_date' => $review->rating_date,
+            'new_on_appeal_reason' => $review->on_appeal_reason,
+            'new_on_appeal_reason_date' => $review->on_appeal_reason_date,
+            'new_off_appeal_reason' => $review->off_appeal_reason,
+            'new_off_appeal_reason_date' => $review->off_appeal_reason_date,
+            'new_is_under_appeal' => $review->is_under_appeal,
+            'new_is_appeal_already_accepted_or_rejected' => $review->is_appeal_already_accepted_or_rejected,
+            'new_hired_by_contractor' => $review->hired_by_contractor,
+            'new_paid_on_time' => $review->paid_on_time,
+            'new_hired_contractor' => $review->hired_contractor,
+            'new_give_full_payment' => $review->give_full_payment,
+            'new_how_did_you_meet_this_contractor' => $review->how_did_you_meet_this_contractor,
+            'reason' => $reasonData['reason'],
+            'reason_date' => Carbon::now(),
+        ];
+
+        // Combine old and new values and save to the review_history table
+        $historyData = array_merge($oldValues, $newValues);
+        $historyData['review_id'] = $review->id;
+
+        DB::table('review_history')->insert($historyData);
 
         // Create a new record in the rating_reasons table
         RatingReason::create([

@@ -31,7 +31,7 @@ const dropdownMenu = ref(null);
 
 const isAdminUrl = computed(() => {
   if (usePage().props.value.auth.user) {
-    return usePage().props.value.auth.user.reviews_privileges === 1;
+    return usePage().props.value.auth.user.appeals_privileges === 1;
   }
   return false;
 });
