@@ -253,6 +253,7 @@ const handleAppealSubmit = async () => {
 
 const handleResponse = () => {
   if (userVersion.value === 1) {
+    store.commit("setGoldOrPlatinum", true);
     store.commit("setIsUpgradeToGoldPlatinumDialogOpen", true);
     toggleFalse.value = false;
     return;

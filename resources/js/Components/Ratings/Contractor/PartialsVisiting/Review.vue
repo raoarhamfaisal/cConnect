@@ -407,6 +407,7 @@ const handleAppealSubmit = async () => {
 };
 const handleAppeal = () => {
   if (userVersion.value === 1) {
+    store.commit("setGoldOrPlatinum", true);
     store.commit("setIsUpgradeToGoldPlatinumDialogOpen", true);
     return;
   }

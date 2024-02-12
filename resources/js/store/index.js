@@ -22,11 +22,13 @@ export const store = createStore({
     englishTranslations: {},
     spanishTranslations: {},
     userDetails: {},
+    goldOrPlatinum: false,
     isUpgradeToGoldPlatinumDialogOpen: false,
   },
   getters: {
     screenWidth: (state) => state.screenWidth,
     userDetails: (state) => state.userDetails,
+    goldOrPlatinum: (state) => state.goldOrPlatinum,
     isUpgradeToGoldPlatinumDialogOpen: (state) =>
       state.isUpgradeToGoldPlatinumDialogOpen,
     userVersion: (state) => state.userVersion,
@@ -35,6 +37,9 @@ export const store = createStore({
   mutations: {
     setScreenWidth(state, width) {
       state.screenWidth = width;
+    },
+    setGoldOrPlatinum(state, newValue) {
+      state.goldOrPlatinum = newValue;
     },
     setBadWords(state, words) {
       state.badWords = words;

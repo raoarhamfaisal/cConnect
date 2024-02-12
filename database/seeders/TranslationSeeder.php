@@ -730,7 +730,8 @@ class TranslationSeeder extends Seeder
               ['key' => 'rating_should_not_be_empty', 'english' => 'Rating reason should not be empty.', 'mexican_spanish' => 'El motivo de la calificación no debe estar vacío.', 'created_at' => now(), 'updated_at' => now()],
              ['key' => 'gold', 'english' => 'Gold', 'mexican_spanish' => 'Oro', 'created_at' => now(), 'updated_at' => now()],
              ['key' => 'platinum', 'english' => 'Platinum', 'mexican_spanish' => 'Platino', 'created_at' => now(), 'updated_at' => now()],
-
+             ['key' => 'gold_or_platinum_version', 'english' => 'Esta función requiere la versión Gold o Platinum.', 'mexican_spanish' => 'Esta función requiere la versión Gold o Platinum.', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'maximum_images_cannot_exceed', 'english' => 'Maximum Number of Images cannot exceed', 'mexican_spanish' => 'El número máximo de imágenes no puede exceder', 'created_at' => now(), 'updated_at' => now()],
 
             
 

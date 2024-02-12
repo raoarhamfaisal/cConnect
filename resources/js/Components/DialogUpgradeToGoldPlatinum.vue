@@ -4,6 +4,7 @@
     :showFooter="false"
     :disableOutSideClick="false"
     dialogWidth="width-40"
+    @closed="closedDialog"
     upgradeDialog
     style="z-index: 100"
     :title="translations && translations.upgrade_required"
@@ -12,17 +13,20 @@
     <div
       class="border-8 p-1 font-semibold sm:p-2 border-white rounded-t-lg bg-white shadow sm:rounded-lg text-base sx:text-lg sm:text-xl"
     >
-      <div>
+      <div v-if="!goldOrPlatinum">
         {{
           translations &&
           translations.you_have_exceeded_your_free_allotment_or_this_feature_requires_the_gold_or_platinum_version_to_access
         }}
       </div>
-      <div class="mt-2">
+      <div class="mt-2" v-if="!goldOrPlatinum">
         {{
           translations &&
           translations.do_not_miss_out_on_any_more_features_for_a_few_dollars_a_month_we_encourage_you_to_upgrade_to_the_gold_version
         }}
+      </div>
+      <div v-if="goldOrPlatinum">
+        {{ translations && translations.gold_or_platinum_version }}
       </div>
       <div class="flex justify-start space-x-3 cursor-pointer">
         <div
@@ -78,6 +82,7 @@ const store = useStore();
 const dialogRef = ref();
 
 const translations = computed(() => store.getters.translations);
+const goldOrPlatinum = computed(() => store.getters.goldOrPlatinum);
 
 const onUpgrade = () => {
   localStorage.setItem("activeTab", 2);
@@ -98,6 +103,11 @@ const openDialog = () => {
     }
   }, 5000);
 };
+
+const closedDialog = () => {
+  store.commit("setGoldOrPlatinum", false);
+};
+
 defineExpose({ openDialog });
 </script>
 

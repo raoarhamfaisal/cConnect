@@ -230,7 +230,7 @@ export default {
       console.log(error);
       if (error.body === "Max files") {
         somethingWentWrong(
-          `Maximum Number of Images cannot exceed ${this.maxImageForErrorMsg}`,
+          `${this.translations.maximum_images_cannot_exceed} ${this.maxImageForErrorMsg}`,
           "inherit"
         );
       }
