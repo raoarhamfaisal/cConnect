@@ -15,14 +15,38 @@
         bgColor="white"
         :padding="screenWidth < 640 ? '7px' : '20px'"
       >
-        <PageTitle :linkUrl="`/admin/regions`" pageTitle="All Contractors" />
+        <PageTitle
+          :linkUrl="`/admin/regions/contractors`"
+          pageTitle="All Contractors"
+        />
 
         <SearchInput
-          class="mb-12"
+          class="mb-8"
           :barWidth="screenWidth < 640 ? 50 : 35"
           icon="iconamoon:search"
           @search-clicked="onSearch"
         />
+
+        <div class="mb-6">
+          <div class="flex gap-3">
+            <button
+              class="rounded px-2 py-1 xs:px-4 xs:py-2 xs:text-md text-sm flex gap-2"
+              :class="{ selected: !isReviewers }"
+              :disabled="disabled"
+              @click="handleTabs(false)"
+            >
+              <div class="flex items-center justify-center">Contractors</div>
+            </button>
+            <button
+              class="rounded px-2 py-1 xs:px-4 xs:py-2 xs:text-md text-sm flex gap-2"
+              :disabled="disabled"
+              :class="{ selected: isReviewers }"
+              @click="handleTabs(true)"
+            >
+              <div class="flex items-center justify-center">Reviewers</div>
+            </button>
+          </div>
+        </div>
 
         <div
           class="flex flex-col"
@@ -31,7 +55,9 @@
           <Link
             v-for="(contractor, index) in allContractors"
             :key="index"
-            :href="`/admin/regions/${region_id}/contractors/${contractor.id}`"
+            :href="`/admin/regions/${region_id}/contractors/${contractor.id}${
+              isReviewers ? '/reviews' : ''
+            }`"
             class="hover:bg-[#f8f9fa] hover:rounded"
           >
             <contractor
@@ -66,9 +92,9 @@
             :on-click="onClickHandler"
           />
         </div>
+        <Loader :loading="loading" background="white" height="60vh"></Loader>
       </Card>
     </div>
-    <Loader :loading="loading" background="white" height="100vh"></Loader>
   </Header>
 </template>
 
@@ -102,7 +128,9 @@ const isAdminUrl = usePage().props.value.auth.user.reviews_privileges === 1;
 const store = useStore();
 const currentPage = ref(1);
 const perPage = ref(5);
+const disabled = ref(false);
 const searchTerm = ref("");
+const isReviewers = ref(false);
 
 //Computed
 
@@ -138,4 +166,26 @@ const onSearch = (term) => {
   searchTerm.value = term;
   fetchContractors();
 };
+
+const handleTabs = (isReviewer) => {
+  isReviewers.value = isReviewer;
+
+  store.commit("ratings/setLoading", true);
+  setTimeout(() => {
+    store.commit("ratings/setLoading", false);
+  }, 200);
+};
 </script>
+
+<style scoped>
+button.selected {
+  background-color: #3a357c;
+  color: #fff;
+}
+button {
+  border: 1px solid #ccc;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+</style>

@@ -16,7 +16,10 @@
         :padding="screenWidth < 640 ? '7px' : '20px'"
       >
         <!-- Contractor info -->
-        <PageTitle linkUrl="/admin/appealed" pageTitle="Contractor History" />
+        <PageTitle
+          linkUrl="/admin/regions/appealed"
+          pageTitle="Contractor History"
+        />
 
         <ContractorInfo :contractor="contractor" />
 

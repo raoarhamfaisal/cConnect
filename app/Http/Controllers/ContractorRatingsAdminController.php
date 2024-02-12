@@ -20,7 +20,7 @@ class ContractorRatingsAdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getContractorReviews($region_id,$contractor_id)
+    public function getContractorGotReviews($region_id,$contractor_id)
     {
         // Get current user id
         $userID = Auth()->user('')->id;
@@ -60,7 +60,7 @@ class ContractorRatingsAdminController extends Controller
             $profile = array_merge($profile->toArray(), $profileTrades);
         }
     
-        return Inertia::render('Admin/Ratings/SingleContractor', [
+        return Inertia::render('Admin/Ratings/ContractorGotReviews', [
             'profile' => $profile,
             'region_id' => $region_id,
             'showit' => Auth::check(),
@@ -91,6 +91,76 @@ class ContractorRatingsAdminController extends Controller
         ]);
     }
     
+    public function getContractorGivenReviews($region_id,$contractor_id)
+    {
+        // Get current user id
+        $userID = Auth()->user('')->id;
+        $profile = null;
+    
+        // Retrieve the contractor details from the Profile table with trades
+        $contractor = Profile::where('id', $contractor_id)
+                            ->with('trades')
+                            ->select([
+                                'id',
+                                'user_id',
+                                'email',
+                                'phone_cell',
+                                'first_name',
+                                'last_name',
+                                'phone_cell',
+                                'email',
+                                'company_name',
+                                'city',
+                                'state',
+                                'user_avatar',
+                                'company_logo'
+                            ])
+                            ->first();
+    
+        // Convert trades to old structure
+        $contractorDetails = $this->convertTradesToOldStructure($contractor->trades);
+        $contractorDetails = array_merge($contractor->toArray(), $contractorDetails);
+    
+        // Get the profile information if the user id exists
+        if($userID) {
+            $profile = Profile::where('user_id', $userID)
+                        ->with('trades')
+                        ->first();
+    
+            $profileTrades = $this->convertTradesToOldStructure($profile->trades);
+            $profile = array_merge($profile->toArray(), $profileTrades);
+        }
+    
+        return Inertia::render('Admin/Ratings/ContractorGivenReviews', [
+            'profile' => $profile,
+            'region_id' => $region_id,
+            'showit' => Auth::check(),
+            'posts' => Post::query()
+            ->orderBy('id', 'DESC')
+            ->when(FacadeRequest::input('postSearch'), function ($query, $postSearch) {
+                $query->where('title', 'like', "%{$postSearch}%");
+            })
+            ->paginate(5)
+            ->withQueryString() 
+            ->through(fn($post) => [
+                'id' => $post->id,
+                'user_id' => $post->user_id,
+                'view' => $post->view,
+                'title' => $post->title,
+                'image' => $post->image,
+                'body1' => $post->body1,
+                'body2' => $post->body2,
+                'body1Bold' => $post->body1Bold,
+                'body1ColorId' => $post->body1ColorId,
+                'repost' => $post->repost,
+                'shares' => $post->shares,
+            ]),
+            // pass on any existing search filters that exist
+            // along with data
+            'postSearchFilters' => FacadeRequest::only(['postSearch']),
+            'contractorDetails' => $contractorDetails,
+        ]);
+    }
     private function convertTradesToOldStructure($trades) 
     {
         $oldStructure = [];
@@ -519,3 +589,4 @@ class ContractorRatingsAdminController extends Controller
         //
     }
 }
+

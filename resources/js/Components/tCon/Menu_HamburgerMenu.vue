@@ -259,7 +259,7 @@ const openProfileModal = () => {
 
           <Link
             v-if="isAdminUrl"
-            href="/admin/regions"
+            href="/admin/regions/contractors"
             class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
           >
             <Icon
@@ -273,7 +273,7 @@ const openProfileModal = () => {
           <!-- DropDown: Appeal Review -->
           <Link
             v-if="isAdminUrl"
-            href="/admin/appealed"
+            href="/admin/regions/appealed"
             class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
           >
             <Icon

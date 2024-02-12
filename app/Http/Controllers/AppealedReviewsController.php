@@ -16,7 +16,7 @@ class AppealedReviewsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getAppealedReviews()
+    public function getAppealedReviews($regionId)
     {
          // Get current user id
       $userID = Auth()->user('')->id;
@@ -29,6 +29,7 @@ class AppealedReviewsController extends Controller
       }
     return Inertia::render('Admin/Appealed/AppealedReviews', [
         'profile' => $profile,
+        'region_id' => $regionId,
         'showit' => Auth::check(),
         'posts' => Post::query()
         ->orderBy('id', 'DESC')
