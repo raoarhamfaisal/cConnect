@@ -187,8 +187,10 @@ class ContractorRatingsAdminController extends Controller
                                 'user_id',
                                 'email',
                                 'phone_cell',
+                                'region_id',
                                 'first_name',
                                 'last_name',
+                                'region_id',
                                 'phone_cell',
                                 'email',
                                 'company_name',
@@ -216,26 +218,6 @@ class ContractorRatingsAdminController extends Controller
         return Inertia::render('Admin/History/ContractorHistory', [
             'profile' => $profile,
             'showit' => Auth::check(),
-            'posts' => Post::query()
-            ->orderBy('id', 'DESC')
-            ->when(FacadeRequest::input('postSearch'), function ($query, $postSearch) {
-                $query->where('title', 'like', "%{$postSearch}%");
-            })
-            ->paginate(5)
-            ->withQueryString() 
-            ->through(fn($post) => [
-                'id' => $post->id,
-                'user_id' => $post->user_id,
-                'view' => $post->view,
-                'title' => $post->title,
-                'image' => $post->image,
-                'body1' => $post->body1,
-                'body2' => $post->body2,
-                'body1Bold' => $post->body1Bold,
-                'body1ColorId' => $post->body1ColorId,
-                'repost' => $post->repost,
-                'shares' => $post->shares,
-            ]),
             // pass on any existing search filters that exist
             // along with data
             'postSearchFilters' => FacadeRequest::only(['postSearch']),

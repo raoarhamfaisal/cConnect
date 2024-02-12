@@ -52,7 +52,7 @@
     <div
       class="flex flex-col justify-between items-end"
       :class="{
-        'xl:flex-col-reverse': review.is_under_appeal === 1,
+        'xl:flex-col-reverse': review.is_under_appeal,
       }"
     >
       <div class="flex gap-2 flex-col md:flex-row">
@@ -88,7 +88,7 @@
 
       <!-- Edit buttons -->
       <div
-        v-if="screenWidth >= 768 && !review.deleted_at"
+        v-if="screenWidth >= 768 && !review.deleted_at && hasPostPrevillages"
         class="grid gap-2"
         :style="{
           'grid-template-columns': '32fr 36fr 32fr',
@@ -150,7 +150,7 @@
   </div>
   <!-- for mobile view icons edit inactive delete-->
   <div
-    v-if="screenWidth < 768 && !review.deleted_at"
+    v-if="screenWidth < 768 && !review.deleted_at && hasPostPrevillages"
     class="grid gap-2 mt-3"
     :style="{
       'grid-template-columns': '32fr 36fr 32fr',
@@ -436,7 +436,7 @@ import Tooltip from "@/Components/Ratings/Tooltip.vue";
 
 import { ref, computed } from "vue";
 import { Icon } from "@iconify/vue";
-import { Link } from "@inertiajs/inertia-vue3";
+import { Link, usePage } from "@inertiajs/inertia-vue3";
 import { useStore } from "vuex";
 
 //State
@@ -486,6 +486,8 @@ const options = [
   { id: "trade24", name: "Architectural, Engineering & Law" },
 ];
 const store = useStore();
+const hasPostPrevillages = usePage().props.value.auth.user.posts_privileges;
+
 const editRef = ref();
 const deleteRef = ref();
 const showFullReview = ref(false);

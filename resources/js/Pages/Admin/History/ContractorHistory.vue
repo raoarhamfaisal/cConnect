@@ -17,7 +17,7 @@
       >
         <!-- Contractor info -->
         <PageTitle
-          linkUrl="/admin/regions/appealed"
+          :linkUrl="`/admin/regions/${contractor.region_id}/appealed`"
           pageTitle="Contractor History"
         />
 
@@ -59,6 +59,8 @@
             </div>
           </div>
         </div>
+        <Loader :loading="loading" background="" height="50vh"></Loader>
+
         <div v-if="!loading">
           <heading-card heading="Average Ratings" class="mb-12" />
           <AverageRating
@@ -200,6 +202,7 @@ const { contractorDetails } = defineProps({
     }),
   },
 });
+
 const store = useStore();
 const isAdminUrl = usePage().props.value.auth.user.appeals_privileges === 1;
 const currentPage = ref(1);

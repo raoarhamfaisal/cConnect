@@ -23,7 +23,10 @@
         bgColor="white"
         :padding="screenWidth < 640 ? '7px' : '20px'"
       >
-        <PageTitle linkUrl="/post" pageTitle="Appealed Reviews" />
+        <PageTitle
+          linkUrl="/admin/regions/appealed"
+          pageTitle="Appealed Reviews"
+        />
 
         <!-- Filters -->
         <div class="border-gray-300">
