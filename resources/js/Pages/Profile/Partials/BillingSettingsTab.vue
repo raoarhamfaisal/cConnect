@@ -253,12 +253,14 @@ const fetchPaymentHistoryDetails = async () => {
       pageName="settings"
     />
 
-    <!-- <div
+    <div
       class="h-96 flex items-center justify-center font-semibold"
-      v-if="Object.keys(pricingPlan).length === 2 && !loading"
+      v-if="
+        Object.keys(pricingPlan).length === 2 && !loading && userVersion > 1
+      "
     >
       No Billing or Subscription Details available for you
-    </div> -->
+    </div>
 
     <v-window
       v-model="step"

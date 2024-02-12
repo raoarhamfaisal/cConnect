@@ -149,6 +149,8 @@ const continueSignup = () => {
 function handleLogout() {
   removeToken();
   store.commit("setUserVersion", 0);
+  store.commit("profile/setProfile", {});
+  store.commit("setUserDetails", {});
   Inertia.post("/logout");
 }
 </script>

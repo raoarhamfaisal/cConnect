@@ -533,8 +533,10 @@ onBeforeUnmount(() => {
 function handleLogout() {
   removeToken();
   showingNavigationDropdown.value = !showingNavigationDropdown.value;
-  Inertia.post("/logout");
   store.commit("setUserVersion", 0);
+  store.commit("profile/setProfile", {});
+  store.commit("setUserDetails", {});
+  Inertia.post("/logout");
 }
 
 const onSelectLang = (lang) => {
