@@ -67,6 +67,7 @@ class PostController extends Controller
                     $query->where('posts.title', 'like', "%{$postSearch}%");
                 }) 
                 ->orderBy('posts.created_at', 'desc')
+                ->orderBy('posts.id', 'desc')
                 ->paginate(5)
                 ->withQueryString()
                 ->through(fn($post) => [
