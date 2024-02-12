@@ -179,7 +179,7 @@ const buttonData = computed(() => [
   },
   {
     value: "Rejected",
-    label: translations.value && translations.value.back_up,
+    label: translations.value && translations.value.rejected,
   },
 ]);
 
@@ -194,7 +194,7 @@ const selectButton = (value) => {
 const buttonClass = (value) => [
   "w-28",
   "py-2",
-  "bg-white",
+
   "transition",
   "transform",
   "duration-300",
@@ -247,7 +247,6 @@ const selectSort = (value) => {
 const sortButtonClass = (value) => [
   "px-4",
   "py-2",
-  "bg-white",
   "transition",
   "transform",
   "duration-300",
