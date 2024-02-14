@@ -85,7 +85,9 @@ const handleSubmit = async () => {
       response_text: filterBadWords(response_text),
       response_id: responseId,
     };
-    await store.dispatch("ratings/updateResponse", updateResponse);
+    await store.dispatch("ratings/updateResponse", {
+      responseData: updateResponse,
+    });
     dialogRef.value.closeDialog();
   }
 };

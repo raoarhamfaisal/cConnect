@@ -12,7 +12,7 @@
     >
       <p
         class="text-sm font-semibold py-1 px-3 text-grey-600"
-        v-if="!editResponseText"
+        v-if="!editResponseText && !isTyping && response_text"
       >
         {{
           showFullReview
@@ -38,12 +38,15 @@
       <textarea
         v-else
         v-model="response_text"
-        @blur="editResponseText = false"
+        @blur="stopTyping"
         ref="responseTextArea"
-        @input="autoResize"
+        @input="saveInput"
         class="text-sm w-full py-1 px-3 focus:shadow-none focus:ring-gray-600 focus:rounded font-semibold text-grey-600 border-none resize-none bg-transparent"
         :rows="numberOfRows"
       ></textarea>
+      <div class="text-xs text-red-600" v-if="!response_text">
+        Response Text must not be empty
+      </div>
     </Card>
     <ButtonRatings
       v-if="hasPostPrevillages"
@@ -59,10 +62,11 @@
 <script setup>
 import Card from "@/Components/Card.vue";
 import ButtonRatings from "@/Components/Ratings/ButtonRatings.vue";
-import { convertDateFormat } from "@/helpers/utilities";
+import { convertDateFormat, filterBadWords } from "@/helpers/utilities";
 
 import { computed, nextTick, ref, watch } from "vue";
 import { usePage } from "@inertiajs/inertia-vue3";
+import { useStore } from "vuex";
 
 const { response } = defineProps({
   response: {
@@ -76,10 +80,12 @@ const { response } = defineProps({
   },
 });
 const showFullReview = ref(false);
+const store = useStore();
 const hasPostPrevillages = usePage().props.value.auth.user.posts_privileges;
 
 const editResponseText = ref(false);
 const responseTextArea = ref();
+const isTyping = ref(false);
 const response_text = ref(response.response_text);
 
 //Computed
@@ -90,16 +96,42 @@ const numberOfRows = computed(() => {
   return Math.ceil(response_text.value.length / charsPerLine);
 });
 //Methods
+
+const stopTyping = () => {
+  isTyping.value = false;
+  editResponseText.value = false;
+};
+
+let saveTimeout = null;
+
+const saveInput = async () => {
+  isTyping.value = true;
+
+  if (saveTimeout) {
+    clearTimeout(saveTimeout);
+  }
+
+  // Start a new timer
+  saveTimeout = setTimeout(async () => {
+    if (!response_text.value) {
+      return;
+    }
+    const updatedResponse = {
+      response_text: filterBadWords(response_text),
+      response_id: response.id,
+    };
+    await store.dispatch("ratings/updateResponse", {
+      responseData: updatedResponse,
+      dontShowSuccessSnack: true,
+    });
+  }, 1000); // 1 second delay
+};
+
 const focusTextarea = async () => {
   editResponseText.value = true;
   await nextTick();
   responseTextArea.value.focus();
   autoResize();
-};
-const autoResize = () => {
-  responseTextArea.value.style.height = "auto";
-  responseTextArea.value.style.height =
-    responseTextArea.value.scrollHeight + "px";
 };
 </script>
 

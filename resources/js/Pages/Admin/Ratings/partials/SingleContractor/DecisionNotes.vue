@@ -12,23 +12,24 @@
     >
       <p
         class="text-sm font-semibold py-1 px-3 text-grey-600"
-        v-if="!editAdmitNoteText && demoText"
+        v-if="!editAdmitNoteText && adminNote && !isTyping"
         style="height: 11.3rem"
       >
         {{
           showFullText
-            ? demoText
-            : demoText.substring(0, 400) + (demoText.length > 400 ? "..." : "")
+            ? adminNote
+            : adminNote.substring(0, 400) +
+              (adminNote.length > 400 ? "..." : "")
         }}
         <span
-          v-if="!showFullText && demoText.length > 400"
+          v-if="!showFullText && adminNote.length > 400"
           @click="showFullText = true"
           class="cursor-pointer text-sky-700"
         >
           See more :disabled="disabled"
         </span>
         <span
-          v-if="showFullText && demoText.length > 400"
+          v-if="showFullText && adminNote.length > 400"
           @click="showFullText = false"
           class="cursor-pointer text-sky-700"
         >
@@ -38,9 +39,10 @@
       <textarea
         v-else
         v-model="adminNote"
-        @blur="editAdmitNoteText = false"
+        @blur="stopTyping"
         ref="adminTextAreaRef"
         style="height: 11.3rem"
+        @input="saveNotes"
         placeholder="Type your Notes"
         class="text-sm w-full py-1 px-3 focus:shadow-none focus:ring-gray-600 focus:rounded font-semibold text-grey-600 border-none resize-none bg-transparent"
         :rows="numberOfRows"
@@ -62,8 +64,8 @@
       </button>
       <button
         class="rounded-md border-2 w-28 px-2 py-1 py-2 text-sm text-center"
-        :class="{ selected: appealFilter === 'hlod' }"
-        @click="handleTabs('hlod')"
+        :class="{ selected: appealFilter === 'on_hold' }"
+        @click="handleTabs('on_hold')"
       >
         On Hold
       </button>
@@ -87,27 +89,33 @@
   
   <script setup>
 import Card from "@/Components/Card.vue";
+import { filterBadWords } from "@/helpers/utilities";
 
-import { computed, nextTick, ref } from "vue";
+import { computed, nextTick, ref, watch } from "vue";
+import { useStore } from "vuex";
 
-defineProps({
-  profileId: {
-    type: Number,
+const { appeal_judge_notes, appeal_status, reviewId } = defineProps({
+  appeal_judge_notes: {
+    type: [String],
   },
-  contractorId: {
-    type: Number,
+  reviewId: {
+    type: [String, Number],
+  },
+  appeal_status: {
+    type: String,
   },
 });
+const store = useStore();
 const showFullText = ref(false);
-const appealFilter = ref("open");
+const appealFilter = ref(appeal_status);
 const editAdmitNoteText = ref(false);
-const demoText =
-  "lorem isOptio sint repudiandae nisi et fugit quaerat vel. Porro labore dolores itaque. Sunt similique qui accusantium inventore ratione.Optio sint repudiandae nisi et fugit quaerat vel. Porro labore dolores itaque. Sunt similique qui accusantium inventore ratione.";
 const adminTextAreaRef = ref();
-const adminNote = ref(demoText);
+const isTyping = ref(false);
+const adminNote = ref(appeal_judge_notes);
+const emit = defineEmits(["changeStatus"]);
 
 // Computed
-
+const success = computed(() => store.getters["ratings/success"]);
 const numberOfRows = computed(() => {
   if (!adminNote.value) return 1; // if there's no content, return a default row number
   const charsPerLine = 90;
@@ -115,6 +123,12 @@ const numberOfRows = computed(() => {
   return Math.ceil(adminNote.value.length / charsPerLine);
 });
 
+//Watch
+watch(success, (newVal) => {
+  if (newVal) {
+    emit("changeStatus", appealFilter.value);
+  }
+});
 //Methods
 const focusTextarea = async () => {
   editAdmitNoteText.value = true;
@@ -122,8 +136,39 @@ const focusTextarea = async () => {
   adminTextAreaRef.value.focus();
 };
 
-const handleTabs = (apiToCall) => {
+const stopTyping = () => {
+  isTyping.value = false;
+  editAdmitNoteText.value = false;
+};
+
+let saveTimeout = null;
+
+const saveNotes = () => {
+  isTyping.value = true;
+  if (saveTimeout) {
+    clearTimeout(saveTimeout);
+  }
+
+  // Start a new timer
+  saveTimeout = setTimeout(async () => {
+    await store.dispatch("ratings/updateNotesAndAppeal", {
+      reviewId,
+      postData: {
+        appeal_judge_notes: filterBadWords(adminNote.value),
+        appeal_status: appealFilter.value,
+      },
+    });
+  }, 1000);
+};
+const handleTabs = async (apiToCall) => {
   appealFilter.value = apiToCall;
+  await store.dispatch("ratings/updateNotesAndAppeal", {
+    reviewId,
+    postData: {
+      appeal_status: appealFilter.value,
+      appeal_judge_notes: filterBadWords(adminNote.value),
+    },
+  });
 };
 </script>
   

@@ -141,7 +141,6 @@ const handleConfirm = async () => {
       response_id: responseId,
       reason: filterBadWords(editing_reason),
     };
-    console.log(updateResponse);
     await store.dispatch("ratings/updateResponseAdmin", updateResponse);
     submitRef.value.closeDialog();
     dialogRef.value.closeDialog();

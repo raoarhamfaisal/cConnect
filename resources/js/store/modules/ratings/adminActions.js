@@ -21,6 +21,23 @@ export const getAllContractors = async ({ commit }, payload) => {
     commit("setLoading", false);
   }
 };
+
+export const updateNotesAndAppeal = async ({ commit }, payload) => {
+  commit("setSuccess", false);
+
+  try {
+    const response = await axios.post(
+      `/api/admin/reviews/${payload.reviewId}/appeal/update-appeal`,
+      payload.postData,
+      getAxiosConfig()
+    );
+    if (response.data) {
+      commit("setSuccess", true);
+    }
+  } catch (err) {
+    somethingWentWrong();
+  }
+};
 export const getRegions = async ({ commit }) => {
   commit("setLoading", true);
 
