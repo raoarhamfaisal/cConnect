@@ -47,6 +47,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         Route::get('/contractor/{contractor_id}', [ReviewController::class, 'getContractorInfo'])->name('review.contractor');
         Route::put('reviews/{review}', [ReviewController::class, 'update']);
         Route::post('reviews/{review}/appeal', [ReviewController::class, 'putOnAppeal']);
+
         Route::post('reviews/{review}/off-appeal', [ReviewController::class, 'removeAppeal']);
         Route::delete('reviews/{review}', [ReviewController::class, 'destroy']);
         Route::post('/review-responses', [ReviewResponseController::class, 'store']);
@@ -59,7 +60,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
             Route::get('/admin/all-contractors', [ReviewController::class, 'getContractorProfiles'])->name('review.allContractors');
             Route::get('/admin/reviews/{contractor_id}', [ReviewController::class, 'contractorAllReviews'])->name('review.contractorAllReviews');
             Route::get('/admin/{region}/search-contractor', [ContractorRatingsAdminController::class, 'searchContractor']);
-        
+
+            Route::post('/admin/reviews/{reviewId}/appeal/update-appeal', [ReviewController::class, 'updateAppeal']);
+            Route::get('/admin/reviews/{regionId}/by-appeal-status', [ReviewController::class, 'getReviewsByAppealStatus']);
+            
         
             Route::get('/admin/all-appealed-reviews/{regionId}', [ReviewController::class, 'getAppealedReviews'])->name('review.getAppealedReviews');
             Route::put('/admin/reviews/{review}', [ReviewController::class, 'updateFromAdmin']);

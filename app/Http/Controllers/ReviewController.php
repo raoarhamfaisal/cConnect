@@ -330,6 +330,7 @@ class ReviewController extends Controller
             $review->is_under_appeal = true;
             $review->on_appeal_reason_date = Carbon::now();
             $review->on_appeal_reason = $data['on_appeal_reason'];
+            $review->appeal_status = "open";
 
             $review->save();
 
@@ -951,7 +952,173 @@ class ReviewController extends Controller
         $regions = Region::all();
         return response()->json(['message' => 'Region successfully got!', 'regions' => $regions], 200);
     }
- 
 
+
+    /**
+     * Change the appeal status
+     *
+     * @param  \App\Models\Review  $review
+     * @return \Illuminate\Http\Response
+     */
+
+     public function updateAppeal(Request $request, $reviewId)
+     {
+        $review = Review::findOrFail($reviewId);
+
+
+        if(!$review) {
+            return response()->json(['message' => 'A reivew with this Id does not exist']);
+        }
+
+        // Get the currently authenticated user
+        $user = Auth::user();
+        // Check if the user is the original reviewer or has admin privileges
+        if ($user->appeals_privileges) {
+
+            $appeal_status = $request->input('appeal_status');
+            $review->appeal_status = $appeal_status;
+            $review->appeal_judge_notes = $request->input('appeal_judge_notes');
+            $review->appeal_last_updated_by = $user->name; // assuming you have auth
+            $review->appeal_last_updated_at = now();
+
+            if (!in_array($appeal_status, ['open', 'on_hold', 'approved', 'denied'])) {
+                return response()->json(['error' => 'Invalid appeal status'], 400);
+            }    
+
+            if($appeal_status === "open") {
+                $review->is_review_active = 1;
+                $review->is_under_appeal = 1;
+            }else if($appeal_status === "on_hold") {
+                $review->is_review_active = 1;
+                $review->is_under_appeal = 1;
+            }else if($appeal_status === "approved") {
+                $review->is_review_active = 0;
+                $review->is_under_appeal = 0;
+            }else if($appeal_status === "denied") {
+                $review->is_review_active = 1;
+                $review->is_under_appeal = 0;
+            }
+
+            $review->save();
+
+            return response()->json(['message' => 'Appeal updated successfully']);
+        }else {
+            return response()->json(['message' => 'You do not have permission to update this appeal'], 403);
+        }
+    }
+
+    /**
+     * Get the reviews by appeal status
+     *
+     * @param  \App\Models\Review  $review
+     * @return \Illuminate\Http\Response
+     */
+
+     public function getReviewsByAppealStatus(Request $request, $regionId)
+     {
+        $appealStatus = $request->input('appeal_status');
+
+        if (!in_array($appealStatus, ['open', 'on_hold', 'approved', 'denied'])) {
+            return response()->json(['error' => 'Invalid appeal status'], 400);
+        }
+ 
+        // Determine pagination parameters from the request's query parameters
+        $perPage = $request->query('per_page', 15);  // Default to 15 if not provided
+        $page = $request->query('page', 1);          // Default to page 1 if not provided
+    
+        // Initialize query builder
+        $query = Review::with([
+            'reviewer' => function ($query) {
+                $query->select([
+                    'id',
+                    'user_id',
+                    'email',
+                    'phone_cell',
+                    'first_name',
+                    'last_name',
+                    'company_name',
+                    'city',
+                    'state',
+                    'user_avatar',
+                    'company_logo'
+                ])->with('trades:id');
+            },
+            'contractor' => function ($query) {
+                $query->select([
+                    'id',
+                    'user_id',
+                    'email',
+                    'phone_cell',
+                    'first_name',
+                    'last_name',
+                    'company_name',
+                    'city',
+                    'state',
+                    'user_avatar',
+                    'company_logo'
+                ])->with('trades:id');
+            },
+            'ratingReasons',
+            'review_response.responseReasons',
+            'review_response'
+        ])->withTrashed()->where('appeal_status', $appealStatus)->whereHas('contractor', function ($query) use ($regionId) {
+            $query->where('region_id', $regionId);
+        }); 
+
+        // Apply sorting based on filters
+        $sortByDate = $request->query('sort_by_date', ''); // Default to latest
+        $sortByRating = $request->query('sort_by_rating', ''); // Default to highest
+    
+        if ($sortByDate === 'oldest') {
+            $query = $query->oldest('created_at');
+        } else if ($sortByDate === 'latest') {
+            $query = $query->latest('created_at');
+        }
+    
+        switch ($sortByRating) {
+            case 'highest':
+                $query = $query->orderByDesc('rating');
+                break;
+            case 'middle':
+                $query = $query->orderBy('rating', 'asc')->whereBetween('rating', [2.5, 3.5]);
+                break;
+            case 'lowest':
+                $query = $query->orderBy('rating', 'asc');
+                break;
+        }
+    
+        // Fetch paginated results
+        $reviews = $query->paginate($perPage, ['*'], 'page', $page);
+    
+        // Convert the paginated results to arrays
+        $reviewsArray = $reviews->toArray();
+
+        // Transform the trades data for each reviewer and contractor
+        foreach ($reviewsArray['data'] as &$review) {
+            if (isset($review['reviewer']) && isset($review['reviewer']['trades'])) {
+                $trades = $review['reviewer']['trades'];
+                $transformedTrades = $this->convertTradesToOldStructure(collect($trades));
+                $review['reviewer'] = array_merge($review['reviewer'], $transformedTrades);
+            }
+            if (isset($review['contractor']) && isset($review['contractor']['trades'])) {
+                $trades = $review['contractor']['trades'];
+                $transformedTrades = $this->convertTradesToOldStructure(collect($trades));
+                $review['contractor'] = array_merge($review['contractor'], $transformedTrades);
+            }
+        }
+
+        // Construct the response
+        $response = [
+            'reviews' => $reviewsArray['data'],
+            'pagination' => [
+                'current_page' => $reviews->currentPage(),
+                'last_page' => $reviews->lastPage(),
+                'per_page' => $reviews->perPage(),
+                'total' => $reviews->total(),
+            ]
+        ];
+    
+        return response()->json($response);
+    }
 
 }
