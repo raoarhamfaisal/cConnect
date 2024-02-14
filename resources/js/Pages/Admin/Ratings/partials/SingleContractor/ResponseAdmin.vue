@@ -40,7 +40,7 @@
         v-model="response_text"
         @blur="stopTyping"
         ref="responseTextArea"
-        @input="saveInput"
+        @keydown="saveInput"
         class="text-sm w-full py-1 px-3 focus:shadow-none focus:ring-gray-600 focus:rounded font-semibold text-grey-600 border-none resize-none bg-transparent"
         :rows="numberOfRows"
       ></textarea>
