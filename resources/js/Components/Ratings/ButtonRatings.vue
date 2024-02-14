@@ -9,6 +9,7 @@
       'justify-center',
       'px-3',
       'py-2',
+      'w-20',
       'text-xs',
       'xs:text-xs',
       'font-bold',

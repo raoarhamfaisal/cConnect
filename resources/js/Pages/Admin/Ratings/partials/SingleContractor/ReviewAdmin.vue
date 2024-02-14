@@ -1,42 +1,52 @@
 <template>
-  <div class="flex space-x-2 justify-between">
-    <div class="flex justify-center items-center space-x-2">
-      <div>
-        <Avatar :imageSrc="`/${review.reviewer.user_avatar}`" />
+  <Card :shadowLevel="0" bgColor="#f0fafc" :isInside="true" :padding="'5px'">
+    <div class="flex space-x-2 justify-between">
+      <div class="flex justify-center items-center space-x-2">
+        <div>
+          <Avatar :imageSrc="`/${review.reviewer.user_avatar}`" />
+        </div>
+        <div class="flex flex-col justify-center">
+          <Tooltip
+            :text="`${review.id} : ${review.reviewer.first_name} ${review.reviewer.last_name}`"
+            :applyTooltipLength="640"
+            :textLengthToShow="20"
+            textClass="text-md xs:text-xl font-medium font-bold text-gray-900 "
+          />
+          <Tooltip
+            :text="review.reviewer.company_name"
+            :applyTooltipLength="640"
+            :textLengthToShow="23"
+            textClass="text-sm xs:text-lg"
+          />
+          <Tooltip
+            v-if="review.reviewer.city || review.reviewer.state"
+            :text="`${review.reviewer.city} ${review.reviewer.state}`"
+            :applyTooltipLength="640"
+            :textLengthToShow="23"
+            textClass="text-xs xs:text-lg"
+          />
+
+          <div v-if="showContactDetails" class="flex gap-2 xs:gap-4">
+            <Icon icon="ic:baseline-phone" color="#241e6d" />
+            <div class="text-sm">
+              {{ review.reviewer.phone_cell }}
+            </div>
+          </div>
+          <div v-if="showContactDetails" class="flex gap-2 xs:gap-4">
+            <Icon icon="clarity:email-solid" color="#241e6d" />
+            <div class="text-sm">
+              {{ review.reviewer.email }}
+            </div>
+          </div>
+        </div>
+        <!-- star and date -->
       </div>
-      <div class="flex flex-col justify-center">
-        <Tooltip
-          :text="`${review.reviewer.first_name} ${review.reviewer.last_name}`"
-          :applyTooltipLength="640"
-          :textLengthToShow="20"
-          textClass="text-md xs:text-xl font-medium font-bold text-gray-900 "
-        />
-        <Tooltip
-          :text="review.reviewer.company_name"
-          :applyTooltipLength="640"
-          :textLengthToShow="23"
-          textClass="text-sm xs:text-lg"
-        />
-        <Tooltip
-          v-if="review.reviewer.city || review.reviewer.state"
-          :text="`${review.reviewer.city} ${review.reviewer.state}`"
-          :applyTooltipLength="640"
-          :textLengthToShow="23"
-          textClass="text-xs xs:text-lg"
-        />
-      </div>
-      <!-- star and date -->
+
+      <!-- show text and under appeal-->
       <div
-        v-if="screenWidth >= 1260"
-        class="flex flex-col self-start"
-        :style="{
-          marginLeft: '10px',
-        }"
+        class="flex flex-col justify-start items-center"
+        style="--tw-space-x-reverse: inherit"
       >
-        <StarRating
-          :rating="Number(parseFloat(review.rating).toFixed(1))"
-          :isIndicatorActive="true"
-        />
         <div
           class="font-bold flex items-center text-md"
           :style="{
@@ -45,143 +55,33 @@
         >
           {{ convertDateFormat(review.rating_date) }}
         </div>
-      </div>
-    </div>
-
-    <!-- Edit delete with under appeal desktop-->
-    <div
-      class="flex flex-col justify-between items-end"
-      :class="{
-        'xl:flex-col-reverse': review.is_under_appeal,
-      }"
-    >
-      <div class="flex gap-2 flex-col md:flex-row">
-        <Link
-          v-if="showContactDetails"
-          :href="`/admin/ratings/contractor/${review.reviewer_id}/history`"
-        >
-          <Badge
-            class="bg-white text-blue-500 padding border-2 cursor-pointer hover:shadow-lg active:scale-95"
-            :style="{
-              '--tw-border-opacity': 1,
-
-              borderColor: 'rgb(59 130 246 / var(--tw-text-opacity))',
-            }"
-            >Show History</Badge
+        <StarRating
+          :rating="Number(parseFloat(review.rating).toFixed(1))"
+          :isIndicatorActive="true"
+        />
+        <div class="flex grow flex-col justify-between translate-y-1">
+          <Badge class="bg-orange-500" v-if="review.is_under_appeal === 1"
+            >Under Appeal</Badge
           >
-        </Link>
+          <Link
+            v-if="showContactDetails"
+            :href="`/admin/ratings/contractor/${review.reviewer_id}/history`"
+          >
+            <Badge
+              class="bg-white text-blue-500 padding border-2 cursor-pointer hover:shadow-lg active:scale-95"
+              :style="{
+                '--tw-border-opacity': 1,
 
-        <Badge class="bg-orange-500" v-if="review.is_under_appeal === 1"
-          >Under Appeal</Badge
-        >
-      </div>
-      <!-- Deleted At -->
-      <div
-        v-if="screenWidth >= 768 && review.deleted_at"
-        class="font-bold inline-block"
-      >
-        Deleted At
-        <div class="font-normal inline-block text-sm">
-          : {{ formatUTCToDateTime(review.deleted_at) }}
+                borderColor: 'rgb(59 130 246 / var(--tw-text-opacity))',
+              }"
+              >Show History</Badge
+            >
+          </Link>
         </div>
       </div>
-
-      <!-- Edit buttons -->
-      <div
-        v-if="screenWidth >= 768 && !review.deleted_at && hasPostPrevillages"
-        class="grid gap-2"
-        :style="{
-          'grid-template-columns': '32fr 36fr 32fr',
-        }"
-      >
-        <!-- edit -->
-        <ButtonRatings
-          bgColor="bg-lime-700"
-          icon="material-symbols:edit-sharp"
-          @click="openEditDialog"
-          >Edit</ButtonRatings
-        >
-        <!-- Hide -->
-        <ButtonRatings
-          bgColor="bg-[#f08c00]"
-          :icon="review.is_review_active === 1 ? 'mdi:hide' : 'mdi:show'"
-          @click="openInActiveDialog"
-          >{{
-            review.is_review_active === 1 ? "Deactivate" : "Activate"
-          }}</ButtonRatings
-        >
-        <!-- delete -->
-        <ButtonRatings
-          bgColor="bg-red-500"
-          icon="ic:baseline-delete"
-          @click="openDeleteDialog"
-          >Delete</ButtonRatings
-        >
-      </div>
     </div>
-  </div>
-  <!-- Delted At for Mobile -->
-  <div
-    v-if="screenWidth < 768 && review.deleted_at"
-    class="pl-2 mt-2 font-bold inline-block"
-  >
-    Deleted At
-    <div class="font-normal inline-block text-sm">
-      : {{ formatUTCToDateTime(review.deleted_at) }}
-    </div>
-  </div>
-  <!-- contact details -->
-  <div
-    class="pl-2 mt-3 flex gap-2 sm:gap-8 flex-col xs:flex-row"
-    v-if="showContactDetails"
-  >
-    <div class="flex gap-2 xs:gap-4">
-      <Icon icon="ic:baseline-phone" color="#241e6d" />
-      <div class="text-sm">
-        {{ review.reviewer.phone_cell }}
-      </div>
-    </div>
-    <div class="flex gap-2 xs:gap-4">
-      <Icon icon="clarity:email-solid" color="#241e6d" />
-      <div class="text-sm">
-        {{ review.reviewer.email }}
-      </div>
-    </div>
-  </div>
-  <!-- for mobile view icons edit inactive delete-->
-  <div
-    v-if="screenWidth < 768 && !review.deleted_at && hasPostPrevillages"
-    class="grid gap-2 mt-3"
-    :style="{
-      'grid-template-columns': '32fr 36fr 32fr',
-    }"
-  >
-    <ButtonRatings
-      bgColor="bg-lime-700"
-      icon="material-symbols:edit-sharp"
-      @click="openEditDialog"
-      >Edit</ButtonRatings
-    >
-    <!-- Hide -->
-    <ButtonRatings
-      bgColor="bg-[#f08c00]"
-      :icon="review.is_review_active === 1 ? 'mdi:hide' : 'mdi:show'"
-      @click="openInActiveDialog"
-      >{{
-        review.is_review_active === 1 ? "Deactivate" : "Activate"
-      }}</ButtonRatings
-    >
-
-    <ButtonRatings
-      bgColor="bg-red-500"
-      icon="ic:baseline-delete"
-      @click="openDeleteDialog"
-      >Delete</ButtonRatings
-    >
-  </div>
-  <div class="mt-3">
     <!-- trades -->
-    <div class="pl-2 text-sm xs:text-md font-bold">
+    <div class="mt-2 pl-2 text-xs">
       {{ review.reviewer.first_name }} {{ review.reviewer.last_name }}
       {{ "'s Trades :" }}
     </div>
@@ -198,59 +98,84 @@
         >{{ option.name }}</Badge
       >
     </template>
-    <!-- mobile veiw stars -->
-    <div
-      v-if="screenWidth < 1260"
-      class="mt-3 mb-2 ml-1 flex items-center space-x-4"
-    >
-      <StarRating
-        :rating="Number(parseFloat(review.rating).toFixed(1))"
-        :isIndicatorActive="true"
-      />
-      <div
-        class="font-bold flex justify-center items-center text-md xs:text-xl"
-      >
-        {{ convertDateFormat(review.rating_date) }}
-      </div>
-    </div>
-    <!-- qulifying questions -->
-    <QualifyingQuestions
-      v-if="questionsSwitch.length && review?.how_did_you_meet_this_contractor"
-      :questionsSwitch="questionsSwitch"
-      :selectedReferal="review.how_did_you_meet_this_contractor"
-    />
+    <!-- qulifying questions + review Text-->
 
-    <!-- review -->
-    <div class="mt-1">
-      <p class="p-2 text-sm xs:text-lg">
-        {{
-          showFullReview
-            ? review.rating_text
-            : review.rating_text.substring(0, 400) +
-              (review.rating_text.length > 400 ? "..." : "")
-        }}
-        <span
-          v-if="!showFullReview && review.rating_text.length > 400"
-          @click="showFullReview = true"
-          class="cursor-pointer text-sky-700"
+    <Card :shadowLevel="0" bgColor="#eaf3fa" :isInside="true" :padding="'1px'">
+      <!-- qulifying questions -->
+
+      <QualifyingQuestionsAdmin
+        v-if="
+          questionsSwitch.length && review?.how_did_you_meet_this_contractor
+        "
+        :questionsSwitch="questionsSwitch"
+        questionsBgColor="#eaf3fa"
+        :selectedReferal="review.how_did_you_meet_this_contractor"
+      />
+
+      <!-- review -->
+      <div class="text-sm ml-4 text-[#3c3d41] font-bold">Review Text:</div>
+
+      <div class="flex gap-2">
+        <Card
+          :shadowLevel="0"
+          bgColor="#deeee1"
+          :isInside="true"
+          :padding="'5px'"
+          class="ml-5 w-full"
         >
-          See more
-        </span>
-        <span
-          v-if="showFullReview && review.rating_text.length > 400"
-          @click="showFullReview = false"
-          class="cursor-pointer text-sky-700"
+          <p
+            class="text-sm font-semibold py-1 px-3 text-grey-600"
+            v-if="!editRatingText"
+          >
+            {{
+              showFullReview
+                ? rating_text
+                : rating_text.substring(0, 400) +
+                  (rating_text.length > 400 ? "..." : "")
+            }}
+            <span
+              v-if="!showFullReview && rating_text.length > 400"
+              @click="showFullReview = true"
+              class="cursor-pointer text-sky-700"
+            >
+              See more
+            </span>
+            <span
+              v-if="showFullReview && rating_text.length > 400"
+              @click="showFullReview = false"
+              class="cursor-pointer text-sky-700"
+            >
+              See less
+            </span>
+          </p>
+          <textarea
+            v-else
+            v-model="rating_text"
+            @blur="editRatingText = false"
+            ref="ratingTextarea"
+            @input="saveInput"
+            class="text-sm w-full py-1 px-3 focus:shadow-none focus:ring-gray-600 focus:rounded font-semibold text-grey-600 border-none resize-none bg-transparent"
+            :rows="numberOfRows"
+          ></textarea>
+        </Card>
+        <ButtonRatings
+          v-if="hasPostPrevillages"
+          bgColor="bg-lime-700"
+          icon="material-symbols:edit-sharp"
+          @click="focusTextarea"
+          class="self-start"
+          >Edit</ButtonRatings
         >
-          See less
-        </span>
-      </p>
-    </div>
-    <!-- Contractor details -->
-    <div v-if="showContactDetails">
-      <div class="font-bold text-md xs:text-lg sm:text-2xl mb-2">
-        Appealing Contractor
       </div>
-      <div class="flex justify-between">
+    </Card>
+  </Card>
+  <!-- Contractor details -->
+  <div v-if="showContactDetails">
+    <div class="px-2 flex justify-between mt-2">
+      <div class="flex flex-col">
+        <div class="font-bold text-md xs:text-lg sm:text-2xl mb-2">
+          Appealing Contractor
+        </div>
         <div class="flex items-center space-x-2">
           <div>
             <Avatar :imageSrc="`/${review.contractor.user_avatar}`" />
@@ -278,163 +203,88 @@
             />
           </div>
         </div>
-        <div>
-          <Link
-            :href="`/admin/ratings/contractor/${review.contractor.id}/history`"
-          >
-            <Badge
-              class="bg-white text-blue-500 padding border-2 cursor-pointer hover:shadow-lg active:scale-95"
-              :style="{
-                '--tw-border-opacity': 1,
-
-                borderColor: 'rgb(59 130 246 / var(--tw-text-opacity))',
-              }"
-              >Show History</Badge
-            >
-          </Link>
+        <div
+          class="pl-2 mt-1 ml-20 flex gap-2 sm:gap-8 flex-col xs:flex-row"
+          v-if="showContactDetails"
+        >
+          <div class="flex gap-2 xs:gap-4">
+            <Icon icon="ic:baseline-phone" color="#241e6d" />
+            <div class="text-sm">
+              {{ review.contractor.phone_cell }}
+            </div>
+          </div>
+          <div class="flex gap-2 xs:gap-4">
+            <Icon icon="clarity:email-solid" color="#241e6d" />
+            <div class="text-sm">
+              {{ review.contractor.email }}
+            </div>
+          </div>
         </div>
       </div>
       <div
-        class="pl-2 mt-3 flex gap-2 sm:gap-8 flex-col xs:flex-row"
-        v-if="showContactDetails"
+        class="flex flex-col translate-y-2 self-start items-center justify-center gap-2"
       >
-        <div class="flex gap-2 xs:gap-4">
-          <Icon icon="ic:baseline-phone" color="#241e6d" />
-          <div class="text-sm">
-            {{ review.contractor.phone_cell }}
-          </div>
+        <div class="font-bold text-sm">
+          Appeal Date : {{ convertDateFormat(review.on_appeal_reason_date) }}
         </div>
-        <div class="flex gap-2 xs:gap-4">
-          <Icon icon="clarity:email-solid" color="#241e6d" />
-          <div class="text-sm">
-            {{ review.contractor.email }}
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- turn on appeal -->
-    <div class="mb-4" v-if="review.on_appeal_reason">
-      <div>
-        <Appeal
-          :appeal="{
-            reason: review.on_appeal_reason,
-            date: review.on_appeal_reason_date,
-          }"
-          heading="Appeal Request from the Contractor"
-        />
-        <div v-if="!review.deleted_at" class="flex justify-end">
-          <div class="flex gap-6">
-            <!-- accept -->
-            <ButtonRatings
-              bgColor="bg-[#364fc7]"
-              @click="sendAcceptRequest('acceptOnAppeal')"
-              class="flex gap-2"
-              :disabled="disabled"
-            >
-              <div class="flex items-center justify-center">Accept</div>
-              <img
-                class="ml-2"
-                v-show="loading && loadingSpecific === 'acceptOnAppeal'"
-                src="/images/avatars/Spinner.gif"
-                alt="spinner"
-                width="20"
-            /></ButtonRatings>
+        <Link
+          :href="`/admin/ratings/contractor/${review.contractor.id}/history`"
+        >
+          <Badge
+            class="bg-white text-blue-500 padding border-2 cursor-pointer hover:shadow-lg active:scale-95"
+            :style="{
+              '--tw-border-opacity': 1,
 
-            <!-- reject -->
-            <ButtonRatings
-              bgColor="bg-[#e03131]"
-              @click="sendRejectRequest('rejectOnAppeal')"
-              class="flex gap-2"
-              :disabled="disabled"
-            >
-              <div class="flex items-center justify-center">Reject</div>
-              <img
-                class="ml-2"
-                v-show="loading && loadingSpecific === 'rejectOnAppeal'"
-                src="/images/avatars/Spinner.gif"
-                alt="spinner"
-                width="20"
-            /></ButtonRatings>
-          </div>
-        </div>
-      </div>
-
-      <!-- trun off appeal -->
-      <div v-if="review.off_appeal_reason">
-        <Appeal
-          :appeal="{
-            reason: review.off_appeal_reason,
-            date: review.off_appeal_reason_date,
-          }"
-          heading="Appeal Turn Off Request from the Contractor"
-        />
-        <div v-if="!review.deleted_at" class="flex justify-end">
-          <div class="flex gap-6">
-            <!-- accept -->
-            <ButtonRatings
-              bgColor="bg-[#364fc7]"
-              @click="sendAcceptRequest('acceptOffAppeal')"
-              class="flex gap-2"
-              :disabled="disabled"
-            >
-              <div class="flex items-center justify-center">Accept</div>
-              <img
-                class="ml-2"
-                v-show="loading && loadingSpecific === 'acceptOffAppeal'"
-                src="/images/avatars/Spinner.gif"
-                alt="spinner"
-                width="20"
-            /></ButtonRatings>
-
-            <!-- reject -->
-            <ButtonRatings
-              bgColor="bg-[#e03131]"
-              @click="sendRejectRequest('rejectOffAppeal')"
-              class="flex gap-2"
-              :disabled="disabled"
-            >
-              <div class="flex items-center justify-center">Reject</div>
-              <img
-                class="ml-2"
-                v-show="loading && loadingSpecific === 'rejectOffAppeal'"
-                src="/images/avatars/Spinner.gif"
-                alt="spinner"
-                width="20"
-            /></ButtonRatings>
-          </div>
-        </div>
+              borderColor: 'rgb(59 130 246 / var(--tw-text-opacity))',
+            }"
+            >Show History</Badge
+          >
+        </Link>
       </div>
     </div>
   </div>
-  <EditRatingModal
-    ref="editRef"
-    :review="review"
-    :profileId="profileId"
-    :questionsSwitch="questionsSwitch"
-    :contractorId="contractorId"
-  />
-  <DeleteRatingModal ref="deleteRef" :reviewId="review.id" />
-  <InActiveRatingModal
-    ref="inActiveRef"
-    :isActive="review.is_review_active === 1"
-    :reviewId="review.id"
-  />
+  <!-- Response -->
+  <div
+    v-if="
+      review.review_response && Object.keys(review.review_response).length > 1
+    "
+  >
+    <ResponseAdmin
+      :response="review.review_response"
+      :contractorId="contractorId"
+      :profileId="profileId"
+    />
+  </div>
+
+  <!-- turn on appeal -->
+  <div class="mb-4 mt-3" v-if="review.on_appeal_reason">
+    <Appeal
+      :appeal="{
+        reason: review.on_appeal_reason,
+        date: review.on_appeal_reason_date,
+      }"
+      heading="Contractor Appeal"
+    />
+  </div>
+  <div class="mb-4 mt-3" v-if="review.on_appeal_reason">
+    <DecisionNotes :contractorId="contractorId" :profileId="profileId" />
+  </div>
 </template>
 
 <script setup>
 import Avatar from "@/Components/Ratings/Avatar.vue";
 import Appeal from "@/Pages/Admin/Ratings/partials/SingleContractor/Appeal.vue";
-import InActiveRatingModal from "@/Pages/Admin/Ratings/partials/SingleContractor/Edit/InActiveRatingModal.vue";
+import DecisionNotes from "@/Pages/Admin/Ratings/partials/SingleContractor/DecisionNotes.vue";
 import StarRating from "@/Components/Ratings/StarRating.vue";
 import ButtonRatings from "@/Components/Ratings/ButtonRatings.vue";
-import EditRatingModal from "@/Pages/Admin/Ratings/partials/SingleContractor/Edit/EditRatingModal.vue";
-import DeleteRatingModal from "@/Pages/Admin/Ratings/partials/SingleContractor/Edit/DeleteRatingModal.vue";
 import Badge from "@/Components/Ratings/Badge.vue";
-import QualifyingQuestions from "@/Pages/Ratings/PartialsPersonal/QualifyingQuestions.vue";
-import { convertDateFormat, formatUTCToDateTime } from "@/helpers/utilities";
+import QualifyingQuestionsAdmin from "@/Pages/Admin/Ratings/partials/SingleContractor/QualifyingQuestionsAdmin.vue";
 import Tooltip from "@/Components/Ratings/Tooltip.vue";
+import Card from "@/Components/Card.vue";
+import { convertDateFormat, filterBadWords } from "@/helpers/utilities";
+import ResponseAdmin from "@/Pages/Admin/Ratings/partials/SingleContractor/ResponseAdmin.vue";
 
-import { ref, computed } from "vue";
+import { ref, computed, nextTick } from "vue";
 import { Icon } from "@iconify/vue";
 import { Link, usePage } from "@inertiajs/inertia-vue3";
 import { useStore } from "vuex";
@@ -488,10 +338,11 @@ const options = [
 const store = useStore();
 const hasPostPrevillages = usePage().props.value.auth.user.posts_privileges;
 
-const editRef = ref();
-const deleteRef = ref();
+const editRatingText = ref(false);
+const ratingTextarea = ref();
+const rating_text = ref(review.rating_text);
+
 const showFullReview = ref(false);
-const inActiveRef = ref();
 const loadingSpecific = ref("");
 //  for quesitonSwitch
 const questionsMapping = [
@@ -524,11 +375,44 @@ const questionsSwitch = questionsMapping.map((mapping) => ({
 }));
 
 //computed
-const loading = computed(() => store.state.ratings.loading);
-const screenWidth = computed(() => store.getters.screenWidth);
-const disabled = computed(() => store.state.ratings.disabled);
 
+const numberOfRows = computed(() => {
+  if (!rating_text.value) return 1; // if there's no content, return a default row number
+  const charsPerLine = 97;
+
+  return Math.ceil(rating_text.value.length / charsPerLine);
+});
 //Methods
+const focusTextarea = async () => {
+  editRatingText.value = true;
+  await nextTick();
+  ratingTextarea.value.focus();
+  autoResize();
+};
+let saveTimeout = null;
+const saveInput = async () => {
+  if (saveTimeout) {
+    clearTimeout(saveTimeout);
+  }
+
+  // Start a new timer
+  saveTimeout = setTimeout(async () => {
+    const updatedReview = {
+      rating_text: filterBadWords(rating_text),
+    };
+    await store.dispatch("ratings/updateReview", {
+      reviewId: review.id,
+      review: updatedReview,
+      dontShowSuccessSnack: true,
+    });
+    autoResize();
+  }, 1000); // 1 second delay
+};
+
+const autoResize = () => {
+  ratingTextarea.value.style.height = "auto";
+  ratingTextarea.value.style.height = ratingTextarea.value.scrollHeight + "px";
+};
 
 const sendAcceptRequest = async (value) => {
   loadingSpecific.value = value;
@@ -547,16 +431,6 @@ const sendRejectRequest = async (value) => {
   await store.dispatch("ratings/sendRejectRequest", payload);
   loadingSpecific.value = "";
 };
-const openEditDialog = () => {
-  editRef.value.openDialogEdit();
-};
-
-const openDeleteDialog = () => {
-  deleteRef.value.openDialogDelete();
-};
-const openInActiveDialog = () => {
-  inActiveRef.value.openDialogInActivate();
-};
 </script>
 
 <style scoped>
@@ -568,5 +442,9 @@ const openInActiveDialog = () => {
   .padding {
     padding: 6px 10px;
   }
+}
+textarea {
+  overflow-y: hidden; /* Hide vertical scrollbar */
+  resize: none; /* Disable textarea resizing */
 }
 </style>

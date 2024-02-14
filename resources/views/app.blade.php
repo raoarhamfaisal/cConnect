@@ -8,7 +8,7 @@
         <!-- <meta name="csrf-token" content="{{ csrf_token() }}"> -->
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
+        <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;500;600;700;800;900;1000&display=swap">
 
         <!-- Scripts -->
         @routes

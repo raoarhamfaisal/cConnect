@@ -1,50 +1,40 @@
 <template>
-  <div
-    class="pl-2 text-xl font-bold text-gray-600 mt-3 mb-3"
-    :style="{
-      padding: noPadding ? '0px' : '',
-    }"
-  >
-    {{ heading }} &nbsp;
+  <div class="font-semibold text-[#3c3d41] ml-3 text-md mb-1">
+    {{ heading }} : {{ convertDateFormat(appeal.date) }}
   </div>
-
-  <Card
-    :shadowLevel="0"
-    :isInside="true"
-    bgColor="#f1f3f5"
-    padding="10px"
-    class="mb-4"
-  >
-    <div class="py-2">
-      <div>
-        <div class="pl-2 text-md text-gray-700">
-          {{
-            showFullText
-              ? appeal.reason
-              : appeal.reason.substring(0, 400) +
-                (appeal.reason.length > 400 ? "..." : "")
-          }}
-          <span
-            v-if="!showFullText && appeal.reason.length > 400"
-            @click="showFullText = true"
-            class="cursor-pointer text-sky-700"
-          >
-            See more
-          </span>
-          <span
-            v-if="showFullText && appeal.reason.length > 400"
-            @click="showFullText = false"
-            class="cursor-pointer text-sky-700"
-          >
-            See less
-          </span>
-        </div>
-        <div class="pl-2 pr-2 text-right text-md font-bold text-gray-600">
-          {{ convertDateFormat(appeal.date) }}
-        </div>
-      </div>
-    </div>
-  </Card>
+  <div class="flex gap-3">
+    <Card
+      :shadowLevel="1"
+      :isInside="true"
+      :padding="'5px'"
+      class="ml-5 w-full"
+      bgColor="#f0f7e7"
+    >
+      <p class="text-sm font-semibold py-1 px-3 text-grey-600">
+        {{
+          showFullText
+            ? appeal.reason
+            : appeal.reason.substring(0, 400) +
+              (appeal.reason.length > 400 ? "..." : "")
+        }}
+        <span
+          v-if="!showFullText && appeal.reason.length > 400"
+          @click="showFullText = true"
+          class="cursor-pointer text-sky-700"
+        >
+          See more
+        </span>
+        <span
+          v-if="showFullText && appeal.reason.length > 400"
+          @click="showFullText = false"
+          class="cursor-pointer text-sky-700"
+        >
+          See less
+        </span>
+      </p>
+    </Card>
+    <div class="w-20"></div>
+  </div>
 </template>
 
 <script setup>
@@ -55,14 +45,6 @@ import { convertDateFormat } from "@/helpers/utilities";
 const { showDetails } = defineProps({
   appeal: Object,
   heading: String,
-  noPadding: {
-    default: false,
-    type: Boolean,
-  },
-  showDetails: {
-    default: false,
-    type: Boolean,
-  },
 });
 const showFullText = ref(false);
 </script>

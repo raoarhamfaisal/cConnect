@@ -24,19 +24,19 @@
           <heading-card
             v-if="average_rating && starPercentages"
             heading="Average Ratings"
-            class="mb-12"
+            class="mb-6"
           />
           <AverageRating
             v-if="average_rating && starPercentages"
             :averageRating="average_rating"
             :starPercentages="starPercentages"
             :length="pagination.total"
-            class="mb-12"
+            class="mb-6"
           />
           <!-- Filters -->
           <div class="border-t-2 border-gray-300">
-            <heading-card class="mt-6" heading="Order Reviews By" />
-            <div class="xs:mb-12 mb-6">
+            <heading-card class="mt-4" heading="Order Reviews By" />
+            <div class="mb-6">
               <div class="flex gap-3">
                 <Button
                   :selected="sortByDate === 'latest'"
@@ -53,8 +53,8 @@
             </div>
           </div>
           <!-- RAting -->
-          <div class="xs:mb-12 mb-6 xs:mt-12 mt-7 border-t-2 border-gray-300">
-            <heading-card heading="Ratings" class="mt-6" />
+          <div class="mb-6 border-t-2 border-gray-300">
+            <heading-card heading="Ratings" class="mt-4" />
             <div class="flex gap-3">
               <div class="flex gap-3">
                 <Button
@@ -77,7 +77,7 @@
               </div>
             </div>
           </div>
-          <div class="xs:mb-12 mb-6 xs:mt-12 mt-7 border-t-2 border-gray-300">
+          <div class="mb-4 mt-6 mt-7 border-t-2 border-gray-300">
             <heading-card heading="Reviews" class="mt-6 mb-12" />
 
             <div

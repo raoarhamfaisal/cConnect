@@ -1,5 +1,5 @@
 <template>
-  <div class="flex gap-4 mb-12 items-center">
+  <div class="flex gap-4 mb-8 items-center">
     <Link :href="linkUrl">
       <Icon class="w-8 h-8" icon="ion:arrow-back" color="#241e6d" />
     </Link>
