@@ -154,7 +154,9 @@ const saveNotes = () => {
     await store.dispatch("ratings/updateNotesAndAppeal", {
       reviewId,
       postData: {
-        appeal_judge_notes: filterBadWords(adminNote.value),
+        appeal_judge_notes: adminNote.value
+          ? filterBadWords(adminNote)
+          : adminNote.value,
         appeal_status: appealFilter.value,
       },
     });
@@ -162,11 +164,14 @@ const saveNotes = () => {
 };
 const handleTabs = async (apiToCall) => {
   appealFilter.value = apiToCall;
+  console.log(appealFilter.value, "hello");
   await store.dispatch("ratings/updateNotesAndAppeal", {
     reviewId,
     postData: {
       appeal_status: appealFilter.value,
-      appeal_judge_notes: filterBadWords(adminNote.value),
+      appeal_judge_notes: adminNote.value
+        ? filterBadWords(adminNote)
+        : adminNote.value,
     },
   });
 };
