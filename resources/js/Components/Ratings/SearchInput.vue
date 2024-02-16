@@ -8,7 +8,7 @@
         width: barWidth ? `${barWidth}%` : '',
       }"
       class="` p-2 border rounded focus:outline-none focus:border-blue-500`"
-      placeholder="Search..."
+      :placeholder="` ${placeholder}`"
     />
     <button
       @click="onClickSearchIcon"
@@ -23,10 +23,21 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits } from "vue";
+import { ref } from "vue";
 import { Icon } from "@iconify/vue";
 
-const { icon = "mdi:magnify" } = defineProps(["icon", "barWidth"]);
+const { icon = "mdi:magnify" } = defineProps({
+  icon: {
+    type: String,
+  },
+  barWidth: {
+    type: [Number, String],
+  },
+  placeholder: {
+    type: [String],
+    default: "Search...",
+  },
+});
 const emit = defineEmits();
 
 const searchInput = ref("");

@@ -131,7 +131,6 @@ const focusTextarea = async () => {
   editResponseText.value = true;
   await nextTick();
   responseTextArea.value.focus();
-  autoResize();
 };
 </script>
 
