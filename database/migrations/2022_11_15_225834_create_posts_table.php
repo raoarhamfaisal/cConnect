@@ -29,8 +29,6 @@ return new class extends Migration
             $table->smallInteger('repost')->default(0);
             $table->smallInteger('shares')->default(0);
 
-            $table->double('longitude');
-            $table->double('latitude');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

@@ -13,26 +13,17 @@ class Review extends Model
     use SoftDeletes;
     
     protected $fillable = [
+        'appeal_id',
         'reviewer_id',
         'contractor_id',
         'rating',
         'rating_text',
         'rating_date',
-        'on_appeal_reason',
-        'on_appeal_reason_date',
-        'off_appeal_reason',
-        'off_appeal_reason_date',
-        'is_under_appeal',
         'hired_by_contractor',
         'paid_on_time',
         'hired_contractor',
         'give_full_payment',
         'how_did_you_meet_this_contractor',
-        'appeal_status',
-        'appeal_judge_notes',
-        'appeal_last_updated_by',
-        'appeal_last_updated_at',
-
     ];
 
     public function reviewer() 
@@ -43,6 +34,11 @@ class Review extends Model
     public function contractor() 
     {
         return $this->belongsTo(Profile::class, 'contractor_id');
+    }
+
+    public function appeal() 
+    {
+        return $this->hasOne(Appeal::class, 'review_id');
     }
 
     public function review_response() 

@@ -236,7 +236,7 @@
         class="flex flex-col translate-y-2 self-start items-center justify-center gap-2"
       >
         <div class="font-bold text-sm">
-          Appeal Date : {{ convertDateFormat(review.on_appeal_reason_date) }}
+          Appeal Date : {{ convertDateFormat(review.appeal.on_appeal_reason_date) }}
         </div>
         <Link
           :href="`/admin/ratings/contractor/${review.contractor.id}/history`"
@@ -268,20 +268,20 @@
   </div>
 
   <!-- turn on appeal -->
-  <div class="mb-4 mt-3" v-if="review.on_appeal_reason">
+  <div class="mb-4 mt-3" v-if="review.appeal.on_appeal_reason">
     <Appeal
       :appeal="{
-        reason: review.on_appeal_reason,
-        date: review.on_appeal_reason_date,
+        reason: review.appeal.on_appeal_reason,
+        date: review.appeal.on_appeal_reason_date,
       }"
       heading="Contractor Appeal"
     />
   </div>
-  <div class="mb-4 mt-3" v-if="review.on_appeal_reason">
+  <div class="mb-4 mt-3" v-if="review.appeal.on_appeal_reason">
     <DecisionNotes
       @changeStatus="changeStatus"
-      :appeal_status="review.appeal_status"
-      :appeal_judge_notes="review.appeal_judge_notes"
+      :appeal_status="review.appeal.appeal_status"
+      :appeal_judge_notes="review.appeal.appeal_judge_notes"
       :reviewId="review.id"
     />
   </div>
