@@ -1,6 +1,6 @@
 <template>
   <div class="font-semibold text-[#3c3d41] ml-3 text-md mb-1 mt-2">
-    Contractor's Response: {{ convertDateFormat(response.response_date) }}
+    Contractor's Response: {{ convertDateFormat(response?.response_date) }}
   </div>
   <div class="flex gap-2">
     <Card
@@ -44,9 +44,6 @@
         class="text-sm w-full py-1 px-3 focus:shadow-none focus:ring-gray-600 focus:rounded font-semibold text-grey-600 border-none resize-none bg-transparent"
         :rows="numberOfRows"
       ></textarea>
-      <div class="text-xs text-red-600" v-if="!response_text">
-        Response Text must not be empty
-      </div>
     </Card>
     <ButtonRatings
       v-if="hasPostPrevillages"
@@ -86,7 +83,7 @@ const hasPostPrevillages = usePage().props.value.auth.user.posts_privileges;
 const editResponseText = ref(false);
 const responseTextArea = ref();
 const isTyping = ref(false);
-const response_text = ref(response.response_text);
+const response_text = ref(response?.response_text);
 
 //Computed
 

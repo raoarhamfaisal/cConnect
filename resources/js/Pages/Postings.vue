@@ -11,7 +11,6 @@ import ButtonRefresh from "@/Components/tCon/tConSub/ButtonRefresh.vue";
 import MainSideMenu from "@/Components/tCon/Menu_MainSideMenu.vue";
 import Menu_Hamburger from "@/Components/tCon/Menu_HamburgerMenu.vue";
 import PostDisplay from "@/Components/tCon/PostDisplay.vue";
-import PostForm from "@/Components/tCon/PostForm.vue";
 import Loader from "@/Components/Ratings/Loader.vue";
 
 import { Head, Link } from "@inertiajs/inertia-vue3";
@@ -47,7 +46,6 @@ export default {
     Menu_Hamburger,
     PostDisplayEnlarged,
     PostDisplay,
-    PostForm,
     Head,
     Link,
     ref,
@@ -434,7 +432,11 @@ export default {
           <div class="px-5 text-gray-300 mb-8 mt-8">LOADING MORE POSTS!</div>
         </AppSpinner> -->
 
-        <div v-show="posts.next_page_url" class="flex mb-8 mt-8" style="height: 250px;justify-content: center; align-items: center;">
+        <div
+          v-show="posts.next_page_url"
+          class="flex mb-8 mt-8"
+          style="height: 250px; justify-content: center; align-items: center"
+        >
           <!-- <Loader
             classes="flex gap-2"
             :loading="loadingPosts"
@@ -471,18 +473,6 @@ export default {
             </PostDisplayEnlarged>
           </Teleport>
         </div>
-
-        <Teleport to="body">
-          <PostForm
-            :isOpen="isFormOpen"
-            :isEdit="isFormEdit"
-            :form="postFormObject"
-            @formsave="saveItem"
-            @formclose="closeModal"
-            @formEditClose="closeModalEditMode"
-          >
-          </PostForm>
-        </Teleport>
       </div>
       <!-- WRAPPER END: For News Feed -->
     </div>
@@ -512,6 +502,3 @@ export default {
   }
 }
 </style>
-
-
-

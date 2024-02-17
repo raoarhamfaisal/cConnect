@@ -37,48 +37,51 @@
           <div class="border-t-2 border-gray-300">
             <heading-card class="mt-4" heading="Order Reviews By" />
             <div class="mb-6">
-              <div class="flex gap-3">
+              <div class="flex gap-3 flex-wrap">
                 <Button
-                  :selected="sortByDate === 'latest'"
-                  @onSelect="(selected) => handleDate(selected, 'latest')"
+                  :selected="sortBy === 'latest'"
+                  @onSelect="
+                    (selected) => handleFilterSelect(selected, 'latest')
+                  "
                   >Latest</Button
                 >
 
                 <Button
-                  :selected="sortByDate === 'oldest'"
-                  @onSelect="(selected) => handleDate(selected, 'oldest')"
+                  :selected="sortBy === 'oldest'"
+                  @onSelect="
+                    (selected) => handleFilterSelect(selected, 'oldest')
+                  "
                   >Oldest</Button
                 >
-              </div>
-            </div>
-          </div>
-          <!-- RAting -->
-          <div class="mb-6 border-t-2 border-gray-300">
-            <heading-card heading="Ratings" class="mt-4" />
-            <div class="flex gap-3">
-              <div class="flex gap-3">
                 <Button
-                  :selected="sortByRating === 'highest'"
-                  @onSelect="(selected) => handleRating(selected, 'highest')"
+                  :selected="sortBy === 'highest'"
+                  @onSelect="
+                    (selected) => handleFilterSelect(selected, 'highest')
+                  "
                   >Highest rated</Button
                 >
 
                 <Button
-                  :selected="sortByRating === 'middle'"
-                  @onSelect="(selected) => handleRating(selected, 'middle')"
+                  :selected="sortBy === 'middle'"
+                  @onSelect="
+                    (selected) => handleFilterSelect(selected, 'middle')
+                  "
                   >Middle Rated</Button
                 >
 
                 <Button
-                  :selected="sortByRating === 'lowest'"
-                  @onSelect="(selected) => handleRating(selected, 'lowest')"
+                  :selected="sortBy === 'lowest'"
+                  @onSelect="
+                    (selected) => handleFilterSelect(selected, 'lowest')
+                  "
                   >Low Rated</Button
                 >
               </div>
             </div>
           </div>
+
           <div class="mb-4 mt-6 mt-7 border-t-2 border-gray-300">
-            <heading-card heading="Reviews" class="mt-6 mb-12" />
+            <heading-card heading="Reviews" class="mt-4 mb-6" />
 
             <div
               v-if="contractorReviews.length > 0"
@@ -148,7 +151,6 @@ import { ref, onMounted, watch, computed } from "vue";
 import { somethingWentWrong } from "@/helpers/utilities";
 import { useStore } from "vuex";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
-import { Icon } from "@iconify/vue";
 
 // State
 const { profile, contractorDetails } = defineProps({
@@ -170,8 +172,7 @@ const loading = ref(false);
 const starPercentages = ref([]);
 const average_rating = ref(null);
 const contractor = ref({});
-const sortByDate = ref("latest");
-const sortByRating = ref("");
+const sortBy = ref("latest");
 const pagination = ref(0);
 const perPage = ref(15);
 const loadingNextPage = ref(false);
@@ -267,19 +268,9 @@ const loadMoreReviews = async () => {
   }
 };
 
-const handleDate = (selected, sortByString) => {
+const handleFilterSelect = (selected, sortByRate) => {
   if (selected) {
-    sortByDate.value = sortByString;
-  } else if (!selected) {
-    sortByDate.value = "";
-  }
-  fetchReveiwsWithLoading();
-};
-const handleRating = (selected, sortByRate) => {
-  if (selected) {
-    sortByRating.value = sortByRate;
-  } else if (!selected) {
-    sortByRating.value = "";
+    sortBy.value = sortByRate;
   }
   fetchReveiwsWithLoading();
 };
@@ -294,9 +285,16 @@ const fetchReviews = async (
   page = 1,
   append = true
 ) => {
+  let sortByDate = "";
+  let sortByRating = "";
+  if (sortBy.value === "latest" || sortBy.value === "oldest") {
+    sortByDate = sortBy.value;
+  } else {
+    sortByRating = sortBy.value;
+  }
   try {
     const response = await axios.get(
-      `/api/reviews/${contractorDetails.id}?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate.value}&sort_by_rating=${sortByRating.value}`,
+      `/api/reviews/${contractorDetails.id}?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate}&sort_by_rating=${sortByRating}`,
       getAxiosConfig()
     );
     if (append) {

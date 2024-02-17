@@ -10,6 +10,7 @@
         :review="review"
         :profileId="profileId"
         :contractorId="contractorId"
+        :showNotes="showNotes"
         :showContactDetails="showContactDetails"
       />
     </section>
@@ -20,6 +21,10 @@
 import Card from "@/Components/Card.vue";
 import ReviewAdmin from "@/Pages/Admin/Ratings/partials/SingleContractor/ReviewAdmin.vue";
 defineProps({
+  showNotes: {
+    type: Boolean,
+    default: false,
+  },
   review: {
     type: Object,
   },

@@ -3,9 +3,9 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputError from "@/Components/InputError.vue";
-import { useForm } from "@inertiajs/inertia-vue3";
 import SelectProfile from "@/Components/SelectProfile.vue";
 import { ref } from "vue";
+import { useForm } from "@inertiajs/inertia-vue3";
 
 const props = defineProps({
   profile: Object,

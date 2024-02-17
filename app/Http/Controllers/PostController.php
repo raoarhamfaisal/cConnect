@@ -95,7 +95,30 @@ class PostController extends Controller
             'postSearchFilters' => Request::only(['postSearch']),
         ]);
     }
-
+    public function selectedTrades($user_id)
+    {
+        // Get current user
+    
+        if ($user_id) {
+            // Get profile of the current user
+            $profile = Profile::where('user_id', $user_id)->first();
+    
+            // Get trades of the profile
+            if ($profile) {
+                $trades = $profile->trades;
+            } else {
+                $trades = [];
+            }
+    
+            return response()->json([
+                'trades' => $trades,
+            ]);
+        } else {
+            return response()->json([
+                'error' => 'User not authenticated',
+            ], 401);
+        }
+    }
 
     // A helper function to convert the trades to old structure coming from proffile table in trade1, trade2 format
     private function convertTradesToOldStructure($trades) {

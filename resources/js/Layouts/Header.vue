@@ -81,7 +81,21 @@ export default {
       playvideo: false,
       isFormOpen: false,
       isFormEdit: false,
-      postFormObject: defaultPostFormObject,
+      id: this.profile.id,
+      postFormObject: {
+        user_id: 0,
+        title: null,
+        image: null,
+        body1: null,
+        body2: null,
+        body1Bold: false,
+        body1ColorId: 0,
+        likes: 0,
+        repost: 0,
+        region_id: this.profile.region_id.toString(),
+        trades: this.profile.trades,
+        shares: 0,
+      },
       userID: this.profile.user_id,
 
       form: defaultPostFormObject,
@@ -338,7 +352,9 @@ export default {
 
             <Teleport to="body">
               <PostForm
+                v-if="isFormOpen"
                 :isOpen="isFormOpen"
+                :id="profile.id"
                 :isEdit="isFormEdit"
                 :form="postFormObject"
                 @formsave="saveItem"
