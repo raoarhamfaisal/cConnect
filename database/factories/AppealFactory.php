@@ -30,7 +30,7 @@ class AppealFactory extends Factory
         }
 
         return [
-            'review_id' => $this->faker->numberBetween(1, 1000),
+            'review_id' => $this->faker->unique()->numberBetween(1, 1000),
             'on_appeal_reason' => $this->faker->text(),
             'on_appeal_reason_date' => $this->faker->dateTime($max = 'now'),
             'appeal_status' => $appeal_status,
