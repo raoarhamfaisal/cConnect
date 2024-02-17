@@ -85,9 +85,11 @@ export default {
     return {
       // the image array parameter
       myFiles: [],
+      options: options,
+      isUploading: false,
       referenceList: ref([]),
       selectedReferal: ref(""),
-      selectedItems: ref(null),
+      selectedItems: null,
       items: [
         {
           id: 1,
@@ -119,7 +121,6 @@ export default {
   },
   mounted() {
     this.$store.dispatch("ratings/getRegions");
-    console.log(this.props, "rops");
     this.$store.dispatch("ratings/getTrades", this.id);
   },
   computed: {
@@ -132,15 +133,45 @@ export default {
         const selectedObj = this.regions.find(
           (item) => item.id === +this.form.region_id
         );
-        console.log(selectedObj, "selectedObj", this.regions);
         const selectedName = selectedObj ? selectedObj.name : undefined;
 
-        console.log(selectedName);
         this.selectedReferal = selectedName;
       }
     },
+    trades(newVal) {
+      this.selectedItems = this.options.filter((option) => {
+        console.log(
+          newVal.some((trade) => trade.name === option.id),
+          "some"
+        );
+        return newVal.some((trade) => trade.name === option.id);
+      });
+      console.log(this.selectedItems, "selectedItems");
+    },
+    selectedItems(newVal) {
+      this.form.trades = this.selectedItems
+        .map((item) => {
+          const match = item.id.match(/\d+$/);
+          return match ? parseInt(match[0], 10) : null;
+        })
+        .filter(Number.isInteger);
+    },
   },
   methods: {
+    handleFilePondProcessStart(file) {
+      console.log("stared");
+      this.isUploading = true;
+    },
+    handleFilePondProcessEnd(file, error) {
+      console.log("ended1");
+
+      // this.isUploading = false;
+    },
+    handleFilePondError(error) {
+      console.log("ended2");
+
+      this.isUploading = false;
+    },
     changeReferal(value) {
       this.selectedReferal = value;
       this.regions.forEach((item) => {
@@ -180,6 +211,8 @@ export default {
       arr.push(image);
       this.form.image = arr.join("|");
       console.log("addForm: ", this.form.image);
+      console.log("ended3");
+      this.isUploading = false;
     },
 
     removeFormImage(image) {
@@ -355,13 +388,18 @@ Array.prototype.remove = function () {
                       },
                       withCredentials: false,
                       onload: handleFilePondLoad,
-                      onerror: () => {},
+                      onerror: handleFilePondError,
                     },
                     remove: handleFilePondRemove,
                     revert: handleFilePondRevert,
                   }"
                   v-bind:files="myFiles"
                   v-on:init="handleFilePondInit"
+                  v-on:addfilestart="handleFilePondProcessStart"
+                  v-on:addfile="handleFilePondProcessEnd"
+                  v-on:processfileabort="handleFilePondError"
+                  v-on:removefile="handleFilePondProcessEnd"
+                  v-on:processfilerevert="handleFilePondProcessEnd"
                 >
                 </file-pond>
                 <!-- <input type="text"
@@ -404,11 +442,17 @@ Array.prototype.remove = function () {
                   :message="$page.props.errors.region_id"
                 />
               </div>
-              <div class="mb-4 sm:mb-0">
+              <div class="mb-4 sm:mb-0 mt-4">
                 <InputLabel class="font-bold mb-1" value="Trades" />
                 <multi-select
-                  v-model="selectedItems"
-                  :items="items"
+                  :modelValue="selectedItems"
+                  @input="
+                    (value) => {
+                      console.log('here', value);
+                      selectedItems = value;
+                    }
+                  "
+                  :items="options"
                   :sorting-property="'name'"
                 />
                 <InputError class="mt-2" :message="$page.props.errors.trades" />
@@ -424,6 +468,7 @@ Array.prototype.remove = function () {
                 type="button"
                 v-show="!isEdit"
                 @click="$emit('formsave', form)"
+                :disabled="isUploading"
                 class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-green-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5"
               >
                 Save Post
@@ -434,6 +479,7 @@ Array.prototype.remove = function () {
             <span class="flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto">
               <button
                 type="button"
+                :disabled="isUploading"
                 v-show="isEdit"
                 @click="$emit('formsave', form)"
                 class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-green-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-green-500 focus:outline-none f ocus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5"
@@ -449,6 +495,7 @@ Array.prototype.remove = function () {
               <button
                 type="button"
                 v-if="!isEdit"
+                :disabled="isUploading"
                 @click="$emit('formclose')"
                 class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5"
               >

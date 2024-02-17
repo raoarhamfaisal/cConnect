@@ -93,7 +93,7 @@ export default {
         likes: 0,
         repost: 0,
         region_id: this.profile.region_id.toString(),
-        trades: this.profile.trades,
+        trades: [],
         shares: 0,
       },
       userID: this.profile.user_id,
@@ -111,7 +111,8 @@ export default {
     saveItem(formData) {
       // Same method for update & create
       // if we have an item id then update
-
+      formData.region_id = +formData.region_id;
+      console.log(formData, "formData");
       let url = "/post";
       if (formData.id) {
         url = "/post/" + formData.id;
