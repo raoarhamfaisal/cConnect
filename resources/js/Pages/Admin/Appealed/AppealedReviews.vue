@@ -359,6 +359,7 @@ const fetchAppealedReviews = async (append = true) => {
 const handleTabs = async (apiToCall) => {
   appealFilter.value = apiToCall;
   appealedReviews.value = [];
+  currentPage.value = 1;
   await fetchAppealedReviews(false);
 };
 

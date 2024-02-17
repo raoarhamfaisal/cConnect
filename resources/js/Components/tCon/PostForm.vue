@@ -90,6 +90,32 @@ export default {
       referenceList: ref([]),
       selectedReferal: ref(""),
       selectedItems: null,
+      tradesPost: {
+        trade1: false,
+        trade2: false,
+        trade3: false,
+        trade4: false,
+        trade5: false,
+        trade6: false,
+        trade7: false,
+        trade8: false,
+        trade9: false,
+        trade10: false,
+        trade11: false,
+        trade12: false,
+        trade13: false,
+        trade14: false,
+        trade15: false,
+        trade16: false,
+        trade17: false,
+        trade18: false,
+        trade19: false,
+        trade20: false,
+        trade21: false,
+        trade22: false,
+        trade23: false,
+        trade24: false,
+      },
       items: [
         {
           id: 1,
@@ -138,15 +164,31 @@ export default {
         this.selectedReferal = selectedName;
       }
     },
+    // trades(newVal) {
+    //   this.selectedItems = this.options.filter((option) => {
+    //     return newVal.some((trade) => trade.name === option.id);
+    //   });
+    // },
     trades(newVal) {
-      this.selectedItems = this.options.filter((option) => {
-        console.log(
-          newVal.some((trade) => trade.name === option.id),
-          "some"
-        );
-        return newVal.some((trade) => trade.name === option.id);
+      // Resetting tradesPost object to all false
+      for (let key in this.tradesPost) {
+        this.tradesPost[key] = false;
+      }
+
+      // Iterating over the trades array and setting the corresponding key in tradesPost to true
+      newVal.forEach((trade) => {
+        if (this.tradesPost.hasOwnProperty(trade.name)) {
+          this.tradesPost[trade.name] = true;
+        }
       });
-      console.log(this.selectedItems, "selectedItems");
+    },
+    tradesPost: {
+      handler(newVal) {
+        this.form.trades = Object.entries(newVal)
+          .filter(([key, value]) => value)
+          .map(([key]) => parseInt(key.replace(/^trade/, ""), 10));
+      },
+      deep: true,
     },
     selectedItems(newVal) {
       this.form.trades = this.selectedItems
@@ -158,6 +200,9 @@ export default {
     },
   },
   methods: {
+    toggleSwitch(field) {
+      this.tradesPost[field] = !this.tradesPost[field];
+    },
     handleFilePondProcessStart(file) {
       console.log("stared");
       this.isUploading = true;
@@ -292,7 +337,7 @@ Array.prototype.remove = function () {
             </span>​ -->
 
       <div
-        class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all w-full mx-6 sm:mx-0 sm:my-8 sm:align-middle sm:max-w-lg sm:w-full md:max-w-2xl"
+        class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all w-full mx-2 sm:my-8 sm:align-middle sm:w-full md:max-w-2xl"
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-headline"
@@ -443,18 +488,35 @@ Array.prototype.remove = function () {
                 />
               </div>
               <div class="mb-4 sm:mb-0 mt-4">
-                <InputLabel class="font-bold mb-1" value="Trades" />
-                <multi-select
-                  :modelValue="selectedItems"
-                  @input="
-                    (value) => {
-                      console.log('here', value);
-                      selectedItems = value;
-                    }
-                  "
-                  :items="options"
-                  :sorting-property="'name'"
-                />
+                <InputLabel class="font-bold mb-3" value="Trades" />
+                <div class="grid grid-cols-2 gap-x-3 gap-y-3">
+                  <div
+                    v-for="(option, index) in options"
+                    :key="index"
+                    class="flex items-center justify-between sm:w-72"
+                  >
+                    <label :for="option.id" class="mr-2 text-xs font-bold">{{
+                      option.name
+                    }}</label>
+                    <div class="switch-post" @click="toggleSwitch(option.id)">
+                      <div
+                        :class="[
+                          tradesPost[option.id]
+                            ? 'switch-bg-on-post'
+                            : 'switch-bg-off-post',
+                        ]"
+                      >
+                        <div
+                          :class="[
+                            tradesPost[option.id]
+                              ? 'switch-knob-on-post'
+                              : 'switch-knob-off-post',
+                          ]"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <InputError class="mt-2" :message="$page.props.errors.trades" />
               </div>
             </div>
@@ -522,3 +584,42 @@ Array.prototype.remove = function () {
     </div>
   </div>
 </template>
+<style scoped>
+.switch-post {
+  cursor: pointer;
+  width: 30px;
+  height: 15px;
+  position: relative;
+}
+.switch-bg-on-post,
+.switch-bg-off-post {
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  transition: background-color 0.2s;
+}
+.switch-bg-on-post {
+  background-color: rgba(36, 30, 109, 1);
+  width: 30px;
+}
+.switch-bg-off-post {
+  background-color: #ccc;
+  width: 29px;
+}
+.switch-knob-on-post,
+.switch-knob-off-post {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: #fff;
+  position: absolute;
+  top: 1px;
+  transition: left 0.2s;
+}
+.switch-knob-on-post {
+  left: 16px;
+}
+.switch-knob-off-post {
+  left: 1px;
+}
+</style>
