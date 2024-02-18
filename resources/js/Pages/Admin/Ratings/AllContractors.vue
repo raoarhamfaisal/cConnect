@@ -141,7 +141,7 @@ const { region_id } = defineProps({
 const isAdminUrl = usePage().props.value.auth.user.appeals_privileges === 1;
 const store = useStore();
 const currentPage = ref(1);
-const perPage = ref(5);
+const perPage = ref(10);
 const disabled = ref(false);
 const searchTerm = ref("");
 const isReviewers = ref(false);

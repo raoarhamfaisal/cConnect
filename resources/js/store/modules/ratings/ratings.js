@@ -179,6 +179,8 @@ export default {
       commit("setLoading", true);
       commit("setDisabled", true);
 
+      console.log("payload.responseData", payload.responseData);
+
       try {
         const response = await axios.post(
           `/api/review-responses`,

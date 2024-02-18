@@ -222,7 +222,10 @@ const handleSubmit = async () => {
       response_text: filterBadWords(response_text),
       review_id: review.id,
     };
-    await store.dispatch("ratings/createResponse", responseData);
+
+    await store.dispatch("ratings/createResponse", {responseData});
+    response_text.value = ""
+    handleResponse()
   }
 };
 const handleAppealSubmit = async () => {

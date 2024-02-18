@@ -220,24 +220,28 @@ watch(updatedReview, (newVal) => {
       // Update the existing review with the new data
       Object.assign(contractorReviews.value[reviewIndex], newVal);
     }
+    fetchReveiwsWithLoading(true);
+
   }
 });
 watch(updatedResponse, (newVal) => {
   if (newVal && newVal.id) {
-    console.log(newVal, "newVal", contractorReviews);
     const reviewToUpdate = contractorReviews.value.find(
       (review) => review.id === newVal.review_id
     );
-
     if (reviewToUpdate) {
       reviewToUpdate.review_response = newVal;
       const indexToUpdate = contractorReviews.value.findIndex(
-        (review) => review.response_id === newVal.id
+        (review) => review.id === newVal.review_id
       );
 
       if (indexToUpdate !== -1) {
-        // Replace the old review with the updated one
-        contractorReviews.value.splice(indexToUpdate, 1, reviewToUpdate);
+        contractorReviews.value = contractorReviews.value.map((review, index) => {
+          if (index === indexToUpdate) {
+            return reviewToUpdate; // Replace the object at the specified index
+          }
+          return review; // Keep other objects unchanged
+        });
       }
     }
   }
@@ -251,12 +255,14 @@ watch(reviewId, (newVal) => {
     if (index !== -1) {
       contractorReviews.value.splice(index, 1);
     }
+    fetchReveiwsWithLoading(true);
+
   }
 });
 watch(responseId, (newVal) => {
   if (newVal) {
     const index = contractorReviews.value.findIndex(
-      (review) => review.response_id === newVal
+      (review) => review.review_response.id === newVal
     );
 
     if (index !== -1) {
@@ -282,16 +288,17 @@ const handleFilterSelect = (selected, sortByRate) => {
   }
   fetchReveiwsWithLoading();
 };
-const fetchReveiwsWithLoading = async () => {
+const fetchReveiwsWithLoading = async (noReviewsChanges = false) => {
   loading.value = true;
-  await fetchReviews(perPage.value, currentPage.value, false);
+  await fetchReviews(perPage.value, currentPage.value, false,noReviewsChanges);
   loading.value = false;
 };
 // Fetch REviews
 const fetchReviews = async (
   per_page = perPage.value,
   page = 1,
-  append = true
+  append = true,
+  noReviewsChanges= false,
 ) => {
   let sortByDate = "";
   let sortByRating = "";
@@ -311,7 +318,9 @@ const fetchReviews = async (
         ...response.data.reviews,
       ];
     } else {
-      contractorReviews.value = [...response.data.reviews];
+      if(!noReviewsChanges){
+
+      contractorReviews.value = [...response.data.reviews];}
     }
     pagination.value = response.data.pagination;
     average_rating.value = response.data.average_rating;

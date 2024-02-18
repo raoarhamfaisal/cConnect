@@ -297,7 +297,7 @@ watch(updatedResponse, (newVal) => {
     }
   }
 });
-watch(updatedReview, (newVal) => {
+watch(updatedReview, async (newVal) => {
   if (newVal && newVal.id) {
     const reviewIndex = contractorReviews.value.findIndex(
       (review) => review.id === newVal.id
@@ -307,7 +307,9 @@ watch(updatedReview, (newVal) => {
       // Update the existing review with the new data
       Object.assign(contractorReviews.value[reviewIndex], newVal);
     }
-    console.log(newVal, newVal.id, reviewIndex, "updated");
+    loading.value = true;
+    await fetchReviews(perPage.value, currentPage.value, false, true);
+    loading.value = false;
   }
 });
 // Methods
@@ -342,7 +344,8 @@ const fetchContractorReviews = async (append = true) => {
 const fetchReviews = async (
   per_page = perPage.value,
   page = 1,
-  append = true
+  append = true,
+  noReviewsChanges = false
 ) => {
   let sortByDate = "";
   let sortByRating = "";
@@ -363,7 +366,9 @@ const fetchReviews = async (
         ...response.data.reviews,
       ];
     } else {
-      contractorReviews.value = [...response.data.reviews];
+      if (!noReviewsChanges) {
+        contractorReviews.value = [...response.data.reviews];
+      }
     }
     pagination.value = response.data.pagination;
     average_rating.value = response.data.average_rating;

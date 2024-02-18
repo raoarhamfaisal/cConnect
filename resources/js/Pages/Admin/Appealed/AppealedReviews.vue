@@ -310,7 +310,7 @@ watch(updatedResponse, (newVal) => {
     }
   }
 });
-watch(updatedReview, (newVal) => {
+watch(updatedReview, async (newVal) => {
   if (newVal && newVal.id) {
     const reviewIndex = appealedReviews.value.findIndex(
       (review) => review.id === newVal.id
@@ -320,7 +320,6 @@ watch(updatedReview, (newVal) => {
       // Update the existing review with the new data
       Object.assign(appealedReviews.value[reviewIndex], newVal);
     }
-    console.log(newVal, newVal.id, reviewIndex, "updated");
   }
 });
 // Methods
