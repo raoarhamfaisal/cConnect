@@ -250,6 +250,8 @@
   </div>
   <!-- Response -->
   <ResponseAdmin
+    :reviewId="review.id"
+    :key="review.id"
     :response="review.review_response"
     :contractorId="contractorId"
     :profileId="profileId"

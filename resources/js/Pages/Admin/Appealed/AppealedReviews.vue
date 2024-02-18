@@ -285,8 +285,31 @@ onBeforeMount(() => {
 
 const updatedReview = computed(() => store.state.ratings.updatedReview);
 const screenWidth = computed(() => store.getters.screenWidth);
+const updatedResponse = computed(() => store.state.ratings.updatedResponse);
 
 //Watch
+watch(updatedResponse, (newVal) => {
+  if (newVal && newVal.id) {
+    const reviewToUpdate = appealedReviews.value.find(
+      (review) => review.id === newVal.review_id
+    );
+    if (reviewToUpdate) {
+      reviewToUpdate.review_response = newVal;
+      const indexToUpdate = appealedReviews.value.findIndex(
+        (review) => review.id === newVal.review_id
+      );
+
+      if (indexToUpdate !== -1) {
+        appealedReviews.value = appealedReviews.value.map((review, index) => {
+          if (index === indexToUpdate) {
+            return reviewToUpdate; // Replace the object at the specified index
+          }
+          return review; // Keep other objects unchanged
+        });
+      }
+    }
+  }
+});
 watch(updatedReview, (newVal) => {
   if (newVal && newVal.id) {
     const reviewIndex = appealedReviews.value.findIndex(

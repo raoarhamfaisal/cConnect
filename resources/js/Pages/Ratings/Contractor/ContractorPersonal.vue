@@ -231,6 +231,14 @@ watch(updatedResponse, (newVal) => {
 
     if (reviewToUpdate) {
       reviewToUpdate.review_response = newVal;
+      const indexToUpdate = contractorReviews.value.findIndex(
+        (review) => review.response_id === newVal.id
+      );
+
+      if (indexToUpdate !== -1) {
+        // Replace the old review with the updated one
+        contractorReviews.value.splice(indexToUpdate, 1, reviewToUpdate);
+      }
     }
   }
 });

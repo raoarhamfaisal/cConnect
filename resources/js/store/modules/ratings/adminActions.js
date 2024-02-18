@@ -3,7 +3,7 @@ import { somethingWentWrong, changesSaved } from "@/helpers/utilities";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
-export const getAllContractors = async ({ commit }, payload) => {
+export const getAllContractors = async ({ commit, state }, payload) => {
   commit("setLoading", true);
 
   try {
@@ -12,7 +12,14 @@ export const getAllContractors = async ({ commit }, payload) => {
       getAxiosConfig()
     );
     if (response.data) {
-      commit("setAllContractors", response.data.profiles);
+      if (payload.append) {
+        commit("setAllContractors", [
+          ...state.allContractors, // Accessing allContractors from the state
+          ...response.data.profiles,
+        ]);
+      } else {
+        commit("setAllContractors", [...response.data.profiles]);
+      }
       commit("setPagination", response.data.pagination);
     }
   } catch (err) {

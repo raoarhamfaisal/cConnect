@@ -237,13 +237,25 @@ const updatedReview = computed(() => store.state.ratings.updatedReview);
 //Watch
 watch(updatedReview, (newVal) => {
   if (newVal && newVal.id) {
-    const reviewIndex = contractorReviews.value.findIndex(
-      (review) => review.id === newVal.id
+    const reviewToUpdate = contractorReviews.value.find(
+      (review) => review.id === newVal.review_id
     );
+    if (reviewToUpdate) {
+      reviewToUpdate.review_response = newVal;
+      const indexToUpdate = contractorReviews.value.findIndex(
+        (review) => review.id === newVal.review_id
+      );
 
-    if (reviewIndex !== -1) {
-      // Update the existing review with the new data
-      Object.assign(contractorReviews.value[reviewIndex], newVal);
+      if (indexToUpdate !== -1) {
+        contractorReviews.value = contractorReviews.value.map(
+          (review, index) => {
+            if (index === indexToUpdate) {
+              return reviewToUpdate; // Replace the object at the specified index
+            }
+            return review; // Keep other objects unchanged
+          }
+        );
+      }
     }
   }
 });
@@ -254,6 +266,14 @@ watch(updatedResponse, (newVal) => {
     );
     if (reviewToUpdate) {
       reviewToUpdate.review_response = newVal;
+      const indexToUpdate = contractorReviews.value.findIndex(
+        (review) => review.response_id === newVal.id
+      );
+
+      if (indexToUpdate !== -1) {
+        // Replace the old review with the updated one
+        contractorReviews.value.splice(indexToUpdate, 1, reviewToUpdate);
+      }
     }
   }
 });

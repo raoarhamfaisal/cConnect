@@ -82,6 +82,7 @@
           <div class="flex gap-8 flex-col">
             <ReviewResponseAdmin
               :review="review"
+              :key="review.review_response"
               :contractorId="review.contractor_id"
               :profileId="profile.id"
             />
@@ -202,8 +203,33 @@ onMounted(async () => {
 
 const screenWidth = computed(() => store.getters.screenWidth);
 const updatedReview = computed(() => store.state.ratings.updatedReview);
+const updatedResponse = computed(() => store.state.ratings.updatedResponse);
 
 //Watch
+watch(updatedResponse, (newVal) => {
+  if (newVal && newVal.id) {
+    const reviewToUpdate = contractorReviews.value.find(
+      (review) => review.id === newVal.review_id
+    );
+    if (reviewToUpdate) {
+      reviewToUpdate.review_response = newVal;
+      const indexToUpdate = contractorReviews.value.findIndex(
+        (review) => review.id === newVal.review_id
+      );
+
+      if (indexToUpdate !== -1) {
+        contractorReviews.value = contractorReviews.value.map(
+          (review, index) => {
+            if (index === indexToUpdate) {
+              return reviewToUpdate; // Replace the object at the specified index
+            }
+            return review; // Keep other objects unchanged
+          }
+        );
+      }
+    }
+  }
+});
 watch(updatedReview, (newVal) => {
   if (newVal && newVal.id) {
     const reviewIndex = contractorReviews.value.findIndex(
