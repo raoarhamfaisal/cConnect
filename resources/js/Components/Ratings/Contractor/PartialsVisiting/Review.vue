@@ -307,7 +307,7 @@ import { convertDateFormat, filterBadWords } from "@/helpers/utilities";
 import { Icon } from "@iconify/vue";
 import { useStore } from "vuex";
 
-import { ref, onMounted, watch, computed, onUnmounted } from "vue";
+import { ref, watch, computed } from "vue";
 const { review } = defineProps({
   review: {
     type: Object,
@@ -402,7 +402,7 @@ const handleAppealSubmit = async () => {
       reviewId: review.id,
     };
     await store.dispatch("ratings/sendAppeal", appealData);
-    return confirmDialogRef.value.closeDialog();
+    confirmDialogRef.value.closeDialog();
   }
 };
 const handleAppeal = () => {

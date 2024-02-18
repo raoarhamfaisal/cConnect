@@ -247,12 +247,14 @@ watch(updatedResponse, (newVal) => {
       );
 
       if (indexToUpdate !== -1) {
-        contractorReviews.value = contractorReviews.value.map((review, index) => {
-          if (index === indexToUpdate) {
-            return reviewToUpdate; // Replace the object at the specified index
+        contractorReviews.value = contractorReviews.value.map(
+          (review, index) => {
+            if (index === indexToUpdate) {
+              return reviewToUpdate; // Replace the object at the specified index
+            }
+            return review; // Keep other objects unchanged
           }
-          return review; // Keep other objects unchanged
-        });
+        );
       }
     }
   }
@@ -268,7 +270,7 @@ watch(updatedReview, (newVal) => {
       Object.assign(contractorReviews.value[reviewIndex], newVal);
     }
     console.log(newVal, newVal.id, reviewIndex, "updated");
-    fetchReveiwsWithLoading(true);
+    fetchReviews(perPage.value, currentPage.value, false, true);
   }
 });
 watch(reviewId, (newVal) => {
@@ -280,8 +282,7 @@ watch(reviewId, (newVal) => {
     if (index !== -1) {
       contractorReviews.value.splice(index, 1);
     }
-    fetchReveiwsWithLoading(true);
-
+    fetchReviews(perPage.value, currentPage.value, false, true);
   }
 });
 watch(responseId, (newVal) => {
@@ -312,7 +313,7 @@ const handleFilterSelect = (selected, sortByRate) => {
 };
 const fetchReveiwsWithLoading = async (noReviewsChanges = false) => {
   loading.value = true;
-  await fetchReviews(perPage.value, currentPage.value, false,noReviewsChanges);
+  await fetchReviews(perPage.value, currentPage.value, false, noReviewsChanges);
   loading.value = false;
 };
 
@@ -321,7 +322,7 @@ const fetchReviews = async (
   per_page = perPage.value,
   page = 1,
   append = true,
-  noReviewsChanges= false,
+  noReviewsChanges = false
 ) => {
   let sortByDate = "";
   let sortByRating = "";
@@ -341,8 +342,7 @@ const fetchReviews = async (
         ...response.data.reviews,
       ];
     } else {
-      if(!noReviewsChanges){
-
+      if (!noReviewsChanges) {
         contractorReviews.value = [...response.data.reviews];
       }
     }

@@ -220,8 +220,7 @@ watch(updatedReview, (newVal) => {
       // Update the existing review with the new data
       Object.assign(contractorReviews.value[reviewIndex], newVal);
     }
-    fetchReveiwsWithLoading(true);
-
+    fetchReviews(perPage.value, currentPage.value, false, true);
   }
 });
 watch(updatedResponse, (newVal) => {
@@ -236,12 +235,14 @@ watch(updatedResponse, (newVal) => {
       );
 
       if (indexToUpdate !== -1) {
-        contractorReviews.value = contractorReviews.value.map((review, index) => {
-          if (index === indexToUpdate) {
-            return reviewToUpdate; // Replace the object at the specified index
+        contractorReviews.value = contractorReviews.value.map(
+          (review, index) => {
+            if (index === indexToUpdate) {
+              return reviewToUpdate; // Replace the object at the specified index
+            }
+            return review; // Keep other objects unchanged
           }
-          return review; // Keep other objects unchanged
-        });
+        );
       }
     }
   }
@@ -255,8 +256,7 @@ watch(reviewId, (newVal) => {
     if (index !== -1) {
       contractorReviews.value.splice(index, 1);
     }
-    fetchReveiwsWithLoading(true);
-
+    fetchReviews(perPage.value, currentPage.value, false, true);
   }
 });
 watch(responseId, (newVal) => {
@@ -290,7 +290,7 @@ const handleFilterSelect = (selected, sortByRate) => {
 };
 const fetchReveiwsWithLoading = async (noReviewsChanges = false) => {
   loading.value = true;
-  await fetchReviews(perPage.value, currentPage.value, false,noReviewsChanges);
+  await fetchReviews(perPage.value, currentPage.value, false, noReviewsChanges);
   loading.value = false;
 };
 // Fetch REviews
@@ -298,7 +298,7 @@ const fetchReviews = async (
   per_page = perPage.value,
   page = 1,
   append = true,
-  noReviewsChanges= false,
+  noReviewsChanges = false
 ) => {
   let sortByDate = "";
   let sortByRating = "";
@@ -318,9 +318,9 @@ const fetchReviews = async (
         ...response.data.reviews,
       ];
     } else {
-      if(!noReviewsChanges){
-
-      contractorReviews.value = [...response.data.reviews];}
+      if (!noReviewsChanges) {
+        contractorReviews.value = [...response.data.reviews];
+      }
     }
     pagination.value = response.data.pagination;
     average_rating.value = response.data.average_rating;

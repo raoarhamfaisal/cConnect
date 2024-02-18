@@ -286,7 +286,7 @@
   <EditRatingModal
     ref="editRef"
     :review="review"
-    :profileId="profileId"
+    :profileId="review.reviewer_id"
     :questionsSwitch="questionsSwitch"
     :contractorId="contractorId"
   />
