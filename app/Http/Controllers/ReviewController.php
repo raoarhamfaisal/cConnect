@@ -107,8 +107,22 @@ class ReviewController extends Controller
                 'company_logo'
             ])->with('trades:id');
         },'reviewer.trades', 'review_response', 
-        'appeal'
-        
+        'appeal' => function($query) {
+                $query->select([
+                    'id as appeal_id',
+                    'review_id',
+                    'on_appeal_reason',
+                    'on_appeal_reason_date',
+                    'off_appeal_reason',
+                    'off_appeal_reason_date',
+                    'is_under_appeal',
+                    'is_appeal_already_accepted_or_rejected',
+                    'appeal_status',
+                    'appeal_judge_notes',
+                    'appeal_last_updated_by',
+                    'appeal_last_updated_at',
+                ]);
+            }
         ])
         ->where('contractor_id', $contractor_id)->where('is_review_active', 1);
     
@@ -257,16 +271,10 @@ class ReviewController extends Controller
         // Check if the user is the original reviewer or has admin privileges
         if ($user->id === $data['reviewer_id'] || $user->posts_privileges) {
 
+            // Delete the appeal associated with review as well
             $appeal = Appeal::where('review_id', $review->id)->first();
-
             if($appeal) {
-                $appeal->is_appeal_already_accepted_or_rejected = false;
-                $appeal->is_under_appeal = false;
-                $appeal->on_appeal_reason_date = null;    
-                $appeal->on_appeal_reason = '';    
-                $appeal->off_appeal_reason_date = null;    
-                $appeal->off_appeal_reason = '';
-                $appeal->save();
+                $appeal->delete();
             }
         
             $review->update($data);
@@ -292,15 +300,11 @@ class ReviewController extends Controller
         $user = Auth::user();
         // Check if the user is the original reviewer or has admin privileges
         if ($user->id === $review->reviewer_id || $user->appeals_privileges || $user->posts_privileges) {
+
+            // Delete the appeal associated with review as well => it's a sof delete. data will still be in database
             $appeal = Appeal::where('review_id', $review->id)->first();
             if($appeal) {
-                $appeal->is_appeal_already_accepted_or_rejected = false;
-                $appeal->is_under_appeal = false;
-                $appeal->on_appeal_reason_date = null;    
-                $appeal->on_appeal_reason = '';    
-                $appeal->off_appeal_reason_date = null;    
-                $appeal->off_appeal_reason = '';
-                $appeal->save();
+                $appeal->delete();
             }
 
             $review->is_review_active = false;
@@ -671,7 +675,24 @@ class ReviewController extends Controller
                 'company_logo'
             ])->with('trades:id');
         },  'ratingReasons',  // Attach rating reasons related to the review
-        'review_response.responseReasons','review_response', 'appeal'])
+        'review_response.responseReasons','review_response', 
+        'appeal' => function($query) {
+                $query->select([
+                    'id as appeal_id',
+                    'review_id',
+                    'on_appeal_reason',
+                    'on_appeal_reason_date',
+                    'off_appeal_reason',
+                    'off_appeal_reason_date',
+                    'is_under_appeal',
+                    'is_appeal_already_accepted_or_rejected',
+                    'appeal_status',
+                    'appeal_judge_notes',
+                    'appeal_last_updated_by',
+                    'appeal_last_updated_at',
+                ]);
+            }
+        ])
         ->withTrashed()
         ->where('contractor_id', $contractor_id);
     
@@ -878,7 +899,11 @@ class ReviewController extends Controller
             'reason' => 'required|string|max:1000'
         ]);
 
-        $review->is_appeal_already_accepted_or_rejected = true;
+        // Delete the appeal associated with review as well => it's a sof delete. data will still be in database
+        $appeal = Appeal::where('review_id', $review->id)->first();
+        if($appeal) {
+            $appeal->delete();
+        }
 
         // Delete the review
         $review->delete();

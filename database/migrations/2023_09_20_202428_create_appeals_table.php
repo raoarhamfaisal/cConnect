@@ -26,6 +26,7 @@ return new class extends Migration
             $table->text('appeal_judge_notes')->nullable();
             $table->string('appeal_last_updated_by')->nullable();
             $table->dateTime('appeal_last_updated_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('review_id')->references('id')->on('reviews');
