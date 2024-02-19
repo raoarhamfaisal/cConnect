@@ -285,6 +285,7 @@
   </div>
   <EditRatingModal
     ref="editRef"
+    fromAdmin
     :review="review"
     :profileId="review.reviewer_id"
     :questionsSwitch="questionsSwitch"

@@ -278,6 +278,7 @@ class ReviewController extends Controller
             }
         
             $review->update($data);
+            $review->is_under_appeal = false;
         
             return response()->json(['message' => 'Review updated successfully!', 'review' => $review], 200);
         }else {
@@ -285,6 +286,7 @@ class ReviewController extends Controller
         }
     
     }
+
 
 
 
@@ -804,7 +806,7 @@ class ReviewController extends Controller
             'how_did_you_meet_this_contractor' => 'nullable|string|max:255',
         ]);
 
-        $appeal = Appeal::where('review_id', $reviewId)->first();
+        $appeal = Appeal::where('review_id', $review->id)->first();
 
 
         // Get the old values
@@ -831,17 +833,10 @@ class ReviewController extends Controller
 
 
 
-        $appeal->is_appeal_already_accepted_or_rejected = true;
-        $appeal->save();
         $review->update($data);
 
 
         
-        
-        // Assuming 'reason' comes in from the request as well
-        $reasonData = $request->validate([
-            'reason' => 'required|string|max:1000'
-        ]);
 
 
         // Get the new values
@@ -864,8 +859,7 @@ class ReviewController extends Controller
             'new_hired_contractor' => $review->hired_contractor,
             'new_give_full_payment' => $review->give_full_payment,
             'new_how_did_you_meet_this_contractor' => $review->how_did_you_meet_this_contractor,
-            'reason' => $reasonData['reason'],
-            'reason_date' => Carbon::now(),
+            'reason' => "",
         ];
 
         // Combine old and new values and save to the review_history table
@@ -877,8 +871,7 @@ class ReviewController extends Controller
         // Create a new record in the rating_reasons table
         RatingReason::create([
             'review_id' => $review->id,
-            'reason' => $reasonData['reason'],
-            'reason_date' => Carbon::now(),
+            'reason' => "",
             'type' => 'updated_review'
         ]);
 
