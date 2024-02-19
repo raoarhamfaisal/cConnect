@@ -3,15 +3,16 @@ import Checkbox from "@/Components/Checkbox.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import TC_LoginForm from "@/Components/TC_LoginForm.vue";
 import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
 import tContractorWord from "@/Components/tCon/tContractorWord.vue";
 import tContractorWhite from "@/Components/tCon/tContractorWhite.vue";
 import { checkCompatEnabled } from "@vue/compiler-core";
-import { ref } from "vue";
+import { ref, watch, onMounted } from "vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
+import TC_SignupForm from "@/Components/TC_SignupForm.vue";
 
-defineProps({
+
+const {showit} = defineProps({
   canResetPassword: Boolean,
   status: String,
   canLogin: Boolean,
@@ -34,6 +35,27 @@ const submit = () => {
     onFinish: () => form.reset("password"),
   });
 };
+
+
+// watch()
+
+watch(
+  () => showit,
+  () => {
+    console.log("showit")
+    if (showit) {
+    } 
+  }
+);
+
+
+
+
+onMounted(() => {
+  
+});
+
+
 </script>
 
 <template>
@@ -247,5 +269,19 @@ const submit = () => {
         </div>
       </nav>
     </header>
+
+    <!-- Signup Section  -->
+    <section class="relative">
+      <div
+        class="container lg:max-w-4xl xl:max-w-7xl z-20 mx-auto mt-4 md:px-12 py-10 sm:px-20 lg:px-8 bg-slate-30-rgba text-gray-700 rounded-xl"
+      >
+
+
+      </div>
+
+    </section>
+
+
+
   </div>
 </template>

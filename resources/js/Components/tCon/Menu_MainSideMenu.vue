@@ -105,9 +105,9 @@ const openProfileModal = () => {
 
         <h4 class="mx-2 font-bold text-gray-800">
           {{
-            profile.company_name.length < 27
+            profile.company_name && (profile.company_name.length < 27
               ? profile.company_name
-              : profile.company_name.substring(0, 23) + "..."
+              : profile.company_name.substring(0, 23) + "...")
           }}
         </h4>
 

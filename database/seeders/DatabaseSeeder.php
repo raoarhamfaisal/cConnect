@@ -46,6 +46,7 @@ class DatabaseSeeder extends Seeder
             'user_id' => 11,
             'region_id' => 1,
             'active_user' => 1,
+            'is_payment_verified' => 1,
             'first_name' => fake()->name(),
             'last_name' => fake()->name(),
             'company_name' => fake()->company(),
@@ -74,8 +75,6 @@ class DatabaseSeeder extends Seeder
             'view_nationwide' => fake()->numberBetween(0, 1),
             'view_following' => fake()->numberBetween(0, 1),
             'view_groups' => fake()->numberBetween(0, 1),
-            'longitude' => fake()->longitude(),
-            'latitude' => fake()->latitude()
         ]);
         // Associate random trades with the profile
         $randomTrades = Trade::inRandomOrder()->take(rand(1, 30))->get();
