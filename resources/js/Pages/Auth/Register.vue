@@ -2,6 +2,8 @@
 import GuestLayout from "@/Layouts/GuestLayout.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
+import WelcomeHeader from "@/Components/Welcome/WelcomeHeader.vue";
+import WelcomeFooter from "@/Components/Welcome/WelcomeFooter.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
@@ -12,6 +14,9 @@ const form = useForm({
   password: "",
   password_confirmation: "",
   terms: false,
+});
+defineProps({
+  showit: Boolean,
 });
 
 const submit = () => {
@@ -24,7 +29,7 @@ const submit = () => {
 <template>
   <GuestLayout>
     <Head title="Register" />
-
+    <WelcomeHeader :showit="showit" :showSignUp="false" />
     <form @submit.prevent="submit">
       <div>
         <InputLabel for="name" value="Name" />
@@ -97,4 +102,5 @@ const submit = () => {
       </div>
     </form>
   </GuestLayout>
+  <WelcomeFooter :showit="showit" />
 </template>

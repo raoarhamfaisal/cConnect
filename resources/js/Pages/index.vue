@@ -117,15 +117,23 @@ const submit = () => {
             <div v-if="!showit">
               <ScrollToLinkVue
                 href="#loginHere"
-                class="block flex justify-center items-center p-2 mx-2 px-6 font-bold rounded-xl text-white bg-blue-800 hover:bg-green-800 border-2 shadow-lg border-green-600"
+                class="block flex justify-center items-center p-1 px-3 sm:p-2 mx-2 sm:px-6 font-bold rounded-xl text-xs sm:text-base text-white bg-blue-800 hover:bg-green-800 border-2 shadow-lg border-green-600"
               >
                 Login
               </ScrollToLinkVue>
             </div>
+            <div v-if="!showit">
+              <Link
+                :href="route('signup')"
+                class="block flex justify-center items-center p-1 px-3 sm:p-2 mr-2 sm:px-6 font-bold rounded-xl text-xs sm:text-base text-white bg-blue-800 hover:bg-green-800 border-2 shadow-lg border-green-600"
+              >
+                Sign Up
+              </Link>
+            </div>
 
             <!-- Hamburger menu button -->
             <!-- Hamburger -->
-            <div class="-mr-2 flex items-center">
+            <div class="-mr-4 sm:-mr-2 flex items-center">
               <button
                 ref="dropdownMenu"
                 @click="toggleDropdown"
@@ -293,7 +301,7 @@ const submit = () => {
     <!-- Annoucement  -->
     <section>
       <div
-        class="container relative max-w-7xl z-10 flex items-center px-6 pt-32 pb-5 mx-auto md:px-10 xl:py-30"
+        class="container relative max-w-7xl z-10 flex items-center px-4 xs:px-6 pt-32 pb-5 mx-auto md:px-10 xl:py-30"
       >
         <!-- Bow YOU Too **********************     -->
         <div
