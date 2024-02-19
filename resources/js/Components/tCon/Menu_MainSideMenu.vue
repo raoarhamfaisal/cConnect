@@ -3,7 +3,7 @@ import tContractorWord from "@/Components/tCon/tContractorWord.vue";
 import ButtonPost from "@/Components/tCon/tConSub/ButtonPost.vue";
 import DialogProfileTabs from "@/Pages/Profile/Partials/main/DialogProfileTabs.vue";
 import ButtonRefresh from "@/Components/tCon/tConSub/ButtonRefresh.vue";
-import { computed, reactive, ref, watch, watchEffect } from "vue";
+import { computed, ref } from "vue";
 import { usePage } from "@inertiajs/inertia-vue3";
 import { Icon } from "@iconify/vue";
 import Avatar from "@/Components/Ratings/Avatar.vue";
@@ -274,7 +274,7 @@ const truncatedName = computed(() => {
           <!-- CONTRACTOR PAGE -->
           <Link
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
-            href="#"
+            :href="`/contractor/${profile.id}`"
           >
             <img
               src="/images/icons/contractorpage_b.png"
