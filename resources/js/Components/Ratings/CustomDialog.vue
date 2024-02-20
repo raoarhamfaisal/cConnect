@@ -1,13 +1,13 @@
 <template>
-  <transition name="fade">
-    <div
-      v-if="isVisible"
-      class="fixed m-0 inset-0 flex items-center justify-center z-50 bg-black bg-opacity-70"
-      :style="{
-        '--tw-space-x-reverse': 'inherit',
-      }"
-      @click="closeDialog"
-    >
+  <div
+    v-if="isVisible"
+    class="fixed m-0 inset-0 flex items-center justify-center z-50 bg-black bg-opacity-70"
+    :style="{
+      '--tw-space-x-reverse': 'inherit',
+    }"
+    @click="closeDialog"
+  >
+    <transition name="fade">
       <div
         :class="[dialogWidth]"
         class="bg-white md:w-2/3 w-full max-h-[90vh] max-md:max-h-full rounded-xl max-sm:rounded-none shadow-xl flex flex-col z-10"
@@ -70,8 +70,8 @@
           </button>
         </div>
       </div>
-    </div>
-  </transition>
+    </transition>
+  </div>
 </template>
 
 <script setup>
@@ -139,14 +139,26 @@ defineExpose({ openDialog, closeDialog });
 </script>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter,
+.fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+  transform: scale(0.7);
 }
+
+/* target state of the dialog after entering or before leaving */
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* transition effect for the dialog */
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.2s;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 .width-75 {
   width: 80%;
 }

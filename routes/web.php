@@ -51,7 +51,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile/trades', [ProfileController::class, 'updateTrades'])->name('profile.updateTrades');
     Route::patch('/profile/links', [ProfileController::class, 'updateLinks'])->name('profile.updateLinks');
     Route::patch('/profile/views', [ProfileController::class, 'updateViews'])->name('profile.updateViews');
-    Route::patch('/profile/views', [ProfileController::class, 'updateViewsApi'])->name('profile.updateViewsApi');
+    Route::patch('/profile/views-api', [ProfileController::class, 'updateViewsApi'])->name('profile.updateViewsApi');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::middleware('verifyPayment')->group(function () {
@@ -102,6 +102,9 @@ Route::get('/index-b', function () {
 // -------------------------------------------------
 Route::get('/post', [PostController::class, 'index'])
     ->name('post')
+    ->middleware(['auth', 'verified']);
+Route::get('/post/{contractor_id}', [PostController::class, 'indexContractor'])
+    ->name('post.contractor')
     ->middleware(['auth', 'verified']);
 
 Route::post('/post', [PostController::class, 'store'])

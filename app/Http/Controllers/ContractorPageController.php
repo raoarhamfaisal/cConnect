@@ -24,15 +24,15 @@ class ContractorPageController extends Controller
     public function index($contractor_id)
     {
         // Get current user id
-        $userID = Auth()->user('')->id;
+      
         $profile = null;
     
 
     
     
         // Get the profile information if the user id exists
-        if($userID) {
-            $profile = Profile::where('user_id', $userID)->with('trades')->first();
+        if($contractor_id) {
+            $profile = Profile::where('user_id', $contractor_id)->with('trades')->first();
     
             // Convert the trades to the old structure for profile
             if ($profile) {

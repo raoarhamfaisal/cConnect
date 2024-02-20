@@ -1,12 +1,12 @@
 <template>
   <div v-if="profile">
-    <div class="flex flex-col gap-4 mt-5 pb-40">
+    <div class="flex flex-col gap-3 sm:gap-4 mt-5 pb-40">
+      <!-- Header -->
       <Card
         :shadowLevel="2"
         bgColor="white"
         :padding="screenWidth < 640 ? '7px' : '20px'"
       >
-        <!-- Header -->
         <!-- <heading-card
           class="mt-2"
           style="font-weight: 800; margin-bottom: 8px; font-size: 24px"
@@ -45,22 +45,46 @@
       >
         <div
           v-if="region_name"
-          class="flex items-center w-full sm:w-1/2 gap-2 xs:gap-4"
+          class="flex items-center justify-between w-full gap-2 xs:gap-4 mt-2 sm:mt-0"
         >
-          <v-tooltip text="Region" location="top">
+          <div class="flex items-center">
+            <v-tooltip text="Region" location="top">
+              <template v-slot:activator="{ props }">
+                <Icon
+                  v-bind="props"
+                  class="w-6 h-6 sm:w-8 sm:h-8"
+                  icon="mdi:location"
+                  color="#241e6d"
+                />
+              </template>
+            </v-tooltip>
+            <div class="font-bold text-base sm:text-lg">Region :</div>
+            <div class="text-sm sm:text-base translate-y-[0px]">
+              {{ region_name }}
+            </div>
+          </div>
+          <!-- User Postings -->
+          <v-tooltip text="See User Posts">
             <template v-slot:activator="{ props }">
-              <Icon
-                v-bind="props"
-                class="w-8 h-8"
-                icon="mdi:location"
-                color="#241e6d"
-              />
+              <Link :href="`/post/${profile.id}`">
+                <button
+                  class="xs:text-md shadow-lg text-lg text-gray-600 font-semibold rounded"
+                  :style="{
+                    boxShadow:
+                      '0px 0px 3px rgba(0, 0, 0, 0.12), 0px 0px 2px rgba(0, 0, 0, 0.12)',
+                    padding: '3px 6px',
+                  }"
+                >
+                  <Icon
+                    v-bind="props"
+                    class="w-6 h-6 focus:outline-none"
+                    icon="mdi:post"
+                    color="#241e6d"
+                  />
+                </button>
+              </Link>
             </template>
           </v-tooltip>
-          <div class="font-bold text-lg">Region :</div>
-          <div class="text-base translate-y-[0px]">
-            {{ region_name }}
-          </div>
         </div>
         <!-- trades -->
         <div class="mb-3">
@@ -92,7 +116,11 @@
       >
         <heading-card
           class="mb-2"
-          style="font-weight: 800; margin-bottom: 8px; font-size: 24px"
+          :style="{
+            fontWeight: 800,
+            marginBottom: '8px',
+            fontSize: screenWidth > 640 ? '24px' : '20px',
+          }"
           :heading="`Additional Info`"
         />
         <div class="flex space-x-2 justify-between">
@@ -121,7 +149,9 @@
             </div>
           </div>
         </div>
-        <div class="flex flex-col sm:flex-row flex-wrap gap-y-2 mt-4">
+        <div
+          class="flex flex-col sm:flex-row flex-wrap gap-y-2 mt-2 sm:mt-4 ml-1 mb-1 sm:mb-0 sm:ml-0"
+        >
           <InfoWithIcon
             icon="ic:baseline-phone"
             tooltipText="Phone Cell"
@@ -175,6 +205,7 @@
         </div>
         <!-- <Loader :loading="loading" background="" height="60vh"></Loader> -->
       </Card>
+      <!-- Average Rating -->
       <Card
         v-if="average_rating && starPercentages"
         :shadowLevel="2"
@@ -186,8 +217,10 @@
           :starPercentages="starPercentages"
           :length="total_reviews"
           class="mb-6"
+          :contractorId="profile.id"
         />
       </Card>
+      <!-- Social Links -->
       <Card
         v-if="
           profile.website_url ||
@@ -202,10 +235,16 @@
       >
         <heading-card
           class="mb-2"
-          style="font-weight: 800; margin-bottom: 8px; font-size: 24px"
+          :style="{
+            fontWeight: 800,
+            marginBottom: '8px',
+            fontSize: screenWidth > 640 ? '24px' : '20px',
+          }"
           :heading="`Social Links`"
         />
-        <div class="flex flex-col sm:flex-row flex-wrap gap-y-3 mt-4">
+        <div
+          class="flex flex-col sm:flex-row flex-wrap gap-y-3 mt-2 sm:mt-4 ml-1 mb-1 sm:mb-0 sm:ml-0"
+        >
           <InfoWithIcon
             v-if="profile.website_url"
             icon="fluent-mdl2:website"
@@ -249,6 +288,8 @@
           />
         </div>
       </Card>
+      <!-- Image Selection -->
+      <ImageTextSection :screen-width="screenWidth" />
     </div>
   </div>
   <MoveToTop />
@@ -261,12 +302,14 @@ import Card from "@/Components/Card.vue";
 import { Icon } from "@iconify/vue";
 
 import InfoWithIcon from "@/Components/ContractorPage/InfoWithIcon.vue";
+import ImageTextSection from "@/Components/ContractorPage/ImageTextSection.vue";
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import Avatar from "@/Components/Ratings/Avatar.vue";
 import Badge from "@/Components/Ratings/Badge.vue";
 import { options } from "@/helpers/dataHelpters.js";
 import { computed } from "vue";
 import { useStore } from "vuex";
+import { Link } from "@inertiajs/inertia-vue3";
 
 // State
 const { profile } = defineProps({
