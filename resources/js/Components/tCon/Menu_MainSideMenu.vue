@@ -274,7 +274,7 @@ const truncatedName = computed(() => {
           <!-- CONTRACTOR PAGE -->
           <Link
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
-            :href="`/contractor/${profile.id}`"
+            :href="`/contractor/${profile.id}?mode=edit`"
           >
             <img
               src="/images/icons/contractorpage_b.png"

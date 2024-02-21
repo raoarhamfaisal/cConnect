@@ -207,7 +207,7 @@ const truncatedName = computed(() => {
 
           <!-- DropDown: CONTRACTOR PAGE -->
           <Link
-            :href="`/contractor/${profile.id}`"
+            :href="`/contractor/${profile.id}?mode=edit`"
             class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
           >
             <img

@@ -24,23 +24,33 @@ class ContractorPageController extends Controller
     public function index($contractor_id)
     {
         // Get current user id
-      
+        $userID = Auth::id();
+
+        $contractorProfile = null;
         $profile = null;
+    
     
 
     
-    
-        // Get the profile information if the user id exists
-        if($contractor_id) {
-            $profile = Profile::where('user_id', $contractor_id)->with('trades')->first();
-    
-            // Convert the trades to the old structure for profile
-            if ($profile) {
-                $profileTrades = $this->convertTradesToOldStructure($profile->trades);
-                $regionName = Region::where('id', $profile->region_id)->value('name');
-                $profile = array_merge($profile->toArray(), $profileTrades);
-            }
+    $mode = FacadeRequest::input('mode');
+
+    if($contractor_id) {
+        $contractorProfile = Profile::where('user_id', $contractor_id)->with('trades')->first();
+
+        // Convert the trades to the old structure for contractor profile
+        if ($contractorProfile) {
+            $profileTrades = $this->convertTradesToOldStructure($contractorProfile->trades);
+            $regionName = Region::where('id', $contractorProfile->region_id)->value('name');
+            $contractorProfile = array_merge($contractorProfile->toArray(), $profileTrades);
         }
+        
+    }
+
+    if ($userID) {
+        $profile = Profile::where('user_id', $userID)->first();
+        $profileTrades = $this->convertTradesToOldStructure($profile->trades);
+        $profile = array_merge($profile->toArray(), $profileTrades);
+    }
         $allReviews = Review::where('contractor_id', $contractor_id)->where('is_review_active', 1)->get();
         $totalReviews = Review::where('contractor_id', $contractor_id)
     ->where('is_review_active', 1)
@@ -56,9 +66,11 @@ class ContractorPageController extends Controller
 
         return Inertia::render('Contractor/ContractorPage', [
             'profile' => $profile,
+            'contractorProfile' => $contractorProfile,
             'showit' => Auth::check(),
             'postSearchFilters' => FacadeRequest::only(['postSearch']),
             'region_name' => $regionName,
+            'mode' => $mode,
             'total_reviews' => $totalReviews,
             
             'average_rating' => $avgReview,

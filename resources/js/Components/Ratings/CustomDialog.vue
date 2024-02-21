@@ -110,7 +110,7 @@ const props = defineProps({
     default: false,
   },
 });
-const emit = defineEmits(["submit"]);
+const emit = defineEmits(["submit", "closed"]);
 const submit = () => {
   emit("submit");
 };
@@ -125,8 +125,8 @@ const shouldFetchPostsOnClose = computed(
 //Methods
 const closeDialog = () => {
   isVisible.value = false;
+  emit("closed");
   if (shouldFetchPostsOnClose) {
-    console.log("inDialog");
     store.commit("ratings/setShouldLoadPosts", true);
     store.commit("ratings/setShouldFetchPostsOnClose", false);
   }

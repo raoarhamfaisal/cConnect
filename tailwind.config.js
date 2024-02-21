@@ -29,7 +29,7 @@ module.exports = {
         "black-rgba": "rgba(0, 0,   0,  0.54)",
         "blue-rgba": "rgba(36, 30, 109,  1.00)", //#241e6d
         "blue-30-rgba": "rgba(36, 30, 109,  0.33)",
-        "green-rgba": "rgba(0, 204, 0,  1.00)",
+        "green-rgba": "#00cc00", // #087f5b
         "slate-30-rgba": "rgba(226, 232, 240,  0.40)",
         "gray-30-rgba": "rgba(209, 213, 219,  0.50)",
       },

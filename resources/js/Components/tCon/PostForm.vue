@@ -24,32 +24,7 @@ import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css
 import "filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css";
 import { mapGetters } from "vuex";
 import { ref } from "vue";
-const options = [
-  { id: "trade1", name: "Supplier & Advertiser (all trades)" },
-  { id: "trade2", name: "Construction & Remodeling" },
-  { id: "trade3", name: "Tile Works, Kitchen & Bathrooms" },
-  { id: "trade4", name: "Concrete, Masonry & Foundations" },
-  { id: "trade5", name: "Landscape" },
-  { id: "trade6", name: "Earthworks, Drives & Parking Lots" },
-  { id: "trade7", name: "Roofing & Solar" },
-  { id: "trade8", name: "Gutters, Siding & Fencing" },
-  { id: "trade9", name: "Water/Fire & Mold Remediation" },
-  { id: "trade10", name: "Electrical & Low Voltage" },
-  { id: "trade11", name: "Plumbing (all Facets)" },
-  { id: "trade12", name: "HVAC" },
-  { id: "trade13", name: "Carpentry & Finish Carpentry" },
-  { id: "trade14", name: "Cabinets, Countertops & Furniture" },
-  { id: "trade15", name: "Decks, Pergolas & Gazzebo" },
-  { id: "trade16", name: "Flooring - All Types" },
-  { id: "trade17", name: "Painting & Staining" },
-  { id: "trade18", name: "Drywall Install & Repair Mud Texture" },
-  { id: "trade19", name: "Garage & Garage Doors" },
-  { id: "trade20", name: "Cleaning Services & Junk Haul Off" },
-  { id: "trade21", name: "Glass, Mirrors, Windows & Doors" },
-  { id: "trade22", name: "Metal Fab, Fireplaces" },
-  { id: "trade23", name: "Handyman Services" },
-  { id: "trade24", name: "Architectural, Engineering & Law" },
-];
+import { options } from "@/helpers/dataHelpters.js";
 
 const FilePond = VueFilePond(
   FilePondPluginImageExifOrientation,
@@ -116,32 +91,7 @@ export default {
         trade23: false,
         trade24: false,
       },
-      items: [
-        {
-          id: 1,
-          name: "Javascript",
-        },
-        {
-          id: 2,
-          name: "PHP",
-        },
-        {
-          id: 3,
-          name: "Node",
-        },
-        {
-          id: 4,
-          name: "Python",
-        },
-        {
-          id: 5,
-          name: "Rust",
-        },
-        {
-          id: 6,
-          name: "Java",
-        },
-      ],
+
       // csrfToken: document.querySelector('meta[name="csrf-token"]').content
     };
   },

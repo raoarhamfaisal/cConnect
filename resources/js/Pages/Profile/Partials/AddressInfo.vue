@@ -17,11 +17,13 @@ const selectedObj = props.regions.find(
 );
 const selectedName = selectedObj ? selectedObj.name : undefined;
 
-console.log(selectedName);
 const selectedReferal = ref(selectedName);
 
 const form = useForm({
-  region_id: props.profile && props.profile.region_id && props.profile.region_id.toString(),
+  region_id:
+    props.profile &&
+    props.profile.region_id &&
+    props.profile.region_id.toString(),
   address_1: props.profile.address_1,
   address_2: props.profile.address_2,
   city: props.profile.city,

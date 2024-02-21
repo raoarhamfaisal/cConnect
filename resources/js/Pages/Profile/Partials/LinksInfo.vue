@@ -69,8 +69,9 @@ const form = useForm({
           <InputLabel class="font-bold" for="twitter" value="Twitter" />
           <input-icon
             id="twitter"
+            color="black"
             type="url"
-            icon="devicon:twitter"
+            icon="fa6-brands:square-x-twitter"
             class="mt-1 block w-full"
             v-model="form.twitter"
             placeholder="Type your Twitter link"

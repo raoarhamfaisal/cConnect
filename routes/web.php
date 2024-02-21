@@ -103,7 +103,7 @@ Route::get('/index-b', function () {
 Route::get('/post', [PostController::class, 'index'])
     ->name('post')
     ->middleware(['auth', 'verified']);
-Route::get('/post/{contractor_id}', [PostController::class, 'indexContractor'])
+Route::get('/contractor/post/{contractor_id}', [PostController::class, 'indexContractor'])
     ->name('post.contractor')
     ->middleware(['auth', 'verified']);
 
