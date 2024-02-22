@@ -57,7 +57,7 @@ class ContractorPageController extends Controller
                 $profileTrades = $this->convertTradesToOldStructure($contractorProfile->trades);
                 $regionName = Region::where('id', $contractorProfile->region_id)->value('name');
                 $contractorProfile = array_merge($contractorProfile->toArray(), $profileTrades);
-                // $contractorProfile['imageSections'] = $profileImageSections;
+                $contractorProfile['imageSections'] = $profileImageSections;
                 
             }
             
