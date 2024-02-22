@@ -127,14 +127,7 @@ class PostController extends Controller
                         DB::raw('(SELECT COUNT(*) FROM reviews WHERE reviews.contractor_id = profiles.id AND reviews.is_review_active = 1) as total_reviews')
                     ])
                     ->leftJoin('profiles', 'posts.user_id', '=', 'profiles.user_id')
-                    ->where('posts.region_id', $profile['region_id'])
                     ->where('posts.user_id', $contractor_id)
-                    ->whereHas('trades', function ($query) use ($userTradeIds) {
-                        $query->whereIn('trades.id', $userTradeIds);
-                    })
-                    ->when(Request::input('postSearch'), function ($query, $postSearch) {
-                        $query->where('posts.title', 'like', "%{$postSearch}%");
-                    }) 
                     ->orderBy('posts.created_at', 'desc')
                     ->orderBy('posts.id', 'desc')
                     ->paginate(5)
