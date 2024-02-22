@@ -455,73 +455,73 @@ class ProfileController extends Controller
 
 
     /**
-        * Update Company Logo
-        *
-        * @param  \App\Http\Requests\ProfileCompanyLogoUpdateRequest  $request
-        * @return \Illuminate\Http\RedirectResponse
-        */
+    * Update Company Logo
+    *
+    * @param  \App\Http\Requests\ProfileCompanyLogoUpdateRequest  $request
+    * @return \Illuminate\Http\RedirectResponse
+    */
 
-        public function updateCompanyLogo(Request $request)
-        {
-            $userID = $request->user_id;
-            $profile = null;
-    
-            // Get the profile information if the user id exists
-            if($userID) {
-                $profile = Profile::where('user_id', $userID)->first();
-            }
+    public function updateCompanyLogo(Request $request)
+    {
+        $userID = $request->user_id;
+        $profile = null;
 
-            $url = "";
-    
-            if($profile) {
-                $request->validate([
-                    'company_logo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        // Get the profile information if the user id exists
+        if($userID) {
+            $profile = Profile::where('user_id', $userID)->first();
+        }
+
+        $url = "";
+
+        if($profile) {
+            $request->validate([
+                'company_logo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
+
+            if ($request->hasFile('company_logo')) {
+
+                $companyLogoPath = $profile->company_logo;
+                $file = $request->file('company_logo');
+                $path = $file->store('images/company-logos', 'public-storage');
+
+                $url = asset($path);
+
+                // Update the user's profile with the new avatar path
+                $profile->update([
+                    'company_logo' => $path,
                 ]);
-    
-                if ($request->hasFile('company_logo')) {
-    
-                    $companyLogoPath = $profile->company_logo;
-                    $file = $request->file('company_logo');
-                    $path = $file->store('images/company-logos', 'public-storage');
-    
-                    $url = asset($path);
-    
-                    // Update the user's profile with the new avatar path
-                    $profile->update([
-                        'company_logo' => $path,
-                    ]);
 
-                    // After saving delete the old profile => Company Logo
-                    if (File::exists(public_path($companyLogoPath))) {
-                        // delete old file
-                        $pathToDelete = public_path($companyLogoPath);
-                        File::delete($pathToDelete);
-                    }
-    
-                }else {
-                    return response()->json([
-                        'status' => 'error',
-                        'message' => 'Avatar not updated successfully',
-                        'company_logo' => '',
-                    ]);    
-            
+                // After saving delete the old profile => Company Logo
+                if (File::exists(public_path($companyLogoPath))) {
+                    // delete old file
+                    $pathToDelete = public_path($companyLogoPath);
+                    File::delete($pathToDelete);
                 }
-            }
-            // Return json response because this is an api axios call
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Avatar updated successfully',
-                'company_logo' => $url,
-            ]);    
-        }
 
-        // A helper function to convert the trades to old structure coming from proffile table in trade1, trade2 format
-        private function convertTradesToOldStructure($trades) {
-            $oldStructure = [];
-            for ($i = 1; $i <= 30; $i++) {
-                $oldStructure["trade{$i}"] = $trades->contains('id', $i) ? 1 : 0;
+            }else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Avatar not updated successfully',
+                    'company_logo' => '',
+                ]);    
+        
             }
-            return $oldStructure;
         }
+        // Return json response because this is an api axios call
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Avatar updated successfully',
+            'company_logo' => $url,
+        ]);    
+    }
+
+    // A helper function to convert the trades to old structure coming from proffile table in trade1, trade2 format
+    private function convertTradesToOldStructure($trades) {
+        $oldStructure = [];
+        for ($i = 1; $i <= 30; $i++) {
+            $oldStructure["trade{$i}"] = $trades->contains('id', $i) ? 1 : 0;
+        }
+        return $oldStructure;
+    }
             
 }
