@@ -70,7 +70,7 @@
       </div>
       <template v-for="(option, index) in options" :key="option.name">
         <Badge
-          v-if="profile[option.id] === 1"
+          v-if="tradesPost[option.id] === 1"
           class="my-1 mx-1 space-x-1 flex"
           :style="{
             backgroundColor: index % 2 === 0 ? '#5f3dc4' : '#364fc7',
@@ -86,6 +86,8 @@
       v-if="mode === 'edit'"
       submitText="Save"
       @submit="handleSubmit"
+      :loading="loadingDialog"
+      :disabled="disabled"
       ref="dialogRef"
       title="Edit Your General Information"
     >
@@ -114,14 +116,14 @@
             <div class="switch-post" @click="toggleSwitch(option.id)">
               <div
                 :class="[
-                  tradesPost[option.id]
+                  tempTradesPost[option.id]
                     ? 'switch-bg-on-post'
                     : 'switch-bg-off-post',
                 ]"
               >
                 <div
                   :class="[
-                    tradesPost[option.id]
+                    tempTradesPost[option.id]
                       ? 'switch-knob-on-post'
                       : 'switch-knob-off-post',
                   ]"
@@ -151,7 +153,9 @@ import { Icon } from "@iconify/vue";
 import { options } from "@/helpers/dataHelpters.js";
 import { Link } from "@inertiajs/inertia-vue3";
 import { useStore } from "vuex";
-import { computed, ref, watch, onMounted } from "vue";
+import { computed, ref, watch, onMounted, reactive } from "vue";
+import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
+import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 // State
 const props = defineProps({
   profile: Object,
@@ -165,10 +169,39 @@ const props = defineProps({
 });
 const store = useStore();
 const referenceList = ref([]);
-const selectedReferal = ref(props.region_name);
+const region_name = ref(props.region_name);
+const selectedReferal = ref(region_name.value);
 const dialogRef = ref();
+const loadingDialog = ref(false);
+const disabled = ref(false);
 
-const tradesPost = ref({
+const tradesPost = reactive({
+  trade1: props.profile.trade1,
+  trade2: props.profile.trade2,
+  trade3: props.profile.trade3,
+  trade4: props.profile.trade4,
+  trade5: props.profile.trade5,
+  trade6: props.profile.trade6,
+  trade7: props.profile.trade7,
+  trade8: props.profile.trade8,
+  trade9: props.profile.trade9,
+  trade10: props.profile.trade10,
+  trade11: props.profile.trade11,
+  trade12: props.profile.trade12,
+  trade13: props.profile.trade13,
+  trade14: props.profile.trade14,
+  trade15: props.profile.trade15,
+  trade16: props.profile.trade16,
+  trade17: props.profile.trade17,
+  trade18: props.profile.trade18,
+  trade19: props.profile.trade19,
+  trade20: props.profile.trade20,
+  trade21: props.profile.trade21,
+  trade22: props.profile.trade22,
+  trade23: props.profile.trade23,
+  trade24: props.profile.trade24,
+});
+const tempTradesPost = reactive({
   trade1: props.profile.trade1,
   trade2: props.profile.trade2,
   trade3: props.profile.trade3,
@@ -216,7 +249,9 @@ onMounted(() => {
 
 //Methods
 const toggleSwitch = (field) => {
-  tradesPost.value[field] = !tradesPost.value[field];
+  console.log(field, "refchanged");
+  console.log(tradesPost[field] === 1 ? 1 : 0);
+  tempTradesPost[field] = tempTradesPost[field] === 1 ? 0 : 1;
 };
 const openDialog = () => {
   dialogRef.value.openDialog();
@@ -231,11 +266,61 @@ const changeReferal = (value) => {
   //   }
   // });
 };
-const handleSubmit = () => {
-  console.log(selectedReferal.value, tradesPost.value, "onsubmit");
+const handleSubmit = async () => {
+  console.log(selectedReferal.value, tempTradesPost, "onsubmitchanges");
+  let region_id = null; // Initialize with a default value
+
+  regions.value.forEach((r) => {
+    if (r.name === selectedReferal.value) {
+      region_id = r.id;
+      console.log(
+        selectedReferal.value,
+        r.name === selectedReferal.value,
+        r.id
+      );
+      console.log(region_id);
+      return; // Exit the forEach loop once a match is found
+    }
+  });
+  const resultArray = [];
+
+  for (const key in tempTradesPost) {
+    if (tempTradesPost[key] === 1) {
+      // Extract the number from the key and add it to the result array
+      const number = parseInt(key.replace("trade", ""));
+      resultArray.push(number);
+    }
+  }
+  const payload = {
+    region_id: region_id,
+    trades: resultArray,
+  };
+  loadingDialog.value = true;
+  disabled.value = true;
+  try {
+    const response = await axios.patch(
+      `/api/contractor/region-trades`,
+      payload,
+      getAxiosConfig()
+    );
+    if (response.data) {
+      changesSaved(
+        response.data.message || "Region and Trades successfully saved"
+      );
+      for (const key in tempTradesPost) {
+        tradesPost[key] = tempTradesPost[key];
+      }
+      region_name.value = selectedReferal.value;
+      dialogRef.value.closeDialog();
+    }
+  } catch (err) {
+    somethingWentWrong();
+  } finally {
+    loadingDialog.value = false;
+    disabled.value = false;
+  }
 };
 </script>
-
 
 <style scoped>
 .switch-post {

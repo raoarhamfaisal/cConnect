@@ -1,13 +1,7 @@
 <template>
   <!-- Social Links -->
   <Card
-    v-if="
-      profile.website_url ||
-      profile.facebook ||
-      profile.twitter ||
-      profile.tiktok ||
-      profile.instagram
-    "
+    v-if="website_url || facebook || twitter || tiktok || instagram"
     :shadowLevel="2"
     bgColor="white"
     :padding="screenWidth < 640 ? '7px' : '20px'"
@@ -33,45 +27,45 @@
       class="flex flex-col sm:flex-row flex-wrap gap-y-3 mt-2 sm:mt-4 ml-1 mb-1 sm:mb-0 sm:ml-0"
     >
       <InfoWithIcon
-        v-if="profile.website_url"
+        v-if="website_url"
         icon="fluent-mdl2:website"
         iconClasses="w-6 h-6"
         textClasses="text-md"
         tooltipText="Website"
-        :text="profile.website_url"
+        :text="website_url"
       />
       <InfoWithIcon
-        v-if="profile.facebook"
+        v-if="facebook"
         icon="logos:facebook"
         iconClasses="w-6 h-6"
         textClasses="text-md"
         tooltipText="Facebook"
-        :text="profile.facebook"
+        :text="facebook"
       />
       <InfoWithIcon
-        v-if="profile.twitter"
+        v-if="twitter"
         icon="fa6-brands:square-x-twitter"
         iconColor="black"
         iconClasses="w-6 h-6"
         textClasses="text-md"
         tooltipText="Twitter"
-        :text="profile.twitter"
+        :text="twitter"
       />
       <InfoWithIcon
-        v-if="profile.tiktok"
+        v-if="tiktok"
         icon="logos:tiktok-icon"
         iconClasses="w-6 h-6"
         textClasses="text-md"
         tooltipText="TikTok"
-        :text="profile.tiktok"
+        :text="tiktok"
       />
       <InfoWithIcon
-        v-if="profile.instagram"
+        v-if="instagram"
         icon="skill-icons:instagram"
         iconClasses="w-6 h-6"
         textClasses="text-md"
         tooltipText="Instagram"
-        :text="profile.instagram"
+        :text="instagram"
       />
     </div>
   </Card>
@@ -79,6 +73,8 @@
     v-if="mode === 'edit'"
     submitText="Save"
     @submit="handleSubmit"
+    :loading="loading"
+    :disabled="disabled"
     ref="dialogRef"
     title="Edit Your Social Links"
   >
@@ -96,7 +92,7 @@
           type="url"
           icon="fluent-mdl2:website"
           color="#241e6d"
-          v-model="website_url"
+          v-model="tempSocialProfiles.website_url"
           placeholder="Type your Website URL"
         />
       </div>
@@ -106,7 +102,7 @@
           id="facebook"
           type="url"
           icon="logos:facebook"
-          v-model="facebook"
+          v-model="tempSocialProfiles.facebook"
           placeholder="Type your Facebook link"
         />
       </div>
@@ -119,7 +115,7 @@
           type="url"
           icon="fa6-brands:square-x-twitter"
           class="mt-1 block w-full"
-          v-model="twitter"
+          v-model="tempSocialProfiles.twitter"
           placeholder="Type your Twitter link"
         />
       </div>
@@ -131,7 +127,7 @@
           type="url"
           class="mt-1 block w-full"
           icon="logos:tiktok-icon"
-          v-model="tiktok"
+          v-model="tempSocialProfiles.tiktok"
           placeholder="Type your TikTok link"
         />
       </div>
@@ -143,7 +139,7 @@
           type="url"
           icon="skill-icons:instagram"
           class="mt-1 block w-full"
-          v-model="instagram"
+          v-model="tempSocialProfiles.instagram"
           placeholder="Type your Instagram link"
         />
       </div>
@@ -161,7 +157,11 @@ import InputIcon from "@/Components/InputIcon.vue";
 import Card from "@/Components/Card.vue";
 
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
-import { ref } from "vue";
+import { reactive, ref } from "vue";
+
+import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
+
+import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 
 // State
 const props = defineProps({
@@ -179,12 +179,53 @@ const facebook = ref(props.profile.facebook);
 const twitter = ref(props.profile.twitter);
 const tiktok = ref(props.profile.tiktok);
 const instagram = ref(props.profile.instagram);
+const loading = ref(false);
+const disabled = ref(false);
+
+const tempSocialProfiles = reactive({
+  website_url: website_url.value,
+  facebook: facebook.value,
+  twitter: twitter.value,
+  tiktok: tiktok.value,
+  instagram: instagram.value,
+});
 
 //Methods
 
+// Creating the handleSocialSubmit function
+const handleSubmit = async () => {
+  loading.value = true;
+  disabled.value = true;
+
+  try {
+    const response = await axios.patch(
+      `/api/contractor/social-links`, // Replace with your endpoint
+      tempSocialProfiles,
+      getAxiosConfig()
+    );
+
+    if (response.data) {
+      changesSaved(
+        response.data.message || "Social profiles successfully saved"
+      );
+
+      // Updating the refs with the new values
+      website_url.value = tempSocialProfiles.website_url;
+      facebook.value = tempSocialProfiles.facebook;
+      twitter.value = tempSocialProfiles.twitter;
+      tiktok.value = tempSocialProfiles.tiktok;
+      instagram.value = tempSocialProfiles.instagram;
+
+      dialogRef.value.closeDialog();
+    }
+  } catch (err) {
+    somethingWentWrong();
+  } finally {
+    loading.value = false;
+    disabled.value = false;
+  }
+};
 const openDialog = () => {
   dialogRef.value.openDialog();
 };
-
-const handleSubmit = () => {};
 </script>

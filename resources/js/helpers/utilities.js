@@ -16,7 +16,8 @@ export const filterBadWords = (textRef) => {
 };
 
 export const changesSaved = (
-  notificationMessage = "Changes Successfully Saved!"
+  notificationMessage = "Changes Successfully Saved!",
+  changeWidth = 300
 ) => {
   Swal.fire({
     background: "#E6F5E9",
@@ -25,7 +26,7 @@ export const changesSaved = (
     position: "top-end",
     showConfirmButton: false,
     timer: 2000,
-    width: 300,
+    width: changeWidth,
     padding: 10,
   });
 };

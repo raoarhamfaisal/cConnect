@@ -8,7 +8,7 @@
     <div class="flex space-x-2 justify-between">
       <div class="flex justify-center items-center space-x-2">
         <div>
-          <Avatar :imageSrc="`/${profile.user_avatar}`" />
+          <Avatar :imageSrc="`/${user_avatar}`" />
         </div>
         <div class="flex flex-col justify-center">
           <!-- <h2
@@ -33,14 +33,12 @@
               </template>
             </v-tooltip>
           </div>
-          <div class="text-sm xs:text-lg" v-if="profile.company_name">
-            {{ profile.company_name }}
+          <div class="text-sm xs:text-lg" v-if="company_name">
+            {{ company_name }}
           </div>
-          <span
-            class="text-xs xs:text-lg"
-            v-if="profile.city || profile.state"
-            >{{ profile.city + " " + profile.state }}</span
-          >
+          <span class="text-xs xs:text-lg" v-if="city || state">{{
+            city + " " + state
+          }}</span>
         </div>
       </div>
       <!-- See Live view and edit -->
@@ -68,12 +66,14 @@
     v-if="mode === 'edit'"
     submitText="Save"
     @submit="handleSubmit"
+    :loading="loading"
+    :disabled="disabled"
     ref="dialogRef"
     title="Edit Your General Information"
   >
     <div class="flex justify-center">
       <UserAvatar
-        :imageSrc="profile.user_avatar"
+        :imageSrc="`/${user_avatar}`"
         @update-image="handleImageUpdate"
       />
     </div>
@@ -87,7 +87,7 @@
           type="text"
           class="mt-1 block w-full"
           required
-          v-model="first_name"
+          v-model="tempProfile.first_name"
           placeholder="Type your first name"
           autocomplete="given-name"
         />
@@ -100,7 +100,7 @@
           id="last_name"
           type="text"
           class="mt-1 block w-full"
-          v-model="last_name"
+          v-model="tempProfile.last_name"
           required
           placeholder="Type your last name"
           autocomplete="family-name"
@@ -114,7 +114,7 @@
           type="text"
           class="mt-1 block w-full"
           placeholder="Type your Company name"
-          v-model="company_name"
+          v-model="tempProfile.company_name"
           required
           autocomplete="company_name"
         />
@@ -127,7 +127,7 @@
           id="city"
           type="text"
           class="mt-1 block w-full"
-          v-model="city"
+          v-model="tempProfile.city"
           placeholder="Type your city"
           autocomplete="city"
         />
@@ -139,7 +139,7 @@
           id="state"
           type="text"
           class="mt-1 block w-full"
-          v-model="state"
+          v-model="tempProfile.state"
           placeholder="Type your State"
           autocomplete="state"
         />
@@ -161,8 +161,13 @@ import Card from "@/Components/Card.vue";
 
 import Avatar from "@/Components/Ratings/Avatar.vue";
 
-import { computed, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import { Link } from "@inertiajs/inertia-vue3";
+import {
+  getAxiosConfig,
+  getAxiosConfigFormData,
+} from "@/helpers/axiosConfigHelpers";
+import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 // State
 const props = defineProps({
   profile: Object,
@@ -175,16 +180,24 @@ const props = defineProps({
 
 const first_name = ref(props.profile.first_name);
 const last_name = ref(props.profile.last_name);
+const user_avatar = ref(props.profile.user_avatar);
 const company_name = ref(props.profile.company_name);
 const city = ref(props.profile.city);
 const state = ref(props.profile.state);
+const tempProfile = reactive({
+  first_name: first_name.value,
+  last_name: last_name.value,
+  city: city.value,
+  state: state.value,
+  company_name: company_name.value,
+});
+const loading = ref(false);
+const disabled = ref(false);
 
 const dialogRef = ref();
 
 //Computed
-const fullName = computed(
-  () => props.profile.first_name + " " + props.profile.last_name
-);
+const fullName = computed(() => first_name.value + " " + last_name.value);
 const truncatedName = computed(() => {
   console.log("here in teh trunctated", props.screenWidth);
   if (props.screenWidth < 600) {
@@ -193,7 +206,7 @@ const truncatedName = computed(() => {
       ? fullName.value.substring(0, length) + "..."
       : fullName.value;
   } else {
-    return props.profile.first_name + " " + props.profile.last_name;
+    return first_name.value + " " + last_name.value;
   }
 });
 
@@ -203,28 +216,48 @@ const openDialog = () => {
   dialogRef.value.openDialog();
 };
 
-const handleSubmit = () => {};
+const handleSubmit = async () => {
+  loading.value = true;
+  disabled.value = true;
+  try {
+    const response = await axios.patch(
+      `/api/contractor/general-profile`,
+      tempProfile,
+      getAxiosConfig()
+    );
+    if (response.data) {
+      changesSaved(
+        response.data.message || "Genral information successfully saved"
+      );
+      first_name.value = tempProfile.first_name;
+      last_name.value = tempProfile.last_name;
+      city.value = tempProfile.city;
+      state.value = tempProfile.state;
+      company_name.value = tempProfile.company_name;
+      dialogRef.value.closeDialog();
+    }
+  } catch (err) {
+    somethingWentWrong();
+  } finally {
+    loading.value = false;
+    disabled.value = false;
+  }
+};
 
 // Upload User Avatar on image change
-const handleImageUpdate = (file) => {
-  // const formData = new FormData();
-  // formData.append("user_avatar", file);
+const handleImageUpdate = async (file) => {
+  const formData = new FormData();
+  formData.append("user_avatar", file);
+
   // formData.append("user_id", user.id);
-  // axios
-  //   .post("/api/profile/user-avatar", formData, {
-  //     headers: {
-  //       "Content-Type": "multipart/form-data",
-  //       "X-CSRF-TOKEN": usePage().props.value.csrf_token,
-  //     },
-  //   })
-  //   .then((response) => {
-  //     changesSaved("Avatar uploaded successfully");
-  //     form.file = response.data.user_avatar; // Update the local state with the new avatar path
-  //     Inertia.visit(route("profile.edit"), { only: ["profile"] });
-  //   })
-  //   .catch((error) => {
-  //     somethingWentWrong("Error uploading avatar");
-  //     // Handle the error appropriately here
-  //   });
+  axios
+    .post("/api/contractor/user-avatar", formData, getAxiosConfigFormData())
+    .then((response) => {
+      changesSaved("Avatar uploaded successfully");
+      user_avatar.value = response.data.user_avatar; // Update the local state with
+    })
+    .catch((error) => {
+      somethingWentWrong("Error uploading avatar");
+    });
 };
 </script>

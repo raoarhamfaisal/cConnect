@@ -43,11 +43,30 @@
         :shadowLevel="2"
         bgColor="white"
         :padding="screenWidth < 640 ? '7px' : '20px'"
+        v-if="
+          mode === 'edit' ||
+          profile.bottom_text ||
+          profile.closing_text ||
+          (profile.image_sections && profile.image_sections.length > 0)
+        "
       >
         <div class="flex gap-2 flex-col">
-          <ImageTextSection :mode="mode" :screen-width="screenWidth" />
-          <BottomTitleText :mode="mode" :screen-width="screenWidth" />
-          <ClosingTitleText :mode="mode" :screen-width="screenWidth" />
+          <ImageTextSection
+            :image_sections="profile.image_sections"
+            :contractor-id="profile.id"
+            :mode="mode"
+            :screen-width="screenWidth"
+          />
+          <BottomTitleText
+            :bottom_text="profile.bottom_text"
+            :mode="mode"
+            :screen-width="screenWidth"
+          />
+          <ClosingTitleText
+            :closing_text="profile.closing_text"
+            :mode="mode"
+            :screen-width="screenWidth"
+          />
         </div>
       </Card>
     </div>
