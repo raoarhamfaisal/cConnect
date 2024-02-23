@@ -55,7 +55,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         Route::patch('/contractor/bottom-closing-text', [ContractorProfileController::class, 'updateBottomAndClosingText'])->name('contractorProfile.updateBottomAndClosingText');
 
         Route::post('/contractor/{contractorProfileId}/image-section', [ImageSectionController::class, 'store']);
-        Route::patch('/contractor/image-section/{sectionId}', [ImageSectionController::class, 'update']);
+        Route::post('/contractor/image-section/{sectionId}', [ImageSectionController::class, 'update']);
         Route::delete('/contractor/image-section/{sectionId}', [ImageSectionController::class, 'destroy']);
     
 

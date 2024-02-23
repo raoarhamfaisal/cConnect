@@ -78,19 +78,18 @@ class ImageSectionController extends Controller
     {
         $section = ImageSection::where("id", $sectionId)->first();
 
-        // dd($request);
     
         $data = $request->validate([
-            // 'section_image' => 'sometimes|image',
+            'section_image' => 'sometimes|image',
             'section_text' => 'sometimes|string'
         ]);
     
-        // // If a new image is uploaded, delete the previous one
-        // if ($request->hasFile('section_image')) {
-        //     Storage::disk('public-storage')->delete($section->section_image);
-        // }
+        // If a new image is uploaded, delete the previous one
+        if ($request->hasFile('section_image')) {
+            Storage::disk('public-storage')->delete($section->section_image);
+            $data['section_image'] = $request->file('section_image')->store('images/section_images', 'public-storage');
+        }
         
-        // $data['section_image'] = $request->file('section_image')->store('images/section_images', 'public-storage');
     
         $section->update($data);
     
