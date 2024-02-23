@@ -99,7 +99,7 @@
   </CustomDialog>
   <!-- Zoom image dialog -->
   <CustomDialog :showFooter="false" ref="imageIncDialogRef" title="Your Image">
-    <v-img :src="selectedImage" max-height="600"></v-img>
+    <img :src="selectedImage" />
   </CustomDialog>
   <!-- image Delete Dialog -->
   <CustomDialog
