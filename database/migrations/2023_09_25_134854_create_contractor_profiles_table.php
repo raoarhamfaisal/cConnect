@@ -38,8 +38,8 @@ return new class extends Migration
             $table->string('user_avatar')->nullable();
             $table->string('company_logo')->nullable();
             $table->date('business_start')->nullable();
-            $table->string('bottom_text')->nullable();
-            $table->string('closing_text')->nullable();
+            $table->longText('bottom_text')->nullable();
+            $table->longText('closing_text')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
