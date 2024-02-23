@@ -241,7 +241,7 @@ const handleSubmit = async () => {
         console.log(`${key}: ${value}`, "key value");
       }
       try {
-        const response = await axios.patch(
+        const response = await axios.post(
           `/api/contractor/image-section/${editingSectionId.value}`,
           formData,
           getAxiosConfigFormData()
