@@ -122,14 +122,6 @@ const submit = () => {
                 Login
               </ScrollToLinkVue>
             </div>
-            <div v-if="!showit">
-              <Link
-                :href="route('signup')"
-                class="block flex justify-center items-center p-1 px-3 sm:p-2 mr-2 sm:px-6 font-bold rounded-xl text-xs sm:text-base text-white bg-[#008f00] hover:bg-green-800 shadow-lg"
-              >
-                Sign Up
-              </Link>
-            </div>
 
             <!-- Hamburger menu button -->
             <!-- Hamburger -->

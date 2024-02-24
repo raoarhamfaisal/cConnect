@@ -70,6 +70,55 @@ class ProfileController extends Controller
         'postSearchFilters' => FacadeRequest::only(['postSearch']),
         ]);
     }
+    public function setup(Request $request)
+    {
+        // Get current user id
+        $userID = Auth()->user('')->id;
+        $profile = null;
+
+
+        // Get the profile information if the user id exists
+        if($userID) {
+            $profile = Profile::where('user_id', $userID)->with('trades')->first();
+        }
+
+        $regions = Region::all();
+
+        $tradesOldStructure = $this->convertTradesToOldStructure($profile->trades);
+
+        return Inertia::render('Profile/ProfileSetup', [
+            'regions' => $regions,
+            'profile' => array_merge($profile->toArray(), $tradesOldStructure),
+            'showit' => Auth::check(),
+            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+            'status' => session('status'),
+            'posts' => Post::query()
+            ->orderBy('id', 'DESC')
+            ->when(FacadeRequest::input('postSearch'), function ($query, $postSearch) {
+                $query->where('title', 'like', "%{$postSearch}%");
+            })
+            ->paginate(5)
+            ->withQueryString() 
+            ->through(fn($post) => [
+                'id' => $post->id,
+                'user_id' => $post->user_id,
+                'view' => $post->view,
+                'title' => $post->title,
+                'image' => $post->image,
+                'body1' => $post->body1,
+                'body2' => $post->body2,
+                'body1Bold' => $post->body1Bold,
+                'body1ColorId' => $post->body1ColorId,
+                'repost' => $post->repost,
+                'shares' => $post->shares,
+            ]),
+
+        // pass on any existing search filters that exist
+        // along with data
+        'postSearchFilters' => FacadeRequest::only(['postSearch']),
+        ]);
+    }
+
 
 
     public function getProfileInfo(Request $request)

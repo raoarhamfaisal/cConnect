@@ -2,8 +2,18 @@ import "./bootstrap";
 import "../css/app.css";
 
 import { createApp, h } from "vue";
+import "@mdi/font/css/materialdesignicons.css";
 import { createInertiaApp, Link, Head } from "@inertiajs/inertia-vue3";
 import { InertiaProgress } from "@inertiajs/progress";
+import {
+  VStepper,
+  VStepperWindow,
+  VStepperWindowItem,
+  VStepperItem,
+  VStepperActions,
+  VStepperHeader,
+} from "vuetify/labs/VStepper";
+import { VDivider } from "vuetify/components";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { store } from "@/store/index.js";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
@@ -15,6 +25,15 @@ import * as directives from "vuetify/directives"; // You might want to fine-tune
 
 const vuetify = createVuetify({
   components,
+  components: {
+    VStepper,
+    VStepperWindow,
+    VStepperWindowItem,
+    VStepperHeader,
+    VStepperActions,
+    VStepperItem,
+    VDivider,
+  },
   directives,
 });
 
