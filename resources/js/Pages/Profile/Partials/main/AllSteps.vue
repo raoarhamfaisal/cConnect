@@ -41,8 +41,11 @@ const screenWidth = computed(() => store.getters.screenWidth);
         <header v-if="showHeader" class="w-full">
           <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 max-lg:pt-10">
             <h2 class="font-bold text-2xl text-blue-rgba leading-tight">
-              Profile
+              Profile Setup
             </h2>
+            <p class="mt-0.5 text-sm text-gray-600">
+              Set up your Profile to get started
+            </p>
           </div>
         </header>
         <div
@@ -82,30 +85,28 @@ const screenWidth = computed(() => store.getters.screenWidth);
       </v-stepper-header>
 
       <v-stepper-window>
-        <v-stepper-window-item :value="1">
-          <GeneralInfo
-            :must-verify-email="mustVerifyEmail"
-            :status="status"
-            :profile="profile"
-            class="flex flex-col justify-center m-auto"
-          />
-          <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-            <CompanyInfo :profile="profile" />
-          </div>
-          <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-            <AddressInfo :profile="profile" :regions="regions" />
-          </div>
-          <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-            <LinksInfo :profile="profile" />
-          </div>
-        </v-stepper-window-item>
-        <v-stepper-window-item :value="2">
-          <Trades :profile="profile" />
-        </v-stepper-window-item>
-        <v-stepper-window-item :value="3">
-          <Views :profile="profile" />
-        </v-stepper-window-item>
-        <v-stepper-window-item :value="4"> </v-stepper-window-item>
+        <div class="sm:p-[1rem] bg-white shadow sm:rounded-lg">
+          <v-stepper-window-item :value="1">
+            <GeneralInfo
+              :must-verify-email="mustVerifyEmail"
+              :status="status"
+              :profile="profile"
+              class="flex flex-col justify-center m-auto"
+            />
+            <CompanyInfo :profile="profile" class="mt-10" />
+
+            <AddressInfo :profile="profile" class="mt-10" :regions="regions" />
+
+            <LinksInfo :profile="profile" class="mt-10" />
+          </v-stepper-window-item>
+          <v-stepper-window-item :value="2">
+            <Trades :profile="profile" />
+          </v-stepper-window-item>
+          <v-stepper-window-item :value="3">
+            <Views :profile="profile" />
+          </v-stepper-window-item>
+          <v-stepper-window-item :value="4"> </v-stepper-window-item>
+        </div>
       </v-stepper-window>
 
       <v-stepper-actions
