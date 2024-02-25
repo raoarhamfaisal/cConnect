@@ -6,6 +6,10 @@ import InputLabel from "@/Components/InputLabel.vue";
 import MultiSelect from "@/Components/MultiSelect.vue";
 import InputError from "@/Components/InputError.vue";
 import SelectProfile from "@/Components/SelectProfile.vue";
+import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
+
+import Badge from "@/Components/Ratings/Badge.vue";
+
 import Loader from "@/Components/Ratings/Loader.vue";
 
 // additional required plugins
@@ -43,6 +47,8 @@ export default {
     InputLabel,
     InputError,
     SelectProfile,
+    CustomDialog,
+    Badge,
     MultiSelect,
   },
 
@@ -247,6 +253,12 @@ export default {
       });
       load();
     },
+    openDialog() {
+      this.$refs.tradeDialogRef.openDialog();
+    },
+    handleSubmit() {
+      this.$refs.tradeDialogRef.closeDialog();
+    },
   },
 };
 
@@ -426,48 +438,88 @@ Array.prototype.remove = function () {
                 </div>
               </div>
               <div class="mb-4 sm:mb-0">
-                <InputLabel class="font-bold mb-1" value="Region" />
-                <SelectProfile
+                <InputLabel class="font-bold mb-1 mt-1" value="Region" />
+                <div class="text-lg">{{ selectedReferal }}</div>
+                <!-- <SelectProfile
                   :options="referenceList"
+                  disabled="true"
                   :modelValue="selectedReferal"
                   @update:modelValue="changeReferal"
-                />
+                /> -->
                 <InputError
                   class="mt-2"
                   :message="$page.props.errors.region_id"
                 />
               </div>
-              <div class="mb-4 sm:mb-0 mt-4">
-                <InputLabel class="font-bold mb-3" value="Trades" />
-                <div class="grid grid-cols-2 gap-x-3 gap-y-3">
+              <div class="mb-4 sm:mb-0 mt-1">
+                <div class="flex justify-between mb-2">
+                  <div class="text-lg font-bold text-[#241e6d]">
+                    Display in Trades Group
+                  </div>
                   <div
-                    v-for="(option, index) in options"
-                    :key="index"
-                    class="flex items-center justify-between sm:w-72"
+                    @click="openDialog"
+                    class="cursor-pointer text-base font-bold self-center text-[#241e6d]"
                   >
-                    <label :for="option.id" class="mr-2 text-xs font-bold">{{
-                      option.name
-                    }}</label>
-                    <div class="switch-post" @click="toggleSwitch(option.id)">
-                      <div
-                        :class="[
-                          tradesPost[option.id]
-                            ? 'switch-bg-on-post'
-                            : 'switch-bg-off-post',
-                        ]"
-                      >
-                        <div
-                          :class="[
-                            tradesPost[option.id]
-                              ? 'switch-knob-on-post'
-                              : 'switch-knob-off-post',
-                          ]"
-                        ></div>
-                      </div>
-                    </div>
+                    Edit
                   </div>
                 </div>
-                <InputError class="mt-2" :message="$page.props.errors.trades" />
+                <template v-for="(option, index) in options" :key="option.name">
+                  <Badge
+                    v-if="tradesPost[option.id]"
+                    class="my-1 mx-1 space-x-1 flex"
+                    :style="{
+                      backgroundColor: index % 2 === 0 ? '#5f3dc4' : '#364fc7',
+                      fontSize: '10px',
+                      paddingTop: '6px',
+                      paddingBottom: '6px',
+                    }"
+                    >{{ option.name }}</Badge
+                  >
+                </template>
+                <CustomDialog
+                  submitText="Okay"
+                  @submit="handleSubmit"
+                  :loading="loadingSending"
+                  :showCancel="false"
+                  :disabled="disabledSending"
+                  ref="tradeDialogRef"
+                  title="Edit Trades"
+                >
+                  <div class="mb-4 sm:mb-0 mt-4">
+                    <div class="grid mt-8 gap-3">
+                      <div
+                        v-for="(option, index) in options"
+                        :key="index"
+                        class="flex items-center justify-between sm:w-96 ml-3 mb-5"
+                      >
+                        <label :for="option.id" class="mr-4 font-bold">{{
+                          option.name
+                        }}</label>
+                        <div class="switch" @click="toggleSwitch(option.id)">
+                          <div
+                            :class="[
+                              tradesPost[option.id]
+                                ? 'switch-bg-on'
+                                : 'switch-bg-off',
+                            ]"
+                          >
+                            <div
+                              :class="[
+                                tradesPost[option.id]
+                                  ? 'switch-knob-on'
+                                  : 'switch-knob-off',
+                              ]"
+                            ></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <InputError
+                      class="mt-2"
+                      :message="$page.props.errors.trades"
+                    />
+                  </div>
+                </CustomDialog>
               </div>
             </div>
           </div>
@@ -535,7 +587,7 @@ Array.prototype.remove = function () {
   </div>
 </template>
 <style scoped>
-.switch-post {
+/* .switch-post {
   cursor: pointer;
   width: 30px;
   height: 15px;
@@ -571,5 +623,5 @@ Array.prototype.remove = function () {
 }
 .switch-knob-off-post {
   left: 1px;
-}
+} */
 </style>

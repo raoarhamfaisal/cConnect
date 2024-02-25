@@ -306,6 +306,7 @@ import Tooltip from "@/Components/Ratings/Tooltip.vue";
 import Card from "@/Components/Card.vue";
 import { convertDateFormat } from "@/helpers/utilities";
 import ResponseAdmin from "@/Pages/Admin/Ratings/partials/SingleContractor/ResponseAdmin.vue";
+import { options } from "@/helpers/dataHelpters.js";
 
 import { computed, ref } from "vue";
 import { Icon } from "@iconify/vue";
@@ -335,32 +336,7 @@ const { review, contractorId } = defineProps({
     default: false,
   },
 });
-const options = [
-  { id: "trade1", name: "Supplier & Advertiser (all trades)" },
-  { id: "trade2", name: "Construction & Remodeling" },
-  { id: "trade3", name: "Tile Works, Kitchen & Bathrooms" },
-  { id: "trade4", name: "Concrete, Masonry & Foundations" },
-  { id: "trade5", name: "Landscape" },
-  { id: "trade6", name: "Earthworks, Drives & Parking Lots" },
-  { id: "trade7", name: "Roofing & Solar" },
-  { id: "trade8", name: "Gutters, Siding & Fencing" },
-  { id: "trade9", name: "Water/Fire & Mold Remediation" },
-  { id: "trade10", name: "Electrical & Low Voltage" },
-  { id: "trade11", name: "Plumbing (all Facets)" },
-  { id: "trade12", name: "HVAC" },
-  { id: "trade13", name: "Carpentry & Finish Carpentry" },
-  { id: "trade14", name: "Cabinets, Countertops & Furniture" },
-  { id: "trade15", name: "Decks, Pergolas & Gazzebo" },
-  { id: "trade16", name: "Flooring - All Types" },
-  { id: "trade17", name: "Painting & Staining" },
-  { id: "trade18", name: "Drywall Install & Repair Mud Texture" },
-  { id: "trade19", name: "Garage & Garage Doors" },
-  { id: "trade20", name: "Cleaning Services & Junk Haul Off" },
-  { id: "trade21", name: "Glass, Mirrors, Windows & Doors" },
-  { id: "trade22", name: "Metal Fab, Fireplaces" },
-  { id: "trade23", name: "Handyman Services" },
-  { id: "trade24", name: "Architectural, Engineering & Law" },
-];
+
 const editRef = ref();
 
 const hasPostPrevillages = usePage().props.value.auth.user.posts_privileges;

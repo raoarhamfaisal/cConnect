@@ -240,7 +240,7 @@ const truncatedName = computed(() => {
 
           <!-- DropDown: Settings -->
           <Link
-            :href="route('post')"
+            href="/settings"
             class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
           >
             <img src="/images/icons/settings_bl.png" width="20" height="20" />

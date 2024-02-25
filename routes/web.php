@@ -42,17 +42,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
             'showit' => Auth::check(),
         ]);
     });
-
+    Route::get('/settings', [ProfileController::class, 'settings'])->name('profile.settings');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/profile-setup', [ProfileController::class, 'setup'])->name('profile.setup');
     Route::patch('/profile/general-profile', [ProfileController::class, 'updateGeneralInfo'])->name('profile.updateGeneralInfo');
     Route::patch('/profile/company-info', [ProfileController::class, 'updateCompanyInfo'])->name('profile.updateCompanyInfo');
     Route::patch('/profile/address-info', [ProfileController::class, 'updateAddressInfo'])->name('profile.updateAddressInfo');
-    Route::patch('/profile/trades', [ProfileController::class, 'updateTrades'])->name('profile.updateTrades');
     Route::patch('/profile/links', [ProfileController::class, 'updateLinks'])->name('profile.updateLinks');
-    Route::patch('/profile/views', [ProfileController::class, 'updateViews'])->name('profile.updateViews');
-    Route::patch('/profile/views-api', [ProfileController::class, 'updateViewsApi'])->name('profile.updateViewsApi');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::middleware('verifyPayment')->group(function () {

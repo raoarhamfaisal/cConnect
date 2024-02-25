@@ -41,7 +41,7 @@ export default {
     //     throttle(this.ScreenPostingActionMenu, 1000));
 
     // Remove PostingActionMenu upon scroll
-    // ERROR ONLY WORKS IN MOBILE BECAUSE LOOKING AT WINDOW
+    // ERROR ONLY WORKS IN MOBILE BECAUSE LOOKING AT WINDOW140
     window.addEventListener(
       "scroll",
       throttle(this.HidePostingActionMenu, 500)

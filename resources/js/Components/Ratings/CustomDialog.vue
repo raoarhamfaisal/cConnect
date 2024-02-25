@@ -44,9 +44,13 @@
           <slot></slot>
         </div>
 
-        <div class="flex justify-between p-4" v-if="showFooter">
+        <div
+          :class="`flex ${!showCancel ? 'justify-end' : 'justify-between'} p-4`"
+          v-if="showFooter"
+        >
           <button
             @click="closeDialog"
+            v-show="showCancel"
             class="px-4 py-2 rounded text-white bg-[#364fc7]"
           >
             Cancel
@@ -55,7 +59,7 @@
             @click="submit"
             :disabled="disabled"
             type="submit"
-            class="px-4 py-2 flex items-center gap-2 rounded bg-[#5f3dc4] text-white"
+            class="px-4 py-2 flex tems-center gap-2 rounded bg-[#5f3dc4] text-white"
             :style="{
               backgroundColor: errorIcon ? '#f03e3e' : '',
             }"
@@ -88,6 +92,10 @@ const props = defineProps({
   contentClasses: {
     type: String,
     default: "",
+  },
+  showCancel: {
+    type: Boolean,
+    default: true,
   },
   showFooter: {
     type: Boolean,

@@ -10,7 +10,7 @@ import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
 import { computed, reactive, ref } from "vue";
 
 const form = useForm({
-  name: "",
+  first_name: "",
   email: "",
   company_name: "",
   email: "",
@@ -40,7 +40,7 @@ const validateForm = () => {
   }
 
   // Validate first_name
-  if (!form.name.trim()) {
+  if (!form.first_name.trim()) {
     errors.first_name = "First name is required";
     isValid = false;
   }
@@ -79,6 +79,12 @@ const validateForm = () => {
   return isValid;
 };
 
+const clearError = (field) => {
+  console.log(field, form[field], "field");
+  if (form[field].trim()) {
+    errors[field] = "";
+  }
+};
 const submit = () => {
   if (validateForm()) {
     console.log(form);
@@ -94,39 +100,50 @@ const submit = () => {
     <Head title="Register" />
     <WelcomeHeader :showit="showit" :showSignUp="false" />
     <div class="text-3xl font-bold mb-6">Create Your Account</div>
-    <form @submit.prevent="submit">
+
+    <form
+      @submit.prevent="submit"
+      class="mt-6 space-y-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-6"
+    >
       <div>
-        <InputLabel for="name" value="First Name" />
+        <InputLabel for="name" class="font-bold" value="First Name*" />
         <TextInput
           id="name"
           type="text"
           class="mt-1 block w-full"
-          v-model="form.name"
+          v-model="form.first_name"
           required
           autofocus
-          autocomplete="name"
+          @input="clearError('first_name')"
+          autocomplete="first_name"
         />
         <InputError class="mt-2" :message="errors.first_name" />
       </div>
       <div class="mt-4">
-        <InputLabel for="last_name" value="Last Name" />
+        <InputLabel for="last_name" class="font-bold" value="Last Name*" />
         <TextInput
           id="last_name"
           type="text"
           class="mt-1 block w-full"
           v-model="form.last_name"
+          @input="clearError('last_name')"
           required
           autocomplete="name"
         />
         <InputError class="mt-2" :message="errors.last_name" />
       </div>
       <div class="mt-4">
-        <InputLabel for="last_name" value="Company Name" />
+        <InputLabel
+          for="company_name"
+          class="font-bold"
+          value="Company Name*"
+        />
         <TextInput
-          id="last_name"
+          id="company_name"
           type="text"
           class="mt-1 block w-full"
           v-model="form.company_name"
+          @input="clearError('company_name')"
           required
           autocomplete="name"
         />
@@ -134,25 +151,28 @@ const submit = () => {
       </div>
 
       <div class="mt-4">
-        <InputLabel for="email" value="Email" />
+        <InputLabel for="email" class="font-bold" value="Email*" />
         <TextInput
           id="email"
           type="email"
           class="mt-1 block w-full"
           v-model="form.email"
+          @input="clearError('email')"
           required
           autocomplete="username"
         />
         <InputError class="mt-2" :message="errors.email" />
+        <InputError class="mt-2" :message="form.errors.email" />
       </div>
 
       <div class="mt-4">
-        <InputLabel for="password" value="Password" />
+        <InputLabel for="password" class="font-bold" value="Password*" />
         <TextInput
           id="password"
           type="password"
           class="mt-1 block w-full"
           v-model="form.password"
+          @input="clearError('password')"
           required
           autocomplete="new-password"
         />
@@ -160,48 +180,52 @@ const submit = () => {
       </div>
 
       <div class="mt-4">
-        <InputLabel for="password_confirmation" value="Confirm Password" />
+        <InputLabel
+          for="password_confirmation"
+          class="font-bold"
+          value="Confirm Password*"
+        />
         <TextInput
           id="password_confirmation"
           type="password"
           class="mt-1 block w-full"
           v-model="form.password_confirmation"
+          @input="clearError('password_confirmation')"
           required
           autocomplete="new-password"
         />
         <InputError class="mt-2" :message="errors.password_confirmation" />
       </div>
-
-      <div class="flex items-center justify-end mt-4">
-        <Link
-          :href="route('login')"
-          class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >
-          Already a user?
-        </Link>
-
-        <PrimaryButton
-          class="ml-4"
-          :class="{ 'opacity-25': form.processing }"
-          :disabled="form.processing"
-          style="
-            background-image: linear-gradient(
-              111.4deg,
-              rgba(7, 7, 9, 1) 6.5%,
-              rgba(27, 24, 113, 1) 93.2%
-            );
-          "
-        >
-          <div class="flex items-center justify-center">Signup</div>
-          <img
-            v-show="form.processing"
-            src="/images/avatars/Spinner.gif"
-            alt="spinner"
-            width="30"
-          />
-        </PrimaryButton>
-      </div>
     </form>
+    <div class="flex items-center justify-end mt-4">
+      <Link
+        :href="route('login')"
+        class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+      >
+        Already a user?
+      </Link>
+
+      <PrimaryButton
+        class="ml-4"
+        :class="{ 'opacity-25': form.processing }"
+        :disabled="form.processing"
+        style="
+          background-image: linear-gradient(
+            111.4deg,
+            rgba(27, 24, 113, 1) 6.5%,
+            rgba(7, 7, 9, 0.5) 97.2%
+          );
+        "
+      >
+        <div class="flex items-center justify-center">Signup</div>
+        <img
+          v-show="form.processing"
+          src="/images/avatars/Spinner.gif"
+          alt="spinner"
+          width="30"
+        />
+      </PrimaryButton>
+    </div>
   </SignUpLayout>
   <WelcomeFooter :showit="showit" />
 </template>

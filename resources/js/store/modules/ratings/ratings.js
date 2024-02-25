@@ -55,6 +55,7 @@ export default {
     setLoading(state, payload) {
       state.loading = payload;
     },
+
     setAllTrades(state, payload) {
       state.allTrades = payload;
     },
@@ -133,6 +134,7 @@ export default {
         commit("setLoading", false);
       }
     },
+
     async deleteReview({ commit }, reviewId) {
       commit("setLoadingSending", true);
       commit("setDisabledSending", true);
@@ -207,9 +209,8 @@ export default {
       commit("setDisabledSending", true);
 
       try {
-        let response = null
-        if(!payload.fromAdmin){
-
+        let response = null;
+        if (!payload.fromAdmin) {
           response = await axios.put(
             `/api/reviews/${payload.reviewId}`,
             payload.review,
@@ -220,7 +221,7 @@ export default {
             `/api/admin/reviews/${payload.reviewId}`,
             payload.review,
             getAxiosConfig()
-            );
+          );
         }
         if (response.data) {
           if (!payload.dontShowSuccessSnack) {

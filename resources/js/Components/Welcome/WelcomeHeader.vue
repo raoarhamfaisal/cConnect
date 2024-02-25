@@ -1,5 +1,14 @@
 <template>
-  <header class="absolute top-0 left-0 right-0 z-20 bg-blue-30-rgba">
+  <header
+    class="absolute top-0 left-0 right-0 z-20 bg-blue-30-rgba"
+    style="
+      background-image: linear-gradient(
+        111.4deg,
+        rgba(27, 24, 113, 1) 6.5%,
+        rgba(7, 7, 9, 1) 100.2%
+      );
+    "
+  >
     <nav class="container max-w-7xl px-6 py-2 mx-auto md:px-12">
       <div class="flex items-center justify-between">
         <!-- LOGO -->
@@ -8,7 +17,12 @@
             href="/"
             class="text-2xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center"
           >
-            <tContractorWord />
+            <span
+              class="text-green-rgba font-extrabold italic font-serif normal-case"
+              >t</span
+            >
+            <span class="text-white font-extrabold font-sans uppercase">C</span>
+            <span class="text-white font-bold font-sans">ontractor</span>
           </Link>
         </div>
 
@@ -221,8 +235,6 @@ import tContractorWord from "@/Components/tCon/tContractorWord.vue";
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import { Inertia } from "@inertiajs/inertia";
-
-import ScrollToLinkVue from "@/Components/tCon/ScrollToLink.vue";
 
 defineProps({
   showit: Boolean,

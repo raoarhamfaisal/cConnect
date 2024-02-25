@@ -41,3 +41,4 @@ module.exports = {
 //gradients
 //background-image: radial-gradient( circle 815px at 23.4% -21.8%, rgba(9,29,85,1) 0.2%, rgba(0,0,0,1) 100.2% );
 //background-image: linear-gradient( 111.4deg, rgba(7,7,9,1) 6.5%, rgba(27,24,113,1) 93.2% );
+//  background-image: linear-gradient(111.4deg, rgba(27, 24, 113, 1) 6.5%, rgba(7, 7, 9, 1) 97.2%);

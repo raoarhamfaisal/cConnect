@@ -1,12 +1,15 @@
 <script setup>
 import { somethingWentWrong } from "@/helpers/utilities";
 
-import { useForm } from "@inertiajs/inertia-vue3";
+import { options } from "@/helpers/dataHelpters.js";
+import { reactive } from "vue";
+import { useStore } from "vuex";
 
 const props = defineProps({
   profile: Object,
 });
-const form = useForm({
+const store = useStore();
+const form = reactive({
   trade1: props.profile.trade1,
   trade2: props.profile.trade2,
   trade3: props.profile.trade3,
@@ -33,41 +36,9 @@ const form = useForm({
   trade24: props.profile.trade24,
 });
 
-const options = [
-  { id: "trade1", name: "Supplier & Advertiser (all trades)" },
-  { id: "trade2", name: "Construction & Remodeling" },
-  { id: "trade3", name: "Tile Works, Kitchen & Bathrooms" },
-  { id: "trade4", name: "Concrete, Masonry & Foundations" },
-  { id: "trade5", name: "Landscape" },
-  { id: "trade6", name: "Earthworks, Drives & Parking Lots" },
-  { id: "trade7", name: "Roofing & Solar" },
-  { id: "trade8", name: "Gutters, Siding & Fencing" },
-  { id: "trade9", name: "Water/Fire & Mold Remediation" },
-  { id: "trade10", name: "Electrical & Low Voltage" },
-  { id: "trade11", name: "Plumbing (all Facets)" },
-  { id: "trade12", name: "HVAC" },
-  { id: "trade13", name: "Carpentry & Finish Carpentry" },
-  { id: "trade14", name: "Cabinets, Countertops & Furniture" },
-  { id: "trade15", name: "Decks, Pergolas & Gazzebo" },
-  { id: "trade16", name: "Flooring - All Types" },
-  { id: "trade17", name: "Painting & Staining" },
-  { id: "trade18", name: "Drywall Install & Repair Mud Texture" },
-  { id: "trade19", name: "Garage & Garage Doors" },
-  { id: "trade20", name: "Cleaning Services & Junk Haul Off" },
-  { id: "trade21", name: "Glass, Mirrors, Windows & Doors" },
-  { id: "trade22", name: "Metal Fab, Fireplaces" },
-  { id: "trade23", name: "Handyman Services" },
-  { id: "trade24", name: "Architectural, Engineering & Law" },
-];
-const toggleSwitch = (field) => {
+const toggleSwitch = async (field) => {
   form[field] = form[field] === 1 ? 0 : 1;
-  form.patch(route("profile.updateTrades"), {
-    preserveScroll: true,
-    // onSuccess: () => form.reset("password"),
-    onError: () => {
-      somethingWentWrong();
-    },
-  });
+  await store.dispatch("profile/updateTrades", form);
 };
 </script>
 

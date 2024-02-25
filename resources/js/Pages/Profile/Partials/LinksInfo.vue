@@ -1,21 +1,30 @@
 <script setup>
 import InputLabel from "@/Components/InputLabel.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import TextInput from "@/Components/TextInput.vue";
+import InputError from "@/Components/InputError.vue";
 import InputIcon from "@/Components/InputIcon.vue";
-import { useForm } from "@inertiajs/inertia-vue3";
+import { watch } from "vue";
 
 const props = defineProps({
-  profile: Object,
+  form: Object,
+  errors: Object,
 });
 
-const form = useForm({
-  website_url: props.profile.website_url,
-  facebook: props.profile.facebook,
-  twitter: props.profile.twitter,
-  tiktok: props.profile.tiktok,
-  instagram: props.profile.instagram,
-});
+//Emits
+const emit = defineEmits(["update:form", "clearErrors"]);
+
+//Watch
+watch(
+  props.form,
+  (newForm) => {
+    emit("update:form", newForm);
+  },
+  { deep: true }
+);
+
+//Methods
+const clearError = (field) => {
+  emit("clearErrors", field);
+};
 </script>
 
 <template>
@@ -51,8 +60,10 @@ const form = useForm({
             icon="fluent-mdl2:website"
             color="#241e6d"
             v-model="form.website_url"
+            @input="clearError('website_url')"
             placeholder="Type your Website URL"
           />
+          <InputError class="mt-2" :message="errors.website_url" />
         </div>
         <div>
           <InputLabel class="font-bold" for="facebook" value="Facebook" />
@@ -61,8 +72,10 @@ const form = useForm({
             type="url"
             icon="logos:facebook"
             v-model="form.facebook"
+            @input="clearError('facebook')"
             placeholder="Type your Facebook link"
           />
+          <InputError class="mt-2" :message="errors.facebook" />
         </div>
 
         <div>
@@ -74,8 +87,10 @@ const form = useForm({
             icon="fa6-brands:square-x-twitter"
             class="mt-1 block w-full"
             v-model="form.twitter"
+            @input="clearError('twitter')"
             placeholder="Type your Twitter link"
           />
+          <InputError class="mt-2" :message="errors.twitter" />
         </div>
 
         <div>
@@ -86,8 +101,10 @@ const form = useForm({
             class="mt-1 block w-full"
             icon="logos:tiktok-icon"
             v-model="form.tiktok"
+            @input="clearError('tiktok')"
             placeholder="Type your TikTok link"
           />
+          <InputError class="mt-2" :message="errors.tiktok" />
         </div>
 
         <div>
@@ -98,26 +115,11 @@ const form = useForm({
             icon="skill-icons:instagram"
             class="mt-1 block w-full"
             v-model="form.instagram"
+            @input="clearError('instagram')"
             placeholder="Type your Instagram link"
           />
+          <InputError class="mt-2" :message="errors.instagram" />
         </div>
-      </div>
-
-      <div class="flex items-center gap-4 mt-6 w-full">
-        <PrimaryButton
-          :disabled="form.processing"
-          class="w-full flex justify-center"
-          >Save</PrimaryButton
-        >
-        <Transition
-          enter-from-class="opacity-0"
-          leave-to-class="opacity-0"
-          class="transition ease-in-out"
-        >
-          <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">
-            Saved.
-          </p>
-        </Transition>
       </div>
     </form>
   </section>
