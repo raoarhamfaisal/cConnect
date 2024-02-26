@@ -84,7 +84,7 @@
               :review="review"
               :key="review.review_response"
               :contractorId="review.contractor_id"
-              :profileId="profile.id"
+              :profileId="profile.user_id"
             />
           </div>
         </div>

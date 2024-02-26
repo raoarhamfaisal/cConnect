@@ -11,7 +11,7 @@
     <ContractorRating
       class="bg-gray-200 mt-10"
       :contractorDetails="contractorDetails"
-      :profileId="profile.id"
+      :profileId="profile.user_id"
     />
   </Header>
 </template>
