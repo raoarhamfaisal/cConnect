@@ -1703,65 +1703,97 @@
       "assets/index.7337ff26.css"
     ]
   },
-  "Badge.css": {
-    "file": "assets/Badge.22fb2435.css",
-    "src": "Badge.css"
+  "Loader.css": {
+    "file": "assets/Loader.815b2f9f.css",
+    "src": "Loader.css"
   },
-  "resources/js/Pages/Admin/History/ContractorHistory.css": {
-    "file": "assets/ContractorHistory.e039e2ce.css",
-    "src": "resources/js/Pages/Admin/History/ContractorHistory.css"
+  "resources/js/Pages/Admin/Appealed/AppealedReviews.css": {
+    "file": "assets/AppealedReviews.6bf224ab.css",
+    "src": "resources/js/Pages/Admin/Appealed/AppealedReviews.css"
   },
-  "resources/js/Pages/index.css": {
-    "file": "assets/index.7337ff26.css",
-    "src": "resources/js/Pages/index.css"
-  },
-  "resources/js/Pages/Contractor/ContractorPage.css": {
-    "file": "assets/ContractorPage.c16eabf2.css",
-    "src": "resources/js/Pages/Contractor/ContractorPage.css"
+  "Review.css": {
+    "file": "assets/Review.7371e046.css",
+    "src": "Review.css"
   },
   "Button.css": {
     "file": "assets/Button.75e085fc.css",
     "src": "Button.css"
   },
-  "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ResponseAdmin.css": {
-    "file": "assets/ResponseAdmin.afd681ba.css",
-    "src": "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ResponseAdmin.css"
+  "resources/js/Pages/Postingssetup.css": {
+    "file": "assets/Postingssetup.3d81a95e.css",
+    "src": "resources/js/Pages/Postingssetup.css"
   },
-  "AverageRating.css": {
-    "file": "assets/AverageRating.9b2166e7.css",
-    "src": "AverageRating.css"
+  "Badge.css": {
+    "file": "assets/Badge.22fb2435.css",
+    "src": "Badge.css"
   },
-  "resources/js/Pages/Admin/History/partials/AdminNote.css": {
-    "file": "assets/AdminNote.cca2b14e.css",
-    "src": "resources/js/Pages/Admin/History/partials/AdminNote.css"
-  },
-  "resources/js/Pages/Admin/Ratings/AllContractors.css": {
-    "file": "assets/AllContractors.82127028.css",
-    "src": "resources/js/Pages/Admin/Ratings/AllContractors.css"
+  "SelectProfile.css": {
+    "file": "assets/SelectProfile.9e267209.css",
+    "src": "SelectProfile.css"
   },
   "resources/js/Pages/Admin/Ratings/partials/AllContractors/Contractor.css": {
     "file": "assets/Contractor.a8598b83.css",
     "src": "resources/js/Pages/Admin/Ratings/partials/AllContractors/Contractor.css"
   },
-  "resources/js/Pages/Profile/Partials/Views.css": {
-    "file": "assets/Views.0d155edc.css",
-    "src": "resources/js/Pages/Profile/Partials/Views.css"
+  "PostDisplay.css": {
+    "file": "assets/PostDisplay.469fd2a0.css",
+    "src": "PostDisplay.css"
   },
-  "resources/js/Pages/Profile/components/UserAvatar.css": {
-    "file": "assets/UserAvatar.81e0e43e.css",
-    "src": "resources/js/Pages/Profile/components/UserAvatar.css"
+  "Card.css": {
+    "file": "assets/Card.10899156.css",
+    "src": "Card.css"
   },
   "CustomDialog.css": {
     "file": "assets/CustomDialog.6d8c07eb.css",
     "src": "CustomDialog.css"
   },
-  "resources/js/Pages/PaymentVerification.css": {
-    "file": "assets/PaymentVerification.7337ff26.css",
-    "src": "resources/js/Pages/PaymentVerification.css"
-  },
   "resources/js/Pages/Postings.css": {
     "file": "assets/Postings.f8bb4429.css",
     "src": "resources/js/Pages/Postings.css"
+  },
+  "Tooltip.css": {
+    "file": "assets/Tooltip.1a7cb1a6.css",
+    "src": "Tooltip.css"
+  },
+  "StarRatingEditable.css": {
+    "file": "assets/StarRatingEditable.c338b43f.css",
+    "src": "StarRatingEditable.css"
+  },
+  "PageTitle.css": {
+    "file": "assets/PageTitle.e3b0c442.css",
+    "src": "PageTitle.css"
+  },
+  "resources/js/Pages/Contractor/ContractorPage.css": {
+    "file": "assets/ContractorPage.c16eabf2.css",
+    "src": "resources/js/Pages/Contractor/ContractorPage.css"
+  },
+  "resources/js/Pages/index.css": {
+    "file": "assets/index.7337ff26.css",
+    "src": "resources/js/Pages/index.css"
+  },
+  "Header.css": {
+    "file": "assets/Header.590e51dd.css",
+    "src": "Header.css"
+  },
+  "AverageRating.css": {
+    "file": "assets/AverageRating.9b2166e7.css",
+    "src": "AverageRating.css"
+  },
+  "resources/js/Pages/Admin/Ratings/AllContractors.css": {
+    "file": "assets/AllContractors.82127028.css",
+    "src": "resources/js/Pages/Admin/Ratings/AllContractors.css"
+  },
+  "resources/js/Pages/Admin/History/ContractorHistory.css": {
+    "file": "assets/ContractorHistory.e039e2ce.css",
+    "src": "resources/js/Pages/Admin/History/ContractorHistory.css"
+  },
+  "resources/js/Pages/Profile/Partials/main/AllSteps.css": {
+    "file": "assets/AllSteps.3d2a0c65.css",
+    "src": "resources/js/Pages/Profile/Partials/main/AllSteps.css"
+  },
+  "StarRating.css": {
+    "file": "assets/StarRating.c66acf8a.css",
+    "src": "StarRating.css"
   },
   "PostForm.css": {
     "file": "assets/PostForm.aa4cd27b.css",
@@ -1771,65 +1803,33 @@
     "file": "assets/DecisionNotes.616cc0df.css",
     "src": "resources/js/Pages/Admin/Ratings/partials/SingleContractor/DecisionNotes.css"
   },
-  "PostDisplay.css": {
-    "file": "assets/PostDisplay.469fd2a0.css",
-    "src": "PostDisplay.css"
+  "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ResponseAdmin.css": {
+    "file": "assets/ResponseAdmin.afd681ba.css",
+    "src": "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ResponseAdmin.css"
   },
-  "Loader.css": {
-    "file": "assets/Loader.815b2f9f.css",
-    "src": "Loader.css"
+  "resources/js/Pages/Profile/components/UserAvatar.css": {
+    "file": "assets/UserAvatar.81e0e43e.css",
+    "src": "resources/js/Pages/Profile/components/UserAvatar.css"
+  },
+  "resources/js/Pages/Admin/History/partials/AdminNote.css": {
+    "file": "assets/AdminNote.cca2b14e.css",
+    "src": "resources/js/Pages/Admin/History/partials/AdminNote.css"
+  },
+  "resources/js/Pages/PaymentVerification.css": {
+    "file": "assets/PaymentVerification.7337ff26.css",
+    "src": "resources/js/Pages/PaymentVerification.css"
+  },
+  "resources/js/Pages/Profile/Partials/Views.css": {
+    "file": "assets/Views.0d155edc.css",
+    "src": "resources/js/Pages/Profile/Partials/Views.css"
   },
   "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ReviewAdmin.css": {
     "file": "assets/ReviewAdmin.872bcacf.css",
     "src": "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ReviewAdmin.css"
   },
-  "StarRating.css": {
-    "file": "assets/StarRating.c66acf8a.css",
-    "src": "StarRating.css"
-  },
-  "Card.css": {
-    "file": "assets/Card.10899156.css",
-    "src": "Card.css"
-  },
-  "Header.css": {
-    "file": "assets/Header.590e51dd.css",
-    "src": "Header.css"
-  },
-  "SelectProfile.css": {
-    "file": "assets/SelectProfile.9e267209.css",
-    "src": "SelectProfile.css"
-  },
-  "Tooltip.css": {
-    "file": "assets/Tooltip.1a7cb1a6.css",
-    "src": "Tooltip.css"
-  },
-  "PageTitle.css": {
-    "file": "assets/PageTitle.e3b0c442.css",
-    "src": "PageTitle.css"
-  },
-  "StarRatingEditable.css": {
-    "file": "assets/StarRatingEditable.c338b43f.css",
-    "src": "StarRatingEditable.css"
-  },
-  "Review.css": {
-    "file": "assets/Review.7371e046.css",
-    "src": "Review.css"
-  },
   "resources/js/Pages/Ratings/Contractor/ContractorPersonal.css": {
     "file": "assets/ContractorPersonal.a7a30865.css",
     "src": "resources/js/Pages/Ratings/Contractor/ContractorPersonal.css"
-  },
-  "resources/js/Pages/Profile/Partials/main/AllSteps.css": {
-    "file": "assets/AllSteps.3d2a0c65.css",
-    "src": "resources/js/Pages/Profile/Partials/main/AllSteps.css"
-  },
-  "resources/js/Pages/Postingssetup.css": {
-    "file": "assets/Postingssetup.3d81a95e.css",
-    "src": "resources/js/Pages/Postingssetup.css"
-  },
-  "resources/js/Pages/Admin/Appealed/AppealedReviews.css": {
-    "file": "assets/AppealedReviews.6bf224ab.css",
-    "src": "resources/js/Pages/Admin/Appealed/AppealedReviews.css"
   },
   "resources/js/app.css": {
     "file": "assets/app.e9b59a62.css",
