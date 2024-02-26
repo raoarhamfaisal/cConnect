@@ -42,8 +42,8 @@ const emit = defineEmits(["close-enlarged"]);
 <template>
   <DialogContractorRating
     ref="dialogRef"
-    :userId="profile.user_id"
-    :contractorId="postToEnlarge.user_id"
+    :userId="profile.id"
+    :contractorId="postToEnlarge.id"
   />
   <!-- Enlarged Post -->
   <div class="fixed z-40 inset-0 overflow-y-auto ease-out duration-400">

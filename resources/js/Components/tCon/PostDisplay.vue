@@ -137,8 +137,8 @@ export default {
 <template>
   <DialogContractorRating
     ref="dialogRef"
-    :userId="profile.user_id"
-    :contractorId="post.user_id"
+    :userId="profile.id"
+    :contractorId="post.id"
   />
   <div
     v-if="post.view"
@@ -155,7 +155,7 @@ export default {
       <div class="flex flex-row gap-2 justify-start items-center">
         <!-- Avatar -->
         <Link
-          :href="`/contractor/${post.user_id}`"
+          :href="`/contractor/${post.id}`"
           class="cursor-pointer flex justify-start items-start flex-none w=16"
         >
           <!-- <Link :href="route('post.show')" class="block "> -->
@@ -179,7 +179,7 @@ export default {
             <!-- {{  post }} -->
             {{ post.id }}: {{ post.title }}
           </h2>
-          <Link :href="`/contractor/${post.user_id}`" class="">
+          <Link :href="`/contractor/${post.id}`" class="">
             {{ post.company_name }}
           </Link>
 

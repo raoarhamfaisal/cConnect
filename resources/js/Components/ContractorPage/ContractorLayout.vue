@@ -29,7 +29,7 @@
           :starPercentages="starPercentages"
           :length="total_reviews"
           class="mb-6"
-          :contractorId="profile.user_id"
+          :contractorId="profile.id"
         />
       </Card>
       <SocialLinksSection
@@ -53,7 +53,7 @@
         <div class="flex gap-2 flex-col">
           <ImageTextSection
             :image_sections="profile.image_sections"
-            :contractor-id="profile.user_id"
+            :contractor-id="profile.id"
             :mode="mode"
             :screen-width="screenWidth"
           />
