@@ -71,7 +71,9 @@
             </div>
           </div>
           <div
-            v-if="parseInt(user.id) !== parseInt(contractorDetails.id)"
+            v-if="
+              parseInt(user.user_id) !== parseInt(contractorDetails.user_id)
+            "
             class="py-4 border-t-2 border-b-2 border-gray-300"
           >
             <Button
@@ -333,7 +335,7 @@ const fetchReviews = async (
   }
   try {
     const response = await axios.get(
-      `/api/reviews/${contractorDetails.id}?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate}&sort_by_rating=${sortByRating}`,
+      `/api/reviews/${contractorDetails.user_id}?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate}&sort_by_rating=${sortByRating}`,
       getAxiosConfig()
     );
     if (append) {

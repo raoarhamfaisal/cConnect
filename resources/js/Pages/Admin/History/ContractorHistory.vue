@@ -256,7 +256,7 @@ const loadingNextPage = ref(false);
 
 // Mounted
 onMounted(async () => {
-  contractorId.value = contractorDetails.id;
+  contractorId.value = contractorDetails.user_id;
   contractor.value = contractorDetails;
   await fetchContractorReviews(false);
 });
