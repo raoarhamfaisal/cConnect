@@ -233,7 +233,7 @@
           {{ convertDateFormat(review.appeal.on_appeal_reason_date) }}
         </div>
         <Link
-          :href="`/admin/ratings/contractor/${review.contractor.id}/history`"
+          :href="`/admin/ratings/contractor/${review.contractor.user_id}/history`"
         >
           <Badge
             class="bg-white text-blue-500 padding border-2 cursor-pointer hover:shadow-lg active:scale-95"

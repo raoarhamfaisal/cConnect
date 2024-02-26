@@ -91,7 +91,7 @@
                 v-for="(review, index) in contractorReviews"
                 :key="index"
                 :review="review"
-                :contractorId="contractor.id"
+                :contractorId="contractor.user_id"
                 :profileId="profile.user_id"
               />
             </div>

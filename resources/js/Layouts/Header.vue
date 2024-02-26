@@ -157,7 +157,7 @@ export default {
       this.isFormOpen = false;
     },
     setInitialData() {
-      this.id = this.user_profile.id;
+      this.id = this.user_profile.user_id;
       this.postFormObject.region_id =
         this.user_profile.region_id && this.user_profile.region_id.toString();
       this.userID = this.user_profile.user_id;
@@ -381,7 +381,7 @@ export default {
               <PostForm
                 v-if="isFormOpen"
                 :isOpen="isFormOpen"
-                :id="user_profile.id"
+                :id="user_profile.user_id"
                 :isEdit="isFormEdit"
                 :form="postFormObject"
                 @formsave="saveItem"

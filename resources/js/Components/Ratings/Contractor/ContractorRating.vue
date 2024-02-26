@@ -97,7 +97,7 @@
                 <transition name="accordion">
                   <GiveRating
                     :profileId="profileId"
-                    :contractorId="contractor.id"
+                    :contractorId="contractor.user_id"
                     @addReview="refreshPageOnAdd"
                   />
                 </transition>
@@ -123,7 +123,7 @@
               v-for="(review, index) in contractorReviews"
               :key="index"
               :review="review"
-              :contractorId="contractor.id"
+              :contractorId="contractor.user_id"
               :profileId="profileId"
             />
           </div>
