@@ -30,7 +30,7 @@ class ReviewController extends Controller
      */
     public function getContractorInfo(Request $request, $contractor_id)
     {
-        $contractorDetails = Profile::where('id', $contractor_id)
+        $contractorDetails = Profile::where('user_id', $contractor_id)
             ->select([
                 'id',
                 'user_id',
