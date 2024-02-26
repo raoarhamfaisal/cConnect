@@ -33,26 +33,29 @@ Route::get('/dashboard', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    Route::get('/payment-verification', function () {
-        return Inertia::render('PaymentVerification', [
-            'canLogin' => Route::has('login'),
-            'canRegister' => Route::has('signup'),
-            'laravelVersion' => Application::VERSION,
-            'phpVersion' => PHP_VERSION,
-            'showit' => Auth::check(),
-        ]);
-    });
-    Route::get('/settings', [ProfileController::class, 'settings'])->name('profile.settings');
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    // Route::get('/payment-verification', function () {
+    //     return Inertia::render('PaymentVerification', [
+    //         'canLogin' => Route::has('login'),
+    //         'canRegister' => Route::has('signup'),
+    //         'laravelVersion' => Application::VERSION,
+    //         'phpVersion' => PHP_VERSION,
+    //         'showit' => Auth::check(),
+    //     ]);
+    // });
     Route::get('/profile-setup', [ProfileController::class, 'setup'])->name('profile.setup');
+    
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/profile/general-profile', [ProfileController::class, 'updateGeneralInfo'])->name('profile.updateGeneralInfo');
     Route::patch('/profile/company-info', [ProfileController::class, 'updateCompanyInfo'])->name('profile.updateCompanyInfo');
     Route::patch('/profile/address-info', [ProfileController::class, 'updateAddressInfo'])->name('profile.updateAddressInfo');
     Route::patch('/profile/links', [ProfileController::class, 'updateLinks'])->name('profile.updateLinks');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
+    
     Route::middleware('verifyPayment')->group(function () {
+        Route::get('/settings', [ProfileController::class, 'settings'])->name('profile.settings');
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+
+
         Route::get('/ratings/contractor', [ContractorRatingController::class, 'index'])->name('ratings.contractor.index');
         Route::get('/contractor/{contractor_id}', [ContractorPageController::class, 'index'])->name('ratings.contractor.index');
         Route::get('/ratings/{contractor_id}', [RatingController::class, 'index'])->name('ratings.index');

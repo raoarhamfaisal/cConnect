@@ -30,7 +30,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         \App\Models\User::factory()->create([
-            'name' => 'Admin',
+            'first_name' => 'Admin',
+            'last_name' => 'User',
             'email' => 'admin@admin.com',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password            
@@ -47,8 +48,8 @@ class DatabaseSeeder extends Seeder
             'region_id' => 1,
             'active_user' => 1,
             'is_payment_verified' => 1,
-            'first_name' => fake()->name(),
-            'last_name' => fake()->name(),
+            'first_name' => 'Admin',
+            'last_name' => 'User',
             'company_name' => fake()->company(),
             'website_url' => "https://website_url.com",
             'facebook' => "https://facebook.com",
@@ -69,12 +70,10 @@ class DatabaseSeeder extends Seeder
             'company_logo' => fake()->imageUrl(640, 480),
             'business_start' => fake()->date(),
             'view_locale' => fake()->numberBetween(0, 1),
-            'view_territorial' => fake()->numberBetween(0, 1),
             'view_regional' => fake()->numberBetween(0, 1),
             'view_statewide' => fake()->numberBetween(0, 1),
             'view_nationwide' => fake()->numberBetween(0, 1),
             'view_following' => fake()->numberBetween(0, 1),
-            'view_groups' => fake()->numberBetween(0, 1),
         ]);
         // Associate random trades with the profile
         $randomTrades = Trade::inRandomOrder()->take(rand(1, 30))->get();

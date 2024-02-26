@@ -19,9 +19,9 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->boolean('active_user')->default(0);
             $table->boolean('is_payment_verified')->default(0);
-            $table->string('first_name', 30)->nullable();
-            $table->string('last_name', 30)->nullable();
-            $table->string('company_name', 100)->nullable();
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('company_name')->nullable();
             $table->string('website_url')->nullable();
             $table->string('facebook')->nullable();
             $table->string('twitter')->nullable();
@@ -46,12 +46,10 @@ return new class extends Migration
             $table->date('business_start')->nullable();
 
             $table->boolean('view_locale')->default(1);
-            $table->boolean('view_territorial')->default(0);
             $table->boolean('view_regional')->default(0);
             $table->boolean('view_statewide')->default(0);
             $table->boolean('view_nationwide')->default(0);
             $table->boolean('view_following')->default(0);
-            $table->boolean('view_groups')->default(0);
 
             $table->timestamps();
 

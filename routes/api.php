@@ -64,6 +64,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         Route::get('/profile', [ProfileController::class, 'getProfile'])->name('profile.getProfile');
         Route::patch('/profile/trades', [ProfileController::class, 'updateTrades'])->name('profile.updateTrades');
         Route::patch('/profile/views', [ProfileController::class, 'updateViews'])->name('profile.updateViews');
+        Route::patch('/profile/all-basic-info', [ProfileController::class, 'updateBasicInfo'])->name('profile.updateBasicInfo');
+        
 
         // Review APIs
         Route::post('/reviews', [ReviewController::class, 'store'])->name('review.store');

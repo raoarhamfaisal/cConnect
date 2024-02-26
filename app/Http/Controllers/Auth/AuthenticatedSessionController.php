@@ -47,6 +47,21 @@ class AuthenticatedSessionController extends Controller
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
+
+    /**
+     * Handle an incoming authentication request.
+     *
+     * @param  \App\Http\Requests\Auth\LoginRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function loginUser($user, $request)
+    {
+        Auth::login($user);
+        $request->session()->regenerate();
+        return redirect(RouteServiceProvider::PROFILE);
+    }
+    
+    
     /**
      * Destroy an authenticated session.
      *

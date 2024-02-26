@@ -63,7 +63,7 @@ const handleImageUpdate = (file) => {
       },
     })
     .then((response) => {
-      changesSaved("Avatar uploaded successfully");
+      changesSaved("Company Logo uploaded successfully");
       company_logo.value = response.data.company_logo; // Update the local state with the new avatar path
     })
     .catch((error) => {
