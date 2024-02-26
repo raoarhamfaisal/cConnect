@@ -448,7 +448,7 @@ class ReviewController extends Controller
             DB::raw('AVG(reviews.rating) as average_rating')
         ])
         ->leftJoin('reviews', 'profiles.user_id', '=', 'reviews.contractor_id')
-        ->groupBy('profiles.user_id')
+        ->groupBy('profiles.id')
         ->paginate($perPage, ['*'], 'page', $page);
 
         // Construct the response
