@@ -51,9 +51,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile/links', [ProfileController::class, 'updateLinks'])->name('profile.updateLinks');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
-    Route::get('/settings', [ProfileController::class, 'settings'])->name('profile.settings');
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::middleware('verifyPayment')->group(function () {
+        Route::get('/settings', [ProfileController::class, 'settings'])->name('profile.settings');
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 
 
         Route::get('/ratings/contractor', [ContractorRatingController::class, 'index'])->name('ratings.contractor.index');
