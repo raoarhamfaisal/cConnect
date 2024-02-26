@@ -639,7 +639,7 @@ class ProfileController extends Controller
         }
         if($profile) {
             $profile->is_payment_verified = 1;
-            $profile->update($data);
+            $profile->update();
         }
         return ['message' =>"Views successfully updated", 'profile' => $profile];
 

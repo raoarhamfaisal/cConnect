@@ -64,9 +64,11 @@ const errors = reactive({
   tiktok: "",
   instagram: "",
 });
+const active = computed(() => store.getters["profile/activeProfileTab"]);
+const loading = computed(() => store.state.profile.loading);
+
 const validateForm = () => {
   //Computed
-  const active = computed(() => store.getters["profile/activeProfileTab"]);
 
   //Methods
   let isValid = true;
@@ -200,9 +202,12 @@ const clearErrors = (field) => {
 const handleTabChange = (newActiveTab) => {
   store.commit("profile/setActiveTab", newActiveTab);
 };
-const submitDetails = () => {
+const submitDetails = async () => {
   if (validateForm()) {
-    console.log("submit");
+    await store.dispatch("profile/updateProfileGeneralInfo", {
+      form: form,
+      showSuccess: true,
+    });
   }
 };
 </script>
@@ -254,6 +259,7 @@ const submitDetails = () => {
             <div class="flex items-center gap-4 mt-6 w-full">
               <PrimaryButton
                 @click="submitDetails"
+                :disabled="loading"
                 style="
                   background-image: linear-gradient(
                     111.4deg,
@@ -262,8 +268,14 @@ const submitDetails = () => {
                   );
                 "
                 class="w-full flex justify-center"
-                >Save</PrimaryButton
               >
+                <div class="flex items-center justify-center">Signup</div>
+                <img
+                  v-show="loading"
+                  src="/images/avatars/Spinner.gif"
+                  alt="spinner"
+                  width="30"
+              /></PrimaryButton>
             </div>
           </div>
           <div v-if="activeTab === 1">

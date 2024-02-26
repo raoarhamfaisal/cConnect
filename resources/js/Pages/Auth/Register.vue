@@ -71,6 +71,10 @@ const validateForm = () => {
     errors.password = "Password is required";
     isValid = false;
   }
+  if (form.password.trim().length < 8) {
+    errors.password = "The password must be at least 8 characters.";
+    isValid = false;
+  }
 
   if (form.password.trim() !== form.password_confirmation.trim()) {
     errors.password_confirmation = "Passwords don't match";

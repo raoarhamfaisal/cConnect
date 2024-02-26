@@ -1,6 +1,7 @@
-import { somethingWentWrong } from "@/helpers/utilities";
+import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 import axios from "axios";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
+import { Inertia } from "@inertiajs/inertia";
 export default {
   namespaced: true,
   state() {
@@ -90,6 +91,42 @@ export default {
           form,
           getAxiosConfig()
         );
+      } catch (err) {
+        somethingWentWrong();
+      } finally {
+        commit("setLoading", false);
+      }
+    },
+    async updateProfileGeneralInfo({ commit }, payload) {
+      commit("setLoading", true);
+
+      try {
+        const response = await axios.patch(
+          `/api/profile/all-basic-info`,
+          payload.form,
+          getAxiosConfig()
+        );
+        if (response.data && payload.showSuccess) {
+          changesSaved("Changes Successfully Saved");
+        }
+      } catch (err) {
+        somethingWentWrong();
+      } finally {
+        commit("setLoading", false);
+      }
+    },
+    async verifyPayment({ commit }) {
+      commit("setLoading", true);
+
+      try {
+        const response = await axios.patch(
+          `/api/profile/verify-payment`,
+          {},
+          getAxiosConfig()
+        );
+        if (response.data) {
+          Inertia.visit("/post");
+        }
       } catch (err) {
         somethingWentWrong();
       } finally {
