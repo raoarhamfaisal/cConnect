@@ -137,7 +137,7 @@ const onSendContactUsInformation = async () => {
       );
       if (response.data) {
         changesSaved(translations.value && translations.value.sent_succssfully);
-        form = {
+        form.value = {
           email: "",
           name: "",
           phone_cell: "",
