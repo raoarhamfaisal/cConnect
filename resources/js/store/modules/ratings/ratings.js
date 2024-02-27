@@ -33,6 +33,7 @@ export default {
       updatedReview: null,
       updatedResponse: null,
       isFetchReviews: false,
+      shouldFetchFirstPagePosts: false,
       isDeleted: false,
       isInactive: false,
       allTrades: [],
@@ -50,10 +51,14 @@ export default {
     trades: (state) => state.allTrades,
     success: (state) => state.success,
     loading: (state) => state.loading,
+    shouldFetchFirstPagePosts: (state) => state.shouldFetchFirstPagePosts,
   },
   mutations: {
     setLoading(state, payload) {
       state.loading = payload;
+    },
+    setShouldFetchFirstPagePosts(state, payload) {
+      state.shouldFetchFirstPagePosts = payload;
     },
 
     setAllTrades(state, payload) {

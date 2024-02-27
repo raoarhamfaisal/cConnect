@@ -7,6 +7,8 @@ import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import ScrollToLinkVue from "@/Components/tCon/ScrollToLink.vue";
 import FeaturesGrid from "@/Components/tCon/FeaturesGrid.vue";
+import { useStore } from "vuex";
+import { getToken } from "@/helpers/localStorageHelper";
 
 defineProps({
   canResetPassword: Boolean,
@@ -19,7 +21,7 @@ defineProps({
 });
 
 const showingNavigationDropdown = ref(false);
-
+const store = useStore();
 const form = useForm({
   email: "",
   password: "",
@@ -35,6 +37,7 @@ const isAdminUrl = computed(() => {
   }
   return false;
 });
+const profile = computed(() => store.state.profile.profile);
 
 // Methods
 
@@ -48,7 +51,11 @@ const toggleDropdown = () => {
   showingNavigationDropdown.value = !showingNavigationDropdown.value;
 };
 
-onMounted(() => {
+onMounted(async () => {
+  if (getToken()) {
+    console.log("inside token");
+    await store.dispatch("profile/fetchProfile");
+  }
   document.addEventListener("click", handleOutsideClick);
 });
 
@@ -106,7 +113,11 @@ const submit = () => {
             <!-- News Feed Button -->
             <div v-if="showit">
               <Link
-                :href="route('post')"
+                :href="
+                  profile && profile.is_payment_verified
+                    ? route('post')
+                    : '/profile-setup'
+                "
                 class="block flex justify-center items-center mx-2 p-3 px-6 font-bold rounded-xl text-white bg-green-600 hover:bg-green-800 border-green-600"
               >
                 News Feed
@@ -189,29 +200,49 @@ const submit = () => {
 
               <ResponsiveNavLink
                 v-if="showit"
-                :href="route('post')"
-                :active="route().current('post')"
+                :href="
+                  profile && profile.is_payment_verified
+                    ? route('post')
+                    : '/profile-setup'
+                "
                 class="font-bold"
               >
                 News Feed
               </ResponsiveNavLink>
-              <ResponsiveNavLink v-if="showit" href="/ratings/contractor">
+              <ResponsiveNavLink
+                v-if="showit"
+                :href="
+                  profile && profile.is_payment_verified
+                    ? '/ratings/contractor '
+                    : '/profile-setup'
+                "
+              >
                 Your Ratings
               </ResponsiveNavLink>
             </div>
             <!-- Responsive Settings Options -->
             <div class="pb-1 border-t-2 border-gray-400">
               <div class="mt-3 space-y-1">
-                <ResponsiveNavLink v-if="showit" :href="route('profile.edit')">
+                <ResponsiveNavLink
+                  v-if="showit"
+                  :href="
+                    profile && profile.is_payment_verified
+                      ? '/profile'
+                      : '/profile-setup'
+                  "
+                >
                   Profile
                 </ResponsiveNavLink>
 
                 <ResponsiveNavLink
                   v-if="showit"
-                  :href="route('post')"
-                  :active="route().current('post')"
+                  :href="
+                    profile && profile.is_payment_verified
+                      ? '/settings'
+                      : '/profile-setup'
+                  "
                 >
-                  View Settings
+                  Settings
                 </ResponsiveNavLink>
                 <ResponsiveNavLink :href="route('index')">
                   Contact Us

@@ -45,6 +45,7 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+
   modelValue: {
     type: String,
     default: "",

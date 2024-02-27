@@ -18,6 +18,7 @@
         >
           <div class="flex items-center gap-2">
             <Icon
+              v-if="!dontAllowCancel"
               @click="closeDialog"
               class="w-10 h-10 cursor-pointer"
               icon="icon-park:back"
@@ -32,6 +33,7 @@
             />
           </div>
           <button
+            v-if="!dontAllowCancel"
             @click="closeDialog"
             class="p-2 hover:bg-[#6741d9] rounded-full w-12"
           >
@@ -89,6 +91,10 @@ const props = defineProps({
     type: String,
     default: "Submit",
   },
+  dontAllowCancel: {
+    type: Boolean,
+    default: false,
+  },
   contentClasses: {
     type: String,
     default: "",
@@ -132,6 +138,9 @@ const shouldFetchPostsOnClose = computed(
 );
 //Methods
 const closeDialog = () => {
+  if (props.dontAllowCancel) {
+    return;
+  }
   isVisible.value = false;
   emit("closed");
   if (shouldFetchPostsOnClose) {
