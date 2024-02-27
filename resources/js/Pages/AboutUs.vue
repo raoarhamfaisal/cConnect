@@ -7,9 +7,10 @@ import { Head } from "@inertiajs/inertia-vue3";
 import { Link } from "@inertiajs/inertia-vue3";
 import { useStore } from "vuex";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 
 import { computed, nextTick, reactive, ref } from "vue";
-import SelectInput from "@/Components/SelectInput.vue";
+import SelectProfile from "@/Components/SelectProfile.vue";
 
 import { contactUsDepartments } from "@/helpers/selectListsHelpters.js";
 import InputError from "@/Components/InputError.vue";
@@ -27,14 +28,14 @@ const textRef = ref(null);
 const form = reactive({
   email: "",
   name: "",
-  phone_cell: "",
-  departmentId: 0,
+  phone: "",
+  department: "",
   message: "",
 });
 const errors = reactive({
   email: "",
   name: "",
-  phone_cell: "",
+  phone: "",
   department: "",
   message: "",
 });
@@ -50,13 +51,13 @@ const validateForm = () => {
 
   // Validate Name
   if (!form.name.trim()) {
-    errors.name =
-      translations.value &&
-      translations.value.name + " " + translations.value &&
-      translations.value.is_required;
+    errors.name = `${translations.value && translations.value.name} ${
+      translations.value && translations.value.is_required
+    }
+    `;
     isValid = false;
   }
-  if (!form.departmentId) {
+  if (!form.department.trim()) {
     errors.department = `${
       translations.value && translations.value.department
     } ${translations.value && translations.value.is_required}`;
@@ -82,13 +83,13 @@ const validateForm = () => {
       translations.value && translations.value.invalid_email_format;
     isValid = false;
   }
-  if (!form.phone_cell?.trim()) {
-    errors.phone_cell =
+  if (!form.phone?.trim()) {
+    errors.phone =
       translations.value && translations.value.phone_number_is_required;
     isValid = false;
   }
-  if (form.phone_cell?.trim().length > 13) {
-    errors.phone_cell =
+  if (form.phone?.trim().length > 13) {
+    errors.phone =
       translations.value &&
       translations.value.phone_number_must_not_be_greater_than_13_numbers;
     isValid = false;
@@ -128,19 +129,17 @@ const clearError = (field) => {
 };
 
 const onSendContactUsInformation = async () => {
+  console.log("form", form);
+  loadingSend.value = true;
   if (validateForm()) {
     try {
-      const response = await axios.post(
-        `/tokens/create`,
-        form,
-        getAxiosConfig()
-      );
+      const response = await axios.post(`/api/contact`, form, getAxiosConfig());
       if (response.data) {
         changesSaved(translations.value && translations.value.sent_succssfully);
         form.value = {
           email: "",
           name: "",
-          phone_cell: "",
+          phone: "",
           departmentId: 0,
           message: "",
         };
@@ -149,6 +148,8 @@ const onSendContactUsInformation = async () => {
       console.log(err);
 
       somethingWentWrong();
+    } finally {
+      loadingSend.value = false;
     }
   }
 };
@@ -225,7 +226,7 @@ const onSendContactUsInformation = async () => {
               type="tel"
               class="mt-1 block w-full"
               v-model="form.email"
-              @input="clearErrors('email')"
+              @input="clearError('email')"
               :placeholder="translations && translations.type_your + ' Email'"
               required
               autocomplete="email"
@@ -236,22 +237,22 @@ const onSendContactUsInformation = async () => {
           <div>
             <InputLabel
               class="font-bold"
-              for="phone_cell"
+              for="phone"
               :value="translations && translations.phone_cell + '*'"
             />
             <TextInput
               class="mt-1 block w-full"
-              id="phone_cell"
+              id="phone"
               type="tel"
-              v-model="form.phone_cell"
+              v-model="form.phone"
               required
-              @input="clearError('phone_cell')"
-              autocomplete="phone_cell"
+              @input="clearError('phone')"
+              autocomplete="phone"
               :placeholder="translations && translations.type_your_phone_number"
               v-mask="'###-###-#####'"
             />
             <!-- placeholder="###-###-####" -->
-            <InputError class="mt-2" :message="errors.phone_cell" />
+            <InputError class="mt-2" :message="errors.phone" />
           </div>
           <div>
             <InputLabel
@@ -260,13 +261,23 @@ const onSendContactUsInformation = async () => {
               :value="`${translations && translations.department}*`"
             />
 
-            <SelectInput
+            <!-- <SelectInput
               :options="contactUsDepartments"
               optionsPropForText="name"
               :modelValue="form.departmentId"
               @update:modelValue="
                 (option) => {
                   form.departmentId = option;
+                  clearError('department');
+                }
+              "
+            /> -->
+            <SelectProfile
+              :options="contactUsDepartments"
+              :modelValue="form.department"
+              @update:modelValue="
+                (option) => {
+                  form.department = option;
                   clearError('department');
                 }
               "
@@ -291,6 +302,7 @@ const onSendContactUsInformation = async () => {
             required
             v-model="form.message"
             ref="textRef"
+            @keypress="clearError('message')"
             @keydown="insertTab"
             @input="adjustHeight"
             @paste="adjustHeight"
