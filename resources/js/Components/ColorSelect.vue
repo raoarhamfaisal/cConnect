@@ -20,13 +20,18 @@
           v-for="option in options"
           :key="option"
           :class="[
-            'p-2 cursor-pointer',
+            'p-2 cursor-pointer flex gap-2 items-center',
             option === modelValue ? 'bg-[#364fc7] text-white' : '',
             'hover:bg-[#364fc7] hover:text-white',
           ]"
           @click.stop="selectOption(option)"
         >
-          {{ option }}
+          <div
+            v-if="option.color"
+            :style="{ backgroundColor: option.color }"
+            :class="`w-8 h-8 mr-2 rounded-full border-2 border-[#eee]`"
+          ></div>
+          {{ option.text }}
         </li>
       </ul>
     </div>
@@ -59,7 +64,7 @@ const toggleDropdown = () => {
 };
 
 const selectOption = (option) => {
-  emit("update:modelValue", option);
+  emit("update:modelValue", option.text);
   showDropdown.value = false; // This should close the dropdown on selecting an option.
 };
 

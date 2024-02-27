@@ -11,7 +11,13 @@ import Views from "@/Pages/Profile/Partials/Views.vue";
 import LinksInfo from "@/Pages/Profile/Partials/LinksInfo.vue";
 import { computed, reactive, ref } from "vue";
 import { useStore } from "vuex";
-
+const propertiesToProcess = [
+  "website_url",
+  "facebook",
+  "twitter",
+  "tiktok",
+  "instagram",
+];
 const props = defineProps({
   mustVerifyEmail: Boolean,
   status: String,
@@ -203,6 +209,11 @@ const handleTabChange = (newActiveTab) => {
   store.commit("profile/setActiveTab", newActiveTab);
 };
 const submitDetails = async () => {
+  propertiesToProcess.forEach((prop) => {
+    if (form[prop] && typeof form[prop] === "string") {
+      form[prop] = form[prop].replace(/^https?:\/\//, "");
+    }
+  });
   if (validateForm()) {
     await store.dispatch("profile/updateProfileGeneralInfo", {
       form: form,

@@ -306,7 +306,7 @@ import QualifyingQuestions from "@/Pages/Ratings/PartialsPersonal/QualifyingQues
 import { convertDateFormat, filterBadWords } from "@/helpers/utilities";
 import { Icon } from "@iconify/vue";
 import { useStore } from "vuex";
-import { options } from "@/helpers/dataHelpters.js";
+import { options } from "@/helpers/selectListsHelpters.js";
 
 import { ref, watch, computed } from "vue";
 const { review } = defineProps({
@@ -438,3 +438,4 @@ const questionsSwitch = computed(() => {
   }
 }
 </style>
+@/helpers/selectListsHelpters.js

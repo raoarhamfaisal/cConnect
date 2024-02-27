@@ -19,7 +19,7 @@
       <IconButton
         v-if="mode === 'edit'"
         @click="openDialog"
-        icon="mdi:edit"
+        icon="nimbus:edit"
         color="#1864ab"
       />
     </div>
@@ -163,6 +163,13 @@ import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 
+const propertiesToProcess = [
+  "website_url",
+  "facebook",
+  "twitter",
+  "tiktok",
+  "instagram",
+];
 // State
 const props = defineProps({
   profile: Object,
@@ -194,6 +201,17 @@ const tempSocialProfiles = reactive({
 
 // Creating the handleSocialSubmit function
 const handleSubmit = async () => {
+  propertiesToProcess.forEach((prop) => {
+    if (
+      tempSocialProfiles[prop] &&
+      typeof tempSocialProfiles[prop] === "string"
+    ) {
+      tempSocialProfiles[prop] = tempSocialProfiles[prop].replace(
+        /^https?:\/\//,
+        ""
+      );
+    }
+  });
   loading.value = true;
   disabled.value = true;
 

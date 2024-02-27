@@ -13,7 +13,7 @@ import {
   VStepperActions,
   VStepperHeader,
 } from "vuetify/labs/VStepper";
-import { VDivider } from "vuetify/components";
+import { VDivider, VLazy, VTooltip } from "vuetify/components";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { store } from "@/store/index.js";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
@@ -24,16 +24,18 @@ import * as components from "vuetify/components"; // Import only VTabs and VTab
 import * as directives from "vuetify/directives"; // You might want to fine-tune this as well
 
 const vuetify = createVuetify({
-  components,
   components: {
     VStepper,
     VStepperWindow,
+    VTooltip,
+    VLazy,
     VStepperWindowItem,
     VStepperHeader,
     VStepperActions,
     VStepperItem,
     VDivider,
   },
+  components,
   directives,
 });
 

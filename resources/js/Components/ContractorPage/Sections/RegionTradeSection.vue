@@ -5,6 +5,73 @@
     bgColor="white"
     :padding="screenWidth < 640 ? '7px' : '20px'"
   >
+    <div class="flex justify-between">
+      <heading-card
+        class="mb-2"
+        :style="{
+          marginBottom: '8px',
+          fontWeight: 800,
+          fontSize: screenWidth > 640 ? '24px' : '20px',
+        }"
+        :heading="`Trade Groups`"
+      />
+      <!-- User Posting and Edit Button -->
+      <div class="flex gap-2 sm:gap-3">
+        <!-- User Postings -->
+        <v-tooltip text="See User Posts" location="left">
+          <template v-slot:activator="{ props }">
+            <Link
+              class="active:scale-95 hover:bg-[#f8f9fa] hover:rounded-md"
+              :href="`/contractor/posts/${profile.id}`"
+            >
+              <button
+                class="xs:text-md w-[28px] h-[28px] xs:w-[35px] xs:h-[35px] font-semibold flex items-center justify-center"
+              >
+                <!-- <Icon
+                  v-bind="props"
+                  class="w-[16px] h-[16px] xs:w-[18px] xs:h-[18px] focus:outline-none"
+                  icon="mdi:post"
+                  color="#1864ab"
+                /> -->
+                <img
+                  src="/images/icons/post_b.png"
+                  v-bind="props"
+                  width="28"
+                  height="28"
+                />
+              </button>
+            </Link>
+          </template>
+        </v-tooltip>
+        <!-- Edit -->
+        <IconButton
+          v-if="mode === 'edit'"
+          @click="openDialog"
+          icon="nimbus:edit"
+          color="#1864ab"
+        />
+      </div>
+    </div>
+    <!-- trades -->
+    <div class="mb-3">
+      <!-- <div class="pl-2 text-sm xs:text-md font-bold mt-2 mb-1">
+        {{ profile.first_name + " " + profile.last_name }}
+        {{ "'s Trades :" }}
+      </div> -->
+      <template v-for="(option, index) in options" :key="option.name">
+        <Badge
+          v-if="tradesPost[option.id] === 1"
+          class="my-1 mx-1 space-x-1 flex"
+          :style="{
+            backgroundColor: index % 2 === 0 ? '#5f3dc4' : '#364fc7',
+            fontSize: '10px',
+            paddingTop: '6px',
+            paddingBottom: '6px',
+          }"
+          >{{ option.name }}</Badge
+        >
+      </template>
+    </div>
     <div
       v-if="region_name"
       class="flex items-center justify-between w-full gap-2 xs:gap-4 mt-2 sm:mt-0"
@@ -27,60 +94,6 @@
           {{ region_name }}
         </div>
       </div>
-      <!-- User Posting and Edit Button -->
-      <div class="flex gap-2 sm:gap-3">
-        <!-- User Postings -->
-        <v-tooltip text="See User Posts" location="left">
-          <template v-slot:activator="{ props }">
-            <Link
-              class="active:scale-95 hover:bg-[#f8f9fa] rounded-full"
-              :href="`/contractor/posts/${profile.id}`"
-            >
-              <button
-                class="xs:text-md shadow-lg w-[28px] h-[28px] xs:w-[35px] xs:h-[35px] font-semibold rounded-full border-2 flex items-center justify-center"
-                :style="{
-                  boxShadow:
-                    '0px 0px 3px rgba(0, 0, 0, 0.12), 0px 0px 2px rgba(0, 0, 0, 0.12)',
-                }"
-              >
-                <Icon
-                  v-bind="props"
-                  class="w-[16px] h-[16px] xs:w-[18px] xs:h-[18px] focus:outline-none"
-                  icon="mdi:post"
-                  color="#1864ab"
-                />
-              </button>
-            </Link>
-          </template>
-        </v-tooltip>
-        <!-- Edit -->
-        <IconButton
-          v-if="mode === 'edit'"
-          @click="openDialog"
-          icon="mdi:edit"
-          color="#1864ab"
-        />
-      </div>
-    </div>
-    <!-- trades -->
-    <div class="mb-3">
-      <div class="pl-2 text-sm xs:text-md font-bold mt-2 mb-1">
-        {{ profile.first_name + " " + profile.last_name }}
-        {{ "'s Trades :" }}
-      </div>
-      <template v-for="(option, index) in options" :key="option.name">
-        <Badge
-          v-if="tradesPost[option.id] === 1"
-          class="my-1 mx-1 space-x-1 flex"
-          :style="{
-            backgroundColor: index % 2 === 0 ? '#5f3dc4' : '#364fc7',
-            fontSize: '10px',
-            paddingTop: '6px',
-            paddingBottom: '6px',
-          }"
-          >{{ option.name }}</Badge
-        >
-      </template>
     </div>
     <CustomDialog
       v-if="mode === 'edit'"
@@ -144,13 +157,13 @@ import SelectProfile from "@/Components/SelectProfile.vue";
 import Badge from "@/Components/Ratings/Badge.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
-
+import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import Card from "@/Components/Card.vue";
 
 import { Icon } from "@iconify/vue";
 
-import { options } from "@/helpers/dataHelpters.js";
+import { options } from "@/helpers/selectListsHelpters.js";
 import { Link } from "@inertiajs/inertia-vue3";
 import { useStore } from "vuex";
 import { computed, ref, watch, onMounted, reactive } from "vue";
@@ -361,3 +374,4 @@ const handleSubmit = async () => {
   left: 1px;
 }
 </style>
+@/helpers/selectListsHelpters.js

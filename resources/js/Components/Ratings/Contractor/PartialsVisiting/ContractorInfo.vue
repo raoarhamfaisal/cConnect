@@ -44,7 +44,8 @@
 <script setup>
 import Avatar from "@/Components/Ratings/Avatar.vue";
 import Badge from "@/Components/Ratings/Badge.vue";
-import { options } from "@/helpers/dataHelpters.js";
+import { options } from "@/helpers/selectListsHelpters.js";
 
 defineProps(["contractor"]);
 </script>
+@/helpers/selectListsHelpters.js

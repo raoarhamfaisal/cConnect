@@ -5,7 +5,7 @@ import TextInput from "@/Components/TextInput.vue";
 import { usePage } from "@inertiajs/inertia-vue3";
 import UserAvatar from "../components/UserAvatar.vue";
 import SelectProfile from "@/Components/SelectProfile.vue";
-import { stateList } from "@/helpers/dataHelpters.js";
+import { stateList } from "@/helpers/selectListsHelpters.js";
 
 import InputError from "@/Components/InputError.vue";
 import { watch, ref } from "vue";
@@ -242,3 +242,4 @@ const clearError = (field) => {
     </form>
   </section>
 </template>
+@/helpers/selectListsHelpters.js
