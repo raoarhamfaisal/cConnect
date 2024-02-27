@@ -51,7 +51,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile/links', [ProfileController::class, 'updateLinks'])->name('profile.updateLinks');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
-    Route::middleware('verifyPayment')->group(function () {
+    // Route::middleware('verifyPayment')->group(function () {
         Route::get('/settings', [ProfileController::class, 'settings'])->name('profile.settings');
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 
@@ -67,7 +67,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/admin/regions/{region_id}/appealed', [AppealedReviewsController::class, 'getAppealedReviews'])->name('admin.appealed');
 
         Route::get('/admin/ratings/contractor/{id}/history', [ContractorRatingsAdminController::class, 'historyPage'])->name('admin.history');
-    });
+    // });
 });
 
 Route::get('/index', function () {
@@ -110,11 +110,13 @@ Route::get('/contractor/posts/{contractor_id}', [PostController::class, 'indexCo
 
 Route::post('/post', [PostController::class, 'store'])
     ->name('post.store')
-    ->middleware(['auth', 'verifyPayment', 'verified']);
+    ->middleware(['auth', 'verified']);
+    // ->middleware(['auth', 'verifyPayment', 'verified']);
 
 Route::post('/upload-post', [PostImageController::class, 'upload'])
     ->name('post.update')
-    ->middleware(['auth', 'verifyPayment', 'verified']);
+    ->middleware(['auth', 'verified']);
+    // ->middleware(['auth', 'verifyPayment', 'verified']);
 
 // Delete image from temp storage
 Route::post('upload-post-revert', [PostImageController::class, 'uploadRevert']);

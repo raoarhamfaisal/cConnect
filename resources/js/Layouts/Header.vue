@@ -118,21 +118,29 @@ export default {
         this.setInitialData();
       }
     },
+    profile(newVal, oldVal) {
+      console.log("newVAl", this.profile)
+      this.postFormObject.user_id = (this.profile && this.profile.user_id) || null
+    }
   },
 
   mounted() {
     if (!this.profile) {
       this.fetchProfile();
+    }else {
+      this.postFormObject.user_id = (this.profile && this.profile.user_id) || null
     }
   },
 
   methods: {
     ...mapActions("profile", ["fetchProfile"]),
     saveItem(formData) {
+
+      formData.user_id = (this.profile && this.profile.user_id) || null
+
       // Same method for update & create
       // if we have an item id then update
       formData.region_id = +formData.region_id;
-      console.log(formData, "formData");
       let url = "/post";
       if (formData.id) {
         url = "/post/" + formData.id;

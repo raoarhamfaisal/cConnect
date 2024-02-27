@@ -477,7 +477,7 @@ class ProfileController extends Controller
             if ($request->hasFile('user_avatar')) {
 
                 $file = $request->file('user_avatar');
-                $path = $file->store('images/avatars', 'public-storage');
+                $path = $file->store('uploads/avatars', 'public-storage');
 
                 $userPath = $profile->user_avatar;
                 // Update the user's profile with the new avatar path
