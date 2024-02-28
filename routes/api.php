@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ContractorProfileController;
+use App\Http\Controllers\ContractorPageController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ImageSectionController;
@@ -45,7 +46,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     // Your authenticated routes here
     Route::middleware('auth:sanctum')->group(function () {
         // Contractor Profile
-
+        Route::get('/contractor/get-contractor-info/{contractor_id}', [ContractorPageController::class, 'getContractorInfo'])->name('contractorProfile.getContractorInfo');
         Route::patch('/contractor/general-profile', [ContractorProfileController::class, 'updateGeneralInfo'])->name('contractorProfile.updateGeneralInfo');
         Route::patch('/contractor/region-trades', [ContractorProfileController::class, 'updateRegionTrades'])->name('contractorProfile.updateRegionTrades');
         Route::patch('/contractor/additional-information', [ContractorProfileController::class, 'updateAdditionalInformation'])->name('contractorProfile.updateAdditionalInformation');
@@ -57,6 +58,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         Route::post('/contractor/{contractorProfileId}/image-section', [ImageSectionController::class, 'store']);
         Route::post('/contractor/image-section/{sectionId}', [ImageSectionController::class, 'update']);
         Route::delete('/contractor/image-section/{sectionId}', [ImageSectionController::class, 'destroy']);
+
+        // Settings APIs
+        Route::post('/settings/change-email', [ProfileController::class, 'changeEmail'])->name('profile.changeEmail');
+        Route::post('/settings/verify-email', [ProfileController::class, 'verifyEmail'])->name('profile.verifyEmail');
     
       // Profile Api
 

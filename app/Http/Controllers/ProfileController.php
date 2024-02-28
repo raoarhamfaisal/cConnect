@@ -7,12 +7,19 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Profile;
+use App\Models\ContractorProfile;
 use App\Models\Region;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request as FacadeRequest;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\EmailVerificationCode;
 
 class ProfileController extends Controller
 {
@@ -477,10 +484,24 @@ class ProfileController extends Controller
             if ($request->hasFile('user_avatar')) {
 
                 $file = $request->file('user_avatar');
-                $path = $file->store('uploads/avatars', 'public-storage');
+
+                // Generate new filename
+                $filename = sprintf("%06d", $userID) . '_' . $file->hashName();
+
+                // Check if a file with the new filename already exists and delete it
+                $existingFilePath = 'uploads/avatars/' . $filename;
+                if (Storage::disk('public-storage')->exists($existingFilePath)) {
+                    Storage::disk('public-storage')->delete($existingFilePath);
+                }
+
+                // Store the file with the new filename
+                $path = $file->storeAs('uploads/avatars', $filename, 'public-storage');
+
 
                 $userPath = $profile->user_avatar;
-                // Update the user's profile with the new avatar path
+
+
+               // Update the user's profile with the new avatar path
                 $profile->update([
                     'user_avatar' => $path,
                 ]);
@@ -540,7 +561,19 @@ class ProfileController extends Controller
 
                 $companyLogoPath = $profile->company_logo;
                 $file = $request->file('company_logo');
-                $path = $file->store('uploads/company-logos', 'public-storage');
+
+                // Generate new filename
+                $filename = sprintf("%06d", $userID) . '_' . $file->hashName();
+
+                // Check if a file with the new filename already exists and delete it
+                $existingFilePath = 'uploads/company_logos/' . $filename;
+                if (Storage::disk('public-storage')->exists($existingFilePath)) {
+                    Storage::disk('public-storage')->delete($existingFilePath);
+                }
+
+                // Store the file with the new filename
+                $path = $file->storeAs('uploads/company_logos', $filename, 'public-storage');
+
 
                 $url = asset($path);
 
@@ -620,7 +653,14 @@ class ProfileController extends Controller
 
 
             $profile->update($data);
-            
+
+            $userData = $request->validate([
+                'first_name' => 'required|string|max:256',
+                'last_name' => 'required|string|max:256',
+            ]);
+
+            $user = $request->user();
+            $user->update($userData);
         }
         return ['message' =>"Views successfully updated", 'profile' => $profile];
 
@@ -644,5 +684,79 @@ class ProfileController extends Controller
         return ['message' =>"Views successfully updated", 'profile' => $profile];
 
     }
+
+
+    public function changeEmail(Request $request)
+    {
+        $request->validate([
+            'new_email' => 'required|email|unique:users,email',
+        ]);
+    
+        $user = $request->user();
+    
+        // Generate a 6-digit token
+        $token = rand(100000, 999999);
+    
+        // Store the token in the database with a 2-minute expiration
+        DB::table('email_verifications')->insert([
+            'user_id' => $user->id,
+            'new_email' => $request->new_email,
+            'token' => $token,
+            'expires_at' => Carbon::now()->addMinutes(2),
+        ]);
+    
+        // Send the token to the new email
+        Mail::to($request->new_email)->send(new EmailVerificationCode($token));
+    
+        return response()->json(['message' => 'Verification code sent to new email.']);
+    } 
+    
+    
+    public function verifyEmail(Request $request)
+    {
+        $request->validate([
+            'token' => 'required|size:6',
+        ]);
+    
+        $user = $request->user();
+    
+        $verification = DB::table('email_verifications')
+            ->where('user_id', $user->id)
+            ->where('token', $request->token)
+            ->first();
+    
+        if (!$verification) {
+            return response()->json(['message' => 'Invalid verification code.'], 400);
+        }
+    
+        if (Carbon::parse($verification->expires_at)->lt(Carbon::now())) {
+            return response()->json(['message' => 'Verification code has expired.'], 400);
+        }
+    
+        // Update the user's email
+        $user->email = $verification->new_email;
+        $user->save();
+
+        $profile = Profile::where('user_id', $user->id)->first();
+        $contractorProfile = ContractorProfile::where('user_id', $user->id)->first();
+
+        if($profile) {
+            $profile->email = $verification->new_email;
+            $profile->save();
+        }
+
+        if($contractorProfile) {
+            $contractorProfile->email = $verification->new_email;
+            $contractorProfile->save();
+        }
+
+
+
+    
+        // Delete the verification entry
+        DB::table('email_verifications')->where('id', $verification->id)->delete();
+    
+        return response()->json(['message' => 'Email updated successfully.']);
+    }    
             
 }
