@@ -346,15 +346,44 @@ class CommentController extends Controller
         public function getCommentLikes(Comment $comment)
         {
             $likes = $comment->likes()->with('user.profile')->get()->map(function ($like) {
-                return $like->user->profile;
+               // Access the profile from the like
+        $profile = $like->user->profile;
+
+        // Convert the profile's trades to the old structure
+        $profileTrades = $this->convertTradesToOldStructure($profile->trades);
+
+        // Merge the converted trades back into the profile's data
+        $profileData = $profile->toArray(); // Convert the profile to an array
+        $profile = array_merge($profileData,$profileTrades );
+
+        // Return the profile with its trades converted
+        return $profile;
             });
             return response()->json($likes);
         }
-
+        private function convertTradesToOldStructure($trades) 
+        {
+            $oldStructure = [];
+            for ($i = 1; $i <= 30; $i++) {
+                $oldStructure["trade{$i}"] = $trades->contains('id', $i) ? 1 : 0;
+            }
+            return $oldStructure;
+        }
         public function getCommentDislikes(Comment $comment)
         {
             $dislikes = $comment->dislikes()->with('user.profile')->get()->map(function ($dislike) {
-                return $dislike->user->profile;
+                   // Access the profile from the like
+        $profile = $dislike->user->profile;
+
+        // Convert the profile's trades to the old structure
+        $profileTrades = $this->convertTradesToOldStructure($profile->trades);
+
+        // Merge the converted trades back into the profile's data
+        $profileData = $profile->toArray(); // Convert the profile to an array
+        $profile = array_merge($profileData,$profileTrades );
+
+        // Return the profile with its trades converted
+        return $profile;
             });
             return response()->json($dislikes);
         }

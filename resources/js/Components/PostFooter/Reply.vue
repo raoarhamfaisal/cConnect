@@ -32,9 +32,11 @@
             <!-- {{  user }} -->
             {{ reply.first_name + " " + reply.last_name || reply.company_name }}
           </Link>
-          <div class="text-sm" style="white-space: pre-wrap">
-            {{ reply.body }}
-          </div>
+          <div
+            class="text-sm processed-body"
+            v-html="processUrls(reply.body)"
+            style="white-space: pre-wrap"
+          ></div>
         </div>
 
         <!-- action menu -->
@@ -424,16 +426,14 @@ const onOpenListofLikedUsersModel = () => {
 const onOpenListofDislikedUsersModel = () => {
   emit("openDislikedUserModal", true, props.reply.id);
 };
-
-// const handleTouchStart = () => {
-//   if (longPressTimer.value) clearTimeout(longPressTimer.value);
-//   longPressTimer.value = setTimeout(() => {
-//     menuVisible.value = true; // Open the menu
-//   }, 500); // Time in milliseconds
-// };
-// const handleTouchEnd = () => {
-//   if (longPressTimer.value) clearTimeout(longPressTimer.value);
-// };
+const processUrls = (body) => {
+  // Improved regex: capture URLs but stop if a '<' character (start of a potential HTML tag) is encountered
+  const urlRegex = /(https?:\/\/[^<\s]+|www\.[^<\s]+)/g;
+  return body?.replace(urlRegex, function (url) {
+    let actualUrl = url.startsWith("http") ? url : "http://" + url;
+    return `<a @click.self.stop="()=>{}" href="${actualUrl}" target="_blank">${url}</a>`;
+  });
+};
 </script>
 
 <style>

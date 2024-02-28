@@ -82,7 +82,7 @@ const openDialog = () => {
     if (dialogRef.value) {
       dialogRef.value.closeDialog();
     }
-  }, 5000);
+  }, 10000);
 };
 defineExpose({ openDialog });
 </script>

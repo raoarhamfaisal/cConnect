@@ -5,7 +5,6 @@
     bgColor="#fff"
     :padding="screenWidth < 640 ? '7px' : '20px'"
   >
-    <!-- @checkIfNotUpgradeRequired="checkIfNotUpgradeRequired" -->
     <ContractorHeader :contractor="contractor" :region_name="region_name" />
     <div class="flex justify-between gap-2 mt-2 sm:mt-3">
       <!-- left sections -->
@@ -495,10 +494,16 @@ const contractorSelectedDisplayChoiceButtons = ref([
 ]);
 
 const selectedDisplayContractorButton = ref(
-  props.contractor?.preference_status
+  userVersion.value !== 1 ? props.contractor?.preference_status : ""
 );
 
 const toggleButton = async (value) => {
+  if (userVersion.value === 1) {
+    store.commit("setGoldOrPlatinum", true);
+
+    store.commit("setIsUpgradeToGoldPlatinumDialogOpen", true);
+    return;
+  }
   if (selectedDisplayContractorButton.value === value) {
     selectedDisplayContractorButton.value = ""; // deselect the button
   } else {

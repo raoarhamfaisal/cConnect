@@ -9,7 +9,7 @@ import { Icon } from "@iconify/vue";
 import Avatar from "@/Components/Ratings/Avatar.vue";
 import { Inertia } from "@inertiajs/inertia";
 import { removeToken } from "@/helpers/localStorageHelper";
-// import DialogContractorPage from "@/Pages/Contractor/DialogContractorPage.vue";
+
 import { useStore } from "vuex";
 const props = defineProps({
   showit: Boolean,
@@ -128,7 +128,6 @@ const goToRedFlagPage = () => {
 
 <template>
   <DialogProfileTabs ref="dialogRef" :profile="profile" />
-  <!-- <DialogContractorPage ref="contractorPageRef" :profile="profile" /> -->
 
   <!-- MAIN SIDE MENU  SELECTION CHOICES ONLY -->
   <!-- ******************************************************* -->

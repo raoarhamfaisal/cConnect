@@ -50,26 +50,11 @@ export default {
   },
 
   mounted() {
+    this.getRegions();
     localStorage.setItem("prevUrl", "/post");
     setTimeout(() => {
-      const observerCallback = (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            this.loadMorePosts();
-          }
-        });
-      };
-
-      const observer = new IntersectionObserver(observerCallback, {
-        rootMargin: "0px 0px 0px 0px",
-        threshold: 0,
-      });
-
-      this.$nextTick(() => {
-        if (this.$refs.loadMoreIntersectPosts) {
-          observer.observe(this.$refs.loadMoreIntersectPosts);
-        }
-      });
+      const newFeed = this.$refs.postingsRef;
+      newFeed.addEventListener("scroll", this.handleScroll.bind(this));
     }, 1000);
     this.fetchColors();
 
@@ -109,7 +94,7 @@ export default {
 
           this.allPosts[index].dislikes_count = data.dislikesCount;
 
-          this.allPosts[index].your_reaction = data.userReaction;
+          // this.allPosts[index].your_reaction = data.userReaction;
 
           if (this.postDisplayEnlarged) {
             this.postToEnlarge = this.allPosts[index];
@@ -342,6 +327,19 @@ export default {
   },
   methods: {
     ...mapActions(["fetchUserDetails"]),
+    ...mapActions("ratings", ["getRegions"]),
+    handleScroll() {
+      const lastPost = this.$refs.loadingPostsRef[0];
+
+      if (lastPost) {
+        const headerTop = lastPost.getBoundingClientRect().top;
+        if (headerTop <= 100) {
+          if (!this.loadingPosts) {
+            this.loadMorePosts();
+          }
+        }
+      }
+    },
     onRepostEdit(repostedComment, postId) {
       const postIndex = this.allPosts.findIndex((post) => post.id === postId);
       this.allPosts[postIndex].repost_comment = repostedComment;
@@ -550,6 +548,7 @@ export default {
       <!-- FULL POST WRAPPER News Feed -->
       <div
         class="flex flex-col w-full items-center justify-start px-2 lg:max-h-screen lg:overflow-y-auto h-screen pb-8"
+        ref="postingsRef"
       >
         <!-- back page -->
         <div v-if="contractor_id" class="self-start w-full mt-6 px-2">
@@ -639,6 +638,7 @@ export default {
             id="scrollPost"
             :key="post.id"
             class="relative mx-auto w-full py-0"
+            :ref="index === postsToShow.length - 1 ? 'loadingPostsRef' : ''"
           >
             <!-- INDIVIDUAL POST DISPLAY WITH MENUS -->
             <PostDisplay
@@ -657,54 +657,11 @@ export default {
             </PostDisplay>
           </div>
 
-          <!-- v-for="post in allPosts" -->
-          <!-- ------------------------------------------- -->
-
-          <!-- Makes call to load more posts calling the script
-                             observer.observe(this.$refs.loadMoreIntersectPosts) -->
-          <!-- <div ref="loadMoreIntersectPosts" style="width: 5px; height: 5px" />
-        <Loader
-          classes="flex gap-2"
-          :loading="loadingPosts"
-          circleClasses="small-circle"
-          textClasses="small-text"
-          background="#ccc"
-          height="70px"
-          ></Loader>
-          <AppSpinner v-show="loadingPosts" :showSpinText="true">
-          <div class="px-5 text-gray-300 mb-8">LOADING MORE POSTS!</div>
-        </AppSpinner> -->
-
-          <!-- Makes call to load more posts calling the script
-                             observer.observe(this.$refs.loadMoreIntersectPosts) -->
-          <span
-            ref="loadMoreIntersectPosts"
-            style="width: 5px; height: 5px"
-          ></span>
-
-          <!-- {{ posts.next_page_url }} -->
-
-          <!-- <AppSpinner v-show="posts.next_page_url" :showSpinText="true">
-          <div class="px-5 text-gray-300 mb-8 mt-8">LOADING MORE POSTS!</div>
-        </AppSpinner> -->
-
           <div
-            v-show="posts.next_page_url"
+            v-show="loadingPosts"
             class="flex mb-8 mt-8"
             style="height: 250px; justify-content: center; align-items: center"
           >
-            <!-- <Loader
-            classes="flex gap-2"
-            :loading="loadingPosts"
-            circleClasses="small-circle"
-            textClasses="small-text"
-            background="transparent"
-            height="70px"
-            ></Loader> -->
-
-            <!-- <AppSpinner :showSpinText="true">
-            <div class="px-5 text-gray-300 mb-8 mt-8">LOADING MORE POSTS!</div>
-          </AppSpinner> -->
             <div class="loader"></div>
             <div class="px-5 text-gray-300">LOADING MORE POSTS!</div>
           </div>

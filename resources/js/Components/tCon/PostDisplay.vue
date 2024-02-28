@@ -360,7 +360,7 @@ export default {
           this.repost_count = this.post.repost;
           this.likes_count = this.post.likes_count;
           this.dislikes_count = this.post.dislikes_count;
-          this.your_reaction = this.post.your_reaction;
+          // this.your_reaction = this.post.your_reaction;
         }
       },
       deep: true,
@@ -819,6 +819,7 @@ export default {
       if (this.userVersion !== 1) {
         this.$refs.repostDialogRef.openDialog();
       } else {
+        this.$store.commit("setGoldOrPlatinum", true);
         this.$store.commit("setIsUpgradeToGoldPlatinumDialogOpen", true);
       }
     },
