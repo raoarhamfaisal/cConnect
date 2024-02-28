@@ -16,6 +16,69 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+
+
+        \App\Models\ContractorImageSectionsDefault::create([
+            'first_title_text' => "Default Title Text",
+            'first_title_image' => "/uploads/default-images/blank-image-1.jpg",
+            'second_title_text' => "Default Title Text 2",
+            'second_title_image' => "/uploads/default-images/blank-image-2.jpg",
+            'brag1_text' => "Default Brag Text",
+            'brag1_image' => "/uploads/default-images/blank-image-1.jpg",
+            'brag2_text' => "Default Brag Text 2",
+            'brag2_image' => "/uploads/default-images/blank-image-2.jpg",
+        ]);
+
+        \App\Models\Template::create([
+            'name' => 'Template 1'
+        ]);
+
+        \App\Models\Template::create([
+            'name' => 'Template 2'
+        ]);
+
+        \App\Models\Template::create([
+            'name' => 'Template 3'
+        ]);
+
+        \App\Models\Template::create([
+            'name' => 'Template 4'
+        ]);
+
+        \App\Models\Template::create([
+            'name' => 'Template 5'
+        ]);
+
+        \App\Models\ColorScheme::create([
+            'name' => 'Color Scheme 1',
+            'primary_color' => '#000',
+            'secondary_color' => '#fff'
+        ]);
+
+        \App\Models\ColorScheme::create([
+            'name' => 'Color Scheme 2',
+            'primary_color' => '#000',
+            'secondary_color' => '#fff'
+        ]);
+
+        \App\Models\ColorScheme::create([
+            'name' => 'Color Scheme 3',
+            'primary_color' => '#000',
+            'secondary_color' => '#fff'
+        ]);
+
+        \App\Models\ColorScheme::create([
+            'name' => 'Color Scheme 4',
+            'primary_color' => '#000',
+            'secondary_color' => '#fff'
+        ]);
+        \App\Models\ColorScheme::create([
+            'name' => 'Color Scheme 5',
+            'primary_color' => '#000',
+            'secondary_color' => '#fff'
+        ]);
+
+
         $this->call([
             RegionSeeder::class,
             TradeSeeder::class,
@@ -41,6 +104,7 @@ class DatabaseSeeder extends Seeder
             'users_privileges' => 1,
             'payments_privileges' => 1
         ]);
+
 
 
         $profile = \App\Models\Profile::factory()->create([

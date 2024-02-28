@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('region_id')->nullable();
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('template_id')->nullable();
+            $table->unsignedBigInteger('color_scheme_id')->nullable();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('company_name')->nullable();
@@ -44,6 +46,8 @@ return new class extends Migration
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('region_id')->references('id')->on('regions');
+            $table->foreign('template_id')->references('id')->on('templates');
+            $table->foreign('color_scheme_id')->references('id')->on('color_schemes');
         });
     }
 
