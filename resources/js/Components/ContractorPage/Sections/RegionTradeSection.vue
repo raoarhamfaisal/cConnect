@@ -113,7 +113,7 @@
           :modelValue="selectedReferal"
           @update:modelValue="changeReferal"
         />
-        <!-- <InputError class="mt-2" :message="$page.props.errors.region_id" /> -->
+        <InputError class="mt-2" :message="errors.region_id" />
       </div>
       <div class="mb-4 sm:mb-0 mt-4">
         <InputLabel class="font-bold mb-3" value="Trades" />
@@ -145,7 +145,6 @@
             </div>
           </div>
         </div>
-        <!-- <InputError class="mt-2" :message="$page.props.errors.trades" /> -->
       </div>
     </CustomDialog>
   </Card>
@@ -182,11 +181,15 @@ const props = defineProps({
 });
 const store = useStore();
 const referenceList = ref([]);
-const region_name = ref(props.region_name);
+const region_name = ref(props.region_name ?? "");
 const selectedReferal = ref(region_name.value);
 const dialogRef = ref();
 const loadingDialog = ref(false);
 const disabled = ref(false);
+
+const errors = reactive({
+  region_id: "",
+});
 
 const tradesPost = reactive({
   trade1: props.profile.trade1,
@@ -272,15 +275,22 @@ const openDialog = () => {
 
 const changeReferal = (value) => {
   selectedReferal.value = value;
-  console.log(value);
+  clearError("region_id");
+
   // regions.forEach((item) => {
   //   if (value === item.name) {
   //     this.form.region_id = item.id.toString();
   //   }
   // });
 };
+
+const clearError = (field) => {
+  if (selectedReferal.value) {
+    errors[field] = "";
+  }
+};
+
 const handleSubmit = async () => {
-  console.log(selectedReferal.value, tempTradesPost, "onsubmitchanges");
   let region_id = null; // Initialize with a default value
 
   regions.value.forEach((r) => {
@@ -303,6 +313,10 @@ const handleSubmit = async () => {
       const number = parseInt(key.replace("trade", ""));
       resultArray.push(number);
     }
+  }
+  if (!region_id) {
+    errors.region_id = "Region is Required";
+    return;
   }
   const payload = {
     region_id: region_id,

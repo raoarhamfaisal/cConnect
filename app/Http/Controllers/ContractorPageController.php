@@ -153,11 +153,11 @@ class ContractorPageController extends Controller
         }
 
 
-        if ($userID) {
-            $profile = Profile::where('user_id', $userID)->first();
-            $profileTrades = $this->convertTradesToOldStructure($profile->trades);
-            $profile = array_merge($profile->toArray(), $profileTrades);
-        }
+        // if ($userID) {
+        //     $profile = Profile::where('user_id', $userID)->first();
+        //     $profileTrades = $this->convertTradesToOldStructure($profile->trades);
+        //     $profile = array_merge($profile->toArray(), $profileTrades);
+        // }
 
         $allReviews = Review::where('contractor_id', $contractor_id)->where('is_review_active', 1)->get();
         $totalReviews = Review::where('contractor_id', $contractor_id)
@@ -175,7 +175,7 @@ class ContractorPageController extends Controller
         // dd($contractorProfile);
 
         return response()->json([
-            'profile' => $profile,
+            // 'profile' => $profile,
             'contractorProfile' => $contractorProfile,
             'showit' => Auth::check(),
             'postSearchFilters' => FacadeRequest::only(['postSearch']),

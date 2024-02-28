@@ -17,15 +17,16 @@ export const filterBadWords = (textRef) => {
 
 export const changesSaved = (
   notificationMessage = "Changes Successfully Saved!",
-  changeWidth = 300
+  changeWidth = 300,
+  timer = 2000
 ) => {
   Swal.fire({
     background: "#E6F5E9",
-    html: `<div class="flex items-center flex-col justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 50 50"><path fill="#4B908C" d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17s-7.6 17-17 17zm0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15s15-6.7 15-15s-6.7-15-15-15z"/><path fill="#4B908C" d="m23 32.4l-8.7-8.7l1.4-1.4l7.3 7.3l11.3-11.3l1.4 1.4z"/></svg><div style="color:#4B908C; font-family: Inter, sans-serif; font-weight:normal;white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" class="text-sm pb-2">${notificationMessage}</div></div>`,
+    html: `<div class="flex items-center flex-col justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 50 50"><path fill="#4B908C" d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17s-7.6 17-17 17zm0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15s15-6.7 15-15s-6.7-15-15-15z"/><path fill="#4B908C" d="m23 32.4l-8.7-8.7l1.4-1.4l7.3 7.3l11.3-11.3l1.4 1.4z"/></svg><div style="color:#4B908C; font-family: Inter, sans-serif; font-weight:normal; overflow: hidden; text-overflow: ellipsis;" class="text-sm pb-2">${notificationMessage}</div></div>`,
     // html: `<i class="fas fa-check fa-lg" style="color:#4B908C"></i> `,
     position: "top-end",
     showConfirmButton: false,
-    timer: 2000,
+    timer: timer,
     width: changeWidth,
     padding: 10,
   });

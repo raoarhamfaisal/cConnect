@@ -19,8 +19,7 @@ import { store } from "@/store/index.js";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
 import "./main.scss";
 // import "vuetify/styles"; // Might want to reconsider this if you only want to import styles from specific components
-import { createVuetify } from "vuetify";
-import * as components from "vuetify/components"; // Import only VTabs and VTab
+import { createVuetify } from "vuetify"; // Import only VTabs and VTab
 import * as directives from "vuetify/directives"; // You might want to fine-tune this as well
 
 const vuetify = createVuetify({
@@ -35,7 +34,6 @@ const vuetify = createVuetify({
     VStepperItem,
     VDivider,
   },
-  components,
   directives,
 });
 
