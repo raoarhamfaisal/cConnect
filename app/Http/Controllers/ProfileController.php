@@ -21,6 +21,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\EmailVerificationCode;
 
+
 class ProfileController extends Controller
 {
     /**
@@ -665,6 +666,62 @@ class ProfileController extends Controller
         return ['message' =>"Views successfully updated", 'profile' => $profile];
 
     }
+
+
+
+    public function updateBasicInfoForProfileSetup(Request $request)
+    {
+        // Get current user id
+        $userID = Auth()->user('')->id;
+        $profile = null;
+
+        // Get the profile information if the user id exists
+        if($userID) {
+            $profile = Profile::where('user_id', $userID)->first();
+            $contractorProfile = ContractorProfile::where('user_id', $userID)->first();
+        }
+
+
+        if($profile) {
+
+            $data = $request->validate([
+                'first_name' => 'required|string|max:256',
+                'last_name' => 'required|string|max:256',
+                'phone_cell' => 'required|string',
+                'company_name' => 'required|string',
+                'phone_office' => 'nullable|string',
+                'region_id' => 'required|string',
+                'address_1' => 'required|string',
+                'address_2' => 'nullable|string',
+                'city' => 'required|string',
+                'state' => 'required|string',
+                'zipcode' => 'required|string',
+                'county' => 'required|string',
+
+                'website_url' => 'nullable|string',
+                'facebook' => 'nullable|string',
+                'twitter' => 'nullable|string',
+                'tiktok' => 'nullable|string',
+                'instagram' => 'nullable|string'
+            ]);
+
+
+            $profile->update($data);
+            $contractorProfile->update($data);
+
+
+            $userData = $request->validate([
+                'first_name' => 'required|string|max:256',
+                'last_name' => 'required|string|max:256',
+            ]);
+
+            $user = $request->user();
+            $user->update($userData);
+        }
+        return ['message' =>"Views successfully updated", 'profile' => $profile];
+
+    }
+
 
 
     public function verifyPayment(Request $request)

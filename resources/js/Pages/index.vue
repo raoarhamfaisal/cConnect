@@ -346,7 +346,11 @@ const submit = () => {
 
           <Link
             class="group flex items-center justify-between rounded-xl border border-red-500 bg-red-500 px-5 py-3 mt-8 transition-colors hover:bg-red-800 focus:outline-none focus:ring"
-            :href="route('signup')"
+            :href="
+              profile && profile.is_payment_verified
+                ? route('signup')
+                : '/profile-setup'
+            "
           >
             <span
               class="text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500"
@@ -519,7 +523,11 @@ const submit = () => {
             <!-- Button Flex Item -->
             <div class="flex justify-center items-end">
               <Link
-                :href="route('signup')"
+                :href="
+                  profile && profile.is_payment_verified
+                    ? route('signup')
+                    : '/profile-setup'
+                "
                 class="p-3 px-6 pt-2 text-red bg-white rounded-lg border-white border-spacing-3 shadow-2xl shadow-black align-baseline hover:text-white hover:bg-blue-30-rgba"
                 >Get Started
               </Link>
@@ -598,7 +606,11 @@ const submit = () => {
           <div v-if="!showit" class="flex justify-center space-x-3">
             <Link
               class="group flex items-center justify-between rounded-xl border border-red-500 bg-red-500 px-5 py-3 mt-8 transition-colors hover:bg-red-800 focus:outline-none focus:ring"
-              :href="route('signup')"
+              :href="
+                  profile && profile.is_payment_verified
+                    ? route('signup')
+                    : '/profile-setup'
+                "
             >
               <span
                 class="text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500"

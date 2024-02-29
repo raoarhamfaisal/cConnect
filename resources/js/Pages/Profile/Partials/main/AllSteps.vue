@@ -227,7 +227,7 @@ const nextClick = async () => {
           form[prop] = form[prop].replace(/^https?:\/\//, "");
         }
       });
-      await store.dispatch("profile/updateProfileGeneralInfo", {
+      await store.dispatch("profile/updateProfileGeneralInfoForProfileSetup", {
         form: form,
         showSuccess: false,
       });

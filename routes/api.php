@@ -69,6 +69,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         Route::get('/profile', [ProfileController::class, 'getProfile'])->name('profile.getProfile');
         Route::patch('/profile/trades', [ProfileController::class, 'updateTrades'])->name('profile.updateTrades');
         Route::patch('/profile/views', [ProfileController::class, 'updateViews'])->name('profile.updateViews');
+        Route::patch('/profile/all-basic-info-for-profile-setup', [ProfileController::class, 'updateBasicInfoForProfileSetup'])->name('profile.updateBasicInfoForProfileSetup');
         Route::patch('/profile/all-basic-info', [ProfileController::class, 'updateBasicInfo'])->name('profile.updateBasicInfo');
         Route::patch('/profile/verify-payment', [ProfileController::class, 'verifyPayment'])->name('profile.verifyPayment');
         
@@ -115,3 +116,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
             Route::get('/admin/responses/{id}/history', [ContractorRatingsAdminController::class, 'responsesHistory']);
     });
 });
+
+
+    
