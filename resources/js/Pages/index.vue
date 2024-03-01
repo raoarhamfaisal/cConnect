@@ -650,6 +650,9 @@ const goToRedFlagPage = (event) => {
                 <ResponsiveNavLink href="/pricing#faqs" as="button">
                   {{ translations && translations.faqs }}
                 </ResponsiveNavLink>
+                <ResponsiveNavLink href="/gomobile" as="button">
+                  {{ translations && translations.go_mobile }}
+                </ResponsiveNavLink>
                 <div
                   v-if="isAdminUrl && showit"
                   class="pt-2 pb-2 space-y-1 border-b-2 border-t-2 border-gray-400"
@@ -1157,6 +1160,9 @@ const goToRedFlagPage = (event) => {
             >
             <a href="/privacy-policy" class="hover:text-blue-400">
               {{ translations && translations.privacy_policy }}</a
+            >
+            <a href="/gomobile" class="hover:text-blue-400">
+              {{ translations && translations.go_mobile }}</a
             >
           </div>
         </div>

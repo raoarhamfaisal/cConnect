@@ -74,6 +74,9 @@
           <a href="/privacy-policy" class="hover:text-blue-400">
             {{ translations && translations.privacy_policy }}</a
           >
+          <a href="/gomobile" class="hover:text-blue-400">
+            {{ translations && translations.go_mobile }}</a
+          >
         </div>
       </div>
 

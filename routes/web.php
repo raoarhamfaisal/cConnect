@@ -50,6 +50,11 @@ Route::get('/pricing', function () {
         'showit' => Auth::check(),
     ]);
 });
+Route::get('/gomobile', function () {
+    return Inertia::render('GoMobilePage', [
+        'showit' => Auth::check(),
+    ]);
+});
 Route::get('/terms-of-service', function () {
     return Inertia::render('TermsAndServices', [
         'showit' => Auth::check(),

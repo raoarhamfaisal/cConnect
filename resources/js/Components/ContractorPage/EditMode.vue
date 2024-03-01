@@ -1,5 +1,5 @@
 <template>
-  <div v-if="profile">
+  <div v-if="profile && translations && Object.keys(translations).length > 0">
     <div class="flex flex-col gap-3 sm:gap-4">
       <ProfileHeaderEdit
         :screenWidth="screenWidth"
@@ -55,7 +55,7 @@
           :starPercentages="starPercentages"
           :length="total_reviews"
           class="mb-6"
-          :contractorId="profile.id"
+          :contractorId="profile.user_id"
         />
       </Card>
       <SocialLinksSectionEdit :screenWidth="screenWidth" :profile="profile" />

@@ -19,7 +19,7 @@ import { mapGetters } from "vuex";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import DialogContractorRating from "@/Components/Ratings/Contractor/DialogContractorRating.vue";
 
-import TwoVisibleComments from "@/Components/PostFooter/TwoVisibleComments.vue";
+import ThreeVisibleComments from "@/Components/PostFooter/ThreeVisibleComments.vue";
 
 import { Icon } from "@iconify/vue";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
@@ -29,7 +29,7 @@ import InputError from "@/Components/InputError.vue";
 
 export default {
   components: {
-    TwoVisibleComments,
+    ThreeVisibleComments,
     tContractorWord,
     ButtonPost,
     ButtonRefresh,
@@ -160,8 +160,8 @@ export default {
     ]),
     ...mapGetters("ratings", ["comment"]),
     ...mapGetters(["translations", "userVersion"]),
-    firstTwoComments() {
-      return this.allComments.slice(0, 2);
+    firstThreeComments() {
+      return this.allComments.slice(0, 3);
     },
     toggleClass() {
       return `cursor-pointer ${
@@ -341,6 +341,21 @@ export default {
     //   handler: "checkContentHeight",
     //   deep: true,
     // },
+    "post.body1"(newValue, oldValue) {
+      if (newValue != oldValue) {
+        console.log("body 1 called");
+        setTimeout(() => {
+          this.checkContentHeight();
+        }, 100);
+      }
+    },
+    "post.body2"(newValue, oldValue) {
+      if (newValue != oldValue) {
+        setTimeout(() => {
+          this.checkContentHeightBody2();
+        }, 100);
+      }
+    },
     commentText(newVal) {
       if (newVal) {
         this.commentTextError = "";
@@ -659,7 +674,8 @@ export default {
       const maxHeight = this.lineHeight * 4;
 
       this.isContentOverflow =
-        textElement.offsetHeight || textElement.scrollHeight > maxHeight;
+        textElement.offsetHeight > maxHeight ||
+        textElement.scrollHeight > maxHeight;
     },
     checkContentHeightBody2() {
       const textElementBody2 = this.$refs.textElementBody2;
@@ -672,7 +688,7 @@ export default {
       );
       const maxHeight = this.lineHeightBody2 * 4;
       this.isContentOverflowBody2 =
-        textElementBody2.offsetHeight ||
+        textElementBody2.offsetHeight > maxHeight ||
         textElementBody2.scrollHeight > maxHeight;
     },
 
@@ -1101,13 +1117,14 @@ export default {
                 {{ post.total_reviews }}
               </h2>
             </div>
+            <div class="mt-[-2px] text-[11px] xs:text-xs sm:text-sm">{{}}</div>
           </div>
         </div>
 
         <!-- RIGHT SIDE --- POST ACTION MENU
                                 & time since posting -->
         <div
-          class="flex flex-col flex-initial flex-nowrap justify-center items-center mr-3"
+          class="flex flex-col flex-initial flex-nowrap justify-center items-center sx:mr-3"
         >
           <!-- POST MENU -->
           <!-- <div class="">
@@ -1128,7 +1145,7 @@ export default {
           >
             <button
               @click="NavPostingActionMenu"
-              class="inline-flex items-center justify-center p-2 rounded-md text-black hover:text-gray-500 hover:bg-gray-100 dfocus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
+              class="inline-flex items-center justify-center pl-0 py-2 pr-2 sx:p-2 rounded-md text-black hover:text-gray-500 hover:bg-gray-100 dfocus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
             >
               <svg
                 class="h-6 w-6"
@@ -1454,36 +1471,15 @@ export default {
           </div>
         </div>
       </div>
-
-      <!-- Shares -->
-      <!-- <div class="">
-        <Link
-          href="#"
-          class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
-        >
-          <div class="flex flex-row justify-between items-center">
-            <div class="">
-              <img
-                src="/images/icons/share_out_icon.png"
-                width="20"
-                height="17"
-              />
-            </div>
-            <div class="pl-1">
-              {{ post.shares }}
-            </div>
-          </div>
-        </Link>
-      </div> -->
     </div>
 
     <div :class="`mb-2 border-[1px] w-full border-gray-300 rounded`"></div>
     <div class="flex flex-col gap-1 sm:gap-2 w-full">
-      <TwoVisibleComments
+      <ThreeVisibleComments
         :loadingComments="loadingComments"
         @openAllComments="onOpenCommentsModal"
         @unshiftIntoComments="onAddingComment"
-        :comments="firstTwoComments"
+        :comments="firstThreeComments"
         :length="allComments.length"
         :postId="post.id"
       />

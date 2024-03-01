@@ -39,8 +39,7 @@
             href="/about-us#contactUs"
             class="hidden lg:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8"
             :class="`${
-              url === 'http://0.0.0.0/about-us#contactUs' &&
-              'bg-gray-300 rounded'
+              url === 'http://0.0.0.0/about-us#contactUs' && ' rounded'
             }`"
           >
             {{ translations && translations.contact_us }}
@@ -364,6 +363,9 @@
               </ResponsiveNavLink>
               <ResponsiveNavLink href="/pricing#faqs" as="button">
                 {{ translations && translations.faqs }}
+              </ResponsiveNavLink>
+              <ResponsiveNavLink href="/gomobile" as="button">
+                {{ translations && translations.go_mobile }}
               </ResponsiveNavLink>
               <div
                 v-if="isAdminUrl && showit"

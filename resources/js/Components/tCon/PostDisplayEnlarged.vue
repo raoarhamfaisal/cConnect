@@ -63,6 +63,7 @@ export default {
       commentText: "",
       repostDialogRef: null,
       customBgColor: "",
+      isPostEnlarged: false,
       postToEnlarge: this.postEnlarged,
       added: false,
       text_alignment: "left",
@@ -92,12 +93,20 @@ export default {
     };
   },
   mounted() {
-    // Remove PostingActionMenu upon scroll
-    // ERROR ONLY WORKS IN MOBILE BECAUSE LOOKING AT WINDOW140
+    if (this.goToComments) {
+      setTimeout(() => {
+        this.$refs.allCommentsRef.$el.scrollIntoView({
+          behavior: "instant",
+          block: "end",
+          inline: "end",
+        });
+        this.$store.commit("setGoToComments", false);
+      }, 0);
+    }
     this.fetchAllComments();
   },
   computed: {
-    ...mapGetters(["screenWidth"]),
+    ...mapGetters(["screenWidth", "goToComments"]),
     ...mapGetters("profile", [
       "commentId",
       "postComment",
@@ -1255,6 +1264,7 @@ export default {
 
         <div :class="`mb-2 border-[1px] w-full border-gray-300 rounded`"></div>
         <AllComments
+          ref="allCommentsRef"
           v-model:modelValue="allComments"
           :loadingComments="loadingComments"
           v-model:addedNumber="addedNumber"

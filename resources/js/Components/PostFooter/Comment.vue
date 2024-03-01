@@ -189,12 +189,14 @@
     <Icon icon="bi:arrow-return-right" />
     <div class="font-bold text-sm cursor-pointer">
       {{ translations && translations.view }}
-      {{ comment.replies?.length > 1 ? comment.replies.length : "" }}
-      {{
+      {{ comment.replies.length }}
+      {{ translations && translations.replies }}
+      <!-- {{ comment.replies?.length > 1 ? comment.replies.length : "" }} -->
+      <!-- {{
         comment.replies?.length === 1
           ? translations && translations.reply
           : translations && translations.replies
-      }}
+      }} -->
     </div>
   </div>
   <div
