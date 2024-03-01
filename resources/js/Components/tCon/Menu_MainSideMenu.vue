@@ -9,6 +9,7 @@ import { Icon } from "@iconify/vue";
 import Avatar from "@/Components/Ratings/Avatar.vue";
 import { Inertia } from "@inertiajs/inertia";
 import { removeToken } from "@/helpers/localStorageHelper";
+import DialogContractorPage from "@/Pages/Contractor/DialogContractorPage.vue";
 import { useStore } from "vuex";
 const props = defineProps({
   showit: Boolean,
@@ -34,6 +35,8 @@ const emit = defineEmits([
 ]);
 const store = useStore();
 const dialogRef = ref();
+const contractorPageRef = ref();
+const showContractorPageModal = ref(false);
 
 const newPostSearchValue = () => {
   emit("submitPostSearch");
@@ -85,10 +88,14 @@ const truncatedName = computed(() => {
     (props.profile.last_name ? props.profile.last_name : "");
   return fullName.length < 27 ? fullName : fullName.substring(0, 23) + "...";
 });
+const openContractorPageModal = () => {
+  contractorPageRef.value.openDialog();
+};
 </script>
 
 <template>
   <DialogProfileTabs ref="dialogRef" :profile="profile" />
+  <DialogContractorPage ref="contractorPageRef" :profile="profile" />
 
   <!-- MAIN SIDE MENU  SELECTION CHOICES ONLY -->
   <!-- ******************************************************* -->
@@ -272,9 +279,9 @@ const truncatedName = computed(() => {
           </Link>
 
           <!-- CONTRACTOR PAGE -->
-          <Link
+          <button
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
-            :href="`/contractor/${profile.id}?mode=edit`"
+            @click="openContractorPageModal"
           >
             <img
               src="/images/icons/contractorpage_b.png"
@@ -282,7 +289,7 @@ const truncatedName = computed(() => {
               height="30"
             />
             <span class="mx-4 font-medium">Contractor page</span>
-          </Link>
+          </button>
 
           <hr class="mt-4 ml-6 mr-6 pt-4 pb-1 border-t-2 border-gray-400" />
 

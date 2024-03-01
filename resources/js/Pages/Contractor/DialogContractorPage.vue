@@ -1,12 +1,10 @@
 <template>
-  <Head title="Contractor Page" />
-
-  <Header
-    :profile="profile"
-    :post-search-filters="postSearchFilters"
-    :showit="showit"
-    :show-post-buttons="true"
-    color="rgb(229 231 235 / var(--tw-bg-opacity))"
+  <CustomContractorPageDialog
+    ref="dialogRef"
+    :showFooter="false"
+    dialogWidth="width-75"
+    title="Contractor Page"
+    contentClasses="bg-gray-200 pt-6"
   >
     <ContractorLayout
       v-if="!loading"
@@ -17,38 +15,29 @@
       :region_name="region_name"
     />
     <Loader :loading="loading" background="transparent" height="70vh"></Loader>
-  </Header>
+  </CustomContractorPageDialog>
 </template>
 
 <script setup>
-import Header from "@/Layouts/Header.vue";
 import Loader from "@/Components/Ratings/Loader.vue";
+import CustomContractorPageDialog from "@/Pages/Contractor/CustomContractorPageDialog.vue";
 import ContractorLayout from "@/Components/ContractorPage/ContractorLayout.vue";
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { somethingWentWrong } from "@/helpers/utilities";
 
 // State
 const { profile } = defineProps({
   profile: Object,
-  region_name: String,
-  showit: Boolean,
-  postSearchFilters: {
-    type: Object,
-    default: () => ({
-      postSearch: "",
-    }),
-  },
 });
 const loading = ref(false);
+const dialogRef = ref();
 const starPercentages = ref([]);
 const average_rating = ref(null);
 const contractorProfile = ref({});
+const region_name = ref("");
 const total_reviews = ref(0);
 
-onMounted(() => {
-  fetchContractorDetails();
-});
 const fetchContractorDetails = async () => {
   loading.value = true;
   try {
@@ -59,7 +48,9 @@ const fetchContractorDetails = async () => {
     if (response.data) {
       contractorProfile.value = response.data.contractorProfile;
       average_rating.value = response.data.average_rating;
+      region_name.value = response.data.region_name;
       total_reviews.value = response.data.total_reviews;
+
       // Extracting the star counts
       const {
         five_stars_count,
@@ -91,5 +82,11 @@ const fetchContractorDetails = async () => {
     loading.value = false;
   }
 };
+
+// Expose
+const openDialog = () => {
+  dialogRef.value.openDialog();
+  fetchContractorDetails();
+};
+defineExpose({ openDialog });
 </script>
-<!-- :href="`/contractor/${profile.id}" -->

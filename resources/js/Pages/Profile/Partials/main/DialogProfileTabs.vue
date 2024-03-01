@@ -14,8 +14,8 @@
     </div>
   </CustomDialog>
 </template>
-  
-  <script setup>
+
+<script setup>
 import Views from "@/Pages/Profile/Partials/Views.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import Loader from "@/Components/Ratings/Loader.vue";
@@ -30,12 +30,12 @@ const store = useStore();
 const dialogRef = ref();
 const loading = computed(() => store.getters["profile/loading"]);
 
+//Exposed
 const openDialog = () => {
   store.dispatch("profile/getProfileInfo");
   return dialogRef.value.openDialog();
 };
 defineExpose({ openDialog });
 </script>
-  
-  <style>
-</style>
+
+<style></style>

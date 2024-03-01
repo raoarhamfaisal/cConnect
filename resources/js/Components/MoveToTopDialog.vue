@@ -60,8 +60,8 @@ const handleScroll = () => {
 /* Style for the scroll to top button */
 .scroll-to-top {
   position: fixed;
-  bottom: 40px;
-  right: 100px;
+  bottom: 60px;
+  right: 13%;
   z-index: 20;
   background-color: white;
   color: white;
@@ -77,6 +77,12 @@ const handleScroll = () => {
   .scroll-to-top {
     bottom: 20px;
     right: 20px;
+  }
+}
+@media (max-width: 1024px) {
+  .scroll-to-top {
+    bottom: 30px;
+    right: 30px;
   }
 }
 
