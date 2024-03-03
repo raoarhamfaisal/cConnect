@@ -1,6 +1,6 @@
 <template>
   <div v-if="profile">
-    <div class="flex flex-col gap-3 sm:gap-4">
+    <div class="flex flex-col gap-3 sm:gap-4 closing">
       <ProfileHeaderEdit
         :screenWidth="screenWidth"
         :averageRating="average_rating"
@@ -73,13 +73,14 @@
             :contractor-id="profile.id"
             :screen-width="screenWidth"
           />
+
           <!-- bottom text show -->
           <div
             v-if="bottomText"
             :class="`mt-1 flex gap-1 flex-col border-gray-300 border-2 p-3   rounded-lg`"
           >
             <div class="flex justify-between">
-              <div class="flex items-center font-bold text-lg">
+              <div class="flex text-blue-rgba items-center font-bold text-xl">
                 About Us - Why You Should Work For or Hire Us
               </div>
               <IconButton
@@ -88,7 +89,7 @@
                 color="#1864ab"
               />
             </div>
-            <div class="flex-1 flex sm:items-center">{{ bottomText }}</div>
+            <div v-html="bottomText"></div>
           </div>
           <ClosingTitleTextEdit
             :closing_text="profile.closing_text"
@@ -98,6 +99,7 @@
       </Card>
     </div>
   </div>
+
   <CustomDialog
     submitText="Save"
     :loading="loading"
@@ -107,22 +109,25 @@
     ref="dialogRef"
     title="Add Bottom Text"
   >
-    <!-- Textarea -->
-    <textarea
-      v-model="bottomTextTemp"
-      type="text"
-      :rows="5"
-      class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-      placeholder="Type your Bottom title description..."
-    ></textarea>
+    <div class="closing">
+      <ckeditor
+        :editor="editor"
+        v-model="editorData"
+        :config="editorConfig"
+      ></ckeditor>
+    </div>
   </CustomDialog>
 </template>
 
 <script setup>
 import AverageRating from "@/Components/Ratings/Contractor/PartialsVisiting/AverageRating.vue";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+
 import Card from "@/Components/Card.vue";
 
 import ProfileHeaderEdit from "@/Components/ContractorPage/Sections/Edit/ProfileHeaderEdit.vue";
+
+import MyEditor from "@/Components/ContractorPage/Sections/Edit/MyEditor.vue";
 import RegionTradeSectionEdit from "@/Components/ContractorPage/Sections/Edit/RegionTradeSectionEdit.vue";
 import Templates from "@/Components/ContractorPage/Sections/Edit/Templates.vue";
 import SocialLinksSectionEdit from "@/Components/ContractorPage/Sections/Edit/SocialLinksSectionEdit.vue";
@@ -162,6 +167,14 @@ const loading = ref(false);
 const disabled = ref(false);
 const bottomTextTemp = ref(bottomText.value);
 const isChecked = ref(false);
+// Use the Classic Editor build.
+const editor = ClassicEditor;
+
+// Editor content.
+const editorData = ref(bottomTextTemp.value);
+
+// Editor configuration.
+const editorConfig = ref({});
 
 const openDialogEdit = () => {
   dialogRef.value.openDialog();
@@ -171,6 +184,8 @@ const handleSubmit = async () => {
   isChecked.value = true;
   loading.value = true;
   disabled.value = true;
+  bottomTextTemp.value = editorData.value;
+
   try {
     const response = await axios.patch(
       `/api/contractor/bottom-closing-text`,

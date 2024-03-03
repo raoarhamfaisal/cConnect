@@ -64,6 +64,7 @@
             class="px-4 py-2 flex tems-center gap-2 rounded bg-[#5f3dc4] text-white"
             :style="{
               backgroundColor: errorIcon ? '#f03e3e' : '',
+              opacity: disabled ? '0.2' : '1',
             }"
           >
             <div class="flex items-center justify-center">{{ submitText }}</div>

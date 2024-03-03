@@ -21,6 +21,8 @@
     "vue": "^3.2.41"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^40.0.0",
+    "@ckeditor/ckeditor5-vue": "^5.1.0",
     "@mdi/font": "^7.2.96",
     "filepond": "^4.30.4",
     "filepond-plugin-file-poster": "^2.5.1",

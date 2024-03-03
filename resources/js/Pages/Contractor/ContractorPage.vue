@@ -8,14 +8,16 @@
     :show-post-buttons="true"
     color="rgb(229 231 235 / var(--tw-bg-opacity))"
   >
-    <ContractorLayout
-      v-if="!loading"
-      :profile="contractorProfile"
-      :average_rating="average_rating"
-      :starPercentages="starPercentages"
-      :total_reviews="total_reviews"
-      :region_name="region_name"
-    />
+    <div class="mt-8 sm:mt-8">
+      <ContractorLayout
+        v-if="!loading"
+        :profile="contractorProfile"
+        :average_rating="average_rating"
+        :starPercentages="starPercentages"
+        :total_reviews="total_reviews"
+        :region_name="region_name"
+      />
+    </div>
     <Loader :loading="loading" background="transparent" height="70vh"></Loader>
   </Header>
 </template>
@@ -92,4 +94,4 @@ const fetchContractorDetails = async () => {
   }
 };
 </script>
-<!-- :href="`/contractor/${profile.id}" -->
+<!-- :href="`/contractor/${profile.id}`" -->

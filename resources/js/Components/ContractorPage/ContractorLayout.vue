@@ -22,11 +22,11 @@
   />
   <Loader :loading="loading" background="transparent" height="70vh"></Loader>
 
-  <MoveToTopDialog scrollableContainer="dialogContainer" />
+  <MoveToTop />
 </template>
 
 <script setup>
-import MoveToTopDialog from "@/Components/MoveToTopDialog.vue";
+import MoveToTop from "@/Components/MoveToTop.vue";
 import EditMode from "@/Components/ContractorPage/EditMode.vue";
 import Template1 from "@/Components/ContractorPage/Templates/Template1.vue";
 

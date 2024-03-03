@@ -64,3 +64,28 @@
   max-height: 1000px; /* This value might need to be adjusted depending on the expected max height of your content */
   opacity: 1;
 }
+.closing ol,
+ul,
+menu {
+  list-style: initial;
+  /* margin: inherit; */
+  padding: revert;
+}
+.closing ul {
+  list-style-type: disc;
+}
+.closing ol {
+  list-style-type: decimal;
+}
+.closing h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: revert;
+  font-weight: revert;
+}
+.closing .ck.ck-reset.ck-dropdown__panel.ck-dropdown__panel_southEast{
+  transform: translateY(130px);
+}

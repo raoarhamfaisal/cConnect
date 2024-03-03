@@ -5,8 +5,32 @@
         :screenWidth="screenWidth"
         :averageRating="average_rating"
         @change-mode="changeMode"
+        :total_reviews="total_reviews"
         :profile="profile"
       />
+      <Card
+        :shadowLevel="2"
+        bgColor="white"
+        :padding="screenWidth < 640 ? '7px' : '20px'"
+        v-if="profile.image_sections && profile.image_sections.length > 0"
+      >
+        <ImageTextSection
+          :image_sections="profile.image_sections"
+          :contractor-id="profile.id"
+          :screen-width="screenWidth"
+        />
+      </Card>
+      <Card
+        :shadowLevel="2"
+        bgColor="white"
+        :padding="screenWidth < 640 ? '7px' : '20px'"
+        v-if="profile.bottom_text"
+      >
+        <BottomTitleText
+          :bottom_text="profile.bottom_text"
+          :screen-width="screenWidth"
+        />
+      </Card>
       <RegionTradeSection
         :screenWidth="screenWidth"
         :region_name="region_name"
@@ -35,18 +59,9 @@
         :shadowLevel="2"
         bgColor="white"
         :padding="screenWidth < 640 ? '7px' : '20px'"
-        v-if="
-          profile.bottom_text ||
-          profile.closing_text ||
-          (profile.image_sections && profile.image_sections.length > 0)
-        "
+        v-if="profile.bottom_text || profile.closing_text"
       >
         <div class="flex gap-2 flex-col">
-          <ImageTextSection
-            :image_sections="profile.image_sections"
-            :contractor-id="profile.id"
-            :screen-width="screenWidth"
-          />
           <BottomTitleText
             :bottom_text="profile.bottom_text"
             :screen-width="screenWidth"
@@ -65,13 +80,13 @@
 import AverageRating from "@/Components/Ratings/Contractor/PartialsVisiting/AverageRating.vue";
 import Card from "@/Components/Card.vue";
 
-import ProfileHeader from "@/Components/ContractorPage/Sections/ProfileHeader.vue";
-import RegionTradeSection from "@/Components/ContractorPage/Sections/RegionTradeSection.vue";
-import SocialLinksSection from "@/Components/ContractorPage/Sections/SocialLinksSection.vue";
-import AdditionalInfoSection from "@/Components/ContractorPage/Sections/AdditionalInfoSection.vue";
-import BottomTitleText from "@/Components/ContractorPage/Sections/BottomTitleText.vue";
-import ClosingTitleText from "@/Components/ContractorPage/Sections/ClosingTitleText.vue";
-import ImageTextSection from "@/Components/ContractorPage/Sections/ImageTextSection.vue";
+import ProfileHeader from "@/Components/ContractorPage/Templates/Template1/ProfileHeader.vue";
+import RegionTradeSection from "@/Components/ContractorPage/Templates/Template1/RegionTradeSection.vue";
+import SocialLinksSection from "@/Components/ContractorPage/Templates/Template1/SocialLinksSection.vue";
+import AdditionalInfoSection from "@/Components/ContractorPage/Templates/Template1/AdditionalInfoSection.vue";
+import BottomTitleText from "@/Components/ContractorPage/Templates/Template1/BottomTitleText.vue";
+import ClosingTitleText from "@/Components/ContractorPage/Templates/Template1/ClosingTitleText.vue";
+import ImageTextSection from "@/Components/ContractorPage/Templates/Template1/ImageTextSection.vue";
 
 // State
 const props = defineProps({

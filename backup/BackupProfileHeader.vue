@@ -12,10 +12,10 @@
         </div>
         <div class="flex flex-col justify-center">
           <!-- <h2
-                class="text-md xs:text-xl font-medium font-bold text-gray-900"
-              >
-                {{ profile.first_name + " " + profile.last_name }}
-              </h2> -->
+                  class="text-md xs:text-xl font-medium font-bold text-gray-900"
+                >
+                  {{ profile.first_name + " " + profile.last_name }}
+                </h2> -->
           <div>
             <v-tooltip
               :open-on-click="true"
