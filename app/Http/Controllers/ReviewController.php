@@ -30,7 +30,7 @@ class ReviewController extends Controller
      */
     public function getContractorInfo(Request $request, $contractor_id)
     {
-        $contractorDetails = Profile::where('id', $contractor_id)
+        $contractorDetails = Profile::where('user_id', $contractor_id)
             ->select([
                 'id',
                 'user_id',
@@ -212,6 +212,10 @@ class ReviewController extends Controller
             'how_did_you_meet_this_contractor' => 'nullable|string|max:255',
         ]);
 
+        // $profile = Profile::where('user_id', '=', $data['reviewer_id'])->first();
+
+        // $data['reviewer_id'] = $profile->id;
+
         // Check if the reviewer has already created a review for this contractor within the last 48 hours
         $lastReview = Review::where('reviewer_id', $data['reviewer_id'])
                             ->where('contractor_id', $data['contractor_id'])
@@ -268,8 +272,12 @@ class ReviewController extends Controller
 
         // Get the currently authenticated user
         $user = Auth::user();
+
+
+        $profile = Profile::where('user_id', '=', $user->id)->first();
+
         // Check if the user is the original reviewer or has admin privileges
-        if ($user->id === $data['reviewer_id'] || $user->posts_privileges) {
+        if ($profile->id === $data['reviewer_id'] || $user->posts_privileges) {
 
             // Delete the appeal associated with review as well
             $appeal = Appeal::where('review_id', $review->id)->first();
@@ -300,8 +308,12 @@ class ReviewController extends Controller
     {
         // Get the currently authenticated user
         $user = Auth::user();
+
+
+        $profile = Profile::where('user_id', '=', $user->id)->first();
+
         // Check if the user is the original reviewer or has admin privileges
-        if ($user->id === $review->reviewer_id || $user->appeals_privileges || $user->posts_privileges) {
+        if ($profile->id === $review->reviewer_id || $user->appeals_privileges || $user->posts_privileges) {
 
             // Delete the appeal associated with review as well => it's a sof delete. data will still be in database
             $appeal = Appeal::where('review_id', $review->id)->first();
@@ -345,8 +357,12 @@ class ReviewController extends Controller
 
         // Get the currently authenticated user
         $user = Auth::user();
+
+
+        $profile = Profile::where('user_id', '=', $user->id)->first();
+
         // Check if the user is the original reviewer or has admin privileges
-        if ($user->id === $review->contractor_id || $user->appeals_privileges) {
+        if ($profile->id === $review->contractor_id || $user->appeals_privileges) {
 
             $appealData = [
                 'review_id' => $review->id,

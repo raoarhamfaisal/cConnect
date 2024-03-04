@@ -13,7 +13,7 @@
         Object.keys(contractorDetails).length > 0
       "
       :contractorDetails="contractorDetails"
-      :profileId="userId"
+      :profileId="loggedInUserId"
     />
   </CustomDialog>
 </template>
@@ -28,6 +28,7 @@ import { useStore } from "vuex";
 const { userId, contractorId } = defineProps({
   userId: [String, Number],
   contractorId: [String, Number],
+  loggedInUserId: [String, Number],
 });
 const store = useStore();
 
@@ -37,7 +38,7 @@ const contractorDetails = computed(() => store.state.ratings.contractorDetails);
 
 const openDialog = () => {
   console.log(userId, "userId", contractorId, "contractor");
-  store.dispatch("ratings/getContractorInfo", contractorId);
+  store.dispatch("ratings/getContractorInfo", userId);
   return dialogRef.value.openDialog();
 };
 defineExpose({ openDialog });

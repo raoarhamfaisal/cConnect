@@ -222,6 +222,7 @@ const validate = () => {
 const handleSubmit = async () => {
   if (validate()) {
     try {
+      console.log("profileId", profileId)
       loading.value = true;
       disabled.value = true;
       const review = {
