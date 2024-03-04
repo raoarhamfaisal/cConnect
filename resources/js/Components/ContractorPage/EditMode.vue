@@ -137,6 +137,7 @@
     <div class="closing">
       <ckeditor
         :editor="editor"
+        @ready="onReady"
         v-model="editorData"
         :config="editorConfig"
       ></ckeditor>
@@ -146,14 +147,14 @@
 
 <script setup>
 import AverageRating from "@/Components/Ratings/Contractor/PartialsVisiting/AverageRating.vue";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 
 import Card from "@/Components/Card.vue";
 
 import ProfileHeaderEdit from "@/Components/ContractorPage/Sections/Edit/ProfileHeaderEdit.vue";
+import DecoupledEditor from "@ckeditor/ckeditor5-build-decoupled-document";
 
-import MyEditor from "@/Components/ContractorPage/Sections/Edit/MyEditor.vue";
+// import MyEditor from "@/Components/ContractorPage/Sections/Edit/MyEditor.vue";
 import RegionTradeSectionEdit from "@/Components/ContractorPage/Sections/Edit/RegionTradeSectionEdit.vue";
 import Templates from "@/Components/ContractorPage/Sections/Edit/Templates.vue";
 import SocialLinksSectionEdit from "@/Components/ContractorPage/Sections/Edit/SocialLinksSectionEdit.vue";
@@ -195,14 +196,22 @@ const disabled = ref(false);
 const bottomTextTemp = ref(bottomText.value);
 const isChecked = ref(false);
 // Use the Classic Editor build.
-const editor = ClassicEditor;
+const editor = DecoupledEditor;
 
 // Editor content.
 const editorData = ref(bottomTextTemp.value);
 
 // Editor configuration.
 const editorConfig = ref({});
-
+const onReady = (editor) => {
+  // Insert the toolbar before the editable area.
+  editor.ui
+    .getEditableElement()
+    .parentElement.insertBefore(
+      editor.ui.view.toolbar.element,
+      editor.ui.getEditableElement()
+    );
+};
 const openDialogEdit = () => {
   dialogRef.value.openDialog();
 };
