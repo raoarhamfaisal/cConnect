@@ -44,3 +44,4 @@ module.exports = {
 //  background-image: linear-gradient(111.4deg, rgba(27, 24, 113, 1) 6.5%, rgba(7, 7, 9, 1) 97.2%);
 
 //url = usePage().url.value;
+// #e5e7eb

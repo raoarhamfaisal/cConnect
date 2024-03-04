@@ -14,24 +14,27 @@
         v-if="showDropdown"
         ref="dropdownMenu"
         :class="['dropdown-menu', dropdownPositionClass]"
-        class="absolute left-0 w-full mt-2 border border-gray-300 rounded-md bg-white shadow-lg z-10"
+        class="absolute left-0 pl-0 w-full mt-2 border border-gray-300 rounded-md bg-white shadow-lg z-10"
       >
         <li
           v-for="option in options"
           :key="option"
           :class="[
-            'p-2 cursor-pointer flex gap-2 items-center',
+            'p-2 cursor-pointer  flex gap-2 justify-between items-center',
             option === modelValue ? 'bg-[#364fc7] text-white' : '',
             'hover:bg-[#364fc7] hover:text-white',
           ]"
           @click.stop="selectOption(option)"
         >
-          <div
-            v-if="option.color"
-            :style="{ backgroundColor: option.color }"
-            :class="`w-8 h-8 mr-2 rounded-full border-2 border-[#eee]`"
-          ></div>
-          {{ option.text }}
+          <div class="">{{ option.text }}</div>
+          <div class="flex gap-2">
+            <div
+              v-for="(color, index) in option.colors"
+              :key="index"
+              :style="{ backgroundColor: color }"
+              class="w-8 h-8 rounded-full border-2 border-[#eee]"
+            ></div>
+          </div>
         </li>
       </ul>
     </div>
@@ -48,7 +51,7 @@ const props = defineProps({
     required: true,
   },
   modelValue: {
-    type: String,
+    type: [Object, String],
     default: "",
   },
 });
@@ -64,7 +67,7 @@ const toggleDropdown = () => {
 };
 
 const selectOption = (option) => {
-  emit("update:modelValue", option.text);
+  emit("update:modelValue", { text: option.text, colors: option.colors });
   showDropdown.value = false; // This should close the dropdown on selecting an option.
 };
 

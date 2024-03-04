@@ -10,7 +10,7 @@
       />
       <Card
         :shadowLevel="2"
-        bgColor="white"
+        :bgColor="selectedColorScheme[1]"
         :padding="screenWidth < 640 ? '7px' : '20px'"
         v-if="profile.image_sections && profile.image_sections.length > 0"
       >
@@ -22,37 +22,59 @@
       </Card>
       <Card
         :shadowLevel="2"
-        bgColor="white"
+        :bgColor="selectedColorScheme[1]"
         :padding="screenWidth < 640 ? '7px' : '20px'"
         v-if="profile.bottom_text"
       >
-        <BottomTitleText
-          :bottom_text="profile.bottom_text"
-          :screen-width="screenWidth"
-        />
+        <div
+          :style="{
+            color: selectedColorScheme[2],
+          }"
+        >
+          <BottomTitleText
+            :bottom_text="profile.bottom_text"
+            :screen-width="screenWidth"
+          />
+        </div>
       </Card>
-      <div class="flex gap-2 items-stretch">
+      <div class="flex flex-col md:flex-row gap-2 items-stretch">
         <AdditionalInfoSection
-          class="w-3/5"
+          class="md:w-3/5"
           :screenWidth="screenWidth"
           :profile="profile"
         />
         <RegionTradeSection
-          class="w-2/5"
+          class="md:w-2/5"
           :screenWidth="screenWidth"
           :region_name="region_name"
           :profile="profile"
         />
       </div>
-
+      <Card
+        :shadowLevel="2"
+        :bgColor="selectedColorScheme[1]"
+        :padding="screenWidth < 640 ? '7px' : '20px'"
+        v-if="profile.image_sections && profile.image_sections.length > 0"
+      >
+        <BragSection
+          :image_sections="profile.image_sections"
+          :contractor-id="profile.id"
+          :screen-width="screenWidth"
+        />
+      </Card>
       <!-- Image Selection -->
       <Card
         :shadowLevel="2"
-        bgColor="white"
+        :bgColor="selectedColorScheme[1]"
         :padding="screenWidth < 640 ? '7px' : '20px'"
         v-if="profile.bottom_text || profile.closing_text"
       >
-        <div class="flex gap-2 flex-col">
+        <div
+          class="flex gap-2 flex-col"
+          :style="{
+            color: selectedColorScheme[2],
+          }"
+        >
           <ClosingTitleText
             :closing_text="profile.closing_text"
             :screen-width="screenWidth"
@@ -71,7 +93,11 @@ import RegionTradeSection from "@/Components/ContractorPage/Templates/Template1/
 import AdditionalInfoSection from "@/Components/ContractorPage/Templates/Template1/AdditionalInfoSection.vue";
 import BottomTitleText from "@/Components/ContractorPage/Templates/Template1/BottomTitleText.vue";
 import ClosingTitleText from "@/Components/ContractorPage/Templates/Template1/ClosingTitleText.vue";
+import BragSection from "@/Components/ContractorPage/Templates/Template1/BragSection.vue";
 import ImageTextSection from "@/Components/ContractorPage/Templates/Template1/ImageTextSection.vue";
+import { computed } from "vue";
+import { template1Default } from "@/helpers/templateDefaults";
+import { useStore } from "vuex";
 
 // State
 const props = defineProps({
@@ -85,6 +111,13 @@ const props = defineProps({
     default: [],
   },
 });
+const store = useStore();
+
+//Computed
+const selectedColorScheme = computed(
+  () => store.state.contractor.selectedColorScheme?.colors || template1Default
+);
+
 //  Emits
 const emit = defineEmits(["changeMode"]);
 

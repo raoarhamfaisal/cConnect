@@ -10,6 +10,8 @@ export default {
     return {
       loading: false,
       disabled: false,
+      selectedColorScheme: {},
+      selectedTemplate: "",
     };
   },
   getters: {
@@ -18,6 +20,12 @@ export default {
   mutations: {
     setLoading(state, payload) {
       state.loading = payload;
+    },
+    setSelectedColorScheme(state, payload) {
+      state.selectedColorScheme = payload;
+    },
+    setSelectedTemplate(state, payload) {
+      state.selectedTemplate = payload;
     },
 
     setDisabled(state, payload) {
