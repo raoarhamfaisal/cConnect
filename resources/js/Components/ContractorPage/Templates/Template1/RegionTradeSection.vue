@@ -3,6 +3,9 @@
   <Card
     :shadowLevel="2"
     bgColor="white"
+    cardInnerClasses="h-full"
+    :isInside="true"
+    class="sm:pr-6 md:pr-6 sm:pr-2 lg:pr-8 h-auto"
     :padding="screenWidth < 640 ? '7px' : '20px'"
   >
     <div class="flex justify-between">

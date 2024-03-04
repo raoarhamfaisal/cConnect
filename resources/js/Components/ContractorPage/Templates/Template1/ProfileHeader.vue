@@ -45,7 +45,7 @@
             <div>{{ profile.email }}</div>
           </div>
           <div class="self-center" v-if="city || state">
-            {{ city + " " + state }}
+            {{ city + ", " + state }}
           </div>
         </div>
       </div>
@@ -90,60 +90,6 @@
         </div>
       </div>
     </div>
-    <!-- <div class="flex space-x-2 justify-between">
-      <div class="flex justify-center items-center space-x-2">
-        <div>
-          <Avatar :imageSrc="`/${user_avatar}`" />
-        </div>
-        <div class="flex flex-col justify-center">
-          <div>
-            <v-tooltip
-              :open-on-click="true"
-              :open-on-focus="true"
-              :text="fullName"
-              location="bottom"
-            >
-              <template v-slot:activator="{ props }">
-                <h2
-                  class="text-md xs:text-xl font-medium font-bold text-gray-900"
-                  v-bind="props"
-                >
-                  {{ truncatedName }}
-                </h2>
-              </template>
-            </v-tooltip>
-          </div>
-          <div class="text-sm xs:text-lg" v-if="company_name">
-            {{ company_name }}
-          </div>
-          <span class="text-xs xs:text-lg" v-if="city || state">{{
-            city + " " + state
-          }}</span>
-        </div>
-      </div>
-
-
-      <div
-        class="self-start flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3"
-      >
-        <div>
-          <StarRating
-            v-if="averageRating"
-            :rating="Number(averageRating.toFixed(1))"
-            :isIndicatorActive="false"
-          />
-        </div>
-        <div class="flex items-center justify-center gap-2">
-          <div class="rounded-full" @click="changeMode">
-            <button
-              class="bg-white px-4 py-1 uppercase text-xs hover:bg-[#f8f9fa] sm:text-sm font-bold rounded-full border-[#1864ab] border-2 sm:border-[3px] bg-white text-[#1864ab] cursor-pointer hover:shadow-lg active:scale-95"
-            >
-              Edit
-            </button>
-          </div>
-        </div>
-      </div>
-    </div> -->
   </Card>
 </template>
 

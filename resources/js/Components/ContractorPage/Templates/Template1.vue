@@ -31,28 +31,19 @@
           :screen-width="screenWidth"
         />
       </Card>
-      <RegionTradeSection
-        :screenWidth="screenWidth"
-        :region_name="region_name"
-        :profile="profile"
-      />
-      <AdditionalInfoSection :screenWidth="screenWidth" :profile="profile" />
-      <!-- Average Rating -->
-      <Card
-        v-if="average_rating && starPercentages"
-        :shadowLevel="2"
-        bgColor="white"
-        :padding="screenWidth < 640 ? '7px' : '20px'"
-      >
-        <AverageRating
-          :averageRating="average_rating"
-          :starPercentages="starPercentages"
-          :length="total_reviews"
-          class="mb-6"
-          :contractorId="profile.id"
+      <div class="flex gap-2 items-stretch">
+        <AdditionalInfoSection
+          class="w-3/5"
+          :screenWidth="screenWidth"
+          :profile="profile"
         />
-      </Card>
-      <SocialLinksSection :screenWidth="screenWidth" :profile="profile" />
+        <RegionTradeSection
+          class="w-2/5"
+          :screenWidth="screenWidth"
+          :region_name="region_name"
+          :profile="profile"
+        />
+      </div>
 
       <!-- Image Selection -->
       <Card
@@ -62,10 +53,6 @@
         v-if="profile.bottom_text || profile.closing_text"
       >
         <div class="flex gap-2 flex-col">
-          <BottomTitleText
-            :bottom_text="profile.bottom_text"
-            :screen-width="screenWidth"
-          />
           <ClosingTitleText
             :closing_text="profile.closing_text"
             :screen-width="screenWidth"
@@ -77,12 +64,10 @@
 </template>
 
 <script setup>
-import AverageRating from "@/Components/Ratings/Contractor/PartialsVisiting/AverageRating.vue";
 import Card from "@/Components/Card.vue";
 
 import ProfileHeader from "@/Components/ContractorPage/Templates/Template1/ProfileHeader.vue";
 import RegionTradeSection from "@/Components/ContractorPage/Templates/Template1/RegionTradeSection.vue";
-import SocialLinksSection from "@/Components/ContractorPage/Templates/Template1/SocialLinksSection.vue";
 import AdditionalInfoSection from "@/Components/ContractorPage/Templates/Template1/AdditionalInfoSection.vue";
 import BottomTitleText from "@/Components/ContractorPage/Templates/Template1/BottomTitleText.vue";
 import ClosingTitleText from "@/Components/ContractorPage/Templates/Template1/ClosingTitleText.vue";

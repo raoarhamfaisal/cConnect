@@ -47,7 +47,7 @@ const props = defineProps({
   },
 });
 const store = useStore();
-const mode = ref("");
+const mode = ref("edit");
 const loading = ref(false);
 
 const screenWidth = computed(() => store.getters.screenWidth);
