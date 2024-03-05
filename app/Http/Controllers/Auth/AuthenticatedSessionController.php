@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Models\User;
 use App\Models\Profile;
+use App\Models\SessionViewSetting;
+use App\Models\SessionTrade;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -48,8 +50,36 @@ class AuthenticatedSessionController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
+        
+        
         if($user) {
             $profile = Profile::where('user_id', $user->id)->first();
+
+            if($profile) {
+    
+                // Store SessionViewSetting
+                $sessionViewSetting = [
+                    'view_locale' => $profile->view_locale,
+                    'view_regional' => $profile->view_regional,
+                    'view_statewide' => $profile->view_statewide,
+                    'view_nationwide' => $profile->view_nationwide,
+                    'view_following' => $profile->view_following,
+                ];
+                SessionViewSetting::updateOrCreate(
+                    ['profile_id' => $profile->id],
+                    $sessionViewSetting
+                );
+    
+                // Store SessionTrade
+                $profileTrades = $profile->trades;
+                foreach ($profileTrades as $trade) {
+                    SessionTrade::updateOrCreate(
+                        ['profile_id' => $profile->id, 'trade_id' => $trade->id]
+                    );
+                }
+            }            
+
+
             if(!$profile->is_payment_verified) {
                 return redirect(RouteServiceProvider::PROFILE);
             }
