@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
+use App\Models\SessionViewSetting;
+use App\Models\SessionTrade;
 
 class PostController extends Controller
 {
@@ -34,10 +36,17 @@ class PostController extends Controller
         $userID = Auth()->user('')->id;
         $profile = null;
         $userTradeIds = [];
+
+        $sessionViewSettings = null;
     
         if ($userID) {
             $profile = Profile::where('user_id', $userID)->first();
-            $userTradeIds = $profile && $profile->trades ? $profile->trades->pluck('id')->toArray() : [];
+            // $userTradeIds = $profile && $profile->trades ? $profile->trades->pluck('id')->toArray() : [];
+
+            $sessionViewSettings = SessionViewSetting::where('profile_id', $profile->id)->first();
+
+            // Retrieve session trade IDs
+            $userTradeIds = SessionTrade::where('profile_id', $profile->id)->pluck('trade_id')->toArray();        
         }
 
     
@@ -62,6 +71,31 @@ class PostController extends Controller
                 ->where('posts.region_id', $profile['region_id'])
                 ->whereHas('trades', function ($query) use ($userTradeIds) {
                     $query->whereIn('trades.id', $userTradeIds);
+                })
+                ->whereHas('user.profile', function ($query) use ($sessionViewSettings) {
+                    // Ensure the post creator has matching view settings with the logged-in user
+                    $query->where(function ($query) use ($sessionViewSettings) {
+                        $query->where(function ($query) use ($sessionViewSettings) {
+                            $query->where('view_locale', 1)
+                                ->where('view_locale', $sessionViewSettings->view_locale);
+                        })
+                        ->orWhere(function ($query) use ($sessionViewSettings) {
+                            $query->where('view_regional', 1)
+                                ->where('view_regional', $sessionViewSettings->view_regional);
+                        })
+                        ->orWhere(function ($query) use ($sessionViewSettings) {
+                            $query->where('view_statewide', 1)
+                                ->where('view_statewide', $sessionViewSettings->view_statewide);
+                        })
+                        ->orWhere(function ($query) use ($sessionViewSettings) {
+                            $query->where('view_nationwide', 1)
+                                ->where('view_nationwide', $sessionViewSettings->view_nationwide);
+                        })
+                        ->orWhere(function ($query) use ($sessionViewSettings) {
+                            $query->where('view_following', 1)
+                                ->where('view_following', $sessionViewSettings->view_following);
+                        });
+                    });
                 })
                 ->when(Request::input('postSearch'), function ($query, $postSearch) {
                     $query->where('posts.title', 'like', "%{$postSearch}%");

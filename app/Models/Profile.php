@@ -49,4 +49,9 @@ class profile extends Model
     {
         return $this->belongsToMany(Trade::class, 'profile_trade');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -79,6 +79,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         Route::get('/profile', [ProfileController::class, 'getProfile'])->name('profile.getProfile');
         Route::patch('/profile/trades', [ProfileController::class, 'updateTrades'])->name('profile.updateTrades');
         Route::patch('/profile/views', [ProfileController::class, 'updateViews'])->name('profile.updateViews');
+        Route::patch('/profile/trades-views-settings', [ProfileController::class, 'updateTradesViewsSettings'])->name('profile.updateTradesViewsSettings');
+        Route::patch('/profile/views-views-settings', [ProfileController::class, 'updateViewsViewsSettings'])->name('profile.updateViewsViewsSettings');
+        Route::patch('/profile/trades-profile-setup', [ProfileController::class, 'updateTradesProfileSetup'])->name('profile.updateTradesProfileSetup');
+        Route::patch('/profile/views-profile-setup', [ProfileController::class, 'updateViewsProfileSetup'])->name('profile.updateViewsProfileSetup');
         Route::patch('/profile/all-basic-info-for-profile-setup', [ProfileController::class, 'updateBasicInfoForProfileSetup'])->name('profile.updateBasicInfoForProfileSetup');
         Route::patch('/profile/all-basic-info', [ProfileController::class, 'updateBasicInfo'])->name('profile.updateBasicInfo');
         Route::patch('/profile/verify-payment', [ProfileController::class, 'verifyPayment'])->name('profile.verifyPayment');
