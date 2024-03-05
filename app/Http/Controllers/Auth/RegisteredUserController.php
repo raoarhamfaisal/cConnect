@@ -8,6 +8,7 @@ use App\Models\Profile;
 use App\Models\ContractorProfile;
 use App\Models\ContractorImageSectionsDefault;
 use App\Models\ImageSection;
+use App\Models\BragSection;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -89,19 +90,30 @@ class RegisteredUserController extends Controller
             $defaults = ContractorImageSectionsDefault::first();
 
             if ($defaults) {
-                $sections = [
+                $imageSections = [
                     ['text' => $defaults->first_title_text, 'image' => $defaults->first_title_image],
                     ['text' => $defaults->second_title_text, 'image' => $defaults->second_title_image],
-                    ['text' => $defaults->brag1_text, 'image' => $defaults->brag1_image],
-                    ['text' => $defaults->brag2_text, 'image' => $defaults->brag2_image],
                 ];
 
-                foreach ($sections as $section) {
+                foreach ($imageSections as $section) {
                     $imageSection = new ImageSection();
                     $imageSection->section_image = $section['image'];
                     $imageSection->section_text = $section['text'];
                     $imageSection->contractor_profile_id = $contractorProfile->id;
                     $imageSection->save();
+                }
+
+                $bragSections = [
+                    ['text' => $defaults->brag1_text, 'image' => $defaults->brag1_image],
+                    ['text' => $defaults->brag2_text, 'image' => $defaults->brag2_image],
+                ];
+
+                foreach ($bragSections as $theBragSection) {
+                    $bragSection = new BragSection();
+                    $bragSection->section_image = $theBragSection['image'];
+                    $bragSection->section_text = $theBragSection['text'];
+                    $bragSection->contractor_profile_id = $contractorProfile->id;
+                    $bragSection->save();
                 }
             }            
             

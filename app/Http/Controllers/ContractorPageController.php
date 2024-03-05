@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Review;
 
-
 use App\Models\Profile;
 use App\Models\ContractorProfile;
 use App\Models\Region;
@@ -47,21 +46,27 @@ class ContractorPageController extends Controller
                     $contractorProfile->trades()->sync($profile->trades);   
                     
                     $contractorProfile->trades = $profile->trades;
-                    $contractorProfile = ContractorProfile::where('user_id', $contractor_id)->with('imageSections')->with('trades')->first();
+                    $contractorProfile = ContractorProfile::where('user_id', $contractor_id)->with('imageSections')->with('bragSections')->with('trades')->first();
                 }
             }
+
+            $regionName = '';
 
             // Convert the trades to the old structure for contractor profile
             if ($contractorProfile) {
                 $profileImageSections = $contractorProfile->imageSections;
+                $profileBragSections = $contractorProfile->bragSections;
                 $profileTrades = $this->convertTradesToOldStructure($contractorProfile->trades);
                 $regionName = Region::where('id', $contractorProfile->region_id)->value('name');
                 $contractorProfile = array_merge($contractorProfile->toArray(), $profileTrades);
                 $contractorProfile['imageSections'] = $profileImageSections;
+                $contractorProfile['bragSections'] = $profileBragSections;
                 
             }
             
+            // dd($contractorProfile);
         }
+
 
 
         if ($userID) {
@@ -143,10 +148,12 @@ class ContractorPageController extends Controller
             // Convert the trades to the old structure for contractor profile
             if ($contractorProfile) {
                 $profileImageSections = $contractorProfile->imageSections;
+                $profileBragSections = $contractorProfile->bragSections;
                 $profileTrades = $this->convertTradesToOldStructure($contractorProfile->trades);
                 $regionName = Region::where('id', $contractorProfile->region_id)->value('name');
                 $contractorProfile = array_merge($contractorProfile->toArray(), $profileTrades);
                 $contractorProfile['imageSections'] = $profileImageSections;
+                $contractorProfile['bragSections'] = $profileBragSections;
                 
             }
             
@@ -268,4 +275,7 @@ class ContractorPageController extends Controller
     {
         //
     }
+
+
+
 }

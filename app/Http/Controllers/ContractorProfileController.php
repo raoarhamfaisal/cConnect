@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\File;
 
 use Illuminate\Support\Facades\Storage;
 
+use App\Models\Template;
+use App\Models\ColorScheme;
+
 
 class ContractorProfileController extends Controller
 {
@@ -326,6 +329,62 @@ class ContractorProfileController extends Controller
     public function updateBottomAndClosingText(Request $request)
     {
         // Get current user id
+        $userID = Auth()->id(); // Simplified user ID retrieval
+    
+        // Get the profile information if the user id exists
+        $profile = $userID ? ContractorProfile::where('user_id', $userID)->first() : null;
+    
+        if($profile) {
+    
+            $data = $request->validate([
+                'bottom_text' => 'nullable|string',
+                'closing_text' => 'nullable|string',
+            ]);
+    
+            // Sanitize input to prevent XSS
+            if(array_key_exists('bottom_text', $data) && $data['bottom_text']) {
+                $data['bottom_text'] = e($data['bottom_text']);
+            }
+    
+            if(array_key_exists('closing_text', $data) && $data['closing_text']) {
+                $data['closing_text'] = e($data['closing_text']);
+            }
+    
+            // Update profile
+            $profile->update($data);            
+        } else {
+            // Return error response if profile not found
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Profile not found',
+            ], 404);
+        }
+    
+        // Return json response because this is an api axios call
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Bottom and Closing Text Updated Successfully',
+            'profile' => $profile,
+        ]);    
+    }
+    
+
+
+
+
+
+    // Get all templates
+    public function getAllTemplates(Request $request) {
+        $allTemplates = Template::get()->all();
+        return response()->json([
+            'allTemplates' => $allTemplates
+        ], 200);
+    }
+
+    // Update template
+    public function updateTemplate(Request $request)
+    {
+        // Get current user id
         $userID = Auth()->user('')->id;
         $profile = null;
 
@@ -338,8 +397,7 @@ class ContractorProfileController extends Controller
         if($profile) {
 
             $data = $request->validate([
-                'bottom_text' => 'nullable|string',
-                'closing_text' => 'nullable|string',
+                'template_id' => 'required|number',
             ]);
 
             $profile->update($data);            
@@ -347,7 +405,46 @@ class ContractorProfileController extends Controller
         // Return json response because this is an api axios call
         return response()->json([
             'status' => 'success',
-            'message' => 'Bottom and Closing Text Updated Successfully',
+            'message' => 'Template Updated Successfully',
+            'profile' => $profile,
+        ]);    
+
+    }
+
+
+    // Get all color schemes
+    public function getAllColorSchemes(Request $request) {
+        $allColorSchemes = ColorScheme::get()->all();
+        return response()->json([
+            'allColorSchemes' => $allColorSchemes
+        ], 200);
+    }
+
+    // Update color scheme
+    public function updateColorScheme(Request $request)
+    {
+        // Get current user id
+        $userID = Auth()->user('')->id;
+        $profile = null;
+
+
+        // Get the profile information if the user id exists
+        if($userID) {
+            $profile = ContractorProfile::where('user_id', $userID)->first();
+        }
+
+        if($profile) {
+
+            $data = $request->validate([
+                'color_scheme_id' => 'required|number',
+            ]);
+
+            $profile->update($data);            
+        }
+        // Return json response because this is an api axios call
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Color Scheme Updated Successfully',
             'profile' => $profile,
         ]);    
 

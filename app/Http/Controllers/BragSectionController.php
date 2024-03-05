@@ -7,8 +7,7 @@ use App\Models\ContractorProfile;
 use App\Models\ImageSection;
 use Illuminate\Support\Facades\Storage;
 
-
-class ImageSectionController extends Controller
+class BragSectionController extends Controller
 {
     public function store(Request $request, $contractorProfileId)
     {
@@ -19,10 +18,10 @@ class ImageSectionController extends Controller
             'section_text' => 'nullable|string'
         ]);
     
-        // $data['section_image'] = $request->file('section_image')->store('uploads/section_images', 'public-storage');
+        // $data['section_image'] = $request->file('section_image')->store('uploads/brag_section', 'public-storage');
     
         // $imageSection = $contractorProfile->imageSections()->create($data);
-        $relativePath = $request->file('section_image')->store('uploads/section_images', 'public-storage');
+        $relativePath = $request->file('section_image')->store('uploads/brag_section', 'public-storage');
     
         // Convert the relative path to a full URL
         $fullURL = asset($relativePath);
@@ -33,7 +32,7 @@ class ImageSectionController extends Controller
         // Use the data to create the image section for the contractor profile
         $imageSection = $contractorProfile->imageSections()->create($data);
     
-        return response()->json(['message' => 'Image section added successfully.', 'imageSection' => $imageSection]);
+        return response()->json(['message' => 'Brag section added successfully.', 'imageSection' => $imageSection]);
     }
     
     public function update(Request $request, $sectionId)
@@ -49,12 +48,12 @@ class ImageSectionController extends Controller
         // If a new image is uploaded, delete the previous one
         if ($request->hasFile('section_image')) {
             // Storage::disk('public-storage')->delete($section->section_image);
-            // $data['section_image'] = $request->file('section_image')->store('uploads/section_images', 'public-storage');
+            // $data['section_image'] = $request->file('section_image')->store('uploads/brag_section', 'public-storage');
             // Delete the old image from storage
             Storage::disk('public-storage')->delete($section->section_image);
             
             // Store the new image and get the relative path
-            $relativePath = $request->file('section_image')->store('uploads/section_images', 'public-storage');
+            $relativePath = $request->file('section_image')->store('uploads/brag_section', 'public-storage');
             
             // Convert the relative path to a full URL
             $fullURL = asset( $relativePath);
@@ -70,7 +69,7 @@ class ImageSectionController extends Controller
         // Refresh the section to get latest attributes (especially if relationships are involved)
         $section->refresh();
     
-        return response()->json(['message' => 'Image section updated successfully.', 'imageSection' => $section]);
+        return response()->json(['message' => 'Brag section updated successfully.', 'imageSection' => $section]);
     }
     
     
@@ -83,6 +82,6 @@ class ImageSectionController extends Controller
         
         $section->delete();
     
-        return response()->json(['message' => 'Image section deleted successfully.']);
+        return response()->json(['message' => 'Brag section deleted successfully.']);
     }
 }

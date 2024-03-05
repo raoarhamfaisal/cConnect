@@ -13,6 +13,8 @@ class ContractorProfile extends Model
         'region_id',
         'user_avatar',
         'user_id',
+        'template_id',
+        'color_scheme_id',
         'first_name',
         'last_name',
         'email',
@@ -44,5 +46,10 @@ class ContractorProfile extends Model
     public function imageSections()
     {
         return $this->hasMany(ImageSection::class);
+    }
+
+    public function bragSections()
+    {
+        return $this->hasMany(BragSection::class);
     }
 }
