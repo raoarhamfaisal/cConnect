@@ -50,14 +50,15 @@
           :profile="profile"
         />
       </div>
+
       <Card
         :shadowLevel="2"
         :bgColor="selectedColorScheme[1]"
         :padding="screenWidth < 640 ? '7px' : '20px'"
-        v-if="profile.image_sections && profile.image_sections.length > 0"
+        v-if="profile.brag_sections && profile.brag_sections.length > 0"
       >
         <BragSection
-          :image_sections="profile.image_sections"
+          :brag_sections="profile.brag_sections"
           :contractor-id="profile.id"
           :screen-width="screenWidth"
         />

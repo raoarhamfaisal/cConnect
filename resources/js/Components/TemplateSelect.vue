@@ -1,5 +1,8 @@
 <template>
   <div class="relative grid items-center">
+    <label class="text-md font-bold text-gray-600 block">
+      {{ label }}
+    </label>
     <div
       ref="dropdownContainer"
       class="relative w-auto border border-gray-300 rounded-md cursor-pointer p-2 pr-8"
@@ -13,28 +16,20 @@
       <ul
         v-if="showDropdown"
         ref="dropdownMenu"
-        :class="['dropdown-menu', dropdownPositionClass]"
-        class="absolute left-0 pl-0 w-full mt-2 border border-gray-300 rounded-md bg-white shadow-lg z-10"
+        :class="dropdownPositionClass"
+        class="absolute left-0 w-full mt-2 border border-gray-300 rounded-md bg-white shadow-lg z-10 p-0"
       >
         <li
           v-for="option in options"
-          :key="option"
+          :key="option.id"
           :class="[
-            'p-2 cursor-pointer  flex gap-2 justify-between items-center',
+            'p-2 cursor-pointer',
             option.name === modelValue ? 'bg-[#364fc7] text-white' : '',
             'hover:bg-[#364fc7] hover:text-white',
           ]"
           @click.stop="selectOption(option)"
         >
-          <div class="">{{ option.name }}</div>
-          <div class="flex gap-2">
-            <div
-              v-for="(color, index) of modifiedOption(option)"
-              :key="index"
-              :style="{ backgroundColor: color }"
-              class="w-8 h-8 rounded-full border-2 border-[#eee]"
-            ></div>
-          </div>
+          {{ option.name }}
         </li>
       </ul>
     </div>
@@ -50,8 +45,13 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+
   modelValue: {
-    type: [Object, String],
+    type: String,
+    default: "",
+  },
+  label: {
+    type: String,
     default: "",
   },
 });
@@ -64,19 +64,6 @@ const dropdownPositionClass = ref("");
 
 const toggleDropdown = () => {
   showDropdown.value = !showDropdown.value;
-};
-const modifiedOption = (option) => {
-  let newOption = {};
-
-  // Iterate through each key-value pair in the original option
-  for (const [key, value] of Object.entries(option)) {
-    // If the key starts with "color", add it to the newOption
-    if (key.startsWith("color")) {
-      newOption[key] = value;
-    }
-  }
-
-  return newOption;
 };
 
 const selectOption = (option) => {
@@ -137,9 +124,5 @@ watchEffect(() => {
   border-radius: 5px;
   background-color: white;
   z-index: 10;
-}
-.dropdown-menu {
-  max-height: 200px; /* Limit height to 5 items */
-  overflow-y: auto; /* Enable vertical scrolling */
 }
 </style>

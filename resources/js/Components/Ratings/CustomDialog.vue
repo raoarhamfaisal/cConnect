@@ -42,7 +42,11 @@
         </div>
 
         <!-- Slot Content - Scrollable -->
-        <div :class="`flex-1 overflow-y-auto p-2 sm:p-4 ${contentClasses}`">
+        <div
+          :class="`flex-1 ${
+            overflowAllowed ? 'overflow-y-auto' : ''
+          } p-2 sm:p-4 ${contentClasses}`"
+        >
           <slot></slot>
         </div>
 
@@ -111,6 +115,10 @@ const props = defineProps({
   dialogWidth: {
     type: String,
     default: "",
+  },
+  overflowAllowed: {
+    type: Boolean,
+    default: true,
   },
   errorIcon: {
     type: Boolean,

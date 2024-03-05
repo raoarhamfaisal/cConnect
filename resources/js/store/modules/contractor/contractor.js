@@ -10,8 +10,9 @@ export default {
     return {
       loading: false,
       disabled: false,
-      selectedColorScheme: {},
-      selectedTemplate: "",
+      selectedColorScheme: 0,
+      selectedTemplate: 0,
+      colorSchemeList: [],
     };
   },
   getters: {
@@ -24,6 +25,9 @@ export default {
     setSelectedColorScheme(state, payload) {
       state.selectedColorScheme = payload;
     },
+    setColorSchemeList(state, payload) {
+      state.colorSchemeList = payload;
+    },
     setSelectedTemplate(state, payload) {
       state.selectedTemplate = payload;
     },
@@ -33,24 +37,43 @@ export default {
     },
   },
   actions: {
-    async deleteReview({ commit }, reviewId) {
-      commit("setLoadingSending", true);
-      commit("setDisabledSending", true);
+    async updatedSelctedTemplate({ commit }, templateId) {
+      commit("setLoading", true);
 
       try {
-        const response = await axios.delete(
-          `/api/reviews/${reviewId}`,
+        const response = await axios.patch(
+          `/api/contractor/update-template`,
+          {
+            template_id: +templateId,
+          },
           getAxiosConfig()
         );
         if (response.data) {
-          changesSaved(response.data.message || "Review Successfully Deleted");
-          commit("setReviewId", reviewId);
+          commit("setSelectedTemplate", templateId);
         }
       } catch (err) {
         somethingWentWrong();
       } finally {
-        commit("setLoadingSending", false);
-        commit("setDisabledSending", false);
+        commit("setLoading", true);
+      }
+    },
+    async updatedSelectedColorScheme({ commit }, colorSchemeId) {
+      commit("setLoading", true);
+
+      try {
+        const response = await axios.patch(
+          `/api/contractor/update-color-scheme`,
+          {
+            color_scheme_id: +colorSchemeId,
+          },
+          getAxiosConfig()
+        );
+        if (response.data) {
+        }
+      } catch (err) {
+        somethingWentWrong();
+      } finally {
+        commit("setLoading", true);
       }
     },
     async deleteResponse({ commit }, responseId) {

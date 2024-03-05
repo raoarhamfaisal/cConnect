@@ -101,7 +101,7 @@ const props = defineProps({
   screenWidth: {
     type: [String, Number],
   },
-  image_sections: {
+  brag_sections: {
     type: Array,
   },
   contractorId: {
@@ -110,7 +110,7 @@ const props = defineProps({
 });
 const store = useStore();
 
-const sections = ref(props.image_sections);
+const sections = ref(props.brag_sections);
 
 const selectedImage = ref("");
 

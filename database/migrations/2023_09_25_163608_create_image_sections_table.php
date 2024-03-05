@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('image_sections', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('contractor_profile_id');
-            $table->string('section_image');
+            $table->string('section_image')->nullable();
             $table->text('section_text')->nullable();
             $table->softDeletes();
             $table->timestamps();

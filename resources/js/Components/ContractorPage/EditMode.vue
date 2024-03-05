@@ -1,6 +1,6 @@
 <template>
   <div v-if="profile">
-    <div class="flex flex-col gap-3 sm:gap-4 closing">
+    <div class="flex flex-col gap-3 sm:gap-4">
       <ProfileHeaderEdit
         :screenWidth="screenWidth"
         :averageRating="average_rating"
@@ -8,6 +8,8 @@
       />
 
       <Templates
+        :templateList="templateList"
+        :colorSchemeList="colorSchemeList"
         :screenWidth="screenWidth"
         @change-mode="changeMode"
         :profile="profile"
@@ -61,11 +63,6 @@
         :shadowLevel="2"
         bgColor="white"
         :padding="screenWidth < 640 ? '7px' : '20px'"
-        v-if="
-          profile.bottom_text ||
-          profile.closing_text ||
-          (profile.image_sections && profile.image_sections.length > 0)
-        "
       >
         <div class="flex gap-2 flex-col">
           <heading-card
@@ -82,25 +79,10 @@
             :contractor-id="profile.id"
             :screen-width="screenWidth"
           />
-          <heading-card
-            class="mb-2 mt-4"
-            :style="{
-              marginBottom: '8px',
-              fontWeight: 800,
-              fontSize: screenWidth > 640 ? '24px' : '20px',
-            }"
-            :heading="`Brag Sections`"
-          />
-          <BragSectionEdit
-            :image_sections="profile.image_sections"
-            :contractor-id="profile.id"
-            :screen-width="screenWidth"
-          />
-
           <!-- bottom text show -->
           <div
             v-if="bottomText"
-            :class="`mt-1 flex gap-1 flex-col border-gray-300 border-2 p-3   rounded-lg`"
+            :class="`mt-1 flex gap-1 flex-col border-gray-300 border-2 p-3   rounded-lg closing`"
           >
             <div class="flex justify-between">
               <div
@@ -115,34 +97,50 @@
               />
             </div>
             <div v-html="bottomText"></div>
+            <!-- <div v-html="'<strong>Test</strong>'"></div> -->
           </div>
+          <heading-card
+            class="mb-2 mt-4"
+            :style="{
+              marginBottom: '8px',
+              fontWeight: 800,
+              fontSize: screenWidth > 640 ? '24px' : '20px',
+            }"
+            :heading="`Brag Sections`"
+          />
+          <BragSectionEdit
+            :brag_sections="profile.brag_sections"
+            :contractor-id="profile.id"
+            :screen-width="screenWidth"
+          />
+
           <ClosingTitleTextEdit
             :closing_text="profile.closing_text"
             :screen-width="screenWidth"
           />
+          <CustomDialog
+            submitText="Save"
+            :loading="loading"
+            :disabled="disabled"
+            :overflowAllowed="false"
+            @submit="handleSubmit"
+            @closed="handleClosed"
+            ref="dialogRef"
+            title="Add Bottom Text"
+          >
+            <div class="closing">
+              <ckeditor
+                :editor="editor"
+                @ready="onReady"
+                v-model="editorData"
+                :config="editorConfig"
+              ></ckeditor>
+            </div>
+          </CustomDialog>
         </div>
       </Card>
     </div>
   </div>
-
-  <CustomDialog
-    submitText="Save"
-    :loading="loading"
-    :disabled="disabled"
-    @submit="handleSubmit"
-    @closed="handleClosed"
-    ref="dialogRef"
-    title="Add Bottom Text"
-  >
-    <div class="closing">
-      <ckeditor
-        :editor="editor"
-        @ready="onReady"
-        v-model="editorData"
-        :config="editorConfig"
-      ></ckeditor>
-    </div>
-  </CustomDialog>
 </template>
 
 <script setup>
@@ -167,12 +165,18 @@ import IconButton from "@/Components/IconButton.vue";
 import { Icon } from "@iconify/vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
-import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
+import {
+  changesSaved,
+  somethingWentWrong,
+  toolbarConfig,
+} from "@/helpers/utilities";
 
 // State
 const props = defineProps({
   profile: Object,
   region_name: String,
+  templateList: Array,
+  colorSchemeList: Array,
   screenWidth: Number,
   total_reviews: [Number, String],
   average_rating: [Number, String],
@@ -181,6 +185,11 @@ const props = defineProps({
     default: [],
   },
 });
+const decodeHtml = (html) => {
+  const txt = document.createElement("textarea");
+  txt.innerHTML = html;
+  return txt.value;
+};
 
 //  Emits
 const emit = defineEmits(["changeMode"]);
@@ -190,19 +199,17 @@ const changeMode = () => {
 };
 
 const dialogRef = ref();
-const bottomText = ref(props.profile.bottom_text);
+const bottomText = ref(decodeHtml(props.profile.bottom_text));
 const loading = ref(false);
 const disabled = ref(false);
 const bottomTextTemp = ref(bottomText.value);
 const isChecked = ref(false);
 // Use the Classic Editor build.
 const editor = DecoupledEditor;
-
-// Editor content.
 const editorData = ref(bottomTextTemp.value);
 
 // Editor configuration.
-const editorConfig = ref({});
+const editorConfig = ref(toolbarConfig);
 const onReady = (editor) => {
   // Insert the toolbar before the editable area.
   editor.ui

@@ -29,7 +29,7 @@
     >
       <div>
         <InputLabel class="font-bold mb-1" for="state" value="Template" />
-        <SelectProfile
+        <TemplateSelect
           :options="templateList"
           :modelValue="form.selectedTemplate"
           @update:modelValue="updateSelectedTemplate"
@@ -54,41 +54,70 @@ import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 
 // import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
-import SelectProfile from "@/Components/SelectProfile.vue";
+import TemplateSelect from "@/Components/TemplateSelect.vue";
 import ColorSelect from "@/Components/ColorSelect.vue";
-import { templateList, colorSchemeList } from "@/helpers/selectListsHelpters";
 
 // import TextInput from "@/Components/TextInput.vue";
 // import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 
 import Card from "@/Components/Card.vue";
 
-import { reactive } from "vue";
+import { computed, onMounted, reactive, watch } from "vue";
 import { useStore } from "vuex";
+import { startOptionToArray } from "@/helpers/utilities";
+// import { colorSchemeList } from "@/helpers/selectListsHelpters";
 
 // State
 const store = useStore();
 const props = defineProps({
+  templateList: Array,
   profile: Object,
   screenWidth: Number,
 });
 const emit = defineEmits(["changeMode"]);
+
 const form = reactive({
-  selectedTemplate: "",
+  selectedTemplate: props.templateList.find(
+    (item) => props.profile.template_id === item.id
+  ).name,
   selectedColorScheme: "",
 });
 const changeMode = () => {
   emit("changeMode");
 };
 
+const colorSchemeList = computed(() => store.state.contractor.colorSchemeList);
+
+watch(colorSchemeList, () => {
+  if (props.profile && colorSchemeList.value.length > 0) {
+    form.selectedColorScheme = colorSchemeList.value.find(
+      (item) => props.profile.color_scheme_id === item.id
+    ).name;
+  }
+});
 const updateSelectedTemplate = (value) => {
-  form.selectedTemplate = value;
-  store.commit("contractor/setSelectedTemplate", value);
+  console.log(value, "value");
+  form.selectedTemplate = value.name;
+  store.dispatch("contractor/updatedSelctedTemplate", value.id);
 };
 
 const updateSelectedColorScheme = (value) => {
-  form.selectedColorScheme = value.text;
-  store.commit("contractor/setSelectedColorScheme", value);
+  console.log(value);
+  form.selectedColorScheme = value.name;
+  const selectedScheme = startOptionToArray(value);
+  console.log(selectedScheme);
+  store.dispatch("contractor/updatedSelectedColorScheme", value.id);
+  store.commit("contractor/setSelectedColorScheme", selectedScheme);
+
   console.log(value, "value");
 };
+
+onMounted(() => {
+  console.log("watch called", colorSchemeList);
+  if (props.profile && colorSchemeList.value.length > 0) {
+    form.selectedColorScheme = colorSchemeList.value.find(
+      (item) => props.profile.color_scheme_id === item.id
+    ).name;
+  }
+});
 </script>

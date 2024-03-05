@@ -20,6 +20,7 @@
     >
       <ContractorLayout
         :profile="contractorProfile"
+        :templateList="templateList"
         @change-mode="changeMode"
         :mode="mode"
         :average_rating="average_rating"
@@ -36,9 +37,9 @@
 import Header from "@/Layouts/Header.vue";
 import Loader from "@/Components/Ratings/Loader.vue";
 import ContractorLayout from "@/Components/ContractorPage/ContractorLayout.vue";
-import { onMounted, computed, ref } from "vue";
+import { onMounted, computed, ref, watchEffect } from "vue";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
-import { somethingWentWrong } from "@/helpers/utilities";
+import { somethingWentWrong, startOptionToArray } from "@/helpers/utilities";
 
 import { template1Default } from "@/helpers/templateDefaults";
 
@@ -57,8 +58,11 @@ const { profile } = defineProps({
   },
 });
 const loading = ref(false);
+const templateList = ref([]);
+
 const store = useStore();
 const mode = ref("edit");
+const firstTime = ref(true);
 const starPercentages = ref([]);
 const average_rating = ref(null);
 const contractorProfile = ref({});
@@ -66,16 +70,17 @@ const total_reviews = ref(0);
 
 const changeMode = () => {
   mode.value = mode.value === "edit" ? "" : "edit";
-  // fetchContractorDetails();
+  fetchContractorDetails();
 };
 
 onMounted(() => {
+  console.log("onMounted");
   fetchContractorDetails();
 });
 
 //Computed
 const selectedColorScheme = computed(
-  () => store.state.contractor.selectedColorScheme?.colors || template1Default
+  () => store.state.contractor.selectedColorScheme || template1Default
 );
 
 const fetchContractorDetails = async () => {
@@ -87,7 +92,13 @@ const fetchContractorDetails = async () => {
     );
     if (response.data) {
       contractorProfile.value = response.data.contractorProfile;
+      store.commit(
+        "contractor/setSelectedTemplate",
+        contractorProfile.value.template_id
+      );
+
       average_rating.value = response.data.average_rating;
+
       total_reviews.value = response.data.total_reviews;
       // Extracting the star counts
       const {
@@ -120,5 +131,51 @@ const fetchContractorDetails = async () => {
     loading.value = false;
   }
 };
+
+const fetchColors = async () => {
+  try {
+    const responseColor = await axios.get(
+      `/api/contractor/all-color-schemes`,
+      getAxiosConfig()
+    );
+    if (responseColor.data) {
+      const colorSchemeList = [...responseColor.data.allColorSchemes];
+      store.commit("contractor/setColorSchemeList", colorSchemeList);
+      const selectedOption = colorSchemeList.find((item) => {
+        return item.id === contractorProfile.value.color_scheme_id;
+      });
+      const selectedScheme = startOptionToArray(selectedOption);
+      console.log(selectedScheme, selectedOption, "optionSelected");
+      store.commit("contractor/setSelectedColorScheme", selectedScheme);
+    }
+  } catch (err) {
+    somethingWentWrong();
+  }
+};
+const fetchTemplates = async () => {
+  try {
+    const response = await axios.get(
+      `/api/contractor/all-templates`,
+      getAxiosConfig()
+    );
+    if (response.data) {
+      templateList.value = response.data.allTemplates;
+    }
+  } catch (err) {
+    somethingWentWrong();
+  }
+};
+//watchEffect
+watchEffect(async () => {
+  if (mode.value === "edit" && firstTime.value) {
+    console.log("watchEffect");
+    loading.value = true;
+
+    await fetchTemplates();
+    await fetchColors();
+    loading.value = false;
+    firstTime.value = false;
+  }
+});
 </script>
 <!-- :href="`/contractor/${profile.id}`" -->

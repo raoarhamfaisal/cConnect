@@ -12,7 +12,7 @@
       <!-- Only Text -->
       <div
         v-if="!section.section_image && section.section_text"
-        class="w-full p-4 md:p-6 text-xl md:text-2xl font-bold md:font-extrabold md:w-2/5 text-xl md:text-3xl font-bold md:font-extrabold text-center"
+        class="w-full p-4 md:p-6 text-xl md:text-2xl font-bold md:font-extrabold text-xl md:text-3xl font-bold md:font-extrabold text-center"
       >
         {{ section.section_text }}
       </div>

@@ -1,6 +1,28 @@
 <template>
   <!-- Social Links -->
   <Card
+    v-if="!website_url && !facebook && !twitter && !tiktok && !instagram"
+    :shadowLevel="2"
+    bgColor="white"
+    :padding="screenWidth < 640 ? '7px' : '20px'"
+  >
+    <heading-card
+      class="mb-2"
+      :style="{
+        fontWeight: 800,
+        marginBottom: '8px',
+        fontSize: screenWidth > 640 ? '24px' : '20px',
+      }"
+      :heading="`Social Links`"
+    />
+    <button
+      @click="openDialog"
+      class="w-full flex gap-2 mt-3 items-center justify-center h-[42px] rounded bg-[#087f5b] text-white active:scale-[0.99] transition transform duration-300 hover:shadow-lg"
+    >
+      <Icon icon="mdi:plus-thick" /> Add Your Social Links
+    </button>
+  </Card>
+  <Card
     v-if="website_url || facebook || twitter || tiktok || instagram"
     :shadowLevel="2"
     bgColor="white"
@@ -70,7 +92,11 @@
     :loading="loading"
     :disabled="disabled"
     ref="dialogRef"
-    title="Edit Your Social Links"
+    :title="`${
+      !website_url && !facebook && !twitter && !tiktok && !instagram
+        ? 'Add'
+        : 'Edit'
+    } Your Social Links`"
   >
     <div
       class="mt-6 space-y-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-4"
@@ -157,6 +183,7 @@ import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import InputIcon from "@/Components/InputIcon.vue";
+import { Icon } from "@iconify/vue";
 
 import Card from "@/Components/Card.vue";
 

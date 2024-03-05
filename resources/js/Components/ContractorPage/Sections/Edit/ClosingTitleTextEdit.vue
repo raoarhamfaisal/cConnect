@@ -32,6 +32,7 @@
       submitText="Save"
       :loading="loading"
       :disabled="disabled"
+      :overflowAllowed="false"
       @submit="handleSubmit"
       @closed="handleClosed"
       ref="dialogRef"
@@ -72,9 +73,14 @@ const props = defineProps({
     type: String,
   },
 });
+const decodeHtml = (html) => {
+  const txt = document.createElement("textarea");
+  txt.innerHTML = html;
+  return txt.value;
+};
 
 const dialogRef = ref();
-const closingText = ref(props.closing_text);
+const closingText = ref(decodeHtml(props.closing_text));
 const closingTextTemp = ref(closingText.value);
 const loading = ref(false);
 const disabled = ref(false);

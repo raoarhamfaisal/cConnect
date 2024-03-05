@@ -174,3 +174,20 @@ export const formatUTCToDateTime = (dateString) => {
   // Construct the final string
   return `${day} ${month} ${year}, ${hours12}:${minutesStr}${ampm}`;
 };
+export const toolbarConfig = {
+  toolbar: {
+    removeItems: ["uploadImage", "mediaEmbed"], // Remove specific items from toolbar
+  },
+};
+
+export const startOptionToArray = (option) => {
+  let newOption = [];
+  // Iterate through each key-value pair in the original option
+  for (const [key, value] of Object.entries(option)) {
+    // If the key starts with "color", add it to the newOption
+    if (key.startsWith("color")) {
+      newOption.push(value);
+    }
+  }
+  return newOption;
+};
