@@ -186,8 +186,40 @@ export default {
       "shouldLoadPosts",
       "shouldFetchFirstPagePosts",
     ]),
+    ...mapGetters("profile", ["loadFirstPageWithNoPreserve"]),
   },
   watch: {
+    loadFirstPageWithNoPreserve(newVal) {
+      if (newVal) {
+        this.$inertia.get(
+          this.posts.first_page_url,
+          {},
+          {
+            // these preserve state keeps our position in the scroll
+            preserveState: true,
+            preserveScroll: false,
+            // 'only' makes sure that inertia only loads current post property
+            // not the whole payload. Make sure lazy load is used in controller
+            only: ["posts"],
+            onSuccess: () => {
+              // takes the object posts and appends it to allpost
+              this.allPosts = [...this.posts.data];
+              this.loadingPosts = false;
+              // 'this.initialUrl' is set in script data
+              window.history.replaceState(
+                {},
+                this.$page.title,
+                this.initialUrl
+              );
+              this.$store.commit(
+                "profile/setLoadFirstPageWithNoPreserve",
+                false
+              );
+            },
+          }
+        );
+      }
+    },
     shouldLoadPosts(newValue) {
       console.log("inforLoadPosts", this.shouldLoadPosts);
       if (this.shouldLoadPosts) {
@@ -331,7 +363,7 @@ export default {
     :post-search-filters="postSearchFilters"
     :showit="showit"
     :show-post-buttons="true"
-    contentWidth="1202px"
+    contentWidth="1220px"
     color="rgb(156 163 175)"
   >
     <!-- POSTING CONTAINER -->

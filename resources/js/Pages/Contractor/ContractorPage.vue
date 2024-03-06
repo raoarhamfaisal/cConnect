@@ -1,40 +1,31 @@
 <template>
   <Head title="Contractor Page" />
 
-  <Header
-    :profile="profile"
-    :post-search-filters="postSearchFilters"
-    :showit="showit"
-    :show-post-buttons="true"
-    color="rgb(229 231 235 / var(--tw-bg-opacity))"
+  <div
+    class="pt-8 sm:pt-8 pb-8"
+    :style="{
+      backgroundColor: selectedColorScheme[0]
+        ? selectedColorScheme[0]
+        : '#e5e7eb',
+    }"
+    v-if="!loading"
   >
-    <div
-      class="pt-8 sm:pt-8"
-      :style="{
-        backgroundColor:
-          mode === '' && selectedColorScheme[0]
-            ? selectedColorScheme[0]
-            : '#e5e7eb',
-      }"
-      v-if="!loading"
-    >
-      <ContractorLayout
-        :profile="contractorProfile"
-        :templateList="templateList"
-        @change-mode="changeMode"
-        :mode="mode"
-        :average_rating="average_rating"
-        :starPercentages="starPercentages"
-        :total_reviews="total_reviews"
-        :region_name="region_name"
-      />
-    </div>
-    <Loader :loading="loading" background="transparent" height="70vh"></Loader>
-  </Header>
+    <ContractorLayout
+      :profile="contractorProfile"
+      :loggedInUserId="profile.user_id"
+      :templateList="templateList"
+      :average_rating="average_rating"
+      :starPercentages="starPercentages"
+      :total_reviews="total_reviews"
+      :region_name="region_name"
+    />
+  </div>
+  <Loader :loading="loading" background="transparent" height="70vh"></Loader>
 </template>
 
 <script setup>
-import Header from "@/Layouts/Header.vue";
+import { Head } from "@inertiajs/inertia-vue3";
+
 import Loader from "@/Components/Ratings/Loader.vue";
 import ContractorLayout from "@/Components/ContractorPage/ContractorLayout.vue";
 import { onMounted, computed, ref, watchEffect } from "vue";
@@ -46,32 +37,21 @@ import { template1Default } from "@/helpers/templateDefaults";
 import { useStore } from "vuex";
 
 // State
-const { profile } = defineProps({
+const { profile, contractor_id } = defineProps({
   profile: Object,
+  contractor_id: [String, Number],
+
   region_name: String,
-  showit: Boolean,
-  postSearchFilters: {
-    type: Object,
-    default: () => ({
-      postSearch: "",
-    }),
-  },
 });
 const loading = ref(false);
 const templateList = ref([]);
 
 const store = useStore();
-const mode = ref("edit");
 const firstTime = ref(true);
 const starPercentages = ref([]);
 const average_rating = ref(null);
 const contractorProfile = ref({});
 const total_reviews = ref(0);
-
-const changeMode = () => {
-  mode.value = mode.value === "edit" ? "" : "edit";
-  fetchContractorDetails();
-};
 
 onMounted(() => {
   console.log("onMounted");
@@ -87,7 +67,7 @@ const fetchContractorDetails = async () => {
   loading.value = true;
   try {
     const response = await axios.get(
-      `/api/contractor/get-contractor-info/${profile.user_id}`,
+      `/api/contractor/get-contractor-info/${contractor_id}`,
       getAxiosConfig()
     );
     if (response.data) {

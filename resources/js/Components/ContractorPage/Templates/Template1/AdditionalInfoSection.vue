@@ -206,7 +206,7 @@ const zipcode = ref(props.profile.zipcode);
 
 //Computed
 const selectedColorScheme = computed(
-  () => store.state.contractor.selectedColorScheme?.colors || template1Default
+  () => store.state.contractor.selectedColorScheme || template1Default
 );
 const absoluteUrl = (url) => {
   if (!url) return "";

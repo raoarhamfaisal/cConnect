@@ -8,7 +8,7 @@ import { Inertia } from "@inertiajs/inertia";
 import { Link, usePage } from "@inertiajs/inertia-vue3";
 import PostForm from "@/Components/tCon/PostForm.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
-
+import DialogProfileTabs from "@/Pages/Profile/Partials/main/DialogProfileTabs.vue";
 import { ref } from "vue";
 import { mapActions, mapGetters } from "vuex";
 import { changesSaved } from "@/helpers/utilities";
@@ -29,6 +29,7 @@ const defaultPostFormObject = {
 export default {
   components: {
     tContractorWord,
+    DialogProfileTabs,
     CustomDialog,
     ButtonPost,
     ButtonRefresh,
@@ -245,6 +246,10 @@ export default {
         { postSearch: this.postSearch }
       );
     },
+    openProfileModal() {
+      console.log(usePage().url.value, "url");
+      this.$refs.dialogRef.openDialog();
+    },
     RefreshPostings() {
       console.log("Refreshed with search: " + this.postSearch);
       Inertia.get("/post", { postSearch: this.postSearch });
@@ -273,6 +278,7 @@ export default {
       Please complete your payment to access this page
     </div>
   </CustomDialog>
+  <DialogProfileTabs ref="dialogRef" :profile="profile" />
   <section
     v-if="(user_profile && paymentCompleted) || url === '/profile-setup'"
     class="bg-gray-100"
@@ -352,17 +358,17 @@ export default {
                       @RefreshPostings="RefreshPostings"
                     ></ButtonRefresh>
 
-                    <!-- Contractor Page -->
+                    <!-- View Settings -->
                     <div
                       class="hidden sx:flex flex-shrink-0 items-center justify-center"
                     >
-                      <Link href="#">
+                      <button @click="openProfileModal">
                         <img
-                          src="/images/icons/contractorpage_b.png"
-                          width="45"
-                          height="45"
+                          src="/images/icons/news_view.png"
+                          width="38"
+                          height="38"
                         />
-                      </Link>
+                      </button>
                     </div>
 
                     <!-- New Post Button -->

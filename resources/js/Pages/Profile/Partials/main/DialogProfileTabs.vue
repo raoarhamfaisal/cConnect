@@ -8,14 +8,17 @@
   >
     <Loader :loading="loading" background="white" height="70vh"></Loader>
     <div
+      v-if="!loading"
       class="border-8 p-2 border-white rounded-t-lg sm:p-8 bg-white shadow sm:rounded-lg"
     >
-      <Views :profile="profile" :byApi="true" />
+      <Views :profile="profile" apiChoice="3" />
+      <Trades :profile="profile" apiChoice="3" class="mt-3" />
     </div>
   </CustomDialog>
 </template>
 
 <script setup>
+import Trades from "@/Pages/Profile/Partials/Trades.vue";
 import Views from "@/Pages/Profile/Partials/Views.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import Loader from "@/Components/Ratings/Loader.vue";
@@ -28,7 +31,7 @@ defineProps({
 const store = useStore();
 
 const dialogRef = ref();
-const loading = computed(() => store.getters["profile/loading"]);
+const loading = computed(() => store.getters["profile/loadingProfile"]);
 
 //Exposed
 const openDialog = () => {

@@ -4,7 +4,7 @@ import { Icon } from "@iconify/vue"; // Make sure to import the Iconify Vue comp
 
 defineProps(["modelValue", "placeholder", "icon", "type", "id", "color"]); // added "icon" prop
 
-defineEmits(["update:modelValue"]);
+defineEmits(["update:modelValue", "iconClick", "blur", "keyup"]);
 
 const input = ref(null);
 
@@ -26,6 +26,8 @@ defineExpose({ focus: () => input.value.focus() });
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
       ref="input"
+      @blur="$emit('blur')"
+      @keyup="$emit('keyup')"
       :placeholder="placeholder"
     />
     <Icon
@@ -33,6 +35,7 @@ defineExpose({ focus: () => input.value.focus() });
       :icon="icon"
       :color="color"
       width="24"
+      @click="$emit('iconClick')"
       height="24"
       class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
     />
