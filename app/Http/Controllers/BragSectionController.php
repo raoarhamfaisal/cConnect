@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ContractorProfile;
-use App\Models\ImageSection;
+use App\Models\BragSection;
 use Illuminate\Support\Facades\Storage;
 
 class BragSectionController extends Controller
@@ -22,7 +22,7 @@ class BragSectionController extends Controller
     
         if( $request->file('section_image')) {
 
-            // $imageSection = $contractorProfile->imageSections()->create($data);
+            // $imageSection = $contractorProfile->bragSections()->create($data);
             $relativePath = $request->file('section_image')->store('uploads/brag_section', 'public-storage');
         
             // Convert the relative path to a full URL
@@ -33,14 +33,14 @@ class BragSectionController extends Controller
         }
 
         // Use the data to create the image section for the contractor profile
-        $imageSection = $contractorProfile->imageSections()->create($data);
+        $imageSection = $contractorProfile->bragSections()->create($data);
     
         return response()->json(['message' => 'Brag section added successfully.', 'imageSection' => $imageSection]);
     }
     
     public function update(Request $request, $sectionId)
     {
-        $section = ImageSection::findOrFail($sectionId);
+        $section = BragSection::findOrFail($sectionId);
     
         $data = $request->validate([
             'section_image' => 'nullable|image',
@@ -78,7 +78,7 @@ class BragSectionController extends Controller
     
     public function destroy($sectionId)
     {
-        $section = ImageSection::findOrFail($sectionId);
+        $section = BragSection::findOrFail($sectionId);
         
         // Delete the image associated with the section
         Storage::disk('public-storage')->delete($section->section_image);

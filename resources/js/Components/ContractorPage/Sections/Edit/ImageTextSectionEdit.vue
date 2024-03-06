@@ -282,9 +282,9 @@ const handleSubmit = async () => {
       ) {
         formData.append("section_image", tempSection.value.section_image);
       }
-      if (tempSection.value.section_text) {
-        formData.append("section_text", tempSection.value.section_text);
-      }
+      // if (tempSection.value.section_text) {
+        formData.append("section_text", tempSection.value.section_text ? tempSection.value.section_text : "");
+      // }
       for (const [key, value] of formData.entries()) {
         console.log(`${key}: ${value}`, "key value");
       }

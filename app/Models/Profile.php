@@ -54,4 +54,15 @@ class profile extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function sessionViewSettings()
+    {
+        return $this->hasOne(SessionViewSetting::class);
+    }
+
+    public function sessionTrades()
+    {
+        return $this->hasMany(SessionTrade::class);
+    }
+
 }

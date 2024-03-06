@@ -9,6 +9,8 @@ export default {
     return {
       loading: false,
       loadingProfile: false,
+      loadingViewSettingsProfile: false,
+      viewsSettingsProfile: {},
       status: "",
       profile: {},
       loadFirstPageWithNoPreserve: false,
@@ -22,6 +24,8 @@ export default {
     loadFirstPageWithNoPreserve: (state) => state.loadFirstPageWithNoPreserve,
     loading: (state) => state.loading,
     loadingProfile: (state) => state.loadingProfile,
+    loadingViewSettingsProfile: (state) => state.loadingViewSettingsProfile,
+    viewsSettingsProfile: (state) => state.viewsSettingsProfile,
     getProfile: (state) => state.profile,
     mustVerifyEmail: (state) => state.mustVerifyEmail,
   },
@@ -47,6 +51,14 @@ export default {
     setLoadingProfile(state, payload) {
       state.loadingProfile = payload;
     },
+
+    setLoadingViewSettingsProfile(state, payload) {
+      state.loadingViewSettingsProfile = payload;
+    },
+
+    setViewsSettingsProfile(state, payload) {
+      state.viewsSettingsProfile = payload;
+    },
   },
   actions: {
     async getProfileInfo({ commit }) {
@@ -63,6 +75,24 @@ export default {
         commit("setLoadingProfile", false);
       }
     },
+
+
+    async getViewSettingsProfile({ commit }) {
+      commit("setLoadingViewSettingsProfile", true);
+      try {
+        const response = await axios.get(`/api/profile/trades-views-settings`, getAxiosConfig());
+        if (response.data) {
+          commit("setViewsSettingsProfile", response.data.profile);
+        }
+      } catch (err) {
+        somethingWentWrong();
+      } finally {
+        commit("setLoadingViewSettingsProfile", false);
+      }
+    },
+
+
+
     async fetchProfile({ commit }) {
       commit("setLoading", true);
 

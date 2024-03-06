@@ -39,7 +39,9 @@ class ContractorPageController extends Controller
         if($contractor_id) {
             $contractorProfile = ContractorProfile::where('user_id', $contractor_id)->with('trades')->first();
 
+            
             if (!$contractorProfile) {
+                dd($contractorProfile);
                 $profile = Profile::where('user_id', $contractor_id)->with('trades')->first();
     
                 // If profile is found in the Profile model, save it to the ContractorProfile model

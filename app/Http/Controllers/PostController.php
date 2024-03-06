@@ -49,6 +49,16 @@ class PostController extends Controller
             $userTradeIds = SessionTrade::where('profile_id', $profile->id)->pluck('trade_id')->toArray();        
         }
 
+        // $posts = Post::query()
+        // ->with(['trades'])
+        // ->whereHas('trades', function ($query) use ($userTradeIds) {
+        //     $query->whereIn('trades.id', $userTradeIds);
+        // })
+        // ->first();
+
+        // dd($posts->trades);
+
+
     
         return Inertia::render('Postings', [
             'showit' => Auth::check(),
@@ -67,11 +77,11 @@ class PostController extends Controller
                     DB::raw('(SELECT AVG(reviews.rating) FROM reviews WHERE reviews.contractor_id = profiles.id AND reviews.is_review_active = 1) as average_rating'),
                     DB::raw('(SELECT COUNT(*) FROM reviews WHERE reviews.contractor_id = profiles.id AND reviews.is_review_active = 1) as total_reviews')
                 ])
+                ->with(['trades' => function ($query) {
+                    $query->select('trades.*'); // select all columns from trades
+                }])
                 ->leftJoin('profiles', 'posts.user_id', '=', 'profiles.user_id')
                 ->where('posts.region_id', $profile['region_id'])
-                ->whereHas('trades', function ($query) use ($userTradeIds) {
-                    $query->whereIn('trades.id', $userTradeIds);
-                })
                 ->whereHas('user.profile', function ($query) use ($sessionViewSettings) {
                     // Ensure the post creator has matching view settings with the logged-in user
                     $query->where(function ($query) use ($sessionViewSettings) {
@@ -96,6 +106,9 @@ class PostController extends Controller
                                 ->where('view_following', $sessionViewSettings->view_following);
                         });
                     });
+                })
+                ->whereHas('trades', function ($query) use ($userTradeIds) {
+                    $query->whereIn('trades.id', $userTradeIds);
                 })
                 ->when(Request::input('postSearch'), function ($query, $postSearch) {
                     $query->where('posts.title', 'like', "%{$postSearch}%");

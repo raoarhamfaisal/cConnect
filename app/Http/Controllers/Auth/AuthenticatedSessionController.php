@@ -69,6 +69,10 @@ class AuthenticatedSessionController extends Controller
                     ['profile_id' => $profile->id],
                     $sessionViewSetting
                 );
+
+                // Delete or deactivate unselected trades
+                SessionTrade::where('profile_id', $profile->id)
+                    ->delete();
     
                 // Store SessionTrade
                 $profileTrades = $profile->trades;
