@@ -2,7 +2,7 @@
   <Head title="Contractor Page" />
 
   <div
-    class="pt-8 sm:pt-8 pb-8"
+    class="pt-2 sm:pt-8 sm:pt-8 pb-8 max-w-[1280px] mx-auto"
     :style="{
       backgroundColor: selectedColorScheme[0]
         ? selectedColorScheme[0]
