@@ -13,11 +13,13 @@ import {
   VStepperActions,
   VStepperHeader,
 } from "vuetify/labs/VStepper";
-import { VDivider, VLazy, VTooltip } from "vuetify/components";
+import { VDivider, VLazy, VSnackbar, VTooltip } from "vuetify/components";
+import VueTheMask from "vue-the-mask";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { store } from "@/store/index.js";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
 import "./main.scss";
+
 import CKEditor from "@ckeditor/ckeditor5-vue";
 
 // import "vuetify/styles"; // Might want to reconsider this if you only want to import styles from specific components
@@ -30,6 +32,7 @@ const vuetify = createVuetify({
     VStepperWindow,
     VTooltip,
     VLazy,
+    VSnackbar,
     VStepperWindowItem,
     VStepperHeader,
     VStepperActions,
@@ -58,6 +61,7 @@ createInertiaApp({
       .use(vuetify)
       .use(store)
       .use(CKEditor)
+      .use(VueTheMask)
       .mount(el);
   },
 });

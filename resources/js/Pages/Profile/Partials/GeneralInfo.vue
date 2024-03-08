@@ -5,7 +5,6 @@ import TextInput from "@/Components/TextInput.vue";
 import { usePage } from "@inertiajs/inertia-vue3";
 import UserAvatar from "../components/UserAvatar.vue";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
-
 import axios from "axios";
 import { ref, watch } from "vue";
 import { useStore } from "vuex";
@@ -104,9 +103,9 @@ const clearError = (field) => {
         <div>
           <InputLabel class="font-bold" for="last_name" value="Last Name*" />
           <TextInput
+            class="mt-1 block w-full"
             id="last_name"
             type="text"
-            class="mt-1 block w-full"
             v-model="form.last_name"
             required
             placeholder="Type your last name"
@@ -119,15 +118,17 @@ const clearError = (field) => {
         <div>
           <InputLabel class="font-bold" for="phone_cell" value="Phone Cell*" />
           <TextInput
+            class="mt-1 block w-full"
             id="phone_cell"
             type="tel"
-            class="mt-1 block w-full"
             v-model="form.phone_cell"
             required
-            placeholder="Type your phone number"
             @input="clearError('phone_cell')"
             autocomplete="phone_cell"
+            placeholder="Type your phone number"
+            v-mask="'###-###-#####'"
           />
+          <!-- placeholder="###-###-####" -->
           <InputError class="mt-2" :message="errors.phone_cell" />
         </div>
       </div>

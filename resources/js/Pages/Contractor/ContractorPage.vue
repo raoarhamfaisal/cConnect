@@ -54,7 +54,6 @@ const contractorProfile = ref({});
 const total_reviews = ref(0);
 
 onMounted(() => {
-  console.log("onMounted");
   fetchContractorDetails();
 });
 

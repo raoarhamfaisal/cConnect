@@ -310,7 +310,7 @@ export default {
 
         <div
           class="flex flex-col items-center justify-start mx-auto lg:mt-0 h-full overflow-x-hidden bg-gray-200"
-          id="scrollableContainer"
+          id="scrollable"
           :style="{
             backgroundColor: `${color}`,
             width: '100%',

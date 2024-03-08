@@ -77,6 +77,8 @@
           }"
         >
           <ClosingTitleText
+            :userId="profile.user_id"
+            :loggedInUserId="loggedInUserId"
             :closing_text="profile.closing_text"
             :screen-width="screenWidth"
           />
@@ -103,8 +105,7 @@ import { useStore } from "vuex";
 // State
 const props = defineProps({
   profile: Object,
-  loggedInUserId: [String, Boolean],
-
+  loggedInUserId: [String, Number],
   region_name: String,
   total_reviews: [Number, String],
   average_rating: [Number, String],

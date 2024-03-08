@@ -85,63 +85,67 @@ const validateForm = () => {
   }
   console.log(form, "form");
   // Validate first_name
-  if (!form.first_name.trim()) {
+  if (!form.first_name?.trim()) {
     errors.first_name = "First name is required";
     isValid = false;
   }
-  if (!form.last_name.trim()) {
+  if (!form.last_name?.trim()) {
     errors.last_name = "Last name is required";
     isValid = false;
   }
-  if (!form.phone_cell.trim()) {
+  if (!form.phone_cell?.trim()) {
     errors.phone_cell = "Phone number is required";
     isValid = false;
   }
-  if (form.phone_cell.trim().length > 13) {
+  if (form.phone_cell?.trim().length > 13) {
     errors.phone_cell = "Phone number must not be greater than 13 numbers";
     isValid = false;
   }
-  if (form.phone_office.trim().length > 13) {
+  if (form.phone_office?.trim().length > 13) {
     errors.phone_office = "Phone Office must not be greater than 13 numbers";
     isValid = false;
   }
   // Validate address_1
-  if (!form.address_1.trim()) {
+  if (!form.address_1?.trim()) {
     errors.address_1 = "Address 1 is required";
     isValid = false;
   }
 
   // Validate city
-  if (!form.city.trim()) {
+  if (!form.city?.trim()) {
     errors.city = "City is required";
     isValid = false;
   }
 
   // Validate state
-  if (!form.state.trim()) {
+  if (!form.state?.trim()) {
     errors.state = "State is required";
     isValid = false;
   }
   // Validate company_name
-  if (!form.company_name.trim()) {
+  if (!form.company_name?.trim()) {
     errors.company_name = "Company name is required";
     isValid = false;
   }
 
   // Validate zipcode
-  if (!form.zipcode.trim()) {
+  if (form.zipcode?.trim().length < 5) {
+    errors.zipcode = "ZipCode  cannot be less than 5 characters";
+    isValid = false;
+  }
+  if (!form.zipcode?.trim()) {
     errors.zipcode = "Zipcode is required";
     isValid = false;
   }
 
   // Validate county
-  if (!form.county.trim()) {
+  if (!form.county?.trim()) {
     errors.county = "County is required";
     isValid = false;
   }
 
   // Validate region
-  if (!form.region_id.trim()) {
+  if (!form.region_id?.trim()) {
     errors.region = "Region is required";
     isValid = false;
   }
@@ -195,12 +199,12 @@ const clearErrors = (field) => {
   console.log("Clear errors", field);
   //for phone_cell only
   if (field === "phone_cell" || field === "phone_office") {
-    if (form[field].trim().length <= 13) {
+    if (form[field]?.trim().length <= 13) {
       errors[field] = "";
     }
     return;
   }
-  if (form[field].trim()) {
+  if (form[field]?.trim()) {
     errors[field] = "";
   }
 };

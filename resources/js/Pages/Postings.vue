@@ -65,6 +65,8 @@ export default {
     // // rootMargin: "-500px 0px -500px 0px",   top right bottom left
 
     // observer.observe(this.$refs.loadMoreIntersect);
+    localStorage.setItem("prevUrl", "/post");
+
     setTimeout(() => {
       const observerCallback = (entries) => {
         entries.forEach((entry) => {
