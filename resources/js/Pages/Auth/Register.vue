@@ -279,12 +279,7 @@ const validatePassword = () => {
           autocomplete="new-password"
         /> -->
         <!-- Display Matched/Unmatched message with icon -->
-        <div
-          v-if="
-            form.password.length >= 8 &&
-            form.password_confirmation.length >= form.password.length
-          "
-        >
+        <div v-if="form.password_confirmation.length >= 1">
           <span
             v-if="form.password_confirmation === form.password"
             class="text-green-500"

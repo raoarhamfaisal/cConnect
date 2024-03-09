@@ -95,7 +95,7 @@
                 color="#1864ab"
               />
             </div>
-            <div v-html="bottomText"></div>
+            <div class="default" v-html="bottomText"></div>
             <!-- <div v-html="'<strong>Test</strong>'"></div> -->
           </div>
           <heading-card
@@ -127,7 +127,7 @@
             ref="dialogRef"
             title="Add Bottom Text"
           >
-            <div class="closing">
+            <div class="closing default">
               <ckeditor
                 :editor="editor"
                 @ready="onReady"

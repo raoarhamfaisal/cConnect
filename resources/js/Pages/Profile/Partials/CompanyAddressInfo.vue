@@ -25,6 +25,7 @@ const props = defineProps({
   regions: Array,
 });
 const user = usePage().props.value.auth.user;
+const loadingImage = ref(false);
 
 const company_logo = ref(props.company_logo);
 const referenceList = props.regions.map((item) => item.name);
@@ -58,6 +59,8 @@ const changeReferal = (value) => {
 
 // Upload Company Logo on image change
 const handleImageUpdate = (file) => {
+  loadingImage.value = true;
+
   const formData = new FormData();
   formData.append("company_logo", file);
   formData.append("user_id", user.id);
@@ -70,11 +73,14 @@ const handleImageUpdate = (file) => {
       },
     })
     .then((response) => {
-      changesSaved("Company Logo uploaded successfully");
+      loadingImage.value = false;
+
       company_logo.value = response.data.company_logo; // Update the local state with the new avatar path
     })
     .catch((error) => {
       somethingWentWrong("Error uploading avatar");
+      loadingImage.value = false;
+
       // Handle the error appropriately here
     });
 };
@@ -108,7 +114,18 @@ const clearError = (field) => {
       @submit.prevent="form.patch(route('profile.updateCompanyInfo'))"
       class="flex flex-col items-center"
     >
-      <UserAvatar :imageSrc="company_logo" @update-image="handleImageUpdate" />
+      <v-skeleton-loader
+        v-if="loadingImage"
+        style="border-radius: 9999px"
+        class="overflow-hidden w-36 h-36"
+        type="image"
+      >
+      </v-skeleton-loader>
+      <UserAvatar
+        v-if="!loadingImage"
+        :imageSrc="company_logo"
+        @update-image="handleImageUpdate"
+      />
       <div
         class="mt-6 space-y-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-6"
       >

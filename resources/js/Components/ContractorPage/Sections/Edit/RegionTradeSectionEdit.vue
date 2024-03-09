@@ -12,14 +12,11 @@
       :heading="`Trade Groups`"
     />
     <!-- User Posting and Edit Button -->
-    <div class="flex gap-2 sm:gap-3">
+    <div @click="openPostDialog" class="flex gap-2 sm:gap-3">
       <!-- User Postings -->
       <v-tooltip text="See User Posts" location="left">
         <template v-slot:activator="{ props }">
-          <Link
-            class="active:scale-95 hover:bg-[#f8f9fa] hover:rounded-md"
-            :href="`/contractor/posts/${profile.id}`"
-          >
+          <div class="active:scale-95 hover:bg-[#f8f9fa] hover:rounded-md">
             <button
               class="xs:text-md w-[28px] h-[28px] xs:w-[35px] xs:h-[35px] font-semibold flex items-center justify-center"
             >
@@ -36,7 +33,7 @@
                 height="28"
               />
             </button>
-          </Link>
+          </div>
         </template>
       </v-tooltip>
       <!-- Edit -->
@@ -107,6 +104,25 @@
     </div>
     <div class="mb-4 sm:mb-0 mt-4">
       <InputLabel class="font-bold mb-3" value="Trades" />
+      <div class="flex items-center gap-4 mt-2 mb-5">
+        <div class="switch-trades" @click="selectAllTrades">
+          <div
+            :class="[
+              selectAll ? 'switch-bg-on-trades' : 'switch-bg-off-trades',
+            ]"
+          >
+            <div
+              :class="[
+                selectAll ? 'switch-knob-on-trades' : 'switch-knob-off-trades',
+              ]"
+            ></div>
+          </div>
+        </div>
+        <label for="select_all" class="mr-4 text-gray-800 font-bold"
+          >Select All</label
+        >
+      </div>
+
       <div class="grid grid-cols-2 gap-x-14 gap-y-3">
         <div
           v-for="(option, index) in options"
@@ -137,6 +153,7 @@
       </div>
     </div>
   </CustomDialog>
+  <DialogContractorPosts ref="postDialogRef" :contractorId="profile.user_id" />
 </template>
 <script setup>
 import IconButton from "@/Components/IconButton.vue";
@@ -144,6 +161,7 @@ import Loader from "@/Components/Ratings/Loader.vue";
 import SelectProfile from "@/Components/SelectProfile.vue";
 import Badge from "@/Components/Ratings/Badge.vue";
 import InputError from "@/Components/InputError.vue";
+import DialogContractorPosts from "@/Components/Postings/DialogContractorPosts.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
@@ -168,11 +186,14 @@ const region_name = ref(props.region_name ?? "");
 const selectedReferal = ref(region_name.value);
 const dialogRef = ref();
 const loadingDialog = ref(false);
+const postDialogRef = ref();
+
 const disabled = ref(false);
 
 const errors = reactive({
   region_id: "",
 });
+const selectAll = ref(false);
 
 const tradesPost = reactive({
   trade1: props.profile.trade1,
@@ -198,7 +219,7 @@ const tradesPost = reactive({
   trade21: props.profile.trade21,
   trade22: props.profile.trade22,
   trade23: props.profile.trade23,
-  trade24: props.profile.trade24,
+  // trade24: props.profile.trade24,
 });
 const tempTradesPost = reactive({
   trade1: props.profile.trade1,
@@ -224,7 +245,7 @@ const tempTradesPost = reactive({
   trade21: props.profile.trade21,
   trade22: props.profile.trade22,
   trade23: props.profile.trade23,
-  trade24: props.profile.trade24,
+  // trade24: props.profile.trade24,
 });
 
 // Computed
@@ -244,6 +265,12 @@ watch(regions, (newVal) => {
 
 onMounted(() => {
   store.dispatch("ratings/getRegions");
+  const allSelected = Object.values(tempTradesPost).every(
+    (value) => value === 1
+  );
+  if (allSelected) {
+    selectAll.value = true;
+  }
 });
 
 //Methods
@@ -330,6 +357,24 @@ const handleSubmit = async () => {
     disabled.value = false;
   }
 };
+const selectAllTrades = () => {
+  if (selectAll.value) {
+    // If selectAll is true, set all properties in form to 1
+    for (let key in tempTradesPost) {
+      tempTradesPost[key] = 0;
+    }
+  } else {
+    // If selectAll is false, set all properties in tempTradesPost to 0
+    for (let key in tempTradesPost) {
+      tempTradesPost[key] = 1;
+    }
+  }
+  // Toggle the value of selectAll
+  selectAll.value = !selectAll.value;
+};
+const openPostDialog = () => {
+  postDialogRef.value.openDialog();
+};
 </script>
 
 <style scoped>
@@ -370,5 +415,51 @@ const handleSubmit = async () => {
 .switch-knob-off-post {
   left: 1px;
 }
+
+.switch-trades {
+  cursor: pointer;
+  width: 40px;
+  height: 20px;
+  position: relative;
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+}
+.switch-bg-on-trades,
+.switch-bg-off-trades {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  transition: background-color 0.2s;
+}
+.switch-bg-on-trades {
+  /* background-color: rgba(36, 30, 109, 1); */
+  background-color: rgba(10, 150, 10, 1);
+  width: 40px;
+}
+.switch-bg-off-trades {
+  background-color: #ccc;
+  /* background-color: rgba(150, 10, 10, 1); */
+  width: 39px;
+}
+.switch-knob-on-trades,
+.switch-knob-off-trades {
+  width: 19px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: #fff;
+  position: absolute;
+  top: 1px;
+  transition: left 0.2s;
+}
+.switch-knob-on-trades {
+  left: 21px;
+}
+.switch-knob-off-trades {
+  left: 1px;
+}
+
+.divider {
+  height: 2px;
+  background-color: #e5e5e5;
+  margin: 20px 0; /* Vertical spacing */
+}
 </style>
-@/helpers/selectListsHelpters.js

@@ -92,3 +92,7 @@ h6 {
 .ck-editor__editable.ck.ck-editor__editable_inline{
   border: 2px solid #ccc;
 }
+
+div.default,.default div,.default p , p.default{
+  font-size: 20px;
+}

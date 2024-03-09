@@ -19,6 +19,7 @@ const props = defineProps({
   errors: Object,
 });
 const store = useStore();
+const loadingImage = ref(false);
 
 const user = usePage().props.value.auth.user;
 const user_avatar = ref(props.user_avatar);
@@ -33,6 +34,9 @@ watch(
 );
 // Upload User Avatar on image change
 const handleImageUpdate = (file) => {
+  store.commit("profile/setLoadingImage", true);
+  loadingImage.value = true;
+
   const formData = new FormData();
   formData.append("user_avatar", file);
   formData.append("user_id", user.id);
@@ -45,12 +49,14 @@ const handleImageUpdate = (file) => {
       },
     })
     .then((response) => {
-      changesSaved("Avatar uploaded successfully");
+      // changesSaved("Avatar uploaded successfully");
       user_avatar.value = response.data.user_avatar; // Update the local state with the new avatar path
-      store.dispatch("profile/fetchProfile");
+      loadingImage.value = false;
+      store.dispatch("profile/fetchProfile", true);
     })
     .catch((error) => {
       somethingWentWrong("Error uploading avatar");
+      loadingImage.value = false;
       // Handle the error appropriately here
     });
 };
@@ -81,7 +87,18 @@ const clearError = (field) => {
       @submit.prevent="form.patch(route('profile.updateGeneralInfo'))"
       class="flex flex-col items-center"
     >
-      <UserAvatar :imageSrc="user_avatar" @update-image="handleImageUpdate" />
+      <v-skeleton-loader
+        v-if="loadingImage"
+        style="border-radius: 9999px"
+        class="overflow-hidden w-36 h-36"
+        type="image"
+      >
+      </v-skeleton-loader>
+      <UserAvatar
+        v-if="!loadingImage"
+        :imageSrc="user_avatar"
+        @update-image="handleImageUpdate"
+      />
       <div
         class="mt-6 space-y-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-6"
       >

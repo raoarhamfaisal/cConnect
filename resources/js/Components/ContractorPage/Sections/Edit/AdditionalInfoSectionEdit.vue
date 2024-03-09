@@ -21,7 +21,14 @@
     <div class="flex space-x-2 justify-between">
       <div class="flex justify-center items-center space-x-2">
         <div>
-          <Avatar :imageSrc="`/${company_logo}`" />
+          <v-skeleton-loader
+            v-if="loadingImage"
+            style="border-radius: 9999px"
+            class="overflow-hidden w-14 h-14 sm:h-20 sm:w-20"
+            type="image"
+          >
+          </v-skeleton-loader>
+          <Avatar v-if="!loadingImage" :imageSrc="`/${company_logo}`" />
         </div>
         <div class="flex flex-col justify-center">
           <h2
@@ -82,7 +89,15 @@
     title="Edit Your Contact Information"
   >
     <div class="flex justify-center">
+      <v-skeleton-loader
+        v-if="loadingImage"
+        style="border-radius: 9999px"
+        class="overflow-hidden w-36 h-36"
+        type="image"
+      >
+      </v-skeleton-loader>
       <UserAvatar
+        v-if="!loadingImage"
         :imageSrc="`/${company_logo ? company_logo : profile.user_avatar}`"
         @update-image="handleImageUpdate"
       />
@@ -252,6 +267,7 @@ const address_1 = ref(props.profile.address_1);
 const address_2 = ref(props.profile.address_2);
 const city = ref(props.profile.city);
 const state = ref(props.profile.state);
+const loadingImage = ref(false);
 const county = ref(props.profile.county);
 const zipcode = ref(props.profile.zipcode);
 const loading = ref(false);
@@ -390,6 +406,7 @@ const handleSubmit = async () => {
 
 // Upload User Avatar on image change
 const handleImageUpdate = async (file) => {
+  loadingImage.value = true;
   const formData = new FormData();
   formData.append("company_logo", file);
 
@@ -397,10 +414,12 @@ const handleImageUpdate = async (file) => {
   axios
     .post("/api/contractor/company-logo", formData, getAxiosConfigFormData())
     .then((response) => {
-      changesSaved("Avatar uploaded successfully");
       company_logo.value = response.data.company_logo; // Update the local state with
+      loadingImage.value = false;
     })
     .catch((error) => {
+      loadingImage.value = false;
+
       somethingWentWrong("Error uploading avatar");
       // Handle the error appropriately here
     });

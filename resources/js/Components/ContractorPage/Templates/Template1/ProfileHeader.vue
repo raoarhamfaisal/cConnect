@@ -5,19 +5,23 @@
     :bgColor="selectedColorScheme[1]"
     :padding="screenWidth < 640 ? '7px' : '15px'"
   >
-    <div class="flex gap-4 mb-1 items-center">
+    <div class="flex gap-2 mb-1 items-center">
       <div @click="goBack" class="cursor-pointer">
-        <Icon class="w-8 h-8" icon="ion:arrow-back" color="#241e6d" />
+        <Icon class="w-6 h-6" icon="ion:arrow-back" color="#241e6d" />
       </div>
       <div
         @click="goBack"
-        class="font-bold flex justify-center items-center text-2xl text-blue-rgba leading-tight"
+        class="font-bold cursor-pointer translate-y-[1px] flex justify-center items-center text-xl text-blue-rgba leading-tight"
       >
         Go Back
       </div>
     </div>
     <div class="flex gap-2" :style="{ color: selectedColorScheme[2] }">
       <div :class="`${screenWidth > 768 ? 'w-3/4' : 'w-4/5'}`">
+        <!-- Company Logo -->
+        <div v-if="profile.company_logo" class="flex justify-center mb-3">
+          <Avatar :imageSrc="`/${profile.company_logo}`" />
+        </div>
         <!-- company name -->
         <div
           class="text-2xl text-center xs:text-3xl font-bold uppercase"
@@ -48,6 +52,9 @@
         </div>
         <!-- phoneOffice -->
         <div class="flex text-xl font-semibold mt-1 flex-col justify-center">
+          <div class="self-center text-base md:text-xl" v-if="city || state">
+            {{ city + ", " + state }}
+          </div>
           <div class="flex max-md:flex-col items-center justify-center">
             <div>{{ profile.phone_office || profile.phone_cell }}</div>
             <div
@@ -58,24 +65,24 @@
             </div>
             <div>{{ profile.email }}</div>
           </div>
-          <div class="self-center text-base md:text-xl" v-if="city || state">
-            {{ city + ", " + state }}
-          </div>
         </div>
       </div>
       <div
         :class="` ${
           screenWidth > 768 ? 'w-1/4' : ''
-        } flex-grow flex flex-col gap-2  flex justify-center  items-center px-2`"
+        } flex-grow flex flex-col gap-2  flex justify-center  items-center `"
       >
-        <div class="flex items-center">
+        <div class="flex items-center gap-1">
           <div class="">
             <img src="/images/icons/pre-diamond.png" width="20" height="30" />
           </div>
           <div class="flex flex-col justify-center items-center">
             <StarRounded
+              @click="openContractorRatingDialog"
               :starWidth="screenWidth > 768 ? 18 : 15"
-              class="h-4 cursor-pointer"
+              :class="`h-4 cursor-pointer ${
+                user.id === profile.user_id ? 'pointer-events-none' : ''
+              }`"
               :indicatorClasses="`text-small h-4 `"
               :starHeight="screenWidth > 768 ? 18 : 15"
               :rating="
@@ -92,6 +99,30 @@
               </h2>
             </div>
           </div>
+          <!-- User Posting  -->
+          <div class="flex gap-2 sm:gap-3 translate-x-[-2px]">
+            <!-- User Postings -->
+            <v-tooltip text="See User Posts" location="left">
+              <template v-slot:activator="{ props }">
+                <div
+                  @click="openPostDialog"
+                  class="active:scale-95 hover:bg-[#f8f9fa] hover:rounded-md"
+                >
+                  <!-- :href="`/contractor/posts/${profile.id}`" -->
+                  <button
+                    class="xs:text-md w-[28px] h-[28px] xs:w-[35px] xs:h-[35px] font-semibold flex items-center justify-center"
+                  >
+                    <img
+                      src="/images/icons/post_b.png"
+                      v-bind="props"
+                      width="28"
+                      height="28"
+                    />
+                  </button>
+                </div>
+              </template>
+            </v-tooltip>
+          </div>
         </div>
         <div class="flex flex-col gap-1">
           <Link
@@ -100,7 +131,7 @@
             :href="`/contractor/${profile.user_id}/edit`"
           >
             <button
-              class="bg-white px-4 py-1 text-xs hover:bg-[#f8f9fa] sm:text-sm font-bold rounded-full border-[#1864ab] border-[1px] text-white bg-[#1864ab] cursor-pointer hover:shadow-lg active:scale-95 w-full"
+              class="bg-white px-4 py-1 text-xs hover:bg-[#114678] sm:text-sm font-bold rounded-full border-[#1864ab] border-[1px] text-white bg-[#1864ab] cursor-pointer hover:shadow-lg active:scale-95 w-full"
             >
               Edit
             </button>
@@ -124,11 +155,18 @@
       </div>
     </div>
   </Card>
+  <DialogContractorRating
+    ref="ratingDialogRef"
+    :loggedInUserId="user.id"
+    :userId="profile.user_id"
+  />
+  <DialogContractorPosts ref="postDialogRef" :contractorId="profile.user_id" />
 </template>
 
 <script setup>
 import StarRounded from "@/Components/Ratings/StarRounded.vue";
-import StarRating from "@/Components/Ratings/StarRating.vue";
+import DialogContractorRating from "@/Components/Ratings/Contractor/DialogContractorRating.vue";
+import DialogContractorPosts from "@/Components/Postings/DialogContractorPosts.vue";
 
 import Card from "@/Components/Card.vue";
 
@@ -157,6 +195,9 @@ const props = defineProps({
   },
 });
 const snackbarVisible = ref(false);
+const user = usePage().props.value.auth.user;
+const ratingDialogRef = ref();
+const postDialogRef = ref();
 
 const shareLink = () => {
   const success = copyToClipboard(window.location.href);
@@ -235,5 +276,11 @@ const truncatedName = computed(() => {
     return first_name.value + " " + last_name.value;
   }
 });
+const openContractorRatingDialog = () => {
+  ratingDialogRef.value.openDialog();
+};
+const openPostDialog = () => {
+  postDialogRef.value.openDialog();
+};
 </script>
 <style scoped></style>

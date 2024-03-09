@@ -22,7 +22,7 @@ export const options = [
   { id: "trade21", name: "Metal Fab, Fireplaces" },
   { id: "trade22", name: "Handyman Services" },
   { id: "trade23", name: "Architectural, Engineering & Law" },
-  { id: "trade24", name: "Supplier & Advertiser (all trades)" },
+  // { id: "trade24", name: "Supplier & Advertiser (all trades)" },
 ];
 export const stateList = [
   "Alabama",

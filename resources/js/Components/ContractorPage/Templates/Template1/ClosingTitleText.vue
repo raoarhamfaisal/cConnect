@@ -3,7 +3,7 @@
   <div v-if="closingText" :class="` flex gap-1 flex-col rounded-lg closing`">
     <!-- :class="`mt-1 flex gap-1 flex-col border-gray-300 border-2 p-3 rounded-lg closing`" -->
 
-    <div v-html="closingText"></div>
+    <div class="default" v-html="closingText"></div>
   </div>
   <div class="flex justify-end gap-1">
     <Link
@@ -12,7 +12,7 @@
       :href="`/contractor/${userId}/edit`"
     >
       <button
-        class="bg-white px-4 py-1 text-xs hover:bg-[#f8f9fa] sm:text-sm font-bold rounded-full border-[#1864ab] w-[66px] border-[1px] text-white bg-[#1864ab] cursor-pointer hover:shadow-lg active:scale-95 w-full"
+        class="bg-white px-4 py-1 text-xs hover:bg-[#114678] sm:text-sm font-bold rounded-full border-[#1864ab] w-[66px] border-[1px] text-white bg-[#1864ab] cursor-pointer hover:shadow-lg active:scale-95 w-full"
       >
         Edit
       </button>
