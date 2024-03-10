@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('contractor_profile_id');
             $table->unsignedBigInteger('trade_id');
         
-            $table->foreign('contractor_profile_id')->references('id')->on('profiles')->onDelete('cascade');
+            $table->foreign('contractor_profile_id')->references('id')->on('contractor_profiles')->onDelete('cascade');
             $table->foreign('trade_id')->references('id')->on('trades')->onDelete('cascade');
         
             $table->primary(['contractor_profile_id', 'trade_id']);            

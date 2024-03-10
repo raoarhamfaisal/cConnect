@@ -53,7 +53,9 @@ class BragSectionController extends Controller
             // Storage::disk('public-storage')->delete($section->section_image);
             // $data['section_image'] = $request->file('section_image')->store('uploads/brag_section', 'public-storage');
             // Delete the old image from storage
-            Storage::disk('public-storage')->delete($section->section_image);
+            if($section->section_image !== "/uploads/default-images/blank-image-2.jpg" && $section->section_image !== "/uploads/default-images/blank-image-1.jpg") {
+                Storage::disk('public-storage')->delete($section->section_image);
+            }
             
             // Store the new image and get the relative path
             $relativePath = $request->file('section_image')->store('uploads/brag_section', 'public-storage');
@@ -81,7 +83,9 @@ class BragSectionController extends Controller
         $section = BragSection::findOrFail($sectionId);
         
         // Delete the image associated with the section
-        Storage::disk('public-storage')->delete($section->section_image);
+        if($section->section_image !== "/uploads/default-images/blank-image-2.jpg" && $section->section_image !== "/uploads/default-images/blank-image-1.jpg") {
+            Storage::disk('public-storage')->delete($section->section_image);
+        }
         
         $section->delete();
     

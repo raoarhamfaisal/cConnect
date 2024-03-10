@@ -41,14 +41,17 @@ class ContractorPageController extends Controller
 
             
             if (!$contractorProfile) {
-                dd($contractorProfile);
                 $profile = Profile::where('user_id', $contractor_id)->with('trades')->first();
     
                 // If profile is found in the Profile model, save it to the ContractorProfile model
                 if ($profile) {
+                    // Fetch the default values
+                    $defaults = ContractorImageSectionsDefault::first();
+
+
                     $contractorProfile = new ContractorProfile();
-                    $profile->bottom_text = "Default Bottom Text";
-                    $profile->closing_text = "Default Closing Text";
+                    $profile->bottom_text = $defaults->bottom_text;
+                    $profile->closing_text = $defaults->closing_text;
                     $profile->template_id = 1;
                     $profile->color_scheme_id = 1;
                     $contractorProfile->fill($profile->toArray()); // This copies all attributes from the profile to contractor profile
@@ -56,8 +59,6 @@ class ContractorPageController extends Controller
                     $contractorProfile->save();  
                     $contractorProfile->trades()->sync($profile->trades);   
         
-                    // Fetch the default values
-                    $defaults = ContractorImageSectionsDefault::first();
         
                     if ($defaults) {
                         $imageSections = [
@@ -170,9 +171,13 @@ class ContractorPageController extends Controller
     
                 // If profile is found in the Profile model, save it to the ContractorProfile model
                 if ($profile) {
+                    // Fetch the default values
+                    $defaults = ContractorImageSectionsDefault::first();
+
+
                     $contractorProfile = new ContractorProfile();
-                    $profile->bottom_text = "Default Bottom Text";
-                    $profile->closing_text = "Default Closing Text";
+                    $profile->bottom_text = $defaults->bottom_text;
+                    $profile->closing_text = $defaults->closing_text;
                     $profile->template_id = 1;
                     $profile->color_scheme_id = 1;
                     $contractorProfile->fill($profile->toArray()); // This copies all attributes from the profile to contractor profile
@@ -180,8 +185,6 @@ class ContractorPageController extends Controller
                     $contractorProfile->save();  
                     $contractorProfile->trades()->sync($profile->trades);   
         
-                    // Fetch the default values
-                    $defaults = ContractorImageSectionsDefault::first();
         
                     if ($defaults) {
                         $imageSections = [
@@ -290,9 +293,12 @@ class ContractorPageController extends Controller
     
                 // If profile is found in the Profile model, save it to the ContractorProfile model
                 if ($profile) {
+                    // Fetch the default values
+                    $defaults = ContractorImageSectionsDefault::first();
+
                     $contractorProfile = new ContractorProfile();
-                    $profile->bottom_text = "Default Bottom Text";
-                    $profile->closing_text = "Default Closing Text";
+                    $profile->bottom_text = $defaults->bottom_text;
+                    $profile->closing_text = $defaults->closing_text;
                     $profile->template_id = 1;
                     $profile->color_scheme_id = 1;
                     $contractorProfile->fill($profile->toArray()); // This copies all attributes from the profile to contractor profile
@@ -300,8 +306,6 @@ class ContractorPageController extends Controller
                     $contractorProfile->save();  
                     $contractorProfile->trades()->sync($profile->trades);   
         
-                    // Fetch the default values
-                    $defaults = ContractorImageSectionsDefault::first();
         
                     if ($defaults) {
                         $imageSections = [
