@@ -9,6 +9,7 @@ import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
 const props = defineProps({
   status: String,
   showit: Boolean,
+  user: Object,
 });
 
 const form = useForm();
@@ -27,9 +28,10 @@ const verificationLinkSent = computed(
     <Head title="Email Verification" />
     <WelcomeHeader :showit="showit" :showSignUp="false" />
 
+    
     <div class="mb-4 text-sm text-gray-600">
       Thanks for signing up! Before getting started, could you verify your email
-      address by clicking on the link we just emailed to you? If you are unable to locate the verification email, please check your spam & junk folders in your email. 
+      address by clicking on the link we just emailed to <a :href="route('signup')" style="color: rgb(36 30 109); font-weight: bold;">{{ user.email }}</a>? If you are unable to locate the verification email, please check your spam & junk folders in your email. 
       If you still didn't
       receive the email, we will gladly send you another.
     </div>
