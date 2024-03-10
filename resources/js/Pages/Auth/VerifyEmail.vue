@@ -29,7 +29,8 @@ const verificationLinkSent = computed(
 
     <div class="mb-4 text-sm text-gray-600">
       Thanks for signing up! Before getting started, could you verify your email
-      address by clicking on the link we just emailed to you? If you didn't
+      address by clicking on the link we just emailed to you? If you are unable to locate the verification email, please check your spam & junk folders in your email. 
+      If you still didn't
       receive the email, we will gladly send you another.
     </div>
 
