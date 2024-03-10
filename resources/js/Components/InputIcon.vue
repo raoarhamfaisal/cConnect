@@ -2,7 +2,15 @@
 import { onMounted, ref } from "vue";
 import { Icon } from "@iconify/vue"; // Make sure to import the Iconify Vue component
 
-defineProps(["modelValue", "placeholder", "icon", "type", "id", "color"]); // added "icon" prop
+defineProps([
+  "modelValue",
+  "placeholder",
+  "icon",
+  "type",
+  "id",
+  "color",
+  "cursor",
+]); // added "icon" prop
 
 defineEmits(["update:modelValue", "iconClick", "blur", "keyup"]);
 
@@ -37,7 +45,9 @@ defineExpose({ focus: () => input.value.focus() });
       width="24"
       @click="$emit('iconClick')"
       height="24"
-      class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+      :class="`absolute ${
+        cursor ? 'cursor-pointer' : ''
+      } right-3 top-1/2 transform -translate-y-1/2 text-gray-500`"
     />
   </div>
 </template>
