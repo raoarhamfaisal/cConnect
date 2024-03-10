@@ -39,6 +39,16 @@
     :total_reviews="total_reviews"
     :region_name="region_name"
   />
+  <Template5
+    v-if="selectedTemplate === 5"
+    :profile="profile"
+    :screenWidth="screenWidth"
+    :loggedInUserId="loggedInUserId"
+    :average_rating="average_rating"
+    :starPercentages="starPercentages"
+    :total_reviews="total_reviews"
+    :region_name="region_name"
+  />
 
   <MoveToTop
     scrollableContainer="scrollableContainer"
@@ -53,6 +63,7 @@ import Template1 from "@/Components/ContractorPage/Templates/Template1.vue";
 import Template2 from "@/Components/ContractorPage/Templates/Template2.vue";
 import Template3 from "@/Components/ContractorPage/Templates/Template3.vue";
 import Template4 from "@/Components/ContractorPage/Templates/Template4.vue";
+import Template5 from "@/Components/ContractorPage/Templates/Template5.vue";
 
 import Loader from "@/Components/Ratings/Loader.vue";
 

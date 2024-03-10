@@ -1,36 +1,37 @@
 <template>
   <!-- Company ,contact address  -->
-
   <div
     :style="{
       color: selectedColorScheme[2],
     }"
-    class="flex flex-col justify-center text-center"
+    class="flex gap-2"
   >
     <!-- Company Logo -->
-    <div v-if="profile.user_avatar" class="flex justify-center mb-3">
+    <div v-if="profile.user_avatar" class="flex mb-3">
       <Avatar :imageSrc="`/${profile.user_avatar}`" />
     </div>
-    <h2
-      class="text-xl sm:text-2xl font-medium font-extrabold"
-      v-if="company_name"
-    >
-      {{ company_name }}
-    </h2>
-    <div
-      class="text-lg sm:text-xl font-medium font-bold"
-      v-if="address_1 || address_2"
-    >
-      {{ address_1 || address_2 }}
+    <div class="flex flex-col">
+      <h2
+        class="text-xl sm:text-2xl font-medium font-extrabold"
+        v-if="company_name"
+      >
+        {{ company_name }}
+      </h2>
+      <div
+        class="text-lg sm:text-xl font-medium font-bold"
+        v-if="address_1 || address_2"
+      >
+        {{ address_1 || address_2 }}
+      </div>
+      <span
+        class="text-base sm:text-lg font-semibold"
+        v-if="city || state || zipcode"
+        >{{ city + ", " + state + " " + zipcode }}</span
+      >
     </div>
-    <span
-      class="text-base sm:text-lg font-semibold"
-      v-if="city || state || zipcode"
-      >{{ city + ", " + state + " " + zipcode }}</span
-    >
   </div>
   <div
-    class="flex flex-col justify-center mt-3 md:mt-6 text-base md:text-lg max-md:items-center items-center font-semibold emailPhoneSection"
+    class="flex flex-col justify-start mt-3 md:mt-6 text-base md:text-lg max-md:items-center font-semibold emailPhoneSection"
     :style="{
       color: selectedColorScheme[2],
     }"
@@ -107,30 +108,31 @@
       </v-tooltip>
       <div>County: {{ profile.county }}</div>
     </div>
-    <a v-if="profile.website_url" :href="absoluteUrl(profile.website_url)">
-      <v-tooltip text="Website" location="top">
-        <template v-slot:activator="{ props }">
-          <Icon
-            v-bind="props"
-            icon="fluent-mdl2:website"
-            :color="selectedColorScheme[3]"
-            class="``"
-          />
-        </template>
-      </v-tooltip>
-      <div>{{ profile.website_url }}</div>
-    </a>
 
     <div
-      class="flex gap-2 mt-3 md:mt-6 max-md:items-center text-sm md:text-base"
+      class="flex flex-col gap-1 mt-3 md:mt-6 max-md:items-center text-sm md:text-base"
     >
+      <a v-if="profile.website_url" :href="absoluteUrl(profile.website_url)">
+        <v-tooltip text="Website" location="top">
+          <template v-slot:activator="{ props }">
+            <Icon
+              v-bind="props"
+              icon="fluent-mdl2:website"
+              :color="selectedColorScheme[3]"
+              class="``"
+            />
+          </template>
+        </v-tooltip>
+        <div>{{ profile.website_url }}</div>
+      </a>
       <!-- For Facebook -->
       <a v-if="profile.facebook" :href="absoluteUrl(profile.facebook)">
         <v-tooltip text="Facebook" location="top">
           <template v-slot:activator="{ props }">
-            <Icon class="w-8 h-8" v-bind="props" icon="logos:facebook" />
+            <Icon v-bind="props" icon="logos:facebook" class="" />
           </template>
         </v-tooltip>
+        <div>Facebook</div>
       </a>
 
       <!-- For Twitter -->
@@ -138,31 +140,34 @@
         <v-tooltip text="Twitter" location="top">
           <template v-slot:activator="{ props }">
             <Icon
-              class="w-8 h-8"
               v-bind="props"
               icon="fa6-brands:square-x-twitter"
               color="black"
+              class=""
             />
           </template>
         </v-tooltip>
+        <div>Twitter</div>
       </a>
 
       <!-- For TikTok -->
       <a v-if="profile.tiktok" :href="absoluteUrl(profile.tiktok)">
         <v-tooltip text="TikTok" location="top">
           <template v-slot:activator="{ props }">
-            <Icon class="w-8 h-8" v-bind="props" icon="logos:tiktok-icon" />
+            <Icon v-bind="props" icon="logos:tiktok-icon" class="" />
           </template>
         </v-tooltip>
+        <div>Tiktok</div>
       </a>
 
       <!-- For Instagram -->
       <a v-if="profile.instagram" :href="absoluteUrl(profile.instagram)">
         <v-tooltip text="Instagram" location="top">
           <template v-slot:activator="{ props }">
-            <Icon class="w-8 h-8" v-bind="props" icon="skill-icons:instagram" />
+            <Icon v-bind="props" icon="skill-icons:instagram" class="" />
           </template>
         </v-tooltip>
+        <div>Instagram</div>
       </a>
     </div>
   </div>

@@ -7,8 +7,12 @@
     }"
     class="flex gap-4 flex-col"
   >
-    <div v-for="(section, index) in sections" :key="section.id">
-      <!-- class="rounded-md border relative border-gray-300 p-2 sm:p-2" -->
+    <div
+      v-for="section in sections"
+      :key="section.id"
+      class="rounded-md border relative border-gray-300 p-2 sm:p-2"
+    >
+      <!---->
       <!-- Only Text -->
       <div
         v-if="!section.section_image && section.section_text"
@@ -30,7 +34,7 @@
         />
       </div>
       <!-- For even items -->
-      <div
+      <!-- <div
         v-if="section.section_image && section.section_text && index % 2 !== 0"
         class="flex max-md:flex-col gap-2 md:gap-4 items-center"
       >
@@ -49,7 +53,7 @@
         </div>
       </div>
 
-      <!-- For odd items -->
+    
       <div
         v-if="section.section_image && section.section_text && index % 2 === 0"
         class="flex max-md:flex-col gap-2 md:gap-4 items-center max-md:flex-col-reverse"
@@ -67,9 +71,9 @@
         >
           {{ section.section_text }}
         </div>
-      </div>
-      <!-- <div
-        v-if="section.section_image && section.section_text && index % 2 === 0"
+      </div> -->
+      <div
+        v-if="section.section_image && section.section_text"
         class="relative"
         @click="openImage(section.section_image)"
       >
@@ -89,7 +93,7 @@
             {{ section.section_text }}
           </span>
         </div>
-      </div> -->
+      </div>
     </div>
   </div>
 
