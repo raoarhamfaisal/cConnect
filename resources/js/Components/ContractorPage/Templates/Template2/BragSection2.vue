@@ -31,7 +31,7 @@
       </div>
       <!-- For even items -->
       <div
-        v-if="section.section_image && section.section_text && index % 2 == 0"
+        v-if="section.section_image && section.section_text && index % 2 !== 0"
         class="flex max-md:flex-col gap-2 md:gap-4 items-center"
       >
         <div
@@ -51,7 +51,7 @@
 
       <!-- For odd items -->
       <div
-        v-if="section.section_image && section.section_text && index % 2 !== 0"
+        v-if="section.section_image && section.section_text && index % 2 === 0"
         class="flex max-md:flex-col gap-2 md:gap-4 items-center max-md:flex-col-reverse"
       >
         <div class="relative w-full md:w-3/5 h-3/5 bg-[#222] rounded-md">

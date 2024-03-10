@@ -163,6 +163,7 @@
       </div>
     </div>
   </div>
+
   <DialogContractorRating
     ref="ratingDialogRef"
     :loggedInUserId="user.id"
@@ -175,8 +176,6 @@
 import StarRounded from "@/Components/Ratings/StarRounded.vue";
 import DialogContractorRating from "@/Components/Ratings/Contractor/DialogContractorRating.vue";
 import DialogContractorPosts from "@/Components/Postings/DialogContractorPosts.vue";
-
-import Card from "@/Components/Card.vue";
 
 import Avatar from "@/Components/Ratings/Avatar.vue";
 import { Icon } from "@iconify/vue";

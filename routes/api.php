@@ -59,7 +59,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         Route::get('/contractor/all-templates', [ContractorProfileController::class, 'getAllTemplates'])->name('contractorProfile.getAllTemplates');
         Route::patch('/contractor/update-template', [ContractorProfileController::class, 'updateTemplate'])->name('contractorProfile.updateTemplate');
         Route::get('/contractor/all-color-schemes', [ContractorProfileController::class, 'getAllColorSchemes'])->name('contractorProfile.getAllColorSchemes');
-        Route::get('/contractor/all-color-schemes', [ContractorProfileController::class, 'getAllColorSchemes'])->name('contractorProfile.getAllColorSchemes');
+        Route::patch('/contractor/update-color-scheme', [ContractorProfileController::class, 'updateColorScheme'])->name('contractorProfile.updateColorScheme');
         Route::get('/contractor/post/{contractor_id}', [PostController::class, 'getContractorPosts'])->name('post.getContractorPosts');
             
         Route::post('/contractor/{contractorProfileId}/image-section', [ImageSectionController::class, 'store']);
