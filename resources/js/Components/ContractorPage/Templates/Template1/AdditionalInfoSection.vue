@@ -48,9 +48,7 @@
           <template v-slot:activator="{ props }">
             <Icon
               v-bind="props"
-              :color="
-                selectedColorScheme[1] === '#212529' ? '#364fc7' : iconColor
-              "
+              :color="selectedColorScheme[2]"
               icon="entypo:address"
               class="w-5 h-5"
             />
@@ -64,9 +62,7 @@
           <template v-slot:activator="{ props }">
             <Icon
               v-bind="props"
-              :color="
-                selectedColorScheme[1] === '#212529' ? '#364fc7' : iconColor
-              "
+              :color="selectedColorScheme[2]"
               icon="wpf:phone-office"
               class="w-5 h-5"
             />
@@ -81,9 +77,7 @@
           <template v-slot:activator="{ props }">
             <Icon
               v-bind="props"
-              :color="
-                selectedColorScheme[1] === '#212529' ? '#364fc7' : iconColor
-              "
+              :color="selectedColorScheme[2]"
               icon="ic:baseline-phone"
               class="w-5 h-5"
             />
@@ -97,9 +91,7 @@
           <template v-slot:activator="{ props }">
             <Icon
               v-bind="props"
-              :color="
-                selectedColorScheme[1] === '#212529' ? '#364fc7' : iconColor
-              "
+              :color="selectedColorScheme[2]"
               icon="bi:envelope-fill"
               class="w-5 h-5"
             />
@@ -114,9 +106,7 @@
           <template v-slot:activator="{ props }">
             <Icon
               v-bind="props"
-              :color="
-                selectedColorScheme[1] === '#212529' ? '#364fc7' : iconColor
-              "
+              :color="selectedColorScheme[2]"
               icon="tabler:location-filled"
               class="w-5 h-5"
             />
@@ -134,9 +124,7 @@
               <Icon
                 v-bind="props"
                 icon="fluent-mdl2:website"
-                :color="
-                  selectedColorScheme[1] === '#212529' ? '#364fc7' : iconColor
-                "
+                :color="selectedColorScheme[2]"
                 class="``"
               />
             </template>

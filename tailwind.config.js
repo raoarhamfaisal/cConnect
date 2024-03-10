@@ -45,3 +45,11 @@ module.exports = {
 
 //url = usePage().url.value;
 // #e5e7eb
+
+// template 1 color 4 and color 5
+
+// #241e6d
+// #1864ab
+
+//template 2 color
+// color 4 =>#364fc7
