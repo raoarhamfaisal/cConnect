@@ -132,7 +132,7 @@
             <Icon v-bind="props" icon="logos:facebook" class="" />
           </template>
         </v-tooltip>
-        <div>Facebook</div>
+        <div>Follow us on Facebook</div>
       </a>
 
       <!-- For Twitter -->
@@ -147,7 +147,7 @@
             />
           </template>
         </v-tooltip>
-        <div>Twitter</div>
+        <div>Follow us on Twitter</div>
       </a>
 
       <!-- For TikTok -->
@@ -157,7 +157,7 @@
             <Icon v-bind="props" icon="logos:tiktok-icon" class="" />
           </template>
         </v-tooltip>
-        <div>Tiktok</div>
+        <div>Follow us on Tiktok</div>
       </a>
 
       <!-- For Instagram -->
@@ -167,7 +167,7 @@
             <Icon v-bind="props" icon="skill-icons:instagram" class="" />
           </template>
         </v-tooltip>
-        <div>Instagram</div>
+        <div>Follow us on Instagram</div>
       </a>
     </div>
   </div>

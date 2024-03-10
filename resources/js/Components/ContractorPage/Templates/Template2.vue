@@ -75,7 +75,7 @@
         <!-- Image Selection -->
         <div
           v-if="profile.bottom_text || profile.closing_text"
-          class="flex gap-2 flex-col my-6"
+          class="flex gap-2 flex-col mt-6"
           :style="{
             color: selectedColorScheme[2],
           }"

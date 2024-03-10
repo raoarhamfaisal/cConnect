@@ -1,9 +1,7 @@
 <template>
   <!-- Trades and Region  -->
 
-  <div
-    class="flex justify-center items-center md:justify-between max-md:gap-4 max-md:mb-2"
-  >
+  <div class="flex justify-center items-center max-md:gap-4 max-md:mb-2">
     <heading-card
       class="text"
       :style="{
@@ -16,7 +14,7 @@
     />
   </div>
   <!-- trades -->
-  <div class="mb-3 max-md:text-center">
+  <div class="mb-3 text-center">
     <template v-for="(option, index) in options" :key="option.name">
       <Badge
         v-if="tradesPost[option.id] === 1"
@@ -36,7 +34,7 @@
   </div>
   <div
     v-if="region_name"
-    class="flex items-center justify-center md:justify-between w-full gap-2 xs:gap-4 mt-2 sm:mt-0"
+    class="flex items-center justify-center w-full gap-2 xs:gap-4 mt-2 sm:mt-0"
     :style="{
       color: selectedColorScheme[2],
     }"
