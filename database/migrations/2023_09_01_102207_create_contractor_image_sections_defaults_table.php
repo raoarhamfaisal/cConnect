@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('brag1_image')->nullable();
             $table->string('brag2_text')->nullable();
             $table->string('brag2_image')->nullable();
+            $table->string('bottom_text')->nullable();
+            $table->string('closing_text')->nullable();
             $table->timestamps();
         });
     }
