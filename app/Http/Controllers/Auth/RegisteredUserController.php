@@ -21,6 +21,10 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Models\SessionViewSetting;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NewEmailVerificationCode;
 
 class RegisteredUserController extends Controller
 {
@@ -211,11 +215,88 @@ class RegisteredUserController extends Controller
             
         }        
 
-        event(new Registered($user));
+        // Generate a 6-digit token
+        $token = rand(100000, 999999);
+    
+        // Store the token in the database with a 2-minute expiration
+        DB::table('email_verifications')->insert([
+            'user_id' => $user->id,
+            'new_email' => $request->email,
+            'token' => $token,
+            'expires_at' => Carbon::now()->addMinutes(5),
+        ]);
+    
+        // Send the token to the new email
+        Mail::to($request->email)->send(new NewEmailVerificationCode($token));
+
 
         // Auth::login($user);
         $authenticatedSessionController = new AuthenticatedSessionController();
         return $authenticatedSessionController->loginUser($user, $request);
     
     }
+
+
+
+    public function resendVerificationCode(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|unique:users,email',
+        ]);
+    
+        $user = $request->user();
+    
+        // Generate a 6-digit token
+        $token = rand(100000, 999999);
+    
+        // Store the token in the database with a 2-minute expiration
+        DB::table('email_verifications')->insert([
+            'user_id' => $user->id,
+            'new_email' => $request->email,
+            'token' => $token,
+            'expires_at' => Carbon::now()->addMinutes(5),
+        ]);
+    
+        // Send the token to the new email
+        Mail::to($request->email)->send(new NewEmailVerificationCode($token));
+    
+        return response()->json(['message' => 'Verification code sent to email.']);
+    } 
+
+    public function verifyEmail(Request $request)
+    {
+        $request->validate([
+            'token' => 'required|size:6',
+        ]);
+    
+        $user = $request->user();
+    
+        $verification = DB::table('email_verifications')
+            ->where('user_id', $user->id)
+            ->where('token', $request->token)
+            ->first();
+    
+        if (!$verification) {
+            return response()->json(['message' => 'Invalid verification code.'], 400);
+        }
+    
+        if (Carbon::parse($verification->expires_at)->lt(Carbon::now())) {
+            return response()->json(['message' => 'Verification code has expired.'], 400);
+        }
+    
+        // Update the user's email
+        $user->email_verified_at = Carbon::now();
+        $user->save();
+    
+        // Delete the verification entry
+        DB::table('email_verifications')->where('id', $verification->id)->delete();
+    
+        return response()->json(['message' => 'Email Verified successfully.']);
+    }    
+
+
+
+
 }
+
+

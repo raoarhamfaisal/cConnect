@@ -39,7 +39,7 @@
         </div>
         <div class="content">
             <p>Hello,</p>
-            <p>You have requested to change your email address for your account at tContractor. Please use the following verification code to complete the process:</p>
+            <p>You have requested to signup using your email address for your account at tContractor. Please use the following verification code to complete the process:</p>
             <h2 style="text-align: center;">{{ $token }}</h2>
             <p>This code will expire in 5 minutes. If you did not request this change, please ignore this email or contact support.</p>
         </div>

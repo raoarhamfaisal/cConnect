@@ -40,7 +40,7 @@ const resendVerificationCode = async (openDialog = true) => {
   loading.value = true;
   try {
     const response = await axios.post(
-      `/api/settings/change-email`,
+      `/api/user/resend-code`,
       formData,
       getAxiosConfig()
     );
@@ -66,7 +66,7 @@ const submitVerificationCode = async () => {
   loadingVerifyCode.value = true;
   try {
     const response = await axios.post(
-      `/api/settings/verify-email`,
+      `/api/user/verify-email`,
       formData,
       getAxiosConfig()
     );
