@@ -42,18 +42,8 @@
             Contact Us
           </Link>
 
-          <!-- News Feed Button -->
-          <div v-if="showit">
-            <Link
-              :href="route('post')"
-              class="block flex justify-center items-center mx-2 p-3 px-6 font-bold rounded-xl text-white bg-green-600 hover:bg-green-800 border-green-600"
-            >
-              News Feed
-            </Link>
-          </div>
-
           <!-- Login Button -->
-          <div v-if="!showit && !token">
+          <div v-if="!showit">
             <Link
               @click="$inertia.visit('/#loginHere')"
               class="block flex justify-center items-center p-1 px-3 sm:p-2 mx-2 sm:px-6 font-bold rounded-xl text-xs sm:text-base text-white bg-blue-800 hover:bg-green-800 border-2 shadow-lg border-green-600"
@@ -126,14 +116,6 @@
               Why <tContractorWord></tContractorWord>
             </ResponsiveNavLink>
 
-            <ResponsiveNavLink
-              v-if="showit"
-              :href="route('post')"
-              :active="route().current('post')"
-              class="font-bold"
-            >
-              News Feed
-            </ResponsiveNavLink>
             <ResponsiveNavLink v-if="showit" href="/ratings/contractor">
               Your Ratings
             </ResponsiveNavLink>
