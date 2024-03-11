@@ -52,8 +52,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
         // Settings APIs
-        Route::post('/signup/resend-code', [RegisteredUserController::class, 'resendVerificationCode'])->name('user.resendVerificationCode');
-        Route::post('/signup/verify-email', [RegisteredUserController::class, 'verifyEmail'])->name('user.verifyEmail');
+        Route::post('/user/resend-code', [RegisteredUserController::class, 'resendVerificationCode'])->name('user.resendVerificationCode');
+        Route::post('/user/verify-email', [RegisteredUserController::class, 'verifyEmail'])->name('user.verifyEmail');
         
 
         // Contractor Profile
