@@ -11,12 +11,9 @@ import InputError from "@/Components/InputError.vue";
 
 import { watch, ref } from "vue";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
-// import GoogleAddressAutocomplete from "vue3-google-address-autocomplete";
+import GoogleAddressAutocomplete from "@/Components/GoogleAddressAutoComplete.vue";
 
-// const address = ref('');
-// const callbackFunction = (place) => {
-//   console.log(place);
-// };
+const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const props = defineProps({
   company_logo: [String, Object],
   region_id: [String, Number],
@@ -57,6 +54,17 @@ const changeReferal = (value) => {
   clearError("region_id");
 };
 
+const callbackFunction = (place) => {
+  console.log(place, "place");
+  props.form.city = place.address_components[2].long_name;
+  props.form.state = place.address_components[4].long_name;
+  props.form.zipcode = place.address_components[6].long_name;
+  props.form.county = place.address_components[3].long_name;
+};
+
+const inputResult = () => {
+  console.log(address.value, "address");
+};
 // Upload Company Logo on image change
 const handleImageUpdate = (file) => {
   loadingImage.value = true;
@@ -102,13 +110,6 @@ const clearError = (field) => {
         </p>
       </div>
     </header>
-    <!-- <GoogleAddressAutocomplete
-      apiKey="AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg"
-      v-model="address"
-      @callback="callbackFunction"
-      class="css-class-here"
-      placeholder="placeholder if you wish"
-    /> -->
 
     <form
       @submit.prevent="form.patch(route('profile.updateCompanyInfo'))"
@@ -170,24 +171,26 @@ const clearError = (field) => {
 
         <div class="mb-4 sm:mb-0">
           <InputLabel class="font-bold" for="address_1" value="Address 1*" />
-          <TextInput
+          <GoogleAddressAutocomplete
             id="address_1"
-            type="text"
-            class="mt-1 block w-full"
+            :apiKey="apiKey"
             v-model="form.address_1"
             @input="clearError('address_1')"
+            @callback="callbackFunction"
+            class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
             placeholder="Type your address 1"
           />
+
           <InputError class="mt-2" :message="errors.address_1" />
         </div>
 
         <div class="mb-4 sm:mb-0">
           <InputLabel class="font-bold" for="address_2" value="Address 2" />
-          <TextInput
+          <GoogleAddressAutocomplete
             id="address_2"
-            type="text"
-            class="mt-1 block w-full"
+            :apiKey="apiKey"
             v-model="form.address_2"
+            class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
             placeholder="Type your address 2"
           />
         </div>

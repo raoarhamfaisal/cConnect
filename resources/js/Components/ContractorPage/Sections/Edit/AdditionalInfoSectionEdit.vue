@@ -153,25 +153,26 @@
 
       <div>
         <InputLabel class="font-bold" for="address_1" value="Address 1*" />
-        <TextInput
+        <GoogleAddressAutocomplete
           id="address_1"
-          type="text"
-          class="mt-1 block w-full"
-          @input="clearError('address_1')"
+          :apiKey="apiKey"
           v-model="tempCompanyProfile.address_1"
-          placeholder="Type your Address 1"
+          @input="clearError('address_1')"
+          @callback="callbackFunction"
+          class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+          placeholder="Type your address 1"
         />
         <InputError class="mt-2" :message="errors.address_1" />
       </div>
 
       <div>
         <InputLabel class="font-bold" for="address_2" value="Address 2" />
-        <TextInput
+        <GoogleAddressAutocomplete
           id="address_2"
-          type="text"
-          class="mt-1 block w-full"
+          :apiKey="apiKey"
           v-model="tempCompanyProfile.address_2"
-          placeholder="Type your Address 2"
+          class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+          placeholder="Type your address 2"
         />
       </div>
 
@@ -251,7 +252,9 @@ import {
   getAxiosConfig,
 } from "@/helpers/axiosConfigHelpers";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
+import GoogleAddressAutocomplete from "@/Components/GoogleAddressAutoComplete.vue";
 
+const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 // State
 const props = defineProps({
   profile: Object,
@@ -437,5 +440,13 @@ const clearError = (field) => {
   if (tempCompanyProfile[field]?.trim()) {
     errors[field] = "";
   }
+};
+
+const callbackFunction = (place) => {
+  console.log(place, "place");
+  tempCompanyProfile.city = place.address_components[2].long_name;
+  tempCompanyProfile.state = place.address_components[4].long_name;
+  tempCompanyProfile.zipcode = place.address_components[6].long_name;
+  tempCompanyProfile.county = place.address_components[3].long_name;
 };
 </script>
