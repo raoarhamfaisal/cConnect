@@ -9,7 +9,7 @@ import { stateList } from "@/helpers/selectListsHelpters.js";
 
 import InputError from "@/Components/InputError.vue";
 
-import { watch, ref, nextTick, onMounted, onBeforeUnmount } from "vue";
+import { watch, ref, onMounted, onBeforeUnmount } from "vue";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 import GoogleAddressAutocomplete from "@/Components/GoogleAddressAutoComplete.vue";
 
@@ -23,7 +23,7 @@ const props = defineProps({
 });
 const user = usePage().props.value.auth.user;
 const loadingImage = ref(false);
-const loadingScript = ref(false);
+const loadingScript = ref(true);
 
 const company_logo = ref(props.company_logo);
 const referenceList = props.regions.map((item) => item.name);
@@ -57,43 +57,25 @@ const changeReferal = (value) => {
 
 const callbackFunction = (place) => {
   console.log(place, "place");
-  props.form.city = place.address_components[2].long_name;
-  props.form.state = place.address_components[4].long_name;
-  props.form.zipcode = place.address_components[6].long_name;
-  props.form.county = place.address_components[3].long_name;
+  for (const component of place.address_components) {
+    // @ts-ignore remove once typings fixed
+    const componentType = component.types[0];
+
+    if (componentType == "locality") {
+      props.form.city = component.long_name;
+    }
+    if (componentType == "administrative_area_level_2") {
+      props.form.county = component.long_name;
+    }
+    if (componentType == "administrative_area_level_1") {
+      props.form.state = component.long_name;
+    }
+    if (componentType == "postal_code") {
+      props.form.zipcode = component.long_name;
+    }
+  }
 };
 
-const loadGoogleMapsScript = () => {
-  return new Promise((resolve, reject) => {
-    const googleMapsScript = document.createElement("script");
-    googleMapsScript.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initMap`;
-
-    window.initMap = () => {
-      resolve();
-    };
-
-    googleMapsScript.onerror = (error) => {
-      reject(error);
-    };
-
-    document.head.appendChild(googleMapsScript);
-  });
-};
-onBeforeUnmount(() => {
-  if (window.initMap) {
-    delete window.initMap;
-  }
-});
-onMounted(async () => {
-  try {
-    loadingScript.value = true;
-    await loadGoogleMapsScript();
-    await nextTick();
-    loadingScript.value = false;
-  } catch (error) {
-    console.error("Failed to load Google Maps API", error);
-  }
-});
 const inputResult = () => {
   console.log(address.value, "address");
 };
@@ -128,6 +110,38 @@ const handleImageUpdate = (file) => {
 const clearError = (field) => {
   emit("clearErrors", field);
 };
+const loadGoogleMapsScript = () => {
+  return new Promise((resolve, reject) => {
+    if (window.google && window.google.maps && window.google.maps.places) {
+      resolve();
+    } else {
+      const googleMapsScript = document.createElement("script");
+      googleMapsScript.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initMap`;
+
+      window.initMap = () => {
+        resolve();
+      };
+
+      googleMapsScript.onerror = (error) => {
+        reject(error);
+      };
+
+      document.head.appendChild(googleMapsScript);
+    }
+  });
+};
+onMounted(async () => {
+  try {
+    loadingScript.value = true;
+    await loadGoogleMapsScript();
+    loadingScript.value = false;
+  } catch (error) {
+    console.error("Failed to load Google Maps API", error);
+  }
+});
+onBeforeUnmount(() => {
+  delete window.initMap;
+});
 </script>
 
 <template>

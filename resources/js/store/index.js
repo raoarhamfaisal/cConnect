@@ -14,7 +14,6 @@ export const store = createStore({
   },
   state: {
     screenWidth: window.innerWidth,
-    googleMapsScriptLoaded: false,
   },
   getters: {
     screenWidth: (state) => state.screenWidth,
@@ -23,16 +22,10 @@ export const store = createStore({
     setScreenWidth(state, width) {
       state.screenWidth = width;
     },
-    SET_GOOGLE_MAPS_SCRIPT_LOADED(state, value) {
-      state.googleMapsScriptLoaded = value;
-    },
   },
   actions: {
     updateScreenWidth({ commit }) {
       commit("setScreenWidth", window.innerWidth);
-    },
-    setGoogleMapsScriptLoaded({ commit }, value) {
-      commit("SET_GOOGLE_MAPS_SCRIPT_LOADED", value);
     },
     async getToken() {
       try {

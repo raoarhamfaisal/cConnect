@@ -11,6 +11,7 @@ import InputIcon from "@/Components/InputIcon.vue";
 
 import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
 import { computed, reactive, ref, watch } from "vue";
+import { useStore } from "vuex";
 
 const { user, profile } = defineProps({
   showit: Boolean,
@@ -27,6 +28,7 @@ const form = useForm({
   id: user?.id ?? "",
 });
 const isPasswordConfirmationShown = ref(false);
+const store = useStore();
 const isPasswordShown = ref(false);
 const errors = reactive({
   first_name: "",
@@ -116,7 +118,11 @@ const submit = () => {
       delete form.id;
     }
     form.post(route("signup"), {
-      onFinish: () => form.reset("password", "password_confirmation"),
+      onSuccess: async () => {
+        console.log("here2");
+        await store.dispatch("getToken");
+        form.reset("password", "password_confirmation");
+      },
     });
   }
 };

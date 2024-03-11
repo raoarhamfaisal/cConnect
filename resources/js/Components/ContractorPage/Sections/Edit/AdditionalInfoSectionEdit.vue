@@ -280,7 +280,7 @@ const loadingImage = ref(false);
 const county = ref(props.profile.county);
 const zipcode = ref(props.profile.zipcode);
 const loading = ref(false);
-const loadingScript = ref(false);
+const loadingScript = ref(true);
 const disabled = ref(false);
 const tempCompanyProfile = reactive({
   company_name: company_name.value ?? "",
@@ -313,20 +313,25 @@ const dialogRef = ref();
 const openDialog = () => {
   dialogRef.value.openDialog();
 };
+
 const loadGoogleMapsScript = () => {
   return new Promise((resolve, reject) => {
-    const googleMapsScript = document.createElement("script");
-    googleMapsScript.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initMap`;
-
-    window.initMap = () => {
+    if (window.google && window.google.maps && window.google.maps.places) {
       resolve();
-    };
+    } else {
+      const googleMapsScript = document.createElement("script");
+      googleMapsScript.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initMap`;
 
-    googleMapsScript.onerror = (error) => {
-      reject(error);
-    };
+      window.initMap = () => {
+        resolve();
+      };
 
-    document.head.appendChild(googleMapsScript);
+      googleMapsScript.onerror = (error) => {
+        reject(error);
+      };
+
+      document.head.appendChild(googleMapsScript);
+    }
   });
 };
 onBeforeUnmount(() => {
@@ -338,7 +343,6 @@ onMounted(async () => {
   try {
     loadingScript.value = true;
     await loadGoogleMapsScript();
-    await nextTick();
     loadingScript.value = false;
   } catch (error) {
     console.error("Failed to load Google Maps API", error);
@@ -481,9 +485,22 @@ const clearError = (field) => {
 
 const callbackFunction = (place) => {
   console.log(place, "place");
-  tempCompanyProfile.city = place.address_components[2].long_name;
-  tempCompanyProfile.state = place.address_components[4].long_name;
-  tempCompanyProfile.zipcode = place.address_components[6].long_name;
-  tempCompanyProfile.county = place.address_components[3].long_name;
+  for (const component of place.address_components) {
+    // @ts-ignore remove once typings fixed
+    const componentType = component.types[0];
+
+    if (componentType == "locality") {
+      tempCompanyProfile.city = component.long_name;
+    }
+    if (componentType == "administrative_area_level_2") {
+      tempCompanyProfile.county = component.long_name;
+    }
+    if (componentType == "administrative_area_level_1") {
+      tempCompanyProfile.state = component.long_name;
+    }
+    if (componentType == "postal_code") {
+      tempCompanyProfile.zipcode = component.long_name;
+    }
+  }
 };
 </script>
