@@ -2,6 +2,7 @@
   <!-- Company ,contact address  -->
   <Card
     :shadowLevel="2"
+    v-if="!loadingScript"
     bgColor="white"
     :padding="screenWidth < 640 ? '7px' : '20px'"
   >
@@ -155,7 +156,6 @@
         <InputLabel class="font-bold" for="address_1" value="Address 1*" />
         <GoogleAddressAutocomplete
           id="address_1"
-          :apiKey="apiKey"
           v-model="tempCompanyProfile.address_1"
           @input="clearError('address_1')"
           @callback="callbackFunction"
@@ -169,7 +169,6 @@
         <InputLabel class="font-bold" for="address_2" value="Address 2" />
         <GoogleAddressAutocomplete
           id="address_2"
-          :apiKey="apiKey"
           v-model="tempCompanyProfile.address_2"
           class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
           placeholder="Type your address 2"
@@ -246,7 +245,14 @@ import TextInput from "@/Components/TextInput.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import Avatar from "@/Components/Ratings/Avatar.vue";
-import { reactive, ref, watchEffect } from "vue";
+import {
+  reactive,
+  ref,
+  watchEffect,
+  onMounted,
+  onBeforeUnmount,
+  nextTick,
+} from "vue";
 import {
   getAxiosConfigFormData,
   getAxiosConfig,
@@ -274,6 +280,7 @@ const loadingImage = ref(false);
 const county = ref(props.profile.county);
 const zipcode = ref(props.profile.zipcode);
 const loading = ref(false);
+const loadingScript = ref(false);
 const disabled = ref(false);
 const tempCompanyProfile = reactive({
   company_name: company_name.value ?? "",
@@ -306,7 +313,37 @@ const dialogRef = ref();
 const openDialog = () => {
   dialogRef.value.openDialog();
 };
+const loadGoogleMapsScript = () => {
+  return new Promise((resolve, reject) => {
+    const googleMapsScript = document.createElement("script");
+    googleMapsScript.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initMap`;
 
+    window.initMap = () => {
+      resolve();
+    };
+
+    googleMapsScript.onerror = (error) => {
+      reject(error);
+    };
+
+    document.head.appendChild(googleMapsScript);
+  });
+};
+onBeforeUnmount(() => {
+  if (window.initMap) {
+    delete window.initMap;
+  }
+});
+onMounted(async () => {
+  try {
+    loadingScript.value = true;
+    await loadGoogleMapsScript();
+    await nextTick();
+    loadingScript.value = false;
+  } catch (error) {
+    console.error("Failed to load Google Maps API", error);
+  }
+});
 const validateForm = () => {
   let isValid = true;
 

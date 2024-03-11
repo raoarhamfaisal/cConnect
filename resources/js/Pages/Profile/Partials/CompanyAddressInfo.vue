@@ -9,7 +9,7 @@ import { stateList } from "@/helpers/selectListsHelpters.js";
 
 import InputError from "@/Components/InputError.vue";
 
-import { watch, ref } from "vue";
+import { watch, ref, nextTick, onMounted, onBeforeUnmount } from "vue";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 import GoogleAddressAutocomplete from "@/Components/GoogleAddressAutoComplete.vue";
 
@@ -23,6 +23,7 @@ const props = defineProps({
 });
 const user = usePage().props.value.auth.user;
 const loadingImage = ref(false);
+const loadingScript = ref(false);
 
 const company_logo = ref(props.company_logo);
 const referenceList = props.regions.map((item) => item.name);
@@ -62,6 +63,37 @@ const callbackFunction = (place) => {
   props.form.county = place.address_components[3].long_name;
 };
 
+const loadGoogleMapsScript = () => {
+  return new Promise((resolve, reject) => {
+    const googleMapsScript = document.createElement("script");
+    googleMapsScript.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initMap`;
+
+    window.initMap = () => {
+      resolve();
+    };
+
+    googleMapsScript.onerror = (error) => {
+      reject(error);
+    };
+
+    document.head.appendChild(googleMapsScript);
+  });
+};
+onBeforeUnmount(() => {
+  if (window.initMap) {
+    delete window.initMap;
+  }
+});
+onMounted(async () => {
+  try {
+    loadingScript.value = true;
+    await loadGoogleMapsScript();
+    await nextTick();
+    loadingScript.value = false;
+  } catch (error) {
+    console.error("Failed to load Google Maps API", error);
+  }
+});
 const inputResult = () => {
   console.log(address.value, "address");
 };
@@ -99,7 +131,7 @@ const clearError = (field) => {
 </script>
 
 <template>
-  <section>
+  <section v-if="!loadingScript">
     <header class="flex space-x-2">
       <div>
         <h2 class="text-lg font-medium font-bold text-gray-900">
@@ -173,7 +205,6 @@ const clearError = (field) => {
           <InputLabel class="font-bold" for="address_1" value="Address 1*" />
           <GoogleAddressAutocomplete
             id="address_1"
-            :apiKey="apiKey"
             v-model="form.address_1"
             @input="clearError('address_1')"
             @callback="callbackFunction"
@@ -188,7 +219,6 @@ const clearError = (field) => {
           <InputLabel class="font-bold" for="address_2" value="Address 2" />
           <GoogleAddressAutocomplete
             id="address_2"
-            :apiKey="apiKey"
             v-model="form.address_2"
             class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
             placeholder="Type your address 2"
