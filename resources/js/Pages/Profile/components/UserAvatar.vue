@@ -51,7 +51,7 @@ watch(
   <div class="relative w-36 h-36 inline-block mb-4 mt-8">
     <img
       v-if="imageSrc && !imageFailed"
-      class="object-cover w-full h-full rounded-full"
+      class="object-contain w-full h-full rounded-full"
       :src="imageSrc"
       @error="handleImageError"
       alt="avatar"

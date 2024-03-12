@@ -2,7 +2,11 @@
 import { ref, watch } from "vue";
 import { Icon } from "@iconify/vue";
 
-const props = defineProps(["imageSrc"]);
+const props = defineProps({
+  imageSrc: {
+    type: String,
+  },
+});
 const imageFailed = ref(false);
 
 const handleImageError = () => {
@@ -20,11 +24,11 @@ watch(
 
 <template>
   <div
-    class="w-14 h-14 flex justify-center items-center sm:h-20 sm:w-20 inline-block"
+    :class="`w-14 h-14 flex justify-center items-center sm:h-20 sm:w-20 inline-block  `"
   >
     <img
       v-if="imageSrc && !imageFailed"
-      class="object-cover w-full h-full rounded-full"
+      class="object-contain w-full h-full rounded-full"
       :src="imageSrc"
       alt="avatar"
       @error="handleImageError"
@@ -37,3 +41,9 @@ watch(
     </div>
   </div>
 </template>
+<style scoped>
+.companyLogo {
+  width: 7rem;
+  height: 7rem;
+}
+</style>

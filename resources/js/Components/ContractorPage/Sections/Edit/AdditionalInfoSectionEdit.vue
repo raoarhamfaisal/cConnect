@@ -29,7 +29,11 @@
             type="image"
           >
           </v-skeleton-loader>
-          <Avatar v-if="!loadingImage" :imageSrc="`/${company_logo}`" />
+          <Avatar
+            class="companyLogo"
+            v-if="!loadingImage"
+            :imageSrc="`/${company_logo}`"
+          />
         </div>
         <div class="flex flex-col justify-center">
           <h2

@@ -5,7 +5,13 @@
     :style="{
       '--tw-space-x-reverse': 'inherit',
     }"
-    @click="closeDialog"
+    @click="
+      () => {
+        if (!disableOutSideClick) {
+          closeDialog();
+        }
+      }
+    "
   >
     <transition name="fade">
       <div
@@ -127,6 +133,10 @@ const props = defineProps({
   loading: {
     type: Boolean,
     default: false,
+  },
+  disableOutSideClick: {
+    type: Boolean,
+    default: true,
   },
   disabled: {
     type: Boolean,

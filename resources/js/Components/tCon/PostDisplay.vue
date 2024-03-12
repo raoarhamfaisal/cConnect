@@ -79,12 +79,13 @@ export default {
       required: true,
     },
   },
-
   data() {
+    let usePageDeatails = usePage().props.value;
     return {
       showingPostingActionMenu: ref(false),
       dialogRef: ref(),
-      user: usePage().props.value.auth.user,
+      user: usePageDeatails.auth.user,
+      profileId: usePageDeatails.profile.id,
     };
   },
 
@@ -138,7 +139,7 @@ export default {
 <template>
   <DialogContractorRating
     ref="dialogRef"
-    :loggedInUserId="user.id"
+    :loggedInUserId="profileId"
     :userId="post.user_id"
   />
   <!-- {{ profile }} -->

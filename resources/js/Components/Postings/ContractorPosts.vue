@@ -299,7 +299,7 @@ export default {
     class="flex flex-col items-center justify-start mx-auto lg:mr-1 mt-3 sm:mt-6 lg:mt-0 shadow-md sm:rounded-3xl"
   >
     <!-- FULL POST WRAPPER News Feed -->
-    <div class="flex flex-col items-center justify-start px-2">
+    <div class="flex flex-col items-center w-full justify-start px-2">
       <div
         v-for="(post, index) in allPosts"
         id="scrollPost"

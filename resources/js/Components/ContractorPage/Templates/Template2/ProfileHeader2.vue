@@ -23,7 +23,7 @@
     <div :class="`${screenWidth > 768 ? 'w-3/4' : 'w-4/5'}`">
       <!-- Company Logo -->
       <div v-if="profile.company_logo" class="flex justify-center mb-3">
-        <Avatar :imageSrc="`/${profile.company_logo}`" />
+        <Avatar class="companyLogo" :imageSrc="`/${profile.company_logo}`" />
       </div>
       <!-- company name -->
       <div
@@ -75,30 +75,31 @@
         screenWidth > 768 ? 'w-1/4' : ''
       } flex-grow flex flex-col gap-2  flex justify-center  items-center `"
     >
+      <div class="flex flex-col justify-center items-center">
+        <StarRounded
+          @click="openContractorRatingDialog"
+          :innerStarRadius="screenWidth > 768 ? 16 : 16"
+          :starWidth="screenWidth > 768 ? 24 : 24"
+          :class="`h-6 cursor-pointer ${
+            user?.id === profile?.user_id ? 'pointer-events-none' : ''
+          }`"
+          :indicatorClasses="`text-small h-6 `"
+          :starHeight="screenWidth > 768 ? 24 : 24"
+          :rating="
+            Number(parseFloat(averageRating ? averageRating : 0.0).toFixed(1))
+          "
+          :isIndicatorActive="false"
+        />
+
+        <div class="">
+          <h2 class="font-light mt-2 text-sm overflow-hidden tracking-tighter">
+            {{ total_reviews }}
+          </h2>
+        </div>
+      </div>
       <div class="flex items-center gap-1">
         <div class="">
           <img src="/images/icons/pre-diamond.png" width="20" height="30" />
-        </div>
-        <div class="flex flex-col justify-center items-center">
-          <StarRounded
-            @click="openContractorRatingDialog"
-            :starWidth="screenWidth > 768 ? 18 : 15"
-            :class="`h-4 cursor-pointer ${
-              user.id === profile.user_id ? 'pointer-events-none' : ''
-            }`"
-            :indicatorClasses="`text-small h-4 `"
-            :starHeight="screenWidth > 768 ? 18 : 15"
-            :rating="
-              Number(parseFloat(averageRating ? averageRating : 0.0).toFixed(1))
-            "
-            :isIndicatorActive="false"
-          />
-
-          <div class="">
-            <h2 class="font-light text-xs overflow-hidden tracking-tighter">
-              {{ total_reviews }}
-            </h2>
-          </div>
         </div>
         <!-- User Posting  -->
         <div class="flex gap-2 sm:gap-3 translate-x-[-2px]">
@@ -153,10 +154,11 @@
           Share
         </button>
         <v-snackbar
-          location="bottom"
+          location="top"
           v-model="snackbarVisible"
-          :timeout="2000"
+          content-class="mt-6"
           color="success"
+          :timeout="2000"
         >
           Link Copied to Clipboard
         </v-snackbar>
@@ -166,16 +168,30 @@
 
   <DialogContractorRating
     ref="ratingDialogRef"
-    :loggedInUserId="user.id"
+    :loggedInUserId="profileId"
     :userId="profile.user_id"
   />
   <DialogContractorPosts ref="postDialogRef" :contractorId="profile.user_id" />
+  <CustomDialog
+    submitText="Okay"
+    @submit="handleSubmit"
+    :showCancel="false"
+    :disableOutSideClick="false"
+    ref="notLoggedDialogRef"
+    errorIcon
+    title="Log in Error"
+  >
+    <div class="mb-4 sm:mb-0 mt-4">
+      You must be logged in to see the contractor's {{ modelText }}
+    </div>
+  </CustomDialog>
 </template>
 
 <script setup>
 import StarRounded from "@/Components/Ratings/StarRounded.vue";
 import DialogContractorRating from "@/Components/Ratings/Contractor/DialogContractorRating.vue";
 import DialogContractorPosts from "@/Components/Postings/DialogContractorPosts.vue";
+import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 
 import Avatar from "@/Components/Ratings/Avatar.vue";
 import { Icon } from "@iconify/vue";
@@ -202,7 +218,19 @@ const props = defineProps({
   },
 });
 const snackbarVisible = ref(false);
-const user = usePage().props.value.auth.user;
+let usePageDeatails = usePage().props.value;
+const user = usePageDeatails?.auth?.user;
+const profileId = usePageDeatails?.profile?.id;
+const modelText = ref("");
+const notLoggedDialogRef = ref();
+
+const handleSubmit = () => {
+  notLoggedDialogRef.value.closeDialog();
+};
+const openNotLoggedDialog = () => {
+  notLoggedDialogRef.value.openDialog();
+};
+
 const ratingDialogRef = ref();
 const postDialogRef = ref();
 
@@ -284,10 +312,21 @@ const truncatedName = computed(() => {
   }
 });
 const openContractorRatingDialog = () => {
-  ratingDialogRef.value.openDialog();
+  if (profileId) {
+    ratingDialogRef.value.openDialog();
+  } else {
+    modelText.value = "ratings";
+
+    openNotLoggedDialog();
+  }
 };
 const openPostDialog = () => {
-  postDialogRef.value.openDialog();
+  if (profileId) {
+    postDialogRef.value.openDialog();
+  } else {
+    modelText.value = "posts";
+    openNotLoggedDialog();
+  }
 };
 </script>
 <style scoped></style>

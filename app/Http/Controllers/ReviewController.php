@@ -199,7 +199,9 @@ class ReviewController extends Controller
      */
     public function store(Request $request)
     {
-
+        
+        // dd($request->reviewer_id);
+        
         $data = $request->validate([
             'reviewer_id' => 'required|integer|exists:profiles,id',
             'contractor_id' => 'required|integer|exists:profiles,id',

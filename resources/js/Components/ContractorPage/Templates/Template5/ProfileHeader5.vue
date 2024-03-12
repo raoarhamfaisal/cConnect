@@ -26,7 +26,7 @@
     >
       <!-- Company Logo -->
       <div v-if="profile.company_logo" class="mr-4 flex-none">
-        <Avatar :imageSrc="`/${profile.company_logo}`" />
+        <Avatar class="companyLogo" :imageSrc="`/${profile.company_logo}`" />
       </div>
 
       <!-- Content on the right -->
@@ -81,7 +81,6 @@
         </div>
       </div>
     </div>
-
     <div
       :class="` ${
         screenWidth > 768 ? 'w-1/4' : ''
@@ -95,10 +94,10 @@
           <StarRounded
             @click="openContractorRatingDialog"
             :starWidth="screenWidth > 768 ? 18 : 15"
-            :class="`h-4 cursor-pointer ${
-              user.id === profile.user_id ? 'pointer-events-none' : ''
+            :class="`h-6 cursor-pointer ${
+              user?.id === profile?.user_id ? 'pointer-events-none' : ''
             }`"
-            :indicatorClasses="`text-small h-4 `"
+            :indicatorClasses="`text-small h-6 `"
             :starHeight="screenWidth > 768 ? 18 : 15"
             :rating="
               Number(parseFloat(averageRating ? averageRating : 0.0).toFixed(1))
@@ -165,10 +164,11 @@
           Share
         </button>
         <v-snackbar
-          location="bottom"
+          location="top"
           v-model="snackbarVisible"
-          :timeout="2000"
+          content-class="mt-6"
           color="success"
+          :timeout="2000"
         >
           Link Copied to Clipboard
         </v-snackbar>
@@ -178,10 +178,23 @@
 
   <DialogContractorRating
     ref="ratingDialogRef"
-    :loggedInUserId="user.id"
+    :loggedInUserId="profileId"
     :userId="profile.user_id"
   />
   <DialogContractorPosts ref="postDialogRef" :contractorId="profile.user_id" />
+  <CustomDialog
+    submitText="Okay"
+    @submit="handleSubmit"
+    :showCancel="false"
+    :disableOutSideClick="false"
+    ref="notLoggedDialogRef"
+    errorIcon
+    title="Log in Error"
+  >
+    <div class="mb-4 sm:mb-0 mt-4">
+      You must be logged in to see the contractor's {{ modelText }}
+    </div>
+  </CustomDialog>
 </template>
 
 <script setup>
@@ -196,6 +209,8 @@ import { computed, ref } from "vue";
 import { template1Default } from "@/helpers/templateDefaults";
 
 import { useStore } from "vuex";
+import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
+
 import { usePage } from "@inertiajs/inertia-vue3";
 import { Inertia } from "@inertiajs/inertia";
 
@@ -214,9 +229,20 @@ const props = defineProps({
   },
 });
 const snackbarVisible = ref(false);
-const user = usePage().props.value.auth.user;
 const ratingDialogRef = ref();
 const postDialogRef = ref();
+let usePageDeatails = usePage().props.value;
+const user = usePageDeatails?.auth?.user;
+const profileId = usePageDeatails?.profile?.id;
+const modelText = ref("");
+const notLoggedDialogRef = ref();
+
+const handleSubmit = () => {
+  notLoggedDialogRef.value.closeDialog();
+};
+const openNotLoggedDialog = () => {
+  notLoggedDialogRef.value.openDialog();
+};
 
 const shareLink = () => {
   const success = copyToClipboard(window.location.href);
@@ -296,10 +322,21 @@ const truncatedName = computed(() => {
   }
 });
 const openContractorRatingDialog = () => {
-  ratingDialogRef.value.openDialog();
+  if (profileId) {
+    ratingDialogRef.value.openDialog();
+  } else {
+    modelText.value = "ratings";
+
+    openNotLoggedDialog();
+  }
 };
 const openPostDialog = () => {
-  postDialogRef.value.openDialog();
+  if (profileId) {
+    postDialogRef.value.openDialog();
+  } else {
+    modelText.value = "posts";
+    openNotLoggedDialog();
+  }
 };
 </script>
 <style scoped></style>

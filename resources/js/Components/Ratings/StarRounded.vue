@@ -82,6 +82,10 @@ export default {
       type: Number,
       default: 24,
     },
+    innerStarRadius: {
+      type: Number,
+      default: 13,
+    },
     starHeight: {
       type: Number,
       default: 24,
@@ -166,7 +170,7 @@ export default {
     },
     initStars() {
       this.stars = []; // Reset the stars array
-      let radius = 13; // Adjust as needed to fit within your .star-rating dimensions
+      let radius = this.innerStarRadius; // Adjust as needed to fit within your .star-rating dimensions
       let centerX = 20; // Half of .star-rating width
       let centerY = 20; // Half of .star-rating height
       let startingRotation = 20; // This might need to be adjusted depending on the initial orientation of your star

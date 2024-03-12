@@ -338,6 +338,8 @@ const appealReasonError = ref("");
 
 //computed
 
+// console.log(usePageDeatails, "usePageDeatails");
+
 const loading = computed(() => store.state.ratings.loading);
 const screenWidth = computed(() => store.getters.screenWidth);
 const disabled = computed(() => store.state.ratings.disabled);
