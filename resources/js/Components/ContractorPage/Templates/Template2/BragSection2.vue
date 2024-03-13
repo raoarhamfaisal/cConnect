@@ -13,6 +13,7 @@
       <div
         v-if="!section.section_image && section.section_text"
         class="w-full p-4 md:p-6 text-xl md:text-2xl font-bold md:font-extrabold text-center"
+        style="word-break: break-word"
       >
         {{ section.section_text }}
       </div>
@@ -64,6 +65,7 @@
         </div>
         <div
           class="w-2/5 md:w-2/5 text-xl md:text-3xl font-bold md:font-extrabold text-center"
+          style="word-break: break-word"
         >
           {{ section.section_text }}
         </div>

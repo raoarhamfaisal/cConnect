@@ -64,6 +64,7 @@
         </div>
         <div
           class="w-2/5 md:w-2/5 text-xl md:text-3xl font-bold md:font-extrabold text-center"
+          style="word-break: break-word"
         >
           {{ section.section_text }}
         </div>

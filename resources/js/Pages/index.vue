@@ -418,11 +418,11 @@ const submit = () => {
         "
       >
         <!-- WITHOUT LOG IN OPTION /  showit = true -->
-        <div v-if="showit" class="max-w-lg">
-          <h2 class="text-3xl font-bold sm:text-4xl">
+        <div v-if="showit">
+          <h2 class="text-3xl text-center font-bold sm:text-4xl">
             Why Do You need
             <br />
-            <span class="text-center text-4xl sm:text-6xl"
+            <span class="text-center mt-1 text-4xl sm:text-6xl"
               ><tContractorWord /> ?</span
             >
           </h2>
@@ -449,7 +449,9 @@ const submit = () => {
             <h2 class="text-3xl font-bold sm:text-4xl md:max-lg:text-3xl">
               Why Do You need
               <br />
-              <span class="text-center text-4xl sm:text-6xl md:max-lg:text-4xl">
+              <span
+                class="text-center mt-1 text-4xl sm:text-6xl md:max-lg:text-4xl"
+              >
                 <tContractorWord /> ?
               </span>
             </h2>

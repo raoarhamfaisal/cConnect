@@ -30,7 +30,7 @@
           >
           </v-skeleton-loader>
           <Avatar
-            class="companyLogo"
+            imageClass="companyLogo"
             v-if="!loadingImage"
             :imageSrc="`/${company_logo}`"
           />
