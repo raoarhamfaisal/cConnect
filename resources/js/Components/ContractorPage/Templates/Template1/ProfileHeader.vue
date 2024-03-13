@@ -75,14 +75,15 @@
         screenWidth > 768 ? 'w-1/4' : ''
       } flex-grow flex flex-col gap-2  flex justify-center  items-center `"
     >
+      <!-- ${
+            user?.id === profile?.user_id ? 'pointer-events-none' : ''
+          } -->
       <div class="flex flex-col justify-center items-center">
         <StarRounded
           @click="openContractorRatingDialog"
           :innerStarRadius="screenWidth > 768 ? 16 : 16"
           :starWidth="screenWidth > 768 ? 24 : 24"
-          :class="`h-6 cursor-pointer ${
-            user?.id === profile?.user_id ? 'pointer-events-none' : ''
-          }`"
+          :class="`h-6 cursor-pointer `"
           :indicatorClasses="`text-small h-6 `"
           :starHeight="screenWidth > 768 ? 24 : 24"
           :rating="

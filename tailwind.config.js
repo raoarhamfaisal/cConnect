@@ -53,3 +53,6 @@ module.exports = {
 
 //template 2 color
 // color 4 =>#364fc7
+// #e2e8f0
+// pricing
+// 073e53 b5c5cb
