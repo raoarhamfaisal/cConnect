@@ -3,17 +3,13 @@
 
   <div class="flex gap-2 mb-1 items-center">
     <div @click="goBack" class="cursor-pointer">
-      <Icon
-        class="w-6 h-6"
-        icon="ion:arrow-back"
-        :color="selectedColorScheme[3]"
-      />
+      <Icon class="w-6 h-6" icon="ion:arrow-back" :color="'#2d2c2b'" />
     </div>
     <div
       @click="goBack"
       class="font-bold cursor-pointer translate-y-[1px] flex justify-center items-center text-xl leading-tight"
       :style="{
-        color: selectedColorScheme[3],
+        color: '#2d2c2b',
       }"
     >
       Go Back
@@ -32,7 +28,7 @@
       <div
         class="text-2xl text-center xs:text-3xl font-bold uppercase"
         :style="{
-          color: selectedColorScheme[3],
+          color: '#4169E1',
         }"
         v-if="company_name"
       >
@@ -137,10 +133,10 @@
           :href="`/contractor/${profile.user_id}/edit`"
         >
           <button
-            :class="` px-4 py-1 text-xs hover:bg-[#114678] sm:text-sm font-bold rounded-full border-[${selectedColorScheme[4]}] border-[1px] text-white cursor-pointer hover:shadow-lg active:scale-95 w-full`"
+            :class="` px-4 py-1 text-xs hover:bg-[#4169E1] sm:text-sm font-bold rounded-full border-[${'#4169E1'}] border-[1px] text-white cursor-pointer hover:shadow-lg active:scale-95 w-full`"
             :style="{
-              background: selectedColorScheme[4],
-              borderColor: selectedColorScheme[4],
+              background: '#4169E1',
+              borderColor: '#4169E1',
             }"
           >
             Edit
@@ -150,8 +146,8 @@
           v-bind="props"
           @click="shareLink"
           :style="{
-            color: selectedColorScheme[4],
-            borderColor: selectedColorScheme[4],
+            color: '#4169E1',
+            borderColor: '#4169E1',
           }"
           :class="`bg-white px-4 py-1 text-xs hover:bg-[#f8f9fa] sm:text-sm font-bold rounded-full border-[1px] bg-white cursor-pointer hover:shadow-lg active:scale-95`"
         >
@@ -222,6 +218,7 @@ const props = defineProps({
     default: 0,
   },
 });
+const mainColor = ref("#4169E1");
 const snackbarVisible = ref(false);
 let usePageDeatails = usePage().props.value;
 const notLoggedDialogRef = ref();

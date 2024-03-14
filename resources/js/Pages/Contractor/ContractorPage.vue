@@ -2,14 +2,17 @@
   <Head title="Contractor Page" />
 
   <div
-    class="pt-2 sm:pt-8 sm:pt-8 pb-8 max-w-[1280px] mx-auto"
+    class="pt-2 sm:pt-8 sm:pt-8"
     :style="{
-      backgroundColor: selectedColorScheme[0]
-        ? selectedColorScheme[0]
-        : '#e5e7eb',
+      backgroundColor: selectedColorScheme[0] ? '#fff' : '#e5e7eb',
     }"
     v-if="!loading"
   >
+    <!-- :style="{
+      backgroundColor: selectedColorScheme[0]
+        ? selectedColorScheme[0]
+        : '#e5e7eb',
+    }" -->
     <ContractorLayout
       :profile="contractorProfile"
       :loggedInUserId="profile?.user_id"

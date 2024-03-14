@@ -1,6 +1,9 @@
 <template>
   <!-- Display Saved Text -->
-  <div v-if="bottomText" :class="`mt-1 flex gap-1 flex-col rounded-lg closing`">
+  <div
+    v-if="bottomText"
+    :class="`mt-1 flex gap-1 flex-col rounded-lg closing w-full max-w-[1400px] mx-auto`"
+  >
     <!-- :class="`mt-1 flex gap-1 flex-col md:border-gray-300 md:border-2 p-3 rounded-lg closing`" -->
 
     <div class="default" v-html="bottomText"></div>
