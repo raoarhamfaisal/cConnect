@@ -14,6 +14,7 @@ defineProps({
   showit: Boolean,
 });
 
+const animate = ref(false);
 const showingNavigationDropdown = ref(false);
 const store = useStore();
 const form = useForm({
@@ -62,6 +63,10 @@ const submit = () => {
     onFinish: () => form.reset("password"),
   });
 };
+
+onMounted(() => {
+  animate.value = true;
+});
 </script>
 
 <template>
@@ -70,6 +75,7 @@ const submit = () => {
   <div class="relative h-screen bg-white">
     <!-- bg-gray-200 -->
     <img
+      :class="{ 'animate-scale': animate }"
       src="/images/pages/bg_a_xl_white.jpg"
       class="absolute object-cover w-full h-full mt-14"
     />
@@ -332,6 +338,7 @@ const submit = () => {
         <!-- Bow YOU Too **********************     -->
         <div
           class="relative z-10 flex flex-col items-start min-[500px]:w-3/5 md:w-3/5 xl:w-2/5 bg-[#ccb19c] rounded-xl text-[#29231f] shadow-lg p-2 py-4 px-4"
+          :class="{ 'animate-scale': animate }"
           style="
             background: rgb(215, 150, 81);
             background: linear-gradient(
@@ -396,7 +403,8 @@ const submit = () => {
     </section>
 
     <!-- LOGIN & FEATURES SECTION  -->
-    <section class="relative">
+
+    <section class="relative" :class="{ 'animate-scale': animate }">
       <div
         class="sm:container max-sm:w-full px-2 lg:max-w-4xl xl:max-w-7xl z-20 mx-auto mt-4 md:px-12 py-10 lg:px-8 bg-[#e5e7eb] text-gray-700 rounded-xl"
         style="
@@ -733,5 +741,18 @@ const submit = () => {
   font-weight: bolder;
   font-size: 120px;
   text-shadow: 5px 5px 0 #000;
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(1.07);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.animate-scale {
+  animation: scaleUp 1.5s ease-in-out;
 }
 </style>
