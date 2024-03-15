@@ -9,6 +9,7 @@ use App\Http\Controllers\ContractorPageController;
 use App\Http\Controllers\ContractorRatingsAdminController;
 use App\Http\Controllers\AppealedReviewsController;
 use App\Http\Controllers\AdminRatingsController;
+use App\Http\Controllers\AdminController;
 
 
 use Illuminate\Foundation\Application;
@@ -86,6 +87,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/admin/regions/{region_id}/appealed', [AppealedReviewsController::class, 'getAppealedReviews'])->name('admin.appealed');
 
         Route::get('/admin/ratings/contractor/{id}/history', [ContractorRatingsAdminController::class, 'historyPage'])->name('admin.history');
+        Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
     // });
 });
 

@@ -27,8 +27,14 @@ const dropdownMenu = ref(null);
 //Computed
 
 const isAdminUrl = computed(() => {
-  if (usePage().props.value.auth.user) {
-    return usePage().props.value.auth.user.appeals_privileges === 1;
+  const user = usePage().props.value.auth.user;
+  console.log(user);
+  if (user) {
+    return (
+      user.appeals_privileges ||
+      user.payments_privileges ||
+      user.users_privileges
+    );
   }
   return false;
 });
@@ -262,14 +268,15 @@ onMounted(() => {
                 </ResponsiveNavLink>
                 <div
                   v-if="isAdminUrl && showit"
-                  class="pt-2 pb-3 space-y-1 border-b-2 border-t-2 border-gray-400"
+                  class="pt-2 pb-2 space-y-1 border-b-2 border-t-2 border-gray-400"
                 >
-                  <ResponsiveNavLink href="/admin/regions/contractors">
+                  <!-- <ResponsiveNavLink href="/admin/regions/contractors">
                     All Contractors
                   </ResponsiveNavLink>
                   <ResponsiveNavLink href="/admin/regions/appealed">
                     Appealed Reviews
-                  </ResponsiveNavLink>
+                  </ResponsiveNavLink> -->
+                  <ResponsiveNavLink href="/admin"> Admin </ResponsiveNavLink>
                 </div>
 
                 <ResponsiveNavLink

@@ -47,7 +47,15 @@ function postClicked(isOpen) {
   emit("postClicked", isOpen);
 }
 const isAdminUrl = computed(() => {
-  return usePage().props.value.auth.user.appeals_privileges === 1;
+  const user = usePage().props.value.auth.user;
+  if (user) {
+    return (
+      user.appeals_privileges ||
+      user.payments_privileges ||
+      user.users_privileges
+    );
+  }
+  return false;
 });
 const loadingImage = computed(() => store.state.profile.loadingImage);
 
@@ -349,6 +357,19 @@ const openContractorPageModal = () => {
           <Link
             v-if="isAdminUrl"
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
+            href="/admin"
+          >
+            <Icon
+              icon="clarity:administrator-solid"
+              color="#1098ad"
+              width="30"
+              height="30"
+            />
+            <span class="mx-4 font-medium">Admin</span>
+          </Link>
+          <!-- <Link
+            v-if="isAdminUrl"
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
             href="/admin/regions/contractors"
           >
             <Icon
@@ -359,7 +380,7 @@ const openContractorPageModal = () => {
             />
             <span class="mx-4 font-medium">All Contractors</span>
           </Link>
-          <!-- Appealed Reviews -->
+          // Appealed Reviews 
           <Link
             v-if="isAdminUrl"
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
@@ -372,7 +393,7 @@ const openContractorPageModal = () => {
               height="30"
             />
             <span class="mx-4 font-medium">Appealed Reviews</span>
-          </Link>
+          </Link> -->
           <hr
             v-if="isAdminUrl"
             class="mt-4 ml-6 mr-6 pt-4 pb-1 border-t-2 border-gray-400"
