@@ -83,12 +83,13 @@
     </div>
   </div>
   <div>
-    <div class="max-w-[1400px] px-3 sm:px-10 shadow-lg rounded mx-auto w-full">
+    <div class="max-w-[1400px] shadow-lg rounded mx-auto w-full">
       <img
         v-if="profile.company_logo || profile.user_avatar"
         class="w-full"
         :class="imageClass"
         ref="imgRef"
+        @load="onLoad"
         :src="`/${profile.company_logo || profile.user_avatar}`"
         alt=""
       />
@@ -370,6 +371,7 @@ import { template1Default } from "@/helpers/templateDefaults";
 import { useStore } from "vuex";
 import { usePage } from "@inertiajs/inertia-vue3";
 import { Inertia } from "@inertiajs/inertia";
+import { POSTS_IMAGES_FULL_PATH } from "@/config/constants";
 
 // State
 const props = defineProps({
@@ -398,20 +400,27 @@ const handleSubmit = () => {
 };
 
 const imageClass = ref("");
+function image_path(img) {
+  // function adds the filepath
+  return POSTS_IMAGES_FULL_PATH + img;
+}
 
-watchEffect(() => {
+const onLoad = async () => {
+  console.log("onLoad");
   if (props.profile.company_logo || props.profile.user_avatar) {
     const img = new Image();
-    img.src = props.profile.company_logo || props.profile.user_avatar;
-    img.onload = function () {
-      if (img.width === img.height) {
-        imageClass.value = "rounded-full"; // Apply border-radius: 50% for circular images
-      } else {
-        imageClass.value = ""; // No additional class for landscape images
-      }
-    };
+    img.src = "/" + props.profile.company_logo || props.profile.user_avatar;
+    await new Promise((resolve) => (img.onload = resolve));
+
+    console.log(img.naturalHeight, img.naturalWidth, "height,width");
+
+    if (img.naturalWidth <= img.naturalHeight) {
+      imageClass.value = "rounded-full object-contain h-[400px]"; // Apply border-radius: 50% for circular images
+    } else {
+      imageClass.value = ""; // No additional class for landscape images
+    }
   }
-});
+};
 
 const openNotLoggedDialog = () => {
   notLoggedDialogRef.value.openDialog();
