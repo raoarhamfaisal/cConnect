@@ -30,9 +30,9 @@
           />
           <span class="mx-4">Reviews</span>
         </summary>
-        <div class="ml-4">
+        <div class="">
           <Link
-            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
+            class="flex items-center pl-8 pr-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
             href="/admin/regions/contractors"
           >
             <Icon
@@ -45,7 +45,7 @@
           </Link>
 
           <Link
-            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
+            class="flex items-center pl-8 pr-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
             href="/admin/regions/appealed"
           >
             <Icon
