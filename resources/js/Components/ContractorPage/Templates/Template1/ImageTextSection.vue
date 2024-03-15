@@ -11,11 +11,11 @@
       <!-- class="rounded-md border relative border-gray-300 p-2 sm:p-2" -->
       <!-- Only Text -->
       <div
-        class="bg-[#f8f8f8] py-20"
+        class="bg-[#f8f8f8] py-10 sm:py-20"
         v-if="!section.section_image && section.section_text"
       >
         <div
-          class="w-full p-4 md:p-6 font-bold md:font-extrabold text-xl md:text-3xl font-bold md:font-extrabold text-center w-full max-w-[1400px] mx-auto"
+          class="w-full p-4 md:p-6 font-bold md:font-extrabold text-xl md:text-3xl font-bold md:font-extrabold text-center w-full max-w-[1400px] px-3 sm:px-10 mx-auto"
         >
           {{ section.section_text }}
         </div>
@@ -23,36 +23,37 @@
       <!-- Only Image -->
       <div
         v-if="section.section_image && !section.section_text"
-        class="w-full h-full bg-[#2d2c2b] py-20 rounded-md"
+        class="w-full h-full bg-[#2d2c2b] py-10 sm:py-20"
       >
         <img
           @click="openImage(section.section_image)"
           :src="section.section_image"
           alt="Section Image"
-          class="object-cover w-full max-w-[1400px] mx-auto"
+          class="object-cover w-full max-w-[1400px] px-3 sm:px-10 mx-auto"
         />
       </div>
       <!-- For even items -->
 
       <div
-        class="bg-[#f8f8f8] py-20 overflow-hidden"
+        class="bg-[#f8f8f8] py-10 sm:py-20 overflow-hidden"
         v-intersect="{
           handler: () => showAnimcation(index),
           options: {
-            threshold: [0, 0.5, 1.0],
+            threshold: [0.1],
           },
         }"
         v-if="section.section_image && section.section_text && index % 2 !== 0"
       >
         <div
-          class="flex max-md:flex-col gap-2 md:gap-4 items-center max-w-[1400px] mx-auto w-full"
+          class="flex max-md:flex-col gap-2 md:gap-4 items-center max-w-[1400px] mx-auto w-full px-3 sm:px-10"
         >
           <!-- Text coming from the bottom -->
           <div
-            class="w-full md:w-2/5 text-xl md:text-3xl font-bold md:font-extrabold md:w-2/5 text-xl md:text-3xl font-bold md:font-extrabold text-left text-[#2d2c2b] duration-700 transition-all"
+            class="w-full md:w-2/5 text-xl md:text-3xl font-bold md:font-extrabold md:w-2/5 text-xl md:text-3xl font-bold md:font-extrabold text-left text-[#2d2c2b] duration-1000 transition-all"
             :class="{
-              'translate-y-0': isSectionVisible[index],
-              'translate-y-[600px]': !isSectionVisible[index],
+              'translate-y-0': screenWidth > 768 && isSectionVisible[index],
+              'translate-y-[600px]':
+                screenWidth > 768 && !isSectionVisible[index],
             }"
           >
             {{ section.section_text }}
@@ -74,52 +75,52 @@
         </div>
       </div>
 
-      <!-- <div
-        class="bg-[#f8f8f8] py-20"
-        v-if="section.section_image && section.section_text && index % 2 !== 0"
-      >
-        <div
-          class="flex max-md:flex-col gap-2 md:gap-4 items-center max-w-[1400px] mx-auto w-full"
-        >
- 
-            <div
-              class="w-full md:w-2/5 text-xl md:text-3xl font-bold md:font-extrabold md:w-2/5 text-xl md:text-3xl font-bold md:font-extrabold text-left text-[#2d2c2b]"
-            >
-              {{ section.section_text }}
-            </div>
-    
-
-          <div class="relative w-full md:w-3/5 h-3/5 bg-[#222] rounded-md">
-            <img
-              @click="openImage(section.section_image)"
-              :src="section.section_image"
-              alt="Section Image"
-              class="object-cover w-full rounded-md"
-            />
-          </div>
-        </div>
-      </div> -->
       <!-- For odd items overlayed -->
       <div
         v-if="section.section_image && section.section_text && index % 2 === 0"
         @click="openImage(section.section_image)"
-        class="bg-[#2d2c2b] py-20 relative"
+        class="bg-[#2d2c2b] py-10 sm:py-20 relative"
       >
         <img
-          class="max-w-[1400px] mx-auto w-full object-cover w-full rounded-md"
+          class="max-w-[1400px] px-3 sm:px-10 overflow-hidden hover:scale-110 hover:cursor-pointer z-50 mx-auto w-full object-cover w-full rounded-md"
           :src="section.section_image"
           alt="Section Image"
         />
-        <div class="absolute inset-0 flex justify-center items-center">
+        <div
+          v-intersect="{
+            quiet: true,
+            handler: () => overlayedAnimcation(index),
+            options: {
+              threshold: [0.5],
+            },
+          }"
+          class="absolute inset-0 flex justify-center items-center overflow-hidden"
+          style="
+            background: radial-gradient(
+              ellipse at center,
+              rgba(0, 0, 0, 0.5) 0%,
+              rgba(0, 0, 0, 0) 55%
+            );
+            /* background: radial-gradient(
+              circle at center,
+              rgba(0, 0, 0, 0.7),
+              transparent
+            ); */
+          "
+        >
           <span
             :style="{
               color: '#fff',
-              backgroundColor: '#000000' + '80',
 
-              // textShadow:
+              // boxShadow:
               //   '0px 0px 15px #000000, -1px -1px 15px #000000, 1px -1px 15px #000000, -1px 1px 15px #000000, 1px 1px 15px #000000',
             }"
-            class="text-center text-xl md:text-3xl font-bold md:font-extrabold text-xl md:text-3xl font-bold md:font-extrabold bg-opacity-50 p-2 rounded"
+            :class="{
+              'translate-y-0': screenWidth > 768 && isOvelayedVisible[index],
+              'translate-y-[600px]':
+                screenWidth > 768 && !isOvelayedVisible[index],
+            }"
+            class="text-center text-xl transitioning md:text-3xl font-bold md:font-extrabold text-xl md:text-3xl font-bold md:font-extrabold bg-opacity-50 p-4 rounded"
           >
             {{ section.section_text }}
           </span>
@@ -177,6 +178,8 @@ const selectedColorScheme = computed(
 );
 
 const isSectionVisible = ref(Array(sections.value.length).fill(false));
+const isOvelayedVisible = ref(Array(sections.value.length).fill(false));
+
 const observeTarget = ref();
 
 const showAnimcation = (index) => {
@@ -185,6 +188,17 @@ const showAnimcation = (index) => {
     isSectionVisible.value[index] = true;
   }
 };
+
+const overlayedAnimcation = (index) => {
+  console.log("in overlayed:", index);
+  if (index > 1 && window.scrollY > 100) {
+    isOvelayedVisible.value[index] = true;
+  }
+  if (index === 0) {
+    isOvelayedVisible.value[index] = true;
+  }
+};
+
 // Methods
 
 const openImage = (imageSrc) => {
@@ -204,7 +218,7 @@ const openImage = (imageSrc) => {
 }
 
 .reveal {
-  animation: revealAnimation 1s forwards;
+  animation: revealAnimation 1.5s forwards;
 }
 
 .transitioning {

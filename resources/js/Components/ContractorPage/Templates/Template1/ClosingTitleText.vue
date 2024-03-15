@@ -2,11 +2,24 @@
   <!-- Display Saved Text -->
   <div
     v-if="closingText"
-    :class="`mt-1 flex gap-1 flex-col rounded-lg closing w-full max-w-[1400px] mx-auto`"
+    :class="`mt-1 flex gap-1  flex-col rounded-lg closing w-full px-3 sm:px-10 max-w-[1400px] mx-auto`"
+    v-intersect="{
+      handler: showAnimcation,
+      options: {
+        threshold: [0, 0.5, 1.0],
+      },
+    }"
   >
     <!-- :class="`mt-1 flex gap-1 flex-col border-gray-300 border-2 p-3 rounded-lg closing`" -->
 
-    <div class="default" v-html="closingText"></div>
+    <div
+      class="default duration-1000 transition-al"
+      :class="{
+        'translate-y-0': screenWidth > 768 && isSectionVisible,
+        'translate-y-[200px]': screenWidth > 768 && !isSectionVisible,
+      }"
+      v-html="closingText"
+    ></div>
   </div>
   <!-- <div class="flex justify-end gap-1">
     <Link
@@ -99,4 +112,12 @@ function copyToClipboard(text) {
   document.body.removeChild(textarea);
   return success;
 }
+
+const isSectionVisible = ref(false);
+const showAnimcation = () => {
+  if (window.scrollY > 100) {
+    console.log("in animation");
+    isSectionVisible.value = true;
+  }
+};
 </script>
