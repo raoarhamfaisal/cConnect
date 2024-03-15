@@ -2,6 +2,7 @@
   <div v-if="profile">
     <!-- '#f8f8f8'  -->
     <!-- "'#c78b22'" -->
+    <!-- #f8f2e8 -->
     <!-- #4169E1 -->
     <!-- #2d2c2b text color -->
     <div class="flex flex-col" v-if="profile">
