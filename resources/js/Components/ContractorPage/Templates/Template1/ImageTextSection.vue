@@ -191,10 +191,7 @@ const showAnimcation = (index) => {
 
 const overlayedAnimcation = (index) => {
   console.log("in overlayed:", index);
-  if (index > 1 && window.scrollY > 100) {
-    isOvelayedVisible.value[index] = true;
-  }
-  if (index === 0) {
+  if (window.scrollY > 100) {
     isOvelayedVisible.value[index] = true;
   }
 };
