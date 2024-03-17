@@ -1,0 +1,63 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\PaymentInfo;
+use Illuminate\Http\Request;
+
+class PaymentInfoController extends Controller
+{
+    // Create
+    public function store(Request $request) {
+        $data = $request->validate([
+            'region_id' => 'required|integer|exists:regions,id',
+            'sales_tax' => 'required|numeric',
+            'billed_annual_price' => 'required|numeric',
+            'billed_monthly_price' => 'required|numeric',
+            'advertised_price' => 'required|numeric',
+        ]);
+
+        $paymentInfo = PaymentInfo::create($data);
+
+        return response()->json(['message' => 'Created successfully', 'data' => $paymentInfo]);
+    }
+
+    // Read
+    public function index() {
+        return PaymentInfo::all();
+    }
+
+    public function show($id) {
+        return PaymentInfo::findOrFail($id);
+    }
+
+    // Update
+    public function update(Request $request, $id) {
+        $data = $request->validate([
+            'region_id' => 'integer|exists:regions,id',
+            'sales_tax' => 'numeric',
+            'billed_annual_price' => 'numeric',
+            'billed_monthly_price' => 'numeric',
+            'advertised_price' => 'numeric',
+        ]);
+
+        $paymentInfo = PaymentInfo::findOrFail($id);
+        $paymentInfo->update($data);
+
+        return response()->json(['message' => 'Updated successfully', 'data' => $paymentInfo]);
+    }
+
+    // Delete
+    public function destroy($id) {
+        $paymentInfo = PaymentInfo::findOrFail($id);
+
+        if(!$paymentInfo) {
+            return response()->json(['message' => 'Payment Info Not Found', 'data' => $paymentInfo]);
+        }
+
+
+        $paymentInfo->delete();
+
+        return response()->json(['message' => 'Deleted successfully']);
+    }
+}
