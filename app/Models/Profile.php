@@ -42,6 +42,7 @@ class profile extends Model
         'view_nationwide',
         'view_following',
         'view_groups',
+        'notes_on_user',
 
     ];
 

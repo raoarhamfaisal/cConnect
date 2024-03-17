@@ -51,6 +51,9 @@ return new class extends Migration
             $table->boolean('view_nationwide')->default(0);
             $table->boolean('view_following')->default(0);
 
+            $table->text('notes_on_user')->nullable();
+
+
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
