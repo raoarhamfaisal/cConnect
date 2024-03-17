@@ -4,9 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class CheckAdminPrivileges
+class AdminWithUsersPrivileges
 {
     /**
      * Handle an incoming request.
@@ -19,9 +18,7 @@ class CheckAdminPrivileges
     {
         $user = Auth()->user(); 
 
-        // dd($user);
-    
-        if ($user && $user->appeals_privileges) {
+        if ($user && $user->users_privileges) {
             return $next($request);
         }
     
