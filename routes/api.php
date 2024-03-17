@@ -13,6 +13,9 @@ use App\Http\Controllers\BragSectionController;
 use App\Http\Controllers\ReviewResponseController;
 use App\Http\Controllers\ContractorRatingsAdminController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\PaymentInfoController;
+use App\Http\Controllers\DiscountCouponController;
+
 
 
 
@@ -152,12 +155,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         // User Functions
         // Only Users having users_privileges are allowed
         Route::middleware('admin-with-users-privileges')->group(function () {
-            
+            Route::get('/admin/users/{regionId}/all', [AdminUsersController::class, 'getAllUsersOfARegion']);
+            Route::post('/admin/users/{userId}', [AdminUsersController::class, 'updateProfile']);
         });
     });
+
+
+    Route::resource('/admin/payment-info', PaymentInfoController::class);
+    Route::resource('/admin/discount-coupon', DiscountCouponController::class);
+
+
     
-    Route::get('/admin/users/{regionId}/all', [AdminUsersController::class, 'getAllUsersOfARegion']);
-    Route::post('/admin/users/{userId}', [AdminUsersController::class, 'updateProfile']);
 
 
     
