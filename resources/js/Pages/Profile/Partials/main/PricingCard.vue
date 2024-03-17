@@ -43,6 +43,7 @@
 
     <button
       class="checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1]"
+      @click="selectedPricing"
     >
       Continue
     </button>
@@ -63,6 +64,10 @@ const props = defineProps({
 });
 
 const hover = ref(false);
+const emit = defineEmits(["selectedPricing"]);
+const selectedPricing = () => {
+  emit("selectedPricing", props.plan);
+};
 </script>
 
 <style scoped>
