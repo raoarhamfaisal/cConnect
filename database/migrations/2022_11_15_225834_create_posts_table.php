@@ -21,7 +21,7 @@ return new class extends Migration
             $table->boolean('view')->default(1);
             $table->string('title')->nullable();
             $table->text('image')->nullable();
-            $table->text('body1')->nullable();
+            $table->longText('body1')->nullable();
             $table->text('body2')->nullable();
             $table->boolean('body1Bold')->default(1);
             $table->smallInteger('body1ColorId')->default(1);
