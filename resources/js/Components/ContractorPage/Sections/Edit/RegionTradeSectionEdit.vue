@@ -12,11 +12,14 @@
       :heading="`Trade Groups`"
     />
     <!-- User Posting and Edit Button -->
-    <div @click="openPostDialog" class="flex gap-2 sm:gap-3">
+    <div class="flex gap-2 sm:gap-3">
       <!-- User Postings -->
       <v-tooltip text="See User Posts" location="left">
         <template v-slot:activator="{ props }">
-          <div class="active:scale-95 hover:bg-[#f8f9fa] hover:rounded-md">
+          <div
+            @click="openPostDialog"
+            class="active:scale-95 hover:bg-[#f8f9fa] hover:rounded-md"
+          >
             <button
               class="xs:text-md w-[28px] h-[28px] xs:w-[35px] xs:h-[35px] font-semibold flex items-center justify-center"
             >
@@ -82,7 +85,7 @@
     @submit="handleSubmit"
     :loading="loadingDialog"
     :disabled="disabled"
-    ref="dialogRef"
+    ref="editDialogRef"
     title="Edit Your General Information"
   >
     <Loader :loading="loading" background="" height="60vh"></Loader>
@@ -178,7 +181,7 @@ const store = useStore();
 const referenceList = ref([]);
 const region_name = ref(props.region_name ?? "");
 const selectedReferal = ref(region_name.value);
-const dialogRef = ref();
+const editDialogRef = ref();
 const loadingDialog = ref(false);
 const postDialogRef = ref();
 
@@ -274,7 +277,7 @@ const toggleSwitch = (field) => {
   tempTradesPost[field] = tempTradesPost[field] === 1 ? 0 : 1;
 };
 const openDialog = () => {
-  dialogRef.value.openDialog();
+  editDialogRef.value.openDialog();
 };
 
 const changeReferal = (value) => {
@@ -342,7 +345,7 @@ const handleSubmit = async () => {
         tradesPost[key] = tempTradesPost[key];
       }
       region_name.value = selectedReferal.value;
-      dialogRef.value.closeDialog();
+      editDialogRef.value.closeDialog();
     }
   } catch (err) {
     somethingWentWrong();
@@ -367,7 +370,7 @@ const selectAllTrades = () => {
   selectAll.value = !selectAll.value;
 };
 const openPostDialog = () => {
-  postDialogRef.value.openDialog();
+  postDialogRef.value.openPostDialog();
 };
 </script>
 
