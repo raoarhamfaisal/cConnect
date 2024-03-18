@@ -102,6 +102,7 @@
       >
       </v-skeleton-loader>
       <UserAvatar
+        :cover="false"
         v-if="!loadingImage"
         :imageSrc="`/${company_logo ? company_logo : profile.user_avatar}`"
         @update-image="handleImageUpdate"

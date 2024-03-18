@@ -2,7 +2,16 @@
 import { ref, watch } from "vue";
 import { Icon } from "@iconify/vue";
 
-const props = defineProps(["imageSrc"]);
+const props = defineProps({
+  imageSrc: {
+    type: String,
+    required: true,
+  },
+  cover: {
+    type: Boolean,
+    default: true,
+  },
+});
 const emit = defineEmits();
 const file = ref(null);
 const updatedImage = ref(null);
@@ -51,7 +60,9 @@ watch(
   <div class="relative w-36 h-36 inline-block mb-4 mt-8">
     <img
       v-if="imageSrc && !imageFailed"
-      class="object-contain w-full h-full rounded-full"
+      :class="`object-${
+        cover ? 'cover' : 'contain'
+      } w-full h-full rounded-full`"
       :src="imageSrc"
       @error="handleImageError"
       alt="avatar"
