@@ -1,12 +1,12 @@
 <template>
   <!-- Display Saved Text -->
   <div
-    v-if="closingText"
+    v-if="processedClosingText"
     :class="` flex gap-1 flex-col rounded-lg closing md:border-gray-300 md:border-2 p-3`"
   >
     <!-- :class="`mt-1 flex gap-1 flex-col border-gray-300 border-2 p-3 rounded-lg closing`" -->
 
-    <div class="default" v-html="closingText"></div>
+    <div class="default ck-content" v-html="processedClosingText"></div>
   </div>
   <div class="flex justify-end gap-1">
     <Link
@@ -79,6 +79,21 @@ const shareLink = () => {
     snackbarVisible.value = true; // Show the Snackbar on successful copy
   }
 };
+const processedClosingText = computed(() => {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(closingText.value, "text/html");
+
+  doc.querySelectorAll("a").forEach((anchor) => {
+    const hrefValue = anchor.getAttribute("href");
+    if (!hrefValue.startsWith("http://") && !hrefValue.startsWith("https://")) {
+      anchor.setAttribute("href", "http://" + hrefValue);
+    }
+    anchor.target = "_blank";
+  });
+
+  return doc.body.innerHTML;
+});
+
 const selectedColorScheme = computed(
   () => store.state.contractor.selectedColorScheme || template1Default
 );

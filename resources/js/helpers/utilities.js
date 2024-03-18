@@ -192,7 +192,11 @@ export const toolbarConfig = {
     removeItems: ["uploadImage", "mediaEmbed"], // Remove specific items from toolbar
   },
 };
-
+export const toolbarConfigPost = {
+  toolbar: {
+    removeItems: ["uploadImage", "mediaEmbed", "strikethrough"], // Remove specific items from toolbar
+  },
+};
 export const startOptionToArray = (option) => {
   let newOption = [];
   // Iterate through each key-value pair in the original option

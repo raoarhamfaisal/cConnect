@@ -95,7 +95,7 @@
                 color="#1864ab"
               />
             </div>
-            <div class="default" v-html="bottomText"></div>
+            <div class="default ck-content" v-html="processedBottomText"></div>
             <!-- <div v-html="'<strong>Test</strong>'"></div> -->
           </div>
           <heading-card
@@ -121,7 +121,7 @@
             submitText="Save"
             :loading="loading"
             :disabled="disabled"
-            :overflowAllowed="false"
+            :overflowAllowed="true"
             @submit="handleSubmit"
             @closed="handleClosed"
             ref="dialogRef"
@@ -159,7 +159,7 @@ import AdditionalInfoSectionEdit from "@/Components/ContractorPage/Sections/Edit
 import ClosingTitleTextEdit from "@/Components/ContractorPage/Sections/Edit/ClosingTitleTextEdit.vue";
 import ImageTextSectionEdit from "@/Components/ContractorPage/Sections/Edit/ImageTextSectionEdit.vue";
 import BragSectionEdit from "@/Components/ContractorPage/Sections/Edit/BragSectionEdit.vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import IconButton from "@/Components/IconButton.vue";
 import { Icon } from "@iconify/vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
@@ -213,10 +213,25 @@ const onReady = (editor) => {
       editor.ui.getEditableElement()
     );
 };
+
+// computed
+const processedBottomText = computed(() => {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(bottomText.value, "text/html");
+
+  doc.querySelectorAll("a").forEach((anchor) => {
+    const hrefValue = anchor.getAttribute("href");
+    if (!hrefValue.startsWith("http://") && !hrefValue.startsWith("https://")) {
+      anchor.setAttribute("href", "http://" + hrefValue);
+    }
+    anchor.target = "_blank";
+  });
+
+  return doc.body.innerHTML;
+});
 const openDialogEdit = () => {
   dialogRef.value.openDialog();
 };
-
 const handleSubmit = async () => {
   isChecked.value = true;
   loading.value = true;

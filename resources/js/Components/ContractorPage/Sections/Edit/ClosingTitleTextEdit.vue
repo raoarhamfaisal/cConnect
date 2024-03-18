@@ -2,7 +2,7 @@
   <div class="closing">
     <!-- Display Saved Text -->
     <div
-      v-if="closingText"
+      v-if="processedClosingText"
       :class="`flex gap-1 flex-col border-gray-300 border-2 p-3  rounded-lg`"
     >
       <div class="flex justify-between">
@@ -15,12 +15,12 @@
           color="#1864ab"
         />
       </div>
-      <div class="default" v-html="closingText"></div>
+      <div class="default ck-content" v-html="processedClosingText"></div>
     </div>
 
     <!-- Add Bottom Text Button -->
     <button
-      v-if="!closingText"
+      v-if="!processedClosingText"
       @click="openDialogEdit"
       class="w-full flex gap-2 items-center justify-center h-[42px] rounded bg-[#087f5b] text-white active:scale-[0.99] transition transform duration-300 hover:shadow-lg"
     >
@@ -32,7 +32,7 @@
       submitText="Save"
       :loading="loading"
       :disabled="disabled"
-      :overflowAllowed="false"
+      :overflowAllowed="true"
       @submit="handleSubmit"
       @closed="handleClosed"
       ref="dialogRef"
@@ -45,20 +45,12 @@
         v-model="editorData"
         :config="editorConfig"
       ></ckeditor>
-      <!-- Textarea -->
-      <!-- <textarea
-      v-model="closingTextTemp"
-      type="text"
-      :rows="5"
-      class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-      placeholder="Type your Closing title description..."
-    ></textarea> -->
     </CustomDialog>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { Icon } from "@iconify/vue";
 import IconButton from "@/Components/IconButton.vue";
 import DecoupledEditor from "@ckeditor/ckeditor5-build-decoupled-document";
@@ -104,6 +96,20 @@ const onReady = (editor) => {
     );
 };
 
+const processedClosingText = computed(() => {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(closingText.value, "text/html");
+
+  doc.querySelectorAll("a").forEach((anchor) => {
+    const hrefValue = anchor.getAttribute("href");
+    if (!hrefValue.startsWith("http://") && !hrefValue.startsWith("https://")) {
+      anchor.setAttribute("href", "http://" + hrefValue);
+    }
+    anchor.target = "_blank";
+  });
+
+  return doc.body.innerHTML;
+});
 const openDialogEdit = () => {
   dialogRef.value.openDialog();
 };

@@ -69,7 +69,7 @@ const errors = reactive({
   tiktok: "",
   instagram: "",
 });
-const currentStep = ref(4);
+const currentStep = ref(1);
 const editableAllowed = ref(1);
 const steps = ref(4);
 const stepTitles = ["General Info", "Trades", "Views", "Billing"];
@@ -349,7 +349,7 @@ const completePayment = async () => {
           </v-stepper-window-item>
           <v-stepper-window-item :value="4">
             <Payment />
-            <!-- <PrimaryButton
+            <PrimaryButton
               @click="completePayment"
               :disabled="loading"
               style="
@@ -369,7 +369,7 @@ const completePayment = async () => {
                 src="/images/avatars/Spinner.gif"
                 alt="spinner"
                 width="30"
-            /></PrimaryButton> -->
+            /></PrimaryButton>
           </v-stepper-window-item>
         </div>
       </v-stepper-window>
