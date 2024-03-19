@@ -41,9 +41,21 @@ class DiscountCouponController extends Controller
         $query = null;
         
         if($regionId === "0" || $regionId === 0) {
-            $query = DiscountCoupon::latest();
+            // Sort by date
+            if ($sortByDate === 'latest') {
+                $query = DiscountCoupon::latest();
+            } else {
+                $query = DiscountCoupon::oldest();
+            }
         }else {
             $query = DiscountCoupon::where('region_id', $regionId);
+
+            // Sort by date
+            if ($sortByDate === 'latest') {
+                $query->latest();
+            } else {
+                $query->oldest();
+            }
         }
     
         // Add search criteria if provided
@@ -53,12 +65,6 @@ class DiscountCouponController extends Controller
             });
         }
     
-        // Sort by date
-        if ($sortByDate === 'latest') {
-            $query->latest();
-        } else {
-            $query->oldest();
-        }
     
         // Fetch with profile (only specified fields) and paginate
         $couponCodes = $query->paginate($perPage, ['*'], 'page', $page);

@@ -28,11 +28,23 @@ class AdminUsersController extends Controller
         $query = null;
         
         if($regionId === "0" || $regionId === 0) {
-            $query = User::latest();
+            // Sort by date
+            if ($sortByDate === 'latest') {
+                $query = User::latest();
+            } else {
+                $query = User::oldest();
+            }
         }else {
             $query = User::whereHas('profile', function($q) use ($regionId) {
                 $q->where('region_id', $regionId);
             });
+
+            // Sort by date
+            if ($sortByDate === 'latest') {
+                $query->latest();
+            } else {
+                $query->oldest();
+            }
         }
     
         // Add search criteria if provided
@@ -46,12 +58,6 @@ class AdminUsersController extends Controller
             });
         }
     
-        // Sort by date
-        if ($sortByDate === 'latest') {
-            $query->latest();
-        } else {
-            $query->oldest();
-        }
     
         // Fetch with profile (only specified fields) and paginate
         $users = $query->with(['profile' => function($q) {
