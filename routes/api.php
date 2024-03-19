@@ -163,6 +163,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
     Route::resource('/admin/payment-info', PaymentInfoController::class);
     Route::resource('/admin/discount-coupon', DiscountCouponController::class);
+    Route::get('/admin/discount-coupon/{regionId}/all', [DiscountCouponController::class, 'getAllDiscountCouponsForARegion']);
 
 
     
