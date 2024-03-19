@@ -19,23 +19,12 @@
         class="mb-6"
       >
         <div class="flex justify-between">
-          <PageTitle linkUrl="/admin/regions/users" pageTitle="All Users" />
-          <SearchInput
-            class="mb-8 w-72"
-            :barWidth="100"
-            icon="iconamoon:search"
-            placeholder="Search by name..."
-            @search-clicked="onSearch"
-          />
+          <PageTitle linkUrl="/admin" pageTitle="All Users" />
         </div>
         <!-- Region -->
-        <heading-card
-          class="mt-2"
-          style="font-weight: 800; margin-bottom: 8px; font-size: 24px"
-          :heading="`Region ${region_id} : ${region_name}`"
-        />
+
         <!-- Filters -->
-        <div class="border-gray-300 border-t-2 border-b-2">
+        <div class="border-gray-300 border-b-2">
           <heading-card class="mt-3" heading="Sort users by" />
           <div class="mb-4 mt-2">
             <div class="flex gap-3 flex-wrap">
@@ -53,8 +42,42 @@
             </div>
           </div>
         </div>
-        <div class="font-bold text-2xl text-blue-rgba leading-tight mt-6 mb-6">
+        <div class="font-bold text-2xl text-blue-rgba leading-tight mt-6 mb-4">
           Users
+        </div>
+        <div class="flex gap-4 items-center justify-between mb-2">
+          <SearchInput
+            class="mb-0 w-72"
+            :barWidth="100"
+            icon="iconamoon:search"
+            placeholder="Search by name..."
+            @search-clicked="onSearch"
+          />
+          <div class="flex gap-4">
+            <v-menu>
+              <template v-slot:activator="{ props }">
+                <button
+                  class="px-4 py-2 rounded bg-blue-600 text-white flex items-center"
+                  v-bind="props"
+                >
+                  Region: {{ selectedRegion }}
+                  <Icon class="ml-2 w-6 h-6" icon="gridicons:dropdown"></Icon>
+                </button>
+              </template>
+              <v-list>
+                <v-list-item @click="changeRegion('All', 0)">
+                  <v-list-item-title>All</v-list-item-title>
+                </v-list-item>
+                <v-list-item
+                  v-for="(item, index) in regions"
+                  :key="index"
+                  @click="changeRegion(item.name, item.id)"
+                >
+                  <v-list-item-title>{{ item.name }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </div>
         </div>
         <!-- if no usere -->
 
@@ -135,13 +158,13 @@
             </tbody>
           </v-table>
           <v-skeleton-loader
-            v-if="users?.length === 0 && loading"
+            v-if="users?.length === 0 && loading && loadingRegions"
             type="table-tbody"
           >
           </v-skeleton-loader>
           <div class="w-full">
             <div
-              v-if="users?.length === 0 && !loading"
+              v-if="users?.length === 0 && !loading && !loadingRegions"
               class="p-2 text-xl text-grey-600 font-bold h-60 flex items-center justify-center"
             >
               No Users Available
@@ -336,6 +359,18 @@
           ></v-switch>
           <InputError class="mt-2" :message="errors.is_payment_verified" />
         </div>
+        <div>
+          <InputLabel class="font-bold mb-2" for="email" value="Email*" />
+          <textarea
+            v-model="userToEdit.profile.notes_on_user"
+            @blur="stopTyping"
+            ref="adminTextAreaRef"
+            style="height: 10.4rem; border: 1px solid grey"
+            placeholder="Type your Notes"
+            class="text-sm w-full py-1 px-3 focus:shadow-none focus:ring-gray-600 focus:rounded font-semibold text-grey-600 border-none resize-none bg-transparent rounded"
+            rows="3"
+          ></textarea>
+        </div>
       </div>
     </CustomDialog>
   </Header>
@@ -381,8 +416,6 @@ import PageTitle from "@/Components/PageTitle.vue";
 // State
 const props = defineProps({
   profile: Object,
-  region_id: [String, Number],
-  region_name: [String, Number],
   showit: Boolean,
   postSearchFilters: {
     type: Object,
@@ -393,13 +426,16 @@ const props = defineProps({
 });
 
 const store = useStore();
-const isAdminUrl = usePage().props.value.auth.user.appeals_privileges === 1;
+const isAdminUrl = usePage().props.value.auth.user.users_privileges;
 const currentPage = ref(1);
 const users = ref([]);
+const regionId = ref(0);
 const loading = ref(false);
 const sortBy = ref("latest");
 const perPage = ref(15);
 const searchTerm = ref("");
+const selectedRegion = ref("All");
+
 const pagination = ref(0);
 const loadingNextPage = ref(false);
 const notesDialogRef = ref();
@@ -424,6 +460,7 @@ const errors = reactive({
 
 // Mounted
 onMounted(async () => {
+  store.dispatch("ratings/getRegions");
   loading.value = true;
   await fetchUsers();
   loading.value = false;
@@ -505,7 +542,8 @@ const numberOfRows = computed(() => {
 
   return Math.ceil(note.value.length / charsPerLine);
 });
-
+const regions = computed(() => store.state.ratings.allRegions);
+const loadingRegions = computed(() => store.state.ratings.loading);
 const screenWidth = computed(() => store.getters.screenWidth);
 
 // Methods
@@ -539,7 +577,7 @@ const fetchUsers = async (
   }
   try {
     const response = await axios.get(
-      `/api/admin/users/${props.region_id}/all?search=${searchTerm.value}&per_page=${per_page}&page=${page}&sort_by_date=${sortByDate}`,
+      `/api/admin/users/${regionId.value}/all?search=${searchTerm.value}&per_page=${per_page}&page=${page}&sort_by_date=${sortByDate}`,
       getAxiosConfig()
     );
     console.log(response, "response");
@@ -562,6 +600,11 @@ const fetchUsersWithLoading = async (append = true) => {
 const onSearch = async (term) => {
   searchTerm.value = term;
   await fetchUsersWithLoading(false);
+};
+const changeRegion = (regionName, region_id) => {
+  selectedRegion.value = regionName;
+  regionId.value = region_id;
+  fetchUsersWithLoading(false);
 };
 const openNoteDialog = (userNote, id) => {
   note.value = userNote;
@@ -635,6 +678,7 @@ const handleEditSubmit = async () => {
       first_name: userToEdit.value.first_name,
       last_name: userToEdit.value.last_name,
       email: userToEdit.value.email,
+      notes_on_user: userToEdit.value.profile.notes_on_user,
     };
     loadingEdit.value = true;
     disabled.value = true;
@@ -659,6 +703,8 @@ const handleEditSubmit = async () => {
             users.value[index].first_name = userToEdit.value.first_name;
             users.value[index].last_name = userToEdit.value.last_name;
             users.value[index].email = userToEdit.value.email;
+            users.value[index].profile.notes_on_user =
+              userToEdit.value.profile.notes_on_user;
           }
         });
         changesSaved(response.data.message);

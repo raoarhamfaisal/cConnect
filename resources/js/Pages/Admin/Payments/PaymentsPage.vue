@@ -22,8 +22,8 @@
           <PageTitle linkUrl="/admin" pageTitle="Pricing Plans" />
         </div>
 
-        <div class="font-bold text-3xl text-black leading-tight mt-4 mb-2">
-          Pricing Details
+        <div class="font-bold text-3xl text-black leading-tight mt-2 mb-2">
+          Pricing Info
         </div>
         <div class="flex justify-end">
           <button
@@ -288,7 +288,7 @@ const props = defineProps({
 });
 
 const store = useStore();
-const isAdminUrl = usePage().props.value.auth.user.appeals_privileges === 1;
+const isAdminUrl = usePage().props.value.auth.user.payments_privileges;
 
 const pricingPlans = ref([]);
 const loading = ref(false);

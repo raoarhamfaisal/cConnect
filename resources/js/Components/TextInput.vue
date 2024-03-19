@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 
-defineProps(["modelValue", "placeholder"]);
+defineProps(["modelValue", "placeholder", "min", "max"]);
 
 defineEmits(["update:modelValue"]);
 
@@ -20,6 +20,8 @@ defineExpose({ focus: () => input.value.focus() });
   <input
     class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
     :value="modelValue"
+    :min="min"
+    :max="max"
     @input="$emit('update:modelValue', $event.target.value)"
     ref="input"
     :placeholder="placeholder"

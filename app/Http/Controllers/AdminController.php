@@ -53,7 +53,7 @@ class AdminController extends Controller
             return $oldStructure;
         }
     
-        public function getAllUsersPage($regionId)
+        public function getAllUsersPage()
         {
              // Get current user id
           $userID = Auth()->user('')->id;
@@ -64,11 +64,9 @@ class AdminController extends Controller
           if($userID) {
               $profile = Profile::where('user_id', $userID)->first();
           }
-          $region_name = Region::find($regionId)->name;
+    
         return Inertia::render('Admin/Users/AllUsers', [
             'profile' => $profile,
-            'region_id' => $regionId,
-            'region_name'=>$region_name,
             'showit' => Auth::check(),
         'postSearchFilters' => FacadeRequest::only(['postSearch']),
        

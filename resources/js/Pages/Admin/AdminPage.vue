@@ -63,7 +63,7 @@
         <summary class="accordion-heading flex items-center">
           <Link
             class="flex items-center text-gray-600 transition-colors duration-300 transform rounded-lg"
-            href="/admin/regions/users"
+            href="/admin/users"
           >
             <Icon
               icon="ion:person-sharp"

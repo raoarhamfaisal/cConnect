@@ -45,6 +45,8 @@
           <div class="font-bold text-3xl text-black leading-tight">
             Discount Coupons
           </div>
+        </div>
+        <div class="flex gap-4 items-center justify-between">
           <SearchInput
             class="mb-0 w-72"
             :barWidth="100"
@@ -52,14 +54,37 @@
             placeholder="Search by coupon code..."
             @search-clicked="onSearch"
           />
-        </div>
-        <div class="flex justify-end">
-          <button
-            @click="openCreateDialog"
-            class="text-sm py-2 px-4 bg-teal-600 text-white font-bold rounded"
-          >
-            Create Discount Coupon
-          </button>
+          <div class="flex gap-4">
+            <v-menu>
+              <template v-slot:activator="{ props }">
+                <button
+                  class="px-4 py-2 rounded bg-blue-600 text-white flex items-center"
+                  v-bind="props"
+                >
+                  Region: {{ selectedRegion }}
+                  <Icon class="ml-2 w-6 h-6" icon="gridicons:dropdown"></Icon>
+                </button>
+              </template>
+              <v-list>
+                <v-list-item @click="changeRegion('All', 0)">
+                  <v-list-item-title>All</v-list-item-title>
+                </v-list-item>
+                <v-list-item
+                  v-for="(item, index) in regions"
+                  :key="index"
+                  @click="changeRegion(item.name, item.id)"
+                >
+                  <v-list-item-title>{{ item.name }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+            <button
+              @click="openCreateDialog"
+              class="text-base py-2 px-4 bg-teal-600 text-white font-bold rounded"
+            >
+              Create Discount Coupon
+            </button>
+          </div>
         </div>
         <!-- if no usere -->
 
@@ -194,7 +219,7 @@
       :disabled="disabled"
       @closed="onClosePriceEdit"
       :title="
-        mode === 'edit' ? `Edit Pricing Plan` : 'Create your Pricing Plan'
+        mode === 'edit' ? `Edit Discount Coupon` : 'Create your Discount Coupon'
       "
     >
       <div class="py-2 p-4">
@@ -202,7 +227,7 @@
           class="mt-6 space-y-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-4"
         >
           <div>
-            <InputLabel class="font-bold mb-1" value="Region" />
+            <InputLabel class="font-bold mb-1" value="Region*" />
             <SelectProfile
               :options="referenceList"
               :modelValue="selectedReferal"
@@ -237,6 +262,8 @@
             <TextInput
               id="off_price"
               type="number"
+              min="0"
+              max="100"
               class="mt-1 block w-full"
               required
               v-model.trim="singleCoupon['%_off_regular_price']"
@@ -262,11 +289,16 @@
             />
             <InputError class="mt-2" :message="errors.months" />
           </div>
-          <div v-click-outside="handleOutsideClick">
+          <div
+            v-click-outside="{
+              handler: handleOutsideClick,
+              closeConditional: onCloseConditional,
+            }"
+          >
             <InputLabel
               class="font-bold"
               for="months"
-              value="Select Coupon Start and End date"
+              value="Select Coupon Start and End date*"
             />
 
             <input-icon
@@ -277,43 +309,48 @@
               readonly
               onfocus="this.removeAttribute('readonly');"
               v-model="displayDateRange"
+              @input="clearErrors('start_end_date')"
               inputClasses="border-gray-300 focus:ring-indigo-500 py-2 px-3 border-2"
               @click="toggleDatePicker"
               class="mt-1 block w-full cursor-pointer"
             />
-            <div>
+            <div class="relative">
               <DatePicker
                 v-if="isDatePickerShown"
                 v-model.range="range"
                 :mode="dateMode"
-                style="width: 100%"
+                style="width: 100%; position: absolute; z-index: 9999"
                 :rules="rules"
                 @update:modelValue="updateDateRange"
               />
             </div>
             <InputError class="mt-2" :message="errors.start_end_date" />
           </div>
-          <div class="flex gap-4 mt-2 self-start h-24">
-            <v-switch
-              class="admin-user-fuction-switch"
-              v-model="singleCoupon.is_valid"
-              hide-details
-              :true-value="true"
-              :false-value="false"
-              label="Is Valid"
-              color="success"
-            ></v-switch>
-          </div>
+        </div>
+        <div class="flex gap-4 self-start">
+          <v-switch
+            class="admin-user-fuction-switch text-base"
+            v-model="singleCoupon.is_valid"
+            hide-details
+            :true-value="1"
+            :false-value="0"
+            label="Is Valid"
+            color="success"
+          ></v-switch>
+        </div>
+        <div class="w-full mt-0">
+          <InputLabel class="font-bold" for="notes" value="Notes" />
+          <textarea
+            id="notes"
+            v-model="singleCoupon.notes"
+            style="height: 10.4rem; border: 1px solid grey"
+            placeholder="Type your Notes"
+            class="text-sm w-full py-1 px-3 focus:shadow-none focus:ring-gray-600 focus:rounded font-semibold text-grey-600 border-none resize-none bg-transparent rounded"
+          ></textarea>
         </div>
       </div>
-      <InputLabel class="font-bold" for="months" value="Notes" />
-      <textarea
-        v-model="singleCoupon.notes"
-        style="height: 10.4rem; border: 1px solid grey"
-        placeholder="Type your Notes"
-        class="text-sm w-full py-1 px-3 focus:shadow-none focus:ring-gray-600 focus:rounded font-semibold text-grey-600 border-none resize-none bg-transparent rounded"
-      ></textarea>
     </CustomDialog>
+
     <!-- for delete -->
     <CustomDialog
       submitText="Delete"
@@ -331,6 +368,54 @@
           class="section_text-lg font-bold pl-6 section_text-gray-800 mt-3 mb-2"
         >
           Do you want to Delete this Discount Coupon?
+        </div>
+      </div>
+    </CustomDialog>
+
+    <CustomDialog
+      dialogWidth="width780px"
+      :showFooter="false"
+      :disableOutSideClick="false"
+      ref="notesDialogRef"
+      @closed="onCloseNote"
+      title="Notes"
+    >
+      <div class="flex gap-2 my-4 mx-2">
+        <div class="w-full">
+          <Card
+            :shadowLevel="1"
+            :isInside="true"
+            :padding="'5px'"
+            class="w-full self-stretch h-full"
+            bgColor="#edfaff"
+          >
+            <p
+              class="text-sm font-semibold py-1 px-3 text-grey-600"
+              v-if="!editAdmitNoteText && note && !isTyping"
+              style="height: 10.4rem"
+            >
+              {{ note }}
+            </p>
+            <textarea
+              v-else
+              v-model="note"
+              @blur="stopTyping"
+              ref="adminTextAreaRef"
+              style="height: 10.4rem; border: 1px solid grey"
+              @keydown="saveNotes"
+              placeholder="Type your Notes"
+              class="text-sm w-full py-1 px-3 focus:shadow-none focus:ring-gray-600 focus:rounded text-grey-600 border-none resize-none bg-transparent rounded"
+              :rows="numberOfRows"
+            ></textarea>
+          </Card>
+        </div>
+        <div class="flex gap-2 flex-col items-center self-start">
+          <button
+            class="rounded-md border-2 w-28 px-2 py-1 py-2 text-sm text-center"
+            @click="focusTextarea"
+          >
+            Edit Notes
+          </button>
         </div>
       </div>
     </CustomDialog>
@@ -371,6 +456,8 @@ import {
   filterBadWordsWithoutValue,
   somethingWentWrong,
   changesSaved,
+  formatDateToDashDate,
+  convertDashDateToDateObjectFormat,
 } from "@/helpers/utilities";
 import { useStore } from "vuex";
 import { Inertia } from "@inertiajs/inertia";
@@ -392,11 +479,12 @@ const props = defineProps({
 });
 
 const store = useStore();
-const isAdminUrl = usePage().props.value.auth.user.appeals_privileges === 1;
+const isAdminUrl = usePage().props.value.auth.user.payments_privileges;
 
 const coupons = ref([]);
 const loading = ref(false);
 const referenceList = ref([]);
+const selectedRegion = ref("All");
 const mode = ref("");
 const selectedReferal = ref("");
 const regionId = ref(0);
@@ -411,7 +499,7 @@ const errors = reactive({
   coupon_code: "",
   off_price: "",
   months: "",
-  sales_tax: "",
+  start_end_date: "",
 });
 const sortBy = ref("latest");
 const perPage = ref(15);
@@ -422,7 +510,7 @@ const currentPage = ref(1);
 const loadingNextPage = ref(false);
 const notesDialogRef = ref();
 const note = ref("");
-const user_id = ref("");
+const coupon_id = ref("");
 const isDatePickerShown = ref(false);
 const editAdmitNoteText = ref(false);
 const adminTextAreaRef = ref();
@@ -434,7 +522,7 @@ const isTyping = ref(false);
 // });
 
 // range picker
-const range = ref(null);
+const range = ref({});
 const dateMode = ref("date");
 const rules = ref([
   {
@@ -450,6 +538,9 @@ const rules = ref([
     milliseconds: 999,
   },
 ]);
+const onCloseConditional = (e) => {
+  return isDatePickerShown.value;
+};
 const toggleDatePicker = () => {
   isDatePickerShown.value = !isDatePickerShown.value;
 };
@@ -504,6 +595,11 @@ watch(regions, (newVal) => {
     referenceList.value = regions.value.map((item) => item.name);
   }
 });
+watch(range, () => {
+  if (range.value.start) {
+    errors.start_end_date = "";
+  }
+});
 //Methods
 
 const loadMoreCoupons = async () => {
@@ -536,20 +632,32 @@ const validateForm = () => {
     errors.region_id = "Region is Required";
     isValid = false; // Set to false if validation fails
   }
-  if (!singleCoupon.value.billed_monthly_price) {
-    errors.billed_monthly_price = "Monthly Price is Required";
+  if (!singleCoupon.value.coupon_code) {
+    errors.coupon_code = "Coupon Code is Required";
     isValid = false;
   }
-  if (!singleCoupon.value.billed_annual_price) {
-    errors.billed_annual_price = "Annual Price is Required";
+  if (
+    !singleCoupon.value["%_off_regular_price"] ||
+    isNaN(singleCoupon.value["%_off_regular_price"])
+  ) {
+    errors.off_price = "Discount Percentage is Required";
     isValid = false;
   }
-  if (!singleCoupon.value.advertised_price) {
-    errors.advertised_price = "Advertised Price is Required";
+  if (
+    +singleCoupon.value["%_off_regular_price"] < 0 ||
+    +singleCoupon.value["%_off_regular_price"] > 100
+  ) {
+    errors.off_price = "Please enter a value between 0 and 100.";
+  }
+  if (!singleCoupon.value.months || isNaN(singleCoupon.value.months)) {
+    errors.months = "Months is Required ";
     isValid = false;
   }
-  if (!singleCoupon.value.sales_tax) {
-    errors.sales_tax = "Sales Tax is Required";
+  if (!range.value?.start || !range.value?.end) {
+    errors.start_end_date = "Start and End Coupon Date are Required";
+    isValid = false;
+  } else if (range.value?.start > range.value?.end) {
+    errors.start_end_date = "Start Date should be before End Date";
     isValid = false;
   }
 
@@ -561,9 +669,14 @@ const clearErrors = (field) => {
     errors[field] = "";
     return;
   }
+
   if (singleCoupon.value[field]?.trim()) {
     errors[field] = "";
   }
+  if (field === "off_price" || field === "start_end_date") {
+    errors[field] = "";
+  }
+  console.log(range.value, "range");
 };
 
 const changeReferal = (value) => {
@@ -601,19 +714,25 @@ const fetchDiscountCoupons = async (
     somethingWentWrong();
   }
 };
+
 const fetchDiscountCouponsWithLoading = async (append = true) => {
   loading.value = true;
   await fetchDiscountCoupons(perPage.value, 1, append);
   loading.value = false;
+};
+const changeRegion = (regionName, region_id) => {
+  selectedRegion.value = regionName;
+  regionId.value = region_id;
+  fetchDiscountCouponsWithLoading(false);
 };
 
 const onSearch = async (term) => {
   searchTerm.value = term;
   await fetchDiscountCouponsWithLoading(false);
 };
-const openNoteDialog = (userNote, id) => {
-  note.value = userNote;
-  user_id.value = id;
+const openNoteDialog = (couponNote, id) => {
+  note.value = couponNote;
+  coupon_id.value = id;
   notesDialogRef.value.openDialog();
 };
 
@@ -637,22 +756,20 @@ const saveNotes = () => {
   // Start a new timer
   saveTimeout = setTimeout(async () => {
     const notes = {
-      notes_on_user: note.value
-        ? filterBadWordsWithoutValue(note.value)
-        : note.value,
+      notes: note.value ? filterBadWordsWithoutValue(note.value) : note.value,
     };
     console.log(notes, note.value, "selectedNote");
     try {
-      const response = await axios.post(
-        `/api/admin/users/${user_id.value}`,
+      const response = await axios.put(
+        `/api/admin/discount-coupon/${coupon_id.value}`,
         notes,
         getAxiosConfig()
       );
       console.log(response, "response");
       if (response.data) {
-        users.value.forEach((coupon, index) => {
-          if (coupon.profile.user_id === user_id.value) {
-            users.value[index].profile.notes_on_user = note.value;
+        coupons.value.forEach((coupon, index) => {
+          if (coupon.id === coupon_id.value) {
+            coupons.value[index].notes = note.value;
           }
         });
       }
@@ -663,17 +780,19 @@ const saveNotes = () => {
 };
 const onCloseNote = () => {
   note.value = "";
-  user_id.value = "";
+  coupon_id.value = "";
 };
 
-const openEditDialog = (plan) => {
+const openEditDialog = (coupon) => {
   for (let key in errors) {
     errors[key] = "";
   }
-  console.log(errors, "errors");
   mode.value = "edit";
-  selectedReferal.value = getRegionName(plan.region_id);
-  singleCoupon.value = JSON.parse(JSON.stringify(plan));
+  selectedReferal.value = getRegionName(coupon.region_id);
+  singleCoupon.value = JSON.parse(JSON.stringify(coupon));
+  range.value.start = convertDashDateToDateObjectFormat(coupon.start_date);
+  range.value.end = convertDashDateToDateObjectFormat(coupon.end_date);
+
   editDialogRef.value.openDialog();
 };
 const openCreateDialog = () => {
@@ -684,6 +803,7 @@ const openCreateDialog = () => {
   mode.value = "create";
   selectedReferal.value = "";
   singleCoupon.value = {};
+  range.value = {};
   editDialogRef.value.openDialog();
 };
 const openDeleteDialog = (coupon) => {
@@ -705,19 +825,24 @@ const handleEditSubmit = async () => {
       }
     });
 
-    const updatedPlan = {
+    const couponToUpdate = {
       region_id: region_id,
-      sales_tax: +singleCoupon.value.sales_tax,
-      billed_annual_price: +singleCoupon.value.billed_annual_price,
-      billed_monthly_price: +singleCoupon.value.billed_monthly_price,
-      advertised_price: +singleCoupon.value.advertised_price,
+      is_valid: singleCoupon.value.is_valid,
+
+      "%_off_regular_price": +singleCoupon.value["%_off_regular_price"],
+      months: +singleCoupon.value.months,
+      coupon_code: singleCoupon.value.coupon_code,
+      start_date: formatDateToDashDate(range.value.start),
+      end_date: formatDateToDashDate(range.value.end),
+      notes: singleCoupon.value.notes,
     };
+    console.log(couponToUpdate, "coupon to create");
     loadingEdit.value = true;
     disabled.value = true;
     try {
       const response = await axios.put(
-        `/api/admin/payment-info/${singleCoupon.value.id}`,
-        updatedPlan,
+        `/api/admin/discount-coupon/${singleCoupon.value.id}`,
+        couponToUpdate,
         getAxiosConfig()
       );
       console.log(response, "response");
@@ -750,7 +875,7 @@ const handleSubmitDelete = async () => {
     );
     if (response.data) {
       changesSaved(
-        response.data.message || "Pricing Plan successfully deleted"
+        response.data.message || "Discount Coupon successfully deleted"
       );
       const index = coupons.value.findIndex((plan, index) => {
         return plan.id === singleCoupon.value.id;
@@ -779,19 +904,24 @@ const handleCreateSubmit = async () => {
       }
     });
 
-    const planToCreate = {
+    const couponToCreate = {
       region_id: region_id,
-      sales_tax: +singleCoupon.value.sales_tax,
-      billed_annual_price: +singleCoupon.value.billed_annual_price,
-      billed_monthly_price: +singleCoupon.value.billed_monthly_price,
-      advertised_price: +singleCoupon.value.advertised_price,
+      is_valid: singleCoupon.value.is_valid,
+
+      "%_off_regular_price": +singleCoupon.value["%_off_regular_price"],
+      months: +singleCoupon.value.months,
+      coupon_code: singleCoupon.value.coupon_code,
+      start_date: formatDateToDashDate(range.value.start),
+      end_date: formatDateToDashDate(range.value.end),
+      notes: filterBadWordsWithoutValue(singleCoupon.value.notes),
     };
+    console.log(couponToCreate, "coupon to create");
     loadingEdit.value = true;
     disabled.value = true;
     try {
       const response = await axios.post(
-        `/api/admin/payment-info    `,
-        planToCreate,
+        `/api/admin/discount-coupon`,
+        couponToCreate,
         getAxiosConfig()
       );
       console.log(response, "response");
