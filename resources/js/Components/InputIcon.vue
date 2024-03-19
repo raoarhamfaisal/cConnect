@@ -4,11 +4,13 @@ import { Icon } from "@iconify/vue"; // Make sure to import the Iconify Vue comp
 
 defineProps([
   "modelValue",
+  "inputClasses",
   "placeholder",
   "icon",
   "type",
   "id",
   "color",
+  "disabled",
   "cursor",
 ]); // added "icon" prop
 
@@ -30,11 +32,12 @@ defineExpose({ focus: () => input.value.focus() });
     <input
       :type="type"
       :id="id"
-      class="border-gray-300 focus:ring-indigo-500 rounded-md shadow-sm pr-10 mt-1 block w-full"
+      :class="`border-gray-300 focus:ring-indigo-500 rounded-md ${inputClasses} shadow-sm pr-10 mt-1 block w-full`"
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
       ref="input"
       @blur="$emit('blur')"
+      :disabled="disabled"
       @keyup="$emit('keyup')"
       :placeholder="placeholder"
     />
