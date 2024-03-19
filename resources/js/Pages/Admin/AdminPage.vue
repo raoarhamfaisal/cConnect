@@ -35,12 +35,7 @@
             class="flex items-center pl-8 pr-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
             href="/admin/regions/contractors"
           >
-            <Icon
-              icon="ion:person-sharp"
-              color="#1098ad"
-              width="30"
-              height="30"
-            />
+            <Icon icon="ion:person-sharp" color="#222" width="30" height="30" />
             <span class="mx-4 font-medium">All Contractors</span>
           </Link>
 
@@ -50,7 +45,7 @@
           >
             <Icon
               icon="fluent-mdl2:review-request-solid"
-              color="#1098ad"
+              color="#222"
               width="30"
               height="30"
             />
@@ -76,7 +71,7 @@
               width="30"
               height="30"
             />
-            <span class="mx-4">User Functions</span>
+            <span class="mx-4 text-[#364fc7]">User Functions</span>
           </Link>
         </summary>
 
@@ -90,20 +85,25 @@
         :open="isOpen"
       >
         <summary class="accordion-heading flex items-center">
-          <Link
-            class="flex items-center text-gray-600 transition-colors duration-300 transform rounded-lg"
-            href="/admin/regions/appealed"
-          >
-            <Icon
-              icon="ion:card-sharp"
-              color="#364fc7"
-              width="30"
-              height="30"
-            />
-            <span class="mx-4">Payment Info</span>
-          </Link>
+          <Icon icon="ion:card-sharp" color="#364fc7" width="30" height="30" />
+          <span class="mx-4">Payments</span>
         </summary>
-
+        <div class="">
+          <Link
+            class="flex items-center pl-8 pr-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
+            href="/admin/pricing"
+          >
+            <Icon icon="mdi-credit-card" color="#222" width="30" height="30" />
+            <span class="mx-4 font-medium">Pricing Plans</span>
+          </Link>
+          <Link
+            class="flex items-center pl-8 pr-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
+            href="/admin/coupons"
+          >
+            <Icon icon="mdi-tag" color="#222" width="30" height="30" />
+            <span class="mx-4 font-medium">Discout Coupons</span>
+          </Link>
+        </div>
         <!-- Links for Payment Info go here... -->
       </details>
     </Card>

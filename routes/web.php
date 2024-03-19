@@ -91,6 +91,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('/admin/ratings/contractor/{id}/history', [ContractorRatingsAdminController::class, 'historyPage'])->name('admin.history');
         Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+
+        //Payments
+        Route::get('/admin/coupons', [AdminController::class, 'getCouponsPage'])->name('admin.appealed');
+        Route::get('/admin/pricing', [AdminController::class, 'getPaymentsPage'])->name('admin.appealed');
+
+
+
     // });
 });
 

@@ -35,7 +35,7 @@
           :heading="`Region ${region_id} : ${region_name}`"
         />
         <!-- Filters -->
-        <div class="border-gray-300 border-t-2">
+        <div class="border-gray-300 border-t-2 border-b-2">
           <heading-card class="mt-3" heading="Sort users by" />
           <div class="mb-4 mt-2">
             <div class="flex gap-3 flex-wrap">
