@@ -15,6 +15,7 @@ use App\Http\Controllers\ContractorRatingsAdminController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\PaymentInfoController;
 use App\Http\Controllers\DiscountCouponController;
+use App\Http\Controllers\PaymentController;
 
 
 
@@ -60,6 +61,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     // Your authenticated routes here
     Route::middleware('auth:sanctum')->group(function () {
 
+        // Process Payment
+        Route::post('/payment/start-subscription', [PaymentController::class, 'startSubscription'])->name('payment.startSubscription');
+        Route::post('/payment/cancel-subscription/{userId}', [PaymentController::class, 'cancelSubscription'])->name('payment.cancelSubscription');
 
         // Settings APIs
         Route::post('/user/resend-code', [RegisteredUserController::class, 'resendVerificationCode'])->name('user.resendVerificationCode');
@@ -172,7 +176,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     
 
 
-    
 
 
     

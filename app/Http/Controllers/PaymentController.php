@@ -1,0 +1,268 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Profile;
+use App\Models\User;
+use App\Models\Subscription;
+use Illuminate\Support\Carbon;
+use Mail;
+use App\Models\DiscountCoupon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use net\authorize\api\contract\v1 as AnetAPI;
+use net\authorize\api\controller as AnetController;
+use App\Mail\SubscriptionFailedMail;
+use App\Mail\SubscriptionSuccessMail;
+use App\Mail\SubscriptionCancelledMail;
+use Illuminate\Support\Facades\DB;
+
+date_default_timezone_set('America/Los_Angeles');
+
+class PaymentController extends Controller
+{
+    public function startSubscription(Request $request)
+    {
+
+        // return response()->json($request);
+        // Ensure user is authenticated
+        if(!Auth()->user('')){
+            return response()->json(['message' => 'User not authenticated'], 401);
+        }
+
+        $userId = Auth()->user('')->id;
+
+
+        $activeSubscription = DB::table('subscriptions')->where('user_id', $userId)->whereNull('ends_at')->first();
+        if ($activeSubscription) {
+            return response()->json(['message' => 'You already have an active subscription!']);
+        }
+
+        // 1. Calculate the subscription amount with coupon
+        $couponDiscount = 0;
+        if($request->has('coupon_code')) {
+            $coupon = DiscountCoupon::where('coupon_code', $request->coupon_code)->where('is_valid', true)->first();
+            if($coupon) {
+                $couponDiscount = $coupon->percentage_off_regular_price;
+            }
+        }
+
+        $baseAmount = 50;  // Example base amount
+        $finalAmount = $baseAmount - ($baseAmount * $couponDiscount / 100);
+
+        // Set the transaction's refId
+        $refId = 'ref' . time();
+
+
+        // 2. Set up the subscription for Authorize.Net
+        $subscription = $this->setUpSubscription($request, $finalAmount);
+
+        // Authentication with Authorize.Net's credentials
+        $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+        $merchantAuthentication->setName(env('MERCHANT_LOGIN_ID'));
+        $merchantAuthentication->setTransactionKey(env('MERCHANT_TRANSACTION_KEY'));
+
+        $apiRequest = new AnetAPI\ARBCreateSubscriptionRequest();
+        $apiRequest->setmerchantAuthentication($merchantAuthentication);
+        $apiRequest->setRefId($refId);
+        $apiRequest->setSubscription($subscription);
+        $controller = new AnetController\ARBCreateSubscriptionController($apiRequest);
+
+        $subscriptionResponse = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::SANDBOX);
+
+        if($subscriptionResponse && $subscriptionResponse->getMessages()->getResultCode() == "Ok") {
+            // 3. Handle successful payments
+            $this->handleSuccessfulPayment($request, $userId, $subscriptionResponse);
+
+        } else {
+            // 4. Handle failed payments
+            $this->handleFailedPayment($userId, $subscriptionResponse);
+
+            // echo "ERROR :  Invalid subscriptionResponse\n";
+            $errorMessages = $subscriptionResponse->getMessages()->getMessage();
+            // echo "Response : " . $errorMessages[0]->getCode() . "  " .$errorMessages[0]->getText() . "\n";
+            DB::table('subscriptions')->insert([
+                'user_id' => $userId,
+                'is_subscription_successfull' => 0,
+                'is_subscription_active' => 0,
+                'subscription_id' => null,
+                'metadata' => json_encode($subscriptionResponse),
+                'subscription_plan' => ($request->input('duration') === 'annual') ? 'Annual Subscription' : 'Monthly Subscription',
+                'ends_at' => null,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]);
+        }
+
+        return $subscriptionResponse;
+    }
+
+    private function setUpSubscription($request, $finalAmount)
+    {
+        // Define the payment type based on user's data from the request
+        $creditCard = new AnetAPI\CreditCardType();
+        $creditCard->setCardNumber($request->input('card_number'));
+        $creditCard->setExpirationDate($request->input('expiration_date'));
+        $creditCard->setCardCode($request->input('cvv'));
+
+        $payment = new AnetAPI\PaymentType();
+        $payment->setCreditCard($creditCard);
+
+        // Set customer billing information
+        $billto = new AnetAPI\NameAndAddressType();
+        $billto->setFirstName($request->input('first_name'));
+        $billto->setLastName($request->input('last_name'));
+        $billto->setAddress($request->input('address'));
+        $billto->setCity($request->input('city'));
+        $billto->setState($request->input('state'));
+        $billto->setZip($request->input('zip'));
+        $billto->setCountry($request->input('country'));
+
+        // Set the subscription interval (Monthly in this case)
+        $intervalLength = ($request->input('duration') === 'annual') ? 365 : 30;
+        $interval = new AnetAPI\PaymentScheduleType\IntervalAType();
+        $interval->setLength($intervalLength);  
+        $interval->setUnit("days"); // Set the interval unit as "days"
+
+        $startDate = Carbon::now();  // Current date
+
+        $paymentSchedule = new AnetAPI\PaymentScheduleType();
+        $paymentSchedule->setInterval($interval);
+        $paymentSchedule->setStartDate($startDate);  // Pass the Carbon object directly
+        $paymentSchedule->setTotalOccurrences("9999");  // Recurring indefinitely
+        $paymentSchedule->setTrialOccurrences("0");
+
+        $subscription = new AnetAPI\ARBSubscriptionType();
+        $subscription->setName(($request->input('duration') === 'annual') ? "Annual Subscription" : "Monthly Subscription");
+        $subscription->setPaymentSchedule($paymentSchedule);
+        $subscription->setPayment($payment);
+        $subscription->setAmount($finalAmount);
+        $subscription->setTrialAmount("0.00");
+        $subscription->setBillTo($billto);
+        
+        $order = new AnetAPI\OrderType();
+        $order->setInvoiceNumber("1234354");        
+        $order->setDescription("Description of the subscription"); 
+        $subscription->setOrder($order); 
+
+        return $subscription;
+    }
+
+    private function handleSuccessfulPayment($request, $userId, $subscriptionResponse)
+    {
+        // Update the profile table
+        $profile = Profile::where('user_id', $userId)->first();
+        if($profile) {
+            $profile->active_user = 1;
+            $profile->is_payment_verified = 1;
+            $profile->save();
+        }
+
+        $endsAt = Carbon::now();
+
+        if ($request->input('duration') === 'annual') {
+            $endsAt->addYear();
+        } else {
+            $endsAt->addDays(30);
+        }
+
+        DB::table('subscriptions')->insert([
+            'user_id' => $userId,
+            'is_subscription_successfull' => 1,
+            'is_subscription_active' => 1,
+            'subscription_id' => $subscriptionResponse->getSubscriptionId(),
+            'metadata' => json_encode($subscriptionResponse),
+            'subscription_plan' => ($request->input('duration') === 'annual') ? 'Annual Subscription' : 'Monthly Subscription',
+            'ends_at' => $endsAt,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
+
+        // Send success email notification
+        $user = User::find($userId);
+        if($user) {
+            Mail::to($user->email)->send(new SubscriptionSuccessMail($user));
+        }
+
+    }
+
+    private function handleFailedPayment($userId, $response)
+    {
+        // Update the profile table
+        $profile = Profile::where('user_id', $userId)->first();
+        if($profile) {
+            $profile->active_user = 0;
+            $profile->is_payment_verified = 0;
+            $profile->save();
+        }
+
+        // Send email notification
+        $user = User::find($userId);
+        if($user) {
+            Mail::to($user->email)->send(new SubscriptionFailedMail($user, $response));
+        }
+    }
+
+
+    public function cancelSubscription(Request $request, $userId)
+    {
+        $subscription = Subscription::where('user_id', $userId)->first();
+
+        if($subscription) {
+
+            /* Create a merchantAuthenticationType object with authentication details
+           retrieved from the constants file */
+           $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+           $merchantAuthentication->setName(env('MERCHANT_LOGIN_ID'));
+           $merchantAuthentication->setTransactionKey(env('MERCHANT_TRANSACTION_KEY'));
+          
+           // Set the transaction's refId
+           $refId = 'ref' . time();
+       
+           $subscriptionRequest = new AnetAPI\ARBCancelSubscriptionRequest();
+           $subscriptionRequest->setMerchantAuthentication($merchantAuthentication);
+           $subscriptionRequest->setRefId($refId);
+           $subscriptionRequest->setSubscriptionId($subscription->subscription_id);
+       
+           $controller = new AnetController\ARBCancelSubscriptionController($subscriptionRequest);
+       
+           $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+       
+           if (($response != null) && ($response->getMessages()->getResultCode() == "Ok"))
+           {
+               $successMessages = $response->getMessages()->getMessage();
+
+                $subscription->is_subscription_active = 0;
+                $subscription->update();
+
+                // Update the profile table
+                $profile = Profile::where('user_id', $userId)->first();
+                if($profile) {
+                    $profile->active_user = 0;
+                    $profile->is_payment_verified = 0;
+                    $profile->save();
+                }
+
+                // Send an email about cancellation
+                $user = User::find($userId);
+                if($user) {
+                    Mail::to($user->email)->send(new SubscriptionCancelledMail($user));
+                }
+        
+            }
+           else
+           {
+            //    echo "ERROR :  Invalid response\n";
+               $errorMessages = $response->getMessages()->getMessage();
+            //    echo "Response : " . $errorMessages[0]->getCode() . "  " .$errorMessages[0]->getText() . "\n";
+               
+           }
+       
+           return $response;
+         }else {
+            return response()->json(["status" => 404, "message" => "No Subscription found for this user "]);
+        }
+
+    }
+
+}

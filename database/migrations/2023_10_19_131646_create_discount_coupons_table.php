@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->boolean('is_valid')->default(true);  // Assuming you want the coupon to be valid by default
             $table->unsignedBigInteger('region_id');
-            $table->decimal('%_off_regular_price', 5, 2);  // e.g. 10.00 for 10%
+            $table->decimal('percentage_off_regular_price', 5, 2);  // e.g. 10.00 for 10%
             $table->integer('months');  // Duration in months for which the coupon is valid
             $table->string('coupon_code')->unique();
             $table->date('start_date');
