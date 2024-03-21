@@ -114,7 +114,7 @@ class AdminController extends Controller
     
             $tradesOldStructure = $this->convertTradesToOldStructure($profile->trades);
     
-            return Inertia::render('Admin/Payments/PaymentsPage', [
+            return Inertia::render('Admin/Payments/AdminPricingPlanPage', [
          
                 'profile' => array_merge($profile->toArray(), $tradesOldStructure),
                 'showit' => Auth::check(),

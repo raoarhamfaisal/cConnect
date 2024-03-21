@@ -40,18 +40,27 @@
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { somethingWentWrong } from "@/helpers/utilities";
 import PricingCard from "@/Pages/Profile/Partials/main/PricingCard.vue";
-import { computed, onMounted, ref } from "vue";
-
+import { Inertia } from "@inertiajs/inertia";
+import { computed, onMounted, ref, watch } from "vue";
+const props = defineProps({
+  region_id: {
+    type: [Number, String],
+  },
+});
 const loading = ref(false);
 const pricingPlan = ref({});
 
 const selectedPricing = (plan) => {
-  console.log(plan);
+  console.log(plan, "plan");
+  localStorage.setItem("selectedPlan", plan);
+  Inertia.visit("/payment");
 };
 
 onMounted(() => {
   fetchPricingCardDetails();
 });
+
+// computed
 
 const monthlyTotal = computed(() => {
   return +pricingPlan.value.billed_monthly_price + +pricingPlan.value.sales_tax;
@@ -63,11 +72,22 @@ const annualTotal = computed(() => {
   );
 });
 
+//watch
+watch(
+  () => props.region_id,
+  (newVal, oldVal) => {
+    console.log(props.region_id, oldVal, newVal, "region_id changed");
+    if (newVal !== oldVal) {
+      fetchPricingCardDetails();
+    }
+  }
+);
+
 const fetchPricingCardDetails = async () => {
   loading.value = true;
   try {
     const response = await axios.get(
-      `/api/admin/payment-info/1`,
+      `/api/admin/payment-info/${props.region_id}`,
       getAxiosConfig()
     );
     console.log(response, "response");

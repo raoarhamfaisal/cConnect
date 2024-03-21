@@ -56,10 +56,10 @@ import { Icon } from "@iconify/vue";
 
 const props = defineProps({
   plan: String,
-  monthlyPrice: Number,
-  // coupon: Number,
-  salesTax: Number,
-  total: Number,
+  monthlyPrice: [Number, String],
+  // coupon: [Number,String],
+  salesTax: [Number, String],
+  total: [Number, String],
   savings: String,
 });
 
