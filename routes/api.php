@@ -166,7 +166,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         // Only Users having payments-privileges are allowed
         Route::middleware('admin-with-payments-privileges')->group(function () {
             Route::resource('/admin/payment-info', PaymentInfoController::class);
+            Route::get('/payment-info-of-a-region/{regionId}', [PaymentInfoController::class, 'paymetInfoOfARegion']);
+            
             Route::resource('/admin/discount-coupon', DiscountCouponController::class);
+            Route::post('/discount-coupon/verify', [DiscountCouponController::class, 'verifyDiscountCoupon']);
             Route::get('/admin/discount-coupon/{regionId}/all', [DiscountCouponController::class, 'getAllDiscountCouponsForARegion']);
         });
 

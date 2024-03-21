@@ -47,8 +47,32 @@ class PaymentController extends Controller
             }
         }
 
-        $baseAmount = 50;  // Example base amount
-        $finalAmount = $baseAmount - ($baseAmount * $couponDiscount / 100);
+        $paymentInfo = DB::table('payment_infos')->where('region_id', $userRegionId)->first();
+
+        // Set base amount based on user's selected duration
+        $baseAmount = $request->input('duration') === 'annual' ? ($paymentInfo->billed_annual_price ? $paymentInfo->billed_annual_price : 390) : ($paymentInfo->billed_monthly_price ? $paymentInfo->billed_monthly_price : 39 );
+        
+        // Retrieve the sales tax rate
+        $salesTaxRate = $paymentInfo->sales_tax ? ($paymentInfo->sales_tax / 100) : (2/100);       
+        
+        if ($request->has('coupon_code')) {
+            $coupon = DiscountCoupon::where('coupon_code', $request->coupon_code)
+                        ->where('is_valid', true)
+                        ->first();
+        
+            if ($coupon) {
+                if ($request->input('duration') === 'annual') {
+                    $threeMonthsValue = ($baseAmount / 12) * $coupon->months;
+                    $couponDiscountValue = $threeMonthsValue * ($coupon->percentage_off_regular_price / 100);
+                    $finalAmount = ($baseAmount - $couponDiscountValue) + (($baseAmount - $couponDiscountValue) * $salesTaxRate);
+                } else {
+                    $couponDiscountValue = $baseAmount * ($coupon->percentage_off_regular_price / 100);
+                    $finalAmount = ($baseAmount - $couponDiscountValue) + (($baseAmount - $couponDiscountValue) * $salesTaxRate);
+                }
+            }
+        } else {
+            $finalAmount = $baseAmount + ($baseAmount * $salesTaxRate);
+        }
 
         // Set the transaction's refId
         $refId = 'ref' . time();

@@ -60,4 +60,17 @@ class PaymentInfoController extends Controller
 
         return response()->json(['message' => 'Deleted successfully']);
     }
+
+    
+    public function paymetInfoOfARegion(Request $request, $regionId) {
+
+        $paymentInfo = PaymentInfo::where('region_id', $regionId)->first();
+
+        if(!$paymentInfo) {
+            return response()->json(['message' => 'No payment info found for this region.']);
+        }
+        
+        return response()->json(['message' => 'Payment information found.', 'paymentInfo' => $paymentInfo]);
+    }
+
 }

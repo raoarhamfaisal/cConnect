@@ -13,6 +13,10 @@ use App\Models\User;
 use App\Models\Profile;
 use App\Models\SessionViewSetting;
 use App\Models\SessionTrade;
+use App\Models\ContractorProfile;
+use App\Models\ContractorImageSectionsDefault;
+use App\Models\ImageSection;
+use App\Models\BragSection;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -81,6 +85,56 @@ class AuthenticatedSessionController extends Controller
                         ['profile_id' => $profile->id, 'trade_id' => $trade->id]
                     );
                 }
+
+
+                $contractorProfile = ContractorProfile::where('user_id', $profile->user_id)->first();
+
+                if(!$contractorProfile) {
+                    // Fetch the default values
+                    $defaults = ContractorImageSectionsDefault::first();
+
+
+                    $contractorProfile = new ContractorProfile();
+                    $profile->bottom_text = $defaults->bottom_text;
+                    $profile->closing_text = $defaults->closing_text;    
+                    $profile->template_id = 1;
+                    $profile->color_scheme_id = 1;
+                    $contractorProfile->fill($profile->toArray()); // This copies all attributes from the profile to contractor profile
+
+                    $contractorProfile->save();  
+                    $contractorProfile->trades()->sync($profile->trades);   
+
+
+                    if ($defaults) {
+                        $imageSections = [
+                            ['text' => $defaults->first_title_text, 'image' => $defaults->first_title_image],
+                            ['text' => $defaults->second_title_text, 'image' => $defaults->second_title_image],
+                        ];
+
+                        foreach ($imageSections as $section) {
+                            $imageSection = new ImageSection();
+                            $imageSection->section_image = $section['image'];
+                            $imageSection->section_text = $section['text'];
+                            $imageSection->contractor_profile_id = $contractorProfile->id;
+                            $imageSection->save();
+                        }
+
+                        $bragSections = [
+                            ['text' => $defaults->brag1_text, 'image' => $defaults->brag1_image],
+                            ['text' => $defaults->brag2_text, 'image' => $defaults->brag2_image],
+                        ];
+
+                        foreach ($bragSections as $theBragSection) {
+                            $bragSection = new BragSection();
+                            $bragSection->section_image = $theBragSection['image'];
+                            $bragSection->section_text = $theBragSection['text'];
+                            $bragSection->contractor_profile_id = $contractorProfile->id;
+                            $bragSection->save();
+                        }
+                    }            
+                }
+
+
             }            
 
 
