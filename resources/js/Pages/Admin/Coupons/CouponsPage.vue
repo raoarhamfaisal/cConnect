@@ -511,6 +511,7 @@ const loadingNextPage = ref(false);
 const notesDialogRef = ref();
 const note = ref("");
 const coupon_id = ref("");
+const isDatePickerShown = ref(false);
 const editAdmitNoteText = ref(false);
 const adminTextAreaRef = ref();
 const isTyping = ref(false);
@@ -521,7 +522,6 @@ const isTyping = ref(false);
 // });
 
 // range picker
-const isDatePickerShown = ref(false);
 const range = ref({});
 const dateMode = ref("date");
 const rules = ref([

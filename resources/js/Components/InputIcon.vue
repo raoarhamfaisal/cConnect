@@ -2,18 +2,21 @@
 import { onMounted, ref } from "vue";
 import { Icon } from "@iconify/vue"; // Make sure to import the Iconify Vue component
 
-defineProps([
-  "modelValue",
-  "inputClasses",
-  "placeholder",
-  "icon",
-  "type",
-  "mask",
-  "id",
-  "color",
-  "disabled",
-  "cursor",
-]); // added "icon" prop
+const props = defineProps({
+  modelValue: String,
+  inputClasses: String,
+  placeholder: String,
+  icon: String,
+  type: String,
+  mask: {
+    type: String,
+  },
+  id: String,
+  color: String,
+  disabled: Boolean,
+  cursor: Boolean,
+});
+// added "icon" prop
 
 defineEmits(["update:modelValue", "iconClick", "blur", "keyup"]);
 
@@ -31,6 +34,7 @@ defineExpose({ focus: () => input.value.focus() });
 <template>
   <div class="relative">
     <input
+      v-if="mask"
       :type="type"
       :id="id"
       :class="`border-gray-300 focus:ring-indigo-500 rounded-md ${inputClasses} shadow-sm pr-10 mt-1 block w-full`"
@@ -43,6 +47,22 @@ defineExpose({ focus: () => input.value.focus() });
       @keyup="$emit('keyup')"
       :placeholder="placeholder"
     />
+
+    <!-- Input without v-mask when mask prop is not provided -->
+    <input
+      v-else
+      :type="type"
+      :id="id"
+      :class="`border-gray-300 focus:ring-indigo-500 rounded-md ${inputClasses} shadow-sm pr-10 mt-1 block w-full`"
+      :value="modelValue"
+      @input="$emit('update:modelValue', $event.target.value)"
+      ref="input"
+      @blur="$emit('blur')"
+      :disabled="disabled"
+      @keyup="$emit('keyup')"
+      :placeholder="placeholder"
+    />
+
     <Icon
       v-if="icon"
       :icon="icon"
