@@ -21,13 +21,13 @@
         </div>
         <div>${{ monthlyPrice }}</div>
       </div>
-      <div class="flex justify-between">
+      <!-- <div class="flex justify-between">
         <div class="flex items-center justify-center mb-2">
           <Icon icon="mdi:ticket-percent" class="w-5 h-5 mr-2" />
           <p><strong>Coupon</strong></p>
         </div>
         <div>${{ coupon }}</div>
-      </div>
+      </div> -->
       <div class="flex justify-between">
         <div class="flex items-center justify-center mb-2">
           <Icon icon="mdi:cash-register" class="w-5 h-5 mr-2" />
@@ -57,7 +57,7 @@ import { Icon } from "@iconify/vue";
 const props = defineProps({
   plan: String,
   monthlyPrice: Number,
-  coupon: Number,
+  // coupon: Number,
   salesTax: Number,
   total: Number,
   savings: String,

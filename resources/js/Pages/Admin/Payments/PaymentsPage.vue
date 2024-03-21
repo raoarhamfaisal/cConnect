@@ -180,7 +180,7 @@
             <InputLabel
               class="font-bold"
               for="advertised_price"
-              value="Advertised Tax*"
+              value="Advertised Price*"
             />
             <TextInput
               id="advertised_price"
