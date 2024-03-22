@@ -22,6 +22,8 @@ return new class extends Migration
             $table->text('metadata');
             $table->string('subscription_plan');
             $table->timestamp('ends_at')->nullable();
+            $table->decimal('original_amount', 10, 2)->nullable();
+            $table->date('discount_end_date')->nullable();
             $table->timestamps();
         });
     }
