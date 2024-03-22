@@ -109,6 +109,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         Route::patch('/profile/all-basic-info-for-profile-setup', [ProfileController::class, 'updateBasicInfoForProfileSetup'])->name('profile.updateBasicInfoForProfileSetup');
         Route::patch('/profile/all-basic-info', [ProfileController::class, 'updateBasicInfo'])->name('profile.updateBasicInfo');
         Route::patch('/profile/verify-payment', [ProfileController::class, 'verifyPayment'])->name('profile.verifyPayment');
+
+        //Payment api
+        Route::get('/payment-info-of-a-region/{regionId}', [PaymentInfoController::class, 'paymetInfoOfARegion']);
+        Route::post('/discount-coupon/verify', [DiscountCouponController::class, 'verifyDiscountCoupon']);
         
 
         // Review APIs
@@ -166,10 +170,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         // Only Users having payments-privileges are allowed
         Route::middleware('admin-with-payments-privileges')->group(function () {
             Route::resource('/admin/payment-info', PaymentInfoController::class);
-            Route::get('/payment-info-of-a-region/{regionId}', [PaymentInfoController::class, 'paymetInfoOfARegion']);
+         
             
             Route::resource('/admin/discount-coupon', DiscountCouponController::class);
-            Route::post('/discount-coupon/verify', [DiscountCouponController::class, 'verifyDiscountCoupon']);
+          
             Route::get('/admin/discount-coupon/{regionId}/all', [DiscountCouponController::class, 'getAllDiscountCouponsForARegion']);
         });
 
