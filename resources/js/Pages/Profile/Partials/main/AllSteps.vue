@@ -349,7 +349,7 @@ const completePayment = async () => {
           </v-stepper-window-item>
           <v-stepper-window-item :value="4">
             <PaymentStep :region_id="form.region_id" />
-            <PrimaryButton
+            <!-- <PrimaryButton
               @click="completePayment"
               :disabled="loading"
               style="
@@ -369,7 +369,7 @@ const completePayment = async () => {
                 src="/images/avatars/Spinner.gif"
                 alt="spinner"
                 width="30"
-            /></PrimaryButton>
+            /></PrimaryButton> -->
           </v-stepper-window-item>
         </div>
       </v-stepper-window>

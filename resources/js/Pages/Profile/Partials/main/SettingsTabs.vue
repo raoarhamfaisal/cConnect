@@ -9,6 +9,8 @@ import InputLabel from "@/Components/InputLabel.vue";
 import Card from "@/Components/Card.vue";
 import { reactive, ref } from "vue";
 import { useStore } from "vuex";
+import BillingSettingsTab from "@/Pages/Profile/Partials/BillingSettingsTab.vue";
+
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
@@ -137,13 +139,6 @@ const submitVerificationCode = async () => {
     ref="verifyDialogRef"
     title="Verify Email"
   >
-    <!-- <Card
-      :shadowLevel="2"
-      :isInside="true"
-      bgColor="#eee"
-      padding="2px"
-      class="mt-2"
-    > -->
     <div class="mb-4 sm:mb-0">
       <div class="text-xl sm:text-2xl mb-2 font-semibold">
         Please enter the code sent to your email address to verify your email.
@@ -245,17 +240,11 @@ const submitVerificationCode = async () => {
             <UpdatePasswordForm />
           </div>
           <div v-if="activeTab === 2">
-            <div>Billing section</div>
+            <BillingSettingsTab :user_id="profile.user_id" />
           </div>
           <!-- ... -->
         </template>
       </Tabs>
-      <!-- <div
-          v-if="active === 0"
-          class="p-4 sm:p-8 bg-white shadow sm:rounded-lg"
-        >
-          <DeleteUserForm class="max-w-xl" />
-        </div> -->
     </div>
     <br />
     <br />
