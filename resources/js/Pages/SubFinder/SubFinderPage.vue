@@ -200,8 +200,10 @@ const sortButtonClass = (value) => [
           </div>
         </div>
       </div>
+      <div class="my-4 border-2 border-gray-400 rounded"></div>
+
       <!-- seelct region -->
-      <div class="w-full mt-8 sm:grid sm:grid-cols-2 sm:gap-4">
+      <div class="w-full sm:grid sm:grid-cols-2 sm:gap-4">
         <div class="mb-4 sm:mb-0">
           <InputLabel class="font-bold text-base" value="Select Region:" />
           <SelectProfile
