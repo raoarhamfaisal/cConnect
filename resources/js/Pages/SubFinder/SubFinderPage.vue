@@ -9,6 +9,7 @@ import SelectProfile from "@/Components/SelectProfile.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import { options } from "@/helpers/selectListsHelpters";
+import SubFinderContractor from "@/Pages/SubFinder/partials/SubFinderContractor.vue";
 
 const props = defineProps({
   profile: Object,
@@ -24,7 +25,9 @@ const props = defineProps({
 
 const searchTerm = ref("");
 const isFocused = ref(false);
+const atButtonClickSearchTerm = ref("");
 const region_id = ref("");
+const foundContractors = ref([props.profile]);
 
 const referenceList = props.regions.map((item) => item.name);
 const tradesList = options.map((item) => item.name);
@@ -53,6 +56,7 @@ const selectedTrade = ref(userFirstTrade);
 const store = useStore();
 
 const submitSearchTerm = () => {
+  atButtonClickSearchTerm.value = searchTerm.value;
   console.log("search term", searchTerm.value);
 };
 const changeReferal = (value) => {
@@ -145,9 +149,10 @@ const sortButtonClass = (value) => [
     :show-post-buttons="false"
     :post-search-filters="postSearchFilters"
     :showit="showit"
-    color="#edecea"
+    color="#f9fafb"
   >
-    <div class="mt-8 sm:mt-4 p-2 sm:p-4">
+    <!-- color="#edecea" -->
+    <div class="mt-4 sm:mt-4 p-2 sm:p-4">
       <!-- back page -->
       <div class="flex relative gap-4 mb-8 items-center">
         <Link href="/post">
@@ -261,7 +266,19 @@ const sortButtonClass = (value) => [
       >
         Find a Sub
       </button>
+      <div class="mt-6" v-if="!atButtonClickSearchTerm">
+        <div class="font-extrabold text-2xl leading-tight">
+          Showing results for term
+          <span class="text-[#021d91]">"{{ atButtonClickSearchTerm }}"</span>
+        </div>
+      </div>
+      <SubFinderContractor
+        v-for="contractor in foundContractors"
+        :key="contractor.id"
+        :contractor="contractor"
+      />
     </div>
+    <!-- search results -->
     <MoveToTop />
   </Header>
 </template>
