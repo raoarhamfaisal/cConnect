@@ -65,6 +65,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         Route::post('/payment/start-subscription', [PaymentController::class, 'startSubscription'])->name('payment.startSubscription');
         Route::post('/payment/cancel-subscription/{userId}', [PaymentController::class, 'cancelSubscription'])->name('payment.cancelSubscription');
 
+        Route::get('/payment/subscription-details/{userId}', [PaymentController::class, 'getSubscriptionDetails'])->name('payment.getSubscriptionDetails');
+
+
         // Settings APIs
         Route::post('/user/resend-code', [RegisteredUserController::class, 'resendVerificationCode'])->name('user.resendVerificationCode');
         Route::post('/user/verify-email', [RegisteredUserController::class, 'verifyEmail'])->name('user.verifyEmail');

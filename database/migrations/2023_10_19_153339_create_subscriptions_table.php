@@ -22,7 +22,9 @@ return new class extends Migration
             $table->text('metadata');
             $table->string('subscription_plan');
             $table->timestamp('ends_at')->nullable();
+            $table->timestamp('started_at')->nullable();
             $table->decimal('original_amount', 10, 2)->nullable();
+            $table->decimal('discount_amount', 10, 2)->nullable();
             $table->date('discount_end_date')->nullable();
             $table->timestamps();
         });
@@ -38,3 +40,5 @@ return new class extends Migration
         Schema::dropIfExists('subscriptions');
     }
 };
+
+

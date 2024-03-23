@@ -35,7 +35,7 @@ class PaymentController extends Controller
         $profile = Profile::where('user_id', $userId)->first();
 
 
-        $activeSubscription = DB::table('subscriptions')->where('user_id', $userId)->whereNull('ends_at')->first();
+        $activeSubscription = DB::table('subscriptions')->where('user_id', $userId)->where('is_subscription_active', 1)->whereNull('ends_at')->first();
         if ($activeSubscription) {
             return response()->json(['message' => 'You already have an active subscription!']);
         }
@@ -63,11 +63,15 @@ class PaymentController extends Controller
             ? ($paymentInfo && $paymentInfo->billed_annual_price ? $paymentInfo->billed_annual_price : 390) 
             : ($paymentInfo && $paymentInfo->billed_monthly_price ? $paymentInfo->billed_monthly_price : 39);
 
+
+        $discountAmount = 0;
+        $discountEndDate = null;
+
         if ($request->has('coupon_code')) {
             $coupon = DiscountCoupon::where('coupon_code', $request->coupon_code)
                         ->where('is_valid', true)
                         ->first();
-        
+            $couponDiscountValue = 0;
             if ($coupon) {
                 if ($request->input('duration') === 'annual') {
                     $monthlyValue = $baseAmount / 12;
@@ -84,6 +88,8 @@ class PaymentController extends Controller
                         $finalAmount = $baseAmount + ($baseAmount * $salesTaxRate);
                     }
                 }
+                $discountEndDate = Carbon::now()->addMonths($coupon->months);
+                $discountAmount = $couponDiscountValue;
             }
         } else {
             $finalAmount = $baseAmount + ($baseAmount * $salesTaxRate);
@@ -112,7 +118,8 @@ class PaymentController extends Controller
 
         if($subscriptionResponse && $subscriptionResponse->getMessages()->getResultCode() == "Ok") {
             // 3. Handle successful payments
-            $this->handleSuccessfulPayment($request, $userId, $subscriptionResponse);
+            $this->handleSuccessfulPayment($request, $userId, $subscriptionResponse, $baseAmount, $discountAmount, $discountEndDate);
+
 
         } else {
             // 4. Handle failed payments
@@ -188,7 +195,7 @@ class PaymentController extends Controller
         return $subscription;
     }
 
-    private function handleSuccessfulPayment($request, $userId, $subscriptionResponse)
+    private function handleSuccessfulPayment($request, $userId, $subscriptionResponse, $originalAmount, $discountAmount, $discountEndDate)
     {
         // Update the profile table
         $profile = Profile::where('user_id', $userId)->first();
@@ -214,6 +221,10 @@ class PaymentController extends Controller
             'metadata' => json_encode($subscriptionResponse),
             'subscription_plan' => ($request->input('duration') === 'annual') ? 'Annual Subscription' : 'Monthly Subscription',
             'ends_at' => $endsAt,
+            'original_amount' => $originalAmount,
+            'discount_amount' => $discountAmount,
+            'discount_end_date' => $discountEndDate,
+            'started_at' => Carbon::now(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
@@ -305,4 +316,25 @@ class PaymentController extends Controller
 
     }
 
+
+    public function getSubscriptionDetails($userId)
+    {
+        $subscription = Subscription::where('user_id', $userId)
+            ->where('is_subscription_active', 1)
+            ->where('is_subscription_successfull', 1)
+            ->first();
+
+        if ($subscription) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Subscription details fetched successfully.',
+                'data' => $subscription
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No active and successful subscription found for this user.',
+            ], 404);
+        }
+    }
 }
