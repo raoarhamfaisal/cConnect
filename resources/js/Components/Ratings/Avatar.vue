@@ -29,12 +29,12 @@ watch(
 <template>
   <div
     :class="` flex justify-center items-center ${
-      imageClass ? '' : 'w-14 h-14 sm:h-20 sm:w-20'
+      imageClass ? imageClass : 'w-14 h-14 sm:h-20 sm:w-20'
     } inline-block  `"
   >
     <img
       v-if="imageSrc && !imageFailed"
-      :class="`object-cover w-full ${imageClass} h-full rounded-full`"
+      :class="`object-cover w-full  h-full rounded-full`"
       :src="imageSrc"
       alt="avatar"
       @error="handleImageError"

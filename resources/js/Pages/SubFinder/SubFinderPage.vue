@@ -52,6 +52,7 @@ options.forEach((item) => {
 });
 
 const selectedTrade = ref(userFirstTrade);
+const loading = ref(false);
 
 const store = useStore();
 
@@ -272,11 +273,26 @@ const sortButtonClass = (value) => [
           <span class="text-[#021d91]">"{{ atButtonClickSearchTerm }}"</span>
         </div>
       </div>
-      <SubFinderContractor
-        v-for="contractor in foundContractors"
-        :key="contractor.id"
-        :contractor="contractor"
-      />
+      <div class="mt-4 mb-40" v-if="!loading">
+        <SubFinderContractor
+          v-for="contractor in foundContractors"
+          :key="contractor.id"
+          :contractor="contractor"
+        />
+      </div>
+    </div>
+
+    <div
+      v-if="loading && atButtonClickSearchTerm"
+      class="h-full h-[30vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4"
+    >
+      <div class="text-center text-xl">Searching...</div>
+      <v-progress-linear
+        color="#241e6d"
+        indeterminate
+        rounded
+        height="6"
+      ></v-progress-linear>
     </div>
     <!-- search results -->
     <MoveToTop />
