@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Profile;
 use App\Models\User;
 use App\Models\Subscription;
+use App\Models\PaymentInfo;
 use Illuminate\Support\Carbon;
 use Mail;
 use App\Models\DiscountCoupon;
@@ -74,11 +75,8 @@ class PaymentController extends Controller
             $couponDiscountValue = 0;
             if ($coupon) {
                 if ($request->input('duration') === 'annual') {
-                    $monthlyValue = $baseAmount / 12;
-                    $threeMonthsValue = $monthlyValue * $coupon->months;
-                    $couponDiscountValue = $threeMonthsValue * ($coupon->percentage_off_regular_price / 100);
-                    $discountedAnnual = $baseAmount - $couponDiscountValue;
-                    $finalAmount = $discountedAnnual + ($discountedAnnual * $salesTaxRate);
+                    $couponDiscountValue = $baseAmount * ($coupon->percentage_off_regular_price / 100);
+                    $finalAmount = ($baseAmount - $couponDiscountValue) + (($baseAmount - $couponDiscountValue) * $salesTaxRate);
                 } else {
                     // Monthly logic
                     if ($coupon->months > 0) {
@@ -257,7 +255,11 @@ class PaymentController extends Controller
 
     public function cancelSubscription(Request $request, $userId)
     {
-        $subscription = Subscription::where('user_id', $userId)->first();
+        $subscription = Subscription::where('user_id', $userId)
+            ->where('is_subscription_active', 1)
+            ->where('is_subscription_successfull', 1)
+            ->first();
+
 
         if($subscription) {
 
@@ -325,10 +327,17 @@ class PaymentController extends Controller
             ->first();
 
         if ($subscription) {
+            $profile = Profile::where('user_id', $userId)->first();
+            $paymentInfo = null;
+            if($profile) {
+                $paymentInfo = PaymentInfo::where('region_id', $profile->region_id)->first();
+            }
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Subscription details fetched successfully.',
-                'data' => $subscription
+                'data' => $subscription,
+                'paymentInfo' => $paymentInfo
             ], 200);
         } else {
             return response()->json([
