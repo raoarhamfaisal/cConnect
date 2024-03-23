@@ -175,7 +175,7 @@ const truncatedName = computed(() => {
 
           <!-- DropDown: SUB FINDER -->
           <Link
-            :href="route('post')"
+            href="/sub-finder"
             class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
           >
             <img src="/images/icons/contractor.png" width="20" height="20" />

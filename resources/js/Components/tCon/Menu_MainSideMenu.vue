@@ -274,7 +274,7 @@ const openContractorPageModal = () => {
           <!-- SUB-FINDER SEARCH -->
           <Link
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
-            href="#"
+            href="/sub-finder"
           >
             <img src="/images/icons/contractor.png" width="30" height="30" />
             <span class="mx-4 font-medium">Sub-Finder</span>

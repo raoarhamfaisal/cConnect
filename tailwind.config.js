@@ -11,6 +11,7 @@ module.exports = {
 
   theme: {
     screens: {
+      x365: "365px",
       sx: "380px",
       xs: "460px",
       "max-sm": { max: "640px" },
@@ -46,6 +47,7 @@ module.exports = {
 
 //url = usePage().url.value;
 // #e5e7eb
+// #edecea
 
 // template 1 color 4 and color 5
 

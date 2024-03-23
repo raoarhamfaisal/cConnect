@@ -178,6 +178,33 @@ class ProfileController extends Controller
 
         //
     }
+    public function getSubFinderPage()
+    {
+        // Get current user id
+        $userID = Auth()->user('')->id;
+        $profile = null;
+
+
+        // Get the profile information if the user id exists
+        if($userID) {
+            $profile = Profile::where('user_id', $userID)->with('trades')->first();
+        }
+
+     
+        $regions = Region::all();
+
+        $tradesOldStructure = $this->convertTradesToOldStructure($profile->trades);
+
+        return Inertia::render('SubFinder/SubFinderPage', [
+     
+            'profile' => array_merge($profile->toArray(), $tradesOldStructure),
+            'showit' => Auth::check(),
+            'regions' => $regions,
+        'postSearchFilters' => FacadeRequest::only(['postSearch']),
+        ]);
+
+        //
+    }
 
     /**
      * Update the user's profile information.

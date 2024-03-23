@@ -65,6 +65,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // });
     Route::get('/profile-setup', [ProfileController::class, 'setup'])->name('profile.setup');
     Route::get('/payment', [ProfileController::class, 'getPaymentsPage'])->name('profile.payment');
+    Route::get('/sub-finder', [ProfileController::class, 'getSubFinderPage'])->name('profile.s');
 
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/profile/general-profile', [ProfileController::class, 'updateGeneralInfo'])->name('profile.updateGeneralInfo');

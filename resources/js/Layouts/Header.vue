@@ -336,17 +336,17 @@ export default {
                 <div class="flex items-center justify-between">
                   <!-- LOGO -->
                   <div class="flex items-center justify-start pl-1 space-x-2">
-                    <Link href="/" class="xs:hidden md:flex w-12">
+                    <!-- <Link href="/" class="xs:hidden md:flex w-12">
                       <img
                         src="/images/logo/icon_blue.png"
                         width="45"
                         height="45"
                       />
-                    </Link>
+                    </Link> -->
 
                     <Link
                       href="/"
-                      class="hidden xs:flex text-2xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center"
+                      class="flex text-2xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center"
                     >
                       <tContractorWord />
                     </Link>
@@ -354,7 +354,7 @@ export default {
 
                   <!-- Cross X Menu Options -->
                   <div
-                    class="flex items-center justify-end sm:space-x-4 space-x-2"
+                    class="flex items-center justify-end sm:space-x-4 space-x-1"
                   >
                     <!-- refresh post icon only -->
                     <ButtonRefresh
@@ -364,7 +364,7 @@ export default {
 
                     <!-- View Settings -->
                     <div
-                      class="hidden sx:flex flex-shrink-0 items-center justify-center"
+                      class="x365:flex hidden flex-shrink-0 items-center justify-center"
                     >
                       <button @click="openProfileModal">
                         <img
