@@ -1,7 +1,7 @@
 <template>
   <Card
-    :shadowLevel="2"
-    bgColor="#e6e7eb"
+    :shadowLevel="1"
+    bgColor="#f9fafb"
     :isInside="true"
     :padding="screenWidth < 640 ? '0px' : '20px'"
   >

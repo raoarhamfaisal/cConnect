@@ -502,14 +502,14 @@
               href="/post"
             >
               <span
-                class="text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500"
+                class="text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold"
               >
                 News Feed
               </span>
 
               <!-- Arrow -->
               <span
-                class="ml-4 flex-shrink-0 rounded-full border border-current bg-white p-2 text-indigo-600 group-active:text-indigo-500"
+                class="ml-4 flex-shrink-0 rounded-full border border-current bg-white p-2 text-indigo-600"
               >
                 <svg
                   class="h-5 w-5"
@@ -971,7 +971,7 @@ const startSubscription = async () => {
       if (response.data) {
         console.log(response.data, "response");
         if (response.data?.messages?.resultCode === "Error") {
-          subscriptionApiError.value = response.data?.messages?.message?.text;
+          subscriptionApiError.value = response.data?.messages?.message[0].text;
         } else {
           confirmPaymentDialogRef.value.openDialog();
         }

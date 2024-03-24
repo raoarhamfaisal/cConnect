@@ -4,7 +4,7 @@ import { Head } from "@inertiajs/inertia-vue3";
 import { useStore } from "vuex";
 import { Icon } from "@iconify/vue";
 import MoveToTop from "@/Components/MoveToTop.vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import SelectProfile from "@/Components/SelectProfile.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
@@ -35,14 +35,12 @@ const selectedObj = props.regions.find(
   (item) => item.id === (props.profile && props.profile.region_id)
 );
 const selectedName = selectedObj ? selectedObj.name : undefined;
-
 const selectedReferal = ref(selectedName ?? "");
 
 // selecting first trade
 const tradeKeys = Object.keys(props.profile).filter(
   (key) => props.profile[key] === 1 && key.startsWith("trade")
 );
-
 // 2. Match these keys with tradesList and return the index
 let userFirstTrade;
 options.forEach((item) => {
@@ -50,12 +48,15 @@ options.forEach((item) => {
     userFirstTrade = item.name;
   }
 });
-
 const selectedTrade = ref(userFirstTrade);
 const loading = ref(false);
 
 const store = useStore();
 
+//Computed
+const screenWidth = computed(() => store.getters.screenWidth);
+
+//Methods
 const submitSearchTerm = () => {
   atButtonClickSearchTerm.value = searchTerm.value;
   console.log("search term", searchTerm.value);
@@ -278,6 +279,7 @@ const sortButtonClass = (value) => [
           v-for="contractor in foundContractors"
           :key="contractor.id"
           :contractor="contractor"
+          :region_name="selectedName"
         />
       </div>
     </div>

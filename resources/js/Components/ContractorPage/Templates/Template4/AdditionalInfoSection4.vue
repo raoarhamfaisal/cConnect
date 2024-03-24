@@ -173,7 +173,6 @@
   </div>
 </template>
 <script setup>
-import InfoWithIcon from "@/Components/ContractorPage/InfoWithIcon.vue";
 import { Icon } from "@iconify/vue";
 
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
