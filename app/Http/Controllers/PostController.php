@@ -21,6 +21,9 @@ use App\Models\SessionTrade;
 use App\Mail\PostReportedMail;
 use Illuminate\Support\Facades\Mail;
 use App\Events\PostCountersChanged;
+use App\Events\PostUpdated;
+use App\Events\PostDeleted;
+
 
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\Broadcast;
@@ -657,6 +660,14 @@ class PostController extends Controller
 
             // Sync the user trades with the postToUpdate
             $postToUpdate->trades()->sync($trades);
+
+            try {
+                $post = $postToUpdate;
+                broadcast(new PostUpdated($post));
+            } catch (\Exception $e) {
+                \Log::error('Error broadcasting PostUpdated event: ' . $e->getMessage());
+                // Optionally, handle the error further if needed
+            }
         }
 
         return redirect()->back()
@@ -741,6 +752,13 @@ class PostController extends Controller
         // Set the active_post field to 0 to deactivate the post
         $post->active_post = 0;
         $post->save();
+
+        try {
+            broadcast(new PostDeleted($post));
+        } catch (\Exception $e) {
+            \Log::error('Error broadcasting PostDeleted event: ' . $e->getMessage());
+            // Optionally, handle the error further if needed
+        }
     
         // Redirect back with a message
         return redirect()

@@ -11,6 +11,7 @@ use App\Events\CommentPosted;
 use App\Events\CommentUpdated;
 use App\Events\CommentDeleted;
 use App\Events\CommentReactionOrReplyChanged;
+use App\Events\CommentReplyAdded;
 
 use Illuminate\Support\Facades\Broadcast;
 
@@ -30,8 +31,9 @@ class CommentController extends Controller
             $userID = Auth::id(); // Get the current user ID
             $perPage = $request->query('per_page', 10); // Default to 10 if not provided
             $page = $request->query('page', 1);         // Default to page 1 if not provided
+            $sortBy = $request->query('sort_by', 'latest'); // Default to 'latest' if not provided
 
-            $comments = $post->comments()
+            $query = $post->comments()
                 ->with([
                     'replies' => function ($query) use ($userID) {
                         $query->withCount(['likes', 'dislikes'])
@@ -45,9 +47,15 @@ class CommentController extends Controller
                     }
                 ])
                 ->withCount(['likes', 'dislikes'])
-                ->whereNull('parent_id')
-                ->latest()
-                ->paginate($perPage, ['*'], 'page', $page);
+                ->whereNull('parent_id');
+
+            if ($sortBy === 'oldest') {
+                $query->oldest();
+            } else {
+                $query->latest();
+            }
+
+            $comments = $query->paginate($perPage, ['*'], 'page', $page);
 
             $totalNumberOfCommentsWithReplies = 0;
 
@@ -77,6 +85,7 @@ class CommentController extends Controller
                 ]
             ]);
         }
+
 
 
 
@@ -331,10 +340,21 @@ class CommentController extends Controller
             unset($reply->user); // Remove additional user details
 
 
+            // try {
+            //     broadcast(new CommentReactionOrReplyChanged($parentComment));
+
+            // } catch (\Exception $e) {
+            //     \Log::error('Error broadcasting CommentReactionOrReplyChanged event: ' . $e->getMessage());
+            //     // Optionally, handle the error further if needed
+            // }
+
+
             try {
-                broadcast(new CommentReactionOrReplyChanged($parentComment));
+                // dd("here");
+                broadcast(new CommentReplyAdded($parentComment));
+
             } catch (\Exception $e) {
-                \Log::error('Error broadcasting CommentReactionOrReplyChanged event: ' . $e->getMessage());
+                \Log::error('Error broadcasting CommentReplyAdded event: ' . $e->getMessage());
                 // Optionally, handle the error further if needed
             }
 

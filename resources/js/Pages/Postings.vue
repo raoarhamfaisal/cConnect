@@ -114,6 +114,13 @@ export default {
 
         // Handle the event (e.g., update your data or UI)
       });
+
+    window.Echo.channel("commentReplies") // Replace with your channel name
+      .listen("CommentReplyAdded", (data) => {
+        console.log("CommentReplyAdded", data);
+
+        // Handle the event (e.g., update your data or UI)
+      });
   },
 
   // beforeDestroy() {
