@@ -172,15 +172,15 @@ export default {
       }
     },
     async fetchCommentPosted({ commit }, payload) {
-      const comment_id = payload.comment.parent_id
-        ? payload.comment.parent_id
-        : payload.comment.id;
+      const comment_id = payload.comment.id
+        ? payload.comment.id
+        : payload.comment.parent_id;
       try {
         const response = await axios.get(
           `/api/posts/comments/${comment_id}`,
           getAxiosConfig()
         );
-
+        console.log(response.data, "data");
         if (response.data) {
           commit("setPusherCommentPosted", response.data);
         }

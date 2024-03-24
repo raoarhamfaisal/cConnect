@@ -351,7 +351,7 @@ class CommentController extends Controller
 
             try {
                 // dd("here");
-                broadcast(new CommentReplyAdded($parentComment));
+                broadcast(new CommentReplyAdded($reply));
 
             } catch (\Exception $e) {
                 \Log::error('Error broadcasting CommentReplyAdded event: ' . $e->getMessage());

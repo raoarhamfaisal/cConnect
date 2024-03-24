@@ -6,7 +6,7 @@ import StarRounded from "@/Components/Ratings/StarRounded.vue";
 
 import tContractorWord from "@/Components/tCon/tContractorWord.vue";
 import LikedUser from "@/Components/PostFooter/LikedUser.vue";
-import DialogAllComments from "@/Components/PostFooter/DialogAllComments.vue";
+
 import ButtonPost from "@/Components/tCon/tConSub/ButtonPost.vue";
 import ButtonRefresh from "@/Components/tCon/tConSub/ButtonRefresh.vue";
 import PostingActionMenu from "@/Components/tCon/PostingActionMenu.vue";
@@ -39,7 +39,7 @@ export default {
     InputError,
     CustomDialog,
     LikedUser,
-    DialogAllComments,
+
     Avatar,
     PostImageDisplay,
     Link,
@@ -404,9 +404,33 @@ export default {
             (comment) => comment.id === newVal.id
           );
           if (commentIndex === -1) {
-            this.allComments.unshift(newVal);
-            this.total_number_of_comments_with_replies =
-              this.total_number_of_comments_with_replies + 1;
+            // check if it is a reply or a comment if comment_id then it is a reply
+            const reply_comment_id = newVal.parent_id;
+            if (reply_comment_id) {
+              this.allComments.forEach((comment) => {
+                if (comment.id === reply_comment_id) {
+                  if (comment.replies && comment.replies.length > 0) {
+                    const replyIndex = comment.replies.findIndex(
+                      (reply) => reply.id === newVal.id
+                    );
+                    if (replyIndex === -1) {
+                      comment.replies.push(newVal);
+                      this.total_number_of_comments_with_replies =
+                        this.total_number_of_comments_with_replies + 1;
+                    }
+                  } else {
+                    comment.replies = [];
+                    comment.replies.push(newVal);
+                    this.total_number_of_comments_with_replies =
+                      this.total_number_of_comments_with_replies + 1;
+                  }
+                }
+              });
+            } else {
+              this.allComments.unshift(newVal);
+              this.total_number_of_comments_with_replies =
+                this.total_number_of_comments_with_replies + 1;
+            }
           }
         }
       },
@@ -415,13 +439,19 @@ export default {
     // comment delte
     commentId(newVal) {
       if (newVal) {
+        console.log("commentId");
         const index = this.allComments.findIndex(
           (comment) => comment.id === newVal
         );
         if (index !== -1) {
+          const repliesLength = this.allComments[index].replies
+            ? this.allComments[index].replies.length
+            : 0;
           this.allComments.splice(index, 1);
+
           this.total_number_of_comments_with_replies =
-            this.total_number_of_comments_with_replies - 1;
+            this.total_number_of_comments_with_replies - (repliesLength + 1);
+
           // this.fetchAllComments();
         }
       }
@@ -441,9 +471,14 @@ export default {
           if (comment_id === newVal.id) {
             // for comment deletion
             if (index !== -1) {
+              const repliesLength = this.allComments[index].replies
+                ? this.allComments[index].replies.length
+                : 0;
               this.allComments.splice(index, 1);
+
               this.total_number_of_comments_with_replies =
-                this.total_number_of_comments_with_replies - 1;
+                this.total_number_of_comments_with_replies -
+                (repliesLength + 1);
             }
           } else {
             // for reply deletion
@@ -451,6 +486,8 @@ export default {
               (comment) => comment.id === newVal.id
             );
             this.allComments[index].replies.splice(replyIndex, 1);
+            this.total_number_of_comments_with_replies =
+              this.total_number_of_comments_with_replies - 1;
           }
         }
       },

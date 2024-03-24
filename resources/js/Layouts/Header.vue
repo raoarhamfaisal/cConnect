@@ -188,7 +188,7 @@ export default {
 
   methods: {
     ...mapActions("profile", ["fetchProfile"]),
-    ...mapActions(["fetchUserDetails","fetchUserVersion"]),
+    ...mapActions(["fetchUserDetails", "fetchUserVersion"]),
     async saveItem(formData) {
       this.success = false;
 
@@ -228,10 +228,6 @@ export default {
           this.success = true;
           this.$store.commit("ratings/setShouldFetchFirstPagePosts", true);
 
-          console.log(
-            this.translations && this.translations.post_successfully_added,
-            "post Successfully added text"
-          );
           this.fetchUserDetails();
           changesSaved(
             this.translations && this.translations.post_successfully_added

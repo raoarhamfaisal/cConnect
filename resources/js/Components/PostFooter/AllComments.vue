@@ -197,7 +197,7 @@ const fetchComments = async (
 ) => {
   try {
     const response = await axios.get(
-      `/api/posts/${props.postId}/comments?per_page=${per_page}&page=${page}`,
+      `/api/posts/${props.postId}/comments?per_page=${per_page}&page=${page}&sort_by=oldest`,
       getAxiosConfig()
     );
 
