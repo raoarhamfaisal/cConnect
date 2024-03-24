@@ -167,6 +167,11 @@
               {{ total_reviews }}
             </h2>
           </div>
+          <div
+            class="text-gray-800 text-[11px] xs:text-xs sm:text-sm text-center"
+          >
+            {{ userVersionMemberText }}
+          </div>
         </div>
 
         <div class="flex gap-2 sm:gap-3 translate-x-[-2px]">
@@ -263,6 +268,15 @@ const store = useStore();
 
 const translations = computed(() => store.getters.translations);
 const userVersion = computed(() => store.getters.userVersion);
+const userVersionMemberText = computed(() => {
+  if (props.profile.version === 1) {
+    return translations.value && translations.value.free_member;
+  } else if (props.profile.version === 2) {
+    return translations.value && translations.value.gold_member;
+  } else if (props.profile.version === 3) {
+    return translations.value && translations.value.platinum_member;
+  }
+});
 
 function image_path(img) {
   // function adds the filepath

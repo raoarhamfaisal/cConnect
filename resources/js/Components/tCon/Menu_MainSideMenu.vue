@@ -66,7 +66,15 @@ const isAdminUrl = computed(() => {
 const loadingImage = computed(() => store.state.profile.loadingImage);
 const translations = computed(() => store.getters.translations);
 const userVersion = computed(() => store.getters.userVersion);
-
+const userVersionMemberText = computed(() => {
+  if (props.profile.version === 1) {
+    return translations.value && translations.value.free_member;
+  } else if (props.profile.version === 2) {
+    return translations.value && translations.value.gold_member;
+  } else if (props.profile.version === 3) {
+    return translations.value && translations.value.platinum_member;
+  }
+});
 function handleLogout() {
   removeToken();
   store.commit("setUserVersion", 0);
@@ -162,8 +170,10 @@ const goToRedFlagPage = () => {
           :imageSrc="`/${profile.user_avatar}`"
           class="sm:w-24 sm:h-24"
         />
-
-        <h4 class="mx-2 mt-2 font-bold text-gray-800">
+        <div class="mt-2 text-gray-600 text-[13px]">
+          {{ userVersionMemberText }}
+        </div>
+        <h4 class="mx-2 font-bold text-gray-800">
           {{ truncatedName }}
         </h4>
 

@@ -551,6 +551,7 @@ class ContractorProfileController extends Controller
                     $join->on('rating_info.contractor_id', '=', 'profiles.id');
                 })
                 ->select('contractor_profiles.*', 
+                'profiles.version', 
                         'rating_info.average_rating', 
                         'rating_info.total_reviews',
                         'contractor_profile_user.notes as user_preference_notes',
@@ -636,7 +637,7 @@ class ContractorProfileController extends Controller
                 foreach ($contractor->trades as $trade) {
                     $tradesArray["trade{$trade->id}"] = 1;
                 }
-
+                $contractor['version'] = $contractor->version;
                 // Remove the original trades relationship
                 unset($contractor->trades);
 

@@ -60,7 +60,7 @@
               </div>
             </div>
 
-            <div
+            <!-- <div
               :class="[
                 'shadow-md flex gap-4 justify-center items-center  border-2 cursor-pointer transition-all duration-300 active:scale-100 p-2 sm:p-5 rounded',
                 paymentMethod === 'ACH'
@@ -90,7 +90,7 @@
                   class="w-48"
                 />
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
 

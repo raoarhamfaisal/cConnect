@@ -18,6 +18,9 @@
         >
       </div>
     </div>
+    <div class="self-end sm:self-start">
+      <Badge :class="versionColor">{{ userVersionMemberText }}</Badge>
+    </div>
   </div>
   <!-- trades -->
   <div class="mb-3">
@@ -48,11 +51,28 @@ import { options } from "@/helpers/selectListsHelpters.js";
 import { computed } from "vue";
 import { useStore } from "vuex";
 
-defineProps(["contractor"]);
+const props = defineProps(["contractor"]);
 
 const store = useStore();
 
 //Computed
-
 const translations = computed(() => store.getters.translations);
+const userVersionMemberText = computed(() => {
+  if (props.contractor.version === 1) {
+    return translations.value && translations.value.free_member;
+  } else if (props.contractor.version === 2) {
+    return translations.value && translations.value.gold_member;
+  } else if (props.contractor.version === 3) {
+    return translations.value && translations.value.platinum_member;
+  }
+});
+const versionColor = computed(() => {
+  if (props.contractor.version === 1) {
+    return "bg-rose-600";
+  } else if (props.contractor.version === 2) {
+    return "bg-[#ed8a19]";
+  } else if (props.contractor.version === 3) {
+    return "bg-[#a6a6a6] text-[#333]";
+  }
+});
 </script>

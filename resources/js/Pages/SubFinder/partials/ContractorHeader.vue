@@ -72,6 +72,9 @@
               {{ total_reviews }}
             </h2>
           </div>
+          <div class="text-gray-600 text-[10px] text-center sm:text-[13px]">
+            {{ userVersionMemberText }}
+          </div>
         </div>
       </div>
     </div>
@@ -121,10 +124,20 @@ const contractorPageDialogRef = ref();
 
 const screenWidth = computed(() => store.getters.screenWidth);
 const userVersion = computed(() => store.getters.userVersion);
+const translations = computed(() => store.getters.translations);
 const shouldLoadPosts = computed(() => store.state.ratings.shouldLoadPosts);
 const averageRatingFromDialog = computed(
   () => store.state.ratings.averageRating
 );
+const userVersionMemberText = computed(() => {
+  if (props.contractor.version === 1) {
+    return translations.value && translations.value.free_member;
+  } else if (props.contractor.version === 2) {
+    return translations.value && translations.value.gold_member;
+  } else if (props.contractor.version === 3) {
+    return translations.value && translations.value.platinum_member;
+  }
+});
 const lengthFromDialog = computed(() => store.state.ratings.length);
 
 //Watch

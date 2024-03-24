@@ -133,6 +133,7 @@ const fetchContractorDetails = async () => {
     );
     if (response.data) {
       contractorProfile.value = response.data.contractorProfile;
+      contractorProfile.value.version = profile.version;
       store.commit(
         "contractor/setSelectedTemplate",
         contractorProfile.value.template_id
