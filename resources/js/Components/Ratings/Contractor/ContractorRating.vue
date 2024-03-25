@@ -134,6 +134,7 @@
             </div>
           </div>
         </div>
+
         <div
           v-show="+currentPage !== +pagination.last_page"
           ref="loadMoreIntersect"

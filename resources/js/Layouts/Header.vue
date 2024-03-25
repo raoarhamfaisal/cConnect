@@ -92,7 +92,7 @@ export default {
         user_id: (this.profile && this.profile.user_id) || null,
         title: null,
         image: null,
-        body1: "<p>Enter your top text</p>",
+        body1: "Top Text...",
         body2: null,
         body1Bold: false,
         body1ColorId: 0,

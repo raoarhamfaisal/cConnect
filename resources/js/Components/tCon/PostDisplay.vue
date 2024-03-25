@@ -86,6 +86,10 @@ export default {
       dialogRef: ref(),
       user: usePageDeatails.auth.user,
       profileId: usePageDeatails.profile.id,
+      showFullTextBody1: false,
+      showFullTextBody2: false,
+      truncatedLength: this.$store.state.screenWidth > 769 ? 400 : 260,
+      truncatedLengthBody2: this.$store.state.screenWidth > 769 ? 300 : 200,
     };
   },
 
@@ -102,24 +106,52 @@ export default {
         }
       },
     },
-    processedTopText() {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(this.post.body1, "text/html");
-
-      doc.querySelectorAll("a").forEach((anchor) => {
-        const hrefValue = anchor.getAttribute("href");
-        if (
-          !hrefValue.startsWith("http://") &&
-          !hrefValue.startsWith("https://")
-        ) {
-          anchor.setAttribute("href", "http://" + hrefValue);
-        }
-        anchor.target = "_blank";
-      });
-
-      return doc.body.innerHTML;
+    displayedBody1() {
+      if (this.showFullTextBody1) {
+        return this.processedBody1;
+      } else {
+        // Truncate the text after a certain length
+        let truncated = this.post.body1.substring(0, this.truncatedLength);
+        // Ensure it doesn't cut off in the middle of a word
+        truncated = truncated.substring(0, truncated.lastIndexOf(" "));
+        return this.processUrls(truncated);
+      }
     },
+    displayedBody2() {
+      if (this.showFullTextBody2) {
+        return this.processedBody2;
+      } else {
+        // Truncate the text after a certain length
+        let truncated = this.post.body2.substring(0, this.truncatedLengthBody2);
+        // Ensure it doesn't cut off in the middle of a word
+        truncated = truncated.substring(0, truncated.lastIndexOf(" "));
+        return this.processUrls(truncated);
+      }
+    },
+    processedBody1() {
+      return this.processUrls(this.post.body1);
+    },
+    // processedTopText() {
+    //   const parser = new DOMParser();
+    //   const doc = parser.parseFromString(this.post.body1, "text/html");
 
+    //   doc.querySelectorAll("a").forEach((anchor) => {
+    //     const hrefValue = anchor.getAttribute("href");
+    //     if (
+    //       !hrefValue.startsWith("http://") &&
+    //       !hrefValue.startsWith("https://")
+    //     ) {
+    //       anchor.setAttribute("href", "http://" + hrefValue);
+    //     }
+    //     anchor.target = "_blank";
+    //   });
+
+    //   return doc.body.innerHTML;
+    // },
+
+    processedBody2() {
+      return this.processUrls(this.post.body2);
+    },
     // Places the post.image string into an array to be
     // passed as prop to PostImageDisplay.vue
     imageArray: {
@@ -148,6 +180,19 @@ export default {
     openDialog() {
       this.$refs.dialogRef.openDialog();
       this.$store.commit("ratings/setIndex", this.index);
+    },
+    processUrls(body) {
+      const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/g;
+      return body.replace(urlRegex, function (url) {
+        let actualUrl = url.startsWith("http") ? url : "http://" + url;
+        return `<a href="${actualUrl}" target="_blank">${url}</a>`;
+      });
+    },
+    toggleText() {
+      this.showFullTextBody1 = !this.showFullTextBody1;
+    },
+    toggleTextBody2() {
+      this.showFullTextBody2 = !this.showFullTextBody2;
     },
   },
 };
@@ -317,12 +362,27 @@ export default {
 
     <!-- Text Body1 UPPER -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-    <div
-      v-show="post.body1"
-      @click="$emit('enlarge-post', post)"
-      class="default ck-content"
-      v-html="processedTopText"
-    ></div>
+    <div class="">
+      <span
+        v-show="post.body1"
+        v-html="displayedBody1"
+        class="processed-body inline"
+      ></span>
+      <span
+        v-if="!showFullTextBody1 && post.body1.length > truncatedLength"
+        @click="toggleText"
+        class="cursor-pointer text-sky-700"
+      >
+        ...more
+      </span>
+      <span
+        v-if="showFullTextBody1 && post.body1.length > truncatedLength"
+        @click="toggleText"
+        class="cursor-pointer text-sky-700"
+      >
+        ...less
+      </span>
+    </div>
     <!-- <div
       v-show="post.body1"
       @click="$emit('enlarge-post', post)"
@@ -355,11 +415,33 @@ export default {
 
     <!-- Text Body2 LOWER -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-    <div
+    <!-- <div
       class="flex flex-row justify-center items-center w-full px-2 mt-0 mb-0 text-base xs:text-lg md:text-xl font-normal text-gray-900"
       @click="$emit('enlarge-post', post)"
     >
       {{ post.body2 }}
+    </div> -->
+    <div class="">
+      <div
+        v-show="post.body2"
+        v-html="displayedBody2"
+        @click.prevent="$emit('enlarge-post', post)"
+        class="processed-body inline justify-center items-center w-full mt-0 mb-0 text-base xs:text-lg md:text-xl font-normal text-gray-900"
+      ></div>
+      <span
+        v-if="!showFullTextBody2 && post.body2.length > truncatedLengthBody2"
+        @click="toggleTextBody2"
+        class="cursor-pointer text-sky-700"
+      >
+        ...more
+      </span>
+      <span
+        v-if="showFullTextBody2 && post.body2.length > truncatedLengthBody2"
+        @click="toggleTextBody2"
+        class="cursor-pointer text-sky-700"
+      >
+        ...less
+      </span>
     </div>
 
     <!-- INDIVIDUAL POST: BOTTOM ROW MENU -->
@@ -450,3 +532,13 @@ export default {
     </PostingActionMenu>
   </div>
 </template>
+<style>
+.processed-body a {
+  color: blue;
+  text-decoration: none;
+}
+
+.processed-body a:hover {
+  text-decoration: underline;
+}
+</style>

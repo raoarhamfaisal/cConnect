@@ -55,6 +55,8 @@ import { Icon } from "@iconify/vue";
 import IconButton from "@/Components/IconButton.vue";
 import DecoupledEditor from "@ckeditor/ckeditor5-build-decoupled-document";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
+import { toolbarConfigPost } from "@/helpers/utilities";
+
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 
@@ -85,7 +87,7 @@ const editor = DecoupledEditor;
 const editorData = ref(closingTextTemp.value);
 
 // Editor configuration.
-const editorConfig = ref({});
+const editorConfig = ref(toolbarConfigPost);
 const onReady = (editor) => {
   // Insert the toolbar before the editable area.
   editor.ui
