@@ -64,7 +64,9 @@
         fontSize: 16 + fontSizeIncrement + 'px',
         color: selectedColor,
         backgroundColor: backgroundColor,
+        height: '200px'
       }"
+      placeholder="To Text..."
       @input="updateContent"
     >
       {{ content }}
@@ -88,7 +90,7 @@ const emit = defineEmits(["update:modelValue"]);
 
 const isBold = ref(false);
 const alignment = ref(""); // Default to left alignment
-const content = ref(props.modelValue ?? "Top Text...");
+const content = ref(props.modelValue ?? "");
 const editor = ref(null);
 const fontSizeIncrement = ref(0);
 const selectedColor = ref("inherit");
