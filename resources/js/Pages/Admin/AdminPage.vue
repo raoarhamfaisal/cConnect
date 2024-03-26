@@ -35,7 +35,12 @@
             class="flex items-center pl-8 pr-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
             href="/admin/regions/contractors"
           >
-            <Icon icon="ion:person-sharp" color="#222" width="30" height="30" />
+            <Icon
+              icon="ion:person-sharp"
+              color="#1098ad"
+              width="30"
+              height="30"
+            />
             <span class="mx-4 font-medium">All Contractors</span>
           </Link>
 
@@ -45,7 +50,7 @@
           >
             <Icon
               icon="fluent-mdl2:review-request-solid"
-              color="#222"
+              color="#1098ad"
               width="30"
               height="30"
             />
@@ -93,14 +98,19 @@
             class="flex items-center pl-8 pr-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
             href="/admin/pricing"
           >
-            <Icon icon="mdi-credit-card" color="#222" width="30" height="30" />
+            <Icon
+              icon="mdi-credit-card"
+              color="#1098ad"
+              width="30"
+              height="30"
+            />
             <span class="mx-4 font-medium">Pricing Plans</span>
           </Link>
           <Link
             class="flex items-center pl-8 pr-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
             href="/admin/coupons"
           >
-            <Icon icon="mdi-tag" color="#222" width="30" height="30" />
+            <Icon icon="mdi-tag" color="#1098ad" width="30" height="30" />
             <span class="mx-4 font-medium">Discout Coupons</span>
           </Link>
         </div>

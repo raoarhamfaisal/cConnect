@@ -88,8 +88,8 @@ const submitVerificationCode = async () => {
     <WelcomeHeader :showit="showit" :showSignUp="false" />
 
     <div class="mb-4 text-sm text-gray-600">
-      Please enter the one-time password sent to your email
-      tcontractorapp@gmail.com. If you cannot locate this email
+      Please enter the one-time password sent to your email by
+      tcontractorapp@gmail.com. If you cannot locate this email at
       <a
         :href="route('signup')"
         style="color: rgb(36 30 109); font-weight: bold"
@@ -145,6 +145,12 @@ const submitVerificationCode = async () => {
       </div>
       <div v-show="loading">Sending...</div></PrimaryButton
     >
+    <a
+      :href="route('signup')"
+      class="border-2 border-blue-rgba w-full mt-2 flex justify-center items-center text-blue-rgba font-bold py-2 px-4 rounded cursor-pointer transition transform duration-300 hover:shadow-lg active:scale-95"
+    >
+      Change Email
+    </a>
   </GuestLayout>
   <WelcomeFooter :showit="showit" />
 </template>

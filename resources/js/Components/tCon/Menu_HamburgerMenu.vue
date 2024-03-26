@@ -170,7 +170,7 @@ const truncatedName = computed(() => {
               width="20"
               height="20"
             />
-            <span class="mx-4 font-medium">Your Ratings</span>
+            <span class="mx-4 font-medium">My Ratings</span>
           </Link>
 
           <!-- DropDown: SUB FINDER -->

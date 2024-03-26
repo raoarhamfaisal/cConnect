@@ -17,7 +17,9 @@
       <div class="flex justify-between">
         <div class="flex items-center justify-center mb-2">
           <Icon icon="mdi:calendar-month" class="w-5 h-5 mr-2" />
-          <p><strong>Monthly</strong></p>
+          <p>
+            <strong>{{ plan === "MONTHLY" ? "Monthly" : "Anually" }}</strong>
+          </p>
         </div>
         <div>${{ monthlyPrice }}</div>
       </div>

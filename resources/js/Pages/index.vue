@@ -232,7 +232,7 @@ onMounted(() => {
                     : '/profile-setup'
                 "
               >
-                Your Ratings
+                My Ratings
               </ResponsiveNavLink>
             </div>
             <!-- Responsive Settings Options -->
