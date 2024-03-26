@@ -85,6 +85,7 @@ export default {
       showingPostingActionMenu: ref(false),
       dialogRef: ref(),
       user: usePageDeatails.auth.user,
+      customBgColor: "",
       profileId: usePageDeatails.profile.id,
       showFullTextBody1: false,
       showFullTextBody2: false,
@@ -106,12 +107,26 @@ export default {
         }
       },
     },
+    body1Class: function () {
+      let regex = /class="([^"]*text-[^"]*)"/;
+      let match = this.post.body1.match(regex);
+
+      let className = match ? match[1] : ""; // Extract the classes
+      let bgClassMatch = className.match(/bg-\[#([a-zA-Z0-9]+)\]/);
+
+      if (bgClassMatch) {
+        this.post.body1 = this.post.body1.replace(bgClassMatch[0], ""); // Remove the bg-[#...] class from post.body1
+        this.customBgColor = "#" + bgClassMatch[1]; // Set the custom background color (with '#')
+      }
+
+      return className;
+    },
     displayedBody1() {
       if (this.showFullTextBody1) {
         return this.processedBody1;
       } else {
         // Truncate the text after a certain length
-        let truncated = this.post.body1.substring(0, this.truncatedLength);
+        let truncated = this.post.body1?.substring(0, this.truncatedLength);
         // Ensure it doesn't cut off in the middle of a word
         truncated = truncated.substring(0, truncated.lastIndexOf(" "));
         return this.processUrls(truncated);
@@ -122,10 +137,17 @@ export default {
         return this.processedBody2;
       } else {
         // Truncate the text after a certain length
-        let truncated = this.post.body2.substring(0, this.truncatedLengthBody2);
-        // Ensure it doesn't cut off in the middle of a word
-        truncated = truncated.substring(0, truncated.lastIndexOf(" "));
-        return this.processUrls(truncated);
+        if (this.post && this.post.body2) {
+          let truncated = this.post.body2.substring(
+            0,
+            this.truncatedLengthBody2
+          );
+          // Ensure it doesn't cut off in the middle of a word
+          truncated = truncated.substring(0, truncated.lastIndexOf(" "));
+          return this.processUrls(truncated);
+        } else {
+          return "";
+        }
       }
     },
     processedBody1() {
@@ -362,7 +384,15 @@ export default {
 
     <!-- Text Body1 UPPER -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-    <div class="">
+    <div
+      :class="`${body1Class} ${
+        customBgColor.startsWith('#')
+          ? 'p-2 py-3 rounded-md shadow-lg border-2'
+          : ''
+      } `"
+      class=""
+      :style="{ backgroundColor: customBgColor }"
+    >
       <span
         v-show="post.body1"
         @click="$emit('enlarge-post', post)"
@@ -372,14 +402,18 @@ export default {
       <span
         v-if="!showFullTextBody1 && post.body1.length > truncatedLength"
         @click="toggleText"
-        class="cursor-pointer text-sky-700"
+        :class="`cursor-pointer ${
+          customBgColor.startsWith('#') ? 'text-sky-400' : 'text-sky-700'
+        }`"
       >
         ...more
       </span>
       <span
         v-if="showFullTextBody1 && post.body1.length > truncatedLength"
         @click="toggleText"
-        class="cursor-pointer text-sky-700"
+        :class="`cursor-pointer ${
+          customBgColor.startsWith('#') ? 'text-sky-400' : 'text-sky-700'
+        }`"
       >
         ...less
       </span>
@@ -430,7 +464,7 @@ export default {
         class="processed-body inline justify-center items-center w-full mt-0 mb-0 text-base xs:text-lg md:text-xl font-normal text-gray-900"
       ></div>
       <span
-        v-if="!showFullTextBody2 && post.body2.length > truncatedLengthBody2"
+        v-if="!showFullTextBody2 && post.body2?.length > truncatedLengthBody2"
         @click="toggleTextBody2"
         class="cursor-pointer text-sky-700"
       >

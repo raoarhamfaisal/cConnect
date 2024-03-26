@@ -3,7 +3,7 @@ import SignUpLayout from "@/Layouts/SignUpLayout.vue";
 import WelcomeHeader from "@/Components/Welcome/WelcomeHeader.vue";
 import WelcomeFooter from "@/Components/Welcome/WelcomeFooter.vue";
 
-import { Head } from "@inertiajs/inertia-vue3";
+import { Head, Link } from "@inertiajs/inertia-vue3";
 import { ref } from "vue";
 
 const props = defineProps({
@@ -64,6 +64,11 @@ const termsSections = ref([
   <SignUpLayout>
     <Head title="Terms of Service" />
     <WelcomeHeader :showNewsFeed="true" :showit="showit" :showSignUp="true" />
+    <div class="mb-3 sm:mb-6">
+      <Link href="/" class="text-blue-500 hover:underline"
+        >← Back to Main Page</Link
+      >
+    </div>
     <div class="text-3xl font-bold mb-6">Terms of Service</div>
     <p class="mb-4">
       By accessing and using the services provided by tContractor.com , you

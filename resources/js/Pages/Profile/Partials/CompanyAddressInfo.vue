@@ -26,7 +26,7 @@ const loadingScript = ref(true);
 
 const company_logo = ref(props.company_logo);
 const referenceList = props.regions.map((item) => item.name);
-const selectedObj = props.regions.find((item) => item.id === props.region_id);
+const selectedObj = props.regions.find((item) => item.id == props.region_id);
 const selectedName = selectedObj ? selectedObj.name : undefined;
 
 const selectedReferal = ref(selectedName ?? "");
@@ -159,13 +159,15 @@ onBeforeUnmount(() => {
     >
       <v-skeleton-loader
         v-if="loadingImage"
-        style="border-radius: 9999px"
-        class="overflow-hidden w-36 h-36"
+        style="border-radius: 0.375rem"
+        class="overflow-hidden w-48 h-24"
         type="image"
       >
       </v-skeleton-loader>
       <UserAvatar
         v-if="!loadingImage"
+        :cover="false"
+        :rounded="false"
         :imageSrc="company_logo"
         @update-image="handleImageUpdate"
       />

@@ -1,15 +1,20 @@
 <template>
   <div class="relative fontSizeDropdownRelateive">
     <!-- Button to toggle the dropdown -->
-    <button
-      type="button"
-      @click="isOpen = !isOpen"
-      :class="{ 'bg-gray-100 border-gray-400': isOpen }"
-      class="pl-1rounded border border-transparent flex items-center"
-    >
-      <Icon icon="mdi:format-font-size-increase" class="w-7 h-7" />
-      <Icon icon="gridicons:dropdown" />
-    </button>
+    <v-tooltip text="Font Color" location="top">
+      <template v-slot:activator="{ props }">
+        <button
+          type="button"
+          @click="isOpen = !isOpen"
+          v-bind="props"
+          :class="{ 'bg-gray-100 border-gray-400': isOpen }"
+          class="pl-1rounded border border-transparent flex items-center"
+        >
+          <Icon icon="mdi:format-font-size-increase" class="w-7 h-7" />
+          <Icon icon="gridicons:dropdown" />
+        </button>
+      </template>
+    </v-tooltip>
 
     <!-- Dropdown content -->
     <div

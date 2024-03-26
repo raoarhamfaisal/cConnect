@@ -37,7 +37,7 @@ const form = reactive({
   phone_cell: profile.phone_cell ?? "",
   company_name: profile.company_name ?? "",
   phone_office: profile.phone_office ?? "",
-  region_id: profile.region_id?.toString() ?? "",
+  region_id: profile.region_id?.toString() ?? "1",
   address_1: profile.address_1 ?? "",
   address_2: profile.address_2 ?? "",
   city: profile.city ?? "",
@@ -322,7 +322,7 @@ const completePayment = async () => {
               :thickness="3"
             ></v-divider>
             <CompanyAddressInfo
-              :region_id="profile.region_id"
+              :region_id="profile.region_id ?? '1'"
               :company_logo="profile.company_logo"
               :regions="regions"
               v-model:form="form"

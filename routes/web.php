@@ -39,6 +39,11 @@ Route::get('/careers', function () {
         'showit' => Auth::check(),
     ]);
 });
+Route::get('/about-us', function () {
+    return Inertia::render('AboutUs', [
+        'showit' => Auth::check(),
+    ]);
+});
 Route::get('/terms-of-service', function () {
     return Inertia::render('TermsAndServices', [
         'showit' => Auth::check(),

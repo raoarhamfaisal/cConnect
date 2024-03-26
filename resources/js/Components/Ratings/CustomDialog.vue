@@ -5,6 +5,7 @@
     :style="{
       '--tw-space-x-reverse': 'inherit',
     }"
+    type="button"
     @click="
       () => {
         if (!disableOutSideClick) {
@@ -17,6 +18,7 @@
       <div
         :class="[dialogWidth]"
         class="bg-white md:w-2/3 w-full max-h-[90vh] max-md:max-h-full rounded-xl max-sm:rounded-none shadow-xl flex flex-col z-10"
+        type="button"
         @click.stop
       >
         <div
@@ -25,6 +27,7 @@
           <div class="flex items-center gap-2">
             <Icon
               v-if="!dontAllowCancel"
+              type="button"
               @click="closeDialog"
               class="w-10 h-10 cursor-pointer"
               icon="icon-park:back"
@@ -39,6 +42,7 @@
             />
           </div>
           <button
+            type="button"
             v-if="!dontAllowCancel"
             @click="closeDialog"
             class="p-2 hover:bg-[#6741d9] rounded-full w-12"
@@ -61,6 +65,7 @@
           v-if="showFooter"
         >
           <button
+            type="button"
             @click="closeDialog"
             v-show="showCancel"
             class="px-4 py-2 rounded text-white bg-[#364fc7]"
@@ -70,7 +75,7 @@
           <button
             @click="submit"
             :disabled="disabled"
-            type="submit"
+            type="button"
             class="px-4 py-2 flex tems-center gap-2 rounded bg-[#5f3dc4] text-white"
             :style="{
               backgroundColor: errorIcon ? '#f03e3e' : '',
@@ -138,6 +143,10 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  shouldFetchPost: {
+    type: Boolean,
+    default: true,
+  },
   disabled: {
     type: Boolean,
     default: false,
@@ -166,7 +175,8 @@ const closeDialog = () => {
   }
   isVisible.value = false;
   emit("closed");
-  if (shouldFetchPostsOnClose) {
+  if (shouldFetchPostsOnClose && props.shouldFetchPost) {
+    console.log("inLoadingPost");
     store.commit("ratings/setShouldLoadPosts", true);
     store.commit("ratings/setShouldFetchPostsOnClose", false);
   }
