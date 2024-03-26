@@ -244,7 +244,7 @@ const truncatedName = computed(() => {
 
           <!-- DropDown: Contact Us -->
           <Link
-            :href="route('post')"
+            href="/about-us#contactUs"
             class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
           >
             <img src="/images/icons/contactus.png" width="20" height="20" />
