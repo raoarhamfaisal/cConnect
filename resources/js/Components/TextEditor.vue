@@ -56,15 +56,17 @@
       @keydown="handleKeyPress"
       :class="{
         'font-bold': isBold,
-        'text-left': alignment === 'left',
-        'text-center': alignment === 'center',
-        'text-right': alignment === 'right',
+        'justify-start text-left': alignment === 'left',
+        'justify-center text-center': alignment === 'center',
+        'justify-end text-right': alignment === 'right',
+        'items-center':
+          backgroundColor !== 'inherit' && backgroundColor !== '#ffffff',
       }"
       :style="{
+        display: 'flex',
         fontSize: 16 + fontSizeIncrement + 'px',
         color: selectedColor,
         backgroundColor: backgroundColor,
-        height: '200px'
       }"
       placeholder="To Text..."
       @input="updateContent"
@@ -104,18 +106,21 @@ const generateStyledContent = () => {
   }
 
   if (alignment.value === "left") {
-    classes += " text-left";
+    classes += " justify-start text-left";
   }
 
   if (alignment.value === "center") {
-    classes += " text-center";
+    classes += " justify-center text-center";
   }
 
   if (alignment.value === "right") {
-    classes += " text-right";
+    classes += " justify-end text-right";
   }
-  if (backgroundColor.value) {
-    classes += ` bg-[${backgroundColor.value}]`;
+  if (
+    backgroundColor.value !== "inherit" &&
+    backgroundColor.value !== "#ffffff"
+  ) {
+    classes += ` bg-[${backgroundColor.value}] items-center flex`;
   }
 
   const style = `font-size: ${16 + fontSizeIncrement.value}px; color: ${
@@ -193,6 +198,6 @@ const handleKeyPress = (event) => {
 
 <style>
 .editor {
-  min-height: 38px;
+  min-height: 200px;
 }
 </style>

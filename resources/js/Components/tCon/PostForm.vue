@@ -58,7 +58,7 @@ export default {
     MultiSelect,
   },
 
-  props: ["form", "isOpen", "isEdit", "id", "success"],
+  props: ["form", "isOpen", "isEdit", "id", "success", "shouldShowBackground"],
   // props: {
   //     form: {
   //         type: Object,
@@ -129,6 +129,11 @@ export default {
         const selectedName = selectedObj ? selectedObj.name : undefined;
 
         this.selectedReferal = selectedName;
+      }
+    },
+    shouldShowBackground(newValue, oldValue) {
+      if (newValue && newValue !== oldValue) {
+        this.showBackroundColor = true;
       }
     },
     success(newVal) {
@@ -553,11 +558,8 @@ Array.prototype.remove = function () {
                   rows="3"
                   id="formPostbody2"
                   placeholder="Bottom text..."
-
                 >
-
                 </textarea>
-
 
                 <div v-if="$page.props.errors.body2" class="text-red-500">
                   {{ $page.props.errors.body2 }}

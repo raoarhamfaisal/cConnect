@@ -74,6 +74,7 @@ export default {
 
       previousY: 0,
       previousRatio: 0,
+      shouldShowBackground: false,
       success: false,
       showSpinText: false,
       showingNavigationDropdown: ref(false),
@@ -179,6 +180,7 @@ export default {
         onSuccess: () => {
           this.closeModal();
           this.success = true;
+          this.shouldShowBackground = true;
           this.$store.commit("ratings/setShouldFetchFirstPagePosts", true);
           changesSaved("Post Successfully Added");
         },
