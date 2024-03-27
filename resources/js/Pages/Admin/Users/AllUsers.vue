@@ -92,6 +92,9 @@
                   Active User
                 </th>
                 <th style="text-align: center; font-weight: bold; color: white">
+                  User Id
+                </th>
+                <th style="text-align: center; font-weight: bold; color: white">
                   First Name
                 </th>
                 <th style="text-align: center; font-weight: bold; color: white">
@@ -119,32 +122,52 @@
               <tr v-for="user in users" class="text-center" :key="user.id">
                 <td>{{ user.profile?.region_id }}</td>
                 <td>{{ user.profile?.active_user }}</td>
+                <td>{{ user.profile?.user_id }}</td>
                 <td>{{ user.first_name }}</td>
                 <td>{{ user.last_name }}</td>
                 <td>{{ user.profile?.company_name }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.profile?.is_payment_verified }}</td>
                 <td>
-                  <Icon
-                    icon="mdi:notes"
-                    @click="
-                      openNoteDialog(
-                        user.profile?.notes_on_user,
-                        user.profile?.user_id
-                      )
-                    "
-                    class="mx-auto cursor-pointer hover:bg-gray-200 hover:rounded-md w-5 h-5"
-                    color="241e6d"
-                  />
+                  <div :class="`${user.profile?.notes_on_user ? 'my-2' : ''}`">
+                    <v-tooltip
+                      max-width="300px"
+                      :text="user.profile?.notes_on_user"
+                      location="top"
+                    >
+                      <template v-slot:activator="{ props }">
+                        <div v-bind="props">
+                          {{
+                            user.profile?.notes_on_user &&
+                            user.profile?.notes_on_user?.substring(0, 60) +
+                              "..."
+                          }}
+                        </div>
+                      </template>
+                    </v-tooltip>
+                    <Icon
+                      icon="mdi:notes"
+                      @click="
+                        openNoteDialog(
+                          user.profile?.notes_on_user,
+                          user.profile?.user_id
+                        )
+                      "
+                      class="mx-auto cursor-pointer hover:bg-gray-200 hover:rounded-md w-5 h-5"
+                      color="241e6d"
+                    />
+                  </div>
                   <!-- {{ user.profile?.notes_on_user }} -->
                 </td>
-                <td class="flex gap-2 justify-center items-center">
-                  <Icon
-                    icon="mdi:edit"
-                    color="#1864ab"
-                    @click="openEditDialog(user)"
-                    class="cursor-pointer hover:bg-gray-200 hover:rounded-md w-6 h-6"
-                  />
+                <td>
+                  <div class="flex gap-2 justify-center items-center">
+                    <Icon
+                      icon="mdi:edit"
+                      color="#1864ab"
+                      @click="openEditDialog(user)"
+                      class="cursor-pointer hover:bg-gray-200 hover:rounded-md w-6 h-6"
+                    />
+                  </div>
                   <!-- <Icon
                     icon="mdi:delete"
                     color="#e03131"
@@ -746,6 +769,6 @@ button {
 .v-table > .v-table__wrapper > table > thead > tr > th,
 .v-table > .v-table__wrapper > table > tfoot > tr > td,
 .v-table > .v-table__wrapper > table > tfoot > tr > th {
-  padding: 0 8px;
+  padding: 0 6px;
 }
 </style>

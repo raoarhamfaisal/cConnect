@@ -113,7 +113,14 @@
                 <th style="text-align: center; font-weight: bold; color: white">
                   End Date
                 </th>
-                <th style="text-align: center; font-weight: bold; color: white">
+                <th
+                  style="
+                    text-align: center;
+                    font-weight: bold;
+                    width: 250px;
+                    color: white;
+                  "
+                >
                   Notes
                 </th>
                 <th style="text-align: center; font-weight: bold; color: white">
@@ -136,26 +143,41 @@
                 <td>{{ coupon.start_date }}</td>
                 <td>{{ coupon.end_date }}</td>
                 <td>
-                  <Icon
-                    icon="mdi:notes"
-                    @click="openNoteDialog(coupon.notes, coupon.id)"
-                    class="mx-auto cursor-pointer hover:bg-gray-200 hover:rounded-md w-5 h-5"
-                    color="241e6d"
-                  />
+                  <div :class="`${coupon.notes ? 'my-2' : ''}`">
+                    <v-tooltip
+                      max-width="300px"
+                      :text="coupon.notes"
+                      location="top"
+                    >
+                      <template v-slot:activator="{ props }">
+                        <div v-bind="props">
+                          {{ coupon?.notes?.substring(0, 60) + "..." }}
+                        </div>
+                      </template>
+                    </v-tooltip>
+                    <Icon
+                      icon="mdi:notes"
+                      @click="openNoteDialog(coupon.notes, coupon.id)"
+                      class="mx-auto cursor-pointer hover:bg-gray-200 hover:rounded-md w-5 h-5"
+                      color="241e6d"
+                    />
+                  </div>
                 </td>
-                <td class="flex gap-2 justify-center items-center">
-                  <Icon
-                    icon="mdi:edit"
-                    color="#1864ab"
-                    @click="openEditDialog(coupon)"
-                    class="cursor-pointer hover:bg-gray-200 hover:rounded-md w-6 h-6"
-                  />
-                  <Icon
-                    icon="mdi:delete"
-                    @click="openDeleteDialog(coupon)"
-                    color="#e03131"
-                    class="cursor-pointer hover:bg-gray-200 hover:rounded-md w-6 h-6"
-                  />
+                <td class="">
+                  <div class="flex gap-2 justify-center items-center">
+                    <Icon
+                      icon="mdi:edit"
+                      color="#1864ab"
+                      @click="openEditDialog(coupon)"
+                      class="cursor-pointer hover:bg-gray-200 hover:rounded-md w-6 h-6"
+                    />
+                    <Icon
+                      icon="mdi:delete"
+                      @click="openDeleteDialog(coupon)"
+                      color="#e03131"
+                      class="cursor-pointer hover:bg-gray-200 hover:rounded-md w-6 h-6"
+                    />
+                  </div>
                 </td>
                 <!-- <td>{{ coupon.appeals_privileges }}</td>
                     <td>{{ coupon.payments_privileges }}</td>
