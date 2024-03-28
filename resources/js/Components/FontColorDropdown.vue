@@ -36,7 +36,7 @@
           :style="{ backgroundColor: color }"
           @click="setColor(color)"
           :class="{ 'ring-2 ring-blue-500': color === selectedColor }"
-          class="w-6 h-6 rounded cursor-pointer"
+          class="w-6 h-6 rounded cursor-pointer border-2 border-gray-20"
         ></div>
       </div>
     </div>
@@ -57,6 +57,8 @@ const isOpen = ref(false);
 const selectedColor = ref(props.modelValue);
 const colors = [
   "#000000",
+  "#ffffff",
+
   "#2C3E50",
   "#34495E",
   "#7F8C8D",

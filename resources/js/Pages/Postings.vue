@@ -369,7 +369,7 @@ export default {
     >
       <!-- FULL POST WRAPPER News Feed -->
       <div
-        class="flex flex-col items-center justify-start px-2 lg:max-h-screen lg:overflow-y-auto h-screen pb-8"
+        class="flex flex-col w-full items-center justify-start px-2 lg:max-h-screen lg:overflow-y-auto h-screen pb-8"
       >
         <!-- -------for="post in allPosts"------------- -->
         <!-- .slice only allows 400 iterations -->

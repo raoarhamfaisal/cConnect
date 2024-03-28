@@ -49,7 +49,7 @@
       </button>
     </div>
 
-    <div
+    <!-- <div
       ref="editor"
       contenteditable="true"
       class="editor rounded focus:outline-none focus:shadow-outline border-gray-600 mt-4 py-2 px-3 border"
@@ -72,12 +72,34 @@
       @input="updateContent"
     >
       {{ content }}
-    </div>
+    </div> -->
+
+    <!-- @keydown="handleKeyPress" -->
+    <textarea
+      ref="editor"
+      class="overflow-y-hidden resize-none min-h-[200px] rounded focus:border-gray-700 focus:border-2 focus:outline-none focus:ring-gray-700 border-gray-600 mt-4 py-2 px-3 border w-full resize-none"
+      :class="{
+        'font-bold': isBold,
+        'justify-start text-left': alignment === 'left',
+        'justify-center text-center': alignment === 'center',
+        'justify-end text-right': alignment === 'right',
+        'items-center py-[87px]':
+          backgroundColor !== 'inherit' && backgroundColor !== '#ffffff',
+      }"
+      :style="{
+        fontSize: 16 + fontSizeIncrement + 'px',
+        color: selectedColor,
+        backgroundColor: backgroundColor,
+      }"
+      @paste="updateContent"
+      @input="updateContent"
+      v-model="content"
+    ></textarea>
   </div>
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { nextTick, ref, watch } from "vue";
 import { Icon } from "@iconify/vue";
 import FontSizeDropdown from "@/Components/FontSizeDropdown.vue";
 import BackgroundColorDropdown from "@/Components/BackgroundColorDropdown.vue";
@@ -157,17 +179,36 @@ watch(
   }
 );
 watch(backgroundColor, (newValue) => {
+  // only if the selected color is black or inherit
   if (
     backgroundColor.value !== "inherit" &&
-    backgroundColor.value !== "#ffffff"
+    backgroundColor.value !== "#ffffff" &&
+    (selectedColor.value === "inherit" || selectedColor.value === "#000000")
   ) {
-    selectedColor.value = "#ffffff";
+    // selectedColor.value = "#ffffff";
     alignment.value = "center";
-  } else {
-    selectedColor.value = "black";
+  } else if (
+    backgroundColor.value !== "inherit" &&
+    backgroundColor.value !== "#ffffff" &&
+    (selectedColor.value !== "inherit" || selectedColor.value !== "#000000")
+  ) {
+    alignment.value = "center";
+  }
+
+  // if font color changed other than black then this condition and when i remove the background color
+
+  if (
+    backgroundColor.value === "inherit" ||
+    backgroundColor.value === "#ffffff"
+  ) {
     alignment.value = "left";
+    if (selectedColor.value === "#ffffff") {
+      selectedColor.value = "inherit";
+    }
   }
 });
+
+// cursor position
 
 const toggleBold = () => {
   isBold.value = !isBold.value;
@@ -178,26 +219,18 @@ const setAlignment = (align) => {
 };
 
 const updateContent = () => {
-  content.value = editor.value.innerText;
-};
-
-const handleKeyPress = (event) => {
-  if (event.key === "Enter") {
-    event.preventDefault(); // Prevent default behavior
-    const selection = window.getSelection();
-    const range = selection.getRangeAt(0);
-    const br = document.createElement("br");
-    range.insertNode(br);
-    range.setStartAfter(br); // Set cursor after the new line
-    range.setEndAfter(br);
-    selection.removeAllRanges();
-    selection.addRange(range);
-  }
+  // content.value = editor.value.innerText;
+  nextTick(() => {
+    editor.value.style.height = "auto"; // Reset height first to get the correct scrollHeight
+    editor.value.style.height = editor.value.scrollHeight + "px";
+  });
 };
 </script>
 
-<style>
+<style scoped>
 .editor {
   min-height: 200px;
+  overflow-y: hidden; /* Hide vertical scrollbar */
+  resize: none; /* Disable textarea resizing */
 }
 </style>
