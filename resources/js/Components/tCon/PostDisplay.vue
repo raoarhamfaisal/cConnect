@@ -33,6 +33,9 @@ export default {
   },
 
   mounted() {
+
+    // console.log('content', this.post);
+    // this.post.body1 = this.post.body1.replace(/\/n/g, '<br>');
     // Remove PostingActionMenu upon scroll
     // const scrollElement = document.querySelector('#scrollPost');
     // console.log((scrollElement));
@@ -114,6 +117,8 @@ export default {
       let match = this.post.body1.match(regex);
       let match2 = this.post.body1.match(regex2);
 
+
+
       let className = match ? match[1] : ""; // Extract the classes
       let className2 = match2 ? match2[1] : ""; // Extract the classes
       let bgClassMatch = className.match(/bg-\[#([a-zA-Z0-9]+)\]/);
@@ -125,14 +130,18 @@ export default {
 
       return className + " " + className2;
     },
+
     displayedBody1() {
-      if (
-        this.showFullTextBody1 ||
-        this.post.body1?.length <= this.truncatedLength
-      ) {
-        return this.processedBody1;
+      let content = this.post.body1;
+      if (content) {
+        content = content.replace(/\/n/g, '<br>');  // Replace /n with <br>
+      }
+
+      
+      if (this.showFullTextBody1 || content?.length <= this.truncatedLength) {
+        return this.processUrls(content);
       } else {
-        let truncated = this.post.body1?.substring(0, this.truncatedLength);
+        let truncated = content?.substring(0, this.truncatedLength);
         // Ensure it doesn't cut off in the middle of a word if and only if it's actually being truncated
         if (truncated?.length >= this.truncatedLength) {
           truncated = truncated.substring(0, truncated.lastIndexOf(" "));
@@ -140,17 +149,17 @@ export default {
         return this.processUrls(truncated);
       }
     },
+
     displayedBody2() {
-      if (
-        this.showFullTextBody2 ||
-        this.post.body2?.length <= this.truncatedLengthBody2
-      ) {
-        return this.processedBody2;
+      let content = this.post.body2;
+      if (content) {
+        content = content.replace(/\/n/g, '<br>');  // Replace /n with <br>
+      }
+      
+      if (this.showFullTextBody2 || content?.length <= this.truncatedLengthBody2) {
+        return this.processUrls(content);
       } else {
-        let truncated = this.post.body2?.substring(
-          0,
-          this.truncatedLengthBody2
-        );
+        let truncated = content?.substring(0, this.truncatedLengthBody2);
         // Ensure it doesn't cut off in the middle of a word if and only if it's actually being truncated
         if (truncated?.length >= this.truncatedLengthBody2) {
           truncated = truncated.substring(0, truncated.lastIndexOf(" "));
@@ -158,6 +167,9 @@ export default {
         return this.processUrls(truncated);
       }
     },
+
+
+
     processedBody1() {
       return this.processUrls(this.post.body1);
     },
@@ -406,7 +418,7 @@ export default {
         v-show="post.body1"
         @click="$emit('enlarge-post', post)"
         v-html="displayedBody1"
-        class="processed-body inline"
+        class="w-full processed-body inline"
       ></span>
       <span
         v-if="!showFullTextBody1 && post.body1.length > truncatedLength"

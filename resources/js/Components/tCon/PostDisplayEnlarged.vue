@@ -326,7 +326,7 @@ export default {
             <span
               v-show="postToEnlarge.body1"
               v-html="displayedBody1"
-              class="processed-body inline"
+              class="w-full processed-body inline"
             ></span>
             <span
               v-if="

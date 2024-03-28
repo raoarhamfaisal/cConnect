@@ -189,6 +189,21 @@ export default {
       "shouldFetchFirstPagePosts",
     ]),
     ...mapGetters("profile", ["loadFirstPageWithNoPreserve"]),
+
+    postsToShow() {
+      const allPostsToShow = this.allPosts;
+
+      // Get the modified array
+      const modifiedPosts = allPostsToShow.map(item => {
+        return {
+          ...item,
+          body1: item.body1 ? item.body1.replace(/\n/g, '<br>') : item.body1,
+          body2: item.body2 ? item.body2.replace(/\n/g, '<br>') : item.body2,
+        };
+      });
+
+      return modifiedPosts;
+    }
   },
   watch: {
     loadFirstPageWithNoPreserve(newVal) {
@@ -375,7 +390,7 @@ export default {
         <!-- .slice only allows 400 iterations -->
         <!-- <div v-for="post in allPosts.slice(0, 400)" :key="post.id" -->
         <div
-          v-for="(post, index) in allPosts"
+          v-for="(post, index) in postsToShow"
           id="scrollPost"
           :key="post.id"
           class="relative mx-auto w-full py-0"
