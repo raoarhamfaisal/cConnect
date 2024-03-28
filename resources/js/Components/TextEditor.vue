@@ -163,6 +163,8 @@ watch(
     backgroundColor,
   ],
   (newValue) => {
+    adjustHeight();
+
     const styledContent = generateStyledContent();
     emit("update:modelValue", styledContent);
   }
@@ -213,17 +215,21 @@ watch(backgroundColor, (newValue) => {
 const toggleBold = () => {
   isBold.value = !isBold.value;
 };
+const adjustHeight = () => {
+  nextTick(() => {
+    editor.value.style.height = "auto"; // Reset height first to get the correct scrollHeight
+    editor.value.style.height = editor.value.scrollHeight + "px";
+  });
+};
 
 const setAlignment = (align) => {
+  adjustHeight();
   alignment.value = align;
 };
 
 const updateContent = () => {
   // content.value = editor.value.innerText;
-  nextTick(() => {
-    editor.value.style.height = "auto"; // Reset height first to get the correct scrollHeight
-    editor.value.style.height = editor.value.scrollHeight + "px";
-  });
+  adjustHeight();
 };
 </script>
 
