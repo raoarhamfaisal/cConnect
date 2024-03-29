@@ -365,14 +365,11 @@ export default {
                     ></ButtonRefresh>
 
                     <!-- View Settings -->
-                    <div
-                      class="x365:flex hidden flex-shrink-0 items-center justify-center"
-                    >
+                    <div class="flex flex-shrink-0 items-center justify-center">
                       <button @click="openProfileModal">
                         <img
                           src="/images/icons/news_view.png"
-                          width="38"
-                          height="38"
+                          class="w-7 h-7 x350:w-[38px] x350:h-[38px]"
                         />
                       </button>
                     </div>
@@ -391,7 +388,7 @@ export default {
                     <div class="-mr-2 flex items-center">
                       <button
                         @click="NavigationDropdown"
-                        class="inline-flex items-center justify-center p-2 rounded-md text-black hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
+                        class="inline-flex items-center justify-center pl-0 py-2 pr-2 x365:p-2 rounded-md text-black hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
                       >
                         <svg
                           class="h-6 w-6"

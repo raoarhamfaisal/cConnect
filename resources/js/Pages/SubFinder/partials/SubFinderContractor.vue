@@ -290,6 +290,13 @@ const tradesPost = reactive({
   trade21: props.contractor?.trade21,
   trade22: props.contractor?.trade22,
   trade23: props.contractor?.trade23,
+  trade24: props.contractor?.trade24,
+  trade25: props.contractor?.trade25,
+  trade26: props.contractor?.trade26,
+  trade27: props.contractor?.trade27,
+  trade28: props.contractor?.trade28,
+  trade29: props.contractor?.trade29,
+  trade30: props.contractor?.trade30,
   // trade24: props.profile.trade24,
 });
 const tradeDialogRef = ref();

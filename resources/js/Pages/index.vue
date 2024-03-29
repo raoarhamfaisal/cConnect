@@ -9,14 +9,18 @@ import ScrollToLinkVue from "@/Components/tCon/ScrollToLink.vue";
 import FeaturesGrid from "@/Components/tCon/FeaturesGrid.vue";
 import { useStore } from "vuex";
 import { getToken } from "@/helpers/localStorageHelper";
+import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
+import { somethingWentWrong } from "@/helpers/utilities";
 
 defineProps({
   showit: Boolean,
 });
 
 const animate = ref(false);
+const loading = ref(false);
 const showingNavigationDropdown = ref(false);
 const store = useStore();
+const pricingPlan = ref({});
 const form = useForm({
   email: "",
   password: "",
@@ -72,13 +76,51 @@ const submit = () => {
 
 onMounted(() => {
   animate.value = true;
+  fetchPricingCardDetails();
 });
+
+const fetchPricingCardDetails = async () => {
+  loading.value = true;
+  try {
+    const response = await axios.get(
+      `/api/payment-info-of-a-region/1`,
+      getAxiosConfig()
+    );
+    console.log(response, "response");
+    if (response.data) {
+      pricingPlan.value = { ...response.data.paymentInfo };
+    }
+  } catch (err) {
+    somethingWentWrong();
+  } finally {
+    loading.value = false;
+  }
+};
+
+const formatPrice = (price) => {
+  const num = parseFloat(price);
+  if (Math.floor(num) === num) {
+    return Math.floor(num).toString();
+  }
+  return num.toString();
+};
 </script>
 
 <template>
   <Head title="Welcome" />
-
-  <div class="relative h-screen bg-white">
+  <div
+    v-if="loading"
+    class="h-full h-[100vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4"
+  >
+    <div class="text-center text-xl">Loading...</div>
+    <v-progress-linear
+      color="#241e6d"
+      indeterminate
+      rounded
+      height="6"
+    ></v-progress-linear>
+  </div>
+  <div v-if="!loading" class="relative h-screen bg-white">
     <!-- bg-gray-200 -->
     <img
       :class="{ 'animate-scale': animate }"
@@ -561,7 +603,7 @@ onMounted(() => {
                 <span class="pt-10">$</span>
               </div>
               <div class="price text-white">
-                <span>29</span>
+                <span>{{ formatPrice(pricingPlan.advertised_price) }}</span>
               </div>
               <div
                 class="flex text-xl justify-end items-end italic text-blue-rgba pb-10"

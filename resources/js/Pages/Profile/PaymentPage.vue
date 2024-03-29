@@ -486,25 +486,39 @@
           :showFooter="false"
           dialogWidth="width-40"
           ref="confirmPaymentDialogRef"
-          title="Thank you"
+          title="Welcome to tContractor"
         >
           <div class="flex items-center justify-center flex-col">
             <div class="">
-              Your payment has been processed successfully. We truly appreciate
+              <div>
+                You now have access to the most powerful tool in your
+                toolbox.<strong>tContractor</strong> is your source to:
+              </div>
+              <ul>
+                <li>Keep up to date on whats going on in your industry</li>
+                <li>Find out what jobs are available.</li>
+                <!-- <ul> -->
+
+                <!-- </ul> -->
+                <li>
+                  Press continue to enter the News Feed! This is where the
+                  action starts!
+                </li>
+              </ul>
+            </div>
+
+            <!-- Your payment has been processed successfully. We truly appreciate
               your trust in <strong>tContractor</strong>. With your subscription
               now active, you have unlocked a world of exclusive services and
               benefits. Dive into our news feed to stay updated and make the
               most of what we have to offer. Welcome to the
-              <strong>tContractor</strong> community!
-            </div>
+              <strong>tContractor</strong> community! -->
             <Link
-              class="group flex items-center self-start justify-between rounded-xl border border-teal-500 bg-[#16a34a] px-5 py-3 mt-4 transition-colors hover:bg-[#16a34a] focus:outline-none focus:ring"
+              class="group flex items-center self-start justify-between rounded-xl border border-teal-500 bg-[#16a34a] px-5 py-3 mt-4 hover:bg-[#16a34a] focus:outline-none focus:ring transition transform duration-300 hover:shadow-lg active:scale-95"
               href="/post"
             >
-              <span
-                class="text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold"
-              >
-                News Feed
+              <span class="text-lg font-bold text-white uppercase transition">
+                Continue
               </span>
 
               <!-- Arrow -->
@@ -998,5 +1012,10 @@ const startSubscription = async () => {
 .accordion-enter-to, .accordion-leave-from /* .accordion-enter-active in <2.6 */ {
   max-height: 100em; /* large enough for content to fit */
   opacity: 1;
+}
+
+ul {
+  list-style-type: disc;
+  padding-left: 20px;
 }
 </style>

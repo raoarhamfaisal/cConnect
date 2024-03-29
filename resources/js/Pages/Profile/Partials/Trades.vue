@@ -2,7 +2,7 @@
 import { somethingWentWrong } from "@/helpers/utilities";
 
 import { options } from "@/helpers/selectListsHelpters.js";
-import { onMounted, reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import { useStore } from "vuex";
 
 const props = defineProps({
@@ -42,7 +42,15 @@ const form = reactive({
   trade21: props.profile.trade21,
   trade22: props.profile.trade22,
   trade23: props.profile.trade23,
+  trade24: props.profile.trade24,
+  trade25: props.profile.trade25,
+  trade26: props.profile.trade26,
+  trade27: props.profile.trade27,
+  trade28: props.profile.trade28,
+  trade29: props.profile.trade29,
+  trade30: props.profile.trade30,
 });
+const emit = defineEmits(["dontProceed"]);
 
 onMounted(() => {
   const allSelected = Object.values(form).every((value) => value === 1);
@@ -52,7 +60,27 @@ onMounted(() => {
 });
 
 const toggleSwitch = async (field) => {
-  form[field] = form[field] === 1 ? 0 : 1;
+  if (field === "trade1") {
+    // If toggling trade1, update all trades up to trade24 based on its value
+    const newValue = form[field] === 1 ? 0 : 1;
+    for (let i = 1; i <= 24; i++) {
+      form[`trade${i}`] = newValue;
+    }
+  } else {
+    form[field] = form[field] === 1 ? 0 : 1;
+  }
+
+  // The rest of your existing toggleSwitch code
+  if (props.apiChoice === "2") {
+    const areAllTradesSetToZero = Object.values(form).every(
+      (value) => value !== 1
+    );
+    if (areAllTradesSetToZero) {
+      emit("dontProceed", true);
+    } else {
+      emit("dontProceed", false);
+    }
+  }
   if (props.apiChoice === "1") {
     await store.dispatch("profile/updateTrades", form);
   } else if (props.apiChoice === "2") {
@@ -61,6 +89,7 @@ const toggleSwitch = async (field) => {
     await store.dispatch("profile/updateViewSettingsTrades", form);
   }
 };
+
 const selectAllTrades = async () => {
   if (selectAll.value) {
     // If selectAll is true, set all properties in form to 1
@@ -73,6 +102,17 @@ const selectAllTrades = async () => {
       form[key] = 1;
     }
   }
+
+  if (props.apiChoice === "2") {
+    const areAllTradesSetToZero = Object.values(form).every(
+      (value) => value !== 1
+    );
+    if (areAllTradesSetToZero) {
+      emit("dontProceed", true);
+    } else {
+      emit("dontProceed", false);
+    }
+  }
   if (props.apiChoice === "1") {
     await store.dispatch("profile/updateTrades", form);
   } else if (props.apiChoice === "2") {
@@ -83,6 +123,29 @@ const selectAllTrades = async () => {
   // Toggle the value of selectAll
   selectAll.value = !selectAll.value;
 };
+
+// for more and less
+
+const isExpanded = ref(false); // State to manage if the text is expanded or not
+
+const toggleText = () => {
+  isExpanded.value = !isExpanded.value;
+};
+
+const displayedText = computed(() => {
+  if (isExpanded.value) {
+    return `
+      <span><strong class="text-sm">Hint:</strong> Selecting your Trade Group allows you to control
+      what postings you see in the News Feed.</br>
+      <strong>For example,</strong> if you do not care about Roofing, turn that
+      group off so you will not see postings referring to Roofing.
+    </br>
+      This is your default information and can be changed at
+      anytime. </span>`;
+  } else {
+    return "<span><strong class='text-sm'>Hint:</strong> Selecting your Trade Group allows you</span>";
+  }
+});
 </script>
 
 <template>
@@ -96,11 +159,33 @@ const selectAllTrades = async () => {
               : 'text-gray-900 text-lg'
           }`"
         >
-          Trades
+          Trade Groups
         </h2>
-        <p class="mt-1 text-sm text-gray-600">
-          Update your Trades Information.
-        </p>
+        <div v-if="apiChoice !== '3'" class="w-full">
+          <span class="mt-1 text-sm" v-html="displayedText"></span>
+          <!-- {{ displayedText }} -->
+          <span
+            v-if="!isExpanded"
+            class="text-blue-500 cursor-pointer translate-y-[1px] ml-1"
+            @click="toggleText"
+          >
+            …more
+          </span>
+
+          <span
+            v-if="isExpanded"
+            class="text-blue-500 cursor-pointer translate-y-[1px] ml-1"
+            @click="toggleText"
+          >
+            …less
+          </span>
+        </div>
+        <div v-if="apiChoice === '3'" class="w-full">
+          <span class="mt-1 text-sm">
+            <strong class="text-sm">Hint:</strong> Select Trade Groups allows
+            you to control what postings you see in the News Feed.
+          </span>
+        </div>
       </div>
     </header>
     <div class="flex items-center gap-4 mt-6 mb-5">

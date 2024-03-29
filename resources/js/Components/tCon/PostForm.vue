@@ -107,6 +107,12 @@ export default {
         trade22: false,
         trade23: false,
         trade24: false,
+        trade25: false,
+        trade26: false,
+        trade27: false,
+        trade28: false,
+        trade29: false,
+        trade30: false,
       },
 
       // csrfToken: document.querySelector('meta[name="csrf-token"]').content
@@ -178,7 +184,14 @@ export default {
   },
   methods: {
     toggleSwitch(field) {
-      this.tradesPost[field] = !this.tradesPost[field];
+      if (field === "trade1") {
+        const newState = !this.tradesPost["trade1"];
+        for (let i = 1; i <= 24; i++) {
+          this.tradesPost["trade" + i] = newState;
+        }
+      } else {
+        this.tradesPost[field] = !this.tradesPost[field];
+      }
     },
     handleFilePondProcessStart(file) {
       console.log("started file");
@@ -325,10 +338,16 @@ Array.prototype.remove = function () {
     @submit="handleSubmit"
     :showCancel="false"
     ref="tradeDialogRef"
-    title="Edit Trades"
+    title="Edit Trade Groups"
   >
+    <div class="w-full">
+      <span class="mt-1 text-base">
+        <strong>Hint:</strong> Select the Trade Groups you want your post tone
+        displayed in.
+      </span>
+    </div>
     <div class="mb-4 sm:mb-0 mt-4">
-      <div class="flex items-center gap-4 mt-6 mb-5">
+      <div class="flex items-center gap-4 mt-4 mb-5">
         <div class="switch-trades" @click="selectAllTrades">
           <div
             :class="[

@@ -16,11 +16,9 @@
     >
       <svg
         class="star-svg"
-        :style="[
-          { fill: `url(#gradient${star.raw})` },
-          { width: styleStarWidth },
-          { height: styleStarHeight },
-        ]"
+        :width="styleStarWidth"
+        :height="styleStarHeight"
+        :style="[{ fill: `url(#gradient${star.raw})` }]"
         aria-hidden="true"
       >
         <polygon :points="getStarPoints" style="fill-rule: nonzero" />

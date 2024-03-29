@@ -42,7 +42,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::get('/regions', [ReviewController::class, 'regions'])->name('review.getRegions');
     Route::get('/profileTrades/{user_id}', [PostController::class, 'selectedTrades'])->name('review.getProfileTrades');
 
-
+  //Payment api
+  Route::get('/payment-info-of-a-region/{regionId}', [PaymentInfoController::class, 'paymetInfoOfARegion']);
     
     
     
@@ -114,7 +115,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         Route::patch('/profile/verify-payment', [ProfileController::class, 'verifyPayment'])->name('profile.verifyPayment');
 
         //Payment api
-        Route::get('/payment-info-of-a-region/{regionId}', [PaymentInfoController::class, 'paymetInfoOfARegion']);
+      
         Route::post('/discount-coupon/verify', [DiscountCouponController::class, 'verifyDiscountCoupon']);
         
 

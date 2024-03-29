@@ -216,6 +216,14 @@ const tradesPost = reactive({
   trade21: props.profile.trade21,
   trade22: props.profile.trade22,
   trade23: props.profile.trade23,
+  trade24: props.profile.trade24,
+  trade25: props.profile.trade25,
+  trade26: props.profile.trade26,
+  trade27: props.profile.trade27,
+  trade28: props.profile.trade28,
+  trade29: props.profile.trade29,
+  trade30: props.profile.trade30,
+
   // trade24: props.profile.trade24,
 });
 const tempTradesPost = reactive({
@@ -242,6 +250,13 @@ const tempTradesPost = reactive({
   trade21: props.profile.trade21,
   trade22: props.profile.trade22,
   trade23: props.profile.trade23,
+  trade24: props.profile.trade24,
+  trade25: props.profile.trade25,
+  trade26: props.profile.trade26,
+  trade27: props.profile.trade27,
+  trade28: props.profile.trade28,
+  trade29: props.profile.trade29,
+  trade30: props.profile.trade30,
   // trade24: props.profile.trade24,
 });
 
