@@ -1072,7 +1072,7 @@ const goToRedFlagPage = (event) => {
               <Link
                 @click="settingTabBillingSelection"
                 :href="getStartedButtonUrl"
-                class="p-3 px-6 pt-2 text-3xl text-center bg-white rounded-lg border-white border-spacing-3 font-bold text-white bg-blue-30-rgba cursor-pointer"
+                class="p-3 px-6 pt-2 text-3xl text-center rounded-lg border-white border-spacing-3 font-bold text-white bg-blue-30-rgba cursor-pointer"
                 >{{ getStartedButtonText }}</Link
               >
             </div>

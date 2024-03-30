@@ -658,7 +658,7 @@ export default {
       if (days > 0) return `${days}d`;
       if (hours > 0) return `${hours}h`;
       if (minutes > 0) return `${minutes}m`;
-      return "just now";
+      return "<1";
     },
     validate() {
       let isValid = true;
@@ -1109,6 +1109,7 @@ export default {
         <div class="flex flex-col justify-center ml-1">
           <h2 class="font-bold text-lg sm:text-xl" style="line-height: 1.5rem">
             <!-- {{  post }} -->
+
             {{ post.id }}: {{ post.first_name + " " + post.last_name }}
           </h2>
 

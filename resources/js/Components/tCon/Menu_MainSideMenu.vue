@@ -142,7 +142,7 @@ const goToRedFlagPage = () => {
 
   <div
     style="width: 650px"
-    class="hidden lg:flex lg:flex-col bg-gray-200 items-center justify-start transition-all duration-700 ease-in-out h-screen overflow-y-scroll"
+    class="hidden lg:flex lg:flex-col bg-gray-200 items-center justify-start transition-all duration-700 ease-in-out h-screen overflow-y-scroll side-header"
   >
     <div
       class="hidden lg:flex lg:flex-col justify-start items-center px-4 py-2 rounded-lg bg-gray-200"

@@ -20,15 +20,13 @@
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import Loader from "@/Components/Ratings/Loader.vue";
 import ContractorPosts from "@/Components/Postings/ContractorPosts.vue";
-import { computed, ref } from "vue";
-import { useStore } from "vuex";
+import { ref } from "vue";
 import { somethingWentWrong } from "@/helpers/utilities";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 // State
 const { contractorId } = defineProps({
   contractorId: [String, Number],
 });
-const store = useStore();
 
 const dialogRef = ref();
 const loading = ref(false);

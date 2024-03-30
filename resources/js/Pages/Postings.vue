@@ -363,8 +363,8 @@ export default {
       const lastPost = this.$refs.loadingPostsRef[0];
       if (lastPost) {
         const headerTop = lastPost.getBoundingClientRect().top;
-
-        if (headerTop <= 500) {
+        console.log(headerTop, "headerTop");
+        if (headerTop <= 800) {
           if (!this.loadingPosts) {
             this.loadMorePosts();
           }
@@ -407,8 +407,7 @@ export default {
           // these preserve state keeps our position in the scroll
           preserveState: true,
           preserveScroll: false,
-          // 'only' makes sure that inertia only loads current post property
-          // not the whole payload. Make sure lazy load is used in controller
+
           only: ["posts"],
           onSuccess: () => {
             // takes the object posts and appends it to allpost
@@ -439,8 +438,7 @@ export default {
           // these preserve state keeps our position in the scroll
           preserveState: true,
           preserveScroll: true,
-          // 'only' makes sure that inertia only loads current post property
-          // not the whole payload. Make sure lazy load is used in controller
+
           only: ["posts"],
           onSuccess: () => {
             // takes the object posts and appends it to allpost
@@ -545,20 +543,6 @@ export default {
     },
   },
 };
-
-// this is script setup, here for reference only
-// watch(postSearch, value => {
-//     console.log(('changed ' + value));
-//     // normal is inertia.get re-renders page
-//     // we need to stop that by 3rd argument preserveState: true
-//     Inertia.get('/post',
-//         // include the data to go along with get request
-//         // because we are using 'get' its going to the query string
-//         // postSearch=inoput data
-//         { postSearch: value },
-//         { preserveState: true }
-//     );
-// });
 </script>
 
 <template>
@@ -577,11 +561,11 @@ export default {
     <!-- color="rgb(156 163 175)" -->
     <!-- POSTING CONTAINER -->
     <div
-      class="flex flex-col items-center justify-start mx-auto lg:mr-1 mt-3 sm:mt-6 lg:mt-0 shadow-md sm:rounded-3xl"
+      class="flex flex-col items-center justify-start mx-auto lg:mr-1 mt-[3.5rem] sm:mt-[4rem] lg:mt-0 shadow-md sm:rounded-3xl"
     >
       <!-- FULL POST WRAPPER News Feed -->
       <div
-        class="flex flex-col w-full items-center justify-start px-2 lg:max-h-screen lg:overflow-y-auto h-screen pb-8"
+        class="flex flex-col w-full items-center justify-start px-2 lg:max-h-screen lg:overflow-y-auto h-screen pb-8 postings"
         ref="postingsRef"
       >
         <!-- back page -->
