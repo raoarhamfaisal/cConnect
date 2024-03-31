@@ -84,6 +84,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         Route::patch('/contractor/bottom-closing-text', [ContractorProfileController::class, 'updateBottomAndClosingText'])->name('contractorProfile.updateBottomAndClosingText');
         Route::patch('/contractor/update-template', [ContractorProfileController::class, 'updateTemplate'])->name('contractorProfile.updateTemplate');
         Route::patch('/contractor/update-color-scheme', [ContractorProfileController::class, 'updateColorScheme'])->name('contractorProfile.updateColorScheme');
+
+
+        // Sub finder module
+        Route::get('/sub-finder/find-contractors', [ContractorProfileController::class, 'findContractors']);
+        Route::post('/sub-finder/{contractor_profile}/preference-and-notes', [ContractorProfileController::class, 'setPreferenceAndNotes']);
+
+
+
+
+
+
         Route::get('/contractor/post/{contractor_id}', [PostController::class, 'getContractorPosts'])->name('post.getContractorPosts');
             
         Route::post('/contractor/{contractorProfileId}/image-section', [ImageSectionController::class, 'store']);

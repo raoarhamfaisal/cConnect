@@ -36,12 +36,10 @@ class profile extends Model
         'tiktok',
         'instagram',
         'view_locale',
-        'view_territorial',
         'view_regional',
         'view_statewide',
         'view_nationwide',
         'view_following',
-        'view_groups',
         'notes_on_user',
 
     ];
@@ -50,6 +48,13 @@ class profile extends Model
     {
         return $this->belongsToMany(Trade::class, 'profile_trade');
     }
+
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'contractor_id');
+    }
+
 
     public function user()
     {
@@ -65,5 +70,9 @@ class profile extends Model
     {
         return $this->hasMany(SessionTrade::class);
     }
+
+
+
+
 
 }
