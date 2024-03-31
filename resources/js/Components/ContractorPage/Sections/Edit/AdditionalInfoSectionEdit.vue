@@ -101,12 +101,20 @@
         type="image"
       >
       </v-skeleton-loader>
+
       <UserAvatar
+        v-if="!loadingImage"
+        :cover="false"
+        :rounded="false"
+        :imageSrc="`/${company_logo ? company_logo : profile.user_avatar}`"
+        @update-image="handleImageUpdate"
+      />
+      <!-- <UserAvatar
         :cover="false"
         v-if="!loadingImage"
         :imageSrc="`/${company_logo ? company_logo : profile.user_avatar}`"
         @update-image="handleImageUpdate"
-      />
+      /> -->
     </div>
     <div
       class="mt-6 space-y-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-4"

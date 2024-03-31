@@ -11,7 +11,7 @@
           v-if="modelValue[option.id]"
           class="my-1 mx-1 space-x-1 flex"
           :style="{
-            backgroundColor: index % 2 === true ? '#5f3dc4' : '#364fc7',
+            backgroundColor: index % 2 ? '#5f3dc4' : '#364fc7',
             fontSize: '10px',
             paddingTop: '6px',
             paddingBottom: '6px',
@@ -63,11 +63,16 @@ const tradeDialogRef = ref();
 const store = useStore();
 const emit = defineEmits(["update:modelValue"]);
 const firstTrade = computed(() => {
-  return options.find((option) => props.modelValue[option.id] === true);
+  return options.find(
+    (option) =>
+      props.modelValue[option.id] === true || props.modelValue[option.id] === 1
+  );
 });
 const tradesCount = computed(() => {
-  return options.filter((option) => props.modelValue[option.id] === true)
-    .length;
+  return options.filter(
+    (option) =>
+      props.modelValue[option.id] === true || props.modelValue[option.id] === 1
+  ).length;
 });
 const screenWidth = computed(() => store.getters.screenWidth);
 

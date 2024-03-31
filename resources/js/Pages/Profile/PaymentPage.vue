@@ -408,6 +408,7 @@
 
                   <PrimaryButton
                     @click="startSubscription"
+                    type="button"
                     :disabled="loadingSubscribing"
                     :style="{
                       background: '#099268',
