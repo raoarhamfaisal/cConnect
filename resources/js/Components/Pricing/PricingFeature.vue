@@ -19,6 +19,10 @@ const props = defineProps({
   platinumText: {
     type: [String, Number, Boolean],
   },
+  version: {
+    type: String,
+    default: "",
+  },
   pageName: {
     type: String,
     default: "pricing",
@@ -44,7 +48,7 @@ const notFreeVersion = computed(
 </script>
 <template>
   <!-- For Desktop -->
-  <div :class="`flex gap-2 `" v-if="screenWidth > 768">
+  <div :class="`flex gap-2 `" v-if="screenWidth >= 768">
     <div class="w-[55%] text-xl text-end font-semibold">
       {{ props.featureText }}
     </div>
@@ -149,18 +153,17 @@ const notFreeVersion = computed(
     </div>
   </div>
   <!-- For Mobile -->
-  <div :class="` ${bgColor}`" v-else>
+  <div :class="`flex items-center justify-between gap-1 ${bgColor}`" v-else>
     <!-- Feteature TExt -->
-    <div class="text-xl mb-2 text-center font-semibold">
+    <div class="text-sm sx:text-base sm:text-lg lg:text-xl font-semibold">
       {{ props.featureText }}
     </div>
-    <div
-      class="grid gap-x-1"
-      :class="userVersion !== 1 ? 'grid-cols-2' : 'grid-cols-3'"
-    >
+    <div class="grid gap-x-1">
       <!-- Free -->
       <div
-        v-if="userVersion === 1 || userVersion === 0"
+        v-if="
+          (userVersion === 1 || userVersion === 0) && props.version === 'Free'
+        "
         class="flex justify-center items-center"
       >
         <Icon
@@ -177,7 +180,10 @@ const notFreeVersion = computed(
           v-else-if="props.freeText === 0"
           icon="clarity:remove-solid"
         />
-        <div v-else class="text-lg lg:text-2xl font-extrabold">
+        <div
+          v-else
+          class="text-sm sx:text-base sm:text-lg lg:text-2xl font-extrabold min-w-[22px] text-center"
+        >
           {{
             props.freeText === 99
               ? translations && translations.unlimited
@@ -186,7 +192,10 @@ const notFreeVersion = computed(
         </div>
       </div>
       <!-- Gold -->
-      <div class="flex justify-center items-center">
+      <div
+        class="flex justify-center items-center"
+        v-else-if="props.version === 'Gold'"
+      >
         <Icon
           color="#099268"
           width="22"
@@ -201,7 +210,10 @@ const notFreeVersion = computed(
           v-else-if="props.goldText === 0"
           icon="clarity:remove-solid"
         />
-        <div v-else class="text-lg lg:text-2xl font-extrabold">
+        <div
+          v-else
+          class="text-sm sx:text-base sm:text-lg lg:text-2xl font-extrabold min-w-[22px] text-center"
+        >
           {{
             props.goldText === 99
               ? translations && translations.unlimited
@@ -210,7 +222,10 @@ const notFreeVersion = computed(
         </div>
       </div>
       <!-- Platinium -->
-      <div class="flex justify-center items-center">
+      <div
+        class="flex justify-center items-center"
+        v-else-if="props.version === 'Platinum'"
+      >
         <Icon
           color="#099268"
           width="22"
@@ -225,7 +240,10 @@ const notFreeVersion = computed(
           v-else-if="props.platinumText === 0"
           icon="clarity:remove-solid"
         />
-        <div v-else class="text-lg lg:text-2xl font-extrabold">
+        <div
+          v-else
+          class="text-sm sx:text-base sm:text-lg lg:text-2xl font-extrabold min-w-[22px] text-center"
+        >
           {{
             props.platinumText === 99
               ? translations && translations.unlimited

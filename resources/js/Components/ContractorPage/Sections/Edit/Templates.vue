@@ -79,7 +79,6 @@ const props = defineProps({
   profile: Object,
   screenWidth: Number,
 });
-
 const form = reactive({
   selectedTemplate:
     props.templateList && props.templateList.length > 0
@@ -91,13 +90,16 @@ const form = reactive({
 
 const colorSchemeList = computed(() => store.state.contractor.colorSchemeList);
 const translations = computed(() => store.getters.translations);
-watch(props.templateList, () => {
-  if (props.profile && props.templateList.value.length > 0) {
-    form.selectedTemplate = props.templateList.value.find(
-      (item) => props.profile.template_id === item.id
-    ).name;
+watch(
+  () => props.templateList,
+  () => {
+    if (props.profile && props.templateList.value.length > 0) {
+      form.selectedTemplate = props.templateList.value.find(
+        (item) => props.profile.template_id === item.id
+      ).name;
+    }
   }
-});
+);
 
 watch(colorSchemeList, () => {
   if (props.profile && colorSchemeList.value.length > 0) {

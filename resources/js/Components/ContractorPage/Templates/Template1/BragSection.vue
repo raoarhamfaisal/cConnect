@@ -8,11 +8,13 @@
     class="flex flex-col text-[#2d2c2b]"
   >
     <div v-for="(section, index) in sections" :key="section.id">
-      <!-- class="rounded-md border relative border-gray-300 p-2 sm:p-2" -->
       <!-- Only Text -->
       <div
         class="bg-[#f8f8f8] py-10 sm:py-20"
-        v-if="!section.section_image && section.section_text"
+        v-if="
+          (!section.section_image || section.imageFailedToLoad) &&
+          section.section_text
+        "
       >
         <div
           class="w-full p-4 md:p-6 font-bold md:font-extrabold text-xl px-3 sm:px-10 md:text-3xl font-bold md:font-extrabold text-center w-full max-w-[1400px] px-3 sm:px-10 mx-auto"
@@ -22,10 +24,15 @@
       </div>
       <!-- Only Image -->
       <div
-        v-if="section.section_image && !section.section_text"
+        v-if="
+          section.section_image &&
+          !section.imageFailedToLoad &&
+          !section.section_text
+        "
         class="w-full h-full bg-[#2d2c2b] py-10 sm:py-20"
       >
         <img
+          @error="onImageError(index)"
           @click="openImage(section.section_image)"
           :src="section.section_image"
           alt="Section Image"
@@ -42,7 +49,12 @@
             threshold: [0.1],
           },
         }"
-        v-if="section.section_image && section.section_text && index % 2 !== 0"
+        v-if="
+          section.section_image &&
+          !section.imageFailedToLoad &&
+          section.section_text &&
+          index % 2 !== 0
+        "
       >
         <div
           class="flex max-md:flex-col gap-2 md:gap-4 items-center max-w-[1400px] px-3 sm:px-10 mx-auto w-full"
@@ -66,6 +78,7 @@
             }"
           >
             <img
+              @error="onImageError(index)"
               @click="openImage(section.section_image)"
               :src="section.section_image"
               alt="Section Image"
@@ -76,11 +89,17 @@
       </div>
       <!-- overlayed -->
       <div
-        v-if="section.section_image && section.section_text && index % 2 === 0"
+        v-if="
+          section.section_image &&
+          !section.imageFailedToLoad &&
+          section.section_text &&
+          index % 2 === 0
+        "
         @click="openImage(section.section_image)"
         class="bg-[#2d2c2b] py-10 sm:py-20 relative"
       >
         <img
+          @error="onImageError(index)"
           class="max-w-[1400px] overflow-hidden hover:scale-110 hover:cursor-pointer z-50 mx-auto w-full object-cover w-full rounded-md"
           :src="section.section_image"
           alt="Section Image"
@@ -136,7 +155,7 @@
     <div
       class="max-h-[400px] md:max-h-[500px] w-full flex justify-center xs:w-[400px] md:w-[600px] bg-[#222]"
     >
-      <img :src="selectedImage" />
+      <img @error="onImageError(index)" :src="selectedImage" />
     </div>
   </CustomDialog>
 </template>
@@ -177,6 +196,10 @@ const translations = computed(() => store.getters.translations);
 
 // Methods
 
+const onImageError = (index) => {
+  sections.value[index].imageFailedToLoad = true;
+};
+
 const openImage = (imageSrc) => {
   selectedImage.value = imageSrc;
   imageIncDialogRef.value.openDialog();
@@ -186,7 +209,6 @@ const isSectionVisible = ref(Array(sections.value.length).fill(false));
 const isOvelayedVisible = ref(Array(sections.value.length).fill(false));
 
 const showAnimcation = (index) => {
-  console.log("show animation");
   const dialogContainer = document.getElementById("dialogContainer");
   if (window.scrollY > 100 || dialogContainer.scrollTop > 100) {
     console.log("in animation for section:", index);

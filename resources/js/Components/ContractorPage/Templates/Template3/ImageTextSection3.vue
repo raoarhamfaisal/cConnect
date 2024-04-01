@@ -8,14 +8,16 @@
     class="flex gap-4 flex-col"
   >
     <div
-      v-for="section in sections"
+      v-for="(section, index) in sections"
       :key="section.id"
       class="rounded-md border relative border-gray-300 p-2 sm:p-2"
     >
-      <!-- class="rounded-md border relative border-gray-300 p-2 sm:p-2" -->
       <!-- Only Text -->
       <div
-        v-if="!section.section_image && section.section_text"
+        v-if="
+          (!section.section_image || section.imageFailedToLoad) &&
+          section.section_text
+        "
         class="w-full p-4 md:p-6 text-xl md:text-2xl font-bold md:font-extrabold text-xl md:text-3xl font-bold md:font-extrabold text-center"
       >
         {{ section.section_text }}
@@ -23,10 +25,15 @@
 
       <!-- Only Image -->
       <div
-        v-if="section.section_image && !section.section_text"
+        v-if="
+          section.section_image &&
+          !section.imageFailedToLoad &&
+          !section.section_text
+        "
         class="w-full h-full bg-[#222] rounded-md"
       >
         <img
+          @error="onImageError(index)"
           @click="openImage(section.section_image)"
           :src="section.section_image"
           alt="Section Image"
@@ -44,7 +51,7 @@
           {{ section.section_text }}
         </div>
         <div class="relative w-full md:w-3/5 h-3/5 rounded-md">
-          <img
+          <img @error="onImageError(index)"
             @click="openImage(section.section_image)"
             :src="section.section_image"
             alt="Section Image"
@@ -55,11 +62,16 @@
 
       <!-- For odd items -->
       <div
-        v-if="section.section_image && section.section_text"
+        v-if="
+          section.section_image &&
+          !section.imageFailedToLoad &&
+          section.section_text
+        "
         class="flex max-md:flex-col gap-2 md:gap-4 items-center max-md:flex-col-reverse"
       >
         <div class="relative w-full md:w-2/4 h-2/4 bg-[#222] rounded-md">
           <img
+            @error="onImageError(index)"
             @click="openImage(section.section_image)"
             :src="section.section_image"
             alt="Section Image"
@@ -77,7 +89,7 @@
         class="relative"
         @click="openImage(section.section_image)"
       >
-        <img
+        <img @error="onImageError(index)"
           :src="section.section_image"
           alt="Section Image"
           class="object-cover w-full rounded-md"
@@ -147,6 +159,10 @@ const selectedColorScheme = computed(
 const translations = computed(() => store.getters.translations);
 
 // Methods
+
+const onImageError = (index) => {
+  sections.value[index].imageFailedToLoad = true;
+};
 
 const openImage = (imageSrc) => {
   selectedImage.value = imageSrc;

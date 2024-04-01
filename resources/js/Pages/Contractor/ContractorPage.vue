@@ -96,6 +96,7 @@ const selectedColorScheme = computed(
   () => store.state.contractor.selectedColorScheme || template1Default
 );
 const shouldLoad = computed(() => store.state.ratings.shouldFetchPostsOnClose);
+const translations = computed(() => store.getters.translations);
 
 watch(
   () => isUpgradeToGoldPlatinumDialogOpen.value,
@@ -133,6 +134,17 @@ const fetchContractorDetails = async () => {
     );
     if (response.data) {
       contractorProfile.value = response.data.contractorProfile;
+
+      contractorProfile.value.image_sections =
+        contractorProfile.value.image_sections.map((section) => ({
+          ...section,
+          imageFailedToLoad: false,
+        }));
+      contractorProfile.value.brag_sections =
+        contractorProfile.value.brag_sections.map((section) => ({
+          ...section,
+          imageFailedToLoad: false,
+        }));
       contractorProfile.value.version = profile.version;
       store.commit(
         "contractor/setSelectedTemplate",
