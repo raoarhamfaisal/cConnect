@@ -4,12 +4,15 @@ import { Head } from "@inertiajs/inertia-vue3";
 import { useStore } from "vuex";
 import { Icon } from "@iconify/vue";
 import MoveToTop from "@/Components/MoveToTop.vue";
-import { computed, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import SelectProfile from "@/Components/SelectProfile.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import { options } from "@/helpers/selectListsHelpters";
+import Loader from "@/Components/Ratings/Loader.vue";
 import SubFinderContractor from "@/Pages/SubFinder/partials/SubFinderContractor.vue";
+import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
+import { somethingWentWrong } from "@/helpers/utilities";
 
 const props = defineProps({
   profile: Object,
@@ -27,15 +30,17 @@ const searchTerm = ref("");
 const isFocused = ref(false);
 const atButtonClickSearchTerm = ref("");
 const region_id = ref("");
-const foundContractors = ref([props.profile]);
+const foundContractors = ref([]);
 
 const referenceList = props.regions.map((item) => item.name);
 const tradesList = options.map((item) => item.name);
-const selectedObj = props.regions.find(
-  (item) => item.id === (props.profile && props.profile.region_id)
-);
+const selectedObj = props.regions.find((item) => {
+  return item.id === (props.profile && props.profile.region_id);
+});
+region_id.value = selectedObj ? selectedObj.id : undefined;
 const selectedName = selectedObj ? selectedObj.name : undefined;
 const selectedReferal = ref(selectedName ?? "");
+const trade_id = ref("");
 
 // selecting first trade
 const tradeKeys = Object.keys(props.profile).filter(
@@ -46,20 +51,52 @@ let userFirstTrade;
 options.forEach((item) => {
   if (item.id === tradeKeys[0]) {
     userFirstTrade = item.name;
+    trade_id.value = item.id;
+    trade_id.value = trade_id.value.replace(/^trade/, "");
   }
 });
 const selectedTrade = ref(userFirstTrade);
 const loading = ref(false);
-
+const currentPage = ref(1);
+const pagination = ref(0);
+const perPage = ref(15);
+const loadingNextPage = ref(false);
+const loadMoreIntersect = ref();
+const basedOnSearch = ref(false);
 const store = useStore();
 
 //Computed
 const screenWidth = computed(() => store.getters.screenWidth);
 
+//Mounted
+onMounted(async () => {});
+//
+watch(foundContractors, (newVal) => {
+  if (newVal.length > 0) {
+    setTimeout(() => {
+      const observerCallback = (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            loadMoreContractors();
+          }
+        });
+      };
+
+      const observer = new IntersectionObserver(observerCallback, {
+        rootMargin: "0px 0px 0px 0px",
+        threshold: 0,
+      });
+
+      observer.observe(loadMoreIntersect.value);
+    }, 300);
+  }
+});
+
 //Methods
 const submitSearchTerm = () => {
   atButtonClickSearchTerm.value = searchTerm.value;
-  console.log("search term", searchTerm.value);
+  basedOnSearch.value = true;
+  fetchSearchedContractorsWithLoading();
 };
 const changeReferal = (value) => {
   selectedReferal.value = value;
@@ -71,23 +108,33 @@ const changeReferal = (value) => {
 };
 const changeTrade = (value) => {
   selectedTrade.value = value;
+  options.forEach((item) => {
+    if (item.id === tradeKeys[0]) {
+      trade_id.value = item.id;
+      trade_id.value = trade_id.value.replace(/^trade/, "");
+    }
+  });
 };
-const onFindASub = () => {};
+const onFindASub = () => {
+  atButtonClickSearchTerm.value = "true";
+  basedOnSearch.value = false;
+  fetchSearchedContractorsWithLoading();
+};
 
 // Display contractor logic
 
 const buttonData = [
-  { value: "all", label: "All" },
-  { value: "preferred", label: "Preferred" },
-  { value: "backup", label: "Back-Up" },
-  { value: "possible", label: "Possible" },
-  { value: "rejected", label: "Rejected" },
+  { value: "", label: "All" },
+  { value: "Preferred", label: "Preferred" },
+  { value: "Back-Up", label: "Back-Up" },
+  { value: "Possible", label: "Possible" },
+  { value: "Rejected", label: "Rejected" },
 ];
 
-const selectedDisplayContractorButton = ref("all"); // Use the value from buttonData as default
+const preference_status = ref(""); // Use the value from buttonData as default
 
 const selectButton = (value) => {
-  selectedDisplayContractorButton.value = value;
+  preference_status.value = value;
 };
 
 const buttonClass = (value) => [
@@ -105,20 +152,18 @@ const buttonClass = (value) => [
   "rounded",
   "sm:text-lg",
   "text-base",
-  value === selectedDisplayContractorButton.value
-    ? "bg-indigo-800 text-white"
-    : "",
+  value === preference_status.value ? "bg-indigo-800 text-white" : "",
 ];
 
 // Define the button data for sort options
 const sortButtonData = [
-  { value: "highRated", label: "High Rated" },
-  { value: "lowRated", label: "Low Rated" },
-  { value: "newlyRegistered", label: "Newly Registered" },
-  { value: "oldestRegistered", label: "Oldest Registered" },
+  { value: "high_rated", label: "High Rated" },
+  { value: "low_rated", label: "Low Rated" },
+  { value: "newly_registered", label: "Newly Registered" },
+  { value: "oldest_registered", label: "Oldest Registered" },
 ];
 
-const selectedSort = ref("newlyRegistered"); // Default selected value
+const selectedSort = ref("high_rated"); // Default selected value
 
 const selectSort = (value) => {
   selectedSort.value = value;
@@ -141,6 +186,56 @@ const sortButtonClass = (value) => [
   "text-base",
   value === selectedSort.value ? "bg-indigo-800 text-white" : "",
 ];
+
+// apis
+
+const loadMoreContractors = async () => {
+  loadingNextPage.value = true;
+  currentPage.value = currentPage.value + 1;
+  await fetchSearchedContractors(perPage.value, currentPage.value, true);
+  loadingNextPage.value = false;
+};
+
+// Fetch REviews
+const fetchSearchedContractors = async (
+  per_page = perPage.value,
+  page = 1,
+  append = false
+) => {
+  let response;
+  try {
+    if (basedOnSearch.value) {
+      response = await axios.get(
+        `/api/sub-finder/find-contractors?region_id=${region_id.value}per_page=${per_page}&page=${page}&search_term=${searchTerm.value}&sort_by=high_rated&preference_status=&trade_id=`,
+        getAxiosConfig()
+      );
+    } else {
+      response = await axios.get(
+        `/api/sub-finder/find-contractors?region_id=${region_id.value}per_page=${per_page}&page=${page}&search_term=&sort_by=${selectedSort.value}&preference_status=${preference_status.value}&trade_id=${trade_id.value}`,
+        getAxiosConfig()
+      );
+    }
+    if (append) {
+      foundContractors.value = [
+        ...foundContractors.value,
+        ...response.data.contractors,
+      ];
+    } else {
+      foundContractors.value = [...response.data.contractors];
+    }
+    pagination.value = response.data.pagination;
+
+    // Extracting the star counts
+  } catch (err) {
+    somethingWentWrong();
+  }
+};
+
+const fetchSearchedContractorsWithLoading = async () => {
+  loading.value = true;
+  await fetchSearchedContractors();
+  loading.value = false;
+};
 </script>
 
 <template>
@@ -268,19 +363,64 @@ const sortButtonClass = (value) => [
       >
         Find a Sub
       </button>
-      <div class="mt-6" v-if="!atButtonClickSearchTerm">
+      <div
+        class="mt-6"
+        v-if="atButtonClickSearchTerm && atButtonClickSearchTerm !== 'true'"
+      >
         <div class="font-extrabold text-2xl leading-tight">
           Showing results for term
           <span class="text-[#021d91]">"{{ atButtonClickSearchTerm }}"</span>
         </div>
       </div>
-      <div class="mt-4 mb-40" v-if="!loading && foundContractors.length > 0">
-        <SubFinderContractor
-          v-for="contractor in foundContractors"
-          :key="contractor.id"
-          :contractor="contractor"
-          :region_name="selectedName"
-        />
+      <div class="mt-6" v-if="atButtonClickSearchTerm === 'true'">
+        <div class="font-extrabold text-2xl leading-tight">
+          Showing contractors based on your selected criteria
+        </div>
+      </div>
+      <div class="mt-4" v-if="!loading && atButtonClickSearchTerm">
+        <div
+          v-if="foundContractors && foundContractors.length > 0"
+          class="flex flex-col gap-2 sm:gap-4"
+        >
+          <SubFinderContractor
+            v-for="contractor in foundContractors"
+            :key="contractor.id"
+            :contractor="contractor"
+            :region_name="selectedName"
+          />
+        </div>
+        <div v-if="foundContractors && foundContractors.length === 0">
+          <div
+            class="p-2 text-xl text-grey-600 font-bold h-72 flex items-center justify-center"
+          >
+            No Contractor Found
+          </div>
+        </div>
+
+        <!-- lazy loading -->
+        <div
+          v-show="+currentPage !== +pagination.last_page"
+          ref="loadMoreIntersect"
+          style="width: 5px; height: 5px"
+        ></div>
+        <div
+          v-show="
+            currentPage > 1 &&
+            !loadingNextPage &&
+            +currentPage === +pagination.last_page
+          "
+          class="text-center my-5 font-bold"
+        >
+          No More Contractors to Load
+        </div>
+        <Loader
+          classes="flex gap-2"
+          :loading="loadingNextPage"
+          circleClasses="small-circle"
+          textClasses="small-text"
+          background=""
+          height="70px"
+        ></Loader>
       </div>
     </div>
 

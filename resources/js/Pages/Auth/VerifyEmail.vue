@@ -147,7 +147,7 @@ const submitVerificationCode = async () => {
     >
     <a
       :href="route('signup')"
-      class="border-2 border-blue-rgba w-full mt-2 flex justify-center items-center text-blue-rgba font-bold py-2 px-4 rounded cursor-pointer transition transform duration-300 hover:shadow-lg active:scale-95"
+      class="border-2 border-blue-rgba w-full mt-2 flex justify-center items-center text-blue-rgba font-bold py-2 uppercase px-4 rounded cursor-pointer transition transform duration-300 hover:shadow-lg active:scale-95"
     >
       Change Email
     </a>
