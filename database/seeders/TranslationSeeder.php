@@ -541,7 +541,7 @@ class TranslationSeeder extends Seeder
             ['key' => 'upon_receiving_your_request_to_cancel', 'english' => 'Upon receiving your request to cancel, we will carefully review it and notify you of the outcome via your registered', 'mexican_spanish' => 'Al recibir tu solicitud de cancelación, la revisaremos cuidadosamente y te notificaremos el resultado a través de tu', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'email_address', 'english' => 'email address', 'mexican_spanish' => 'dirección de correo electrónico', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'we_understand_the_importance_of_your_decision', 'english' => 'We understand the importance of your decision and are committed to processing your request promptly.', 'mexican_spanish' => 'Entendemos la importancia de tu decisión y estamos comprometidos a procesar tu solicitud rápidamente.', 'created_at' => now(), 'updated_at' => now()],
-            ['key' => 'pricing_plan', 'english' => 'Pricing lan', 'mexican_spanish' => 'Plan de Precios', 'created_at' => now(), 'updated_at' => now()],
+            ['key' => 'pricing_plan', 'english' => 'Pricing Plan', 'mexican_spanish' => 'Plan de Precios', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'subscription_plan', 'english' => 'Subscription Plan', 'mexican_spanish' => 'Plan de Suscripción', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'amount_paid', 'english' => 'Amount Paid', 'mexican_spanish' => 'Cantidad Pagada', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'charged_date', 'english' => 'Charged Date', 'mexican_spanish' => 'Fecha de Cobro', 'created_at' => now(), 'updated_at' => now()],

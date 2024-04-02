@@ -9,7 +9,7 @@
     color="rgb(229 231 235 / var(--tw-bg-opacity))"
   >
     <ContractorRating
-      class="bg-gray-200 mt-10"
+      class="bg-gray-200 mt-1"
       :contractorDetails="contractorDetails"
       :profileId="profile.id"
     />

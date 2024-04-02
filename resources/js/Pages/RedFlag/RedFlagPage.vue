@@ -403,7 +403,7 @@ const determineBorderVisibility = (index) => {
   >
     <!-- color="#edecea" -->
     <div
-      class="mt-4 sm:mt-4 p-2 sm:p-4"
+      class="sm:mt-4 p-2 sm:p-4"
       v-if="userVersion !== 1 && userVersion !== 0"
     >
       <!-- back page -->

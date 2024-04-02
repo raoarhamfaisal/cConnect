@@ -141,7 +141,7 @@ p.default {
   left: 0%;
   z-index: 10;
   width: 100%;
-  padding: 8px;
+  padding-right: 6px;
 }
 
 .text-3xl-imp .v-expansion-panel-title__icon {
@@ -159,8 +159,24 @@ p.default {
 #scrollable::-webkit-scrollbar-track {
   /* background: #a1a1a1; */
   background: transparent;
+  margin-top: 0px;
 }
-
+@media (max-width: 768px) {
+  .postings::-webkit-scrollbar-track,
+  #scrollable::-webkit-scrollbar-track {
+    /* background: #a1a1a1; */
+    background: transparent;
+    margin-top: 64px;
+  }
+}
+@media (max-width: 640px) {
+  .postings::-webkit-scrollbar-track,
+  #scrollable::-webkit-scrollbar-track {
+    /* background: #a1a1a1; */
+    background: transparent;
+    margin-top: 56px;
+  }
+}
 /* Targets the scrollbar handle */
 .postings::-webkit-scrollbar-thumb,
 #scrollable::-webkit-scrollbar-thumb {

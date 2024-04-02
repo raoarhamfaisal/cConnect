@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-200 mt-10">
+  <div class="bg-gray-200 mt-1">
     <Card
       :shadowLevel="2"
       bgColor="white"

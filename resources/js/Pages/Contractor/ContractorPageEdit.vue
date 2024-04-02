@@ -14,7 +14,7 @@
     color="rgb(229 231 235 / var(--tw-bg-opacity))"
   >
     <div
-      class="pt-8 sm:pt-8"
+      class="pt-1 sm:pt-8"
       v-if="
         !loading &&
         contractorProfile &&

@@ -348,7 +348,10 @@ export default {
     class="bg-gray-100"
   >
     <!-- Section Container -->
-    <div class="relative mx-auto mt-0 lg:pt-0 h-screen">
+    <!-- ${
+        url !== '/post' && 'pt-14'
+      }  -->
+    <div :class="`relative mx-auto mt-0 lg:pt-0 h-screen `">
       <div
         :style="{
           maxWidth: contentWidth,
@@ -382,7 +385,7 @@ export default {
         >
           <div
             id="NewsFeedScroll"
-            class="h-screen"
+            class="h-screen max-lg:pt-14"
             :style="{
               width: '100%',
             }"
