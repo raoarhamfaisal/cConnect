@@ -24,6 +24,7 @@ const translations = computed(() => store.getters.translations);
 
     <Head :title="translations && translations.privacy_policy" />
     <WelcomeHeader :showNewsFeed="true" :showit="showit" :showSignUp="true" />
+    <template v-if="translations && Object.keys(translations).length > 0">
     <div class="mb-3 sm:mb-6">
       <Link href="/" class="text-blue-500 hover:underline">← {{ translations && translations.back_to_main_page }}</Link>
     </div>
@@ -76,6 +77,10 @@ const translations = computed(() => store.getters.translations);
     <p class="mb-2">{{ translations && translations.tos_questions_contact }} <a href='mailto:tcontractor@gmail.com'
         class='text-blue-rgba font-bold'>tcontractor@gmail.com</a></p>
   </section>
-
+</template>
+    <div v-else class="h-[100vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4">
+      <div class="text-center text-xl">Loading...</div>
+      <v-progress-linear color="#241e6d" indeterminate rounded height="6"></v-progress-linear>
+    </div>
 </SignUpLayout>
-<WelcomeFooter :showit="showit" /></template>
+<WelcomeFooter v-if="translations && Object.keys(translations).length > 0" :showit="showit" /></template>

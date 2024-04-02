@@ -135,7 +135,7 @@ const handleScroll = () => {
   );
   const faqsPosition = faqsRef.value.getBoundingClientRect().top;
   console.log(headerPositions, faqsPosition, "header faqs position");
-  let elementTop = 30;
+  let elementTop = 0;
   if (headerPositions.length === 3) {
     if (headerPositions[0] <= elementTop && headerPositions[1] >= 400) {
       // Only Free version should be shown
@@ -548,7 +548,7 @@ const scrollToFAQs = () => {
       <div class="features pb-4">
         <!-- News Feed -->
         <div class="w-full mb-2">
-          <span class="text-2xl font-extrabold text-blue-rgba">
+          <span class="text-xl sm:text-2xl font-extrabold text-blue-rgba">
             {{ translations && translations.news_feed }}:
           </span>
         </div>
@@ -578,7 +578,7 @@ const scrollToFAQs = () => {
         </div>
         <!-- News Feed Postings-->
         <div class="w-full my-2">
-          <span class="text-2xl font-extrabold text-blue-rgba">
+          <span class="text-xl sm:text-2xl font-extrabold text-blue-rgba">
             {{ translations && translations.news_feed_postings }}
           </span>
         </div>
@@ -642,7 +642,7 @@ const scrollToFAQs = () => {
         </div>
         <!-- Sub Finder-->
         <div class="w-full my-2">
-          <span class="text-2xl font-extrabold text-blue-rgba">
+          <span class="text-xl sm:text-2xl font-extrabold text-blue-rgba">
             {{ translations && translations.sub_finder }}:
           </span>
         </div>
@@ -701,7 +701,7 @@ const scrollToFAQs = () => {
         </div>
         <!-- Trade Groups-->
         <div class="w-full my-2">
-          <span class="text-2xl font-extrabold text-blue-rgba">
+          <span class="text-xl sm:text-2xl font-extrabold text-blue-rgba">
             {{ translations && translations.trade_groups }}:
           </span>
         </div>
@@ -739,7 +739,7 @@ const scrollToFAQs = () => {
         </div>
         <!-- View Red Flags-->
         <div class="w-full my-2">
-          <span class="text-2xl font-extrabold text-blue-rgba">
+          <span class="text-xl sm:text-2xl font-extrabold text-blue-rgba">
             {{ translations && translations.view_red_flags }}:
           </span>
         </div>
@@ -779,7 +779,7 @@ const scrollToFAQs = () => {
         </div>
         <!-- Real Contractor Reviews-->
         <div class="w-full my-2">
-          <span class="text-2xl font-extrabold text-blue-rgba">
+          <span class="text-xl sm:text-2xl font-extrabold text-blue-rgba">
             {{ translations && translations.real_contractor_reviews }}:
           </span>
         </div>
@@ -813,7 +813,7 @@ const scrollToFAQs = () => {
         </div>
         <!-- Contractor Page-->
         <div class="w-full my-2">
-          <span class="text-2xl font-extrabold text-blue-rgba">
+          <span class="text-xl sm:text-2xl font-extrabold text-blue-rgba">
             {{ translations && translations.contractor_page }}:
           </span>
         </div>
@@ -940,7 +940,7 @@ const scrollToFAQs = () => {
         <div class="features pb-4">
           <!-- News Feed -->
           <div class="w-full mb-2">
-            <span class="text-2xl font-extrabold text-blue-rgba">
+            <span class="text-xl sm:text-2xl font-extrabold text-blue-rgba">
               {{ translations && translations.news_feed }}:
             </span>
           </div>
@@ -972,7 +972,7 @@ const scrollToFAQs = () => {
           </div>
           <!-- News Feed Postings-->
           <div class="w-full my-2">
-            <span class="text-2xl font-extrabold text-blue-rgba">
+            <span class="text-xl sm:text-2xl font-extrabold text-blue-rgba">
               {{ translations && translations.news_feed_postings }}
             </span>
           </div>
@@ -1042,7 +1042,7 @@ const scrollToFAQs = () => {
           </div>
           <!-- Sub Finder-->
           <div class="w-full my-2">
-            <span class="text-2xl font-extrabold text-blue-rgba">
+            <span class="text-xl sm:text-2xl font-extrabold text-blue-rgba">
               {{ translations && translations.sub_finder }}:
             </span>
           </div>
@@ -1108,7 +1108,7 @@ const scrollToFAQs = () => {
           </div>
           <!-- Trade Groups-->
           <div class="w-full my-2">
-            <span class="text-2xl font-extrabold text-blue-rgba">
+            <span class="text-xl sm:text-2xl font-extrabold text-blue-rgba">
               {{ translations && translations.trade_groups }}:
             </span>
           </div>
@@ -1149,7 +1149,7 @@ const scrollToFAQs = () => {
           </div>
           <!-- View Red Flags-->
           <div class="w-full my-2">
-            <span class="text-2xl font-extrabold text-blue-rgba">
+            <span class="text-xl sm:text-2xl font-extrabold text-blue-rgba">
               {{ translations && translations.view_red_flags }}:
             </span>
           </div>
@@ -1193,7 +1193,7 @@ const scrollToFAQs = () => {
           </div>
           <!-- Real Contractor Reviews-->
           <div class="w-full my-2">
-            <span class="text-2xl font-extrabold text-blue-rgba">
+            <span class="text-xl sm:text-2xl font-extrabold text-blue-rgba">
               {{ translations && translations.real_contractor_reviews }}:
             </span>
           </div>
@@ -1230,7 +1230,7 @@ const scrollToFAQs = () => {
           </div>
           <!-- Contractor Page-->
           <div class="w-full my-2">
-            <span class="text-2xl font-extrabold text-blue-rgba">
+            <span class="text-xl sm:text-2xl font-extrabold text-blue-rgba">
               {{ translations && translations.contractor_page }}:
             </span>
           </div>

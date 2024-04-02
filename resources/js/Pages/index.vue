@@ -255,9 +255,7 @@ const goToRedFlagPage = (event) => {
     v-if="loading"
     class="h-[100vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4"
   >
-    <div class="text-center text-xl">
-      {{ translations && translations.loading }}
-    </div>
+    <div class="text-center text-xl">Loading...</div>
     <v-progress-linear
       color="#241e6d"
       indeterminate
@@ -278,7 +276,7 @@ const goToRedFlagPage = (event) => {
     <img
       :class="{ 'animate-scale': animate }"
       src="/images/pages/bg_a_xl_white.jpg"
-      class="absolute object-cover w-full h-full mt-14"
+      class="absolute object-cover w-full h-full mt-12 x365:mt-14"
     />
     <!-- <div class="absolute inset-0 bg-black opacity-10"></div> -->
 

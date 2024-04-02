@@ -11,7 +11,9 @@ const translations = computed(() => store.getters.translations);
 <template>
   <div class="mt-4">
     <div class="flex justify-center" ref="whatVersionAreYourRef">
-      <span class="text-5xl font-extrabold mb-4 text-center text-blue-rgba">
+      <span
+        class="text-4xl sm:text-5xl font-extrabold mb-4 text-center text-blue-rgba"
+      >
         {{ translations && translations.faqs }}
       </span>
     </div>

@@ -24,7 +24,10 @@ const translations = computed(() => store.getters.translations);
     <Head :title="translations && translations.careers" />
     <WelcomeHeader :showNewsFeed="true" :showit="showit" :showSignUp="true" />
 
-    <div class="bg-gray-100 min-h-screen p-3 sm:p-5 max-sm:rounded">
+    <div
+      v-if="translations && Object.keys(translations).length > 0"
+      class="bg-gray-100 min-h-screen p-3 sm:p-5 max-sm:rounded"
+    >
       <div class="mb-3 sm:mb-6">
         <Link href="/" class="text-blue-500 hover:underline"
           >← {{ translations && translations.back_to_main_page }}</Link
@@ -136,6 +139,21 @@ const translations = computed(() => store.getters.translations);
         </a>
       </div> -->
     </div>
+    <div
+      v-else
+      class="h-[100vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4"
+    >
+      <div class="text-center text-xl">Loading...</div>
+      <v-progress-linear
+        color="#241e6d"
+        indeterminate
+        rounded
+        height="6"
+      ></v-progress-linear>
+    </div>
   </SignUpLayout>
-  <WelcomeFooter :showit="showit" />
+  <WelcomeFooter
+    v-if="translations && Object.keys(translations).length > 0"
+    :showit="showit"
+  />
 </template>
