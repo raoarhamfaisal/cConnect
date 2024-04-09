@@ -171,7 +171,7 @@ const formatPrice = (price) => {
             <div v-if="showit">
               <Link
                 :href="
-                  profile && profile.is_payment_verified
+                  profile && profile.is_payment_verified && profile.active_user
                     ? route('post')
                     : '/profile-setup'
                 "
@@ -258,7 +258,7 @@ const formatPrice = (price) => {
               <ResponsiveNavLink
                 v-if="showit"
                 :href="
-                  profile && profile.is_payment_verified
+                  profile && profile.is_payment_verified && profile.active_user
                     ? route('post')
                     : '/profile-setup'
                 "
@@ -269,7 +269,7 @@ const formatPrice = (price) => {
               <ResponsiveNavLink
                 v-if="showit"
                 :href="
-                  profile && profile.is_payment_verified
+                  profile && profile.is_payment_verified && profile.active_user
                     ? '/ratings/contractor '
                     : '/profile-setup'
                 "
@@ -283,7 +283,7 @@ const formatPrice = (price) => {
                 <ResponsiveNavLink
                   v-if="showit"
                   :href="
-                    profile && profile.is_payment_verified
+                    profile && profile.is_payment_verified && profile.active_user
                       ? '/profile'
                       : '/profile-setup'
                   "
@@ -294,7 +294,7 @@ const formatPrice = (price) => {
                 <ResponsiveNavLink
                   v-if="showit"
                   :href="
-                    profile && profile.is_payment_verified
+                    profile && profile.is_payment_verified && profile.active_user
                       ? '/settings'
                       : '/profile-setup'
                   "
@@ -416,7 +416,7 @@ const formatPrice = (price) => {
           <Link
             class="group flex items-center justify-between rounded-xl border border-red-500 bg-red-500 px-5 py-3 mt-8 transition-colors hover:bg-red-800 focus:outline-none focus:ring"
             :href="
-              showit && profile && profile.is_payment_verified === 0
+              showit && profile && (profile.is_payment_verified === 0 || profile.active_user === 0)
                 ? '/profile-setup'
                 : route('signup')
             "
@@ -603,7 +603,7 @@ const formatPrice = (price) => {
                 <span class="pt-10">$</span>
               </div>
               <div class="price text-white">
-                <span>{{ formatPrice(pricingPlan.advertised_price) }}</span>
+                <span>{{ formatPrice(pricingPlan.advertised_price ? pricingPlan.advertised_price : 0) }}</span>
               </div>
               <div
                 class="flex text-xl justify-end items-end italic text-blue-rgba pb-10"
@@ -615,7 +615,7 @@ const formatPrice = (price) => {
             <div class="flex justify-center items-end">
               <Link
                 :href="
-                  showit && profile && profile.is_payment_verified === 0
+                  showit && profile && (profile.is_payment_verified === 0 || profile.active_user === 0)
                     ? '/profile-setup'
                     : route('signup')
                 "
@@ -704,7 +704,7 @@ const formatPrice = (price) => {
             <Link
               class="group flex items-center justify-between rounded-xl border border-red-500 bg-red-500 px-5 py-3 mt-8 transition-colors hover:bg-red-800 focus:outline-none focus:ring"
               :href="
-                showit && profile && profile.is_payment_verified === 0
+                showit && profile && (profile.is_payment_verified === 0 || profile.active_user === 0)
                   ? '/profile-setup'
                   : route('signup')
               "

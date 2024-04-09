@@ -66,6 +66,11 @@ class RegisteredUserController extends Controller
 
         $userID = $request->get('id');
 
+        $user = User::find($userID);
+
+
+        // dd($user);
+
         $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -119,11 +124,6 @@ class RegisteredUserController extends Controller
             }
         }
         
-        
-        
-        
-        
-        
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
@@ -169,7 +169,6 @@ class RegisteredUserController extends Controller
                     
                 ]
             );
-
 
             // Fetch the default values
             $defaults = ContractorImageSectionsDefault::first();

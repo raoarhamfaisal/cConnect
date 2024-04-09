@@ -49,14 +49,14 @@
               <div class="flex flex-col items-center justify-center">
                 <h2 class="text-xl sm:text-2xl font-bold mb-2">MONTHLY</h2>
                 <div
-                  class="price-tag bg-white w-24 h-24 sm:w-32 sm:h-32 border-2 rounded-full flex items-center justify-center"
+                  class="price-tag bg-white w-40 h-40 sm:w-40 sm:h-40 border-2 rounded-full flex items-center justify-center"
                   :class="{
                     'bg-[#4169E1] border-[#4169E1] text-white':
                       planType === 'MONTHLY',
                     'bg-white border-black text-black': planType !== 'MONTHLY',
                   }"
                 >
-                  <span class="text-lg sm:text-2xl">${{ monthlyTotal }}</span>
+                  <span class="text-lg sm:text-2xl">${{ parseFloat(monthlyTotal).toFixed(4) }}</span>
                   <span class="text-xs ml-1">/mo</span>
                 </div>
               </div>
@@ -86,15 +86,15 @@
               <div class="flex flex-col items-center justify-center">
                 <h2 class="text-xl sm:text-2xl font-bold mb-2">ANNUAL</h2>
                 <div
-                  class="price-tag bg-white w-24 h-24 sm:w-32 sm:h-32 border-2 rounded-full flex items-center justify-center"
+                  class="price-tag bg-white w-40 h-40 sm:w-40 sm:h-40 border-2 rounded-full flex items-center justify-center"
                   :class="{
                     'bg-[#4169E1] border-[#4169E1] text-white':
                       planType === 'ANNUAL',
                     'bg-white border-black text-black': planType !== 'ANNUAL',
                   }"
                 >
-                  <span class="text-lg sm:text-2xl">${{ annualTotal }}</span>
-                  <span class="text-xs ml-1">/mo</span>
+                  <span class="text-lg sm:text-2xl">${{ parseFloat(annualTotal).toFixed(4) }}</span>
+                  <span class="text-xs ml-1">/yr</span>
                 </div>
               </div>
             </div>
@@ -138,9 +138,9 @@
                 ></div>
                 <div class="flex items-center justify-center">
                   <img
-                    src="/images/icons/authorize.png"
+                    src="/images/icons/debit-visa-card.png"
                     alt="Authorize.net Logo"
-                    class="w-32"
+                    class="w-48"
                   />
                 </div>
               </div>
@@ -170,7 +170,7 @@
                   <img
                     src="/images/icons/ach.png"
                     alt="Authorize.net Logo"
-                    class="w-32"
+                    class="w-48"
                   />
                 </div>
               </div>
@@ -301,8 +301,8 @@
                           class="mt-1 block w-full"
                           v-model="form.expiration_date"
                           @input="clearError('expiration_date')"
-                          v-mask="'####/##'"
-                          placeholder="YYYY/MM"
+                          v-mask="'##/##'"
+                          placeholder="MM/YY"
                         />
                         <InputError
                           class="mt-2"
@@ -681,12 +681,12 @@ const monthlyTotal = computed(() => {
 
     // Return the discounted monthly total
     return (
-      originalMonthlyTotal - monthlyDiscount + +(+pricingPlan.value.sales_tax)
+      originalMonthlyTotal - monthlyDiscount + +(+pricingPlan.value.sales_tax * 0.01 * originalMonthlyTotal)
     );
   }
 
   // Return the original monthly total if there's no coupon.value
-  return originalMonthlyTotal + +(+pricingPlan.value.sales_tax);
+  return originalMonthlyTotal + +(+pricingPlan.value.sales_tax * 0.01 * originalMonthlyTotal);
 });
 
 const annualTotal = computed(() => {
@@ -701,12 +701,12 @@ const annualTotal = computed(() => {
 
     // Return the discounted annual total
     return (
-      originalAnnualTotal - annualDiscount + +pricingPlan.value.sales_tax * 12
+      originalAnnualTotal - annualDiscount + ((+pricingPlan.value.sales_tax * 0.01 * originalAnnualTotal))
     );
   }
 
   // Return the original annual total if there's no coupon
-  return originalAnnualTotal + +pricingPlan.value.sales_tax * 12;
+  return originalAnnualTotal + ((+pricingPlan.value.sales_tax * 0.01 * originalAnnualTotal));
 });
 
 watch(
@@ -896,26 +896,28 @@ const validateForm = () => {
     errors.card_number = "Invalid card number format";
     isValid = false;
   }
+
   // Validate expiration date
   if (!form.expiration_date?.trim()) {
     errors.expiration_date = "Expiration date is required";
     isValid = false;
   } else {
-    let [year, month] = form.expiration_date.split("/");
-    let currentYear = new Date().getFullYear();
+    let [month, year] = form.expiration_date.split("/");
+    let currentYear = new Date().getFullYear() % 100; // Get the last two digits of the current year
     let currentMonth = new Date().getMonth() + 1; // +1 because months are 0-indexed
     year = parseInt(year, 10);
     month = parseInt(month, 10);
 
-    if (year < currentYear || (year === currentYear && month <= currentMonth)) {
+    if (year < currentYear || (year === currentYear && month < currentMonth)) {
       errors.expiration_date = "Expiration date should be in the future";
       isValid = false;
-    } else if (!/^\d{4}\/(0[1-9]|1[0-2])$/.test(form.expiration_date)) {
+    } else if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(form.expiration_date)) {
       errors.expiration_date =
-        "Invalid expiration date format. Should be YYYY/MM";
+        "Invalid expiration date format. Should be MM/YY";
       isValid = false;
     }
   }
+
   // Validate CVV
   if (!form.cvv?.trim()) {
     errors.cvv = "CVV is required";

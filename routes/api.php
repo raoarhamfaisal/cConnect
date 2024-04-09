@@ -65,6 +65,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         // Process Payment
         Route::post('/payment/start-subscription', [PaymentController::class, 'startSubscription'])->name('payment.startSubscription');
         Route::post('/payment/cancel-subscription/{userId}', [PaymentController::class, 'cancelSubscription'])->name('payment.cancelSubscription');
+        Route::post('/subscription/request-cancellation/{userId}', [PaymentController::class, 'requestCancellation'])->name('subscription.requestCancellation');
+
+        Route::post('/admin/accept-cancellation/{userId}', [PaymentController::class, 'acceptCancellationRequest'])->middleware('admin')->name('admin.acceptCancellationRequest');
+        Route::get('/admin/cancellation-requests', [PaymentController::class, 'getCancellationRequests'])->middleware('admin')->name('admin.getCancellationRequests');
 
         Route::get('/payment/subscription-details/{userId}', [PaymentController::class, 'getSubscriptionDetails'])->name('payment.getSubscriptionDetails');
 

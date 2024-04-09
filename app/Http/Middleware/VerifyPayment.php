@@ -20,7 +20,7 @@ class VerifyPayment
         $user = Auth::user();
 
         // Check if the user is authenticated and has a profile with is_payment_verified
-        if ($user && !$user->profile->is_payment_verified) {
+        if ($user && (!$user->profile->is_payment_verified || !$user->profile->active_user)) {
             // You can customize the response or redirection here
             return redirect('/profile-setup');
         }

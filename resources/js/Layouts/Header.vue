@@ -139,12 +139,12 @@ export default {
       this.postFormObject.user_id =
         (this.profile && this.profile.user_id) || null;
     }
-    this.paymentCompleted = this.user_profile.is_payment_verified;
+    this.paymentCompleted = this.user_profile.is_payment_verified && this.user_profile.active_user;
     const user = usePage().props.value;
 
     if (
       this.user_profile &&
-      !this.user_profile.is_payment_verified &&
+      (!this.user_profile.is_payment_verified || !this.user_profile.active_user) &&
       this.url !== "/profile-setup" &&
       this.url !== "/payment"
     ) {

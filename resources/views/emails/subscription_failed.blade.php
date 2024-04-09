@@ -44,7 +44,7 @@
             <p>Please update your payment details to continue enjoying our services.</p>
         </div>
         <div class="footer">
-            &copy; {{ date('Y') }} tContractor. All rights reserved.
+            &copy; 2024 tContractor. All rights reserved.
         </div>
     </div>
 </body>

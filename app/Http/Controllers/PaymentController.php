@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Profile;
 use App\Models\User;
 use App\Models\Subscription;
+use App\Models\UpcomingSubscription;
 use App\Models\PaymentInfo;
 use Illuminate\Support\Carbon;
 use Mail;
@@ -16,6 +17,11 @@ use net\authorize\api\controller as AnetController;
 use App\Mail\SubscriptionFailedMail;
 use App\Mail\SubscriptionSuccessMail;
 use App\Mail\SubscriptionCancelledMail;
+
+use App\Mail\SubscriptionCancellationRequestMail;
+
+
+
 use Illuminate\Support\Facades\DB;
 
 date_default_timezone_set('America/Los_Angeles');
@@ -98,8 +104,9 @@ class PaymentController extends Controller
         $refId = 'ref' . time();
 
 
+
         // 2. Set up the subscription for Authorize.Net
-        $subscription = $this->setUpSubscription($request, $finalAmount);
+        $subscription = $this->setUpSubscription($request, floatval($finalAmount));
 
         // Authentication with Authorize.Net's credentials
         $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
@@ -164,10 +171,12 @@ class PaymentController extends Controller
         $billto->setCountry($request->input('country'));
 
         // Set the subscription interval (Monthly in this case)
-        $intervalLength = ($request->input('duration') === 'annual') ? 365 : 30;
+        // $intervalLength = ($request->input('duration') === 'annual') ? 12 : 1;
+        $intervalLength = ($request->input('duration') === 'annual') ? 7 : 7;
         $interval = new AnetAPI\PaymentScheduleType\IntervalAType();
         $interval->setLength($intervalLength);  
         $interval->setUnit("days"); // Set the interval unit as "days"
+        // $interval->setUnit("months"); // Set the interval unit as "months"
 
         $startDate = Carbon::now();  // Current date
 
@@ -181,7 +190,8 @@ class PaymentController extends Controller
         $subscription->setName(($request->input('duration') === 'annual') ? "Annual Subscription" : "Monthly Subscription");
         $subscription->setPaymentSchedule($paymentSchedule);
         $subscription->setPayment($payment);
-        $subscription->setAmount($finalAmount);
+        // dd($finalAmount);
+        $subscription->setAmount(round($finalAmount, 2));
         $subscription->setTrialAmount("0.00");
         $subscription->setBillTo($billto);
         
@@ -208,7 +218,7 @@ class PaymentController extends Controller
         if ($request->input('duration') === 'annual') {
             $endsAt->addYear();
         } else {
-            $endsAt->addDays(30);
+            $endsAt->addMonth();
         }
 
         DB::table('subscriptions')->insert([
@@ -226,6 +236,21 @@ class PaymentController extends Controller
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
+
+        // Determine the upcoming amount
+        $upcomingAmount = $endsAt->lessThanOrEqualTo($discountEndDate) ? ($originalAmount - $discountAmount) : $originalAmount;
+
+        // Update upcoming subscriptions        
+        // Calculate next charge date based on subscription plan
+        if ($request->input('duration') === 'annual') {
+            $nextChargeDate = $endsAt->copy()->addYear();
+        } else {
+            $nextChargeDate = $endsAt->copy()->addMonth();
+        } 
+
+        $this->updateUpcomingSubscription($userId, $originalAmount, $upcomingAmount, $nextChargeDate, ($request->input('duration') === 'annual') ? 'Annual Subscription' : 'Monthly Subscription', $subscriptionResponse->getSubscriptionId(), true);
+
+       
 
         // Send success email notification
         $user = User::find($userId);
@@ -253,6 +278,41 @@ class PaymentController extends Controller
     }
 
 
+    public function requestCancellation(Request $request, $userId)
+    {
+        $subscription = Subscription::where('user_id', $userId)
+            ->where('is_subscription_active', 1)
+            ->where('is_subscription_successfull', 1)
+            ->first();
+    
+        if ($subscription) {
+            $subscription->is_cancellation_requested = 1;
+            $subscription->save();
+    
+            // Send email to user
+            $user = User::find($userId);
+            if ($user) {
+                Mail::to($user->email)->send(new SubscriptionCancellationRequestMail($user));
+            }
+    
+            return response()->json(["message" => "Cancellation request received."]);
+        } else {
+            return response()->json(["status" => 404, "message" => "No active subscription found for this user."]);
+        }
+    }
+
+    public function getCancellationRequests()
+    {
+        $cancellationRequests = Subscription::where('is_cancellation_requested', true)->get();
+        return response()->json($cancellationRequests);
+    }
+
+    public function acceptCancellationRequest(Request $request, $userId)
+    {
+        // Call the existing cancelSubscription logic
+        return $this->cancelSubscription($request, $userId);
+    }
+        
     public function cancelSubscription(Request $request, $userId)
     {
         $subscription = Subscription::where('user_id', $userId)
@@ -261,7 +321,7 @@ class PaymentController extends Controller
             ->first();
 
 
-        if($subscription) {
+        if ($subscription && $subscription->is_cancellation_requested) {
 
             /* Create a merchantAuthenticationType object with authentication details
            retrieved from the constants file */
@@ -296,6 +356,9 @@ class PaymentController extends Controller
                     $profile->save();
                 }
 
+                // Remove or update the upcoming subscription record
+                $this->removeUpcomingSubscription($userId);
+
                 // Send an email about cancellation
                 $user = User::find($userId);
                 if($user) {
@@ -312,13 +375,22 @@ class PaymentController extends Controller
            }
        
            return $response;
-         }else {
-            return response()->json(["status" => 404, "message" => "No Subscription found for this user "]);
+        } else {
+            return response()->json(["status" => 403, "message" => "Cancellation request not made or already processed."]);
         }
 
     }
 
 
+    private function removeUpcomingSubscription($userId)
+    {
+        // Option 1: Delete the upcoming subscription record
+        UpcomingSubscription::where('user_id', $userId)->delete();
+    
+        // Option 2: Update the record to set `is_subscription_active` to 0
+        // UpcomingSubscription::where('user_id', $userId)
+        //     ->update(['is_subscription_active' => 0]);
+    }
     public function getSubscriptionDetails($userId)
     {
         $subscription = Subscription::where('user_id', $userId)
@@ -345,5 +417,22 @@ class PaymentController extends Controller
                 'message' => 'No active and successful subscription found for this user.',
             ], 404);
         }
+    }
+
+    private function updateUpcomingSubscription($userId, $amount, $upcomingAmount, $nextChargeDate, $subscriptionPlan, $subscriptionId, $wasSuccessful)
+    {
+        $upcomingSubscription = UpcomingSubscription::updateOrCreate(
+            ['user_id' => $userId],
+            [
+                'previous_amount' => $amount,
+                'upcoming_amount' => $upcomingAmount,
+                'last_charged_at' => now(),
+                'next_charge_date' => $nextChargeDate,
+                'subscription_plan' => $subscriptionPlan,
+                'subscription_id' => $subscriptionId,
+                'was_previous_subscription_successful' => $wasSuccessful,
+                'is_subscription_active' => 1 // Or determine the actual status
+            ]
+        );
     }
 }

@@ -138,7 +138,7 @@ class AuthenticatedSessionController extends Controller
             }            
 
 
-            if(!$profile->is_payment_verified) {
+            if(!$profile->is_payment_verified || !$profile->active_user) {
                 return redirect(RouteServiceProvider::PROFILE);
             }
         }

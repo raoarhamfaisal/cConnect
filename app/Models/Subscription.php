@@ -13,6 +13,7 @@ class Subscription extends Model
     protected $fillable = [
         'is_subscription_successfull',
         'is_subscription_active',
+        'is_cancellation_requested',
         'user_id',
         'subscription_id',
         'metadata',

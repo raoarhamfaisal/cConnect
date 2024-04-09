@@ -312,7 +312,7 @@ const submit = () => {
           <div
             class="mx-auto my-6 text-center first-letter: text-white md:hidden"
           >
-            Copyright &copy; 2023, All Rights Reserved
+            Copyright &copy; 2024, All Rights Reserved
           </div>
 
           <!-- LOGO -->
@@ -433,7 +433,7 @@ const submit = () => {
           <div
             class="hidden text-white md:block mx-auto my-6 text-center first-letter:"
           >
-            Copyright &copy; 2023, All Rights Reserved
+            Copyright &copy; 2024, All Rights Reserved
           </div>
         </div>
       </div>
