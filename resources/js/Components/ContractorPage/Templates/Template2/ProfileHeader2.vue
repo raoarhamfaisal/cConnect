@@ -270,7 +270,7 @@ const goBack = () => {
   } else if (prevUrl === "/edit") {
     Inertia.visit(`/contractor/${props.profile.user_id}/edit`);
   } else {
-    Inertia.visit("/post");
+    Inertia.visit("/sub-finder");
   }
   // if (window.history.length > 1) {
   //   let previousUrl = document.referrer;

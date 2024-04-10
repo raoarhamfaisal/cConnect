@@ -113,6 +113,18 @@
             <Icon icon="mdi-tag" color="#1098ad" width="30" height="30" />
             <span class="mx-4 font-medium">Discout Coupons</span>
           </Link>
+          <Link
+            class="flex items-center pl-8 pr-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
+            href="/admin/cancel-subscription"
+          >
+            <Icon
+              icon="material-symbols:cancel-presentation-rounded"
+              color="#1098ad"
+              width="30"
+              height="30"
+            />
+            <span class="mx-4 font-medium">Cancel Subscription Requests</span>
+          </Link>
         </div>
         <!-- Links for Payment Info go here... -->
       </details>

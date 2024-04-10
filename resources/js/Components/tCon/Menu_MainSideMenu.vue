@@ -28,6 +28,7 @@ const props = defineProps({
   modelValue: String,
   postSearchFilters: Object,
 });
+const userProps = usePage().props.value;
 const emit = defineEmits([
   "update:modelValue",
   "submitPostSearch",
@@ -37,6 +38,7 @@ const store = useStore();
 const dialogRef = ref();
 const contractorPageRef = ref();
 const showContractorPageModal = ref(false);
+const url = usePage().url.value;
 
 const newPostSearchValue = () => {
   emit("submitPostSearch");
@@ -47,7 +49,8 @@ function postClicked(isOpen) {
   emit("postClicked", isOpen);
 }
 const isAdminUrl = computed(() => {
-  const user = usePage().props.value.auth.user;
+  const user = userProps.auth.user;
+  console.log(usePage().props.value, "usepage");
   if (user) {
     return (
       user.appeals_privileges ||
@@ -244,14 +247,21 @@ const openContractorPageModal = () => {
       <!-- SIDE MENU OPTIONS -->
 
       <!-- SIDE MENU DIV -->
-      <div class="flex flex-col justify-between flex-1 mt-6">
+      <div
+        class="flex flex-col justify-between flex-1 mt-6"
+        :class="
+          url === '/payment' || url === '/profile-setup'
+            ? 'pointer-events-none'
+            : ''
+        "
+      >
         <nav>
           <!-- all contractors -->
 
           <!-- MENU ITEMS -->
 
           <Link
-            v-if="Inertia.page.component != 'Postings'"
+            v-if="!showPostButtons"
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
             :href="route('post')"
           >
@@ -271,7 +281,7 @@ const openContractorPageModal = () => {
           <!-- RED FLAGS / SLIPPERY APPLES SEARCH -->
           <Link
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
-            href="#"
+            href="/post"
           >
             <img src="/images/icons/redflag.png" width="30" height="30" />
             <span class="mx-4 font-medium text-cyan-600">Red Flags</span>
@@ -307,9 +317,7 @@ const openContractorPageModal = () => {
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
           >
             <img src="/images/icons/news_view.png" width="30" height="30" />
-            <span class="mx-4 font-medium hover:text-cyan-600"
-              >View Settings</span
-            >
+            <span class="mx-4 font-medium hover:text-cyan-600">View</span>
           </button>
 
           <Link
@@ -412,7 +420,7 @@ const openContractorPageModal = () => {
 
           <!-- CONTACT -->
           <Link
-            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 pointer-events-auto"
             href="/about-us#contactUs"
           >
             <img src="/images/icons/contactus.png" width="30" height="30" />
@@ -472,7 +480,7 @@ const openContractorPageModal = () => {
           <!-- LOG OUT -->
           <button
             @click="handleLogout"
-            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
+            class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 pointer-events-auto"
           >
             <img src="/images/icons/logout_bl.png" width="30" height="30" />
             <span class="mx-4 font-medium">Log Out</span>

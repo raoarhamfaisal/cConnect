@@ -175,7 +175,7 @@ const closeDialog = () => {
   }
   isVisible.value = false;
   emit("closed");
-  if (shouldFetchPostsOnClose && props.shouldFetchPost) {
+  if (shouldFetchPostsOnClose.value && props.shouldFetchPost) {
     console.log("inLoadingPost");
     store.commit("ratings/setShouldLoadPosts", true);
     store.commit("ratings/setShouldFetchPostsOnClose", false);

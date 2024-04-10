@@ -51,6 +51,11 @@ export default {
       type: String,
       required: false,
     },
+    showOnlyNewsFeed: {
+      type: Boolean,
+      default: true,
+      required: false,
+    },
     profile: {
       type: Object,
       required: false,
@@ -139,12 +144,14 @@ export default {
       this.postFormObject.user_id =
         (this.profile && this.profile.user_id) || null;
     }
-    this.paymentCompleted = this.user_profile.is_payment_verified && this.user_profile.active_user;
+    this.paymentCompleted =
+      this.user_profile.is_payment_verified && this.user_profile.active_user;
     const user = usePage().props.value;
 
     if (
       this.user_profile &&
-      (!this.user_profile.is_payment_verified || !this.user_profile.active_user) &&
+      (!this.user_profile.is_payment_verified ||
+        !this.user_profile.active_user) &&
       this.url !== "/profile-setup" &&
       this.url !== "/payment"
     ) {
@@ -364,8 +371,11 @@ export default {
                       @RefreshPostings="RefreshPostings"
                     ></ButtonRefresh>
 
-                    <!-- View Settings -->
-                    <div class="flex flex-shrink-0 items-center justify-center">
+                    <!-- View -->
+                    <div
+                      v-if="showPostButtons"
+                      class="flex flex-shrink-0 items-center justify-center"
+                    >
                       <button @click="openProfileModal">
                         <img
                           src="/images/icons/news_view.png"
@@ -373,6 +383,13 @@ export default {
                         />
                       </button>
                     </div>
+                    <Link
+                      v-if="!showPostButtons && showOnlyNewsFeed"
+                      :href="route('post')"
+                      class="block flex justify-center items-center mx-2 py-2 sm:py-3 px-3 sm:px-6 font-bold rounded-lg sm:rounded-xl text-white bg-green-600 hover:bg-green-800 border-green-600"
+                    >
+                      News Feed
+                    </Link>
 
                     <!-- New Post Button -->
 

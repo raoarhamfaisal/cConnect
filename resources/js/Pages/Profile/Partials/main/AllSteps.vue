@@ -70,7 +70,7 @@ const errors = reactive({
   tiktok: "",
   instagram: "",
 });
-const currentStep = ref(1);
+const currentStep = ref(4);
 const editableAllowed = ref(1);
 const steps = ref(4);
 const stepTitles = ["General Info", "Trades", "Views", "Billing"];
@@ -330,6 +330,7 @@ const dontProceed = (areAllTradesSetToZero) => {
           <v-stepper-window-item :value="1">
             <GeneralInfo
               v-model:form="form"
+              :email="profile.email"
               :user_avatar="profile.user_avatar"
               :errors="errors"
               @clearErrors="clearErrors"
@@ -439,6 +440,7 @@ const dontProceed = (areAllTradesSetToZero) => {
 .nextNewFeedColor.buttonClass button:last-child {
   background: #2b8a3e;
   color: #fff;
+  display: none;
 }
 .buttonClass button:first-child {
   background: #ccc;

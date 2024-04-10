@@ -67,9 +67,21 @@ const store = useStore();
 
 //Computed
 const screenWidth = computed(() => store.getters.screenWidth);
+const shouldLoadPosts = computed(() => store.state.ratings.shouldLoadPosts);
 
 //Mounted
-onMounted(async () => {});
+onMounted(async () => {
+  localStorage.setItem("prevUrl", "/sub-finder");
+});
+
+// watch
+watch(shouldLoadPosts, (newVal) => {
+  console.log(newVal);
+  if (newVal) {
+    currentPage.value = 1;
+    fetchSearchedContractorsWithLoading();
+  }
+});
 //
 watch(foundContractors, (newVal) => {
   if (newVal.length > 0) {

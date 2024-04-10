@@ -198,7 +198,7 @@ onMounted(() => {});
                   :href="route('post')"
                   :active="route().current('post')"
                 >
-                  View Settings
+                  View
                 </ResponsiveNavLink>
 
                 <ResponsiveNavLink

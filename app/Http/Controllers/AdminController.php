@@ -123,6 +123,32 @@ class AdminController extends Controller
     
             //
         }
+
+        public function getCancelSubscriptionPage()
+        {
+            // Get current user id
+            $userID = Auth()->user('')->id;
+            $profile = null;
+    
+    
+            // Get the profile information if the user id exists
+            if($userID) {
+                $profile = Profile::where('user_id', $userID)->with('trades')->first();
+            }
+    
+         
+    
+            $tradesOldStructure = $this->convertTradesToOldStructure($profile->trades);
+    
+            return Inertia::render('Admin/Subscription/AdminCancelSubscriptionPage', [
+         
+                'profile' => array_merge($profile->toArray(), $tradesOldStructure),
+                'showit' => Auth::check(),
+                'postSearchFilters' => FacadeRequest::only(['postSearch']),
+            ]);
+    
+            //
+        }
     /**
      * Show the form for creating a new resource.
      *

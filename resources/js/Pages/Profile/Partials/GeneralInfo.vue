@@ -12,6 +12,7 @@ import { useStore } from "vuex";
 const props = defineProps({
   user_avatar: [String, Object],
   form: Object,
+  email: String,
   mode: {
     type: String,
     default: "",
@@ -22,6 +23,7 @@ const store = useStore();
 const loadingImage = ref(false);
 
 const user = usePage().props.value.auth.user;
+const userAvatarError = ref("");
 const user_avatar = ref(props.user_avatar);
 const emit = defineEmits(["update:form", "clearErrors"]);
 
@@ -50,12 +52,15 @@ const handleImageUpdate = (file) => {
     })
     .then((response) => {
       // changesSaved("Avatar uploaded successfully");
+      userAvatarError.value = "";
+
       user_avatar.value = response.data.user_avatar; // Update the local state with the new avatar path
       loadingImage.value = false;
       store.dispatch("profile/fetchProfile", true);
     })
     .catch((error) => {
-      somethingWentWrong("Error uploading avatar");
+      userAvatarError.value = error.response.data.message;
+
       loadingImage.value = false;
       // Handle the error appropriately here
     });
@@ -100,9 +105,24 @@ const clearError = (field) => {
         :imageSrc="user_avatar"
         @update-image="handleImageUpdate"
       />
+      <InputError class="mt-2" :message="userAvatarError" />
+
       <div
         class="mt-6 space-y-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-6"
       >
+        <div>
+          <InputLabel class="font-bold" for="email" value="Email" />
+          <input
+            id="email"
+            type="tel"
+            class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm disabled:bg-gray-100"
+            :value="email"
+            :disabled="true"
+            required
+            autocomplete="email"
+          />
+        </div>
+        <div></div>
         <div>
           <InputLabel class="font-bold" for="first_name" value="First Name*" />
           <TextInput

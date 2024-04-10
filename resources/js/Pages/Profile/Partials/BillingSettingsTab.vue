@@ -47,12 +47,17 @@ const monthlyTotal = computed(() => {
 
     // Return the discounted monthly total
     return (
-      originalMonthlyTotal - monthlyDiscount + +(+pricingPlan.value.sales_tax * 0.01 * originalMonthlyTotal)
+      originalMonthlyTotal -
+      monthlyDiscount +
+      +(+pricingPlan.value.sales_tax * 0.01 * originalMonthlyTotal)
     );
   }
 
   // Return the original monthly total if there's no coupon.value
-  return originalMonthlyTotal + +(+pricingPlan.value.sales_tax * 0.01 * originalMonthlyTotal);
+  return (
+    originalMonthlyTotal +
+    +(+pricingPlan.value.sales_tax * 0.01 * originalMonthlyTotal)
+  );
 });
 
 const annualTotal = computed(() => {
@@ -67,12 +72,17 @@ const annualTotal = computed(() => {
 
     // Return the discounted annual total
     return (
-      originalAnnualTotal - annualDiscount + ((+pricingPlan.value.sales_tax * 0.01 * originalAnnualTotal))
+      originalAnnualTotal -
+      annualDiscount +
+      +pricingPlan.value.sales_tax * 0.01 * originalAnnualTotal
     );
   }
 
   // Return the original annual total if there's no coupon
-  return originalAnnualTotal + ((+pricingPlan.value.sales_tax * 0.01 * originalAnnualTotal));
+  return (
+    originalAnnualTotal +
+    +pricingPlan.value.sales_tax * 0.01 * originalAnnualTotal
+  );
 });
 
 //Methods
@@ -113,16 +123,14 @@ const handleCancelSubscription = async () => {
 
   try {
     const response = await axios.post(
-      `/api/payment/cancel-subscription/${props.user_id}`,
+      `/api/subscription/request-cancellation/${props.user_id}`,
       {},
       getAxiosConfig()
     );
     if (response.data) {
       console.log(response.data, "response");
-      changesSaved("Your subscription is successfully cancelled");
-      setTimeout(() => {
-        Inertia.post("/logout");
-      }, 2000);
+      changesSaved("Cancellation Request Recieved");
+      cancelSubscriptionDialogRef.value.closeDialog();
     }
   } catch (err) {
     console.log(err);
@@ -141,6 +149,16 @@ const handleCancelSubscription = async () => {
         <p class="mt-1 text-sm text-gray-600">
           The next billing will be made with selected payment method below
         </p>
+      </div>
+
+      <div
+        class="inline-flex items-center justify-center px-2 py-2 sm:px-3 sm:py-2 py-1 bg-teal-600 sm:text-xs font-bold leading-none uppercase text-white rounded-full self-start"
+        v-if="
+          Object.keys(pricingPlan).length > 2 &&
+          pricingPlan.is_cancellation_requested
+        "
+      >
+        Under Cancellation
       </div>
       <!-- <div
         @click="openAssuringCancelSubDialog"
@@ -190,10 +208,14 @@ const handleCancelSubscription = async () => {
             >
               <span class="text-lg sm:text-2xl"
                 >${{
-                  planType === "monthly" ? parseFloat(monthlyTotal).toFixed(4) : parseFloat(annualTotal).toFixed(4)
+                  planType === "monthly"
+                    ? parseFloat(monthlyTotal).toFixed(4)
+                    : parseFloat(annualTotal).toFixed(4)
                 }}</span
               >
-              <span class="text-xs ml-1">/{{ planType === "monthly" ? "mo" : "yr" }}</span>
+              <span class="text-xs ml-1"
+                >/{{ planType === "monthly" ? "mo" : "yr" }}</span
+              >
             </div>
             <div class="features w-full text-center mb-6">
               <div class="flex justify-between">
@@ -251,12 +273,19 @@ const handleCancelSubscription = async () => {
       </div>
 
       <div class="mt-8 flex text-sm">
-        <div class="">For cancelling your subscription ,</div>
         <div
-          @click="openAssuringCancelSubDialog"
-          class="font-bold ml-1 text-blue-rgba cursor-pointer"
+          v-if="
+            Object.keys(pricingPlan).length > 2 &&
+            !pricingPlan.is_cancellation_requested
+          "
         >
-          click here.
+          <div class="">For cancelling your subscription ,</div>
+          <div
+            @click="openAssuringCancelSubDialog"
+            class="font-bold ml-1 text-blue-rgba cursor-pointer"
+          >
+            click here.
+          </div>
         </div>
         <div class="ml-1">For billing inquiries ,</div>
         <a
@@ -293,10 +322,12 @@ const handleCancelSubscription = async () => {
   >
     <div class="mb-4">
       <div class="pl-6 section_text-gray-700 mt-3 mb-2">
-        <p class="mb-2 text-xl">
+        <div class="mb-2 text-xl">
           Are you sure you want to cancel your subscription with
-          <span class="font-bold">tContractor</span>? Upon cancellation:
-        </p>
+          <span class="font-bold">tContractor</span>?
+
+          <p class="text-lg font-semibold">Upon cancellation:</p>
+        </div>
         <ul class="list-disc pl-5 text-base">
           <li class="mb-1">
             You will lose access to all exclusive services and benefits
@@ -314,6 +345,12 @@ const handleCancelSubscription = async () => {
         <p class="mt-2 font-semibold">
           Please consider carefully, as this action is
           <strong>irreversible </strong>.
+        </p>
+        <p class="text-base">
+          Upon receiving your request to cancel, we will carefully review it and
+          notify you of the outcome via your registered
+          <strong>email address</strong>. We understand the importance of your
+          decision and are committed to processing your request promptly.
         </p>
       </div>
     </div>

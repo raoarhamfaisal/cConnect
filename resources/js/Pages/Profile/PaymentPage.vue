@@ -49,14 +49,16 @@
               <div class="flex flex-col items-center justify-center">
                 <h2 class="text-xl sm:text-2xl font-bold mb-2">MONTHLY</h2>
                 <div
-                  class="price-tag bg-white w-40 h-40 sm:w-40 sm:h-40 border-2 rounded-full flex items-center justify-center"
+                  class="price-tag bg-white w-28 h-28 sm:w-40 sm:h-40 border-2 rounded-full flex items-center justify-center"
                   :class="{
                     'bg-[#4169E1] border-[#4169E1] text-white':
                       planType === 'MONTHLY',
                     'bg-white border-black text-black': planType !== 'MONTHLY',
                   }"
                 >
-                  <span class="text-lg sm:text-2xl">${{ parseFloat(monthlyTotal).toFixed(4) }}</span>
+                  <span class="text-lg sm:text-2xl"
+                    >${{ parseFloat(monthlyTotal).toFixed(2) }}</span
+                  >
                   <span class="text-xs ml-1">/mo</span>
                 </div>
               </div>
@@ -86,14 +88,16 @@
               <div class="flex flex-col items-center justify-center">
                 <h2 class="text-xl sm:text-2xl font-bold mb-2">ANNUAL</h2>
                 <div
-                  class="price-tag bg-white w-40 h-40 sm:w-40 sm:h-40 border-2 rounded-full flex items-center justify-center"
+                  class="price-tag bg-white w-28 h-28 sm:w-40 sm:h-40 border-2 rounded-full flex items-center justify-center"
                   :class="{
                     'bg-[#4169E1] border-[#4169E1] text-white':
                       planType === 'ANNUAL',
                     'bg-white border-black text-black': planType !== 'ANNUAL',
                   }"
                 >
-                  <span class="text-lg sm:text-2xl">${{ parseFloat(annualTotal).toFixed(4) }}</span>
+                  <span class="text-lg sm:text-2xl"
+                    >${{ parseFloat(annualTotal).toFixed(2) }}</span
+                  >
                   <span class="text-xs ml-1">/yr</span>
                 </div>
               </div>
@@ -115,10 +119,10 @@
             <div class="font-bold text-2xl text-blue-rgba leading-tight">
               Choose Payment Method
             </div>
-            <div class="flex gap-4 max-sm:gap-6 gap-2 lg:gap-10 w-full mt-4">
+            <div class="flex gap-4 gap-1 sx:gap-2 lg:gap-10 w-full mt-4">
               <div
                 :class="[
-                  'shadow-md flex justify-center items-center gap-2 border-2 cursor-pointer  active:scale-100  p-3 sm:p-5 rounded',
+                  'shadow-md flex justify-center items-center gap-2 border-2 cursor-pointer  active:scale-100 p-2  sm:p-5 rounded',
                   paymentMethod === 'AUTHORIZE.NET'
                     ? 'border-[#4169E1] border-[2px]'
                     : 'border-black hover:scale-[1.02]',
@@ -128,7 +132,7 @@
                 style="transition: all 0.3s ease-in-out"
               >
                 <div
-                  class="h-4 w-4 border-2 rounded-full mx-auto"
+                  class="h-3 sm:h-4 w-3 sm:w-4 border-2 rounded-full mx-auto"
                   :style="{
                     background:
                       paymentMethod === 'AUTHORIZE.NET' ? '#4169E1' : 'white',
@@ -136,7 +140,14 @@
                       paymentMethod === 'AUTHORIZE.NET' ? '#4169E1' : 'black',
                   }"
                 ></div>
-                <div class="flex items-center justify-center">
+                <div
+                  class="flex max-xl:flex-col max-xl:gap-0 items-center justify-center"
+                >
+                  <div
+                    class="font-bold mr-1 translate-y-[0px] text-sm sm:text-lg"
+                  >
+                    Credit/Debit
+                  </div>
                   <img
                     src="/images/icons/debit-visa-card.png"
                     alt="Authorize.net Logo"
@@ -147,7 +158,7 @@
 
               <div
                 :class="[
-                  'shadow-md flex gap-4 justify-center items-center  border-2 cursor-pointer transition-all duration-300 active:scale-100 p-3 sm:p-5 rounded',
+                  'shadow-md flex gap-4 justify-center items-center  border-2 cursor-pointer transition-all duration-300 active:scale-100 p-2 sm:p-5 rounded',
                   paymentMethod === 'ACH'
                     ? 'border-[#4169E1] border-[2px]'
                     : 'border-black hover:scale-[1.02] border-[2px]',
@@ -155,18 +166,20 @@
                 @click="selectPayment('ACH')"
               >
                 <div
-                  class="h-4 border-2 w-4 rounded-full mx-auto"
+                  class="h-3 sm:h-4 border-2 w-3 sm:w-4 rounded-full mx-auto"
                   :style="{
                     background: paymentMethod === 'ACH' ? '#4169E1' : 'white',
                     borderColor: paymentMethod === 'ACH' ? '#4169E1' : 'black',
                   }"
                 ></div>
-                <div class="flex items-center justify-center">
-                  <!-- <img
-                    src="path_to_ach_image"
-                    alt="ACH"
-                    class="w-32 h-32 rounded-full"
-                  /> -->
+                <div
+                  class="flex max-xl:flex-col max-xl:gap-0 items-center justify-center"
+                >
+                  <div
+                    class="font-bold mr-1 translate-y-[0px] text-sm sm:text-lg"
+                  >
+                    Bank Transfer
+                  </div>
                   <img
                     src="/images/icons/ach.png"
                     alt="Authorize.net Logo"
@@ -199,7 +212,7 @@
                   <div
                     for="sameAsProfile"
                     @click="sameAsProfile = !sameAsProfile"
-                    class="w-full cursor-pointer translate-y-[0px]"
+                    class="w-full cursor-pointer text-sm sm:text-base translate-y-[0px]"
                   >
                     Would you prefer to use the same billing details as you've
                     previously set up in your profile?
@@ -407,7 +420,7 @@
                   <InputError class="mt-2" :message="subscriptionApiError" />
 
                   <PrimaryButton
-                    @click="startSubscription"
+                    @click.stop="startSubscription"
                     type="button"
                     :disabled="loadingSubscribing"
                     :style="{
@@ -681,12 +694,17 @@ const monthlyTotal = computed(() => {
 
     // Return the discounted monthly total
     return (
-      originalMonthlyTotal - monthlyDiscount + +(+pricingPlan.value.sales_tax * 0.01 * originalMonthlyTotal)
+      originalMonthlyTotal -
+      monthlyDiscount +
+      +(+pricingPlan.value.sales_tax * 0.01 * originalMonthlyTotal)
     );
   }
 
   // Return the original monthly total if there's no coupon.value
-  return originalMonthlyTotal + +(+pricingPlan.value.sales_tax * 0.01 * originalMonthlyTotal);
+  return (
+    originalMonthlyTotal +
+    +(+pricingPlan.value.sales_tax * 0.01 * originalMonthlyTotal)
+  );
 });
 
 const annualTotal = computed(() => {
@@ -701,12 +719,17 @@ const annualTotal = computed(() => {
 
     // Return the discounted annual total
     return (
-      originalAnnualTotal - annualDiscount + ((+pricingPlan.value.sales_tax * 0.01 * originalAnnualTotal))
+      originalAnnualTotal -
+      annualDiscount +
+      +pricingPlan.value.sales_tax * 0.01 * originalAnnualTotal
     );
   }
 
   // Return the original annual total if there's no coupon
-  return originalAnnualTotal + ((+pricingPlan.value.sales_tax * 0.01 * originalAnnualTotal));
+  return (
+    originalAnnualTotal +
+    +pricingPlan.value.sales_tax * 0.01 * originalAnnualTotal
+  );
 });
 
 watch(

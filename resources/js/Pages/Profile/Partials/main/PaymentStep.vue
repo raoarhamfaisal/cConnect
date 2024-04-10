@@ -17,16 +17,22 @@
     >
       <PricingCard
         plan="MONTHLY"
-        :monthlyPrice="pricingPlan.billed_monthly_price ? pricingPlan.billed_monthly_price : 0"
+        :monthlyPrice="
+          pricingPlan.billed_monthly_price
+            ? pricingPlan.billed_monthly_price
+            : 0
+        "
         :salesTax="pricingPlan.sales_tax ? pricingPlan.sales_tax : 0"
-        :total="monthlyTotal ? parseFloat(monthlyTotal).toFixed(4) : 0"
+        :total="monthlyTotal ? parseFloat(monthlyTotal).toFixed(2) : 0"
         @selectedPricing="selectedPricing"
       />
 
       <PricingCard
         plan="ANNUAL"
-        :monthlyPrice="pricingPlan.billed_annual_price ? pricingPlan.billed_annual_price : 0"
-        :total="annualTotal ? parseFloat(annualTotal).toFixed(4) : 0"
+        :monthlyPrice="
+          pricingPlan.billed_annual_price ? pricingPlan.billed_annual_price : 0
+        "
+        :total="annualTotal ? parseFloat(annualTotal).toFixed(2) : 0"
         @selectedPricing="selectedPricing"
         :salesTax="pricingPlan.sales_tax ? pricingPlan.sales_tax : 0"
       />
@@ -63,12 +69,16 @@ onMounted(() => {
 // computed
 
 const monthlyTotal = computed(() => {
-  return +pricingPlan.value.billed_monthly_price + ((+pricingPlan.value.sales_tax * 0.01 * +pricingPlan.value.billed_monthly_price));
+  return (
+    +pricingPlan.value.billed_monthly_price +
+    +pricingPlan.value.sales_tax * +pricingPlan.value.billed_monthly_price
+  );
 });
 
 const annualTotal = computed(() => {
   return (
-    +pricingPlan.value.billed_annual_price + ((+pricingPlan.value.sales_tax * 0.01 * +pricingPlan.value.billed_annual_price))
+    +pricingPlan.value.billed_annual_price +
+    +pricingPlan.value.sales_tax * +pricingPlan.value.billed_annual_price
   );
 });
 

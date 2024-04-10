@@ -30,6 +30,7 @@ const selectedObj = props.regions.find((item) => item.id == props.region_id);
 const selectedName = selectedObj ? selectedObj.name : undefined;
 
 const selectedReferal = ref(selectedName ?? "");
+const companyLogoError = ref("");
 
 //Emits
 const emit = defineEmits(["update:form", "clearErrors"]);
@@ -92,11 +93,14 @@ const handleImageUpdate = (file) => {
     })
     .then((response) => {
       loadingImage.value = false;
+      companyLogoError.value = "";
 
       company_logo.value = response.data.company_logo; // Update the local state with the new avatar path
     })
     .catch((error) => {
-      somethingWentWrong("Error uploading avatar");
+      console.log(error, "error");
+      companyLogoError.value = error.response.data.message;
+
       loadingImage.value = false;
 
       // Handle the error appropriately here
@@ -171,6 +175,8 @@ onBeforeUnmount(() => {
         :imageSrc="company_logo"
         @update-image="handleImageUpdate"
       />
+      <InputError class="mt-2" :message="companyLogoError" />
+
       <div
         class="mt-6 space-y-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-6"
       >
@@ -249,8 +255,16 @@ onBeforeUnmount(() => {
           <InputError class="mt-2" :message="errors.city" />
         </div>
         <div class="mb-4 sm:mb-0">
-          <InputLabel class="font-bold mb-1" value="State*" />
-          <SelectProfile
+          <InputLabel for="state" class="font-bold mb-1" value="State*" />
+          <TextInput
+            id="state"
+            type="text"
+            class="mt-1 block w-full"
+            v-model="form.state"
+            @input="clearError('state')"
+            placeholder="Type your State"
+          />
+          <!-- <SelectProfile
             :options="stateList"
             :modelValue="form.state"
             @update:modelValue="
@@ -259,7 +273,7 @@ onBeforeUnmount(() => {
                 clearError('state');
               }
             "
-          />
+          /> -->
           <InputError class="mt-2" :message="errors.state" />
         </div>
 
