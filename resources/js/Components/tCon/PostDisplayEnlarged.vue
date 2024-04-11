@@ -73,6 +73,7 @@ export default {
   data() {
     return {
       dialogRef: null,
+      customBgColor: "",
       showFullTextBody1: false,
       showFullTextBody2: false,
       truncatedLength: this.$store.state.screenWidth > 769 ? 400 : 260,
@@ -101,37 +102,49 @@ export default {
         }
       },
     },
+    body1Class: function () {
+      let regex = /class="([^"]*text-[^"]*)"/;
+      let regex2 = /class="([^"]*justify-[^"]*)"/;
+
+      let match = this.postToEnlarge.body1.match(regex);
+      let match2 = this.postToEnlarge.body1.match(regex2);
+
+      let className = match ? match[1] : ""; // Extract the classes
+      let className2 = match2 ? match2[1] : ""; // Extract the classes
+      let bgClassMatch = className.match(/bg-\[#([a-zA-Z0-9]+)\]/);
+
+      if (bgClassMatch) {
+        // this.postToEnlarge.body1 = this.postToEnlarge.body1.replace(
+        //   bgClassMatch[0],
+        //   ""
+        // ); // Remove the bg-[#...] class from postToEnlarge.body1
+        this.customBgColor = "#" + bgClassMatch[1]; // Set the custom background color (with '#')
+      }
+
+      return className + " " + className2;
+    },
+
+    displayedBody1() {
+      let content = this.postToEnlarge.body1;
+      if (content) {
+        content = content.replace(/\/n/g, "<br>"); // Replace /n with <br>
+      }
+
+      return this.processUrls(content);
+    },
+
+    displayedBody2() {
+      let content = this.postToEnlarge.body2;
+      if (content) {
+        content = content.replace(/\/n/g, "<br>"); // Replace /n with <br>
+      }
+
+      return this.processUrls(content);
+    },
     processedBody2() {
       return this.processUrls(this.postToEnlarge.body2);
     },
-    displayedBody1() {
-      if (this.showFullTextBody1) {
-        return this.processedBody1;
-      } else {
-        // Truncate the text after a certain length
-        let truncated = this.postToEnlarge.body1.substring(
-          0,
-          this.truncatedLength
-        );
-        // Ensure it doesn't cut off in the middle of a word
-        truncated = truncated.substring(0, truncated.lastIndexOf(" "));
-        return this.processUrls(truncated);
-      }
-    },
-    displayedBody2() {
-      if (this.showFullTextBody2) {
-        return this.processedBody2;
-      } else {
-        // Truncate the text after a certain length
-        let truncated = this.postToEnlarge.body2.substring(
-          0,
-          this.truncatedLengthBody2
-        );
-        // Ensure it doesn't cut off in the middle of a word
-        truncated = truncated.substring(0, truncated.lastIndexOf(" "));
-        return this.processUrls(truncated);
-      }
-    },
+
     processedBody1() {
       return this.processUrls(this.postToEnlarge.body1);
     },
@@ -141,10 +154,11 @@ export default {
       this.$refs.dialogRef.openDialog();
     },
     processUrls(body) {
-      const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/g;
-      return body.replace(urlRegex, function (url) {
+      // Improved regex: capture URLs but stop if a '<' character (start of a potential HTML tag) is encountered
+      const urlRegex = /(https?:\/\/[^<\s]+|www\.[^<\s]+)/g;
+      return body?.replace(urlRegex, function (url) {
         let actualUrl = url.startsWith("http") ? url : "http://" + url;
-        return `<a href="${actualUrl}" target="_blank">${url}</a>`;
+        return `<a @click.self.stop="()=>{}" href="${actualUrl}" target="_blank">${url}</a>`;
       });
     },
     toggleText() {
@@ -204,7 +218,7 @@ export default {
             </div>
           </button>
         </div>
-        <div class="px-4">
+        <div class="px-4 flex justify-start items-center flex-col">
           <!-- TOP ROW MENUS POST ACTIONS MENU -->
           <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
           <div
@@ -309,45 +323,20 @@ export default {
           </div>
           <!-- End TOP POSTING ROW -->
 
-          <!-- Text Body1 UPPER -->
-          <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-          <!-- <div
-            v-show="postToEnlarge.body1"
-            class="flex flex-row justify-center items-center w-full px-2 text-lg xs:text-xl md:text-2xl"
-            :class="[
-              body1Colors[postToEnlarge.body1ColorId],
-              postToEnlarge.body1Bold ? 'font-bold' : 'font-normal',
-            ]"
+          <div
+            :class="`${body1Class} ${
+              customBgColor.startsWith('#')
+                ? ' flex-col w-full items-center  px-2 py-32 rounded-md shadow-lg border-2'
+                : ''
+            } `"
+            class=""
+            :style="{ backgroundColor: customBgColor }"
           >
-            {{ postToEnlarge.body1 }}
-          </div> -->
-
-          <div class="">
             <span
               v-show="postToEnlarge.body1"
               v-html="displayedBody1"
               class="w-full processed-body inline"
             ></span>
-            <span
-              v-if="
-                !showFullTextBody1 &&
-                postToEnlarge.body1.length > truncatedLength
-              "
-              @click="toggleText"
-              class="cursor-pointer text-sky-700"
-            >
-              ...more
-            </span>
-            <span
-              v-if="
-                showFullTextBody1 &&
-                postToEnlarge.body1.length > truncatedLength
-              "
-              @click="toggleText"
-              class="cursor-pointer text-sky-700"
-            >
-              ...less
-            </span>
           </div>
 
           <!-- INDIVIDUAL POST: MAIN IMAGES  -->
@@ -373,7 +362,7 @@ export default {
           >
             {{ postToEnlarge.body2 }}
           </div> -->
-          <div class="">
+          <!-- <div class="">
             <div
               v-show="postToEnlarge.body2"
               v-html="displayedBody2"
@@ -382,7 +371,7 @@ export default {
             <span
               v-if="
                 !showFullTextBody2 &&
-                postToEnlarge.body2.length > truncatedLengthBody2
+                postToEnlarge.body2?.length > truncatedLengthBody2
               "
               @click="toggleTextBody2"
               class="cursor-pointer text-sky-700"
@@ -392,13 +381,21 @@ export default {
             <span
               v-if="
                 showFullTextBody2 &&
-                postToEnlarge.body2.length > truncatedLengthBody2
+                postToEnlarge.body2?.length > truncatedLengthBody2
               "
               @click="toggleTextBody2"
               class="cursor-pointer text-sky-700"
             >
               ...less
             </span>
+          </div> -->
+
+          <div class="mb-3 mt-3">
+            <div
+              v-show="postToEnlarge.body2"
+              v-html="displayedBody2"
+              class="processed-body inline justify-center items-center w-full text-base xs:text-lg md:text-xl font-normal text-gray-900"
+            ></div>
           </div>
 
           <!-- INDIVIDUAL POST: BOTTOM ROW MENU -->

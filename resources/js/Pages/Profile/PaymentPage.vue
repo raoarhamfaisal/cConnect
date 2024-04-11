@@ -103,7 +103,7 @@
               </div>
             </div>
           </div>
-          <div
+          <!-- <div
             class="font-bold flex mt-6 flex-wrap justify-center items-center text-base"
           >
             Have a coupon code?
@@ -113,7 +113,7 @@
             >
               Click here to enter your code
             </div>
-          </div>
+          </div> -->
           <!-- payment type -->
           <div class="mt-4">
             <div class="font-bold text-2xl text-blue-rgba leading-tight">
@@ -449,7 +449,7 @@
           height="80vh"
         ></Loader>
 
-        <CustomDialog
+        <!-- <CustomDialog
           submitText="Okay"
           :showFooter="false"
           dialogWidth="width-40"
@@ -491,8 +491,8 @@
               <div v-show="loadingCoupon">Verifying...</div></PrimaryButton
             >
           </div>
-          <!-- </Card> -->
-        </CustomDialog>
+         
+        </CustomDialog> -->
 
         <CustomDialog
           :dontAllowCancel="true"

@@ -75,7 +75,7 @@ export default {
       options: options,
       isUploading: false,
       referenceList: ref([]),
-      showBackroundColor: true,
+      // showBackroundColor: true,
       selectedReferal: ref(""),
       // editor: DecoupledEditor,
       // editorData: "<p>Enter your top text</p>",
@@ -137,11 +137,11 @@ export default {
         this.selectedReferal = selectedName;
       }
     },
-    shouldShowBackground(newValue, oldValue) {
-      if (newValue && newValue !== oldValue) {
-        this.showBackroundColor = true;
-      }
-    },
+    // shouldShowBackground(newValue, oldValue) {
+    //   if (newValue && newValue !== oldValue) {
+    //     this.showBackroundColor = true;
+    //   }
+    // },
     success(newVal) {
       if (newVal) {
         this.form.title = "";
@@ -195,9 +195,29 @@ export default {
     },
     handleFilePondProcessStart(file) {
       console.log("started file");
-      this.showBackroundColor = false;
+      // this.showBackroundColor = false;
       this.isUploading = true;
     },
+    handleFileReorder(files, origin, target) {
+      console.log(origin, target, "target");
+
+      // Split the form.image string into an array
+      let imagesArray = this.form.image.split("|");
+
+      // Check if the origin and target indices are valid
+      if (origin < imagesArray.length && target < imagesArray.length) {
+        // Swap the elements at the origin and target indices
+        let temp = imagesArray[origin];
+        imagesArray[origin] = imagesArray[target];
+        imagesArray[target] = temp;
+
+        // Update the form.image string with the new order
+        this.form.image = imagesArray.join("|");
+      }
+
+      console.log("Updated image order:", this.form.image);
+    },
+
     handleFilePondProcessEnd(file, error) {
       console.log("ended1");
     },
@@ -205,7 +225,7 @@ export default {
       console.log("ended2");
 
       this.isUploading = false;
-      this.showBackroundColor = true;
+      // this.showBackroundColor = true;
     },
     changeReferal(value) {
       this.selectedReferal = value;
@@ -222,7 +242,6 @@ export default {
       this.myFiles = [];
       // Create the array of images using seperator |
       let arr = this.form.image ? this.form.image.split("|") : [];
-
       // loop through array and display each image
       for (let i = 0; i < arr.length; i++) {
         // Adding image object to myFiles arrray
@@ -237,6 +256,16 @@ export default {
         });
       }
     },
+    reverseAndJoinString(inputString) {
+      // Split the string into an array
+      let arr = inputString.split("|");
+
+      // Reverse the array
+      console.log(arr, "array");
+
+      // Join the array back into a string
+      return arr.join("|");
+    },
 
     addFormImage(image) {
       // deleting or adding new item to array and
@@ -244,10 +273,12 @@ export default {
       // using vertical line as delimiter... all the
       // file names will be in the same field in the DB
       // but seperated by '|'
+
       let arr = this.form.image ? this.form.image.split("|") : [];
       arr.push(image);
       this.form.image = arr.join("|");
-      console.log("addForm: ", this.form.image);
+      // this.form.image = this.reverseAndJoinString(this.form.image);
+      console.log("addFormsdljkf: ", image, "image", this.form.image);
       console.log("ended3");
     },
 
@@ -261,6 +292,7 @@ export default {
     // The callback when image is loaded
     // response is the image
     handleFilePondLoad(response) {
+      console.log(response, "response");
       this.addFormImage(response);
       // for multiple we need to return the unique file id
       // the name of the file
@@ -289,15 +321,19 @@ export default {
       });
       load();
       console.log(this.form.image, "image");
-      if (!this.form.image) {
-        this.showBackroundColor = true;
-      }
+      // if (!this.form.image) {
+      //   this.showBackroundColor = true;
+      // }
     },
     openDialog() {
       this.$refs.tradeDialogRef.openDialog();
     },
     handleSubmit() {
       this.$refs.tradeDialogRef.closeDialog();
+    },
+    updateFiles(files) {
+      let myFiles = files.map((fileItem) => fileItem.file);
+      console.log(myFiles.map((file) => file.name).join("|"), "update files");
     },
     selectAllTrades() {
       if (this.selectAll) {
@@ -469,10 +505,8 @@ Array.prototype.remove = function () {
                   id="formPostbody1"
                   placeholder="Top text..."
                 /> -->
-                <TextEditor
-                  v-model="form.body1"
-                  :shouldShowBackground="showBackroundColor"
-                />
+                <TextEditor v-model="form.body1" />
+                <!-- :shouldShowBackground="showBackroundColor" -->
                 <div v-if="$page.props.errors.body1" class="text-red-500">
                   {{ $page.props.errors.body1 }}
                 </div>
@@ -507,7 +541,7 @@ Array.prototype.remove = function () {
                   imageResizeTargetHeight="2000"
                   imageResizeUpscale="true"
                   maxFiles="10"
-                  allowReorder="true"
+                  :allowReorder="true"
                   credits="false"
                   v-bind:server="{
                     url: '',
@@ -542,7 +576,9 @@ Array.prototype.remove = function () {
                   "
                   v-on:addfile="handleFilePondProcessEnd"
                   v-on:processfileabort="handleFilePondError"
+                  v-on:updatefiles="updateFiles"
                   v-on:removefile="handleFilePondProcessEnd"
+                  v-on:reorderfiles="handleFileReorder"
                   v-on:processfilerevert="handleFilePondProcessEnd"
                 >
                 </file-pond>

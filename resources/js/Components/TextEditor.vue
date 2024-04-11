@@ -3,10 +3,7 @@
     <div class="toolbar bg-gray-100 p-2 border-b flex items-center">
       <FontSizeDropdown v-model="fontSizeIncrement" />
       <FontColorDropdown v-model="selectedColor" />
-      <BackgroundColorDropdown
-        v-if="shouldShowBackground"
-        v-model="backgroundColor"
-      />
+      <BackgroundColorDropdown v-model="backgroundColor" />
 
       <!-- Bold Icon -->
       <button
@@ -107,7 +104,6 @@ import BackgroundColorDropdown from "@/Components/BackgroundColorDropdown.vue";
 import FontColorDropdown from "@/Components/FontColorDropdown.vue";
 const props = defineProps({
   modelValue: String,
-  shouldShowBackground: Boolean,
 });
 
 const emit = defineEmits(["update:modelValue"]);
@@ -169,17 +165,7 @@ watch(
     emit("update:modelValue", styledContent);
   }
 );
-watch(
-  () => props.shouldShowBackground,
-  (newValue) => {
-    console.log(newValue, "inShowBackground");
-    if (!newValue) {
-      backgroundColor.value = "inherit";
-      // selectedColor.value = "black";
-      // alignment.value = "";
-    }
-  }
-);
+
 watch(backgroundColor, (newValue) => {
   // only if the selected color is black or inherit
   if (
