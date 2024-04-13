@@ -28,32 +28,12 @@ const gridConfigs = computed(() => {
         { cols: 2, start: i + 2, end: i + 4 }
       );
       break;
-    case 5:
+
+    default:
       configs.push(
         { cols: 2, start: i, end: i + 2 },
         { cols: 3, start: i + 2, end: i + 5 }
       );
-      break;
-    case 6:
-      configs.push(
-        { cols: 3, start: i, end: i + 3 },
-        { cols: 3, start: i + 3, end: i + 6 }
-      );
-      break;
-    case 7:
-      configs.push(
-        { cols: 2, start: i, end: i + 2 },
-        { cols: 2, start: i + 2, end: i + 4 },
-        { cols: 3, start: i + 4, end: i + 7 }
-      );
-      break;
-    default:
-      while (i < props.imageArray.length - 3) {
-        // keep the last 3 images separate
-        configs.push({ cols: 2, start: i, end: i + 2 });
-        i += 2;
-      }
-      configs.push({ cols: 3, start: i, end: props.imageArray.length });
       break;
   }
   return configs;
@@ -131,7 +111,7 @@ const handleUpdateHeight = ({ height, imageLength, firstTwoImages }) => {
     }
   } else if (!firstTwoImages) {
     heights.value.push(height);
-    if (heights.value.length === imageLength) {
+    if (heights.value.length === imageLength || heights.value.length === 5) {
       smallestHeight.value = Math.min(...heights.value);
     }
   }
@@ -455,6 +435,17 @@ const handleUpdateHeight = ({ height, imageLength, firstTwoImages }) => {
           :key="index"
         >
           <PostShowTheImage
+            v-if="index === 2"
+            @updateHeight="handleUpdateHeight"
+            :allPortraits="true"
+            :cropImage="true"
+            :smallestHeight="smallestHeight"
+            :image="image"
+            :numberOfImages="numberOfImages - 2"
+            :plusImageNumber="imageArray.length - config.end + 1"
+          />
+          <PostShowTheImage
+            v-else
             :numberOfImages="numberOfImages - 2"
             @updateHeight="handleUpdateHeight"
             :allPortraits="true"
@@ -468,3 +459,35 @@ const handleUpdateHeight = ({ height, imageLength, firstTwoImages }) => {
     </div>
   </div>
 </template>
+<!-- <div
+v-for="(config, cIndex) in gridConfigs"
+:key="cIndex"
+:class="`grid grid-cols-${config.cols} gap-1 pb-1`"
+>
+<div
+  v-for="(image, index) in imageArray.slice(config.start, config.end)"
+  :key="index"
+>
+
+  <PostShowTheImage
+    v-if="index < 2"
+    :numberOfImages="numberOfImages - 2"
+    @updateHeight="handleUpdateHeight"
+    :allPortraits="true"
+    :smallestHeight="smallestHeight"
+    :image="image"
+    :cropImage="true"
+    :plusImageNumber="0"
+  />
+  <PostShowTheImage
+    v-else
+    :numberOfImages="numberOfImages - 2"
+    @updateHeight="handleUpdateHeight"
+    :allPortraits="true"
+    :smallestHeight="smallestHeight"
+    :image="image"
+    :cropImage="true"
+    :plusImageNumber="imageArray.length - config.end + 1"
+  />
+ 
+</div> -->

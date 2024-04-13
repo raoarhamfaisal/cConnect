@@ -22,7 +22,10 @@ const props = defineProps({
     type: [String, Number],
     default: 1000,
   },
-  plusImages: Boolean,
+  plusImageNumber: {
+    type: [String, Number],
+    default: 0,
+  },
   cropImage: Boolean,
 });
 
@@ -98,9 +101,44 @@ const onImageLoad = () => {
 <template>
   <div>
     <span>Height: {{ dimensions.nHeight }}</span>
+    <!-- <div
+      v-if="plusImageNumber"
+      :style="{
+        height: smallestHeight + 'px',
+      }"
+      class="flex justify-center items-center bg-[#1a1a1a] rounded-lg text-white font-extrabold text-4xl"
+    >
+      +{{ plusImageNumber }}
+    </div> -->
+    <div
+      v-if="plusImageNumber && allPortraits"
+      :style="{
+        height: smallestHeight + 'px',
+      }"
+      class="relative"
+    >
+      <!-- :style="{
+        height: smallestHeight + 'px',
+      }" -->
+      <img
+        ref="imageRef"
+        :class="`w-full  object-cover object-center rounded-lg`"
+        :style="{
+          height: smallestHeight + 'px',
+        }"
+        :src="image_path(props.image)"
+        alt=""
+      />
 
+      <!-- :style="{ height: smallestHeight + 'px' }" -->
+      <div
+        class="absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-[#1a1a1a] bg-opacity-50 backdrop-blur rounded-lg text-white font-extrabold text-4xl"
+      >
+        +{{ plusImageNumber }}
+      </div>
+    </div>
     <video
-      v-if="isVideo(props.image)"
+      v-else-if="isVideo(props.image)"
       class="w-full h-full rounded-lg"
       controls
       autoplay
@@ -121,6 +159,7 @@ const onImageLoad = () => {
         :src="image_path(props.image)"
         alt=""
       />
+      <!-- only portraits -->
       <img
         v-else-if="allPortraits"
         :style="{
@@ -145,13 +184,6 @@ const onImageLoad = () => {
         :src="image_path(props.image)"
         alt=""
       />
-
-      <div
-        v-if="plusImages"
-        class="fixed w-full h-full grid place-items-center blue-400 text-red-600 font-extrabold text-7xl"
-      >
-        +000000
-      </div>
     </div>
   </div>
 </template>
