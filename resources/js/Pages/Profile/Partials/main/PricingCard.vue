@@ -78,7 +78,9 @@
             class="mt-2 text-lg text-center font-bold"
           >
             That's only
-            <span class="text-indigo-600">{{ (total / 12).toFixed(2) }}</span>
+            <span class="text-indigo-600 month-price">{{
+              (total / 12).toFixed(2)
+            }}</span>
             per Month!
           </div>
         </div>
@@ -144,7 +146,8 @@ const enter = (el, done) => {
 .pricing-card.hovered .price-tag span {
   color: black;
 }
-.pricing-card.hovered .mdi {
+.pricing-card.hovered .mdi,
+.pricing-card.hovered .month-price {
   color: white;
 }
 

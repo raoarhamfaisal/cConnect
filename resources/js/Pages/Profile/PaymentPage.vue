@@ -661,15 +661,27 @@ const subscriptionApiError = ref("");
 const coupon = ref({});
 const paymentDetailsRef = ref();
 const confirmPaymentDialogRef = ref();
+const monthlyTotal = ref(0.0);
+const annualTotal = ref(0.0);
 
 //onMounted
 
 onMounted(async () => {
   const selectedPlan = localStorage.getItem("selectedPlan");
+  coupon.value = JSON.parse(localStorage.getItem("coupon"));
+  const total = JSON.parse(localStorage.getItem("total"));
+  if (coupon.value && Object.keys(coupon.value).length > 0) {
+    console.log("here in total");
+    monthlyTotal.value = total.monthlyTotal;
+    annualTotal.value = total.annualTotal;
+  }
   if (selectedPlan) {
     planType.value = selectedPlan;
   }
   localStorage.removeItem("selectedPlan");
+  localStorage.removeItem("coupon");
+  localStorage.removeItem("total");
+
   fetchPricingCardDetails();
   try {
     loadingScript.value = true;
@@ -682,55 +694,55 @@ onMounted(async () => {
 
 //Computed
 const screenWidth = computed(() => store.getters.screenWidth);
-const monthlyTotal = computed(() => {
-  // Calculate the original monthly price with tax
-  const originalMonthlyTotal = +pricingPlan.value.billed_monthly_price;
+// const monthlyTotal = computed(() => {
+//   // Calculate the original monthly price with tax
+//   const originalMonthlyTotal = +pricingPlan.value.billed_monthly_price;
 
-  // If there's a coupon
-  if (coupon.value && coupon.value.percentage_off_regular_price) {
-    // Calculate the discount for the monthly price
-    const monthlyDiscount =
-      (originalMonthlyTotal * coupon.value.percentage_off_regular_price) / 100;
+//   // If there's a coupon
+//   if (coupon.value && coupon.value.percentage_off_regular_price) {
+//     // Calculate the discount for the monthly price
+//     const monthlyDiscount =
+//       (originalMonthlyTotal * coupon.value.percentage_off_regular_price) / 100;
 
-    // Return the discounted monthly total
-    return (
-      originalMonthlyTotal -
-      monthlyDiscount +
-      +(+pricingPlan.value.sales_tax * 0.01 * originalMonthlyTotal)
-    );
-  }
+//     // Return the discounted monthly total
+//     return (
+//       originalMonthlyTotal -
+//       monthlyDiscount +
+//       +(+pricingPlan.value.sales_tax * 0.01 * originalMonthlyTotal)
+//     );
+//   }
 
-  // Return the original monthly total if there's no coupon.value
-  return (
-    originalMonthlyTotal +
-    +(+pricingPlan.value.sales_tax * 0.01 * originalMonthlyTotal)
-  );
-});
+//   // Return the original monthly total if there's no coupon.value
+//   return (
+//     originalMonthlyTotal +
+//     +(+pricingPlan.value.sales_tax * 0.01 * originalMonthlyTotal)
+//   );
+// });
 
-const annualTotal = computed(() => {
-  // Calculate the original annual price with tax for 12 months
-  const originalAnnualTotal = +pricingPlan.value.billed_annual_price;
+// const annualTotal = computed(() => {
+//   // Calculate the original annual price with tax for 12 months
+//   const originalAnnualTotal = +pricingPlan.value.billed_annual_price;
 
-  // If there's a coupon.value
-  if (coupon.value && coupon.value.percentage_off_regular_price) {
-    // Calculate the discount for the annual price
-    const annualDiscount =
-      (originalAnnualTotal * coupon.value.percentage_off_regular_price) / 100;
+//   // If there's a coupon.value
+//   if (coupon.value && coupon.value.percentage_off_regular_price) {
+//     // Calculate the discount for the annual price
+//     const annualDiscount =
+//       (originalAnnualTotal * coupon.value.percentage_off_regular_price) / 100;
 
-    // Return the discounted annual total
-    return (
-      originalAnnualTotal -
-      annualDiscount +
-      +pricingPlan.value.sales_tax * 0.01 * originalAnnualTotal
-    );
-  }
+//     // Return the discounted annual total
+//     return (
+//       originalAnnualTotal -
+//       annualDiscount +
+//       +pricingPlan.value.sales_tax * 0.01 * originalAnnualTotal
+//     );
+//   }
 
-  // Return the original annual total if there's no coupon
-  return (
-    originalAnnualTotal +
-    +pricingPlan.value.sales_tax * 0.01 * originalAnnualTotal
-  );
-});
+//   // Return the original annual total if there's no coupon
+//   return (
+//     originalAnnualTotal +
+//     +pricingPlan.value.sales_tax * 0.01 * originalAnnualTotal
+//   );
+// });
 
 watch(
   () => sameAsProfile.value,
@@ -770,6 +782,15 @@ const fetchPricingCardDetails = async () => {
     console.log(response, "response");
     if (response.data) {
       pricingPlan.value = { ...response.data.paymentInfo };
+      if (!coupon.value) {
+        monthlyTotal.value =
+          +pricingPlan.value.billed_monthly_price +
+          +pricingPlan.value.billed_monthly_price *
+            +pricingPlan.value.sales_tax;
+        annualTotal.value =
+          +pricingPlan.value.billed_annual_price +
+          +pricingPlan.value.billed_annual_price * +pricingPlan.value.sales_tax;
+      }
     }
   } catch (err) {
     somethingWentWrong();
@@ -954,34 +975,34 @@ const validateForm = () => {
   return isValid;
 };
 
-const openCouponDialog = () => {
-  verifyCouponDialogRef.value.openDialog();
-};
-const verifyCouponCode = async () => {
-  couponApiError.value = "";
-  if (!form.coupon_code?.trim()) {
-    errors.coupon_code = "Coupon code  is Required";
-    return;
-  }
-  loadingCoupon.value = true;
-  try {
-    const response = await axios.post(
-      `/api/discount-coupon/verify`,
-      { coupon_code: form.coupon_code },
-      getAxiosConfig()
-    );
-    if (response.data) {
-      console.log(response.data, "response");
-      changesSaved(response.data.message);
-      coupon.value = response.data.coupon;
-    }
-  } catch (err) {
-    couponApiError.value = err.response.data.message;
-  } finally {
-    loadingCoupon.value = false;
-    verifyCouponDialogRef.value.closeDialog();
-  }
-};
+// const openCouponDialog = () => {
+//   verifyCouponDialogRef.value.openDialog();
+// };
+// const verifyCouponCode = async () => {
+//   couponApiError.value = "";
+//   if (!form.coupon_code?.trim()) {
+//     errors.coupon_code = "Coupon code  is Required";
+//     return;
+//   }
+//   loadingCoupon.value = true;
+//   try {
+//     const response = await axios.post(
+//       `/api/discount-coupon/verify`,
+//       { coupon_code: form.coupon_code },
+//       getAxiosConfig()
+//     );
+//     if (response.data) {
+//       console.log(response.data, "response");
+//       changesSaved(response.data.message);
+//       coupon.value = response.data.coupon;
+//     }
+//   } catch (err) {
+//     couponApiError.value = err.response.data.message;
+//   } finally {
+//     loadingCoupon.value = false;
+//     verifyCouponDialogRef.value.closeDialog();
+//   }
+// };
 const startSubscription = async () => {
   if (validateForm()) {
     console.log("form", form);
