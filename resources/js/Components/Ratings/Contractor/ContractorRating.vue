@@ -122,6 +122,7 @@
               v-for="(review, index) in contractorReviews"
               :key="index"
               :review="review"
+              @responseAdded="onResponseAdd"
               :contractorId="contractor.id"
               :profileId="profileId"
             />
@@ -208,6 +209,8 @@ const user = usePageDeatails.auth.user;
 // Mounted
 onMounted(async () => {
   loading.value = true;
+  console.log("6");
+
   await fetchReviews();
   loading.value = false;
   contractor.value = contractorDetails;
@@ -231,38 +234,15 @@ onMounted(async () => {
 
 //Computed
 
-const updatedResponse = computed(() => store.state.ratings.updatedResponse);
 const screenWidth = computed(() => store.getters.screenWidth);
 const reviewId = computed(() => store.state.ratings.reviewId);
 const responseId = computed(() => store.state.ratings.responseId);
 const updatedReview = computed(() => store.state.ratings.updatedReview);
 
 //Watch
-watch(updatedResponse, (newVal) => {
-  if (newVal && newVal.id) {
-    const reviewToUpdate = contractorReviews.value.find(
-      (review) => review.id === newVal.review_id
-    );
-    if (reviewToUpdate) {
-      reviewToUpdate.review_response = newVal;
-      const indexToUpdate = contractorReviews.value.findIndex(
-        (review) => review.id === newVal.review_id
-      );
 
-      if (indexToUpdate !== -1) {
-        contractorReviews.value = contractorReviews.value.map(
-          (review, index) => {
-            if (index === indexToUpdate) {
-              return reviewToUpdate; // Replace the object at the specified index
-            }
-            return review; // Keep other objects unchanged
-          }
-        );
-      }
-    }
-  }
-});
 watch(updatedReview, (newVal) => {
+  console.log(newVal, newVal.id, "updatedReview");
   if (newVal && newVal.id) {
     const reviewIndex = contractorReviews.value.findIndex(
       (review) => review.id === newVal.id
@@ -272,11 +252,14 @@ watch(updatedReview, (newVal) => {
       // Update the existing review with the new data
       Object.assign(contractorReviews.value[reviewIndex], newVal);
     }
-    console.log(newVal, newVal.id, reviewIndex, "updated");
+    console.log("5");
+
     fetchReviews(perPage.value, currentPage.value, false, true);
   }
 });
 watch(reviewId, (newVal) => {
+  console.log(newVal, "updatedReviewId");
+
   if (newVal) {
     const index = contractorReviews.value.findIndex(
       (review) => review.id === newVal
@@ -285,6 +268,8 @@ watch(reviewId, (newVal) => {
     if (index !== -1) {
       contractorReviews.value.splice(index, 1);
     }
+    console.log("4");
+
     fetchReviews(perPage.value, currentPage.value, false, true);
   }
 });
@@ -305,6 +290,8 @@ watch(responseId, (newVal) => {
 const loadMoreReviews = async () => {
   loadingNextPage.value = true;
   currentPage.value = currentPage.value + 1;
+  console.log("3");
+
   await fetchReviews(perPage.value, currentPage.value);
   loadingNextPage.value = false;
 };
@@ -316,6 +303,8 @@ const handleFilterSelect = (selected, sortByRate) => {
 };
 const fetchReveiwsWithLoading = async (noReviewsChanges = false) => {
   loading.value = true;
+  console.log("2");
+
   await fetchReviews(perPage.value, currentPage.value, false, noReviewsChanges);
   loading.value = false;
 };
@@ -335,6 +324,7 @@ const fetchReviews = async (
     sortByRating = sortBy.value;
   }
   try {
+    console.log("fetchReviews");
     const response = await axios.get(
       `/api/reviews/${contractorDetails.id}?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate}&sort_by_rating=${sortByRating}`,
       getAxiosConfig()
@@ -409,8 +399,36 @@ const refreshPageOnAdd = async () => {
   loading.value = true;
 
   currentPage.value = 1;
+  console.log("1");
   await fetchReviews(perPage.value, currentPage.value, false);
   loading.value = false;
   handleSelect();
+};
+
+const onResponseAdd = (newVal) => {
+  if (newVal && newVal.id) {
+    console.log("here in teh code of updatedResponse");
+
+    const reviewToUpdate = contractorReviews.value.find(
+      (review) => review.id === newVal.review_id
+    );
+    if (reviewToUpdate) {
+      reviewToUpdate.review_response = newVal;
+      const indexToUpdate = contractorReviews.value.findIndex(
+        (review) => review.id === newVal.review_id
+      );
+
+      if (indexToUpdate !== -1) {
+        contractorReviews.value = contractorReviews.value.map(
+          (review, index) => {
+            if (index === indexToUpdate) {
+              return reviewToUpdate; // Replace the object at the specified index
+            }
+            return review; // Keep other objects unchanged
+          }
+        );
+      }
+    }
+  }
 };
 </script>
