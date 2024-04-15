@@ -429,7 +429,7 @@ const handleUpdateHeight = ({ height, imageLength, firstTwoImages }) => {
           :key="index"
         >
           <PostShowTheImage
-            v-if="index === 2"
+            v-if="index === 2 && numberOfImages > 7"
             @updateHeight="handleUpdateHeight"
             :allPortraits="true"
             :cropImage="true"

@@ -56,7 +56,9 @@ const processedBottomText = computed(() => {
 });
 const isSectionVisible = ref(false);
 const showAnimcation = () => {
-  if (window.scrollY > 100) {
+  const dialogContainer = document.getElementById("dialogContainer");
+
+  if (window.scrollY > 100 || dialogContainer.scrollTop > 100) {
     console.log("in animation");
     isSectionVisible.value = true;
   }

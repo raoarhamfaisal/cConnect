@@ -6,7 +6,7 @@
     :padding="screenWidth < 640 ? '0px' : '20px'"
   >
     <div class="flex space-x-2 justify-between">
-      <Link :href="`/contractor/${contractor.user_id}`" class="">
+      <span class="cursor-pointer" @click="openContractorPageDiaglog">
         <div class="flex justify-center items-center space-x-2">
           <div class="self-center">
             <Avatar
@@ -39,7 +39,7 @@
             <div class="max-sm:text-xs">{{ contractor.phone_cell }}</div>
           </div>
         </div>
-      </Link>
+      </span>
       <div class="flex items-center gap-1">
         <div class="flex flex-col md:mt-2 justify-center items-center">
           <!-- @click="openContractorRatingDialog" -->
@@ -72,12 +72,19 @@
     :loggedInUserId="loggedInUserId"
     :userId="contractor?.user_id"
   />
+  <DialogContractorPage
+    ref="contractorPageDialogRef"
+    :contractor_id="contractor.user_id"
+    :region_name="region_name"
+    :profile="contractor"
+  />
 </template>
 
 <script setup>
 import Avatar from "@/Components/Ratings/Avatar.vue";
 import StarRounded from "@/Components/Ratings/StarRounded.vue";
 import DialogContractorRating from "@/Components/Ratings/Contractor/DialogContractorRating.vue";
+import DialogContractorPage from "@/Pages/Contractor/DialogContractorPage.vue";
 
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
@@ -85,7 +92,7 @@ import Card from "@/Components/Card.vue";
 import Tooltip from "@/Components/Ratings/Tooltip.vue";
 import { usePage } from "@inertiajs/inertia-vue3";
 
-const props = defineProps(["contractor"]);
+const props = defineProps(["contractor", "region_name"]);
 const ratingDialogRef = ref();
 console.log("contractor", props.contractor);
 const store = useStore();
@@ -95,6 +102,7 @@ const loggedInUserId = usePageDeatails?.profile?.id;
 
 const total_reviews = ref(0);
 const averageRating = ref(props.contractor.average_rating);
+const contractorPageDialogRef = ref();
 
 //Computed
 
@@ -102,6 +110,10 @@ const screenWidth = computed(() => store.getters.screenWidth);
 
 const openContractorRatingDialog = () => {
   ratingDialogRef.value.openDialog();
+};
+const openContractorPageDiaglog = () => {
+  localStorage.setItem("showGoBack", "false");
+  contractorPageDialogRef.value.openDialog();
 };
 </script>
 

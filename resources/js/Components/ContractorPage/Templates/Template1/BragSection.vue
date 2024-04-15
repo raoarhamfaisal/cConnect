@@ -185,14 +185,16 @@ const isSectionVisible = ref(Array(sections.value.length).fill(false));
 const isOvelayedVisible = ref(Array(sections.value.length).fill(false));
 
 const showAnimcation = (index) => {
-  if (window.scrollY > 100) {
+  console.log("show animation");
+  const dialogContainer = document.getElementById("dialogContainer");
+  if (window.scrollY > 100 || dialogContainer.scrollTop > 100) {
     console.log("in animation for section:", index);
     isSectionVisible.value[index] = true;
   }
 };
 const overlayedAnimcation = (index) => {
-  console.log("in overlayed:", index);
-  if (window.scrollY > 100) {
+  const dialogContainer = document.getElementById("dialogContainer");
+  if (window.scrollY > 100 || dialogContainer.scrollTop > 100) {
     isOvelayedVisible.value[index] = true;
   }
 };

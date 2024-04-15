@@ -62,7 +62,6 @@ import { useStore } from "vuex";
 const { profile, contractor_id } = defineProps({
   profile: Object,
   contractor_id: [String, Number],
-  contractorOriginalProfile: Object,
   region_name: String,
 });
 const loading = ref(false);
