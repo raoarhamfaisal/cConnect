@@ -56,6 +56,11 @@ Route::get('/privacy-policy', function () {
     ]);
 });
 
+Route::get('/inactive-account', function () {
+    return Inertia::render('InactiveAccount', [
+        'showit' => Auth::check(),
+    ]);
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
@@ -70,8 +75,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // });
     Route::get('/profile-setup', [ProfileController::class, 'setup'])->name('profile.setup');
     Route::get('/payment', [ProfileController::class, 'getPaymentsPage'])->name('profile.payment');
-    Route::get('/sub-finder', [ProfileController::class, 'getSubFinderPage'])->name('profile.s');
-
+    
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/profile/general-profile', [ProfileController::class, 'updateGeneralInfo'])->name('profile.updateGeneralInfo');
     Route::patch('/profile/company-info', [ProfileController::class, 'updateCompanyInfo'])->name('profile.updateCompanyInfo');
@@ -79,10 +83,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile/links', [ProfileController::class, 'updateLinks'])->name('profile.updateLinks');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
-    // Route::middleware('verifyPayment')->group(function () {
+    Route::middleware('activeUser')->group(function () {
         Route::get('/settings', [ProfileController::class, 'settings'])->name('profile.settings');
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-
+        
+        Route::get('/sub-finder', [ProfileController::class, 'getSubFinderPage'])->name('profile.s');
 
         Route::get('/ratings/contractor', [ContractorRatingController::class, 'index'])->name('ratings.contractor.index');
         Route::get('/contractor/{contractor_id}/edit', [ContractorPageController::class, 'index'])->name('ratings.contractor.index');
@@ -107,7 +112,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
 
-    // });
+    });
 });
 
 Route::get('/index', function () {

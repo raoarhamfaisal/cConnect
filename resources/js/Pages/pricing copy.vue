@@ -65,7 +65,7 @@
             <Link
               :href="
                 showit && profile && (profile.is_payment_verified === 0 || profile.active_user === 0)
-                  ? '/profile-setup'
+                  ? (profile.is_payment_verified === 0 ? '/profile-setup' : '/inactive-account')
                   : route('signup')
               "
               class="p-3 px-6 pt-2 text-red bg-white rounded-lg border-white border-spacing-3 shadow-2xl shadow-black align-baseline hover:text-white hover:bg-blue-30-rgba"

@@ -40,7 +40,7 @@
         <div class="content">
             <p>Hello {{ $user->first_name }} {{ $user->last_name }},</p>
             <p>Unfortunately, your subscription payment failed.</p>
-            <p>Details: {{ $response->getMessages()->getMessage()[0]->getText() }}</p>
+            <p>Your payment could not be processed due to incorrect card details.</p>
             <p>Please update your payment details to continue enjoying our services.</p>
         </div>
         <div class="footer">

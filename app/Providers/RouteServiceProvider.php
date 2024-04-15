@@ -19,6 +19,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public const HOME = '/post';
     public const PROFILE = '/profile-setup';
+    public const INACTIVE_ACCOUNT = '/inactive-account';
+
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
