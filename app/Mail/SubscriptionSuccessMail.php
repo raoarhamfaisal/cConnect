@@ -14,12 +14,14 @@ class SubscriptionSuccessMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $user;
+    public $user, $amount, $last4DigitsOfBankAccount, $subscriptionDate;
 
-    public function __construct(User $user)
+    public function __construct(User $user, $amount, $last4DigitsOfBankAccount, $subscriptionDate)
     {
         $this->user = $user;
-    }
+        $this->amount = $amount;
+        $this->last4DigitsOfBankAccount = $last4DigitsOfBankAccount;
+        $this->subscriptionDate = $subscriptionDate;    }
 
     public function build()
     {
