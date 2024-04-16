@@ -8,7 +8,7 @@ import { computed, onMounted, ref, watch } from "vue";
 import SelectProfile from "@/Components/SelectProfile.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
-import { options } from "@/helpers/selectListsHelpters";
+import { subFinderOptions as options } from "@/helpers/selectListsHelpters";
 import Loader from "@/Components/Ratings/Loader.vue";
 import SubFinderContractor from "@/Pages/SubFinder/partials/SubFinderContractor.vue";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
@@ -25,7 +25,10 @@ const props = defineProps({
     }),
   },
 });
-
+// const optionsList = options.unshift({
+//   id: "trade",
+//   name: "All",
+// });
 const searchTerm = ref("");
 const isFocused = ref(false);
 const atButtonClickSearchTerm = ref("");
@@ -67,7 +70,6 @@ const store = useStore();
 
 //Computed
 const screenWidth = computed(() => store.getters.screenWidth);
-const shouldLoadPosts = computed(() => store.state.ratings.shouldLoadPosts);
 
 //Mounted
 onMounted(async () => {
@@ -75,13 +77,7 @@ onMounted(async () => {
 });
 
 // watch
-watch(shouldLoadPosts, (newVal) => {
-  console.log(newVal);
-  if (newVal) {
-    currentPage.value = 1;
-    fetchSearchedContractorsWithLoading();
-  }
-});
+
 //
 watch(foundContractors, (newVal) => {
   if (newVal.length > 0) {
@@ -112,6 +108,7 @@ const submitSearchTerm = () => {
 };
 const changeReferal = (value) => {
   selectedReferal.value = value;
+  console.log("changeREfereatl");
   props.regions.forEach((item) => {
     if (value === item.name) {
       region_id.value = item.id.toString();
@@ -121,11 +118,13 @@ const changeReferal = (value) => {
 const changeTrade = (value) => {
   selectedTrade.value = value;
   options.forEach((item) => {
-    if (item.id === tradeKeys[0]) {
+    if (item.name === selectedTrade.value) {
       trade_id.value = item.id;
+
       trade_id.value = trade_id.value.replace(/^trade/, "");
     }
   });
+  console.log(tradeKeys[0], "tradeKeys[0]", trade_id.value);
 };
 const onFindASub = () => {
   atButtonClickSearchTerm.value = "true";

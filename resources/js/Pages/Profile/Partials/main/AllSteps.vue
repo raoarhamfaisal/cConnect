@@ -11,6 +11,7 @@ import { computed, reactive, ref } from "vue";
 import { useStore } from "vuex";
 import PaymentStep from "@/Pages/Profile/Partials/main/PaymentStep.vue";
 import { Inertia } from "@inertiajs/inertia";
+import { somethingWentWrong } from "@/helpers/utilities";
 
 const props = defineProps({
   mustVerifyEmail: Boolean,
@@ -229,7 +230,9 @@ const nextClick = async () => {
   }
   //for step 1 complted
   if (currentStep.value === 1) {
-    if (validateForm()) {
+    const isValid = validateForm();
+
+    if (isValid) {
       propertiesToProcess.forEach((prop) => {
         if (form[prop] && typeof form[prop] === "string") {
           form[prop] = form[prop].replace(/^https?:\/\//, "");
@@ -240,6 +243,7 @@ const nextClick = async () => {
         showSuccess: false,
       });
     } else {
+      somethingWentWrong("Validation error  ");
       return;
     }
   }

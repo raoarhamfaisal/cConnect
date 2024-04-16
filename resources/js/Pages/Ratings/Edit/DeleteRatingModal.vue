@@ -41,11 +41,10 @@ const disabledSending = computed(() => store.state.ratings.disabledSending);
 
 const handleSubmit = async () => {
   await store.dispatch("ratings/deleteReview", reviewId);
-  deleteDialogRef.value.closeDialog();
   store.commit("ratings/setShouldLoadPosts", false);
-  console.log("this executed2");
-
   store.commit("ratings/setShouldFetchPostsOnClose", true);
+  deleteDialogRef.value.closeDialog();
+  console.log("this executed2");
 };
 
 const openDialogDelete = () => {
