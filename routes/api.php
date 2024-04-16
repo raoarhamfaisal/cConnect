@@ -16,6 +16,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\PaymentInfoController;
 use App\Http\Controllers\DiscountCouponController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PostColorController;
 
 
 
@@ -34,6 +35,11 @@ use App\Http\Controllers\PaymentController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::get('/post/text-colors', [PostColorController::class, 'getTextColors']);
+Route::get('/post/background-colors', [PostColorController::class, 'getBackgroundColors']);
+
 
 // Route::middleware('auth:sanctum')->group(function () {
     Route::post('/profile/user-avatar', [ProfileController::class, 'updateUserAvatar'])->name('profile.updateUserAvatar');
