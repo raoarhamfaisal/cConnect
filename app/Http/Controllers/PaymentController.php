@@ -64,7 +64,7 @@ class PaymentController extends Controller
         : ($paymentInfo && $paymentInfo->billed_monthly_price ? $paymentInfo->billed_monthly_price : 39);
            
         // Retrieve the sales tax rate
-        $salesTaxRate = ($paymentInfo && $paymentInfo->sales_tax) ? ($paymentInfo->sales_tax / 100) : (2/100);       
+        $salesTaxRate = ($paymentInfo && $paymentInfo->sales_tax) ? ($paymentInfo->sales_tax * 0.01) : (0.02);       
 
         $finalAmount = $request->input('duration') === 'annual' 
             ? ($paymentInfo && $paymentInfo->billed_annual_price ? $paymentInfo->billed_annual_price : 390) 
@@ -73,6 +73,7 @@ class PaymentController extends Controller
 
         $discountAmount = 0;
         $discountEndDate = null;
+        $salesTaxPrice = $baseAmount * $salesTaxRate;
 
         if ($request->has('coupon_code')) {
             $coupon = DiscountCoupon::where('coupon_code', $request->coupon_code)
@@ -81,23 +82,27 @@ class PaymentController extends Controller
             $couponDiscountValue = 0;
             if ($coupon) {
                 if ($request->input('duration') === 'annual') {
-                    $couponDiscountValue = $baseAmount * ($coupon->percentage_off_regular_price / 100);
-                    $finalAmount = ($baseAmount - $couponDiscountValue) + (($baseAmount - $couponDiscountValue) * $salesTaxRate);
+                    $couponDiscountValue = ((int)$baseAmount / 12) * ($coupon->percentage_off_regular_price * 0.01) * $coupon->months;
+
+
+                    $finalAmount = $baseAmount - $couponDiscountValue + $salesTaxPrice;
                 } else {
                     // Monthly logic
                     if ($coupon->months > 0) {
-                        $couponDiscountValue = $baseAmount * ($coupon->percentage_off_regular_price / 100);
-                        $finalAmount = ($baseAmount - $couponDiscountValue) + (($baseAmount - $couponDiscountValue) * $salesTaxRate);
+                        $couponDiscountValue = $baseAmount * ($coupon->percentage_off_regular_price * 0.01);
+                        $finalAmount = $baseAmount - $couponDiscountValue + $salesTaxPrice;
                     } else {
-                        $finalAmount = $baseAmount + ($baseAmount * $salesTaxRate);
+                        $finalAmount = $baseAmount + $salesTaxPrice;
                     }
                 }
                 $discountEndDate = Carbon::now()->addMonths($coupon->months);
                 $discountAmount = $couponDiscountValue;
             }
         } else {
-            $finalAmount = $baseAmount + ($baseAmount * $salesTaxRate);
+            $finalAmount = $baseAmount + $salesTaxPrice;
         }
+
+        // dd($finalAmount);
 
 
         // Set the transaction's refId

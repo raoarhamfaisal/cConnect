@@ -482,6 +482,7 @@ class ContractorProfileController extends Controller
             ->select('contractor_id', 
                 \DB::raw('AVG(rating) as average_rating'),
                 \DB::raw('COUNT(*) as total_reviews'))
+            ->whereNull('deleted_at')  // Exclude soft-deleted records
             ->groupBy('contractor_id');
     
         // Start the query for contractor_profiles
@@ -522,10 +523,10 @@ class ContractorProfileController extends Controller
         // Search by name or company name functionality
         if ($searchTerm) {
             $query->where(function ($q) use ($searchTerm) {
-                $q->where('first_name', 'like', '%' . $searchTerm . '%')
-                ->orWhere('last_name', 'like', '%' . $searchTerm . '%')
-                ->orWhere('email', 'like', '%' . $searchTerm . '%')
-                ->orWhere('company_name', 'like', '%' . $searchTerm . '%');
+                $q->where('contractor_profiles.first_name', 'like', '%' . $searchTerm . '%')
+                ->orWhere('contractor_profiles.last_name', 'like', '%' . $searchTerm . '%')
+                ->orWhere('contractor_profiles.email', 'like', '%' . $searchTerm . '%')
+                ->orWhere('contractor_profiles.company_name', 'like', '%' . $searchTerm . '%');
             });
         }
     

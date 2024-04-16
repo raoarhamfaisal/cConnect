@@ -140,7 +140,7 @@ const annualTotal = computed(() => {
     // Calculate the discount for the annual price
     const annualDiscount =
       coupon.value.months *
-      ((+pricingPlan.value.billed_monthly_price *
+      (((+pricingPlan.value.billed_annual_price / 12) *
         coupon.value.percentage_off_regular_price) /
         100);
     // Return the discounted annual total
