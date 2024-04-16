@@ -1,6 +1,6 @@
 <template>
   <button
-    class="rounded px-2 py-1 xs:px-4 xs:py-2 xs:text-md text-sm"
+    class="rounded px-2 py-1 xs:px-4 xs:py-2 xs:text-md text-sm bg-white"
     :class="{ selected: isSelected }"
     @click="toggleSelect"
     @mouseover="showTooltip = true"
