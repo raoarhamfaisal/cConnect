@@ -40,7 +40,8 @@ class ContractorProfile extends Model
 
     public function trades()
     {
-        return $this->belongsToMany(Trade::class, 'contractor_trade');
+        // return $this->belongsToMany(Trade::class, 'contractor_trade');
+        return $this->belongsToMany(Trade::class, 'contractor_trade', 'contractor_profile_id', 'trade_id');
     }
 
     public function imageSections()

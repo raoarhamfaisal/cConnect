@@ -476,35 +476,40 @@ class ContractorProfileController extends Controller
         $sortBy = $request->query('sort_by', '');
         $searchTerm = $request->query('search_term');
         $preferenceStatus = $request->query('preference_status');
-
+    
+        // Subquery for average rating and total reviews
+        $ratingSubquery = \DB::table('reviews')
+            ->select('contractor_id', 
+                \DB::raw('AVG(rating) as average_rating'),
+                \DB::raw('COUNT(*) as total_reviews'))
+            ->groupBy('contractor_id');
     
         // Start the query for contractor_profiles
         $query = ContractorProfile::with('trades:id')
+            ->join('profiles', 'profiles.user_id', '=', 'contractor_profiles.user_id')
+            ->leftJoinSub($ratingSubquery, 'rating_info', function($join) {
+                $join->on('rating_info.contractor_id', '=', 'profiles.id');
+            })
             ->select('contractor_profiles.*', 
-                \DB::raw('COALESCE((SELECT AVG(reviews.rating) FROM reviews WHERE reviews.contractor_id = contractor_profiles.id), 0) as average_rating'),
-                \DB::raw('(SELECT preference_status FROM contractor_profile_user WHERE contractor_profile_user.contractor_profile_id = contractor_profiles.id AND contractor_profile_user.user_id = ' . $user->id . ') as preference_status'),
-                \DB::raw('(SELECT notes FROM contractor_profile_user WHERE contractor_profile_user.contractor_profile_id = contractor_profiles.id AND contractor_profile_user.user_id = ' . $user->id . ') as notes')
-            )
-            ->leftJoin('reviews', 'reviews.contractor_id', '=', 'contractor_profiles.id')
-            ->groupBy('contractor_profiles.id');  
-            
+                'rating_info.average_rating', 
+                'rating_info.total_reviews');                    
             
         // Filtering by region
         if ($regionId) {
             $query->where('contractor_profiles.region_id', $regionId);
         }
 
-    // Filtering by preference status
-    if ($preferenceStatus) {
-        // Use a WHERE EXISTS clause to check if a preference_status meets the condition
-        $query->whereExists(function ($subQuery) use ($user, $preferenceStatus) {
-            $subQuery->select(\DB::raw(1))
-                     ->from('contractor_profile_user')
-                     ->whereRaw('contractor_profile_user.contractor_profile_id = contractor_profiles.id')
-                     ->where('contractor_profile_user.user_id', '=', $user->id)
-                     ->where('contractor_profile_user.preference_status', '=', $preferenceStatus);
-        });
-    }
+        // Filtering by preference status
+        if ($preferenceStatus) {
+            // Use a WHERE EXISTS clause to check if a preference_status meets the condition
+            $query->whereExists(function ($subQuery) use ($user, $preferenceStatus) {
+                $subQuery->select(\DB::raw(1))
+                        ->from('contractor_profile_user')
+                        ->whereRaw('contractor_profile_user.contractor_profile_id = contractor_profiles.id')
+                        ->where('contractor_profile_user.user_id', '=', $user->id)
+                        ->where('contractor_profile_user.preference_status', '=', $preferenceStatus);
+            });
+        }
     
         // If trade is specified, add a constraint for it
         if ($tradeId) {
@@ -512,6 +517,7 @@ class ContractorProfileController extends Controller
                 $subQuery->where('trades.id', $tradeId);
             });
         }
+
 
         // Search by name or company name functionality
         if ($searchTerm) {
@@ -561,15 +567,19 @@ class ContractorProfileController extends Controller
 
             // Convert the Eloquent Model to an array for modification
             $contractorArray = $contractor->toArray();
-            
+                
             // Merge the transformed trades into the contractor object
             $contractor = array_merge($contractorArray, $tradesArray);
 
-            // Add preference status and notes to the contractor object
-            $contractor['preference_status'] = $contractorArray['preference_status'];
-            $contractor['notes'] = $contractorArray['notes'];
+            // Add preference status and notes to the contractor object with a fallback to null
+            $contractor['preference_status'] = $contractorArray['preference_status'] ?? null;
+            $contractor['notes'] = $contractorArray['notes'] ?? null;
 
-            return $contractor;
+            // Add total_reviews to the contractor object
+            // Accessing 'total_reviews' from $contractorArray since it's an array
+            $contractor['total_reviews'] = $contractorArray['total_reviews'];
+
+            return $contractor;        
         });
     
         // Construct the response with contractors and pagination information
@@ -591,7 +601,7 @@ class ContractorProfileController extends Controller
     
         // Validate the request
         $validatedData = $request->validate([
-            'preference_status' => 'sometimes|in:Preferred,Back-Up,Possible,Rejected',
+            'preference_status' => 'sometimes|nullable|in:Preferred,Back-Up,Possible,Rejected',
             'notes' => 'sometimes|string',
         ]);
     
@@ -601,7 +611,7 @@ class ContractorProfileController extends Controller
             $updateData['preference_status'] = $validatedData['preference_status'];
         }
         if ($request->has('notes')) {
-            $updateData['notes'] = $validatedData['notes'];
+            $updateData['notes'] = $validatedData['notes'] === '' ? null : $validatedData['notes'];
         }
     
         // Make sure we have data to update
@@ -617,7 +627,7 @@ class ContractorProfileController extends Controller
         // Return a response
         return response()->json(['message' => 'Preference or notes updated successfully.']);
     }
-    
+        
 
 }
 
