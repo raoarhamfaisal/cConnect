@@ -141,6 +141,10 @@ const changeTrade = (value) => {
 };
 const onFindASub = () => {
   atButtonClickSearchTerm.value = "true";
+  if (screenWidth.value < 640) {
+    showAdvanceFiltersButton.value = true;
+    showAdvanceFilters.value = false;
+  }
   basedOnSearch.value = false;
   fetchSearchedContractorsWithLoading();
 };
