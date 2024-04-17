@@ -265,6 +265,18 @@ class PaymentController extends Controller
             $nextChargeDate = $endsAt->copy()->addMonth();
         } 
 
+        // // Determine if the next billing cycle is within the discount period
+        // $nextBillingWithinDiscount = $discountEndDate && Carbon::now()->lessThan($discountEndDate);
+
+        // // Calculate the amount for the next billing cycle
+        // $nextBillingAmount = $nextBillingWithinDiscount ? ($originalAmount - $discountAmount) : $originalAmount;
+
+
+        // $subscriptionPlan = 
+        // // Update upcoming subscriptions
+        // $this->updateUpcomingSubscription($userId, $originalAmount, $nextBillingAmount, $nextChargeDate, $subscriptionPlan, $subscriptionResponse->getSubscriptionId(), true);
+
+
         $this->updateUpcomingSubscription($userId, $originalAmount, $upcomingAmount, $nextChargeDate, ($request->input('duration') === 'annual') ? 'Annual Subscription' : 'Monthly Subscription', $subscriptionResponse->getSubscriptionId(), true);
 
        

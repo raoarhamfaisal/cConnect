@@ -160,7 +160,6 @@ const truncatedName = computed(() => {
           <!-- DropDown: NEWS FEED -->
 
           <Link
-            v-if="Inertia.page.component != 'Postings'"
             :href="route('post')"
             class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
           >
@@ -318,7 +317,7 @@ const truncatedName = computed(() => {
           <!-- DropDown: Contact Us -->
           <Link
             href="/about-us#contactUs"
-            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700 pointer-events-auto"
+            class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
           >
             <img src="/images/icons/contactus.png" width="20" height="20" />
             <span class="mx-4 font-medium">Contact Us</span>
