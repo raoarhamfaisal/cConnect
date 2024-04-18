@@ -18,6 +18,9 @@ use App\Mail\SubscriptionFailedMail;
 use App\Mail\SubscriptionSuccessMail;
 use App\Mail\SubscriptionCancelledMail;
 
+use App\Helpers\SubscriptionHelper;
+
+
 use App\Mail\SubscriptionCancellationRequestMail;
 
 
@@ -39,10 +42,11 @@ class PaymentController extends Controller
 
         $userId = Auth()->user('')->id;
 
+
         $profile = Profile::where('user_id', $userId)->first();
 
 
-        $activeSubscription = DB::table('subscriptions')->where('user_id', $userId)->where('is_subscription_active', 1)->whereNull('ends_at')->first();
+        $activeSubscription = DB::table('subscriptions')->where('user_id', $userId)->where('is_subscription_active', 1)->first();
         if ($activeSubscription) {
             return response()->json(['message' => 'You already have an active subscription!']);
         }
@@ -73,7 +77,6 @@ class PaymentController extends Controller
 
         $discountAmount = 0;
         $discountEndDate = null;
-        $salesTaxPrice = $baseAmount * $salesTaxRate;
 
         if ($request->has('coupon_code')) {
             $coupon = DiscountCoupon::where('coupon_code', $request->coupon_code)
@@ -84,14 +87,19 @@ class PaymentController extends Controller
                 if ($request->input('duration') === 'annual') {
                     $couponDiscountValue = ((int)$baseAmount / 12) * ($coupon->percentage_off_regular_price * 0.01) * $coupon->months;
 
-
-                    $finalAmount = $baseAmount - $couponDiscountValue + $salesTaxPrice;
+                    $tempFinalAmount = $baseAmount - $couponDiscountValue;
+                    
+                    $salesTaxPrice = $tempFinalAmount * $salesTaxRate;
+                    $finalAmount = $tempFinalAmount + $salesTaxPrice;
                 } else {
                     // Monthly logic
                     if ($coupon->months > 0) {
                         $couponDiscountValue = $baseAmount * ($coupon->percentage_off_regular_price * 0.01);
-                        $finalAmount = $baseAmount - $couponDiscountValue + $salesTaxPrice;
+                        $tempFinalAmount = $baseAmount - $couponDiscountValue;
+                        $salesTaxPrice = $tempFinalAmount * $salesTaxRate;
+                        $finalAmount = $tempFinalAmount + $salesTaxPrice;
                     } else {
+                        $salesTaxPrice = $baseAmount * $salesTaxRate;
                         $finalAmount = $baseAmount + $salesTaxPrice;
                     }
                 }
@@ -99,6 +107,7 @@ class PaymentController extends Controller
                 $discountAmount = $couponDiscountValue;
             }
         } else {
+            $salesTaxPrice = $baseAmount * $salesTaxRate;
             $finalAmount = $baseAmount + $salesTaxPrice;
         }
 
@@ -128,7 +137,7 @@ class PaymentController extends Controller
 
         if($subscriptionResponse && $subscriptionResponse->getMessages()->getResultCode() == "Ok") {
             // 3. Handle successful payments
-            $this->handleSuccessfulPayment($request, $userId, $subscriptionResponse, $baseAmount, $discountAmount, $discountEndDate, $finalAmount);
+            $this->handleSuccessfulPayment($request, $userId, $subscriptionResponse, $baseAmount, $discountAmount, $discountEndDate, $finalAmount, $paymentInfo->id);
 
 
         } else {
@@ -138,17 +147,25 @@ class PaymentController extends Controller
             // echo "ERROR :  Invalid subscriptionResponse\n";
             $errorMessages = $subscriptionResponse->getMessages()->getMessage();
             // echo "Response : " . $errorMessages[0]->getCode() . "  " .$errorMessages[0]->getText() . "\n";
-            DB::table('subscriptions')->insert([
-                'user_id' => $userId,
-                'is_subscription_successfull' => 0,
-                'is_subscription_active' => 0,
-                'subscription_id' => null,
-                'metadata' => json_encode($subscriptionResponse),
-                'subscription_plan' => ($request->input('duration') === 'annual') ? 'Annual Subscription' : 'Monthly Subscription',
-                'ends_at' => null,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
-            ]);
+
+            Subscription::updateOrCreate(
+                ['user_id' => $userId], // Attributes to check
+                [
+                    'payment_info_id' => $paymentInfo->id,
+                    'is_subscription_successfull' => 0,
+                    'is_subscription_active' => 0,
+                    'subscription_id' => null,
+                    'metadata' => json_encode($subscriptionResponse),
+                    'subscription_plan' => ($request->input('duration') === 'annual') ? 'Annual Subscription' : 'Monthly Subscription',
+                    'ends_at' => null,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                ]
+            );
+    
+
+
+            // dd()
 
             $subscriptionResponse = [
                 'messages' => [
@@ -220,7 +237,7 @@ class PaymentController extends Controller
         return $subscription;
     }
 
-    private function handleSuccessfulPayment($request, $userId, $subscriptionResponse, $originalAmount, $discountAmount, $discountEndDate, $finalAmount)
+    private function handleSuccessfulPayment($request, $userId, $subscriptionResponse, $originalAmount, $discountAmount, $discountEndDate, $finalAmount, $paymentId)
     {
         // Update the profile table
         $profile = Profile::where('user_id', $userId)->first();
@@ -238,32 +255,45 @@ class PaymentController extends Controller
             $endsAt->addMonth();
         }
 
-        DB::table('subscriptions')->insert([
-            'user_id' => $userId,
-            'is_subscription_successfull' => 1,
-            'is_subscription_active' => 1,
-            'subscription_id' => $subscriptionResponse->getSubscriptionId(),
-            'metadata' => json_encode($subscriptionResponse),
-            'subscription_plan' => ($request->input('duration') === 'annual') ? 'Annual Subscription' : 'Monthly Subscription',
-            'ends_at' => $endsAt,
-            'original_amount' => $originalAmount,
-            'discount_amount' => $discountAmount,
-            'discount_end_date' => $discountEndDate,
-            'started_at' => Carbon::now(),
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
-        ]);
+
+        $cardNumber = $request->input('card_number');
+        $last4Digits = substr($cardNumber, -4); // Extracts the last 4 digits of the card number
+
+
+        // dd($last4Digits);
+
+
+        Subscription::updateOrCreate(
+            ['user_id' => $userId], // Attributes to check
+            [
+                'payment_info_id' => $paymentId,
+                'is_subscription_successfull' => 1,
+                'is_subscription_active' => 1,
+                'subscription_id' => $subscriptionResponse->getSubscriptionId(),
+                'metadata' => json_encode($subscriptionResponse),
+                'subscription_plan' => ($request->input('duration') === 'annual') ? 'Annual Subscription' : 'Monthly Subscription',
+                'ends_at' => $endsAt,
+                'last_4_digits_of_card' => $last4Digits,
+                'original_amount' => $originalAmount,
+                'final_amount' => $finalAmount,
+                'discount_amount' => $discountAmount,
+                'discount_end_date' => $discountEndDate,
+                'started_at' => Carbon::now(),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]
+        );
 
         // Determine the upcoming amount
         $upcomingAmount = $endsAt->lessThanOrEqualTo($discountEndDate) ? ($originalAmount - $discountAmount) : $originalAmount;
 
         // Update upcoming subscriptions        
         // Calculate next charge date based on subscription plan
-        if ($request->input('duration') === 'annual') {
-            $nextChargeDate = $endsAt->copy()->addYear();
-        } else {
-            $nextChargeDate = $endsAt->copy()->addMonth();
-        } 
+        // if ($request->input('duration') === 'annual') {
+        //     $nextChargeDate = $endsAt->copy()->addYear();
+        // } else {
+        //     $nextChargeDate = $endsAt->copy()->addMonth();
+        // } 
 
         // // Determine if the next billing cycle is within the discount period
         // $nextBillingWithinDiscount = $discountEndDate && Carbon::now()->lessThan($discountEndDate);
@@ -276,8 +306,12 @@ class PaymentController extends Controller
         // // Update upcoming subscriptions
         // $this->updateUpcomingSubscription($userId, $originalAmount, $nextBillingAmount, $nextChargeDate, $subscriptionPlan, $subscriptionResponse->getSubscriptionId(), true);
 
+        $subscription = Subscription::where('user_id', $userId)->where('is_subscription_active', 1)->first();
 
-        $this->updateUpcomingSubscription($userId, $originalAmount, $upcomingAmount, $nextChargeDate, ($request->input('duration') === 'annual') ? 'Annual Subscription' : 'Monthly Subscription', $subscriptionResponse->getSubscriptionId(), true);
+        $billingAmount = SubscriptionHelper::calculateBillingAmount($subscription);
+
+
+        $this->updateUpcomingSubscription($userId, $finalAmount, $billingAmount, $endsAt, ($request->input('duration') === 'annual') ? 'Annual Subscription' : 'Monthly Subscription', $subscriptionResponse->getSubscriptionId(), true);
 
        
 
@@ -285,8 +319,6 @@ class PaymentController extends Controller
         $user = User::find($userId);
         if($user) {
             // Mail::to($user->email)->send(new SubscriptionSuccessMail($user));
-            $cardNumber = $request->input('card_number');
-            $last4Digits = substr($cardNumber, -4); // Extracts the last 4 digits of the card number
             Mail::to($user->email)->send(new SubscriptionSuccessMail($user, $finalAmount, $last4Digits, Carbon::now()->format('Y-m-d')));
 
         }
