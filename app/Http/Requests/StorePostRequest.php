@@ -31,6 +31,11 @@ class StorePostRequest extends FormRequest
             'body1' => 'required',
             'body2' => '',
 
+            'is_body_bold' => 'boolean', // Assuming it's a boolean value
+            'post_text_color_id' => 'nullable|exists:post_colors,id', // Ensure it exists in post_colors table
+            'post_background_color_id' => 'nullable|exists:post_colors,id', // Ensure it exists in post_colors table
+            'font_size' => 'nullable|string',
+            'text_alignment' => 'in:left,center,right'
         ];
     }
 
