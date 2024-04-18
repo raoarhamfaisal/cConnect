@@ -26,7 +26,7 @@ class PostFactory extends Factory
             'body1' => $this->faker->text(),
             'body2' => $this->faker->text(),
             'is_body_bold' => $this->faker->numberBetween(0, 1),
-            'post_text_color_id' => $this->faker->numberBetween(0, 12),
+            'post_text_color_id' => $this->faker->numberBetween(1, 12),
             'post_background_color_id' => $this->faker->numberBetween(12, 24),
 
             'likes' => $this->faker->numberBetween(0, 100),
