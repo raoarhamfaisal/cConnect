@@ -23,8 +23,13 @@ return new class extends Migration
             $table->text('image')->nullable();
             $table->longText('body1')->nullable();
             $table->text('body2')->nullable();
-            $table->boolean('body1Bold')->default(1);
-            $table->smallInteger('body1ColorId')->default(1);
+
+            $table->boolean('is_body_bold')->default(0);
+            $table->unsignedBigInteger('post_text_color_id')->nullable();
+            $table->unsignedBigInteger('post_background_color_id')->nullable();
+            $table->string('font_size')->nullable();
+            $table->string('text_alignment')->default('left');
+
             $table->smallInteger('likes')->default(0);
             $table->smallInteger('repost')->default(0);
             $table->smallInteger('shares')->default(0);
@@ -33,6 +38,8 @@ return new class extends Migration
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('region_id')->references('id')->on('regions');
+            $table->foreign('post_text_color_id')->references('id')->on('post_colors');
+            $table->foreign('post_background_color_id')->references('id')->on('post_colors');
 
         });
     }
