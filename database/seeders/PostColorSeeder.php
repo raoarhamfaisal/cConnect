@@ -18,32 +18,34 @@ class PostColorSeeder extends Seeder
     public function run()
     {
         $textColors = [
-            "#000000", // Black
-            "#FFFFFF", // White
-            "#FF0000", // Red
-            "#00FF00", // Lime
-            "#0000FF", // Blue
-            "#FFFF00", // Yellow
-            "#00FFFF", // Cyan / Aqua
-            "#FF00FF", // Magenta / Fuchsia
-            "#C0C0C0", // Silver
-            "#808080", // Gray
-            "#800000", // Maroon
-            "#808000", // Olive
+            "#000000",
+            "#ffffff",
+            "#2C3E50",
+            "#34495E",
+            "#7F8C8D",
+            "#27AE60",
+            "#2980B9",
+            "#8E44AD",
+            "#F39C12",
         ];
         $backgroundColors = [
-            "#FFC0CB", // Pink
-            "#FFA07A", // Light Salmon
-            "#20B2AA", // Light Sea Green
-            "#87CEFA", // Light Sky Blue
-            "#778899", // Light Slate Gray
-            "#B0C4DE", // Light Steel Blue
-            "#FFFFE0", // Light Yellow
-            "#00FA9A", // Medium Spring Green
-            "#48D1CC", // Medium Turquoise
-            "#C71585", // Medium Violet Red
-            "#191970", // Midnight Blue
-            "#F5FFFA", // Mint Cream
+            "#ffffff",
+  "#000000",
+
+  "#2C3E50",
+    "#7F8C8D",
+  "#27AE60",
+  "#2980B9",
+  "#8E44AD",
+    "#F39C12",
+    "#D35400", // Pumpkin
+    "#C0392B", // Pomegranate
+  "#E74C3C", // Red
+  "#E84393", // Plum
+  "#2E4053", // Midnight Blue
+
+
+
         ];
             
         foreach ($textColors as $color) {
