@@ -24,6 +24,11 @@ const defaultPostFormObject = {
   likes: 0,
   repost: 0,
   shares: 0,
+  is_body_bold: 0,
+  post_text_color_id: null,
+  post_background_color_id: null,
+  font_size: "0",
+  text_alignment: "left",
 };
 
 export default {
@@ -167,7 +172,7 @@ export default {
       this.success = false;
 
       formData.user_id = (this.profile && this.profile.user_id) || null;
-
+      formData.is_body_bold = formData.is_body_bold ? 1 : 0;
       // Same method for update & create
       // if we have an item id then update
       formData.region_id = +formData.region_id;

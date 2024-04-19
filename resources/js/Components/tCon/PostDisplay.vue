@@ -44,6 +44,7 @@ export default {
 
     // Remove PostingActionMenu upon scroll
     // ERROR ONLY WORKS IN MOBILE BECAUSE LOOKING AT WINDOW140
+
     window.addEventListener(
       "scroll",
       throttle(this.HidePostingActionMenu, 500)
@@ -74,6 +75,14 @@ export default {
       type: Object,
       required: true,
     },
+    textColors: {
+      type: Array,
+      required: true,
+    },
+    backgroundColors: {
+      type: Array,
+      required: true,
+    },
 
     // array of colors for top body text (postings.vue)
     body1Colors: {
@@ -88,6 +97,8 @@ export default {
       dialogRef: ref(),
       user: usePageDeatails.auth.user,
       customBgColor: "",
+      text_alignment: "left",
+      text_color: "",
       profileId: usePageDeatails.profile.id,
       showFullTextBody1: false,
       showFullTextBody2: false,
@@ -110,20 +121,47 @@ export default {
       },
     },
     body1Class: function () {
-      let regex = /class="([^"]*text-[^"]*)"/;
-      let regex2 = /class="([^"]*justify-[^"]*)"/;
+      // let regex = /class="([^"]*text-[^"]*)"/;
+      // let regex2 = /class="([^"]*justify-[^"]*)"/;
 
-      let match = this.post.body1.match(regex);
-      let match2 = this.post.body1.match(regex2);
+      // let match = this.post.body1.match(regex);
+      // let match2 = this.post.body1.match(regex2);
 
-      let className = match ? match[1] : ""; // Extract the classes
-      let className2 = match2 ? match2[1] : ""; // Extract the classes
-      let bgClassMatch = className.match(/bg-\[#([a-zA-Z0-9]+)\]/);
-
-      if (bgClassMatch) {
-        // this.post.body1 = this.post.body1.replace(bgClassMatch[0], ""); // Remove the bg-[#...] class from post.body1
-        this.customBgColor = "#" + bgClassMatch[1]; // Set the custom background color (with '#')
+      // let className = match ? match[1] : ""; // Extract the classes
+      // let className2 = match2 ? match2[1] : ""; // Extract the classes
+      let className, className2;
+      if (this.post.is_body_bold) {
+        className = "font-bold";
       }
+      if (this.post.text_alignment) {
+        this.text_alignment =
+          this.post.text_alignment === "left"
+            ? " text-left"
+            : this.post.text_alignment === "center"
+            ? " text-center"
+            : " text-right";
+      }
+      if (this.post.post_text_color_id) {
+        this.textColors.forEach((color) => {
+          if (color.id === this.post.post_text_color_id) {
+            this.text_color = color.color;
+          }
+        });
+      }
+      if (this.post.post_background_color_id) {
+        this.backgroundColors.forEach((color) => {
+          if (color.id === this.post.post_background_color_id) {
+            this.customBgColor = color.color;
+          }
+        });
+      }
+
+      // let bgClassMatch = className.match(/bg-\[#([a-zA-Z0-9]+)\]/);
+
+      // if (bgClassMatch) {
+      //   // this.post.body1 = this.post.body1.replace(bgClassMatch[0], ""); // Remove the bg-[#...] class from post.body1
+      //   this.customBgColor = "#" + bgClassMatch[1]; // Set the custom background color (with '#')
+      // }
 
       return className + " " + className2;
     },
@@ -406,10 +444,10 @@ export default {
     <!-- Text Body1 UPPER -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <div
-      :class="`${body1Class} ${
+      :class="`${text_alignment} ${
         customBgColor.startsWith('#')
           ? ' flex-col w-full items-center  px-2 py-32 rounded-md shadow-lg border-2'
-          : ''
+          : 'w-full'
       } `"
       @click="$emit('enlarge-post', post)"
       class=""
@@ -418,7 +456,11 @@ export default {
       <span
         v-show="post.body1"
         v-html="displayedBody1"
-        class="w-full processed-body inline"
+        :class="`${body1Class} w-full processed-body inline`"
+        :style="{
+          fontSize: `${16 + +post.font_size}px`,
+          color: text_color,
+        }"
       ></span>
       <span
         v-if="!showFullTextBody1 && post.body1?.length > truncatedLength"
@@ -429,6 +471,7 @@ export default {
       >
         ...more
       </span>
+
       <span
         v-if="showFullTextBody1 && post.body1?.length > truncatedLength"
         @click.self.stop="toggleText"

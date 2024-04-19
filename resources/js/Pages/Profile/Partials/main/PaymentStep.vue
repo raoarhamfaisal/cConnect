@@ -102,89 +102,81 @@ const monthlyTotal = computed(() => {
   // Calculate the original monthly price with tax
   const originalMonthlyTotal = +pricingPlan.value.billed_monthly_price;
 
-  const salesTaxPrice =
-    +pricingPlan.value.sales_tax *
-    0.01 *
-    +pricingPlan.value.billed_monthly_price;
   // If there's a coupon
   if (coupon.value && coupon.value.percentage_off_regular_price) {
     // Calculate the discount for the monthly price
-    const monthlyDiscount =
-      (originalMonthlyTotal * coupon.value.percentage_off_regular_price) / 100;
+
     // Return the discounted monthly total
     return (
-      originalMonthlyTotal - monthlyDiscount + salesTaxPrice
+      originalMonthlyTotal - monthlyDiscount.value + +monthlyTaxPrice.value
       // +(+pricingPlan.value.sales_tax * 0.01 * originalMonthlyTotal)
     );
   }
 
   // Return the original monthly total if there's no coupon.value
-  return originalMonthlyTotal + salesTaxPrice;
-
-  // return (
-  //   +pricingPlan.value.billed_monthly_price +
-  //   +pricingPlan.value.sales_tax * +pricingPlan.value.billed_monthly_price
-  // );
+  return originalMonthlyTotal + +monthlyTaxPrice.value;
 });
 
 const annualTotal = computed(() => {
   // Calculate the original annual price with tax for 12 months
   const originalAnnualTotal = +pricingPlan.value.billed_annual_price;
-  const salesTaxPrice =
-    +pricingPlan.value.sales_tax *
-    0.01 *
-    +pricingPlan.value.billed_annual_price;
-  console.log("salesTax: " + salesTaxPrice);
+
   // If there's a coupon.value
   if (coupon.value && coupon.value.percentage_off_regular_price) {
     // Calculate the discount for the annual price
-    const annualDiscount =
-      coupon.value.months *
-      (((+pricingPlan.value.billed_annual_price / 12) *
-        coupon.value.percentage_off_regular_price) /
-        100);
+
     // Return the discounted annual total
-    return originalAnnualTotal - annualDiscount + salesTaxPrice;
+    const subtractedTotal = originalAnnualTotal - annualDiscount.value;
+    console.log(
+      subtractedTotal,
+      annualDiscount.value,
+      originalAnnualTotal,
+      "total,discount,originalAnnualTotal"
+    );
+    return subtractedTotal + +annualTaxPrice.value;
   }
 
   // Return the original annual total if there's no coupon
-  return originalAnnualTotal + salesTaxPrice;
-
-  // return (
-  //   +pricingPlan.value.billed_annual_price +
-  //   +pricingPlan.value.sales_tax * +pricingPlan.value.billed_annual_price
-  // );
+  return originalAnnualTotal + +annualTaxPrice.value;
 });
 
 const annualDiscount = computed(() => {
+  const percentage_off_regular_price = coupon.value.percentage_off_regular_price
+    ? coupon.value.percentage_off_regular_price
+    : 0.0;
+
+  const couponMonths = coupon.value.months ? coupon.value.months : 0;
   return (
-    coupon.value.months *
-    ((+pricingPlan.value.billed_monthly_price *
-      coupon.value.percentage_off_regular_price) /
+    couponMonths *
+    ((+pricingPlan.value.billed_monthly_price * percentage_off_regular_price) /
       100)
   );
 });
 const monthlyDiscount = computed(() => {
   const originalMonthlyTotal = +pricingPlan.value.billed_monthly_price;
-
-  return (
-    (originalMonthlyTotal * coupon.value.percentage_off_regular_price) / 100
-  );
+  const percentage_off_regular_price = coupon.value.percentage_off_regular_price
+    ? coupon.value.percentage_off_regular_price
+    : 0.0;
+  return (originalMonthlyTotal * percentage_off_regular_price) / 100;
 });
 const monthlyTaxPrice = computed(() => {
-  return (
-    +pricingPlan.value.sales_tax *
-    0.01 *
-    +pricingPlan.value.billed_monthly_price
+  const discount = monthlyDiscount.value;
+  let price = (
+    (+pricingPlan.value.sales_tax / 100) *
+    (+pricingPlan.value.billed_monthly_price - discount)
   ).toFixed(2);
+  return price === "0.00" ? "0.01" : price;
 });
+
 const annualTaxPrice = computed(() => {
-  return (
-    +pricingPlan.value.sales_tax *
-    0.01 *
-    +pricingPlan.value.billed_annual_price
+  const discount = annualDiscount.value;
+  let price = (
+    (+pricingPlan.value.sales_tax / 100) *
+    (+pricingPlan.value.billed_annual_price - discount)
   ).toFixed(2);
+  return price === "0.00" ? "0.01" : price;
 });
+
 //watch
 watch(
   () => props.region_id,

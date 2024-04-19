@@ -506,7 +506,14 @@ Array.prototype.remove = function () {
                   id="formPostbody1"
                   placeholder="Top text..."
                 /> -->
-                <TextEditor v-model="form.body1" />
+                <TextEditor
+                  v-model:modelValue="form.body1"
+                  v-model:fontSize="form.font_size"
+                  v-model:textColorId="form.post_text_color_id"
+                  v-model:backgroundColorId="form.post_background_color_id"
+                  v-model:isBold="form.is_body_bold"
+                  v-model:textAlignment="form.text_alignment"
+                />
                 <!-- :shouldShowBackground="showBackroundColor" -->
                 <div v-if="$page.props.errors.body1" class="text-red-500">
                   {{ $page.props.errors.body1 }}
@@ -648,19 +655,6 @@ Array.prototype.remove = function () {
                   </div>
                 </div>
                 <TradesWithDialog v-model="tradesPost" />
-                <!-- <template v-for="(option, index) in options" :key="option.name">
-                  <Badge
-                    v-if="tradesPost[option.id]"
-                    class="my-1 mx-1 space-x-1 flex"
-                    :style="{
-                      backgroundColor: index % 2 === 0 ? '#5f3dc4' : '#364fc7',
-                      fontSize: '10px',
-                      paddingTop: '6px',
-                      paddingBottom: '6px',
-                    }"
-                    >{{ option.name }}</Badge
-                  >
-                </template> -->
               </div>
             </div>
           </div>

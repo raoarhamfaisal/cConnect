@@ -44,8 +44,10 @@
           v-for="(color, index) in colors"
           :key="index"
           :style="{ backgroundColor: color.color }"
-          @click="setColor(color.color)"
-          :class="{ 'ring-2 ring-blue-500': color.color === selectedColor }"
+          @click="setColor(color)"
+          :class="{
+            'ring-2 ring-blue-500': color.color === selectedColor.color,
+          }"
           class="w-6 h-6 rounded cursor-pointer border-2 border-gray-20"
         ></div>
       </div>
@@ -88,7 +90,7 @@ const setColor = (color) => {
 };
 
 const clearColor = () => {
-  selectedColor.value = "inherit";
+  selectedColor.value.color = "inherit";
 };
 
 // Click outside logic

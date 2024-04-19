@@ -27,22 +27,24 @@ class PostColorSeeder extends Seeder
             "#2980B9",
             "#8E44AD",
             "#F39C12",
+            "#C0392B", // Pomegranate
+            "#E74C3C", // Red
+            "#E84393", 
+            
         ];
         $backgroundColors = [
             "#ffffff",
-  "#000000",
-
-  "#2C3E50",
-    "#7F8C8D",
-  "#27AE60",
-  "#2980B9",
-  "#8E44AD",
-    "#F39C12",
-    "#D35400", // Pumpkin
-    "#C0392B", // Pomegranate
-  "#E74C3C", // Red
-  "#E84393", // Plum
-  "#2E4053", // Midnight Blue
+            "#000000",
+            "#2C3E50",
+            "#7F8C8D",
+            "#27AE60",
+            "#2980B9",
+            "#8E44AD",
+            "#F39C12",
+            "#D35400", // Pumpkin
+            "#C0392B", // Pomegranate
+            "#E74C3C", // Red
+            "#E84393", // Plum
 
 
 
