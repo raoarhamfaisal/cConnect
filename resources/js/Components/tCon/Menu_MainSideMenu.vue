@@ -280,10 +280,10 @@ const openContractorPageModal = () => {
           <!-- RED FLAGS / SLIPPERY APPLES SEARCH -->
           <Link
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
-            href="/post"
+            href="/red-flag"
           >
             <img src="/images/icons/redflag.png" width="30" height="30" />
-            <span class="mx-4 font-medium text-cyan-600">Red Flags</span>
+            <span class="mx-4 font-medium">Red Flags</span>
           </Link>
 
           <!-- Mentor SEARCH -->
