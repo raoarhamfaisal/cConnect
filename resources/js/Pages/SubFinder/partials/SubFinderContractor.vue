@@ -327,7 +327,6 @@
 
 <script setup>
 import Card from "@/Components/Card.vue";
-import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 
 import ContractorHeader from "@/Pages/SubFinder/partials/ContractorHeader.vue";
 import { computed, nextTick, onMounted, reactive, ref } from "vue";

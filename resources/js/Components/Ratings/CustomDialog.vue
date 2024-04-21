@@ -22,6 +22,7 @@
         @click.stop
       >
         <div
+          v-if="showHeader"
           class="flex justify-between rounded-b-none max-md:rounded-none rounded-lg text-white items-center p-4 bg-[#241e6d]"
         >
           <div class="flex items-center gap-2">
@@ -120,6 +121,10 @@ const props = defineProps({
     default: true,
   },
   showFooter: {
+    type: Boolean,
+    default: true,
+  },
+  showHeader: {
     type: Boolean,
     default: true,
   },
@@ -230,6 +235,21 @@ defineExpose({ openDialog, closeDialog });
 }
 .width-40 {
   width: 40%;
+}
+
+@media (max-width: 640px) {
+  .card-width {
+    width: 90%;
+    max-height: 90%;
+    border-radius: 10px;
+  }
+}
+@media (max-width: 460px) {
+  .card-width {
+    width: 95%;
+    max-height: 95%;
+    border-radius: 10px;
+  }
 }
 
 @media (max-width: 640px) {

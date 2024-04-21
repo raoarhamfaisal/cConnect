@@ -35,18 +35,13 @@
         </v-tooltip>
         <!-- for mobile complaint -->
         <div v-if="screenWidth <= 640">
-          <v-tooltip
-            max-width="300px"
-            :text="redFlag.complaintSummary"
-            location="top"
-          >
+          <v-tooltip max-width="300px" :text="redFlag.complaint" location="top">
             <template v-slot:activator="{ props }">
               <div v-bind="props" class="text-sm">
                 {{
-                  redFlag.complaintSummary &&
-                  redFlag.complaintSummary.length > 30
-                    ? redFlag.complaintSummary.substring(0, 30) + "..."
-                    : redFlag.complaintSummary
+                  redFlag.complaint && redFlag.complaint.length > 30
+                    ? redFlag.complaint.substring(0, 30) + "..."
+                    : redFlag.complaint
                 }}
               </div>
             </template>
@@ -54,17 +49,13 @@
         </div>
       </div>
       <div v-if="screenWidth >= 640" class="sm:w-[34%] text-sm">
-        <v-tooltip
-          max-width="300px"
-          :text="redFlag.complaintSummary"
-          location="top"
-        >
+        <v-tooltip max-width="300px" :text="redFlag.complaint" location="top">
           <template v-slot:activator="{ props }">
             <div v-bind="props" class="text-sm">
               {{
-                redFlag.complaintSummary && redFlag.complaintSummary.length > 30
-                  ? redFlag.complaintSummary.substring(0, 30) + "..."
-                  : redFlag.complaintSummary
+                redFlag.complaint && redFlag.complaint.length > 30
+                  ? redFlag.complaint.substring(0, 30) + "..."
+                  : redFlag.complaint
               }}
             </div>
           </template>
@@ -157,6 +148,7 @@
             <textarea
               id="notes"
               ref="redFlagComplaintTextRef"
+              :disabled="!editRedFlagComplaintText"
               v-model="redFlagComplaintText"
               @paste="adjustHeight"
               @blur="stopTyping"
@@ -174,6 +166,7 @@
                 class="inline-block cursor-pointer w-7 h-7"
               ></Icon>
               <Icon
+                @click="onOpenDeleteComplaintModalDialog"
                 icon="mdi:delete-circle"
                 color="#e03131"
                 class="inline-block cursor-pointer w-8 h-8"
@@ -184,9 +177,30 @@
       </div>
     </div>
   </div>
+  <CustomDialog
+    submitText="Delete"
+    :disableOutSideClick="true"
+    @submit="onSubmitDeleteComplaint"
+    ref="deleteDialogRef"
+    errorIcon
+    :loading="loadingAccept"
+    :disabled="loadingAccept"
+    dialogWidth="max-h-[70vh] width50"
+    title="Are you sure? "
+  >
+    <div class="mb-4">
+      <div
+        class="section_text-lg font-bold pl-6 section_text-gray-800 mt-3 mb-2"
+      >
+        Do you want to remove this red flag ?
+      </div>
+    </div>
+  </CustomDialog>
 </template>
 
 <script setup>
+import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
+
 import { ref, watch, computed, nextTick } from "vue";
 import { Icon } from "@iconify/vue";
 import { useStore } from "vuex";
@@ -246,7 +260,7 @@ function toggleAccordion() {
     isOpen: isAccordionOpen.value,
   });
 }
-const redFlagComplaintText = ref(props.redFlag.complaintSummary);
+const redFlagComplaintText = ref(props.redFlag.complaint);
 
 const isTyping = ref(false);
 const editRedFlagComplaintText = ref(false);
@@ -298,6 +312,44 @@ const adjustHeight = () => {
     redFlagComplaintTextRef.value.style.height =
       redFlagComplaintTextRef.value.scrollHeight + "px";
   });
+};
+
+const deleteDialogRef = ref();
+const loadingAccept = ref(false);
+
+const onOpenDeleteComplaintModalDialog = () => {
+  deleteDialogRef.value.openDialog();
+};
+const onSubmitDeleteComplaint = async () => {
+  loadingAccept.value = true;
+
+  // try {
+  //   const response = await axios.post(
+  //     `/api/admin/accept-cancellation/${userId.value}`,
+  //     {},
+  //     getAxiosConfig()
+  //   );
+  //   if (response.data) {
+  //     changesSaved(
+  //       response.data.message || "Cancel request successfully accepted"
+  //     );
+  //     //   const index = cancelRequests.value.findIndex((plan, index) => {
+  //     //     return plan.id === singlePlan.value.id;
+  //     //   });
+
+  //     //   if (index !== -1) {
+  //     //     cancelRequests.value.splice(index, 1);
+  //     //   }
+  //     setTimeout(() => {
+  //       fetchCancelRequests();
+  //     }, 2000);
+  //   }
+  // } catch (err) {
+  //   console.log(err);
+  //   somethingWentWrong(err.response.data.message, "inherit");
+  // }
+  loadingAccept.value = false;
+  deleteDialogRef.value.closeDialog();
 };
 </script>
 
