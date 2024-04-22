@@ -17,6 +17,7 @@ use App\Http\Controllers\PaymentInfoController;
 use App\Http\Controllers\DiscountCouponController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PostColorController;
+use App\Http\Controllers\RedFlagcontroller;
 
 
 
@@ -67,6 +68,17 @@ Route::get('/post/background-colors', [PostColorController::class, 'getBackgroun
     
     // Your authenticated routes here
     Route::middleware('auth:sanctum')->group(function () {
+
+
+        // Red Flag APIs
+        Route::post('/red-flags', [RedFlagController::class, 'store']);
+        Route::put('/red-flags/{redFlag}', [RedFlagController::class, 'update']);
+        Route::delete('/red-flags/{redFlag}', [RedFlagController::class, 'destroy']);
+        Route::get('/red-flags', [RedFlagController::class, 'index']);
+        Route::get('/red-flags/my-red-flags', [RedFlagController::class, 'myFlags']);
+
+
+
 
         // Process Payment
         Route::post('/payment/start-subscription', [PaymentController::class, 'startSubscription'])->name('payment.startSubscription');
