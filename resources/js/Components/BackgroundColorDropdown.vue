@@ -107,6 +107,7 @@ const setColor = (color) => {
 
 const clearColor = () => {
   selectedColor.value.color = "inherit";
+  selectedColor.value.id = null;
 };
 
 // Click outside logic

@@ -24,7 +24,7 @@ const defaultPostFormObject = {
   body1: null,
   body2: null,
   is_body_bold: false,
-  post_text_color_id: 0,
+  post_text_color_id: null,
   likes: 0,
   repost: 0,
   shares: 0,

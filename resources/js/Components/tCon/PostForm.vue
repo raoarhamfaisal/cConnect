@@ -147,6 +147,12 @@ export default {
         this.form.title = "";
         this.form.body1 = "";
         this.form.body2 = "";
+        this.form.post_text_color_id = null;
+
+        this.form.post_background_color_id = null;
+        this.form.is_body_bold = false;
+        this.form.font_size = 0;
+        this.form.text_alignment = "left";
         this.myFiles = [];
         this.form.image = "";
         this.$store.dispatch("ratings/getTrades", this.id);
@@ -506,6 +512,7 @@ Array.prototype.remove = function () {
                   id="formPostbody1"
                   placeholder="Top text..."
                 /> -->
+
                 <TextEditor
                   v-model:modelValue="form.body1"
                   v-model:fontSize="form.font_size"

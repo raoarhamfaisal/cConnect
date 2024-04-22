@@ -44,7 +44,9 @@ export default {
 
     // Remove PostingActionMenu upon scroll
     // ERROR ONLY WORKS IN MOBILE BECAUSE LOOKING AT WINDOW140
-
+    this.$nextTick(() => {
+      this.checkContentHeight();
+    });
     window.addEventListener(
       "scroll",
       throttle(this.HidePostingActionMenu, 500)
@@ -100,6 +102,8 @@ export default {
       text_alignment: "left",
       text_color: "",
       profileId: usePageDeatails.profile.id,
+      isContentOverflow: false,
+      lineHeight: 0,
       showFullTextBody1: false,
       showFullTextBody2: false,
       truncatedLength: this.$store.state.screenWidth > 769 ? 300 : 150,
@@ -109,6 +113,31 @@ export default {
 
   computed: {
     ...mapGetters(["screenWidth"]),
+    toggleClass() {
+      return `cursor-pointer ${
+        this.customBgColor.startsWith("#") ? "text-sky-400" : "text-sky-700"
+      }`;
+    },
+    textStyle() {
+      if (this.showFullTextBody1) {
+        return {
+          maxHeight: "none",
+          overflow: "hidden",
+          display: "inline",
+          fontSize: `${16 + +this.post.font_size}px`,
+          color: this.text_color,
+        };
+      } else {
+        return {
+          maxHeight: this.lineHeight * 4 + "px",
+          fontSize: `${16 + +this.post.font_size}px`,
+          overflow: "hidden",
+          display: "block",
+
+          color: this.text_color,
+        };
+      }
+    },
     numberOfImages: {
       // Gets the number of images in post.image string
       // passed as prop to PostImageDisplay.vue
@@ -171,17 +200,18 @@ export default {
       if (content) {
         content = content.replace(/\/n/g, "<br>"); // Replace /n with <br>
       }
+      return this.processUrls(content);
 
-      if (this.showFullTextBody1 || content?.length <= this.truncatedLength) {
-        return this.processUrls(content);
-      } else {
-        let truncated = content?.substring(0, this.truncatedLength);
-        // Ensure it doesn't cut off in the middle of a word if and only if it's actually being truncated
-        if (truncated?.length >= this.truncatedLength) {
-          truncated = truncated.substring(0, truncated.lastIndexOf(" "));
-        }
-        return this.processUrls(truncated);
-      }
+      // if (this.showFullTextBody1 || content?.length <= this.truncatedLength) {
+      //   return this.processUrls(content);
+      // } else {
+      //   let truncated = content?.substring(0, this.truncatedLength);
+      //   // Ensure it doesn't cut off in the middle of a word if and only if it's actually being truncated
+      //   if (truncated?.length >= this.truncatedLength) {
+      //     truncated = truncated.substring(0, truncated.lastIndexOf(" "));
+      //   }
+      //   return this.processUrls(truncated);
+      // }
     },
 
     displayedBody2() {
@@ -245,10 +275,35 @@ export default {
       },
     },
   },
-
+  watch: {
+    post: {
+      handler: "checkContentHeight",
+      deep: true,
+    },
+    showFullTextBody1: "checkContentHeight",
+  },
   methods: {
     NavPostingActionMenu(showingPostingActionMenu) {
       this.showingPostingActionMenu = !this.showingPostingActionMenu;
+    },
+    checkContentHeight() {
+      const textElement = this.$refs.textElement;
+      if (!textElement) {
+        return;
+      }
+
+      this.lineHeight = parseInt(
+        window.getComputedStyle(textElement).lineHeight
+      );
+      const maxHeight = this.lineHeight * 4;
+      console.log(
+        "Checking content height",
+        textElement.offsetHeight,
+        textElement.scrollHeight,
+        maxHeight
+      );
+      this.isContentOverflow =
+        textElement.offsetHeight || textElement.scrollHeight > maxHeight;
     },
 
     HidePostingActionMenu(showingPostingActionMenu) {
@@ -456,13 +511,18 @@ export default {
       <span
         v-show="post.body1"
         v-html="displayedBody1"
+        :style="textStyle"
         :class="`${body1Class} w-full processed-body inline`"
-        :style="{
-          fontSize: `${16 + +post.font_size}px`,
-          color: text_color,
-        }"
+        ref="textElement"
       ></span>
       <span
+        v-if="isContentOverflow"
+        @click.self.stop="toggleText"
+        :class="`${toggleClass} ${showFullTextBody1 ? 'inline' : 'block'} `"
+      >
+        {{ showFullTextBody1 ? "...less" : "...more" }}
+      </span>
+      <!-- <span
         v-if="!showFullTextBody1 && post.body1?.length > truncatedLength"
         @click.self.stop="toggleText"
         :class="`cursor-pointer ${
@@ -480,7 +540,7 @@ export default {
         }`"
       >
         ...less
-      </span>
+      </span> -->
     </div>
     <!-- <div
       v-show="post.body1"

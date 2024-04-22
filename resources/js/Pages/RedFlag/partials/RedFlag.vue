@@ -177,6 +177,7 @@
       </div>
     </div>
   </div>
+
   <CustomDialog
     submitText="Delete"
     :disableOutSideClick="true"

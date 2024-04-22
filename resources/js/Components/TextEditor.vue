@@ -14,7 +14,6 @@
       >
         <Icon icon="fa-solid:bold" class="w-5 h-5" />
       </button>
-
       <!-- Align Left Icon -->
       <button
         type="button"
