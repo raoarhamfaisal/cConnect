@@ -17,7 +17,7 @@ import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import Card from "@/Components/Card.vue";
 
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
-import { somethingWentWrong } from "@/helpers/utilities";
+import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 
 const props = defineProps({
   profile: Object,
@@ -30,106 +30,11 @@ const props = defineProps({
     }),
   },
 });
-// const optionsList = options.unshift({
-//   id: "trade",
-//   name: "All",
-// });
+
 const searchTerm = ref("");
-const isSearchByCustomer = ref(true);
-const atButtonClickSearchTerm = ref("");
+const isSearchByCustomer = ref(1);
 const region_id = ref("");
-const redFlags = ref([
-  {
-    id: 1,
-    flagAddedBy: {
-      name: "John Doe",
-      city: "Dallasman",
-      state: "Texas",
-    },
-
-    customerName: "George SuperIdolSmithy",
-    complaint:
-      "I thought they did sub-par work work.  asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid. asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid.",
-    region: "1001 Dallas Ft Worth",
-    dateReported: "12/30/23",
-    isComplaintOnCustomer: true,
-  },
-  {
-    id: 2,
-    flagAddedBy: {
-      name: "John Doe",
-      city: "Dallasman",
-      state: "Texas",
-    },
-
-    customerName: "Rosealina Smithwhateverlast",
-    complaint:
-      "Never paid the final insurance check. She told me that her insurance adjuster said that was her money so she took her family on a cruise. I asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel.",
-    region: "1001 Dallas Ft Worth",
-    dateReported: "12/30/23",
-    isComplaintOnCustomer: true,
-  },
-  {
-    id: 3,
-    flagAddedBy: {
-      name: "John Doe",
-      city: "Dallasman",
-      state: "Texas",
-    },
-
-    customerName: "George SuperIdolSmithy",
-    complaint:
-      "I thought they did sub-par work work.  asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid. asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid.",
-    region: "1001 Dallas Ft Worth",
-    dateReported: "12/30/23",
-    isComplaintOnCustomer: true,
-  },
-  {
-    id: 4,
-    flagAddedBy: {
-      name: "John Doe",
-      city: "Dallasman",
-      state: "Texas",
-    },
-
-    customerName: "Rosealina Smithwhateverlast",
-    complaint:
-      "Never paid the final insurance check. She told me that her insurance adjuster said that was her money so she took her family on a cruise. I asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel.",
-    region: "1001 Dallas Ft Worth",
-    dateReported: "12/30/23",
-    isComplaintOnCustomer: true,
-  },
-  {
-    id: 5,
-    flagAddedBy: {
-      name: "John Doe",
-      city: "Dallasman",
-      state: "Texas",
-    },
-
-    customerName: "George SuperIdolSmithy",
-    complaint:
-      "I thought they did sub-par work work.  asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid. asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid.",
-    region: "1001 Dallas Ft Worth",
-    dateReported: "12/30/23",
-    isComplaintOnCustomer: true,
-  },
-  {
-    id: 6,
-    flagAddedBy: {
-      name: "John Doe",
-      city: "Dallasman",
-      state: "Texas",
-    },
-
-    customerName: "Rosealina Smithwhateverlast",
-    complaint:
-      "Never paid the final insurance check. She told me that her insurance adjuster said that was her money so she took her family on a cruise. I asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel.",
-    region: "1001 Dallas Ft Worth",
-    dateReported: "12/30/23",
-    isComplaintOnCustomer: true,
-  },
-]);
+const redFlags = ref([]);
 
 const referenceList = props.regions.map((item) => item.name);
 const selectedObj = props.regions.find((item) => {
@@ -145,9 +50,6 @@ const pagination = ref(0);
 const perPage = ref(15);
 const loadingNextPage = ref(false);
 const loadMoreIntersect = ref();
-const basedOnSearch = ref(false);
-const showAdvanceFiltersButton = ref(false);
-const showAdvanceFilters = ref(true);
 
 const store = useStore();
 
@@ -156,7 +58,7 @@ const screenWidth = computed(() => store.getters.screenWidth);
 
 //Mounted
 onMounted(async () => {
-  localStorage.setItem("prevUrl", "/sub-finder");
+  fetchSearchedComplaintsWithLoading();
 });
 
 // watch
@@ -183,21 +85,33 @@ watch(redFlags, (newVal) => {
   }
 });
 
+watch(region_id, (newVal) => {
+  if (searchTerm.value && newVal) {
+    fetchSearchedComplaintsWithLoading();
+  }
+});
+watch(isSearchByCustomer, (newVal) => {
+  if (searchTerm.value && isSearchByCustomer !== null) {
+    fetchSearchedComplaintsWithLoading();
+  }
+});
+
 //Methods
 
-const handleSelect = async () => {
-  showAdvanceFilters.value = !showAdvanceFilters.value;
-};
+let searchTimer;
 
 const submitSearchTerm = () => {
-  atButtonClickSearchTerm.value = searchTerm.value;
-  basedOnSearch.value = true;
-  if (screenWidth.value < 640) {
-    showAdvanceFiltersButton.value = true;
-    showAdvanceFilters.value = false;
+  // Clear any existing timer
+  if (searchTimer) {
+    clearTimeout(searchTimer);
   }
-  fetchSearchedContractorsWithLoading();
+
+  // Set a new timer for 1 second
+  searchTimer = setTimeout(() => {
+    fetchSearchedComplaintsWithLoading();
+  }, 300);
 };
+
 const changeReferal = (value) => {
   selectedReferal.value = value;
   console.log("changeREfereatl");
@@ -213,47 +127,47 @@ const changeReferal = (value) => {
 const loadMoreContractors = async () => {
   loadingNextPage.value = true;
   currentPage.value = currentPage.value + 1;
-  await fetchSearchedContractors(perPage.value, currentPage.value, true);
+  await fetchSearchedComplaints(perPage.value, currentPage.value, true);
   loadingNextPage.value = false;
 };
 
 // Fetch REviews
-const fetchSearchedContractors = async (
+const fetchSearchedComplaints = async (
   per_page = perPage.value,
   page = 1,
   append = false
 ) => {
   let response;
   try {
-    if (basedOnSearch.value) {
-      response = await axios.get(
-        `/api/sub-finder/find-contractors?region_id=${region_id.value}&per_page=${per_page}&page=${page}&search_term=${searchTerm.value}&sort_by=high_rated&preference_status=&trade_id=`,
-        getAxiosConfig()
-      );
-    } else {
-      response = await axios.get(
-        `/api/sub-finder/find-contractors?region_id=${region_id.value}&per_page=${per_page}&page=${page}&search_term=&sort_by=${selectedSort.value}&preference_status=${preference_status.value}&trade_id=${trade_id.value}`,
-        getAxiosConfig()
-      );
-    }
+    response = await axios.get(
+      `/api/red-flags?${
+        searchTerm.value &&
+        `name_of_the_contractor_or_customer=
+       ${searchTerm.value}`
+      }&region_id=${region_id.value}${
+        isSearchByCustomer.value !== null &&
+        `&is_contractor_or_customer=${isSearchByCustomer.value}`
+      }&sort_field=red_flag_date&sort_order=desc`,
+      getAxiosConfig()
+    );
+    // &per_page=${per_page}&page=${page}&sort_field=&sort_order=asc
+    console.log(response.data, "response");
     if (append) {
-      foundContractors.value = [
-        ...foundContractors.value,
-        ...response.data.contractors,
-      ];
+      redFlags.value = [...redFlags.value, ...response.data];
     } else {
-      foundContractors.value = [...response.data.contractors];
+      redFlags.value = [...response.data];
     }
-    pagination.value = response.data.pagination;
+    // pagination.value = response.data.pagination;
 
     // Extracting the star counts
   } catch (err) {
+    console.log(err);
     somethingWentWrong();
   }
 };
-const fetchSearchedContractorsWithLoading = async () => {
+const fetchSearchedComplaintsWithLoading = async () => {
   loading.value = true;
-  await fetchSearchedContractors();
+  await fetchSearchedComplaints();
   loading.value = false;
 };
 
@@ -288,25 +202,25 @@ watch(doYouAgreeBestPracticeCheck, (newValue) => {
 
 // add new Red Flag
 const newRedFlag = reactive({
-  customerName: "",
+  name_of_the_contractor_or_customer: "",
   complaint: "",
-  isComplaintOnCustomer: null,
-
+  is_contractor_or_customer: null,
   region_id: selectedObj ? selectedObj.id.toString() : undefined,
 });
 const errors = reactive({
-  customerName: null,
+  name_of_the_contractor_or_customer: null,
   complaint: null,
-  isComplaintOnCustomer: null,
+  is_contractor_or_customer: null,
   region_id: null,
 });
 const redFlagComplaintTextRef = ref();
 const selectedRegion = ref(selectedName ?? "");
+const addingRedFlag = ref(false);
 
 watch(
-  () => newRedFlag.isComplaintOnCustomer,
+  () => newRedFlag.is_contractor_or_customer,
   () => {
-    clearError("isComplaintOnCustomer");
+    clearError("is_contractor_or_customer");
   }
 );
 
@@ -335,9 +249,9 @@ const validateForm = () => {
     errors[field] = null;
   }
 
-  // Validate customerName
-  if (!newRedFlag.customerName.trim()) {
-    errors.customerName = "Name is required.";
+  // Validate name_of_the_contractor_or_customer
+  if (!newRedFlag.name_of_the_contractor_or_customer.trim()) {
+    errors.name_of_the_contractor_or_customer = "Name is required.";
     isValid = false;
   }
 
@@ -347,9 +261,9 @@ const validateForm = () => {
     isValid = false;
   }
 
-  // Validate isComplaintOnCustomer
-  if (newRedFlag.isComplaintOnCustomer === null) {
-    errors.isComplaintOnCustomer =
+  // Validate is_contractor_or_customer
+  if (newRedFlag.is_contractor_or_customer === null) {
+    errors.is_contractor_or_customer =
       "Please select if the complaint is on a customer or contractor.";
     isValid = false;
   }
@@ -363,11 +277,11 @@ const validateForm = () => {
   return isValid;
 };
 const clearError = (field) => {
-  if (newRedFlag[field] !== null && field === "isComplaintOnCustomer") {
+  if (newRedFlag[field] !== null && field === "is_contractor_or_customer") {
     errors[field] = "";
     return;
   }
-  if (field === "isComplaintOnCustomer") {
+  if (field === "is_contractor_or_customer") {
     return;
   }
   if (newRedFlag[field].trim()) {
@@ -375,10 +289,33 @@ const clearError = (field) => {
   }
 };
 
-const onAddNewRedFlag = () => {
+const onAddNewRedFlag = async () => {
+  addingRedFlag.value = true;
   if (validateForm()) {
-    console.log("newRedFlag", newRedFlag.value);
-    addNewRedFlagDialogRef.value.closeDialog();
+    newRedFlag.red_flag_date = "2023-11-24";
+    try {
+      const response = await axios.post(
+        `/api/red-flags`,
+        newRedFlag,
+        getAxiosConfig()
+      );
+
+      if (response.data) {
+        fetchSearchedComplaintsWithLoading();
+        changesSaved(response.data.message || "Red Flag successfully added");
+        setTimeout(() => {
+          addNewRedFlagDialogRef.value.closeDialog();
+        }, 2000);
+      }
+      // pagination.value = response.data.pagination;
+
+      // Extracting the star counts
+    } catch (err) {
+      console.log(err);
+      somethingWentWrong();
+    } finally {
+      addingRedFlag.value = false;
+    }
   }
 };
 
@@ -438,7 +375,7 @@ const determineBorderVisibility = (index) => {
               type="text"
               id="search"
               v-model="searchTerm"
-              @keypress.prevent.enter="submitSearchTerm"
+              @input="submitSearchTerm"
               class="relative m-0 flex-grow block w-full h-[45px] px-3 py-1.5 text-base font-normal text-gray-700 outline-none rounded-md border-solid border-gray-600 placeholder:italic placeholder:text-slate-500 pr-12"
               placeholder="Search Name..."
             />
@@ -473,7 +410,7 @@ const determineBorderVisibility = (index) => {
                     v-model="isSearchByCustomer"
                     color="error"
                     id="isSearchByCustomer"
-                    :true-value="true"
+                    :true-value="1"
                     :false-value="null"
                     style="font-size: 1.5rem"
                     hide-details
@@ -481,7 +418,7 @@ const determineBorderVisibility = (index) => {
                   </v-checkbox>
                   <div
                     for="isSearchByCustomer"
-                    @click="isSearchByCustomer = true"
+                    @click="isSearchByCustomer = 1"
                     class="w-full cursor-pointer text-sm sm:text-xl"
                   >
                     Customer
@@ -493,14 +430,14 @@ const determineBorderVisibility = (index) => {
                     color="error"
                     id="notSearchByCustomer"
                     style="font-size: 1.5rem"
-                    :true-value="false"
+                    :true-value="0"
                     :false-value="null"
                     hide-details
                   >
                   </v-checkbox>
                   <div
                     for="notSearchByCustomer"
-                    @click="isSearchByCustomer = false"
+                    @click="isSearchByCustomer = 0"
                     class="w-full cursor-pointer text-sm sm:text-xl"
                   >
                     Contractor(non-member)
@@ -527,21 +464,13 @@ const determineBorderVisibility = (index) => {
         </div>
       </div>
 
-      <div
-        class="mt-3 sm:mt-6"
-        v-if="atButtonClickSearchTerm && atButtonClickSearchTerm !== 'true'"
-      >
-        <div class="font-extrabold text-2xl leading-tight">
-          Showing results for term
-          <span class="text-[#021d91]">"{{ atButtonClickSearchTerm }}"</span>
-        </div>
-      </div>
-      <!-- v-if="!loading && atButtonClickSearchTerm" -->
       <div class="mt-4">
         <div class="bg-white border-2 border-black table-container">
           <TableHead />
 
-          <template v-if="!loading && redFlags && redFlags.length > 0">
+          <template
+            v-if="!loading && searchTerm && redFlags && redFlags.length > 0"
+          >
             <RedFlag
               v-for="(redFlag, index) in redFlags"
               :key="redFlag.id"
@@ -553,7 +482,7 @@ const determineBorderVisibility = (index) => {
           </template>
           <!-- searching -->
           <div
-            v-if="loading && atButtonClickSearchTerm"
+            v-if="loading"
             class="h-full h-[30vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4"
           >
             <div class="text-center text-xl">Searching...</div>
@@ -571,6 +500,13 @@ const determineBorderVisibility = (index) => {
               Nothing Found
             </div>
           </div>
+          <!-- <div class="" v-if="!searchTerm">
+            <div
+              class="p-2 text-xl text-grey-600 font-bold h-72 flex items-center justify-center"
+            >
+              Please start typing to see your corresponding red flags
+            </div>
+          </div> -->
 
           <!-- lazy loading -->
           <div
@@ -696,12 +632,15 @@ const determineBorderVisibility = (index) => {
           <input
             type="text"
             id="search"
-            v-model="newRedFlag.customerName"
+            v-model="newRedFlag.name_of_the_contractor_or_customer"
             class="relative m-0 flex-grow block w-full h-[45px] px-3 py-1.5 text-base font-normal text-gray-700 outline-none rounded-md border-solid border-gray-600 placeholder:italic placeholder:text-slate-500 pr-12"
             placeholder="Enter Name..."
-            @input="clearError('customerName')"
+            @input="clearError('name_of_the_contractor_or_customer')"
           />
-          <InputError class="mt-2" :message="errors.customerName" />
+          <InputError
+            class="mt-2"
+            :message="errors.name_of_the_contractor_or_customer"
+          />
         </div>
         <textarea
           ref="redFlagComplaintTextRef"
@@ -717,9 +656,9 @@ const determineBorderVisibility = (index) => {
         <div class="w-full flex flex-col gap-1 -translate-x-2 mt-1 sm:mt-2">
           <div class="flex gap-2 items-center h-8">
             <v-checkbox
-              v-model="newRedFlag.isComplaintOnCustomer"
+              v-model="newRedFlag.is_contractor_or_customer"
               color="#241e6d"
-              id="newRedFlag.isComplaintOnCustomer"
+              id="newRedFlag.is_contractor_or_customer"
               :true-value="true"
               :false-value="null"
               style="font-size: 1.3rem"
@@ -727,8 +666,8 @@ const determineBorderVisibility = (index) => {
             >
             </v-checkbox>
             <div
-              for="newRedFlag.isComplaintOnCustomer"
-              @click="newRedFlag.isComplaintOnCustomer = true"
+              for="newRedFlag.is_contractor_or_customer"
+              @click="newRedFlag.is_contractor_or_customer = true"
               class="w-full cursor-pointer text-sm sm:text-xl"
             >
               Customer
@@ -736,7 +675,7 @@ const determineBorderVisibility = (index) => {
           </div>
           <div class="flex gap-2 items-center h-8">
             <v-checkbox
-              v-model="newRedFlag.isComplaintOnCustomer"
+              v-model="newRedFlag.is_contractor_or_customer"
               color="#241e6d"
               id="notisComplaintOnCustomer"
               style="font-size: 1.3rem"
@@ -747,14 +686,14 @@ const determineBorderVisibility = (index) => {
             </v-checkbox>
             <div
               for="notisComplaintOnCustomer"
-              @click="newRedFlag.isComplaintOnCustomer = false"
+              @click="newRedFlag.is_contractor_or_customer = false"
               class="w-full cursor-pointer text-sm sm:text-xl"
             >
               Contractor(non-member)
             </div>
           </div>
         </div>
-        <InputError class="mt-2" :message="errors.isComplaintOnCustomer" />
+        <InputError class="mt-2" :message="errors.is_contractor_or_customer" />
 
         <!-- seelct region -->
         <div class="w-full sm:w-1/2 my-2">
@@ -775,9 +714,16 @@ const determineBorderVisibility = (index) => {
         <!-- Submit -->
         <button
           @click="onAddNewRedFlag"
+          :disabled="addingRedFlag"
           class="border-2 mt-5 w-full sm:w-40 flex items-center justify-center border-2 border-teal-green bg-teal-green text-white font-semibold text-xl py-2 px-4 rounded transition transform duration-300 hover:shadow-lg active:scale-95"
+          :style="{
+            opacity: addingRedFlag ? '0.4' : '1.0',
+          }"
         >
-          Save
+          <div v-show="!addingRedFlag" class="flex items-center justify-center">
+            Save
+          </div>
+          <div v-show="addingRedFlag">Saving...</div>
         </button>
       </section>
 
@@ -801,3 +747,96 @@ const determineBorderVisibility = (index) => {
   color: #fff;
 }
 </style>
+
+<!-- const redFlags = ref([
+  {
+    id: 1,
+    flagAddedBy: {
+      name: "John Doe",
+      city: "Dallasman",
+      state: "Texas",
+    },
+
+    customerName: "George SuperIdolSmithy",
+    complaint:
+      "I thought they did sub-par work work.  asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid. asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid.",
+    region: "1001 Dallas Ft Worth",
+    dateReported: "12/30/23",
+    isComplaintOnCustomer: true,
+  },
+  {
+    id: 2,
+    flagAddedBy: {
+      name: "John Doe",
+      city: "Dallasman",
+      state: "Texas",
+    },
+
+    customerName: "Rosealina Smithwhateverlast",
+    complaint:
+      "Never paid the final insurance check. She told me that her insurance adjuster said that was her money so she took her family on a cruise. I asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel.",
+    region: "1001 Dallas Ft Worth",
+    dateReported: "12/30/23",
+    isComplaintOnCustomer: true,
+  },
+  {
+    id: 3,
+    flagAddedBy: {
+      name: "John Doe",
+      city: "Dallasman",
+      state: "Texas",
+    },
+
+    customerName: "George SuperIdolSmithy",
+    complaint:
+      "I thought they did sub-par work work.  asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid. asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid.",
+    region: "1001 Dallas Ft Worth",
+    dateReported: "12/30/23",
+    isComplaintOnCustomer: true,
+  },
+  {
+    id: 4,
+    flagAddedBy: {
+      name: "John Doe",
+      city: "Dallasman",
+      state: "Texas",
+    },
+
+    customerName: "Rosealina Smithwhateverlast",
+    complaint:
+      "Never paid the final insurance check. She told me that her insurance adjuster said that was her money so she took her family on a cruise. I asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel.",
+    region: "1001 Dallas Ft Worth",
+    dateReported: "12/30/23",
+    isComplaintOnCustomer: true,
+  },
+  {
+    id: 5,
+    flagAddedBy: {
+      name: "John Doe",
+      city: "Dallasman",
+      state: "Texas",
+    },
+
+    customerName: "George SuperIdolSmithy",
+    complaint:
+      "I thought they did sub-par work work.  asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid. asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid.",
+    region: "1001 Dallas Ft Worth",
+    dateReported: "12/30/23",
+    isComplaintOnCustomer: true,
+  },
+  {
+    id: 6,
+    flagAddedBy: {
+      name: "John Doe",
+      city: "Dallasman",
+      state: "Texas",
+    },
+
+    customerName: "Rosealina Smithwhateverlast",
+    complaint:
+      "Never paid the final insurance check. She told me that her insurance adjuster said that was her money so she took her family on a cruise. I asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel.",
+    region: "1001 Dallas Ft Worth",
+    dateReported: "12/30/23",
+    isComplaintOnCustomer: true,
+  },
+]); -->
