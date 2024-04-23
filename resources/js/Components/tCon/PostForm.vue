@@ -137,11 +137,7 @@ export default {
         this.selectedReferal = selectedName;
       }
     },
-    // shouldShowBackground(newValue, oldValue) {
-    //   if (newValue && newValue !== oldValue) {
-    //     this.showBackroundColor = true;
-    //   }
-    // },
+  
     success(newVal) {
       if (newVal) {
         this.form.title = "";
@@ -151,7 +147,7 @@ export default {
 
         this.form.post_background_color_id = null;
         this.form.is_body_bold = false;
-        this.form.font_size = 0;
+        this.form.font_size = "0";
         this.form.text_alignment = "left";
         this.myFiles = [];
         this.form.image = "";

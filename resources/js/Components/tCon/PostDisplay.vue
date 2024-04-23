@@ -276,10 +276,10 @@ export default {
     },
   },
   watch: {
-    post: {
-      handler: "checkContentHeight",
-      deep: true,
-    },
+    // post: {
+    //   handler: "checkContentHeight",
+    //   deep: true,
+    // },
     showFullTextBody1: "checkContentHeight",
   },
   methods: {

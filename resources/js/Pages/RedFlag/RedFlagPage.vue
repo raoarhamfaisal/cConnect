@@ -14,7 +14,6 @@ import TableHead from "@/Pages/RedFlag/partials/TableHead.vue";
 import RedFlag from "@/Pages/RedFlag/partials/RedFlag.vue";
 
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
-import Card from "@/Components/Card.vue";
 
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
@@ -45,6 +44,7 @@ const selectedName = selectedObj ? selectedObj.name : undefined;
 const selectedReferal = ref(selectedName ?? "");
 
 const loading = ref(false);
+const fetchMyRedFlags = ref(false)
 const currentPage = ref(1);
 const pagination = ref(0);
 const perPage = ref(15);
@@ -65,35 +65,35 @@ onMounted(async () => {
 
 //
 watch(redFlags, (newVal) => {
-  if (newVal.length > 0) {
-    setTimeout(() => {
-      const observerCallback = (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            loadMoreContractors();
-          }
-        });
-      };
+  // if (newVal.length > 0) {
+  //   setTimeout(() => {
+  //     const observerCallback = (entries) => {
+  //       entries.forEach((entry) => {
+  //         if (entry.isIntersecting) {
+  //           loadMoreContractors();
+  //         }
+  //       });
+  //     };
 
-      const observer = new IntersectionObserver(observerCallback, {
-        rootMargin: "0px 0px 0px 0px",
-        threshold: 0,
-      });
+  //     const observer = new IntersectionObserver(observerCallback, {
+  //       rootMargin: "0px 0px 0px 0px",
+  //       threshold: 0,
+  //     });
 
-      observer.observe(loadMoreIntersect.value);
-    }, 300);
-  }
+  //     observer.observe(loadMoreIntersect.value);
+  //   }, 300);
+  // }
 });
 
 watch(region_id, (newVal) => {
-  if (searchTerm.value && newVal) {
+ 
     fetchSearchedComplaintsWithLoading();
-  }
+  
 });
 watch(isSearchByCustomer, (newVal) => {
-  if (searchTerm.value && isSearchByCustomer !== null) {
+ 
     fetchSearchedComplaintsWithLoading();
-  }
+
 });
 
 //Methods
@@ -108,6 +108,7 @@ const submitSearchTerm = () => {
 
   // Set a new timer for 1 second
   searchTimer = setTimeout(() => {
+    fetchMyRedFlags.value = false
     fetchSearchedComplaintsWithLoading();
   }, 300);
 };
@@ -131,6 +132,11 @@ const loadMoreContractors = async () => {
   loadingNextPage.value = false;
 };
 
+const fetchComplaintsAddedByMe = ()=>{
+  fetchMyRedFlags.value = true
+  fetchSearchedComplaintsWithLoading();
+}
+
 // Fetch REviews
 const fetchSearchedComplaints = async (
   per_page = perPage.value,
@@ -139,8 +145,9 @@ const fetchSearchedComplaints = async (
 ) => {
   let response;
   try {
-    response = await axios.get(
-      `/api/red-flags?${
+    if(fetchMyRedFlags.value){
+      response = await axios.get(
+      `/api/red-flags/my-red-flags?${
         searchTerm.value &&
         `name_of_the_contractor_or_customer=
        ${searchTerm.value}`
@@ -150,6 +157,20 @@ const fetchSearchedComplaints = async (
       }&sort_field=red_flag_date&sort_order=desc`,
       getAxiosConfig()
     );
+    }else{
+
+      response = await axios.get(
+        `/api/red-flags?${
+          searchTerm.value &&
+          `name_of_the_contractor_or_customer=
+         ${searchTerm.value}`
+        }&region_id=${region_id.value}${
+          isSearchByCustomer.value !== null &&
+          `&is_contractor_or_customer=${isSearchByCustomer.value}`
+        }&sort_field=red_flag_date&sort_order=desc`,
+        getAxiosConfig()
+      );
+    }
     // &per_page=${per_page}&page=${page}&sort_field=&sort_order=asc
     console.log(response.data, "response");
     if (append) {
@@ -170,6 +191,11 @@ const fetchSearchedComplaintsWithLoading = async () => {
   await fetchSearchedComplaints();
   loading.value = false;
 };
+
+
+const onRemoveFlag = (id)=>{
+  redFlags.value = redFlags.value.filter(flag => flag.id !== id);
+}
 
 // Add new Red Flag and best practice open and close
 const addNewRedFlagDialogRef = ref();
@@ -358,6 +384,7 @@ const determineBorderVisibility = (index) => {
         <div
           class="flex sm:absolute sm:transform sm:-translate-x-1/2 sm:left-1/2 items-center gap-2"
         >
+        
           <img src="/images/icons/redflag.png" width="30" height="30" />
           <div class="font-extrabold text-2xl text-[#021d91] leading-tight">
             Red Flags
@@ -391,6 +418,8 @@ const determineBorderVisibility = (index) => {
             </button>
             <button
               type="button"
+              @click="fetchComplaintsAddedByMe"
+
               class="w-1/5 px-1 py-1 h-[48px] rounded-lg transition transform duration-300 hover:shadow-lg active:scale-95 font-extrabold bg-[#8a0000] text-white text-sm leading-5 font-sans"
             >
               My Red Flags
@@ -469,23 +498,38 @@ const determineBorderVisibility = (index) => {
           <TableHead />
 
           <template
-            v-if="!loading && searchTerm && redFlags && redFlags.length > 0"
+            v-if="!loading  && redFlags && redFlags.length > 0"
           >
             <RedFlag
               v-for="(redFlag, index) in redFlags"
               :key="redFlag.id"
+              :regions="regions"
               :redFlag="redFlag"
               :index="index"
               @accordion-toggled="handleAccordionToggle"
+              @removeFlag="onRemoveFlag"
               :shouldShowBorder="determineBorderVisibility(index)"
             />
           </template>
           <!-- searching -->
           <div
-            v-if="loading"
+            v-if="loading && searchTerm"
             class="h-full h-[30vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4"
           >
             <div class="text-center text-xl">Searching...</div>
+            <v-progress-linear
+              color="#241e6d"
+              indeterminate
+              rounded
+              height="6"
+            ></v-progress-linear>
+          </div>
+
+          <div
+            v-if="loading && !searchTerm"
+            class="h-full h-[30vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4"
+          >
+            <div class="text-center text-xl">Loading...</div>
             <v-progress-linear
               color="#241e6d"
               indeterminate
@@ -509,7 +553,7 @@ const determineBorderVisibility = (index) => {
           </div> -->
 
           <!-- lazy loading -->
-          <div
+          <!-- <div
             v-show="+currentPage !== +pagination.last_page"
             ref="loadMoreIntersect"
             style="width: 5px; height: 5px"
@@ -531,7 +575,7 @@ const determineBorderVisibility = (index) => {
             textClasses="small-text"
             background=""
             height="70px"
-          ></Loader>
+          ></Loader> -->
           <!-- <SubFinderContractor
             v-for="contractor in redFlags"
             :key="contractor.id"
@@ -635,6 +679,7 @@ const determineBorderVisibility = (index) => {
             v-model="newRedFlag.name_of_the_contractor_or_customer"
             class="relative m-0 flex-grow block w-full h-[45px] px-3 py-1.5 text-base font-normal text-gray-700 outline-none rounded-md border-solid border-gray-600 placeholder:italic placeholder:text-slate-500 pr-12"
             placeholder="Enter Name..."
+            maxlength="50"
             @input="clearError('name_of_the_contractor_or_customer')"
           />
           <InputError
