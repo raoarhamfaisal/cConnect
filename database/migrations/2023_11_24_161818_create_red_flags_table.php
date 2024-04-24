@@ -19,7 +19,6 @@ return new class extends Migration
             $table->unsignedBigInteger('region_id');
             $table->string('name_of_the_contractor_or_customer');
             $table->text('complaint');
-            $table->date('red_flag_date');
             $table->boolean('is_contractor_or_customer');
             $table->softDeletes(); // For soft deletes
             $table->timestamps();
