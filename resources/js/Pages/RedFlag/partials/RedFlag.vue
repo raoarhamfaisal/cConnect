@@ -118,10 +118,10 @@
           <div>
             <div class="flex gap-1">
               <div>
-                {{ redFlag.first_name + " "+ redFlag.last_name }}
+                {{ redFlag.profile.first_name + " "+ redFlag.profile.last_name }}
               </div>
               <div>
-                {{ redFlag.city }}, {{ redFlag.state }}
+                {{ redFlag.profile.city }}, {{ redFlag.profile.state }}
               </div>
             </div>
           </div>
@@ -136,15 +136,15 @@
           <div v-if="screenWidth >= 640" class="w-[31%] text-sm">
             <div class="flex sm:flex-col">
               <div>
-                {{ redFlag.first_name + " "+ redFlag.last_name }}
+                {{ redFlag.profile.first_name + " "+ redFlag.profile.last_name }}
               </div>
               <div>
-                {{ redFlag.city }}, {{ redFlag.state }}
+                {{ redFlag.profile.city }}, {{ redFlag.profile.state }}
               </div>
             </div>
           </div>
           <!-- complaint text -->
-          <div class="w-[80%] sm:w-[54%] text-center text-sm">
+          <div :class="`${+profileId === +redFlag.profile_id ? 'w-[80%] sm:w-[54%]': 'w-full sm:w-[69%]'} text-center text-sm`">
             <textarea
               id="notes"
               ref="redFlagComplaintTextRef"
@@ -158,8 +158,9 @@
             ></textarea>
           </div>
           <!-- complaint buttons -->
-          <div class="w-[20%] sm:w-[15%] text-sm text-center">
-            <div class="flex flex-col justify-start items-center">
+        
+          <div class="w-[20%] sm:w-[15%] text-sm text-center" v-if="+profileId === +redFlag.profile_id">
+            <div class="flex flex-col justify-start items-center" >
               <Icon
                 @click="focusTextarea"
                 icon="nimbus:edit"
@@ -207,6 +208,7 @@ import { Icon } from "@iconify/vue";
 import { useStore } from "vuex";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { changesSaved, convertDateFormatWith2DigitsYear, filterBadWordsWithoutValue } from "@/helpers/utilities";
+import { usePage } from "@inertiajs/inertia-vue3";
 
 const props = defineProps({
   redFlag: {
@@ -221,6 +223,8 @@ const props = defineProps({
     type: Boolean,
   },
 });
+let usePageDeatails = usePage().props.value;
+const profileId = usePageDeatails?.profile.id;
 const store = useStore();
 const emit = defineEmits(["accordion-toggled","removeFlag"]);
 
@@ -292,12 +296,12 @@ const saveRedFlagComplaint = () => {
 
   // Start a new timer
   saveTimeout = setTimeout(async () => {
-    const {region_id,name_of_the_contractor_or_customer,red_flag_date,is_contractor_or_customer}= props.redFlag
+    const {region_id,name_of_the_contractor_or_customer,is_contractor_or_customer}= props.redFlag
     const updatedRedFlag  = {
       complaint: redFlagComplaintText.value
         ? filterBadWordsWithoutValue(redFlagComplaintText.value)
         : redFlagComplaintText.value,
-region_id,name_of_the_contractor_or_customer,red_flag_date,is_contractor_or_customer
+region_id,name_of_the_contractor_or_customer,is_contractor_or_customer
 
     };
     console.log(redFlagComplaintText.value, "selectedNote");

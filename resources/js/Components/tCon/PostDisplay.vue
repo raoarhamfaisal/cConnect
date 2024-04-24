@@ -46,6 +46,7 @@ export default {
     // ERROR ONLY WORKS IN MOBILE BECAUSE LOOKING AT WINDOW140
     this.$nextTick(() => {
       this.checkContentHeight();
+      this.checkContentHeightBody2();
     });
     window.addEventListener(
       "scroll",
@@ -103,7 +104,9 @@ export default {
       text_color: "",
       profileId: usePageDeatails.profile.id,
       isContentOverflow: false,
+      isContentOverflowBody2: false,
       lineHeight: 0,
+      lineHeightBody2: 0,
       showFullTextBody1: false,
       showFullTextBody2: false,
       truncatedLength: this.$store.state.screenWidth > 769 ? 300 : 150,
@@ -116,6 +119,10 @@ export default {
     toggleClass() {
       return `cursor-pointer ${
         this.customBgColor.startsWith("#") ? "text-sky-400" : "text-sky-700"
+      }`;
+    },
+    toggleClassBody2(){
+      return `cursor-pointer text-sky-700 "
       }`;
     },
     textStyle() {
@@ -135,6 +142,24 @@ export default {
           display: "block",
 
           color: this.text_color,
+        };
+      }
+    },
+    textStyleBody2() {
+      if (this.showFullTextBody2) {
+        return {
+          maxHeight: "none",
+          overflow: "hidden",
+          display: "inline",
+         
+        };
+      } else {
+        return {
+          maxHeight: this.lineHeightBody2 * 4 + "px",
+         
+          overflow: "hidden",
+          display: "block",
+
         };
       }
     },
@@ -220,19 +245,21 @@ export default {
         content = content.replace(/\/n/g, "<br>"); // Replace /n with <br>
       }
 
-      if (
-        this.showFullTextBody2 ||
-        content?.length <= this.truncatedLengthBody2
-      ) {
-        return this.processUrls(content);
-      } else {
-        let truncated = content?.substring(0, this.truncatedLengthBody2);
-        // Ensure it doesn't cut off in the middle of a word if and only if it's actually being truncated
-        if (truncated?.length >= this.truncatedLengthBody2) {
-          truncated = truncated.substring(0, truncated.lastIndexOf(" "));
-        }
-        return this.processUrls(truncated);
-      }
+      return this.processUrls(content);
+
+      // if (
+      //   this.showFullTextBody2 ||
+      //   content?.length <= this.truncatedLengthBody2
+      // ) {
+      //   return this.processUrls(content);
+      // } else {
+      //   let truncated = content?.substring(0, this.truncatedLengthBody2);
+      //   // Ensure it doesn't cut off in the middle of a word if and only if it's actually being truncated
+      //   if (truncated?.length >= this.truncatedLengthBody2) {
+      //     truncated = truncated.substring(0, truncated.lastIndexOf(" "));
+      //   }
+      //   return this.processUrls(truncated);
+      // }
     },
 
     processedBody1() {
@@ -281,6 +308,7 @@ export default {
     //   deep: true,
     // },
     showFullTextBody1: "checkContentHeight",
+    showFullTextBody2: "checkContentHeightBody2"
   },
   methods: {
     NavPostingActionMenu(showingPostingActionMenu) {
@@ -296,14 +324,28 @@ export default {
         window.getComputedStyle(textElement).lineHeight
       );
       const maxHeight = this.lineHeight * 4;
-      console.log(
-        "Checking content height",
-        textElement.offsetHeight,
-        textElement.scrollHeight,
-        maxHeight
-      );
+      
       this.isContentOverflow =
         textElement.offsetHeight || textElement.scrollHeight > maxHeight;
+    },
+    checkContentHeightBody2() {
+      const textElementBody2 = this.$refs.textElementBody2;
+      if (!textElementBody2) {
+        return;
+      }
+
+      this.lineHeightBody2 = parseInt(
+        window.getComputedStyle(textElementBody2).lineHeight
+      );
+      const maxHeight = this.lineHeightBody2 * 4;
+      console.log(
+        "Checking content height",
+        textElementBody2.offsetHeight,
+        textElementBody2.scrollHeight,
+        maxHeight
+      );
+      this.isContentOverflowBody2 =
+        textElementBody2.offsetHeight || textElementBody2.scrollHeight > maxHeight;
     },
 
     HidePostingActionMenu(showingPostingActionMenu) {
@@ -542,17 +584,7 @@ export default {
         ...less
       </span> -->
     </div>
-    <!-- <div
-      v-show="post.body1"
-      @click="$emit('enlarge-post', post)"
-      class="flex flex-row justify-center items-center w-full px-2 text-lg xs:text-xl md:text-2xl"
-      :class="[
-        body1Colors[post.post_text_color_id],
-        post.is_body_bold ? 'font-bold' : 'font-normal',
-      ]"
-    >
-      {{ post.body1 }}
-    </div> -->
+
 
     <!-- INDIVIDUAL POST: MAIN IMAGES  -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -580,7 +612,7 @@ export default {
     >
       {{ post.body2 }}
     </div> -->
-    <div class="mb-3 mt-3">
+    <!-- <div class="mb-3 mt-3">
       <div
         v-show="post.body2"
         v-html="displayedBody2"
@@ -601,6 +633,27 @@ export default {
       >
         ...less
       </span>
+    </div> -->
+    <div
+      :class="`'w-full'`"
+      @click="$emit('enlarge-post', post)"
+      class=""
+    >
+      <span
+        v-show="post.body2"
+        v-html="displayedBody2"
+        :style="textStyleBody2"
+        :class="`w-full processed-body inline`"
+        ref="textElementBody2"
+      ></span>
+      <span
+        v-if="isContentOverflowBody2"
+        @click.self.stop="toggleTextBody2"
+        :class="`${toggleClassBody2} ${showFullTextBody2 ? 'inline' : 'inline'} `"
+      >
+        {{ showFullTextBody2 ? "...less" : "...more" }}
+      </span>
+     
     </div>
 
     <!-- INDIVIDUAL POST: BOTTOM ROW MENU -->
