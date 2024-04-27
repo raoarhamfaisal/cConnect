@@ -15,7 +15,7 @@
       <div class="font-bold text-xl">Coupon Code</div>
       <input
         type="text"
-        class="border-b-2 border-0 focus:border-b-2 focus:border-black w-28 pt-0 focus:ring-0 pb-1"
+        class="border-b-2 border-0 focus:border-b-2 focus:border-black w-36 text-center pt-0 focus:ring-0 pb-1"
         @input="verifyCouponCode"
         v-model="form.coupon_code"
       />
@@ -48,6 +48,7 @@
         :coupon="coupon"
         :couponDiscount="monthlyDiscount ? monthlyDiscount.toFixed(2) : 0.0"
         :salesTax="pricingPlan.sales_tax ? monthlyTaxPrice : 0"
+        :savingValue="monthlyDiscount"
         :total="monthlyTotal ? parseFloat(monthlyTotal).toFixed(2) : 0"
         @selectedPricing="selectedPricing"
       />
@@ -55,7 +56,8 @@
       <PricingCard
         plan="ANNUAL"
         :coupon="coupon"
-        :couponDiscount="annualDiscount ? annualDiscount.toFixed(2) : 0.0"
+        :couponDiscount="coupon && coupon.percentage_off_regular_price ? annualDiscount.toFixed(2) : 0.00"
+        :savingValue="annualDiscountBesideCoupon.toFixed(2)"
         :monthlyPrice="
           pricingPlan.billed_annual_price ? pricingPlan.billed_annual_price : 0
         "
@@ -127,12 +129,6 @@ const annualTotal = computed(() => {
 
     // Return the discounted annual total
     const subtractedTotal = originalAnnualTotal - annualDiscount.value;
-    console.log(
-      subtractedTotal,
-      annualDiscount.value,
-      originalAnnualTotal,
-      "total,discount,originalAnnualTotal"
-    );
     return subtractedTotal + +annualTaxPrice.value;
   }
 
@@ -146,10 +142,22 @@ const annualDiscount = computed(() => {
     : 0.0;
 
   const couponMonths = coupon.value.months ? coupon.value.months : 0;
+  const annualPriceDiscount = (+pricingPlan.value.billed_annual_price /12) * couponMonths
+
+
   return (
-    couponMonths *
-    ((+pricingPlan.value.billed_monthly_price * percentage_off_regular_price) /
+    ((annualPriceDiscount * percentage_off_regular_price) /
       100)
+  );
+});
+
+const annualDiscountBesideCoupon = computed(() => {
+  const originalMonthlyTotal = +pricingPlan.value.billed_monthly_price;
+
+  const annualTotalwithRespectToMonth = (originalMonthlyTotal + +monthlyTaxPrice.value) * 12;
+ console.log(annualTotalwithRespectToMonth,annualTotal.value,'annual',originalMonthlyTotal,monthlyTaxPrice.value)
+  return (
+    annualTotalwithRespectToMonth - annualTotal.value 
   );
 });
 const monthlyDiscount = computed(() => {
@@ -162,7 +170,7 @@ const monthlyDiscount = computed(() => {
 const monthlyTaxPrice = computed(() => {
   const discount = monthlyDiscount.value;
   let price = (
-    (+pricingPlan.value.sales_tax / 100) *
+    (+pricingPlan.value.sales_tax) *
     (+pricingPlan.value.billed_monthly_price - discount)
   ).toFixed(2);
   return price === "0.00" ? "0.01" : price;
@@ -171,7 +179,7 @@ const monthlyTaxPrice = computed(() => {
 const annualTaxPrice = computed(() => {
   const discount = annualDiscount.value;
   let price = (
-    (+pricingPlan.value.sales_tax / 100) *
+    (+pricingPlan.value.sales_tax ) *
     (+pricingPlan.value.billed_annual_price - discount)
   ).toFixed(2);
   return price === "0.00" ? "0.01" : price;
@@ -228,11 +236,14 @@ const verifyCouponCode = () => {
     clearTimeout(saveTimeout);
   }
 
+  couponApiError.value = "";
+  couponApiSuccessMsg.value = "";
   // Start a new timer
+  if(!form.coupon_code){
+    coupon.value = {}
+    return
+  }
   saveTimeout = setTimeout(async () => {
-    couponApiError.value = "";
-    couponApiSuccessMsg.value = "";
-
     loadingCoupon.value = true;
     try {
       const response = await axios.post(

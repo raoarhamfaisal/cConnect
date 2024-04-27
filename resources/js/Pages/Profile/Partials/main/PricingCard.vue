@@ -41,7 +41,7 @@
           <Icon icon="mdi-tag" class="w-5 h-5 mr-2" />
           <p><strong>Coupon</strong></p>
         </div>
-        <div>- ${{ couponDiscount ? couponDiscount : "0.00" }}</div>
+        <div>- ${{  couponDiscount ? couponDiscount : "0.00" }}</div>
       </div>
       <div class="flex justify-between">
         <div class="flex items-center justify-center mb-2">
@@ -58,28 +58,28 @@
         <div>${{ total }}</div>
       </div>
       <transition name="expand" @before-enter="beforeEnter" @enter="enter">
-        <div>
+        <div class="sm:h-[80px]">
           <div
-            v-if="couponDiscount"
+            v-if="savingValue"
             class="flex gap-2 mt-2 text-xl justify-center items-center font-bold"
           >
             You Save
-            <p class="text-green-500 text-3xl">${{ couponDiscount }}.</p>
+            <p class="text-green-500 text-3xl">${{ parseFloat(savingValue).toFixed(2) }}.</p>
           </div>
           <div
             v-if="plan === `MONTHLY` && couponDiscount"
             class="flex gap-2 mt-2 text-indigo-600 text-base justify-center items-center font-bold"
           >
-            {{ total }} for the 1st {{ coupon.months }} months, then
+            {{ parseFloat(total - salesTax).toFixed(2) }} for the 1st {{ coupon.months }} months, then
             {{ monthlyPrice }}
           </div>
           <div
-            v-else-if="plan !== `MONTHLY` && couponDiscount"
+            v-else-if="plan !== `MONTHLY`"
             class="mt-2 text-lg text-center font-bold"
           >
             That's only
             <span class="text-indigo-600 month-price">{{
-              (total / 12).toFixed(2)
+              ((total - couponDiscount-salesTax) / 12).toFixed(2)
             }}</span>
             per Month!
           </div>
@@ -109,6 +109,7 @@ const props = defineProps({
   couponDiscount: { type: [Number, String], default: "0.00" },
   total: [Number, String],
   savings: String,
+  savingValue:[Number, String]
 });
 
 const hover = ref(false);
