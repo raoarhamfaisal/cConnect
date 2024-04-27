@@ -350,7 +350,12 @@ const validatePassword = () => {
           width="30"
         />
       </PrimaryButton>
+      
     </div>
+    <div class="flex items-center justify-end">
+      <InputError class="mt-1" :message="form.errors.general" />
+    </div>
+
   </SignUpLayout>
   <WelcomeFooter :showit="showit" />
 </template>
