@@ -98,7 +98,7 @@ const handleImageUpdate = (file) => {
       company_logo.value = response.data.company_logo; // Update the local state with the new avatar path
     })
     .catch((error) => {
-      console.log(error, "error");
+     
       companyLogoError.value = error.response.data.message;
 
       loadingImage.value = false;

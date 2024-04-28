@@ -97,7 +97,7 @@ const validateForm = () => {
   for (let field in errors) {
     errors[field] = "";
   }
-  console.log(form, "form");
+ 
   // Validate first_name
   if (!form.first_name?.trim()) {
     errors.first_name = "First name is required";
@@ -210,7 +210,7 @@ const isValidUrl = (urlString) => {
 };
 
 const clearErrors = (field) => {
-  console.log("Clear errors", field);
+
   //for phone_cell only
   if (field === "phone_cell" || field === "phone_office") {
     if (form[field]?.trim().length <= 13) {

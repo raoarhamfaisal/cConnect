@@ -296,6 +296,7 @@
           @paste="adjustHeight"
           ref="textRef"
           @blur="stopTyping"
+          @keydown="insertTab"
           @input="saveNotes"
           placeholder="Type your Notes"
           class="text-sm w-full py-1 min-h-[100px] overflow-y-hidden px-3 focus:shadow-none focus:ring-gray-600 focus:rounded bg-[#f9fafb] border-gray-200 text-grey-600 resize-none rounded focus-within:ring-gray-600 focus:border-gray-600"
@@ -351,7 +352,7 @@ const props = defineProps({
   region_name: String,
 });
 const store = useStore();
-const note = ref(props.contractor?.notes);
+const note = ref(props.contractor?.notes ?? "");
 const textRef = ref();
 const postDialogRef = ref();
 const isTyping = ref(false);
@@ -394,9 +395,6 @@ const screenWidth = computed(() => store.getters.screenWidth);
 
 // methods
 
-const openTradeDialog = () => {
-  tradeDialogRef.value.openDialog();
-};
 
 const stopTyping = () => {
   isTyping.value = false;
@@ -409,6 +407,20 @@ const adjustHeight = () => {
     textRef.value.style.height = textRef.value.scrollHeight + "px";
   });
 };
+const insertTab = (event) => {
+  if (event.key === 'Tab') {
+    event.preventDefault();
+    const start = event.target.selectionStart;
+    const end = event.target.selectionEnd;
+
+    // Set the value to: text before caret + four spaces + text after caret
+    note.value = note.value.substring(0, start) + '      ' + note.value.substring(end);
+
+    // Put caret at right position again
+    event.target.selectionStart = event.target.selectionEnd = start + 4;
+  }
+};
+
 let saveTimeout = null;
 
 const saveNotes = () => {
@@ -436,7 +448,7 @@ const saveNotes = () => {
     } catch (err) {
       // somethingWentWrong(err.response.data.message, "inherit");
     }
-  }, 1000);
+  }, 500);
 };
 const openPostDialog = () => {
   postDialogRef.value.openPostDialog();

@@ -78,6 +78,13 @@ const toggleSwitch = async (field) => {
   } else {
     form[field] = form[field] === 1 ? 0 : 1;
   }
+  const allSelected = Object.values(form).every((value) => value === 1);
+  if (allSelected) {
+    selectAll.value = true;
+  }else{
+    selectAll.value = false;
+
+  }
 
   // The rest of your existing toggleSwitch code
   if (props.apiChoice === "2") {
@@ -126,6 +133,10 @@ const selectAllTrades = async () => {
     }
   }
   if (props.apiChoice === "1") {
+  //   const allSelected = Object.values(form).every((value) => value === 1);
+  // if (!allSelected) {
+  //   selectAll.value = true;
+  // }
     await store.dispatch("profile/updateTrades", form);
   } else if (props.apiChoice === "2") {
     await store.dispatch("profile/updateProfileSetupTrades", form);
