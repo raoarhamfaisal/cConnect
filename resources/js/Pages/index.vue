@@ -739,7 +739,7 @@ const formatPrice = (price) => {
           <div
             class="mx-auto text-xs mb-6 text-center first-letter: text-white md:hidden"
           >
-            0052311301524
+            0062311300410
           </div>
           <div
             class="mx-auto my-6 text-center first-letter: text-white md:hidden"
@@ -882,7 +882,7 @@ const formatPrice = (price) => {
           <div
             class="hidden text-xs text-white md:block my-2 text-center first-letter:"
           >
-          0052311301524
+          0062311300410
           </div>
         </div>
       </div>
