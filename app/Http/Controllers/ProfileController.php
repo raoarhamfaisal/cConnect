@@ -460,6 +460,31 @@ class ProfileController extends Controller
             
             // Sync the selected trades with the profile
             $profile->trades()->sync($selectedTrades);
+
+
+            $selectedSessionTrades = [];
+    
+            // Iterate through possible trades
+            for ($i = 1; $i <= 30; $i++) {
+                // Check whether the trade is selected (value is 1)
+                if ($request->input("trade{$i}") == 1) {
+                    $selectedSessionTrades[] = $i;  // Assuming trade IDs are sequential from 1 to 30
+                }
+            }
+    
+            // Delete or deactivate unselected trades
+            SessionTrade::where('profile_id', $profile->id)
+                ->whereNotIn('trade_id', $selectedSessionTrades)
+                ->delete();
+    
+            // Update or create selected trades
+            foreach ($selectedSessionTrades as $sessionTrade) {
+                SessionTrade::updateOrCreate(
+                    ['profile_id' => $profile->id, 'trade_id' => $sessionTrade]
+                );
+            }
+
+
         }
         return ['message' =>"Trades successfully updated"];
     
@@ -499,6 +524,11 @@ class ProfileController extends Controller
 
 
             $profile->update($data);
+
+            SessionViewSetting::updateOrCreate(
+                ['profile_id' => $profile->id],
+                $data
+            );
             
         }
         return ['message' =>"Views successfully updated"];
