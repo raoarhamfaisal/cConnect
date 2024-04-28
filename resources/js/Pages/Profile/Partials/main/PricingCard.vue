@@ -73,6 +73,7 @@
             {{ parseFloat(total - salesTax).toFixed(2) }} for the 1st {{ coupon.months }} months, then
             {{ monthlyPrice }}
           </div>
+
           <div
             v-else-if="plan !== `MONTHLY`"
             class="mt-2 text-lg text-center font-bold"
@@ -81,8 +82,9 @@
             <span class="text-indigo-600 month-price">{{
               anuualOnlyMonthValue
             }}</span>
-            per Month!
+            per Month!!
           </div>
+          <!-- here we are -->
         </div>
       </transition>
     </div>
@@ -129,7 +131,7 @@ const enter = (el, done) => {
 
 const anuualOnlyMonthValue = computed(()=>{
   let result = ((+props.total - +props.couponDiscount - +props.salesTax) / 12).toFixed(2);
-if (result === "0.00") {
+if (result === 0 || result === "0.00" || result === "-0.00") {
     return result = (+props.total / 12).toFixed(2);
 }
 return result;
