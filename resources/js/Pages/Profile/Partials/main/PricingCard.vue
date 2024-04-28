@@ -79,7 +79,7 @@
           >
             That's only
             <span class="text-indigo-600 month-price">{{
-              ((total - couponDiscount-salesTax) / 12).toFixed(2)
+              anuualOnlyMonthValue
             }}</span>
             per Month!
           </div>
@@ -97,7 +97,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { Icon } from "@iconify/vue";
 
 const props = defineProps({
@@ -126,6 +126,14 @@ const enter = (el, done) => {
   el.style.height = el.scrollHeight + "px";
   el.addEventListener("transitionend", done);
 };
+
+const anuualOnlyMonthValue = computed(()=>{
+  let result = ((+props.total - +props.couponDiscount - +props.salesTax) / 12).toFixed(2);
+if (result === "0.00") {
+    return result = (+props.total / 12).toFixed(2);
+}
+return result;
+})
 </script>
 
 <style scoped>
