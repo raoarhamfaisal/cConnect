@@ -33,9 +33,13 @@
                 id="responseText"
                 type="text"
                 :rows="5"
-                class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm overflow-hidden"
                 required
                 v-model="response_text"
+                ref="textRef"
+                @keydown="insertTab"
+                @input="adjustHeight"
+                @paste="adjustHeight"
                 placeholder="Type your response text"
               />
               <InputError
@@ -93,7 +97,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import InputError from "@/Components/InputError.vue";
 
 import Review from "./Review.vue";
-import { computed, ref, watch } from "vue";
+import { computed, nextTick, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 
@@ -112,7 +116,6 @@ const store = useStore();
 
 const response_text = ref("");
 const showResponseArea = ref(false);
-const showAppealArea = ref(false);
 
 const turnOffReason = ref("");
 const loading = ref(false);
@@ -141,21 +144,15 @@ watch(
     turnOffReasonError.value = "";
   }
 );
+watch(
+  () => showResponseArea.value,
+  () => {
+    
+  }
+);
 //Methods
 
-const validateTurnOffReason = () => {
-  let isValid = true;
-  // Reset the error messages before validating
-  turnOffReasonError.value = "";
 
-  // Validate rating_text
-  if (!turnOffReason.value || turnOffReason.value.trim() === "") {
-    turnOffReasonError.value = "Turn off Reason should not be empty.";
-    isValid = false;
-  }
-
-  return isValid;
-};
 
 const validateResponse = () => {
   let isValid = true;
@@ -203,23 +200,36 @@ const handleSubmit = async () => {
     handleResponse();
   }
 };
-const handleAppealSubmit = async () => {
-  if (review.is_under_appeal) {
-    if (validateTurnOffReason()) {
-      const appealTurnOffData = {
-        off_appeal_reason: filterBadWords(turnOffReason),
-        reviewId: review.id,
-      };
-      await store.dispatch("ratings/sendTurnOffApeal", appealTurnOffData);
-    }
-  }
-};
 
 const handleResponse = () => {
   showResponseArea.value = !showResponseArea.value;
 };
-const handleAppeal = () => {
-  showAppealArea.value = !showAppealArea.value;
+
+const textRef = ref();
+const insertTab = (event) => {
+  if (event.key === "Tab") {
+    event.preventDefault();
+    const start = event.target.selectionStart;
+    const end = event.target.selectionEnd;
+
+    // Set the value to: text before caret + four spaces + text after caret
+    response_text.value =
+      response_text.value.substring(0, start) +
+      "      " +
+      response_text.value.substring(end);
+
+    // Put caret at right position again
+    nextTick(() => {
+      event.target.selectionStart = event.target.selectionEnd = start + 6;
+    });
+  }
+};
+const adjustHeight = () => {
+  console.log("here");
+  nextTick(() => {
+    textRef.value.style.height = "auto"; // Reset height first to get the correct scrollHeight
+    textRef.value.style.height = textRef.value.scrollHeight + "px";
+  });
 };
 </script>
 

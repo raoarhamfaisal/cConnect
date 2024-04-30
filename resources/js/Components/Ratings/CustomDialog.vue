@@ -161,7 +161,7 @@ const props = defineProps({
     default: "Cancel",
   },
 });
-const emit = defineEmits(["submit", "closed"]);
+const emit = defineEmits(["submit", "closed","opened"]);
 const submit = () => {
   emit("submit");
 };
@@ -189,6 +189,8 @@ const closeDialog = () => {
 
 const openDialog = () => {
   isVisible.value = true;
+  emit("opened");
+
 };
 defineExpose({ openDialog, closeDialog });
 </script>

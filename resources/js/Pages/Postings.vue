@@ -70,6 +70,7 @@ export default {
         }
       });
     }, 1000);
+    this.fetchColors();
   },
   // unmounted() {
 

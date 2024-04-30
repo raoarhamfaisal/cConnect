@@ -114,7 +114,7 @@ const handleUpdateHeight = ({ height, imageLength, firstTwoImages }) => {
 
 <template>
   <div class="w-full">
-    <p>numberOfImages: {{ numberOfImages }}</p>
+    <!-- <p>numberOfImages: {{ numberOfImages }}</p> -->
 
     <div
       v-if="numberOfImages == 1"
@@ -453,35 +453,4 @@ const handleUpdateHeight = ({ height, imageLength, firstTwoImages }) => {
     </div>
   </div>
 </template>
-<!-- <div
-v-for="(config, cIndex) in gridConfigs"
-:key="cIndex"
-:class="`grid grid-cols-${config.cols} gap-1 pb-1`"
->
-<div
-  v-for="(image, index) in imageArray.slice(config.start, config.end)"
-  :key="index"
->
 
-  <PostShowTheImage
-    v-if="index < 2"
-    :numberOfImages="numberOfImages - 2"
-    @updateHeight="handleUpdateHeight"
-    :allPortraits="true"
-    :smallestHeight="smallestHeight"
-    :image="image"
-    :cropImage="true"
-    :plusImageNumber="0"
-  />
-  <PostShowTheImage
-    v-else
-    :numberOfImages="numberOfImages - 2"
-    @updateHeight="handleUpdateHeight"
-    :allPortraits="true"
-    :smallestHeight="smallestHeight"
-    :image="image"
-    :cropImage="true"
-    :plusImageNumber="imageArray.length - config.end + 1"
-  />
- 
-</div> -->

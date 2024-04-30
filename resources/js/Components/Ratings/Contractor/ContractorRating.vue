@@ -238,6 +238,8 @@ const screenWidth = computed(() => store.getters.screenWidth);
 const reviewId = computed(() => store.state.ratings.reviewId);
 const responseId = computed(() => store.state.ratings.responseId);
 const updatedReview = computed(() => store.state.ratings.updatedReview);
+const updatedResponse = computed(() => store.state.ratings.updatedResponse);
+
 
 //Watch
 
@@ -255,6 +257,30 @@ watch(updatedReview, (newVal) => {
     console.log("5");
 
     fetchReviews(perPage.value, currentPage.value, false, true);
+  }
+});
+watch(updatedResponse, (newVal) => {
+  if (newVal && newVal.id) {
+    const reviewToUpdate = contractorReviews.value.find(
+      (review) => review.id === newVal.review_id
+    );
+    if (reviewToUpdate) {
+      reviewToUpdate.review_response = newVal;
+      const indexToUpdate = contractorReviews.value.findIndex(
+        (review) => review.id === newVal.review_id
+      );
+
+      if (indexToUpdate !== -1) {
+        contractorReviews.value = contractorReviews.value.map(
+          (review, index) => {
+            if (index === indexToUpdate) {
+              return reviewToUpdate; // Replace the object at the specified index
+            }
+            return review; // Keep other objects unchanged
+          }
+        );
+      }
+    }
   }
 });
 watch(reviewId, (newVal) => {

@@ -100,16 +100,8 @@ const onImageLoad = () => {
 
 <template>
   <div>
-    <span>Height: {{ dimensions.nHeight }}</span>
-    <!-- <div
-      v-if="plusImageNumber"
-      :style="{
-        height: smallestHeight + 'px',
-      }"
-      class="flex justify-center items-center bg-[#1a1a1a] rounded-lg text-white font-extrabold text-4xl"
-    >
-      +{{ plusImageNumber }}
-    </div> -->
+    <!-- <span>Height: {{ dimensions.nHeight }}</span> -->
+   
     <div
       v-if="plusImageNumber && allPortraits"
       :style="{
@@ -132,7 +124,7 @@ const onImageLoad = () => {
 
       <!-- :style="{ height: smallestHeight + 'px' }" -->
       <div
-        class="absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-[#1a1a1a] bg-opacity-50 backdrop-blur rounded-lg text-white font-extrabold text-4xl"
+        class="absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-[#1a1a1a] bg-opacity-50 backdrop-blur rounded-lg text-white font-extrabold text-4xl cursor-pointer"
       >
         +{{ plusImageNumber }}
       </div>

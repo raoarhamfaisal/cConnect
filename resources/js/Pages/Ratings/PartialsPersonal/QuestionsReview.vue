@@ -35,6 +35,10 @@
               class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
               required
               v-model="response_text"
+              ref="textRef"
+              @keydown="insertTab"
+              @input="adjustHeight"
+              @paste="adjustHeight"
               placeholder="Type your response text"
             />
             <InputError
@@ -140,7 +144,7 @@ import InputError from "@/Components/InputError.vue";
 import Response from "@/Components/Ratings/Contractor/PartialsVisiting/Response.vue";
 import Review from "@/Components/Ratings/Contractor/PartialsVisiting/Review.vue";
 import Button from "@/Components/Ratings/Button.vue";
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed, nextTick } from "vue";
 import { useStore } from "vuex";
 import { filterBadWords } from "@/helpers/utilities";
 
@@ -223,9 +227,9 @@ const handleSubmit = async () => {
       review_id: review.id,
     };
 
-    await store.dispatch("ratings/createResponse", {responseData});
-    response_text.value = ""
-    handleResponse()
+    await store.dispatch("ratings/createResponse", { responseData });
+    response_text.value = "";
+    handleResponse();
   }
 };
 const handleAppealSubmit = async () => {
@@ -245,5 +249,31 @@ const handleResponse = () => {
 };
 const handleAppeal = () => {
   showAppealArea.value = !showAppealArea.value;
+};
+const textRef = ref();
+const insertTab = (event) => {
+  if (event.key === "Tab") {
+    event.preventDefault();
+    const start = event.target.selectionStart;
+    const end = event.target.selectionEnd;
+
+    // Set the value to: text before caret + four spaces + text after caret
+    response_text.value =
+      response_text.value.substring(0, start) +
+      "      " +
+      response_text.value.substring(end);
+
+    // Put caret at right position again
+    nextTick(() => {
+      event.target.selectionStart = event.target.selectionEnd = start + 6;
+    });
+  }
+};
+const adjustHeight = () => {
+  console.log("here");
+  nextTick(() => {
+    textRef.value.style.height = "auto"; // Reset height first to get the correct scrollHeight
+    textRef.value.style.height = textRef.value.scrollHeight + "px";
+  });
 };
 </script>

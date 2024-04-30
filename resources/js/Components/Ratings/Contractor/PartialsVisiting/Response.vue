@@ -61,7 +61,7 @@
           </div>
         </div>
         <div class="">
-          <p class="p-2 text-sm xs:text-sm xs:text-lg">
+          <p class="p-2 text-sm xs:text-sm xs:text-lg"  style="white-space: pre-wrap">
             {{
               showFullReview
                 ? response.response_text

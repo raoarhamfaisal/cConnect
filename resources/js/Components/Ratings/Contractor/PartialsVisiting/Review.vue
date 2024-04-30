@@ -139,9 +139,13 @@
           id="appealReason"
           type="text"
           :rows="3"
-          class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+          class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm overflow-hidden"
           required
           v-model="appealReason"
+          ref="textRef"
+          @keydown="insertTab"
+          @input="adjustHeight"
+          @paste="adjustHeight"
           placeholder="Type your reason for your appeal"
         />
 
@@ -242,7 +246,7 @@
       :selectedReferal="review.how_did_you_meet_this_contractor"
     />
     <div class="mt-1">
-      <p class="p-2 text-sm xs:text-lg">
+      <p class="p-2 text-sm xs:text-lg" style="white-space: pre-wrap">
         {{
           showFullReview
             ? review.rating_text
@@ -297,7 +301,7 @@ import { Icon } from "@iconify/vue";
 import { useStore } from "vuex";
 import { options } from "@/helpers/selectListsHelpters.js";
 
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed, nextTick } from "vue";
 const { review } = defineProps({
   review: {
     type: Object,
@@ -420,6 +424,32 @@ const questionsSwitch = computed(() => {
     };
   });
 });
+const textRef = ref();
+const insertTab = (event) => {
+  if (event.key === "Tab") {
+    event.preventDefault();
+    const start = event.target.selectionStart;
+    const end = event.target.selectionEnd;
+
+    // Set the value to: text before caret + four spaces + text after caret
+    appealReason.value =
+      appealReason.value.substring(0, start) +
+      "      " +
+      appealReason.value.substring(end);
+
+    // Put caret at right position again
+    nextTick(() => {
+      event.target.selectionStart = event.target.selectionEnd = start + 6;
+    });
+  }
+};
+const adjustHeight = () => {
+  console.log("here");
+  nextTick(() => {
+    textRef.value.style.height = "auto"; // Reset height first to get the correct scrollHeight
+    textRef.value.style.height = textRef.value.scrollHeight + "px";
+  });
+};
 </script>
 
 <style scoped>
@@ -429,4 +459,3 @@ const questionsSwitch = computed(() => {
   }
 }
 </style>
-@/helpers/selectListsHelpters.js

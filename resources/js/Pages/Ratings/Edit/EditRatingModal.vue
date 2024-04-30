@@ -4,6 +4,7 @@
     submitText="Save Changes"
     @submit="handleSubmit"
     :loading="loadingSending"
+    @opened="onOpened"
     :disabled="disabledSending"
     ref="editDialogRef"
     title="Edit Rating"
@@ -21,9 +22,13 @@
         id="rating_text"
         type="text"
         :rows="5"
-        class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+        class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm overflow-hidden"
         required
         v-model="state.rating_text"
+        ref="textRef"
+        @keydown="insertTab"
+        @input="adjustHeight"
+        @paste="adjustHeight"
         placeholder="Type reason for your rating"
       />
       <InputError
@@ -57,7 +62,7 @@
         </div>
       </div>
     </div>
-
+    
     <CustomSelect
       :options="referenceList"
       :modelValue="selectedReferal"
@@ -72,7 +77,7 @@ import InputError from "@/Components/InputError.vue";
 import CustomSelect from "@/Components/CustomSelect.vue";
 import StarRatingEditable from "@/Components/Ratings/StarRatingEditable.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
-import { computed, reactive, ref, toRefs, watch } from "vue";
+import { computed, nextTick, onMounted, reactive, ref, toRefs, watch } from "vue";
 import { useStore } from "vuex";
 import { filterBadWords } from "@/helpers/utilities";
 
@@ -204,10 +209,39 @@ const handleSubmit = async () => {
 };
 
 const openDialogEdit = () => {
+
   return editDialogRef.value.openDialog();
 };
 
 defineExpose({ openDialogEdit });
+
+const textRef = ref();
+const insertTab = (event) => {
+  if (event.key === 'Tab') {
+    event.preventDefault();
+    const start = event.target.selectionStart;
+    const end = event.target.selectionEnd;
+
+    // Set the value to: text before caret + four spaces + text after caret
+    state.rating_text = state.rating_text.substring(0, start) + '      ' + state.rating_text.substring(end);
+
+    // Put caret at right position again
+    nextTick(() => {
+      event.target.selectionStart = event.target.selectionEnd = start + 6;
+    });
+  }
+};
+const adjustHeight = () => {
+  console.log('here')
+  nextTick(() => {
+    textRef.value.style.height = "auto"; // Reset height first to get the correct scrollHeight
+    textRef.value.style.height = textRef.value.scrollHeight + "px";
+  });
+};
+const onOpened = ()=>{
+  adjustHeight()
+}
+
 </script>
 
 <style></style>

@@ -53,6 +53,8 @@
           <Link
             href="/about-us#contactUs"
             class="hidden lg:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8"
+            :class="`${ url === 'http://0.0.0.0/about-us#contactUs' &&  'bg-gray-300 rounded'}`"
+            
           >
             Contact Us
           </Link>
@@ -149,11 +151,11 @@
               >
                 View
               </ResponsiveNavLink>
-              <ResponsiveNavLink href="/about-us#contactUs">
+              <ResponsiveNavLink href="/about-us#contactUs" :class="`${ url === 'http://0.0.0.0/about-us#contactUs' &&  'bg-gray-300 rounded'}`">
                 Contact Us
               </ResponsiveNavLink>
 
-              <ResponsiveNavLink href="/about-us#aboutUs">
+              <ResponsiveNavLink href="/about-us#aboutUs" :class="`${ url === 'http://0.0.0.0/about-us#aboutUs' || url === 'http://0.0.0.0/about-us' ?  ' bg-gray-300 rounded' : ''}`">
                 About Us
               </ResponsiveNavLink>
               <div
@@ -249,6 +251,8 @@ defineProps({
 const showingNavigationDropdown = ref(false);
 
 const dropdownMenu = ref(null);
+const url = usePage().url.value;
+console.log(url,usePage(),'url')
 const token = ref(false);
 
 //Computed

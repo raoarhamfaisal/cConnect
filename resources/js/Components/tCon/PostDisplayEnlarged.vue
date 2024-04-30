@@ -69,11 +69,24 @@ export default {
       type: Array,
       required: true,
     },
+    textColors: {
+      type: Array,
+      required: true,
+    },
+    backgroundColors: {
+      type: Array,
+      required: true,
+    },
+
   },
   data() {
     return {
       dialogRef: null,
       customBgColor: "",
+      text_alignment: "left",
+      text_color: "",
+      lineHeight: 0,
+      lineHeightBody2: 0,
       showFullTextBody1: false,
       showFullTextBody2: false,
       truncatedLength: this.$store.state.screenWidth > 769 ? 400 : 260,
@@ -102,25 +115,57 @@ export default {
         }
       },
     },
+    textStyle() {
+      
+        return {
+      
+          fontSize: `${16 + +this.postToEnlarge.font_size}px`,
+          lineHeight: +this.postToEnlarge.font_size > 3 && +this.postToEnlarge.font_size < 10  ? '1.7rem': +this.postToEnlarge.font_size >=10 ? '2rem' :  'inherit',
+          display: "block",
+
+          color: this.text_color,
+        };
+      
+    },
+    textStyleBody2() {
+       
+        return {
+       
+         
+          overflow: "hidden",
+          display: "block",
+
+        };
+      
+    },
     body1Class: function () {
-      let regex = /class="([^"]*text-[^"]*)"/;
-      let regex2 = /class="([^"]*justify-[^"]*)"/;
-
-      let match = this.postToEnlarge.body1.match(regex);
-      let match2 = this.postToEnlarge.body1.match(regex2);
-
-      let className = match ? match[1] : ""; // Extract the classes
-      let className2 = match2 ? match2[1] : ""; // Extract the classes
-      let bgClassMatch = className.match(/bg-\[#([a-zA-Z0-9]+)\]/);
-
-      if (bgClassMatch) {
-        // this.postToEnlarge.body1 = this.postToEnlarge.body1.replace(
-        //   bgClassMatch[0],
-        //   ""
-        // ); // Remove the bg-[#...] class from postToEnlarge.body1
-        this.customBgColor = "#" + bgClassMatch[1]; // Set the custom background color (with '#')
+    
+      let className, className2;
+      if (this.postToEnlarge.is_body_bold) {
+        className = "font-bold";
       }
-
+      if (this.postToEnlarge.text_alignment) {
+        this.text_alignment =
+          this.postToEnlarge.text_alignment === "left"
+            ? " text-left"
+            : this.postToEnlarge.text_alignment === "center"
+            ? " text-center"
+            : " text-right";
+      }
+      if (this.postToEnlarge.post_text_color_id) {
+        this.textColors.forEach((color) => {
+          if (color.id === this.postToEnlarge.post_text_color_id) {
+            this.text_color = color.color;
+          }
+        });
+      }
+      if (this.postToEnlarge.post_background_color_id) {
+        this.backgroundColors.forEach((color) => {
+          if (color.id === this.postToEnlarge.post_background_color_id) {
+            this.customBgColor = color.color;
+          }
+        });
+      }
       return className + " " + className2;
     },
 
@@ -154,7 +199,7 @@ export default {
       this.$refs.dialogRef.openDialog();
     },
     processUrls(body) {
-      // Improved regex: capture URLs but stop if a '<' character (start of a potential HTML tag) is encountered
+    
       const urlRegex = /(https?:\/\/[^<\s]+|www\.[^<\s]+)/g;
       return body?.replace(urlRegex, function (url) {
         let actualUrl = url.startsWith("http") ? url : "http://" + url;
@@ -319,11 +364,11 @@ export default {
               <!-- RIGHT SIDE --- POST ACTION MENU
                                     & time since posting -->
             </div>
-            <!-- END Ratings / postToEnlarge action menu / posting date -->
           </div>
+          <!-- END Ratings / postToEnlarge action menu / posting date -->
           <!-- End TOP POSTING ROW -->
 
-          <div
+          <!-- <div
             :class="`${body1Class} ${
               customBgColor.startsWith('#')
                 ? ' flex-col w-full items-center  px-2 py-32 rounded-md shadow-lg border-2'
@@ -337,11 +382,32 @@ export default {
               v-html="displayedBody1"
               class="w-full processed-body inline"
             ></span>
-          </div>
+          </div> -->
+
+          <div
+      :class="`${text_alignment} ${
+        customBgColor.startsWith('#')
+          ? ' flex-col w-full items-center  px-2 py-32 rounded-md shadow-lg border-2'
+          : 'w-full'
+      } `"
+      class=""
+      :style="{ backgroundColor: customBgColor }"
+    >
+      <span
+        v-show="postToEnlarge.body1"
+      
+        v-html="displayedBody1"
+        style="white-space: pre-wrap;"
+        :style="textStyle"
+        :class="`${body1Class} w-full processed-body inline`"
+        ref="textElement"
+      ></span>
+      
+    </div>
 
           <!-- INDIVIDUAL POST: MAIN IMAGES  -->
           <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-          <div class="flex flex-row justify-center items-center w-full mb-1">
+          <div class="flex flex-row justify-center items-center w-full mb-1 mt-1">
             <div v-if="imageArray.length > 0">
               <div v-for="image in imageArray" :key="image.id" class="pb-2">
                 <PostShowTheImage
@@ -390,13 +456,30 @@ export default {
             </span>
           </div> -->
 
-          <div class="mb-3 mt-3">
+          <!-- <div class="mb-3 mt-3">
             <div
               v-show="postToEnlarge.body2"
               v-html="displayedBody2"
               class="processed-body inline justify-center items-center w-full text-base xs:text-lg md:text-xl font-normal text-gray-900"
             ></div>
-          </div>
+          </div> -->
+          <div
+      :class="`'w-full'`"
+      
+      class=""
+    >
+      <span
+        v-show="postToEnlarge.body2"
+        v-html="displayedBody2"
+        style="white-space: pre-wrap;"
+        :style="textStyleBody2"
+        :class="`w-full processed-body inline`"
+        ref="textElementBody2"
+      ></span>
+      
+   
+     
+    </div>
 
           <!-- INDIVIDUAL POST: BOTTOM ROW MENU -->
           <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
