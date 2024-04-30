@@ -488,13 +488,23 @@ class ContractorProfileController extends Controller
         // Start the query for contractor_profiles
         $query = ContractorProfile::with('trades:id')
             ->join('profiles', 'profiles.user_id', '=', 'contractor_profiles.user_id')
-            ->leftJoinSub($ratingSubquery, 'rating_info', function($join) {
+            ->leftJoin('contractor_profile_user', function($join) use ($user) {
+                $join->on('contractor_profile_user.contractor_profile_id', '=', 'contractor_profiles.id')
+                    ->where('contractor_profile_user.user_id', '=', $user->id);
+            })
+            ->leftJoinSub($ratingSubquery, 'rating_info', function ($join) {
                 $join->on('rating_info.contractor_id', '=', 'profiles.id');
             })
             ->select('contractor_profiles.*', 
-                'rating_info.average_rating', 
-                'rating_info.total_reviews');                    
-            
+                    'rating_info.average_rating', 
+                    'rating_info.total_reviews',
+                    'contractor_profile_user.notes as user_preference_notes',
+                    'contractor_profile_user.preference_status as user_preference_status');  // Selecting the preference status
+        
+        // Apply the where clause for preference status conditionally
+        if ($preferenceStatus) {
+            $query->where('contractor_profile_user.preference_status', $preferenceStatus);
+        }                
         // Filtering by region
         if ($regionId) {
             $query->where('contractor_profiles.region_id', $regionId);
@@ -574,13 +584,16 @@ class ContractorProfileController extends Controller
 
             // Add preference status and notes to the contractor object with a fallback to null
             $contractor['preference_status'] = $contractorArray['preference_status'] ?? null;
-            $contractor['notes'] = $contractorArray['notes'] ?? null;
+            $contractor['notes'] = $contractorArray['user_preference_notes'] ?? null;
 
             // Add total_reviews to the contractor object
             // Accessing 'total_reviews' from $contractorArray since it's an array
             $contractor['total_reviews'] = $contractorArray['total_reviews'];
 
-            return $contractor;        
+            // Add user preference status to the contractor object
+            $contractor['preference_status'] = $contractor['user_preference_status'] ?? null;
+
+            return $contractor;          
         });
     
         // Construct the response with contractors and pagination information
