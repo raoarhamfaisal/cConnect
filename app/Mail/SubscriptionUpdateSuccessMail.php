@@ -17,7 +17,7 @@ class SubscriptionUpdateSuccessMail extends Mailable
     public function __construct(User $user, $newAmount, $last4DigitsOfBankAccount, $updateDate)
     {
         $this->user = $user;
-        $this->newAmount = $newAmount;
+        $this->newAmount = number_format($newAmount, 2, '.', ''); // Format the amount
         $this->last4DigitsOfBankAccount = $last4DigitsOfBankAccount;
         $this->updateDate = $updateDate;
     }

@@ -19,7 +19,7 @@ class SubscriptionSuccessMail extends Mailable
     public function __construct(User $user, $amount, $last4DigitsOfBankAccount, $subscriptionDate)
     {
         $this->user = $user;
-        $this->amount = $amount;
+        $this->amount = number_format($amount, 2, '.', ''); // Format the amount
         $this->last4DigitsOfBankAccount = $last4DigitsOfBankAccount;
         $this->subscriptionDate = $subscriptionDate;    }
 

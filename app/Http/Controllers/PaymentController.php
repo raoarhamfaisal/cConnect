@@ -137,7 +137,7 @@ class PaymentController extends Controller
             $apiRequest->setSubscription($subscription);
             $controller = new AnetController\ARBCreateSubscriptionController($apiRequest);
 
-            $subscriptionResponse = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::SANDBOX);
+            $subscriptionResponse = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 
             if($subscriptionResponse && $subscriptionResponse->getMessages()->getResultCode() == "Ok") {
                 // 3. Handle successful payments
@@ -435,7 +435,7 @@ class PaymentController extends Controller
        
            $controller = new AnetController\ARBCancelSubscriptionController($subscriptionRequest);
        
-           $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+           $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
        
            if (($response != null) && ($response->getMessages()->getResultCode() == "Ok"))
            {
