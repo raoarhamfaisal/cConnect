@@ -11,6 +11,7 @@ use App\Http\Controllers\ContractorRatingsAdminController;
 use App\Http\Controllers\AppealedReviewsController;
 use App\Http\Controllers\AdminRatingsController;
 use App\Http\Controllers\AdminController;
+use App\Models\Profile;
 
 
 use Illuminate\Foundation\Application;
@@ -56,11 +57,34 @@ Route::get('/privacy-policy', function () {
     ]);
 });
 
+
+
 Route::get('/inactive-account', function () {
-    return Inertia::render('InactiveAccount', [
-        'showit' => Auth::check(),
-    ]);
+    if (Auth::check()) {
+        $user = Auth::user(); // Get the authenticated user
+
+        $profile = Profile::where('user_id', $user->id)->first();
+
+        // Retrieve specific user profile properties. For example:
+        $profileDetails = [
+            'active_user' => $profile->active_user,
+            'is_deactivated_by_admin' => $profile->is_deactivated_by_admin,
+            'is_payment_verified' => $profile->is_payment_verified,
+        ];
+
+        return Inertia::render('InactiveAccount', [
+            'showit' => true,
+            'profile' => $profileDetails, // Pass the profile details
+        ]);
+    } else {
+        // Handle the case when the user is not authenticated
+        return Inertia::render('InactiveAccount', [
+            'showit' => false,
+        ]);
+    }
 });
+
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
