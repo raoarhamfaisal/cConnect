@@ -25,6 +25,9 @@ class Post extends Model
         'likes',
         'repost',
         'shares',
+        'title_text_alignment',
+        'title_text_color_id',
+        'title_background_color_id',
     ];
 
 
