@@ -17,7 +17,7 @@
         class="mb-6"
       >
         <div class="flex justify-between">
-          <PageTitle linkUrl="/profile-setup" pageTitle="Payment" />
+          <PageTitle :linkUrl="goBack" pageTitle="Payment" />
         </div>
 
         <div class="" v-if="!loading && !loadingScript && pricingPlan">
@@ -693,6 +693,16 @@ onMounted(async () => {
 
 //Computed
 const screenWidth = computed(() => store.getters.screenWidth);
+const goBack = computed(() => {
+  // Check if the history is
+  const prevUrl = localStorage.getItem("prevUrl");
+  if (prevUrl === "/pricing-plan") {
+  return prevUrl;
+  }else {
+   return '/profile-setup'
+  }
+ 
+});
 
 
 watch(

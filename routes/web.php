@@ -99,6 +99,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // });
     Route::get('/profile-setup', [ProfileController::class, 'setup'])->name('profile.setup');
     Route::get('/payment', [ProfileController::class, 'getPaymentsPage'])->name('profile.payment');
+    Route::get('/pricing-plan', [ProfileController::class, 'getPricingPlanPage'])->name('profile.pricing-plan');
     
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/profile/general-profile', [ProfileController::class, 'updateGeneralInfo'])->name('profile.updateGeneralInfo');
