@@ -26,7 +26,7 @@ class StorePostRequest extends FormRequest
     {
         return [
             'user_id' => 'required',
-            'title' => ['required', 'max:255'],
+            'title' => ['nullable', 'max:255'],
             'image' => ['max:5000'],
             'body1' => 'required',
             'body2' => '',

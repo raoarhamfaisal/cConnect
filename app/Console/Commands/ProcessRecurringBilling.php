@@ -154,6 +154,7 @@ class ProcessRecurringBilling extends Command
         $profile = Profile::where('user_id', $subscription->user_id)->first();
         if($profile) {
             $profile->active_user = 1;
+            $profile->is_deactivated_by_admin = 0;
             $profile->is_payment_verified = 1;
             $profile->save();
         }
@@ -205,6 +206,7 @@ class ProcessRecurringBilling extends Command
         $profile = Profile::where('user_id', $subscription->user_id)->first();
         if($profile) {
             $profile->active_user = 0;
+            $profile->is_deactivated_by_admin = 0;
             $profile->is_payment_verified = 0;
             $profile->save();
         }
@@ -294,6 +296,7 @@ class ProcessRecurringBilling extends Command
                     if($profile) {
                         $profile->is_payment_verified = 1; // Set to True
                         $profile->active_user = 1;
+                        $profile->is_deactivated_by_admin = 0;
                         $profile->save();
                     }
 
@@ -302,6 +305,7 @@ class ProcessRecurringBilling extends Command
                     if($profile) {
                         $profile->is_payment_verified = 0; // Set to false
                         $profile->active_user = 0;
+                        $profile->is_deactivated_by_admin = 0;
                         $profile->save();
                         $this->cancelSubscription($profile->user_id);
                     }
@@ -316,6 +320,7 @@ class ProcessRecurringBilling extends Command
                 if($profile) {
                     $profile->is_payment_verified = 0; // Set to False
                     $profile->active_user = 0;
+                    $profile->is_deactivated_by_admin = 0;
                     $profile->save();
                     $this->cancelSubscription($profile->user_id);
                 }
@@ -327,6 +332,7 @@ class ProcessRecurringBilling extends Command
             if($profile) {
                 $profile->is_payment_verified = 0; // Set to False
                 $profile->active_user = 0;
+                $profile->is_deactivated_by_admin = 0;
                 $profile->save();
                 $this->cancelSubscription($profile->user_id);
             }
@@ -377,6 +383,7 @@ class ProcessRecurringBilling extends Command
                 if($profile) {
                     $profile->active_user = 0;
                     $profile->is_payment_verified = 0;
+                    $profile->is_deactivated_by_admin = 0;
                     $profile->save();
                 }
 
