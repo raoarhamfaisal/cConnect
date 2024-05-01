@@ -5,16 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Trade;
+use App\Models\PostReaction;
+
+use App\Models\Comment;
+use App\Models\Post;
+
 
 class Post extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'original_post_id',
         'region_id',
         'user_id',
         'title',
-        'image',
+        'image',    
         'body1',
         'body2',
         'is_body_bold',
@@ -41,4 +47,28 @@ class Post extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+
+    public function likes()
+    {
+        return $this->hasMany(PostReaction::class)->where('type', 'like');
+    }
+
+    public function dislikes()
+    {
+        return $this->hasMany(PostReaction::class)->where('type', 'dislike');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    // If you want to track original posts for reposts
+    public function originalPost()
+    {
+        return $this->belongsTo(Post::class, 'original_post_id');
+    }
+
+
 }

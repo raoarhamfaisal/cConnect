@@ -75,6 +75,7 @@ class PostController extends Controller
             'profile' => $profile,
             'posts' => Post::query()
                 ->select(['posts.*', 'posts.id as post_id'])
+                ->withCount(['likes', 'dislikes'])
                 ->addSelect([
                     'profiles.first_name',
                     'profiles.last_name',
@@ -145,6 +146,9 @@ class PostController extends Controller
 
                     'font_size' => $post->font_size,
                     'text_alignment' => $post->text_alignment,
+
+                    'likes_count' => $post->likes_count,
+                    'dislikes_count' => $post->dislikes_count,
 
                     'repost' => $post->repost,
                     'shares' => $post->shares,
@@ -483,4 +487,23 @@ class PostController extends Controller
         }
     }
 
+    public function repost(Post $post)
+    {
+        // List the attributes you want to replicate
+        $attributesToReplicate = ['region_id', 'title', 'image', 'body1', 'body2', 'is_body_bold', 'post_text_color_id', 'post_background_color_id', 'font_size', 'text_alignment', 'title_text_alignment', 'title_text_color_id', 'title_background_color_id'];
+    
+        // Replicate the original post with specified attributes
+        $repost = $post->replicate()->fill($attributesToReplicate);
+    
+        // Set the current user as the poster and link to the original post
+        $repost->user_id = Auth::id();
+
+        // dd($post->title);
+        $repost->original_post_id = $post->id;
+    
+        $repost->save();
+    
+        return response()->json($repost, 201);
+    }
+        
 }
