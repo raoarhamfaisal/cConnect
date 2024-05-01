@@ -449,50 +449,6 @@
           height="80vh"
         ></Loader>
 
-        <!-- <CustomDialog
-          submitText="Okay"
-          :showFooter="false"
-          dialogWidth="width-40"
-          ref="verifyCouponDialogRef"
-          title="Verify Coupon"
-        >
-          <div class="mb-4 sm:mb-0">
-            <div class="mt-3">
-              <InputLabel
-                class="font-bold"
-                for="Coupon_code"
-                value="Enter Coupon Code"
-              />
-              <TextInput
-                id="Coupon_code"
-                type="text"
-                class="mt-1 block w-full md:"
-                v-model="form.coupon_code"
-                required
-              />
-              <InputError class="mt-2" :message="errors.coupon_code" />
-            </div>
-            <InputError class="mt-2" :message="couponApiError" />
-            <PrimaryButton
-              @click="verifyCouponCode"
-              :disabled="loading"
-              :style="{
-                backgroundColor: '#099268',
-                opacity: loadingCoupon ? '0.4' : '1.0',
-              }"
-              class="w-full mt-3 flex justify-center"
-            >
-              <div
-                v-show="!loadingCoupon"
-                class="flex items-center justify-center"
-              >
-                Verify Coupon Code
-              </div>
-              <div v-show="loadingCoupon">Verifying...</div></PrimaryButton
-            >
-          </div>
-         
-        </CustomDialog> -->
 
         <CustomDialog
           :dontAllowCancel="true"
@@ -574,16 +530,14 @@ import SelectProfile from "@/Components/SelectProfile.vue";
 
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 
-import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
-
 import Loader from "@/Components/Ratings/Loader.vue";
 
-import { Icon } from "@iconify/vue";
+
 
 import Card from "@/Components/Card.vue";
 
 import { useStore } from "vuex";
-import { Inertia } from "@inertiajs/inertia";
+
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import PageTitle from "@/Components/PageTitle.vue";
 import {
