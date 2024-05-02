@@ -241,21 +241,6 @@ export default {
       // this.showBackroundColor = false;
       this.isUploading = true;
     },
-    // console.log("Original values:", { origin, target },'before',this.form.image);
-    //   let imagesArray = this.form.image.split('|');
-    // // Adjust the indices if necessary
-    // const adjustedOrigin = origin;
-    // const adjustedTarget = target;
-
-    // console.log('adjustedOrigin', adjustedOrigin, 'adjustedTarget', adjustedTarget);
-
-    // // Swap the images based on the adjusted origin and target
-    // let temp = imagesArray[adjustedOrigin];
-    // imagesArray[adjustedOrigin] = imagesArray[adjustedTarget];
-    // imagesArray[adjustedTarget] = temp;
-
-    // // Join the array back into a string and update the form's image field
-    // this.form.image = imagesArray.join('|');
     handleFileReorder() {
     let imagesArray = this.form.image.split("|");
     let filePondFiles = this.$refs.pond.getFiles(); // Get actual File objects from FilePond
