@@ -16,6 +16,8 @@ import { ref } from "vue";
 import { mapGetters } from "vuex";
 import DialogContractorRating from "@/Components/Ratings/Contractor/DialogContractorRating.vue";
 import { Icon } from "@iconify/vue";
+import { somethingWentWrong } from "@/helpers/utilities";
+import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 
 export default {
   components: {
@@ -103,10 +105,10 @@ export default {
       dialogRef: ref(),
       user: usePageDeatails.auth.user,
       customBgColor: "",
-      customBgColor: "",
       text_alignment: "left",
-      titleCustomBgColor: "left",
       text_color: "",
+      title_text_alignment: "",
+      titleCustomBgColor: "left",
       title_text_color: "",
       profileId: usePageDeatails.profile.id,
       isContentOverflow: false,
@@ -115,8 +117,9 @@ export default {
       lineHeightBody2: 0,
       showFullTextBody1: false,
       showFullTextBody2: false,
-      truncatedLength: this.$store.state.screenWidth > 769 ? 300 : 150,
-      truncatedLengthBody2: this.$store.state.screenWidth > 769 ? 200 : 120,
+      likes_count: this.post.likes_count,
+      dislikes_count: this.post.dislikes_count,
+      repost_count: this.post.repost,
     };
   },
 
@@ -261,17 +264,6 @@ export default {
         content = content.replace(/\/n/g, "<br>"); // Replace /n with <br>
       }
       return this.processUrls(content);
-
-      // if (this.showFullTextBody1 || content?.length <= this.truncatedLength) {
-      //   return this.processUrls(content);
-      // } else {
-      //   let truncated = content?.substring(0, this.truncatedLength);
-      //   // Ensure it doesn't cut off in the middle of a word if and only if it's actually being truncated
-      //   if (truncated?.length >= this.truncatedLength) {
-      //     truncated = truncated.substring(0, truncated.lastIndexOf(" "));
-      //   }
-      //   return this.processUrls(truncated);
-      // }
     },
 
     displayedBody2() {
@@ -374,6 +366,70 @@ export default {
     toggleTextBody2() {
       this.showFullTextBody2 = !this.showFullTextBody2;
     },
+    async onLike() {
+      if (this.post.likes_count === this.likes_count) {
+        this.likes_count = this.likes_count + 1;
+        this.dislikes_count = this.post.dislikes_count;
+
+        try {
+          const response = await axios.post(
+            `/api/posts/${this.post.id}/like`,
+            {},
+            getAxiosConfig()
+          );
+          if (response.data) {
+          }
+        } catch (err) {
+          somethingWentWrong();
+        } finally {
+        }
+      } else {
+        this.likes_count = this.likes_count - 1;
+
+        try {
+          const response = await axios.delete(
+            `/api/posts/${this.post.id}/like`,
+            getAxiosConfig()
+          );
+          if (response.data) {
+          }
+        } catch (err) {
+          somethingWentWrong();
+        } finally {
+        }
+      }
+    },
+    async onDislike() {
+      if (this.post.dislikes_count === this.dislikes_count) {
+        this.dislikes_count = this.dislikes_count + 1;
+        this.likes_count = this.post.likes_count;
+        try {
+          const response = await axios.post(
+            `/api/posts/${this.post.id}/dislike`,
+            {},
+            getAxiosConfig()
+          );
+          if (response.data) {
+          }
+        } catch (err) {
+          somethingWentWrong();
+        } finally {
+        }
+      } else {
+        this.dislikes_count = this.dislikes_count - 1;
+        try {
+          const response = await axios.delete(
+            `/api/posts/${this.post.id}/dislike`,
+            getAxiosConfig()
+          );
+          if (response.data) {
+          }
+        } catch (err) {
+          somethingWentWrong();
+        } finally {
+        }
+      }
+    },
   },
 };
 </script>
@@ -419,14 +475,9 @@ export default {
 
         <!-- User Info -->
         <div class="flex flex-col justify-center ml-1">
-          <h2
-            class="font-bold text-lg sm:text-xl"
-            style="line-height: 1.5rem"
-           
-          >
+          <h2 class="font-bold text-lg sm:text-xl" style="line-height: 1.5rem">
             <!-- {{  post }} -->
             {{ post.id }}: {{ post.first_name + " " + post.last_name }}
-            <!-- {{ post.id }}: {{ post.title }} -->
           </h2>
           <div class="">
             {{ post.company_name }}
@@ -551,7 +602,7 @@ export default {
     <div
       :class="`${title_text_alignment} ${
         titleCustomBgColor.startsWith('#')
-          ? ' flex-col w-full items-center  px-2 py-5 rounded-md shadow-lg border-2'
+          ? ' flex-col w-full items-center  px-2 py-2 rounded-md shadow-lg border-2'
           : 'w-full'
       } `"
       @click="$emit('enlarge-post', post)"
@@ -570,7 +621,7 @@ export default {
     <div
       :class="`${text_alignment} ${
         customBgColor.startsWith('#')
-          ? ' flex-col w-full items-center  px-2 py-32 rounded-md shadow-lg border-2'
+          ? ' flex-col w-full items-center  px-2 py-[87px] rounded-md shadow-lg border-2'
           : 'w-full'
       } `"
       @click="$emit('enlarge-post', post)"
@@ -634,82 +685,67 @@ export default {
         {{ showFullTextBody2 ? "...less" : "...more" }}
       </span>
     </div>
+
+    <!-- footer icons counts -->
+    <!-- INDIVIDUAL POST: BOTTOM ROW MENU -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <div
       :class="`mb-2 ${
         post.body2 ? 'mt-3' : ''
       } border-[1px] w-1/3 border-gray-800 rounded`"
     ></div>
 
-    <!-- footer icons counts -->
     <div class="pb-2 flex justify-between w-full">
-
       <div class="flex gap-2">
-
-     
-      <!-- Like -->
-      <div class="flex gap-1 justify-center items-center cursor-pointer">
-      <!-- <div v-if="post.likes_count" class=""> -->
-        <div
-          class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
-        >
-          <div class="flex flex-row justify-between items-center">
-            <div class="">
-          
-              <Icon
-                icon="emojione-monotone:up-arrow"
-          
-                :class="`  text-[#16a34a]`"
-                width="25"
-              />
+        <!-- Like -->
+        <div class="flex gap-1 justify-center items-center cursor-pointer">
+          <!-- <div v-if="post.likes_count" class=""> -->
+          <div
+            class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
+          >
+            <div class="flex flex-row justify-between items-center">
+              <div class="">
+                <Icon
+                  icon="emojione-monotone:up-arrow"
+                  :class="`  text-[#16a34a]`"
+                  width="25"
+                />
+              </div>
             </div>
           </div>
+          <div>{{ likes_count }}</div>
         </div>
-        <div>{{ post.likes_count }}</div>
-      </div>
-      <!-- dislikes -->
-      <div class="flex gap-1 justify-center items-center cursor-pointer">
-      <!-- <div v-if="post.likes_count" class=""> -->
-        <div
-          class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
-        >
-          <div class="flex flex-row justify-between items-center">
-            <div class="">
-          
-              <Icon
-                icon="emojione-monotone:up-arrow"
-          
-                :class="`  text-[#c40516]`"
-                width="25"
-                :rotate="2"
-              />
+        <!-- dislikes -->
+        <div class="flex gap-1 justify-center items-center cursor-pointer">
+          <!-- <div v-if="post.likes_count" class=""> -->
+          <div
+            class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
+          >
+            <div class="flex flex-row justify-between items-center">
+              <div class="">
+                <Icon
+                  icon="emojione-monotone:up-arrow"
+                  :class="`  text-[#c40516]`"
+                  width="25"
+                  :rotate="2"
+                />
+              </div>
             </div>
           </div>
+          <div>{{ dislikes_count }}</div>
         </div>
-        <div>{{ post.dislikes_count }}</div>
+      </div>
+      <div class="text-gray-900 flex gap-1">
+        <span class=""> 4 comments </span>
+        &#9679;
+        <span class=""> {{ repost_count }} reposts </span>
       </div>
     </div>
-    <div class="text-gray-900 flex gap-1">
-<span class="">
-  4 Comments
-</span>
-&#9679;
-<span class="">
-  {{ post.repost }} Re-posts
-</span>
-    </div>
 
-    </div>
-    
-
-    <!-- INDIVIDUAL POST: BOTTOM ROW MENU -->
-    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-
-    <div
-      :class="`mb-2 border-[1px] w-full border-gray-300 rounded`"
-    ></div>
+    <div :class="`mb-2 border-[1px] w-full border-gray-300 rounded`"></div>
     <div class="flex flex-row justify-between items-center w-full mb-2">
       <!-- Likes -->
-      <div class="hovered">
+      <div class="hovered" @click="onLike">
         <div
           class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
         >
@@ -719,47 +755,38 @@ export default {
               <!-- <Icon icon="emojione-monotone:up-arrow" color="#16a34a" width="25" /> -->
               <Icon
                 icon="emojione-monotone:up-arrow"
-          
-                :class="`icon-like text-transparent stroke-[2px] stroke-green-600   `"
+                class="icon-like text-transparent stroke-[2px] stroke-green-600"
+                :class="`${likes_count > post.likes_count ? 'liked' : ''}`"
                 width="25"
               />
             </div>
-            <div class="pl-1 icon-text text-[#16a34a]">
-             Like
-            </div>
+            <div class="pl-1 icon-text text-[#16a34a]">Like</div>
           </div>
         </div>
       </div>
       <!-- Dislike -->
-      <div class="hovered">
-        <a
-         
-          class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
-        >
+      <div class="hovered" @click="onDislike">
+        <a class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer">
           <div class="flex flex-row justify-between items-center">
-            <div class="" >
+            <div class="">
               <!-- <img src="/images/icons/like_green.png" width="25" height="25" /> -->
               <!-- <Icon icon="emojione-monotone:up-arrow" :rotate="2" color="#c40516" width="25" /> -->
               <Icon
                 icon="emojione-monotone:up-arrow"
                 :rotate="2"
-                :class="`icon-dislike text-transparent stroke-[2px] stroke-[#c40516] `"
+                :class="`${dislikes_count > post.dislikes_count ? 'disliked' : ''}`"
+                class="icon-dislike text-transparent stroke-[2px] stroke-[#c40516]"
                 width="25"
               />
             </div>
-            <div class="pl-1 icon-text text-[#c40516]" >
-              Dislike
-            </div>
+            <div class="pl-1 icon-text text-[#c40516]">Dislike</div>
           </div>
         </a>
       </div>
 
       <!-- Comments -->
       <div class="hovered">
-        <Link
-          href="#"
-          class="font-medium text-xs sm:text-sm text-blue-800 "
-        >
+        <Link href="#" class="font-medium text-xs sm:text-sm text-blue-800">
           <div class="flex flex-row justify-between items-center">
             <div class="">
               <img
@@ -775,17 +802,12 @@ export default {
 
       <!-- Re-Posted -->
       <div class="hovered">
-        <Link
-          href="#"
-          class="font-medium text-xs sm:text-sm text-blue-800 "
-        >
+        <Link href="#" class="font-medium text-xs sm:text-sm text-blue-800">
           <div class="flex flex-row justify-between items-center">
             <div class="">
               <img src="/images/icons/share_icon.png" width="25" height="25" />
             </div>
-            <div class="pl-1 icon-text">
-            Re-post
-            </div>
+            <div class="pl-1 icon-text">Repost</div>
           </div>
         </Link>
       </div>
@@ -822,6 +844,7 @@ export default {
     </PostingActionMenu>
   </div>
 </template>
+
 <style>
 .processed-body a {
   color: blue;
@@ -832,15 +855,26 @@ export default {
   text-decoration: underline;
 }
 
-.hovered:hover .icon-text{
+.hovered:hover .icon-text {
   text-decoration: underline;
 }
 
-.hovered:hover .icon-like{
+.hovered:hover .icon-like {
   stroke-width: 0px;
   color: #16a34a;
 }
-.hovered:hover .icon-dislike{
+
+.liked {
+  stroke-width: 0px;
+  color: #16a34a;
+}
+
+.hovered:hover .icon-dislike {
+  stroke-width: 0px;
+  color: #c40516;
+}
+
+.disliked {
   stroke-width: 0px;
   color: #c40516;
 }

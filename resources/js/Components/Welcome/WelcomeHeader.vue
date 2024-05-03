@@ -111,120 +111,230 @@
 
       <!-- HAMBURGER Navigation Menu -->
       <div
-        :class="{
-          block: showingNavigationDropdown,
-          hidden: !showingNavigationDropdown,
-        }"
-        class="absolute top-16 right-4 sm:right-6 lg:right-20 xl:right-32 2xl:right-80 z-30 px-3 text-left border-b border-gray-400 rounded-xl bg-gray-100 flex"
-      >
-        <div class="">
-          <div class="pt-4 pb-2 pl-3 border-b-2 border-gray-400">
-            <div class="font-bold text-base text-gray-800">
-              <div v-if="showit">{{ $page.props.auth.user.name }}</div>
-              <div v-if="!showit">Not Logged In</div>
+          :class="{
+            block: showingNavigationDropdown,
+            hidden: !showingNavigationDropdown,
+          }"
+          class="absolute top-16 right-4 sm:right-6 lg:right-20 xl:right-32 2xl:right-80 z-30 px-3 text-left border-b border-gray-400 rounded-xl bg-gray-100 flex"
+        >
+          <div class="">
+            <div class="pt-4 pb-2 pl-3 border-b-2 border-gray-400">
+              <div class="font-bold text-base text-gray-800">
+                <div v-if="showit">{{ $page.props.auth.user.name }}</div>
+                <div v-if="!showit">Not Logged In</div>
+              </div>
+              <div v-if="showit" class="font-medium text-sm text-gray-500">
+                {{ $page.props.auth.user.email }}
+              </div>
             </div>
-            <div v-if="showit" class="font-medium text-sm text-gray-500">
-              {{ $page.props.auth.user.email }}
-            </div>
-          </div>
 
-          <div class="pt-2 pb-3 space-y-1">
-            <ResponsiveNavLink @click="$inertia.visit('/#whytContractor')">
-              Why <tContractorWord></tContractorWord>
-            </ResponsiveNavLink>
-
-            <ResponsiveNavLink v-if="showit" href="/ratings/contractor">
-              My Ratings
-            </ResponsiveNavLink>
-          </div>
-          <!-- Responsive Settings Options -->
-          <div class="pb-1 border-t-2 border-gray-400">
-            <div class="mt-3 space-y-1">
-              <ResponsiveNavLink v-if="showit" :href="route('profile.edit')">
-                Profile
+            <div class="pt-2 pb-3 space-y-1">
+              <ResponsiveNavLink href="#whytContractor">
+                Why <tContractorWord></tContractorWord>
               </ResponsiveNavLink>
 
               <ResponsiveNavLink
                 v-if="showit"
-                :href="route('post')"
-                :active="route().current('post')"
+                :href="
+                  profile && profile.is_payment_verified && profile.active_user
+                  ? route('post')
+                  : profile && !profile.is_payment_verified
+                  ? '/profile-setup'
+                  : '/inactive-account'
+                "
+                class="font-bold"
               >
-                View
+                News Feed
               </ResponsiveNavLink>
-              <ResponsiveNavLink href="/about-us#contactUs" :class="`${ url === 'http://0.0.0.0/about-us#contactUs' &&  'bg-gray-300 rounded'}`">
-                Contact Us
+              <ResponsiveNavLink
+                v-if="showit"
+                :href="
+                  profile && profile.is_payment_verified && profile.active_user
+                  ? 'sub-finder'
+                  : profile && !profile.is_payment_verified
+                  ? '/profile-setup'
+                  : '/inactive-account'
+                "
+                class="font-bold"
+              >
+                Sub Finder
+              </ResponsiveNavLink>
+              <ResponsiveNavLink
+                v-if="showit"
+                :href="
+                  profile && profile.is_payment_verified && profile.active_user
+                  ? route('post')
+                  : profile && !profile.is_payment_verified
+                  ? '/profile-setup'
+                  : '/inactive-account'
+                "
+                class="font-bold"
+              >
+                Red Flags
               </ResponsiveNavLink>
 
-              <ResponsiveNavLink href="/about-us#aboutUs" :class="`${ url === 'http://0.0.0.0/about-us#aboutUs' || url === 'http://0.0.0.0/about-us' ?  ' bg-gray-300 rounded' : ''}`">
-                About Us
-              </ResponsiveNavLink>
-              <div
-                v-if="isAdminUrl && showit"
-                class="pt-2 pb-3 space-y-1 border-b-2 border-t-2 border-gray-400"
+              <ResponsiveNavLink
+                v-if="showit"
+                :href="
+                  profile && profile.is_payment_verified && profile.active_user
+                  ? route('post')
+                  : profile && !profile.is_payment_verified
+                  ? '/profile-setup'
+                  : '/inactive-account'
+                "
+                class="font-bold"
               >
-                <ResponsiveNavLink href="/admin/regions/contractors">
-                  All Contractors
+                Mentoring
+              </ResponsiveNavLink>
+              <ResponsiveNavLink
+                v-if="showit"
+                :href="
+                  profile && profile.is_payment_verified && profile.active_user
+                  ? `/contractor/${profile.user_id}/edit`
+                  : profile && !profile.is_payment_verified
+                  ? '/profile-setup'
+                  : '/inactive-account'
+                "
+                class="font-bold"
+              >
+                Contractor page
+              </ResponsiveNavLink>
+            </div>
+            <!-- Responsive Settings Options -->
+            <div class="pb-1 border-t-2 border-gray-400">
+              <div class="mt-3 space-y-1">
+                <ResponsiveNavLink
+                  v-if="showit"
+                  :href="
+                    profile &&
+                    profile.is_payment_verified &&
+                    profile.active_user
+                    ? `/posts/${profile.user_id}`
+                    : profile && !profile.is_payment_verified
+                    ? '/profile-setup'
+                    : '/inactive-account'
+                  "
+                >
+                  My Posts
                 </ResponsiveNavLink>
-                <ResponsiveNavLink href="/admin/regions/appealed">
-                  Appealed Reviews
+                <ResponsiveNavLink
+                  v-if="showit"
+                  :href="
+                    profile &&
+                    profile.is_payment_verified &&
+                    profile.active_user
+                    ? '/ratings/contractor '
+                    : profile && !profile.is_payment_verified
+                    ? '/profile-setup'
+                    : '/inactive-account'
+                  "
+                >
+                  My Ratings
+                </ResponsiveNavLink>
+                <ResponsiveNavLink
+                  v-if="showit"
+                  :href="
+                    profile &&
+                    profile.is_payment_verified &&
+                    profile.active_user
+                    ? '/profile'
+                    : profile && !profile.is_payment_verified
+                    ? '/profile-setup'
+                    : '/inactive-account'
+                  "
+                >
+                  My Profile
+                </ResponsiveNavLink>
+
+                <ResponsiveNavLink
+                  v-if="showit"
+                  :href="
+                    profile &&
+                    profile.is_payment_verified &&
+                    profile.active_user
+                    ? '/settings'
+                    : profile && !profile.is_payment_verified
+                    ? '/profile-setup'
+                    : '/inactive-account'
+                  "
+                >
+                  Settings
+                </ResponsiveNavLink>
+                <ResponsiveNavLink href="/about-us#contactUs">
+                  Contact Us
+                </ResponsiveNavLink>
+
+                <ResponsiveNavLink href="/about-us#aboutUs">
+                  About Us
+                </ResponsiveNavLink>
+                <div
+                  v-if="isAdminUrl && showit"
+                  class="pt-2 pb-2 space-y-1 border-b-2 border-t-2 border-gray-400"
+                >
+                  <!-- <ResponsiveNavLink href="/admin/regions/contractors">
+                    All Contractors
+                  </ResponsiveNavLink>
+                  <ResponsiveNavLink href="/admin/regions/appealed">
+                    Appealed Reviews
+                  </ResponsiveNavLink> -->
+                  <ResponsiveNavLink href="/admin"> Admin </ResponsiveNavLink>
+                </div>
+
+                <ResponsiveNavLink
+                  v-if="showit"
+                  :href="route('logout')"
+                  method="post"
+                  as="button"
+                  @click="
+                    showingNavigationDropdown = !showingNavigationDropdown
+                  "
+                >
+                  Log Out
+                </ResponsiveNavLink>
+                <ResponsiveNavLink
+                  v-if="!showit"
+                  :href="route('signup')"
+                  as="button"
+                  class="text-blue-rgba font-bold"
+                >
+                  Sign Up
+                </ResponsiveNavLink>
+                <ResponsiveNavLink
+                  v-if="!showit"
+                  href="#loginHere"
+                  as="button"
+                  @click="
+                    showingNavigationDropdown = !showingNavigationDropdown
+                  "
+                >
+                  Log In
                 </ResponsiveNavLink>
               </div>
-
-              <ResponsiveNavLink
-                v-if="showit"
-                :href="route('logout')"
-                method="post"
-                as="button"
-                @click="showingNavigationDropdown = !showingNavigationDropdown"
-              >
-                Log Out
-              </ResponsiveNavLink>
-              <ResponsiveNavLink
-                v-if="
-                  !showit &&
-                  showSignUp &&
-                  (Inertia.page.component != 'Auth/Register' ||
-                    Inertia.page.component != 'Auth/VerifyEmail')
-                "
-                :href="route('signup')"
-                as="button"
-                class="text-blue-rgba font-bold"
-              >
-                Sign Up
-              </ResponsiveNavLink>
-              <ResponsiveNavLink
-                v-if="!showit"
-                @click="$inertia.visit('/#loginHere')"
-                as="button"
-              >
-                Log In
-              </ResponsiveNavLink>
             </div>
           </div>
-        </div>
-        <button
-          @click="toggleDropdown"
-          class="self-start inline-flex items-start justify-center p-2 rounded-md text-black hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
-        >
-          <svg
-            class="h-6 w-6"
-            stroke="currentColor"
-            fill="none"
-            viewBox="0 0 24 24"
+          <button
+            @click="toggleDropdown"
+            class="self-start inline-flex items-start justify-center p-2 rounded-md text-black hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
           >
-            <path
-              :class="{
-                hidden: !showingNavigationDropdown,
-                'inline-flex': showingNavigationDropdown,
-              }"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
-      </div>
+            <svg
+              class="h-6 w-6"
+              stroke="currentColor"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                :class="{
+                  hidden: !showingNavigationDropdown,
+                  'inline-flex': showingNavigationDropdown,
+                }"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
     </nav>
   </header>
 </template>
@@ -235,6 +345,7 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import { Inertia } from "@inertiajs/inertia";
 import { getToken } from "@/helpers/localStorageHelper";
+import { useStore } from "vuex";
 
 defineProps({
   showit: Boolean,
@@ -254,15 +365,24 @@ const dropdownMenu = ref(null);
 const url = usePage().url.value;
 console.log(url,usePage(),'url')
 const token = ref(false);
+const store =  useStore();
 
 //Computed
 
 const isAdminUrl = computed(() => {
-  if (usePage().props.value.auth.user) {
-    return usePage().props.value.auth.user.appeals_privileges === 1;
+  const user = usePage().props.value.auth.user;
+  console.log(user);
+  if (user) {
+    return (
+      user.appeals_privileges ||
+      user.payments_privileges ||
+      user.users_privileges
+    );
   }
   return false;
 });
+
+const profile = computed(() => store.state.profile.profile);
 
 // Methods
 
@@ -276,9 +396,10 @@ const toggleDropdown = () => {
   showingNavigationDropdown.value = !showingNavigationDropdown.value;
 };
 
-onMounted(() => {
+onMounted( async() => {
   if (getToken()) {
     console.log(getToken(), token.value, "token");
+    await store.dispatch("profile/fetchProfile");
     token.value = true;
   }
 

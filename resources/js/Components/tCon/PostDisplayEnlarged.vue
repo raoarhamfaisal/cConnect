@@ -1,43 +1,3 @@
-<!-- <script setup>
-import PostShowTheImage from "@/Components/tCon/tConSub/PostShowTheImage.vue";
-import tContractorWord from "@/Components/tCon/tContractorWord.vue";
-import { computed, ref } from "vue";
-import StarRounded from "@/Components/Ratings/StarRounded.vue";
-import DialogContractorRating from "@/Components/Ratings/Contractor/DialogContractorRating.vue";
-import Avatar from "@/Components/Ratings/Avatar.vue";
-import { Icon } from "@iconify/vue";
-import { useStore } from "vuex";
-
-const myProps = defineProps({
-  profile: {
-    type: Object,
-    required: true,
-  },
-
-  // Individual postToEnlarge from v-for posts (postings.vue)
-  postToEnlarge: {
-    type: Object,
-    required: true,
-  },
-
-  // array of colors for top body text (postings.vue)
-  body1Colors: {
-    type: Array,
-    required: true,
-  },
-});
-const store = useStore();
-const dialogRef = ref();
-
-const screenWidth = computed(() => store.getters.screenWidth);
-const imageArray = computed(() => {
-  return myProps.postToEnlarge.image.split("|");
-});
-const openDialog = () => {
-  dialogRef.value.openDialog();
-};
-const emit = defineEmits(["close-enlarged"]);
-</script> -->
 <script>
 import PostShowTheImage from "@/Components/tCon/tConSub/PostShowTheImage.vue";
 import tContractorWord from "@/Components/tCon/tContractorWord.vue";
@@ -77,7 +37,6 @@ export default {
       type: Array,
       required: true,
     },
-
   },
   data() {
     return {
@@ -87,10 +46,10 @@ export default {
       text_color: "",
       lineHeight: 0,
       lineHeightBody2: 0,
-      showFullTextBody1: false,
-      showFullTextBody2: false,
-      truncatedLength: this.$store.state.screenWidth > 769 ? 400 : 260,
-      truncatedLengthBody2: this.$store.state.screenWidth > 769 ? 300 : 200,
+
+      title_text_alignment: "",
+      titleCustomBgColor: "left",
+      title_text_color: "",
     };
   },
   computed: {
@@ -116,30 +75,61 @@ export default {
       },
     },
     textStyle() {
-      
-        return {
-      
-          fontSize: `${16 + +this.postToEnlarge.font_size}px`,
-          lineHeight: +this.postToEnlarge.font_size > 3 && +this.postToEnlarge.font_size < 10  ? '1.7rem': +this.postToEnlarge.font_size >=10 ? '2rem' :  'inherit',
-          display: "block",
+      return {
+        fontSize: `${16 + +this.postToEnlarge.font_size}px`,
+        lineHeight:
+          +this.postToEnlarge.font_size > 3 &&
+          +this.postToEnlarge.font_size < 10
+            ? "1.7rem"
+            : +this.postToEnlarge.font_size >= 10
+            ? "2rem"
+            : "inherit",
+        display: "block",
 
-          color: this.text_color,
-        };
-      
+        color: this.text_color,
+      };
     },
     textStyleBody2() {
-       
-        return {
-       
-         
-          overflow: "hidden",
-          display: "block",
-
-        };
-      
+      return {
+        overflow: "hidden",
+        display: "block",
+      };
     },
+    titleTextStyle() {
+      return {
+        color: this.title_text_color,
+      };
+    },
+    titleClass: function () {
+      let className, className2;
+
+      if (this.postToEnlarge.title_text_alignment) {
+        this.title_text_alignment =
+          this.postToEnlarge.title_text_alignment === "left"
+            ? " text-left"
+            : this.postToEnlarge.title_text_alignment === "center"
+            ? " text-center"
+            : " text-right";
+      }
+      if (this.postToEnlarge.title_text_color_id) {
+        this.textColors.forEach((color) => {
+          if (color.id === this.postToEnlarge.title_text_color_id) {
+            this.title_text_color = color.color;
+          }
+        });
+      }
+      if (this.postToEnlarge.title_background_color_id) {
+        this.backgroundColors.forEach((color) => {
+          if (color.id === this.postToEnlarge.title_background_color_id) {
+            this.titleCustomBgColor = color.color;
+          }
+        });
+      }
+
+      return className + " " + className2;
+    },
+
     body1Class: function () {
-    
       let className, className2;
       if (this.postToEnlarge.is_body_bold) {
         className = "font-bold";
@@ -186,31 +176,18 @@ export default {
 
       return this.processUrls(content);
     },
-    processedBody2() {
-      return this.processUrls(this.postToEnlarge.body2);
-    },
-
-    processedBody1() {
-      return this.processUrls(this.postToEnlarge.body1);
-    },
+   
   },
   methods: {
     openDialog() {
       this.$refs.dialogRef.openDialog();
     },
     processUrls(body) {
-    
       const urlRegex = /(https?:\/\/[^<\s]+|www\.[^<\s]+)/g;
       return body?.replace(urlRegex, function (url) {
         let actualUrl = url.startsWith("http") ? url : "http://" + url;
         return `<a @click.self.stop="()=>{}" href="${actualUrl}" target="_blank">${url}</a>`;
       });
-    },
-    toggleText() {
-      this.showFullTextBody1 = !this.showFullTextBody1;
-    },
-    toggleTextBody2() {
-      this.showFullTextBody2 = !this.showFullTextBody2;
     },
     emit() {
       this.$emit("close-enlarged");
@@ -293,7 +270,8 @@ export default {
                   class="font-bold text-lg sm:text-xl"
                   style="line-height: 1.5rem"
                 >
-                  {{ postToEnlarge.id }}: {{ postToEnlarge.title }}
+                  {{ postToEnlarge.id }}:
+                  {{ postToEnlarge.first_name + " " + postToEnlarge.last_name }}
                 </h2>
                 <div class="">
                   {{ postToEnlarge.company_name }}
@@ -321,17 +299,7 @@ export default {
                     height="30"
                   />
                 </div>
-                <!-- ratings & how many -->
-                <!-- <div class="flex flex-col justify-center items-center">
-            <div class="">
-              <img src="/images/icons/Stars4_icon.png" width="40" height="40" />
-            </div>
-            <div class="">
-              <h2 class="font-light text-xs overflow-hidden tracking-tighter">
-                5555
-              </h2>
-            </div>
-          </div> -->
+
                 <div class="flex flex-col justify-center items-center">
                   <StarRounded
                     @click="openDialog"
@@ -368,11 +336,29 @@ export default {
           <!-- END Ratings / postToEnlarge action menu / posting date -->
           <!-- End TOP POSTING ROW -->
 
-          <!-- <div
-            :class="`${body1Class} ${
+          <div
+            :class="`${title_text_alignment} ${
+              titleCustomBgColor.startsWith('#')
+                ? ' flex-col w-full items-center  px-2 py-2 rounded-md shadow-lg border-2'
+                : 'w-full'
+            } `"
+            class="font-bold text-xl sm:text-2xl md:tex-3xl mb-1 mt-1"
+            :style="{ backgroundColor: titleCustomBgColor }"
+          >
+            <span
+              v-show="postToEnlarge.title"
+              v-html="postToEnlarge.title"
+              style="white-space: pre-wrap"
+              :style="titleTextStyle"
+              :class="`${titleClass} w-full processed-body inline`"
+              ref="titleElement"
+            ></span>
+          </div>
+          <div
+            :class="`${text_alignment} ${
               customBgColor.startsWith('#')
-                ? ' flex-col w-full items-center  px-2 py-32 rounded-md shadow-lg border-2'
-                : ''
+                ? ' flex-col w-full items-center  px-2 py-[87px] rounded-md shadow-lg border-2'
+                : 'w-full'
             } `"
             class=""
             :style="{ backgroundColor: customBgColor }"
@@ -380,34 +366,18 @@ export default {
             <span
               v-show="postToEnlarge.body1"
               v-html="displayedBody1"
-              class="w-full processed-body inline"
+              style="white-space: pre-wrap"
+              :style="textStyle"
+              :class="`${body1Class} w-full processed-body inline`"
+              ref="textElement"
             ></span>
-          </div> -->
-
-          <div
-      :class="`${text_alignment} ${
-        customBgColor.startsWith('#')
-          ? ' flex-col w-full items-center  px-2 py-32 rounded-md shadow-lg border-2'
-          : 'w-full'
-      } `"
-      class=""
-      :style="{ backgroundColor: customBgColor }"
-    >
-      <span
-        v-show="postToEnlarge.body1"
-      
-        v-html="displayedBody1"
-        style="white-space: pre-wrap;"
-        :style="textStyle"
-        :class="`${body1Class} w-full processed-body inline`"
-        ref="textElement"
-      ></span>
-      
-    </div>
+          </div>
 
           <!-- INDIVIDUAL POST: MAIN IMAGES  -->
           <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-          <div class="flex flex-row justify-center items-center w-full mb-1 mt-1">
+          <div
+            class="flex flex-row justify-center items-center w-full mb-1 mt-1"
+          >
             <div v-if="imageArray.length > 0">
               <div v-for="image in imageArray" :key="image.id" class="pb-2">
                 <PostShowTheImage
@@ -423,149 +393,144 @@ export default {
 
           <!-- Text Body2 LOWER -->
           <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-          <!-- <div
-            class="flex flex-row justify-center items-center w-full px-2 mt-0 mb-0 text-base xs:text-lg md:text-xl font-normal text-gray-900"
-          >
-            {{ postToEnlarge.body2 }}
-          </div> -->
-          <!-- <div class="">
-            <div
+        
+          <div :class="`'w-full'`" class="">
+            <span
               v-show="postToEnlarge.body2"
               v-html="displayedBody2"
-              class="processed-body inline justify-center items-center w-full mt-0 mb-0 text-base xs:text-lg md:text-xl font-normal text-gray-900"
-            ></div>
-            <span
-              v-if="
-                !showFullTextBody2 &&
-                postToEnlarge.body2?.length > truncatedLengthBody2
-              "
-              @click="toggleTextBody2"
-              class="cursor-pointer text-sky-700"
-            >
-              ...more
-            </span>
-            <span
-              v-if="
-                showFullTextBody2 &&
-                postToEnlarge.body2?.length > truncatedLengthBody2
-              "
-              @click="toggleTextBody2"
-              class="cursor-pointer text-sky-700"
-            >
-              ...less
-            </span>
-          </div> -->
+              style="white-space: pre-wrap"
+              :style="textStyleBody2"
+              :class="`w-full processed-body inline`"
+              ref="textElementBody2"
+            ></span>
+          </div>
+  <!-- footer icons counts -->
+    <!-- INDIVIDUAL POST: BOTTOM ROW MENU -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <div
+      :class="`mb-2 ${
+        postToEnlarge.body2 ? 'mt-3' : ''
+      } border-[1px] w-1/3 border-gray-800 rounded`"
+    ></div>
 
-          <!-- <div class="mb-3 mt-3">
-            <div
-              v-show="postToEnlarge.body2"
-              v-html="displayedBody2"
-              class="processed-body inline justify-center items-center w-full text-base xs:text-lg md:text-xl font-normal text-gray-900"
-            ></div>
-          </div> -->
+    <div class="pb-2 flex justify-between w-full">
+      <div class="flex gap-2">
+        <!-- Like -->
+        <div class="flex gap-1 justify-center items-center cursor-pointer">
+          <!-- <div v-if="postToEnlarge.likes_count" class=""> -->
           <div
-      :class="`'w-full'`"
-      
-      class=""
-    >
-      <span
-        v-show="postToEnlarge.body2"
-        v-html="displayedBody2"
-        style="white-space: pre-wrap;"
-        :style="textStyleBody2"
-        :class="`w-full processed-body inline`"
-        ref="textElementBody2"
-      ></span>
-      
-   
-     
-    </div>
-
-          <!-- INDIVIDUAL POST: BOTTOM ROW MENU -->
-          <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-          <div class="flex flex-row justify-between items-center w-full mb-2">
-            <!-- Likes -->
-            <div class="">
-              <Link
-                href="#"
-                class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
-              >
-                <div class="flex flex-row justify-between items-center">
-                  <div class="">
-                    <img
-                      src="/images/icons/like_green.png"
-                      width="25"
-                      height="25"
-                    />
-                  </div>
-                  <div class="pl-1">
-                    {{ postToEnlarge.likes }}
-                  </div>
-                </div>
-              </Link>
-            </div>
-
-            <!-- Comments -->
-            <div class="">
-              <Link
-                href="#"
-                class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
-              >
-                <div class="flex flex-row justify-between items-center">
-                  <div class="">
-                    <img
-                      src="/images/icons/comment_icon.png"
-                      width="25"
-                      height="25"
-                    />
-                  </div>
-                  <div class="pl-1">12,999</div>
-                </div>
-              </Link>
-            </div>
-
-            <!-- Re-Posted -->
-            <div class="">
-              <Link
-                href="#"
-                class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
-              >
-                <div class="flex flex-row justify-between items-center">
-                  <div class="">
-                    <img
-                      src="/images/icons/share_icon.png"
-                      width="25"
-                      height="25"
-                    />
-                  </div>
-                  <div class="pl-1">
-                    {{ postToEnlarge.repost }}
-                  </div>
-                </div>
-              </Link>
-            </div>
-
-            <!-- Shares -->
-            <div class="">
-              <Link
-                href="#"
-                class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
-              >
-                <div class="flex flex-row justify-between items-center">
-                  <div class="">
-                    <img
-                      src="/images/icons/share_out_icon.png"
-                      width="20"
-                      height="17"
-                    />
-                  </div>
-                  <div class="pl-1">
-                    {{ postToEnlarge.shares }}
-                  </div>
-                </div>
-              </Link>
+            class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
+          >
+            <div class="flex flex-row justify-between items-center">
+              <div class="">
+                <Icon
+                  icon="emojione-monotone:up-arrow"
+                  :class="`  text-[#16a34a]`"
+                  width="25"
+                />
+              </div>
             </div>
           </div>
+          <div>{{ postToEnlarge.likes_count }}</div>
+        </div>
+        <!-- dislikes -->
+        <div class="flex gap-1 justify-center items-center cursor-pointer">
+          <!-- <div v-if="postToEnlarge.likes_count" class=""> -->
+          <div
+            class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
+          >
+            <div class="flex flex-row justify-between items-center">
+              <div class="">
+                <Icon
+                  icon="emojione-monotone:up-arrow"
+                  :class="`  text-[#c40516]`"
+                  width="25"
+                  :rotate="2"
+                />
+              </div>
+            </div>
+          </div>
+          <div>{{ postToEnlarge.dislikes_count }}</div>
+        </div>
+      </div>
+      <div class="text-gray-900 flex gap-1">
+        <span class=""> 4 Comments </span>
+        &#9679;
+        <span class=""> {{ postToEnlarge.repost }} Re-posts </span>
+      </div>
+    </div>
+
+
+    <div :class="`mb-2 border-[1px] w-full border-gray-300 rounded`"></div>
+    <div class="flex flex-row justify-between items-center w-full mb-2">
+      <!-- Likes -->
+      <div class="hovered">
+        <div
+          class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
+        >
+          <div class="flex flex-row justify-between items-center">
+            <div hoveredclass="">
+          
+              <Icon
+                icon="emojione-monotone:up-arrow"
+                :class="`icon-like text-transparent stroke-[2px] stroke-green-600   `"
+                width="25"
+              />
+            </div>
+            <div class="pl-1 icon-text text-[#16a34a]">Like</div>
+          </div>
+        </div>
+      </div>
+      <!-- Dislike -->
+      <div class="hovered">
+        <a class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer">
+          <div class="flex flex-row justify-between items-center">
+            <div class="">
+              <!-- <img src="/images/icons/like_green.png" width="25" height="25" /> -->
+              <!-- <Icon icon="emojione-monotone:up-arrow" :rotate="2" color="#c40516" width="25" /> -->
+              <Icon
+                icon="emojione-monotone:up-arrow"
+                :rotate="2"
+                :class="`icon-dislike text-transparent stroke-[2px] stroke-[#c40516] `"
+                width="25"
+              />
+            </div>
+            <div class="pl-1 icon-text text-[#c40516]">Dislike</div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Comments -->
+      <div class="hovered">
+        <Link href="#" class="font-medium text-xs sm:text-sm text-blue-800">
+          <div class="flex flex-row justify-between items-center">
+            <div class="">
+              <img
+                src="/images/icons/comment_icon.png"
+                width="25"
+                height="25"
+              />
+            </div>
+            <div class="pl-1 icon-text">Comment</div>
+          </div>
+        </Link>
+      </div>
+
+      <!-- Re-Posted -->
+      <div class="hovered">
+        <Link href="#" class="font-medium text-xs sm:text-sm text-blue-800">
+          <div class="flex flex-row justify-between items-center">
+            <div class="">
+              <img src="/images/icons/share_icon.png" width="25" height="25" />
+            </div>
+            <div class="pl-1 icon-text">Re-post</div>
+          </div>
+        </Link>
+      </div>
+
+     
+    </div>
+      
         </div>
 
         <!-- TOP BACK TO NEWS FEED -->
@@ -596,3 +561,26 @@ export default {
     </div>
   </div>
 </template>
+<style scoped>
+.processed-body a {
+  color: blue;
+  text-decoration: none;
+}
+
+.processed-body a:hover {
+  text-decoration: underline;
+}
+
+.hovered:hover .icon-text {
+  text-decoration: underline;
+}
+
+.hovered:hover .icon-like {
+  stroke-width: 0px;
+  color: #16a34a;
+}
+.hovered:hover .icon-dislike {
+  stroke-width: 0px;
+  color: #c40516;
+}
+</style>
