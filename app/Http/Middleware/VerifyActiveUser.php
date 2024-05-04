@@ -22,7 +22,7 @@ class VerifyActiveUser
         // dd($user->profile);
 
         // Check if the user is authenticated and active
-        if ($user && ((!$user->profile->active_user && $user->profile->is_payment_verified) || ($user->profile->active_user && !$user->profile->is_payment_verified))) {
+        if ($user && ((!$user->profile->active_user) || (!$user->profile->is_payment_verified))) {
             // Redirect to a specific page or show an error message
             // Customize this part as per your application's needs
             return redirect('/inactive-account');

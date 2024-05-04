@@ -26,7 +26,6 @@ class VerifyEmailController extends Controller
             event(new Verified($request->user()));
             $profile = Profile::where('user_id', $request->user()->id)->first();
             $profile->active_user = 1;
-            $profile->is_deactivated_by_admin = 0;
             $profile->save();
 
         }

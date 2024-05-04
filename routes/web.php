@@ -68,8 +68,8 @@ Route::get('/inactive-account', function () {
         // Retrieve specific user profile properties. For example:
         $profileDetails = [
             'active_user' => $profile->active_user,
-            'is_deactivated_by_admin' => $profile->is_deactivated_by_admin,
             'is_payment_verified' => $profile->is_payment_verified,
+            'profile' => $profile
         ];
 
         return Inertia::render('InactiveAccount', [
@@ -82,6 +82,11 @@ Route::get('/inactive-account', function () {
             'showit' => false,
         ]);
     }
+});
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/pricing-plan', [ProfileController::class, 'getPricingPlanPage'])->name('profile.pricing-plan');
 });
 
 
@@ -99,7 +104,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // });
     Route::get('/profile-setup', [ProfileController::class, 'setup'])->name('profile.setup');
     Route::get('/payment', [ProfileController::class, 'getPaymentsPage'])->name('profile.payment');
-    Route::get('/pricing-plan', [ProfileController::class, 'getPricingPlanPage'])->name('profile.pricing-plan');
     
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/profile/general-profile', [ProfileController::class, 'updateGeneralInfo'])->name('profile.updateGeneralInfo');
@@ -174,22 +178,22 @@ Route::get('/index-b', function () {
 // -------------------------------------------------
 Route::get('/post', [PostController::class, 'index'])
     ->name('post')
-    ->middleware(['auth', 'verified']);
+    ->middleware(['auth', 'activeUser']);
 Route::get('/contractor/posts/{contractor_id}', [PostController::class, 'indexContractor'])
     ->name('post.contractor')
-    ->middleware(['auth', 'verified']);
+    ->middleware(['auth', 'verified', 'activeUser']);
     Route::get('/posts/{contractor_id}', [PostController::class, 'indexContractor'])
     ->name('post.contractor')
-    ->middleware(['auth', 'verified']);
+    ->middleware(['auth', 'verified', 'activeUser']);
 
 Route::post('/post', [PostController::class, 'store'])
     ->name('post.store')
-    ->middleware(['auth', 'verified']);
+    ->middleware(['auth', 'verified', 'activeUser']);
     // ->middleware(['auth', 'verifyPayment', 'verified']);
 
 Route::post('/upload-post', [PostImageController::class, 'upload'])
     ->name('post.update')
-    ->middleware(['auth', 'verified']);
+    ->middleware(['auth', 'verified', 'activeUser']);
     // ->middleware(['auth', 'verifyPayment', 'verified']);
 
 // Delete image from temp storage

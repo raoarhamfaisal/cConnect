@@ -40,7 +40,7 @@
           @click="handleLogout"
           class="border-2 border-blue-rgba w-full sm:w-40 flex justify-center items-center text-blue-rgba font-bold text-xl py-2 px-4 uppercase rounded cursor-pointer transition transform duration-300 hover:shadow-lg active:scale-95"
         >
-          Cancel
+        Close
         </button>
       </div>
     </div>
@@ -48,8 +48,7 @@
     <!-- Condition for Admin Suspension -->
     <div
       v-else-if="
-        profile.active_user === 0 && profile.is_deactivated_by_admin === 1
-      "
+        profile.active_user === 0 && profile.is_payment_verified === 1"
     >
       <div class="text-3xl font-bold mb-6">Account Inactive</div>
       <p class="mb-4">
@@ -65,12 +64,12 @@
           @click="handleLogout"
           class="border-2 border-blue-rgba w-full sm:w-40 flex justify-center items-center text-blue-rgba font-bold text-xl py-2 px-4 uppercase rounded cursor-pointer transition transform duration-300 hover:shadow-lg active:scale-95"
         >
-          Cancel
+        Close
         </button>
     </div>
 
     <!-- Condition for Unknown Reason -->
-    <div v-else-if="profile.active_user === 0">
+    <div v-else>
       <div class="text-3xl font-bold mb-6">Account Inactive</div>
       <p class="mb-4">
         It appears you have not completed the registration process, please
@@ -97,7 +96,7 @@
           @click="handleLogout"
           class="border-2 border-teal-green w-full sm:w-40 flex justify-center items-center text-teal-green font-bold text-xl py-2 px-4 uppercase rounded cursor-pointer transition transform duration-300 hover:shadow-lg active:scale-95"
         >
-          Cancel
+        Close
         </button>
         </div>
     </div>

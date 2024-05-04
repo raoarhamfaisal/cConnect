@@ -158,6 +158,7 @@ export default {
         !this.user_profile.active_user) &&
       this.url !== "/profile-setup" &&
       this.url !== "/inactive-account" &&
+      this.url !== "/pricing-plan" &&
       this.url !== "/payment"
     ) {
       this.$refs.paymentDialogRef.openDialog();
@@ -297,6 +298,7 @@ export default {
     v-if="
       (user_profile && paymentCompleted) ||
       url === '/profile-setup' ||
+      url === '/pricing-plan' ||
       url === '/payment'
     "
     class="bg-gray-100"

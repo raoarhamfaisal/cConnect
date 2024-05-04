@@ -171,11 +171,13 @@ const formatPrice = (price) => {
             <div v-if="showit">
               <Link
                 :href="
-                  profile && profile.is_payment_verified && profile.active_user
-                  ? route('post')
-                  : profile && !profile.is_payment_verified
-                  ? '/profile-setup'
-                  : '/inactive-account'
+                  profile && profile.id && profile.is_payment_verified && profile.active_user
+                    ? route('post')
+                    : profile && profile.id && (!profile.is_payment_verified || !profile.active_user)
+                    ? (!profile.is_payment_verified && !profile.active_user) 
+                    ? '/profile-setup' 
+                    : ((!profile.is_payment_verified && profile.active_user) ? '/pricing-plan' : '/inactive-account')
+                    : '/inactive-account'
                 "
                 class="block flex justify-center items-center mx-2 py-2 sm:py-3 px-3 sm:px-6 font-bold rounded-lg sm:rounded-xl text-white bg-green-600 hover:bg-green-800 border-green-600"
               >
@@ -260,11 +262,13 @@ const formatPrice = (price) => {
               <ResponsiveNavLink
                 v-if="showit"
                 :href="
-                  profile && profile.is_payment_verified && profile.active_user
-                  ? route('post')
-                  : profile && !profile.is_payment_verified
-                  ? '/profile-setup'
-                  : '/inactive-account'
+                  profile && profile.id && profile.is_payment_verified && profile.active_user
+                    ? route('post')
+                    : profile && profile.id && (!profile.is_payment_verified || !profile.active_user)
+                    ? (!profile.is_payment_verified && !profile.active_user) 
+                    ? '/profile-setup' 
+                    : ((!profile.is_payment_verified && profile.active_user) ? '/pricing-plan' : '/inactive-account')
+                    : '/inactive-account'
                 "
                 class="font-bold"
               >
@@ -273,11 +277,13 @@ const formatPrice = (price) => {
               <ResponsiveNavLink
                 v-if="showit"
                 :href="
-                  profile && profile.is_payment_verified && profile.active_user
-                  ? 'sub-finder'
-                  : profile && !profile.is_payment_verified
-                  ? '/profile-setup'
-                  : '/inactive-account'
+                  profile && profile.id && profile.is_payment_verified && profile.active_user
+                    ? 'sub-finder'
+                    : profile && profile.id && (!profile.is_payment_verified || !profile.active_user)
+                    ? (!profile.is_payment_verified && !profile.active_user) 
+                    ? '/profile-setup' 
+                    : ((!profile.is_payment_verified && profile.active_user) ? '/pricing-plan' : '/inactive-account')
+                    : '/inactive-account'
                 "
                 class="font-bold"
               >
@@ -286,11 +292,13 @@ const formatPrice = (price) => {
               <ResponsiveNavLink
                 v-if="showit"
                 :href="
-                  profile && profile.is_payment_verified && profile.active_user
-                  ? route('post')
-                  : profile && !profile.is_payment_verified
-                  ? '/profile-setup'
-                  : '/inactive-account'
+                  profile && profile.id && profile.is_payment_verified && profile.active_user
+                    ? 'red-flag'
+                    : profile && profile.id && (!profile.is_payment_verified || !profile.active_user)
+                    ? (!profile.is_payment_verified && !profile.active_user) 
+                    ? '/profile-setup' 
+                    : ((!profile.is_payment_verified && profile.active_user) ? '/pricing-plan' : '/inactive-account')
+                    : '/inactive-account'
                 "
                 class="font-bold"
               >
@@ -300,11 +308,13 @@ const formatPrice = (price) => {
               <ResponsiveNavLink
                 v-if="showit"
                 :href="
-                  profile && profile.is_payment_verified && profile.active_user
-                  ? route('post')
-                  : profile && !profile.is_payment_verified
-                  ? '/profile-setup'
-                  : '/inactive-account'
+                  profile && profile.id && profile.is_payment_verified && profile.active_user
+                    ? route('post')
+                    : profile && profile.id && (!profile.is_payment_verified || !profile.active_user)
+                    ? (!profile.is_payment_verified && !profile.active_user) 
+                    ? '/profile-setup' 
+                    : ((!profile.is_payment_verified && profile.active_user) ? '/pricing-plan' : '/inactive-account')
+                    : '/inactive-account'
                 "
                 class="font-bold"
               >
@@ -313,11 +323,13 @@ const formatPrice = (price) => {
               <ResponsiveNavLink
                 v-if="showit"
                 :href="
-                  profile && profile.is_payment_verified && profile.active_user
-                  ? `/contractor/${profile.user_id}/edit`
-                  : profile && !profile.is_payment_verified
-                  ? '/profile-setup'
-                  : '/inactive-account'
+                  profile && profile.id && profile.is_payment_verified && profile.active_user
+                    ? `/contractor/${profile.user_id}/edit`
+                    : profile && profile.id && (!profile.is_payment_verified || !profile.active_user)
+                    ? (!profile.is_payment_verified && !profile.active_user) 
+                    ? '/profile-setup' 
+                    : ((!profile.is_payment_verified && profile.active_user) ? '/pricing-plan' : '/inactive-account')
+                    : '/inactive-account'
                 "
                 class="font-bold"
               >
@@ -330,13 +342,13 @@ const formatPrice = (price) => {
                 <ResponsiveNavLink
                   v-if="showit"
                   :href="
-                    profile &&
-                    profile.is_payment_verified &&
-                    profile.active_user
-                    ? `/posts/${profile.user_id}`
-                    : profile && !profile.is_payment_verified
-                    ? '/profile-setup'
-                    : '/inactive-account'
+                    profile && profile.id && profile.is_payment_verified && profile.active_user
+                      ? `/posts/${profile.user_id}`
+                      : profile && profile.id && (!profile.is_payment_verified || !profile.active_user)
+                      ? (!profile.is_payment_verified && !profile.active_user) 
+                      ? '/profile-setup' 
+                      : ((!profile.is_payment_verified && profile.active_user) ? '/pricing-plan' : '/inactive-account')
+                      : '/inactive-account'
                   "
                 >
                   My Posts
@@ -344,13 +356,13 @@ const formatPrice = (price) => {
                 <ResponsiveNavLink
                   v-if="showit"
                   :href="
-                    profile &&
-                    profile.is_payment_verified &&
-                    profile.active_user
-                    ? '/ratings/contractor '
-                    : profile && !profile.is_payment_verified
-                    ? '/profile-setup'
-                    : '/inactive-account'
+                    profile && profile.id && profile.is_payment_verified && profile.active_user
+                      ? '/ratings/contractor'
+                      : profile && profile.id && (!profile.is_payment_verified || !profile.active_user)
+                      ? (!profile.is_payment_verified && !profile.active_user) 
+                      ? '/profile-setup' 
+                      : ((!profile.is_payment_verified && profile.active_user) ? '/pricing-plan' : '/inactive-account')
+                      : '/inactive-account'
                   "
                 >
                   My Ratings
@@ -358,13 +370,13 @@ const formatPrice = (price) => {
                 <ResponsiveNavLink
                   v-if="showit"
                   :href="
-                    profile &&
-                    profile.is_payment_verified &&
-                    profile.active_user
-                    ? '/profile'
-                    : profile && !profile.is_payment_verified
-                    ? '/profile-setup'
-                    : '/inactive-account'
+                    profile && profile.id && profile.is_payment_verified && profile.active_user
+                      ? '/profile'
+                      : profile && profile.id && (!profile.is_payment_verified || !profile.active_user)
+                      ? (!profile.is_payment_verified && !profile.active_user) 
+                      ? '/profile-setup' 
+                      : ((!profile.is_payment_verified && profile.active_user) ? '/pricing-plan' : '/inactive-account')
+                      : '/inactive-account'
                   "
                 >
                   My Profile
@@ -373,13 +385,13 @@ const formatPrice = (price) => {
                 <ResponsiveNavLink
                   v-if="showit"
                   :href="
-                    profile &&
-                    profile.is_payment_verified &&
-                    profile.active_user
-                    ? '/settings'
-                    : profile && !profile.is_payment_verified
-                    ? '/profile-setup'
-                    : '/inactive-account'
+                    profile && profile.id && profile.is_payment_verified && profile.active_user
+                      ? '/settings'
+                      : profile && profile.id && (!profile.is_payment_verified || !profile.active_user)
+                      ? (!profile.is_payment_verified && !profile.active_user) 
+                      ? '/profile-setup' 
+                      : ((!profile.is_payment_verified && profile.active_user) ? '/pricing-plan' : '/inactive-account')
+                      : '/inactive-account'
                   "
                 >
                   Settings
@@ -401,7 +413,19 @@ const formatPrice = (price) => {
                   <ResponsiveNavLink href="/admin/regions/appealed">
                     Appealed Reviews
                   </ResponsiveNavLink> -->
-                  <ResponsiveNavLink href="/admin"> Admin </ResponsiveNavLink>
+                  <ResponsiveNavLink 
+                    :href="
+                      profile && profile.id && profile.is_payment_verified && profile.active_user
+                        ? '/admin'
+                        : profile && profile.id && (!profile.is_payment_verified || !profile.active_user)
+                        ? (!profile.is_payment_verified && !profile.active_user) 
+                        ? '/profile-setup' 
+                        : ((!profile.is_payment_verified && profile.active_user) ? '/pricing-plan' : '/inactive-account')
+                        : '/inactive-account'
+                    "
+                  > 
+                    Admin 
+                  </ResponsiveNavLink>
                 </div>
 
                 <ResponsiveNavLink
@@ -499,10 +523,12 @@ const formatPrice = (price) => {
           <Link
             class="group flex items-center justify-between rounded-xl border border-red-500 bg-red-500 px-5 py-3 mt-8 transition-colors hover:bg-red-800 focus:outline-none focus:ring"
             :href="
-              showit &&
-              profile &&
-              (profile.is_payment_verified === 0 || profile.active_user === 0)
-                ? (profile.is_payment_verified === 0 ? '/profile-setup' : '/inactive-account')
+              profile && profile.id && profile.is_payment_verified && profile.active_user
+                ? route('post')
+                : profile && profile.id && (!profile.is_payment_verified || !profile.active_user)
+                ? (!profile.is_payment_verified && !profile.active_user) 
+                ? '/profile-setup' 
+                : ((!profile.is_payment_verified && profile.active_user) ? '/pricing-plan' : '/inactive-account')
                 : route('signup')
             "
           >
@@ -706,11 +732,12 @@ const formatPrice = (price) => {
             <div class="flex justify-center items-end">
               <Link
                 :href="
-                  showit &&
-                  profile &&
-                  (profile.is_payment_verified === 0 ||
-                    profile.active_user === 0)
-                    ? (profile.is_payment_verified === 0 ? '/profile-setup' : '/inactive-account')
+                  profile && profile.id && profile.is_payment_verified && profile.active_user
+                    ? route('post')
+                    : profile && profile.id && (!profile.is_payment_verified || !profile.active_user)
+                    ? (!profile.is_payment_verified && !profile.active_user) 
+                    ? '/profile-setup' 
+                    : ((!profile.is_payment_verified && profile.active_user) ? '/pricing-plan' : '/inactive-account')
                     : route('signup')
                 "
                 class="p-3 px-6 pt-2 text-red bg-white rounded-lg border-white border-spacing-3 shadow-2xl shadow-black align-baseline hover:text-white hover:bg-blue-30-rgba"
@@ -739,7 +766,7 @@ const formatPrice = (price) => {
           <div
             class="mx-auto text-xs mb-6 text-center first-letter: text-white md:hidden"
           >
-            0102312041311
+            0112312061550
           </div>
           <div
             class="mx-auto my-6 text-center first-letter: text-white md:hidden"
@@ -802,13 +829,17 @@ const formatPrice = (price) => {
           <div v-if="!showit" class="flex justify-center space-x-3">
             <Link
               class="group flex items-center justify-between rounded-xl border border-red-500 bg-red-500 px-5 py-3 mt-8 transition-colors hover:bg-red-800 focus:outline-none focus:ring"
+
               :href="
-                showit &&
-                profile &&
-                (profile.is_payment_verified === 0 || profile.active_user === 0)
-                  ? (profile.is_payment_verified === 0 ? '/profile-setup' : '/inactive-account')
+                profile && profile.id && profile.is_payment_verified && profile.active_user
+                  ? route('post')
+                  : profile && profile.id && (!profile.is_payment_verified || !profile.active_user)
+                  ? (!profile.is_payment_verified && !profile.active_user) 
+                  ? '/profile-setup' 
+                  : ((!profile.is_payment_verified && profile.active_user) ? '/pricing-plan' : '/inactive-account')
                   : route('signup')
               "
+
             >
               <span
                 class="text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500"
@@ -840,7 +871,15 @@ const formatPrice = (price) => {
           <!-- NEWS FEED BUTTON -->
           <div v-if="showit" class="flex justify-center space-x-3">
             <Link
-              :href="route('post')"
+              :href="
+                profile && profile.id && profile.is_payment_verified && profile.active_user
+                  ? route('post')
+                  : profile && profile.id && (!profile.is_payment_verified || !profile.active_user)
+                  ? (!profile.is_payment_verified && !profile.active_user) 
+                  ? '/profile-setup' 
+                  : ((!profile.is_payment_verified && profile.active_user) ? '/pricing-plan' : '/inactive-account')
+                  : '/inactive-account'
+              "
               class="group flex items-center justify-between rounded-xl border border-green-600 bg-green-600 hover:bg-green-800 px-5 py-3 mt-8 transition-colors focus:outline-none focus:ring"
               preserve-scroll
             >
@@ -882,7 +921,7 @@ const formatPrice = (price) => {
           <div
             class="hidden text-xs text-white md:block my-2 text-center first-letter:"
           >
-          0102312041311
+          0112312061550
           </div>
         </div>
       </div>
