@@ -23,18 +23,18 @@
       >
         <div
           v-if="showHeader"
-          class="flex justify-between rounded-b-none max-md:rounded-none rounded-lg text-white items-center p-4 bg-[#241e6d]"
+          class="flex justify-between rounded-b-none max-md:rounded-none rounded-lg text-white items-center p-2 xs:p-4 bg-[#241e6d]"
         >
           <div class="flex items-center gap-2">
             <Icon
               v-if="!dontAllowCancel"
               type="button"
               @click="closeDialog"
-              class="w-10 h-10 cursor-pointer"
+              class="w-8 h-8 sx:w-10 sx:h-10 cursor-pointer"
               icon="icon-park:back"
               color="red"
             />
-            <h3 class="text-xl font-bold">{{ title }}</h3>
+            <h3 class="text-lg sx:text-xl font-bold">{{ title }}</h3>
             <Icon
               class="w-6 h-6"
               v-if="errorIcon"
@@ -178,6 +178,7 @@ const closeDialog = () => {
   if (props.dontAllowCancel) {
     return;
   }
+  console.log('false')
   isVisible.value = false;
   emit("closed");
   if (shouldFetchPostsOnClose.value && props.shouldFetchPost) {
