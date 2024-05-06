@@ -1,6 +1,6 @@
 <script>
 // SCRIPT UP TOP BECAUSE I LIKE IT HERE!
-import { InertiaLink, usePage } from "@inertiajs/inertia-vue3";
+import {  usePage } from "@inertiajs/inertia-vue3";
 import Avatar from "@/Components/Ratings/Avatar.vue";
 import StarRounded from "@/Components/Ratings/StarRounded.vue";
 
@@ -24,7 +24,7 @@ import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 
 export default {
   components: {
-    InertiaLink,
+
     tContractorWord,
     ButtonPost,
     ButtonRefresh,
@@ -527,6 +527,7 @@ export default {
   <DialogAllComments
     ref="commentDialogRef"
     :allComments="allComments"
+    :postId="post.id"
   />
   <!-- likes modal -->
   <CustomDialog
