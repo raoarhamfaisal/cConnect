@@ -107,6 +107,8 @@ import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { filterBadWords, somethingWentWrong } from "@/helpers/utilities";
 import { Icon } from "@iconify/vue";
 import { computed, nextTick, onMounted, ref, watch } from "vue";
+import Comment from "@/Components/PostFooter/Comment.vue";
+
 import { useStore } from "vuex";
 
 const props = defineProps({
