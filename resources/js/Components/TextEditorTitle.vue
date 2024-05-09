@@ -122,22 +122,22 @@ watch(
 
 watch(backgroundColor, (newValue) => {
   // only if the selected color is black or inherit
-  if (
-    backgroundColor.value.color !== "inherit" &&
-    backgroundColor.value.color !== "#ffffff" &&
-    (selectedColor.value.color === "inherit" ||
-      selectedColor.value.color === "#000000")
-  ) {
-    // selectedColor.value.color = "#ffffff";
-    alignment.value = "center";
-  } else if (
-    backgroundColor.value.color !== "inherit" &&
-    backgroundColor.value.color !== "#ffffff" &&
-    (selectedColor.value.color !== "inherit" ||
-      selectedColor.value.color !== "#000000")
-  ) {
-    alignment.value = "center";
-  }
+  // if (
+  //   backgroundColor.value.color !== "inherit" &&
+  //   backgroundColor.value.color !== "#ffffff" &&
+  //   (selectedColor.value.color === "inherit" ||
+  //     selectedColor.value.color === "#000000")
+  // ) {
+  //   // selectedColor.value.color = "#ffffff";
+  //   alignment.value = "center";
+  // } else if (
+  //   backgroundColor.value.color !== "inherit" &&
+  //   backgroundColor.value.color !== "#ffffff" &&
+  //   (selectedColor.value.color !== "inherit" ||
+  //     selectedColor.value.color !== "#000000")
+  // ) {
+  //   alignment.value = "center";
+  // }
 
   // if font color changed other than black then this condition and when i remove the background color
 

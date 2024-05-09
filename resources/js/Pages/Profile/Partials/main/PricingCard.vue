@@ -3,7 +3,7 @@
     @mouseover="hover = true"
     @mouseout="hover = false"
     :class="hover ? 'hovered' : ''"
-    class="pricing-card flex flex-col justify-between items-center w-full sm:w-1/2 p-6 sm:p-10 lg:p-15 bg-white border border-gray-300 rounded-lg shadow-md transition-all duration-300 ease-in-out transform hover:scale-105 relative"
+    class="pricing-card flex flex-col justify-between items-center w-full sm:w-1/2 p-6 sm:p-9 lg:p-6 xl:p-14 bg-white border border-gray-300 rounded-lg shadow-md transition-all duration-300 ease-in-out transform hover:scale-105 relative"
   >
     <!-- <div
       v-if="coupon && coupon.percentage_off_regular_price"

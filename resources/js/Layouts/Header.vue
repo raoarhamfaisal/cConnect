@@ -11,7 +11,7 @@ import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import DialogProfileTabs from "@/Pages/Profile/Partials/main/DialogProfileTabs.vue";
 import { ref } from "vue";
 import { mapActions, mapGetters } from "vuex";
-import { changesSaved } from "@/helpers/utilities";
+import { changesSaved, filterBadWordsWithoutValue } from "@/helpers/utilities";
 
 const defaultPostFormObject = {
   user_id: 0,
@@ -173,9 +173,16 @@ export default {
 
       formData.user_id = (this.profile && this.profile.user_id) || null;
       formData.is_body_bold = formData.is_body_bold ? 1 : 0;
+      console.log(formData.image,'before');
+      formData.image = formData.image ? this.reverseAndJoinString(formData.image):formData.image;
+      console.log(formData.image,'after');
+
       // Same method for update & create
       // if we have an item id then update
       formData.region_id = +formData.region_id;
+      formData.title = formData.title ? filterBadWordsWithoutValue(formData.title) : formData.title;
+      formData.body1 = formData.body1 ? filterBadWordsWithoutValue(formData.body1):formData.body1;
+      formData.body2 = formData.body2 ? filterBadWordsWithoutValue(formData.body2) : formData.body2;
       let url = "/post";
       if (formData.id) {
         url = "/post/" + formData.id;
@@ -198,6 +205,17 @@ export default {
           changesSaved("Post Successfully Added");
         },
       });
+    },
+    reverseAndJoinString(inputString) {
+      // Split the string into an array
+      let arr = inputString.split("|");
+
+      // Reverse the array
+      console.log(arr, "array");
+      console.log("addFormImage");
+      arr = arr.reverse();
+      // Join the array back into a string
+      return arr.join("|");
     },
 
     closeModal() {

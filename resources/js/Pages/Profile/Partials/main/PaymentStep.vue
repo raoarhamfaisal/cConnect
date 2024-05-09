@@ -1,10 +1,10 @@
 <template>
-  <div class="lg:p-5">
+  <div class="xl:p-5">
     <h1 class="text-3xl font-bold mb-6 sm:mb-8">Choose Your Pricing Plan</h1>
     <div
       v-if="loading"
       style="height: 500px"
-      class="card flex max-sm:flex-col max-sm:gap-10 gap-2 lg:gap-10 w-full"
+      class="card flex max-sm:flex-col max-sm:gap-10 gap-2  w-full"
     >
       <v-skeleton-loader class="w-full h-full" type="image">
       </v-skeleton-loader>
@@ -36,7 +36,7 @@
 
     <div
       v-if="!loading"
-      class="flex max-sm:flex-col mt-4 max-sm:gap-10 gap-2 lg:gap-10 w-full"
+      class="flex max-sm:flex-col mt-4 max-sm:gap-10 gap-2  w-full"
     >
       <PricingCard
         plan="MONTHLY"

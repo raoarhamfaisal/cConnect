@@ -193,148 +193,6 @@
       </div>
     </div>
   </div>
-  <!-- <div class="h-12 bg-[#2d2c2b]"></div> -->
-  <!-- <div class="flex gap-2" :style="{ color: selectedColorScheme[2] }">
-    <div :class="`${screenWidth > 768 ? 'w-3/4' : 'w-4/5'}`">
-      <div v-if="profile.company_logo" class="flex justify-center mb-3">
-        <Avatar
-          imageClass="companyLogo"
-          :imageSrc="`/${profile.company_logo}`"
-        />
-      </div>
-      <div
-        class="text-2xl text-center xs:text-3xl font-bold uppercase"
-        :style="{
-          color: '#4169E1',
-        }"
-        v-if="company_name"
-      >
-        {{ company_name }}
-      </div>
-      <div class="text-center">
-        <v-tooltip
-          :open-on-click="true"
-          :open-on-focus="true"
-          :text="fullName"
-          location="bottom"
-        >
-          <template v-slot:activator="{ props }">
-            <h2
-              class="text-xl xs:text-2xl font-medium font-bold"
-              v-bind="props"
-            >
-              {{ truncatedName }}
-            </h2>
-          </template>
-        </v-tooltip>
-      </div>
-      <div class="flex text-xl font-semibold mt-1 flex-col justify-center">
-        <div class="self-center text-base md:text-xl" v-if="city || state">
-          {{ city + ", " + state }}
-        </div>
-        <div class="flex max-md:flex-col items-center justify-center">
-          <div>{{ profile.phone_office || profile.phone_cell }}</div>
-          <div
-            class="mx-2 flex justify-center items-center translate-y-[-1px]"
-            v-if="screenWidth > 768"
-          >
-            |
-          </div>
-          <div>{{ profile.email }}</div>
-        </div>
-      </div>
-    </div>
-    <div
-      :class="` ${
-        screenWidth > 768 ? 'w-1/4' : ''
-      } flex-grow flex flex-col gap-2  flex justify-center  items-center `"
-    >
-   
-      <div class="flex flex-col justify-center items-center">
-        <StarRounded
-          @click="openContractorRatingDialog"
-          :innerStarRadius="screenWidth > 768 ? 16 : 16"
-          :starWidth="screenWidth > 768 ? 24 : 24"
-          :class="`h-6 cursor-pointer `"
-          :indicatorClasses="`text-small h-6 `"
-          :starHeight="screenWidth > 768 ? 24 : 24"
-          :rating="
-            Number(parseFloat(averageRating ? averageRating : 0.0).toFixed(1))
-          "
-          :isIndicatorActive="false"
-        />
-
-        <div class="">
-          <h2 class="font-light mt-2 text-sm overflow-hidden tracking-tighter">
-            {{ total_reviews }}
-          </h2>
-        </div>
-      </div>
-      <div class="flex items-center gap-1">
-        <div class="">
-          <img src="/images/icons/pre-diamond.png" width="20" height="30" />
-        </div>
-        <div class="flex gap-2 sm:gap-3 translate-x-[-2px]">
-          <v-tooltip text="See User Posts" location="left">
-            <template v-slot:activator="{ props }">
-              <div
-                @click="openPostDialog"
-                class="active:scale-95 hover:bg-[#f8f9fa] hover:rounded-md"
-              >
-                <button
-                  class="xs:text-md w-[28px] h-[28px] xs:w-[35px] xs:h-[35px] font-semibold flex items-center justify-center"
-                >
-                  <img
-                    src="/images/icons/post_b.png"
-                    v-bind="props"
-                    width="28"
-                    height="28"
-                  />
-                </button>
-              </div>
-            </template>
-          </v-tooltip>
-        </div>
-      </div>
-      <div class="flex flex-col gap-1">
-        <Link
-          class="rounded-full"
-          v-if="profile.user_id === loggedInUserId"
-          :href="`/contractor/${profile.user_id}/edit`"
-        >
-          <button
-            :class="` px-4 py-1 text-xs hover:bg-[#4169E1] sm:text-sm font-bold rounded-full border-[${'#4169E1'}] border-[1px] text-white cursor-pointer hover:shadow-lg active:scale-95 w-full`"
-            :style="{
-              background: '#4169E1',
-              borderColor: '#4169E1',
-            }"
-          >
-            Edit
-          </button>
-        </Link>
-        <button
-          v-bind="props"
-          @click="shareLink"
-          :style="{
-            color: '#4169E1',
-            borderColor: '#4169E1',
-          }"
-          :class="`bg-white px-4 py-1 text-xs hover:bg-[#f8f9fa] sm:text-sm font-bold rounded-full border-[1px] bg-white cursor-pointer hover:shadow-lg active:scale-95`"
-        >
-          Share
-        </button>
-        <v-snackbar
-          location="top"
-          v-model="snackbarVisible"
-          content-class="mt-6"
-          color="success"
-          :timeout="2000"
-        >
-          Link Copied to Clipboard
-        </v-snackbar>
-      </div>
-    </div>
-  </div> -->
   <DialogContractorRating
     ref="ratingDialogRef"
     :loggedInUserId="profileId"
@@ -362,12 +220,10 @@ import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import DialogContractorRating from "@/Components/Ratings/Contractor/DialogContractorRating.vue";
 import DialogContractorPosts from "@/Components/Postings/DialogContractorPosts.vue";
 
-import Card from "@/Components/Card.vue";
 
-import Avatar from "@/Components/Ratings/Avatar.vue";
 import { Icon } from "@iconify/vue";
 
-import { computed, ref, watchEffect, onMounted } from "vue";
+import { computed, ref, onMounted } from "vue";
 import { template1Default } from "@/helpers/templateDefaults";
 
 import { useStore } from "vuex";
@@ -472,7 +328,7 @@ const goBack = () => {
   if (prevUrl === "/post") {
     Inertia.visit(prevUrl);
   } else if (prevUrl === "/edit") {
-    Inertia.visit(`/contractor/${props.profile.user_id}/edit`);
+    Inertia.visit(`/contractor/${props.loggedInUserId}/edit`);
   } else {
     Inertia.visit("/sub-finder");
   }

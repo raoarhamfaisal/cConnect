@@ -3,29 +3,67 @@ import badWordsArray from "./badword.json";
 
 const badWords = new Set(badWordsArray.map((word) => word.toLowerCase()));
 
+// export const filterBadWords = (textRef) => {
+//   const words = textRef.value.split(" ");
+//   const filteredWords = words.map((word) => {
+//     if (badWords.has(word.toLowerCase())) {
+//       return "*".repeat(word.length);
+//     }
+//     return word;
+//   });
+
+//   return (textRef.value = filteredWords.join(" "));
+// };
+
 export const filterBadWords = (textRef) => {
-  const words = textRef.value.split(" ");
+  const words = textRef.value.split(/\b/); // Split on word boundaries to handle punctuations correctly
   const filteredWords = words.map((word) => {
-    if (badWords.has(word.toLowerCase())) {
-      return "*".repeat(word.length);
+    if (badWords.has(word.toLowerCase().replace(/\W/g, ''))) { // Remove non-word characters for the check
+      if (word.length > 2) {
+        const firstChar = word[0];
+        const lastChar = word[word.length - 1];
+        return `${firstChar}${'-'.repeat(word.length - 2)}${lastChar}`;
+      } else {
+        // For single character bad words, replace with a single asterisk
+        return '-'.repeat(word.length);
+      }
     }
     return word;
   });
 
-  return (textRef.value = filteredWords.join(" "));
+  return (textRef.value = filteredWords.join(""));
 };
 
 export const filterBadWordsWithoutValue = (textRef) => {
-  const words = textRef.split(" ");
+  const words = textRef.split(/\b/); // Split on word boundaries to handle punctuations correctly
   const filteredWords = words.map((word) => {
-    if (badWords.has(word.toLowerCase())) {
-      return "*".repeat(word.length);
+    if (badWords.has(word.toLowerCase().replace(/\W/g, ''))) { // Remove non-word characters for the check
+      if (word.length > 2) {
+        const firstChar = word[0];
+        const lastChar = word[word.length - 1];
+        return `${firstChar}${'-'.repeat(word.length - 2)}${lastChar}`;
+      } else {
+        // For single character bad words, replace with a single asterisk
+        return '-'.repeat(word.length);
+      }
     }
     return word;
   });
 
-  return (textRef = filteredWords.join(" "));
+  return (textRef = filteredWords.join(""));
 };
+
+// export const filterBadWordsWithoutValue = (textRef) => {
+//   const words = textRef.split(" ");
+//   const filteredWords = words.map((word) => {
+//     if (badWords.has(word.toLowerCase())) {
+//       return "*".repeat(word.length);
+//     }
+//     return word;
+//   });
+
+//   return (textRef = filteredWords.join(" "));
+// };
 
 export const changesSaved = (
   notificationMessage = "Changes Successfully Saved!",
