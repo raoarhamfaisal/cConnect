@@ -13,5 +13,7 @@
                "database": "tcontractor",
                "username": "sail"
           }
-     ]
+     ],
+     "editor.defaultFormatter": "esbenp.prettier-vscode",
+     "editor.formatOnSave": true
 }

@@ -46,7 +46,7 @@
             type="button"
             v-if="!dontAllowCancel"
             @click="closeDialog"
-            class="p-2 hover:bg-[#6741d9] rounded-full w-12"
+            class="p-2 hover:bg-[#6741d9] w-10 h-10 flex justify-center items-center rounded-full "
           >
             X
           </button>

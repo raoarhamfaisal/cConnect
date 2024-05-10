@@ -39,7 +39,7 @@
             type="button"
             v-if="!dontAllowCancel"
             @click="closeDialog"
-            class="p-2 hover:bg-[#6741d9] rounded-full w-12"
+            class="p-2 hover:bg-[#6741d9] w-10 h-10 flex justify-center items-center rounded-full"
           >
             X
           </button>
@@ -52,8 +52,16 @@
           } p-2 sm:p-4 padding-none ${contentClasses}`"
         >
           <!-- in case of Comments -->
-          <div v-if="comments && comments.length > 0">
-          <Comment v-for="(comment,index) in comments" :key="index" :comments="comment"/>
+          <div
+            v-if="comments && comments.length > 0"
+            class="flex flex-col gap-1 sm:gap-2"
+            ref="commentList"
+          >
+            <Comment
+              v-for="(comment, index) in comments"
+              :key="index"
+              :comment="comment"
+            />
           </div>
 
           <!-- if no Comment -->
@@ -90,10 +98,10 @@
               type="button"
               :disabled="loadingSendComment"
               @click="onSendComment"
-              :class="`w-8 h-8 sx:w-10 sx:h-10 cursor-pointer text-gray-400 apply-stroke ${
+              :class="`w-8 h-8 sx:w-10 sx:h-10 cursor-pointer text-gray-500 apply-stroke ${
                 loadingSendComment ? 'opacity-40' : 'opacity-100'
               }`"
-              icon="lucide:send-horizontal"
+              icon="carbon:send-filled"
             />
           </div>
         </div>
@@ -152,6 +160,7 @@ const props = defineProps({
 const emit = defineEmits(["submit", "closed", "opened"]);
 
 const store = useStore();
+const commentList = ref(null);
 const isVisible = ref(false);
 const commentAreaRef = ref();
 const container = ref();
@@ -208,12 +217,7 @@ const openDialog = () => {
 const adjustHeight = () => {
   nextTick(() => {
     commentAreaRef.value.style.height = "auto"; // Reset height first to get the correct scrollHeight
-    console.log(
-      commentAreaRef.value.style,
-      commentAreaRef.value.scrollHeight,
-      commentAreaRef.value.clientHeight,
-      "styles"
-    );
+
     commentAreaRef.value.style.height =
       commentAreaRef.value.scrollHeight + "px";
     if (
@@ -250,6 +254,9 @@ const insertTab = (event) => {
 };
 const onSendComment = async () => {
   loadingSendComment.value = true;
+  if (!commentText.value && commentText.value / trim() === "") {
+    return;
+  }
   const postComment = {
     body: filterBadWords(commentText),
   };
@@ -262,7 +269,11 @@ const onSendComment = async () => {
     if (response.data) {
       // this.allComments = response.data;
       commentText.value = "";
-      comments.push(response.data);
+      adjustHeight();
+      comments.value.unshift(response.data);
+      nextTick(() => {
+        commentList.value?.scrollIntoView({ behavior: "smooth" });
+      });
     }
   } catch (err) {
     somethingWentWrong();

@@ -12,23 +12,75 @@ use Illuminate\Support\Facades\Auth;
 class CommentController extends Controller
     {
 
+        // public function index(Post $post)
+        // {
+        //     $comments = $post->comments()->with('replies')->whereNull('parent_id')->latest()->take(2)->get();
+        //     return response()->json($comments);
+        // }
         public function index(Post $post)
         {
-            $comments = $post->comments()->with('replies')->whereNull('parent_id')->latest()->take(2)->get();
+            $comments = $post->comments()
+                            ->with(['replies', 'user.profile']) // Eager load the user and their profile
+                            ->whereNull('parent_id')
+                            ->latest()
+                            ->get();
+
+            foreach ($comments as $comment) {
+                // Check if the user and their profile are loaded
+                if (isset($comment->user) && isset($comment->user->profile)) {
+                    $profile = $comment->user->profile;
+                    $comment->user_avatar = $profile->user_avatar ?? null;
+                    $comment->first_name = $profile->first_name ?? null;
+                    $comment->last_name = $profile->last_name ?? null;
+                    $comment->company_logo = $profile->company_logo ?? null;
+                    $comment->company_name = $profile->company_name ?? null;
+                }
+            }
+
             return response()->json($comments);
         }
 
+
     
+        // public function store(Request $request, Post $post)
+        // {
+        //     $comment = new Comment();
+        //     $comment->user_id = Auth::id();
+        //     $comment->post_id = $post->id;
+        //     $comment->body = $request->body;
+        //     $comment->save();
+    
+        //     return response()->json($comment, 201);
+        // }
         public function store(Request $request, Post $post)
-        {
-            $comment = new Comment();
-            $comment->user_id = Auth::id();
-            $comment->post_id = $post->id;
-            $comment->body = $request->body;
-            $comment->save();
-    
-            return response()->json($comment, 201);
-        }
+{
+    $comment = new Comment();
+    $comment->user_id = Auth::id();
+    $comment->post_id = $post->id;
+    $comment->body = $request->body;
+    $comment->save();
+
+    // Eager load the user's profile
+    $comment->load('user.profile');
+
+    // Append profile details to the comment object
+    if (isset($comment->user->profile)) {
+        $profile = $comment->user->profile;
+        $comment->user_avatar = $profile->user_avatar ?? null;
+        $comment->first_name = $profile->first_name ?? null;
+        $comment->last_name = $profile->last_name ?? null;
+        $comment->company_logo = $profile->company_logo ?? null;
+        $comment->company_name = $profile->company_name ?? null;
+    }
+
+    // Hide the user object from the response
+    $comment->makeHidden('user');
+
+    return response()->json($comment, 201);
+}
+
+
+        
     
         public function update(Request $request, Comment $comment)
         {
