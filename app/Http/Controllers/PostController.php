@@ -74,7 +74,11 @@ class PostController extends Controller
             'userID' => $userID,
             'profile' => $profile,
             'posts' => Post::query()
-                ->select(['posts.*', 'posts.id as post_id'])
+                ->select(['posts.*', 'posts.id as post_id', 'post_reactions.type as user_reaction'])
+                ->leftJoin('post_reactions', function ($join) use ($userID) {
+                    $join->on('posts.id', '=', 'post_reactions.post_id')
+                        ->where('post_reactions.user_id', '=', $userID);
+                })
                 ->withCount(['likes', 'dislikes'])
                 ->addSelect([
                     'profiles.first_name',
@@ -85,12 +89,22 @@ class PostController extends Controller
                     'profiles.user_avatar',
                     'profiles.id',
                     DB::raw('(SELECT AVG(reviews.rating) FROM reviews WHERE reviews.contractor_id = profiles.id AND reviews.is_review_active = 1) as average_rating'),
-                    DB::raw('(SELECT COUNT(*) FROM reviews WHERE reviews.contractor_id = profiles.id AND reviews.is_review_active = 1) as total_reviews')
+                    DB::raw('(SELECT COUNT(*) FROM reviews WHERE reviews.contractor_id = profiles.id AND reviews.is_review_active = 1) as total_reviews'),
+                    'original_profiles.first_name as original_user_first_name',
+                    'original_profiles.last_name as original_user_last_name',
+                    'original_profiles.company_name as original_user_company_name',
+                    'original_profiles.city as original_user_city',
+                    'original_profiles.state as original_user_state',
+                    'original_profiles.user_avatar as original_user_user_avatar',
+                    'original_profiles.id as original_user_id',
+                    DB::raw('(SELECT AVG(reviews.rating) FROM reviews WHERE reviews.contractor_id = original_profiles.id AND reviews.is_review_active = 1) as original_user_average_rating'),
+                    DB::raw('(SELECT COUNT(*) FROM reviews WHERE reviews.contractor_id = original_profiles.id AND reviews.is_review_active = 1) as original_user_total_reviews')
                 ])
                 ->with(['trades' => function ($query) {
                     $query->select('trades.*'); // select all columns from trades
                 }])
                 ->leftJoin('profiles', 'posts.user_id', '=', 'profiles.user_id')
+                ->leftJoin('profiles as original_profiles', 'posts.original_user_id', '=', 'original_profiles.user_id')
                 ->where('posts.region_id', $profile['region_id'])
                 ->whereHas('user.profile', function ($query) use ($sessionViewSettings) {
                     // Ensure the post creator has matching view settings with the logged-in user
@@ -129,6 +143,7 @@ class PostController extends Controller
                 ->withQueryString()
                 ->through(fn($post) => [
                     'id' => $post->post_id,
+                    'your_reaction' => $post->user_reaction,
                     'user_id' => $post->user_id,
                     'view' => $post->view,
                     'title' => $post->title,
@@ -159,7 +174,17 @@ class PostController extends Controller
                     'state' => $post->state,
                     'user_avatar' => $post->user_avatar,
                     'average_rating' => $post->average_rating,
-                    'total_reviews' => $post->total_reviews
+                    'total_reviews' => $post->total_reviews,
+
+                    'original_user_first_name' => $post->original_user_first_name,
+                    'original_user_last_name' => $post->original_user_last_name,
+                    'original_user_company_name' => $post->original_user_company_name,
+                    'original_user_city' => $post->original_user_city,
+                    'original_user_state' => $post->original_user_state,
+                    'original_user_user_avatar' => $post->original_user_user_avatar,
+                    'original_user_id' => $post->original_user_id,
+                    'original_user_average_rating' => $post->original_user_average_rating,
+                    'original_user_total_reviews' => $post->original_user_total_reviews,
                 
                 ]),
             'postSearchFilters' => Request::only(['postSearch']),
@@ -487,23 +512,40 @@ class PostController extends Controller
         }
     }
 
+
     public function repost(Post $post)
     {
-        // List the attributes you want to replicate
-        $attributesToReplicate = ['region_id', 'title', 'image', 'body1', 'body2', 'is_body_bold', 'post_text_color_id', 'post_background_color_id', 'font_size', 'text_alignment', 'title_text_alignment', 'title_text_color_id', 'title_background_color_id'];
-    
-        // Replicate the original post with specified attributes
-        $repost = $post->replicate()->fill($attributesToReplicate);
-    
-        // Set the current user as the poster and link to the original post
-        $repost->user_id = Auth::id();
+        // Check if the current user has already reposted this post
+        $existingRepost = Post::where('original_post_id', $post->id)
+                            ->where('user_id', Auth::id())
+                            ->first();
 
-        // dd($post->title);
+        if ($existingRepost) {
+            // Return an error response if the user has already reposted
+            return response()->json(['message' => 'You have already reposted this post.'], 403);
+        }
+
+        // List the attributes you want to replicate
+        $attributesToReplicate = ['view', 'region_id', 'title', 'image', 'body1', 'body2', 'is_body_bold', 'post_text_color_id', 'post_background_color_id', 'font_size', 'text_alignment', 'title_text_alignment', 'title_text_color_id', 'title_background_color_id'];
+        
+        // Replicate the original post with specified attributes
+        $repost = $post->replicate();
+        
+        // Set the current user as the poster and link to the original post and user
+        $repost->user_id = Auth::id();
         $repost->original_post_id = $post->id;
-    
+        $repost->original_user_id = $post->user_id; // Save the original user's ID
+
         $repost->save();
-    
+
+        // Get trades associated with the original post
+        $originalPostTrades = $post->trades->pluck('id')->toArray();
+
+        // Attach these trades to the repost
+        $repost->trades()->sync($originalPostTrades);
+
         return response()->json($repost, 201);
     }
-        
+
+            
 }

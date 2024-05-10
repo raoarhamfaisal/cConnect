@@ -12,7 +12,7 @@ class Comment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['post_id', 'user_id', 'body'];
+    protected $fillable = ['post_id', 'user_id', 'body', 'parent_id'];
 
     public function post()
     {
@@ -22,5 +22,11 @@ class Comment extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    // Method to get replies to a comment
+    public function replies()
+    {
+        return $this->hasMany(Comment::class, 'parent_id');
     }
 }
