@@ -97,7 +97,7 @@ const validateForm = () => {
   for (let field in errors) {
     errors[field] = "";
   }
- 
+
   // Validate first_name
   if (!form.first_name?.trim()) {
     errors.first_name = "First name is required";
@@ -210,7 +210,6 @@ const isValidUrl = (urlString) => {
 };
 
 const clearErrors = (field) => {
-
   //for phone_cell only
   if (field === "phone_cell" || field === "phone_office") {
     if (form[field]?.trim().length <= 13) {
@@ -256,10 +255,6 @@ const nextClick = async () => {
   currentStep.value = currentStep.value + 1;
   editableAllowed.value = editableAllowed.value + 1;
 };
-const completePayment = async () => {
-  await store.dispatch("profile/verifyPayment");
-};
-
 const dontProceed = (areAllTradesSetToZero) => {
   if (areAllTradesSetToZero) {
     areAllTradesSetToZeroError.value =
@@ -330,7 +325,7 @@ const dontProceed = (areAllTradesSetToZero) => {
       </v-stepper-header>
 
       <v-stepper-window>
-        <div class=" bg-white">
+        <div class="bg-white">
           <v-stepper-window-item :value="1">
             <GeneralInfo
               v-model:form="form"
@@ -383,27 +378,6 @@ const dontProceed = (areAllTradesSetToZero) => {
           </v-stepper-window-item>
           <v-stepper-window-item :value="4">
             <PaymentStep :region_id="form.region_id" />
-            <!-- <PrimaryButton
-              @click="completePayment"
-              :disabled="loading"
-              style="
-                background-image: linear-gradient(
-                  111.4deg,
-                  rgba(7, 7, 9, 1) 6.5%,
-                  rgba(27, 24, 113, 1) 93.2%
-                );
-              "
-              class="w-full flex justify-center"
-            >
-              <div class="flex items-center justify-center">
-                Complete Payment
-              </div>
-              <img
-                v-show="loading"
-                src="/images/avatars/Spinner.gif"
-                alt="spinner"
-                width="30"
-            /></PrimaryButton> -->
           </v-stepper-window-item>
         </div>
       </v-stepper-window>

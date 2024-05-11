@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 #swal2-html-container.swal2-html-container {
   margin: 0;
 }
@@ -87,18 +85,23 @@ h6 {
   font-size: revert;
   font-weight: revert;
 }
-.closing .ck.ck-reset.ck-dropdown__panel.ck-dropdown__panel_southEast{
+.closing .ck.ck-reset.ck-dropdown__panel.ck-dropdown__panel_southEast {
   transform: translateY(130px);
 }
-.closing .ck-font-family-dropdown .ck.ck-reset.ck-dropdown__panel.ck-dropdown__panel_southEast{
+.closing
+  .ck-font-family-dropdown
+  .ck.ck-reset.ck-dropdown__panel.ck-dropdown__panel_southEast {
   transform: translateY(340px);
 }
 
-.ck-editor__editable.ck.ck-editor__editable_inline{
+.ck-editor__editable.ck.ck-editor__editable_inline {
   border: 2px solid #ccc;
 }
 
-div.default,.default div,.default p , p.default{
+div.default,
+.default div,
+.default p,
+p.default {
   font-size: 20px;
 }
 .admin-user-fuction-switch .v-label.v-label--clickable {
@@ -108,7 +111,21 @@ div.default,.default div,.default p , p.default{
   line-height: 1.25rem;
   opacity: 1;
 }
-.card .v-skeleton-loader__image{
+.card .v-skeleton-loader__image {
   height: 100%;
-  border-radius : 10px;
+  border-radius: 10px;
+}
+.comment-transition-enter-active,
+.comment-transition-leave-active {
+  transition: all 0.3s ease;
+}
+.comment-transition-enter-from,
+.comment-transition-leave-to {
+  opacity: 0;
+  max-height: 0;
+}
+.comment-transition-enter-to,
+.comment-transition-leave-from {
+  opacity: 1;
+  max-height: 10000px; /* Adjust based on your content */
 }

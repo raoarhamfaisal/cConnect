@@ -23,7 +23,7 @@
     </transition-group>
   </div>
 
-  <div class="flex gap-2 w-full items-start overflow-auto">
+  <div class="flex gap-2 w-full items-start overflow-auto" v-if="length > 2">
     <textarea
       id="comment"
       v-model="commentText"
@@ -129,20 +129,3 @@ const adjustHeight = () => {
 //Computed
 const screenWidth = computed(() => store.getters.screenWidth);
 </script>
-
-<style>
-.comment-transition-enter-active,
-.comment-transition-leave-active {
-  transition: all 0.3s ease;
-}
-.comment-transition-enter-from,
-.comment-transition-leave-to {
-  opacity: 0;
-  max-height: 0;
-}
-.comment-transition-enter-to,
-.comment-transition-leave-from {
-  opacity: 1;
-  max-height: 100px; /* Adjust based on your content */
-}
-</style>

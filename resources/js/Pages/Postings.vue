@@ -486,27 +486,25 @@ export default {
         <!-- <div v-for="post in allPosts.slice(0, 400)" :key="post.id" -->
         <Loader :loading="loading" background="inherit" height="100vh"></Loader>
         <template v-if="!loading">
-          <v-expand-transition>
-            <div
-              v-for="(post, index) in postsToShow"
-              id="scrollPost"
-              :key="post.id"
-              class="relative mx-auto w-full py-0"
+          <div
+            v-for="(post, index) in postsToShow"
+            id="scrollPost"
+            :key="post.id"
+            class="relative mx-auto w-full py-0"
+          >
+            <!-- INDIVIDUAL POST DISPLAY WITH MENUS -->
+            <PostDisplay
+              :showit="showit"
+              :index="index"
+              :profile="profile"
+              :textColors="textColors"
+              :backgroundColors="backgroundColors"
+              :post="post"
+              :body1Colors="body1Colors"
+              @enlarge-post="EnlargePost"
             >
-              <!-- INDIVIDUAL POST DISPLAY WITH MENUS -->
-              <PostDisplay
-                :showit="showit"
-                :index="index"
-                :profile="profile"
-                :textColors="textColors"
-                :backgroundColors="backgroundColors"
-                :post="post"
-                :body1Colors="body1Colors"
-                @enlarge-post="EnlargePost"
-              >
-              </PostDisplay>
-            </div>
-          </v-expand-transition>
+            </PostDisplay>
+          </div>
 
           <!-- v-for="post in allPosts" -->
           <!-- ------------------------------------------- -->
