@@ -122,6 +122,7 @@ export default {
       showSpinText: false,
       showingNavigationDropdown: ref(false),
       loadingPosts: ref(false),
+      dontTakeFirstPostOnRepost: false,
 
       // SHow fullpage individual post
       postDisplayEnlarged: false,
@@ -314,7 +315,12 @@ export default {
           only: ["posts"],
           onSuccess: () => {
             // takes the object posts and appends it to allpost
-            this.allPosts = [...this.allPosts, ...this.posts.data];
+            if (this.dontTakeFirstPostOnRepost) {
+              this.allPosts = [...this.allPosts, ...this.posts.data.slice(1)];
+              this.dontTakeFirstPostOnRepost = false;
+            } else {
+              this.allPosts = [...this.allPosts, ...this.posts.data];
+            }
             this.loadingPosts = false;
             // 'this.initialUrl' is set in script data
             window.history.replaceState({}, this.$page.title, this.initialUrl);
@@ -364,6 +370,28 @@ export default {
     EnLargedPostClosed() {
       this.postToEnlarge = null;
       this.postDisplayEnlarged = false;
+    },
+    onRespost() {
+      this.dontTakeFirstPostOnRepost = true;
+      this.$inertia.get(
+        this.posts.first_page_url,
+        {},
+        {
+          // these preserve state keeps our position in the scroll
+          preserveState: true,
+          preserveScroll: true,
+          // 'only' makes sure that inertia only loads current post property
+          // not the whole payload. Make sure lazy load is used in controller
+          only: ["posts"],
+          onSuccess: () => {
+            // takes the object posts and appends it to allpost
+            this.allPosts.unshift(this.posts.data[0]);
+            this.loadingPosts = false;
+            // 'this.initialUrl' is set in script data
+            window.history.replaceState({}, this.$page.title, this.initialUrl);
+          },
+        }
+      );
     },
   },
 };
@@ -494,6 +522,7 @@ export default {
           >
             <!-- INDIVIDUAL POST DISPLAY WITH MENUS -->
             <PostDisplay
+              @onRepost="onRespost"
               :showit="showit"
               :index="index"
               :profile="profile"

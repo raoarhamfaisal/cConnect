@@ -44,16 +44,30 @@
 
         <!-- action menu -->
         <div
-          class="hover:opacity-100 hover:pointer-events-auto cursor-pointer self-center w-[22%] h-full"
+          v-if="loggedInUserId === comment.user_id"
+          class="hover:opacity-100 hover:pointer-events-auto cursor-pointer self-center"
         >
           <v-menu v-model="menuVisible">
-            <template v-slot:activator="{ props }">
-              <button
-                class="bg-[#f0f2f5] px-3 py-2 rounded-[18px] flex items-center"
-                v-bind="props"
+            <template v-slot:activator="menuProps">
+              <v-tooltip
+                :open-on-click="false"
+                :open-on-focus="true"
+                v-model="tooltip"
+                max-width="300px"
+                text="Edit or Delete the comment"
+                location="top"
               >
-                <Icon icon="pepicons-pencil:dots-x" />
-              </button>
+                <template v-slot:activator="{ props }">
+                  <div v-bind="props">
+                    <button
+                      class="bg-[#f0f2f5] px-3 py-2 rounded-[18px] flex items-center"
+                      v-bind="menuProps.props"
+                    >
+                      <Icon icon="pepicons-pencil:dots-x" />
+                    </button>
+                  </div>
+                </template>
+              </v-tooltip>
             </template>
             <v-list>
               <v-list-item class="hover:bg-gray-200" @click="openEditModal">
@@ -74,15 +88,27 @@
         <div>
           {{ timeAgo(comment.updated_at) }}
         </div>
-        <div class="font-bold hover:underline cursor-pointer">Like</div>
-        <div class="font-bold hover:underline cursor-pointer">Dislike</div>
+        <div
+          @click="onLike"
+          class="font-bold hover:underline hover:text-[#16a34a] cursor-pointer"
+          :class="`${your_reaction === 'like' ? 'text-[#16a34a]' : ''}`"
+        >
+          Like
+        </div>
+        <div
+          @click="onDislike"
+          class="font-bold hover:underline cursor-pointer hover:text-[#c40516]"
+          :class="`${your_reaction === 'dislike' ? 'text-[#c40516]' : ''}`"
+        >
+          Dislike
+        </div>
         <div class="font-bold hover:underline cursor-pointer">Reply</div>
         <!-- Like -->
         <div
           class="flex gap-1 justify-center items-center cursor-pointer"
           @click="onOpenListofLikedUsersModel"
         >
-          <!-- <div v-if="post.likes_count" class=""> -->
+          <!-- <div v-if="post.likes_count.value" class=""> -->
           <div
             class="font-medium text-xs text-blue-800 flex flex-row justify-between items-center cursor-pointer"
           >
@@ -125,6 +151,22 @@
       </div>
     </div>
   </div>
+  <div
+    @click="showReplies"
+    class="ml-[54px] hover:underline sm:ml-[65px] text-gray-600 mt-2 flex gap-2"
+    v-if="comment.replies?.length > 0 && !isRepliesShown"
+  >
+    <Icon icon="bi:arrow-return-right" />
+    <div class="font-bold text-sm cursor-pointer">
+      View
+      {{
+        comment.replies.length === 1
+          ? comment.replies.length + " reply"
+          : comment.replies.length + " replies"
+      }}
+    </div>
+  </div>
+
   <teleport to="body">
     <CustomDialog
       submitText="Delete"
@@ -137,7 +179,7 @@
       dialogWidth="max-h-[70vh] width50"
       title="Are you sure? "
     >
-      <div class="mb-4">
+      <div class="">
         <div
           class="section_text-lg font-bold sm:pl-6 section_text-gray-800 mt-3 mb-2"
         >
@@ -164,23 +206,26 @@ import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
 import { Icon } from "@iconify/vue";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
+import { watch } from "vue";
+import { usePage } from "@inertiajs/inertia-vue3";
 
 const props = defineProps({
   comment: Object,
-  // liked: {
-  //   default: false,
-  //   type: Boolean,
-  // },
 });
 const store = useStore();
 const visible = ref(false);
 const deleteDialogRef = ref();
-const likes_count = ref(0);
-const dislikes_count = ref(0);
+const likes_count = ref(props.comment?.likes_count ?? 0);
+const dislikes_count = ref(props.comment?.dislikes_count ?? 0);
 const loadingDelete = ref(false);
 const showIcon = ref(false);
 const menuVisible = ref(false);
+const your_reaction = ref(props.comment?.user_reaction ?? "");
 const editRef = ref();
+const tooltip = ref(false);
+const isRepliesShown = ref(false);
+let usePageDeatails = usePage().props.value;
+const loggedInUserId = usePageDeatails.profile.user_id;
 // const longPressTimer = ref(null);
 const screenWidth = computed(() => store.getters.screenWidth);
 
@@ -190,6 +235,15 @@ const openEditModal = () => {
 const openDeleteModal = () => {
   deleteDialogRef.value.openDialog();
 };
+
+watch(
+  () => menuVisible.value,
+  (newVal) => {
+    if (newVal) {
+      tooltip.value = false;
+    }
+  }
+);
 onMounted(() => {
   visible.value = true;
 });
@@ -213,6 +267,91 @@ const handleSubmitDelete = async () => {
     deleteDialogRef.value.closeDialog();
   }
 };
+
+const onLike = async () => {
+  if (!your_reaction.value || your_reaction.value === "dislike") {
+    likes_count.value = likes_count.value + 1;
+    // if(!your_reaction.value){
+    // }
+    if (your_reaction.value === "dislike") {
+      dislikes_count.value = dislikes_count.value - 1;
+    }
+    your_reaction.value = "like";
+
+    try {
+      const response = await axios.post(
+        `/api/comments/${props.comment.id}/like`,
+        {},
+        getAxiosConfig()
+      );
+      if (response.data) {
+      }
+    } catch (err) {
+      somethingWentWrong();
+    }
+  } else {
+    if (your_reaction.value === "like") {
+      likes_count.value = likes_count.value - 1;
+
+      your_reaction.value = null;
+
+      // try {
+      //   const response = await axios.delete(
+      //     `/api/comments/${props.comment.id}/like`,
+      //     getAxiosConfig()
+      //   );
+      //   if (response.data) {
+      //   }
+      // } catch (err) {
+      //   somethingWentWrong();
+      // }
+    }
+  }
+};
+const onDislike = async () => {
+  if (!your_reaction.value || your_reaction.value === "like") {
+    dislikes_count.value = dislikes_count.value + 1;
+    // if(!your_reaction.value){
+    // }
+    if (your_reaction.value === "like") {
+      likes_count.value = likes_count.value - 1;
+    }
+    your_reaction.value = "dislike";
+
+    try {
+      const response = await axios.post(
+        `/api/comments/${props.comment.id}/dislike`,
+        {},
+        getAxiosConfig()
+      );
+      if (response.data) {
+      }
+    } catch (err) {
+      somethingWentWrong();
+    }
+  } else {
+    if (your_reaction.value === "dislike") {
+      dislikes_count.value = dislikes_count.value - 1;
+
+      your_reaction.value = null;
+
+      // try {
+      //   const response = await axios.delete(
+      //     `/api/comments/${props.comment.id}/dislike`,
+      //     getAxiosConfig()
+      //   );
+      //   if (response.data) {
+      //   }
+      // } catch (err) {
+      //   somethingWentWrong();
+      // }
+    }
+  }
+};
+const showReplies = () => {
+  isRepliesShown.value = true;
+};
+
 // const handleTouchStart = () => {
 //   if (longPressTimer.value) clearTimeout(longPressTimer.value);
 //   longPressTimer.value = setTimeout(() => {

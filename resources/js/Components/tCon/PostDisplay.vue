@@ -21,7 +21,7 @@ import DialogContractorRating from "@/Components/Ratings/Contractor/DialogContra
 import TwoVisibleComments from "@/Components/PostFooter/TwoVisibleComments.vue";
 
 import { Icon } from "@iconify/vue";
-import { somethingWentWrong } from "@/helpers/utilities";
+import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 
 export default {
@@ -128,9 +128,11 @@ export default {
       loadingRepost: false,
       allComments: [],
       loadingComments: false,
+      pagination: {},
+      addedNumber: 0,
     };
   },
-
+  emits: ["onRepost"],
   computed: {
     ...mapGetters(["screenWidth"]),
     ...mapGetters("profile", ["commentId"]),
@@ -322,6 +324,8 @@ export default {
         );
         if (index !== -1) {
           this.allComments.splice(index, 1);
+          this.pagination.total = this.pagination.total - 1;
+          // this.fetchAllComments();
         }
       }
     },
@@ -535,9 +539,11 @@ export default {
         );
         if (response.data) {
           this.repost_count = this.repost_count + 1;
+          this.$emit("onRepost");
+          changesSaved("Reposted Successfully");
         }
       } catch (err) {
-        somethingWentWrong();
+        somethingWentWrong(err.response.data.message, "inherit");
       } finally {
         this.loadingRepost = false;
         this.$refs.repostDialogRef.closeDialog();
@@ -547,11 +553,12 @@ export default {
       this.loadingComments = true;
       try {
         const response = await axios.get(
-          `/api/posts/${this.post.id}/comments`,
+          `/api/posts/${this.post.id}/comments?per_page=10`,
           getAxiosConfig()
         );
         if (response.data) {
-          this.allComments = response.data;
+          this.allComments = response.data?.comments;
+          this.pagination = response.data?.pagination;
         }
       } catch (err) {
         somethingWentWrong();
@@ -564,6 +571,9 @@ export default {
     },
     onAddingComment(comment) {
       this.allComments.unshift(comment);
+      this.pagination.total = this.pagination.total + 1;
+      this.addedNumber = this.addedNumber + 1;
+      console.log(this.pagination.total);
     },
   },
 };
@@ -578,8 +588,11 @@ export default {
   <!-- commentModal -->
   <DialogAllComments
     ref="commentDialogRef"
-    :allComments="allComments"
+    @unshiftIntoComments="onAddingComment"
+    v-model:modelValue="allComments"
+    v-model:addedNumber="addedNumber"
     :postId="post.id"
+    :pagination="pagination"
   />
   <!-- likes modal -->
   <CustomDialog
@@ -677,7 +690,7 @@ export default {
         <!-- User Avatar & User /// INDIVIDUAL POST: TOP POSTING ROW -->
         <Link
           :href="`/contractor/${post.user_id}`"
-          class="flex flex-row gap-2 justify-start items-center"
+          class="flex flex-row gap-2 justify-start items-start"
         >
           <!-- Avatar -->
           <div
@@ -704,6 +717,34 @@ export default {
               <!-- {{  post }} -->
               {{ post.id }}: {{ post.first_name + " " + post.last_name }}
             </h2>
+            <div
+              v-if="
+                post.original_user_first_name && post.original_user_last_name
+              "
+              class="text-sm flex gap-1 justify-center items-center"
+            >
+              <img src="/images/icons/share_icon.png" width="15" height="15" />
+              <div class="">Reposted From</div>
+              <Icon
+                class="translate-y-[-1px]"
+                icon="ion:caret-forward"
+                width="15"
+              />
+              <Link
+                :href="`/contractor/${post.original_user_id}`"
+                v-if="
+                  post.original_user_first_name && post.original_user_last_name
+                "
+              >
+                <div class="font-bold cursor-pointer">
+                  {{
+                    post.original_user_first_name +
+                    " " +
+                    post.original_user_last_name
+                  }}
+                </div>
+              </Link>
+            </div>
             <div class="">
               {{ post.company_name }}
             </div>
@@ -971,7 +1012,7 @@ export default {
             class="cursor-pointer hover:underline"
             @click="onOpenCommentsModal"
           >
-            {{ allComments.length }} comments
+            {{ pagination.total }} comments
           </span>
           &#9679;
           <span class=""> {{ repost_count }} reposts </span>
