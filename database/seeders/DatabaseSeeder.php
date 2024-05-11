@@ -110,7 +110,11 @@ class DatabaseSeeder extends Seeder
             RatingReasonSeeder::class,
             AppealSeeder::class,
             RedFlagSeeder::class,
-
+            PostReactionSeeder::class,
+            CommentSeeder::class,
+            CommentReactionSeeder::class,
+            ReplySeeder::class,
+            ReplyReactionSeeder::class,
         ]);
 
         \App\Models\User::factory()->create([

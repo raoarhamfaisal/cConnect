@@ -30,6 +30,7 @@ class Comment extends Model
         return $this->hasMany(Comment::class, 'parent_id');
     }
 
+
     public function likes()
     {
         return $this->hasMany(CommentReaction::class)->where('type', 'like');
@@ -39,4 +40,10 @@ class Comment extends Model
     {
         return $this->hasMany(CommentReaction::class)->where('type', 'dislike');
     }
+
+    public function reactions()
+    {
+        return $this->hasMany(CommentReaction::class);
+    }
+
 }
