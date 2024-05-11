@@ -146,6 +146,21 @@ class CommentController extends Controller
             return response()->json($reaction, 200);
         }
 
+        private function removeReaction(Comment $comment, $type)
+        {
+            $userId = Auth::id();
+            CommentReaction::where('comment_id', $comment->id)->where('user_id', $userId)->where('type', $type)->delete();
+        }
+    
+
+        public function removeLikeComment(Comment $comment)
+        {
+            $this->removeReaction($comment, 'like');
+            return response()->json(['message' => 'Like removed']);
+        }
+
+
+
         public function dislikeComment(Comment $comment)
         {
             $reaction = CommentReaction::updateOrCreate(
@@ -157,6 +172,12 @@ class CommentController extends Controller
             );
 
             return response()->json($reaction, 200);
+        }
+
+        public function removeDislikeComment(Comment $comment)
+        {
+            $this->removeReaction($comment, 'dislike');
+            return response()->json(['message' => 'Dislike removed']);
         }
 
         public function storeReply(Request $request, $parentCommentId)

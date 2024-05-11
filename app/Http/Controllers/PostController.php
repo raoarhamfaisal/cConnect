@@ -537,8 +537,14 @@ class PostController extends Controller
         $repost->user_id = Auth::id();
         $repost->original_post_id = $post->id;
         $repost->original_user_id = $post->user_id; // Save the original user's ID
+        $repost->repost = 0;
+
+
+        $post->repost++;
 
         $repost->save();
+        $post->save();
+
 
         // Get trades associated with the original post
         $originalPostTrades = $post->trades->pluck('id')->toArray();

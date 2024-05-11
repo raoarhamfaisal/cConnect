@@ -99,7 +99,9 @@ Route::get('/post/background-colors', [PostColorController::class, 'getBackgroun
 
         // Post Comments Reaction
         Route::post('/comments/{comment}/like', [CommentController::class, 'likeComment']);
+        Route::delete('/comments/{comment}/like', [CommentController::class, 'removeLikeComment']);
         Route::post('/comments/{comment}/dislike', [CommentController::class, 'dislikeComment']);
+        Route::delete('/comments/{comment}/dislike', [CommentController::class, 'removeDislikeComment']);
         
         Route::post('/comments/{comment}/reply', [CommentController::class, 'storeReply']);
 
