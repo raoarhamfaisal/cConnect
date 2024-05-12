@@ -243,7 +243,6 @@ watch(
 watch(
   () => props.reply?.likes_count,
   (newVal) => {
-    console.log(newVal, "like");
     if (newVal !== undefined) {
       likes_count.value = newVal;
     }
@@ -253,8 +252,6 @@ watch(
 watch(
   () => props.reply?.dislikes_count,
   (newVal) => {
-    console.log(newVal, "dsilike");
-
     if (newVal !== undefined) {
       dislikes_count.value = newVal;
     }
@@ -323,7 +320,6 @@ const handleSubmitDelete = async () => {
     if (response.data) {
       changesSaved(response.data.message || "Comment successfully deleted");
       store.commit("profile/setReplyId", props.reply.id);
-      console.log("after showing message");
     }
   } catch (err) {
     console.log(err);
