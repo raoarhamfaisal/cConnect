@@ -107,7 +107,9 @@ const validate = () => {
 
   // Validate rating_text
   if (!comment_text.value || comment_text.value.trim() === "") {
-    responseError.value = "Comment should not be empty.";
+    responseError.value = `${
+      isReply ? "Reply" : "Comment"
+    } should not be empty.`;
     isValid = false;
   }
 
