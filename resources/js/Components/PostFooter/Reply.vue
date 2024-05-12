@@ -239,6 +239,77 @@ watch(
     }
   }
 );
+
+watch(
+  () => props.reply?.likes_count,
+  (newVal) => {
+    console.log(newVal, "like");
+    if (newVal !== undefined) {
+      likes_count.value = newVal;
+    }
+  }
+);
+
+watch(
+  () => props.reply?.dislikes_count,
+  (newVal) => {
+    console.log(newVal, "dsilike");
+
+    if (newVal !== undefined) {
+      dislikes_count.value = newVal;
+    }
+  }
+);
+
+watch(
+  () => props.reply?.user_reaction,
+  (newVal) => {
+    console.log(newVal, "user_reaction");
+    if (newVal !== undefined) {
+      your_reaction.value = newVal;
+    }
+  }
+);
+
+watch(
+  () => likes_count.value,
+  (newValue) => {
+    let postReply;
+    postReply = {
+      ...props.reply,
+      likes_count: likes_count.value,
+      dislikes_count: dislikes_count.value,
+      user_reaction: your_reaction.value,
+    };
+    store.commit("profile/setPostReply", postReply);
+  }
+);
+watch(
+  () => dislikes_count.value,
+  (newValue) => {
+    let postReply;
+    postReply = {
+      ...props.reply,
+      likes_count: likes_count.value,
+      dislikes_count: dislikes_count.value,
+      user_reaction: your_reaction.value,
+    };
+    store.commit("profile/setPostReply", postReply);
+  }
+);
+watch(
+  () => your_reaction.value,
+  (newValue) => {
+    let postReply;
+    postReply = {
+      ...props.reply,
+      likes_count: likes_count.value,
+      dislikes_count: dislikes_count.value,
+      user_reaction: your_reaction.value,
+    };
+    store.commit("profile/setPostReply", postReply);
+  }
+);
 onMounted(() => {
   visible.value = true;
 });

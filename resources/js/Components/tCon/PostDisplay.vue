@@ -135,8 +135,17 @@ export default {
   emits: ["onRepost"],
   computed: {
     ...mapGetters(["screenWidth"]),
-    ...mapGetters("profile", ["commentId", "replyId", "reply"]),
+    ...mapGetters("profile", [
+      "commentId",
+      "postComment",
+      "replyId",
+      "reply",
+      "postReply",
+    ]),
     ...mapGetters("ratings", ["comment"]),
+    firstTwoComments() {
+      return this.allComments.slice(0, 2);
+    },
     toggleClass() {
       return `cursor-pointer ${
         this.customBgColor.startsWith("#") ? "text-sky-400" : "text-sky-700"
@@ -331,7 +340,6 @@ export default {
     },
     replyId(newVal) {
       if (newVal) {
-        console.log("in reply");
         for (let i = 0; i < this.allComments.length; i++) {
           const comment = this.allComments[i];
           if (comment.replies) {
@@ -352,9 +360,47 @@ export default {
           return comment.id === newVal.commentId;
         });
         if (commentIndex !== -1) {
+          if (!this.allComments[commentIndex].replies) {
+            // If 'replies' doesn't exist, initialize it as an empty array
+            this.allComments[commentIndex].replies = [];
+          }
+          // Now that 'replies' is guaranteed to be an array, push the new reply
           this.allComments[commentIndex].replies.push(newVal.reply);
         }
       }
+    },
+    postComment: {
+      handler(newVal) {
+        if (newVal && newVal.id) {
+          const commentIndex = this.allComments.findIndex(
+            (comment) => comment.id === newVal.id
+          );
+
+          if (commentIndex !== -1) {
+            // Update the existing comment with the new data
+            this.allComments[commentIndex] = newVal;
+          }
+        }
+      },
+      deep: true,
+    },
+    postReply: {
+      handler(newVal) {
+        if (newVal && newVal.id) {
+          this.allComments.forEach((comment, index) => {
+            // Check if any reply ID matches
+            if (comment.replies) {
+              const replyIndex = comment.replies.findIndex(
+                (reply) => reply.id === newVal.id
+              );
+              if (replyIndex !== -1) {
+                this.allComments[index].replies[replyIndex] = newVal;
+              }
+            }
+          });
+        }
+      },
+      deep: true,
     },
     comment: {
       handler(newVal) {
@@ -430,12 +476,6 @@ export default {
         window.getComputedStyle(textElementBody2).lineHeight
       );
       const maxHeight = this.lineHeightBody2 * 4;
-      console.log(
-        "Checking content height",
-        textElementBody2.offsetHeight,
-        textElementBody2.scrollHeight,
-        maxHeight
-      );
       this.isContentOverflowBody2 =
         textElementBody2.offsetHeight ||
         textElementBody2.scrollHeight > maxHeight;
@@ -627,7 +667,6 @@ export default {
       this.allComments.unshift(comment);
       this.pagination.total = this.pagination.total + 1;
       this.addedNumber = this.addedNumber + 1;
-      console.log(this.pagination.total);
     },
   },
 };
@@ -651,6 +690,7 @@ export default {
   <!-- likes modal -->
   <CustomDialog
     ref="likeDialogRef"
+    dialogWidth="w-full h-full sm:h-5/6"
     @opened="onLikeModalOpen"
     :showFooter="false"
     title="People who liked the post"
@@ -682,13 +722,14 @@ export default {
   <!-- dislike modal -->
   <CustomDialog
     ref="dislikeDialogRef"
+    dialogWidth="w-full h-full sm:h-5/6"
     @opened="onDislikeModalOpen"
     :showFooter="false"
     title="People who disliked the post"
   >
     <div v-if="loadingUnliked">
       <v-skeleton-loader
-        v-for="n in 5"
+        v-for="n in 3"
         :key="n"
         type="list-item-avatar"
       ></v-skeleton-loader>
@@ -729,137 +770,132 @@ export default {
     </div>
   </CustomDialog>
   <!-- {{ profile }} -->
-  <transition name="comment-transition">
-    <div
-      v-if="post.view"
-      class="z-48 flex flex-col items-center justify-start my-2 py-1 lg:py-1 px-2 bg-gray-200 border-2 border-gray-300 rounded-lg drop-shadow-lg transition-all duration-1000 transitioning reveal"
-    >
-      <!-- INDIVIDUAL POST:
+
+  <div
+    v-if="post.view && !loadingComments"
+    class="z-48 flex flex-col items-center justify-start my-2 py-1 lg:py-1 px-2 bg-gray-200 border-2 border-gray-300 rounded-lg drop-shadow-lg transition-all duration-1000 transitioning reveal"
+  >
+    <!-- INDIVIDUAL POST:
 
 
         TOP ROW MENUS
         POST ACTIONS MENU -->
-      <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-      <div class="flex flex-row justify-between items-center w-full mb-2 mt-2">
-        <!-- User Avatar & User /// INDIVIDUAL POST: TOP POSTING ROW -->
-        <Link
-          :href="`/contractor/${post.user_id}`"
-          class="flex flex-row gap-2 justify-start items-start"
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <div class="flex flex-row justify-between items-center w-full mb-2 mt-2">
+      <!-- User Avatar & User /// INDIVIDUAL POST: TOP POSTING ROW -->
+      <Link
+        :href="`/contractor/${post.user_id}`"
+        class="flex flex-row gap-2 justify-start items-start"
+      >
+        <!-- Avatar -->
+        <div
+          class="cursor-pointer flex justify-start items-start flex-none w=16"
         >
-          <!-- Avatar -->
-          <div
-            class="cursor-pointer flex justify-start items-start flex-none w=16"
-          >
-            <!-- <Link :href="route('post.show')" class="block "> -->
-            <div class="block">
-              <Avatar
-                :style="{
-                  width: screenWidth >= 640 ? '4.5rem' : '3.7rem',
-                  height: screenWidth >= 640 ? '4.5rem' : '3.7rem',
-                }"
-                :imageSrc="post.user_avatar"
-              />
-            </div>
+          <!-- <Link :href="route('post.show')" class="block "> -->
+          <div class="block">
+            <Avatar
+              :style="{
+                width: screenWidth >= 640 ? '4.5rem' : '3.7rem',
+                height: screenWidth >= 640 ? '4.5rem' : '3.7rem',
+              }"
+              :imageSrc="post.user_avatar"
+            />
           </div>
+        </div>
 
-          <!-- User Info -->
-          <div class="flex flex-col justify-center ml-1">
-            <h2
-              class="font-bold text-lg sm:text-xl"
-              style="line-height: 1.5rem"
-            >
-              <!-- {{  post }} -->
-              {{ post.id }}: {{ post.first_name + " " + post.last_name }}
-            </h2>
-            <div
+        <!-- User Info -->
+        <div class="flex flex-col justify-center ml-1">
+          <h2 class="font-bold text-lg sm:text-xl" style="line-height: 1.5rem">
+            <!-- {{  post }} -->
+            {{ post.id }}: {{ post.first_name + " " + post.last_name }}
+          </h2>
+          <div
+            v-if="post.original_user_first_name && post.original_user_last_name"
+            class="text-sm flex gap-1 items-center"
+          >
+            <img src="/images/icons/share_icon.png" width="15" height="15" />
+            <div class="">Reposted From</div>
+            <Icon
+              class="translate-y-[-1px]"
+              icon="ion:caret-forward"
+              width="15"
+            />
+            <Link
+              :href="`/contractor/${post.original_user_id}`"
               v-if="
                 post.original_user_first_name && post.original_user_last_name
               "
-              class="text-sm flex gap-1 justify-center items-center"
             >
-              <img src="/images/icons/share_icon.png" width="15" height="15" />
-              <div class="">Reposted From</div>
-              <Icon
-                class="translate-y-[-1px]"
-                icon="ion:caret-forward"
-                width="15"
-              />
-              <Link
-                :href="`/contractor/${post.original_user_id}`"
-                v-if="
-                  post.original_user_first_name && post.original_user_last_name
-                "
-              >
-                <div class="font-bold cursor-pointer">
-                  {{
-                    post.original_user_first_name +
-                    " " +
-                    post.original_user_last_name
-                  }}
-                </div>
-              </Link>
-            </div>
-            <div class="">
-              {{ post.company_name }}
-            </div>
-
-            <div class="">
-              <h2 class="font-light text-sm overflow-hidden">
-                {{ post.city }} {{ post.state }}
-              </h2>
-            </div>
+              <div class="font-bold cursor-pointer">
+                {{
+                  post.original_user_first_name +
+                  " " +
+                  post.original_user_last_name
+                }}
+              </div>
+            </Link>
           </div>
-        </Link>
+          <div class="">
+            {{ post.company_name }}
+          </div>
 
-        <!-- Ratings / post action menu / posting date -->
-        <div
-          class="flex flex-row justify-end items-center self-start flex-none w-28"
-        >
-          <!-- User RATINGS /// INDIVIDUAL POST: TOP POSTING ROW -->
-          <div class="flex flex-row flex-none justify-end items-center px-2">
-            <!-- Premium Marking -->
-            <!-- <div class="">
+          <div class="">
+            <h2 class="font-light text-sm overflow-hidden">
+              {{ post.city }} {{ post.state }}
+            </h2>
+          </div>
+        </div>
+      </Link>
+
+      <!-- Ratings / post action menu / posting date -->
+      <div
+        class="flex flex-row justify-end items-center self-start flex-none w-28"
+      >
+        <!-- User RATINGS /// INDIVIDUAL POST: TOP POSTING ROW -->
+        <div class="flex flex-row flex-none justify-end items-center px-2">
+          <!-- Premium Marking -->
+          <!-- <div class="">
             <img src="/images/icons/pre-diamond.png" width="20" height="30" />
           </div> -->
 
-            <!-- ${
+          <!-- ${
               user.id === post.user_id ? 'pointer-events-none' : ''
             } -->
-            <div class="flex flex-col md:mt-2 justify-center items-center">
-              <StarRounded
-                @click="openDialog"
-                :innerStarRadius="screenWidth > 768 ? 17 : 13"
-                :starWidth="screenWidth > 768 ? 24 : 15"
-                :class="`h-4 md:h-6 cursor-pointer`"
-                :indicatorClasses="`text-small h-4 md:h-6 `"
-                :starHeight="screenWidth > 768 ? 24 : 15"
-                :rating="
-                  Number(
-                    parseFloat(
-                      post.average_rating ? post.average_rating : 0.0
-                    ).toFixed(1)
-                  )
-                "
-                :isIndicatorActive="false"
-              />
+          <div class="flex flex-col md:mt-2 justify-center items-center">
+            <StarRounded
+              @click="openDialog"
+              :innerStarRadius="screenWidth > 768 ? 17 : 13"
+              :starWidth="screenWidth > 768 ? 24 : 15"
+              :class="`h-4 md:h-6 cursor-pointer`"
+              :indicatorClasses="`text-small h-4 md:h-6 `"
+              :starHeight="screenWidth > 768 ? 24 : 15"
+              :rating="
+                Number(
+                  parseFloat(
+                    post.average_rating ? post.average_rating : 0.0
+                  ).toFixed(1)
+                )
+              "
+              :isIndicatorActive="false"
+            />
 
-              <div class="md:mt-2">
-                <h2
-                  class="font-light text-xs md:text-sm overflow-hidden tracking-tighter"
-                >
-                  {{ post.total_reviews }}
-                </h2>
-              </div>
+            <div class="md:mt-2">
+              <h2
+                class="font-light text-xs md:text-sm overflow-hidden tracking-tighter"
+              >
+                {{ post.total_reviews }}
+              </h2>
             </div>
           </div>
+        </div>
 
-          <!-- RIGHT SIDE --- POST ACTION MENU
+        <!-- RIGHT SIDE --- POST ACTION MENU
                                 & time since posting -->
-          <div
-            class="flex flex-col flex-initial flex-nowrap justify-center items-center mr-3"
-          >
-            <!-- POST MENU -->
-            <!-- <div class="">
+        <div
+          class="flex flex-col flex-initial flex-nowrap justify-center items-center mr-3"
+        >
+          <!-- POST MENU -->
+          <!-- <div class="">
                         <h2 class="font-bold text-xl overflow-hidden
                                    tracking-tighter
                                    sm:tracking-wide">
@@ -867,290 +903,284 @@ export default {
                         </h2>
                     </div> -->
 
-            <!-- Hamburger -->
-            <div class="-mr-2 flex items-center">
-              <button
-                @click="NavPostingActionMenu"
-                class="inline-flex items-center justify-center p-2 rounded-md text-black hover:text-gray-500 hover:bg-gray-100 dfocus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
+          <!-- Hamburger -->
+          <div class="-mr-2 flex items-center">
+            <button
+              @click="NavPostingActionMenu"
+              class="inline-flex items-center justify-center p-2 rounded-md text-black hover:text-gray-500 hover:bg-gray-100 dfocus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
+            >
+              <svg
+                class="h-6 w-6"
+                stroke="currentColor"
+                fill="none"
+                viewBox="0 0 24 24"
               >
-                <svg
-                  class="h-6 w-6"
-                  stroke="currentColor"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    :class="{
-                      hidden: showingPostingActionMenu,
-                      'inline-flex': !showingPostingActionMenu,
-                    }"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                  <path
-                    :class="{
-                      hidden: !showingPostingActionMenu,
-                      'inline-flex': showingPostingActionMenu,
-                    }"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
+                <path
+                  :class="{
+                    hidden: showingPostingActionMenu,
+                    'inline-flex': !showingPostingActionMenu,
+                  }"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+                <path
+                  :class="{
+                    hidden: !showingPostingActionMenu,
+                    'inline-flex': showingPostingActionMenu,
+                  }"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
 
-            <div class="">
-              <h2
-                class="flex flex-nowrap font-light text-xs tracking-tighter italic"
-              >
-                20 hrs
-              </h2>
-            </div>
+          <div class="">
+            <h2
+              class="flex flex-nowrap font-light text-xs tracking-tighter italic"
+            >
+              20 hrs
+            </h2>
           </div>
         </div>
-        <!-- END Ratings / post action menu / posting date -->
       </div>
-      <!-- End TOP POSTING ROW -->
+      <!-- END Ratings / post action menu / posting date -->
+    </div>
+    <!-- End TOP POSTING ROW -->
 
-      <!-- Text Body1 UPPER -->
-      <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- Text Body1 UPPER -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+    <div
+      :class="`${title_text_alignment} ${
+        titleCustomBgColor.startsWith('#')
+          ? ' flex-col w-full items-center  px-2 py-2 rounded-md shadow-lg border-2'
+          : 'w-full'
+      } `"
+      @click="$emit('enlarge-post', post)"
+      class="font-bold text-xl sm:text-2xl md:tex-3xl mb-1 mt-1"
+      :style="{ backgroundColor: titleCustomBgColor }"
+    >
+      <span
+        v-show="post.title"
+        v-html="post.title"
+        style="white-space: pre-wrap"
+        :style="titleTextStyle"
+        :class="`${titleClass} w-full processed-body inline`"
+        ref="titleElement"
+      ></span>
+    </div>
+    <div
+      :class="`${text_alignment} ${
+        customBgColor.startsWith('#')
+          ? ' flex-col w-full items-center  px-2 py-[87px] rounded-md shadow-lg border-2'
+          : 'w-full'
+      } `"
+      @click="$emit('enlarge-post', post)"
+      class=""
+      :style="{ backgroundColor: customBgColor }"
+    >
+      <span
+        v-show="post.body1"
+        v-html="displayedBody1"
+        style="white-space: pre-wrap"
+        :style="textStyle"
+        :class="`${body1Class} w-full processed-body inline`"
+        ref="textElement"
+      ></span>
+      <span
+        v-if="isContentOverflow"
+        @click.self.stop="toggleText"
+        :class="`${toggleClass} ${showFullTextBody1 ? 'inline' : 'inline'} `"
+      >
+        {{ showFullTextBody1 ? "...less" : "...more" }}
+      </span>
+    </div>
+
+    <!-- INDIVIDUAL POST: MAIN IMAGES  -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <div class="flex flex-row justify-center w-full mb-1 mt-1">
+      <!-- justify-center  -->
 
       <div
-        :class="`${title_text_alignment} ${
-          titleCustomBgColor.startsWith('#')
-            ? ' flex-col w-full items-center  px-2 py-2 rounded-md shadow-lg border-2'
-            : 'w-full'
-        } `"
+        class="w-full"
+        v-if="post.image"
         @click="$emit('enlarge-post', post)"
-        class="font-bold text-xl sm:text-2xl md:tex-3xl mb-1 mt-1"
-        :style="{ backgroundColor: titleCustomBgColor }"
       >
-        <span
-          v-show="post.title"
-          v-html="post.title"
-          style="white-space: pre-wrap"
-          :style="titleTextStyle"
-          :class="`${titleClass} w-full processed-body inline`"
-          ref="titleElement"
-        ></span>
-      </div>
-      <div
-        :class="`${text_alignment} ${
-          customBgColor.startsWith('#')
-            ? ' flex-col w-full items-center  px-2 py-[87px] rounded-md shadow-lg border-2'
-            : 'w-full'
-        } `"
-        @click="$emit('enlarge-post', post)"
-        class=""
-        :style="{ backgroundColor: customBgColor }"
-      >
-        <span
-          v-show="post.body1"
-          v-html="displayedBody1"
-          style="white-space: pre-wrap"
-          :style="textStyle"
-          :class="`${body1Class} w-full processed-body inline`"
-          ref="textElement"
-        ></span>
-        <span
-          v-if="isContentOverflow"
-          @click.self.stop="toggleText"
-          :class="`${toggleClass} ${showFullTextBody1 ? 'inline' : 'inline'} `"
+        <PostImageDisplay
+          :imageArray="imageArray"
+          :numberOfImages="numberOfImages"
         >
-          {{ showFullTextBody1 ? "...less" : "...more" }}
-        </span>
+        </PostImageDisplay>
       </div>
+    </div>
 
-      <!-- INDIVIDUAL POST: MAIN IMAGES  -->
-      <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-      <div class="flex flex-row justify-center w-full mb-1 mt-1">
-        <!-- justify-center  -->
+    <!-- Text Body2 LOWER -->
 
+    <div :class="`'w-full'`" @click="$emit('enlarge-post', post)" class="">
+      <span
+        v-show="post.body2"
+        v-html="displayedBody2"
+        style="white-space: pre-wrap"
+        :style="textStyleBody2"
+        :class="`w-full processed-body inline`"
+        ref="textElementBody2"
+      ></span>
+
+      <span
+        v-if="isContentOverflowBody2"
+        @click.self.stop="toggleTextBody2"
+        :class="`${toggleClassBody2} ${
+          showFullTextBody2 ? 'inline' : 'inline'
+        } `"
+      >
+        {{ showFullTextBody2 ? "...less" : "...more" }}
+      </span>
+    </div>
+
+    <!-- footer icons counts -->
+    <!-- INDIVIDUAL POST: BOTTOM ROW MENU -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <div
+      :class="`mb-2 ${
+        post.body2 ? 'mt-3' : ''
+      } border-[1px] w-1/3 border-gray-800 rounded`"
+    ></div>
+
+    <div class="pb-2 flex justify-between w-full">
+      <div class="flex gap-2">
+        <!-- Like -->
         <div
-          class="w-full"
-          v-if="post.image"
-          @click="$emit('enlarge-post', post)"
+          class="flex gap-1 justify-center items-center cursor-pointer"
+          @click="onOpenListofLikedUsersModel"
         >
-          <PostImageDisplay
-            :imageArray="imageArray"
-            :numberOfImages="numberOfImages"
-          >
-          </PostImageDisplay>
-        </div>
-      </div>
-
-      <!-- Text Body2 LOWER -->
-
-      <div :class="`'w-full'`" @click="$emit('enlarge-post', post)" class="">
-        <span
-          v-show="post.body2"
-          v-html="displayedBody2"
-          style="white-space: pre-wrap"
-          :style="textStyleBody2"
-          :class="`w-full processed-body inline`"
-          ref="textElementBody2"
-        ></span>
-
-        <span
-          v-if="isContentOverflowBody2"
-          @click.self.stop="toggleTextBody2"
-          :class="`${toggleClassBody2} ${
-            showFullTextBody2 ? 'inline' : 'inline'
-          } `"
-        >
-          {{ showFullTextBody2 ? "...less" : "...more" }}
-        </span>
-      </div>
-
-      <!-- footer icons counts -->
-      <!-- INDIVIDUAL POST: BOTTOM ROW MENU -->
-      <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-      <div
-        :class="`mb-2 ${
-          post.body2 ? 'mt-3' : ''
-        } border-[1px] w-1/3 border-gray-800 rounded`"
-      ></div>
-
-      <div class="pb-2 flex justify-between w-full">
-        <div class="flex gap-2">
-          <!-- Like -->
+          <!-- <div v-if="post.likes_count" class=""> -->
           <div
-            class="flex gap-1 justify-center items-center cursor-pointer"
-            @click="onOpenListofLikedUsersModel"
-          >
-            <!-- <div v-if="post.likes_count" class=""> -->
-            <div
-              class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
-            >
-              <div class="flex flex-row justify-between items-center">
-                <div class="">
-                  <Icon
-                    icon="emojione-monotone:up-arrow"
-                    :class="`  text-[#16a34a]`"
-                    width="25"
-                  />
-                </div>
-              </div>
-            </div>
-            <div>{{ likes_count }}</div>
-          </div>
-          <!-- dislikes -->
-          <div
-            class="flex gap-1 justify-center items-center cursor-pointer"
-            @click="onOpenListofDislikedUsersModel"
-          >
-            <!-- <div v-if="post.likes_count" class=""> -->
-            <div
-              class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
-            >
-              <div class="flex flex-row justify-between items-center">
-                <div class="">
-                  <Icon
-                    icon="emojione-monotone:up-arrow"
-                    :class="`  text-[#c40516]`"
-                    width="25"
-                    :rotate="2"
-                  />
-                </div>
-              </div>
-            </div>
-            <div>{{ dislikes_count }}</div>
-          </div>
-        </div>
-        <div class="text-gray-900 flex gap-1">
-          <span
-            class="cursor-pointer hover:underline"
-            @click="onOpenCommentsModal"
-          >
-            {{ pagination.total }} comments
-          </span>
-          &#9679;
-          <span class=""> {{ repost_count }} reposts </span>
-        </div>
-      </div>
-
-      <div :class="`mb-2 border-[1px] w-full border-gray-300 rounded`"></div>
-      <div class="flex flex-row justify-between items-center w-full mb-2">
-        <!-- Likes -->
-        <div class="hovered" @click="onLike">
-          <div
-            class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
-          >
-            <div class="flex flex-row justify-between items-center">
-              <div class="hovered">
-                <!-- <img src="/images/icons/like_green.png" width="25" height="25" /> -->
-                <!-- <Icon icon="emojione-monotone:up-arrow" color="#16a34a" width="25" /> -->
-                <Icon
-                  icon="emojione-monotone:up-arrow"
-                  class="icon-like text-transparent stroke-[2px] stroke-green-600"
-                  :class="`${your_reaction === 'like' ? 'liked' : ''}`"
-                  width="25"
-                />
-              </div>
-              <div class="pl-1 icon-text text-[#16a34a]">Like</div>
-            </div>
-          </div>
-        </div>
-        <!-- Dislike -->
-        <div class="hovered" @click="onDislike">
-          <a
             class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
           >
             <div class="flex flex-row justify-between items-center">
               <div class="">
-                <!-- <img src="/images/icons/like_green.png" width="25" height="25" /> -->
-                <!-- <Icon icon="emojione-monotone:up-arrow" :rotate="2" color="#c40516" width="25" /> -->
                 <Icon
                   icon="emojione-monotone:up-arrow"
+                  :class="`  text-[#16a34a]`"
+                  width="25"
+                />
+              </div>
+            </div>
+          </div>
+          <div>{{ likes_count }}</div>
+        </div>
+        <!-- dislikes -->
+        <div
+          class="flex gap-1 justify-center items-center cursor-pointer"
+          @click="onOpenListofDislikedUsersModel"
+        >
+          <!-- <div v-if="post.likes_count" class=""> -->
+          <div
+            class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
+          >
+            <div class="flex flex-row justify-between items-center">
+              <div class="">
+                <Icon
+                  icon="emojione-monotone:up-arrow"
+                  :class="`  text-[#c40516]`"
+                  width="25"
                   :rotate="2"
-                  :class="`${your_reaction === 'dislike' ? 'disliked' : ''}`"
-                  class="icon-dislike text-transparent stroke-[2px] stroke-[#c40516]"
-                  width="25"
                 />
               </div>
-              <div class="pl-1 icon-text text-[#c40516]">Dislike</div>
-            </div>
-          </a>
-        </div>
-
-        <!-- Comments -->
-        <div class="hovered cursor-pointer" @click="onOpenCommentsModal">
-          <div class="font-medium text-xs sm:text-sm text-blue-800">
-            <div class="flex flex-row justify-between items-center">
-              <div class="">
-                <img
-                  src="/images/icons/comment_icon.png"
-                  width="25"
-                  height="25"
-                />
-              </div>
-              <div class="pl-1 icon-text">Comment</div>
             </div>
           </div>
+          <div>{{ dislikes_count }}</div>
         </div>
+      </div>
+      <div class="text-gray-900 flex gap-1">
+        <span
+          class="cursor-pointer hover:underline"
+          @click="onOpenCommentsModal"
+        >
+          {{ pagination.total }} comments
+        </span>
+        &#9679;
+        <span class=""> {{ repost_count }} reposts </span>
+      </div>
+    </div>
 
-        <!-- Re-Posted -->
-        <div class="hovered cursor-pointer" @click="onOpenRepostAssuranceModel">
-          <div class="font-medium text-xs sm:text-sm text-blue-800">
-            <div class="flex flex-row justify-between items-center">
-              <div class="">
-                <img
-                  src="/images/icons/share_icon.png"
-                  width="25"
-                  height="25"
-                />
-              </div>
-              <div class="pl-1 icon-text">Repost</div>
+    <div :class="`mb-2 border-[1px] w-full border-gray-300 rounded`"></div>
+    <div class="flex flex-row justify-between items-center w-full mb-2">
+      <!-- Likes -->
+      <div class="hovered" @click="onLike">
+        <div
+          class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
+        >
+          <div class="flex flex-row justify-between items-center">
+            <div class="hovered">
+              <!-- <img src="/images/icons/like_green.png" width="25" height="25" /> -->
+              <!-- <Icon icon="emojione-monotone:up-arrow" color="#16a34a" width="25" /> -->
+              <Icon
+                icon="emojione-monotone:up-arrow"
+                class="icon-like text-transparent stroke-[2px] stroke-green-600"
+                :class="`${your_reaction === 'like' ? 'liked' : ''}`"
+                width="25"
+              />
             </div>
+            <div class="pl-1 icon-text text-[#16a34a]">Like</div>
           </div>
         </div>
+      </div>
+      <!-- Dislike -->
+      <div class="hovered" @click="onDislike">
+        <a class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer">
+          <div class="flex flex-row justify-between items-center">
+            <div class="">
+              <!-- <img src="/images/icons/like_green.png" width="25" height="25" /> -->
+              <!-- <Icon icon="emojione-monotone:up-arrow" :rotate="2" color="#c40516" width="25" /> -->
+              <Icon
+                icon="emojione-monotone:up-arrow"
+                :rotate="2"
+                :class="`${your_reaction === 'dislike' ? 'disliked' : ''}`"
+                class="icon-dislike text-transparent stroke-[2px] stroke-[#c40516]"
+                width="25"
+              />
+            </div>
+            <div class="pl-1 icon-text text-[#c40516]">Dislike</div>
+          </div>
+        </a>
+      </div>
 
-        <!-- Shares -->
-        <!-- <div class="">
+      <!-- Comments -->
+      <div class="hovered cursor-pointer" @click="onOpenCommentsModal">
+        <div class="font-medium text-xs sm:text-sm text-blue-800">
+          <div class="flex flex-row justify-between items-center">
+            <div class="">
+              <img
+                src="/images/icons/comment_icon.png"
+                width="25"
+                height="25"
+              />
+            </div>
+            <div class="pl-1 icon-text">Comment</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Re-Posted -->
+      <div class="hovered cursor-pointer" @click="onOpenRepostAssuranceModel">
+        <div class="font-medium text-xs sm:text-sm text-blue-800">
+          <div class="flex flex-row justify-between items-center">
+            <div class="">
+              <img src="/images/icons/share_icon.png" width="25" height="25" />
+            </div>
+            <div class="pl-1 icon-text">Repost</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shares -->
+      <!-- <div class="">
         <Link
           href="#"
           class="font-medium text-xs sm:text-sm text-blue-800 hover:underline"
@@ -1169,29 +1199,28 @@ export default {
           </div>
         </Link>
       </div> -->
-      </div>
-
-      <div :class="`mb-2 border-[1px] w-full border-gray-300 rounded`"></div>
-      <div class="flex flex-col gap-1 sm:gap-2 w-full">
-        <TwoVisibleComments
-          @openAllComments="onOpenCommentsModal"
-          @unshiftIntoComments="onAddingComment"
-          :comments="allComments.slice(0, 2)"
-          :length="allComments.length"
-          :postId="post.id"
-        />
-      </div>
-
-      <PostingActionMenu
-        :showingPostingActionMenu="showingPostingActionMenu"
-        :postID="post.id"
-        :postUserId="post.user_id"
-        :currentUserId="profile.user_id"
-        @NavPostingActionMenu="NavPostingActionMenu"
-      >
-      </PostingActionMenu>
     </div>
-  </transition>
+
+    <div :class="`mb-2 border-[1px] w-full border-gray-300 rounded`"></div>
+    <div class="flex flex-col gap-1 sm:gap-2 w-full">
+      <TwoVisibleComments
+        @openAllComments="onOpenCommentsModal"
+        @unshiftIntoComments="onAddingComment"
+        :comments="firstTwoComments"
+        :length="allComments.length"
+        :postId="post.id"
+      />
+    </div>
+
+    <PostingActionMenu
+      :showingPostingActionMenu="showingPostingActionMenu"
+      :postID="post.id"
+      :postUserId="post.user_id"
+      :currentUserId="profile.user_id"
+      @NavPostingActionMenu="NavPostingActionMenu"
+    >
+    </PostingActionMenu>
+  </div>
 </template>
 
 <style>

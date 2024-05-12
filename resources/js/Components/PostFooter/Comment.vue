@@ -255,12 +255,13 @@ import Reply from "@/Components/PostFooter/Reply.vue";
 
 import Avatar from "@/Components/Ratings/Avatar.vue";
 
-import { computed, nextTick, onMounted, ref } from "vue";
+import { computed, nextTick, onMounted, ref, watchEffect } from "vue";
 import { useStore } from "vuex";
 import { Icon } from "@iconify/vue";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { watch } from "vue";
 import { usePage } from "@inertiajs/inertia-vue3";
+import { reactive } from "vue";
 
 const props = defineProps({
   comment: Object,
@@ -271,7 +272,7 @@ const deleteDialogRef = ref();
 const likes_count = ref(props.comment?.likes_count ?? 0);
 const dislikes_count = ref(props.comment?.dislikes_count ?? 0);
 const loadingDelete = ref(false);
-const showIcon = ref(false);
+// const showIcon = ref(false);
 const menuVisible = ref(false);
 const your_reaction = ref(props.comment?.user_reaction ?? "");
 const editRef = ref();
@@ -301,6 +302,77 @@ watch(
     }
   }
 );
+watch(
+  () => props.comment?.likes_count,
+  (newVal) => {
+    console.log(newVal, "like");
+    if (newVal !== undefined) {
+      likes_count.value = newVal;
+    }
+  }
+);
+
+watch(
+  () => props.comment?.dislikes_count,
+  (newVal) => {
+    console.log(newVal, "dsilike");
+
+    if (newVal !== undefined) {
+      dislikes_count.value = newVal;
+    }
+  }
+);
+
+watch(
+  () => props.comment?.user_reaction,
+  (newVal) => {
+    console.log(newVal, "user_reaction");
+    if (newVal !== undefined) {
+      your_reaction.value = newVal;
+    }
+  }
+);
+
+watch(
+  () => likes_count.value,
+  (newValue) => {
+    let postComment;
+    postComment = {
+      ...props.comment,
+      likes_count: likes_count.value,
+      dislikes_count: dislikes_count.value,
+      user_reaction: your_reaction.value,
+    };
+    store.commit("profile/setPostComment", postComment);
+  }
+);
+watch(
+  () => dislikes_count.value,
+  (newValue) => {
+    let postComment;
+    postComment = {
+      ...props.comment,
+      likes_count: likes_count.value,
+      dislikes_count: dislikes_count.value,
+      user_reaction: your_reaction.value,
+    };
+    store.commit("profile/setPostComment", postComment);
+  }
+);
+watch(
+  () => your_reaction.value,
+  (newValue) => {
+    let postComment;
+    postComment = {
+      ...props.comment,
+      likes_count: likes_count.value,
+      dislikes_count: dislikes_count.value,
+      user_reaction: your_reaction.value,
+    };
+    store.commit("profile/setPostComment", postComment);
+  }
+);
+
 onMounted(() => {
   visible.value = true;
 });
