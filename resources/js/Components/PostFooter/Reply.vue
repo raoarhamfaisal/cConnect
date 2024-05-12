@@ -2,21 +2,19 @@
   <div
     class="flex flex-row gap-1 sm:gap-2 justify-start items-start transition-all duration-1000 transitioning"
   >
-    <!-- @mouseenter="showIcon = true"
-    @mouseleave="showIcon = false" -->
     <!-- Avatar -->
     <Link
-      :href="`/contractor/${comment.user_id}`"
+      :href="`/contractor/${reply.user_id}`"
       class="cursor-pointer flex justify-start items-start flex-none w=16 mt-[2px]"
     >
       <!-- <Link :href="route('user.show')" class="block "> -->
       <div class="block">
         <Avatar
           :style="{
-            width: screenWidth >= 640 ? '2.5rem' : '2.0rem',
-            height: screenWidth >= 640 ? '2.5rem' : '2.0rem',
+            width: screenWidth >= 640 ? '1.9rem' : '1.8rem',
+            height: screenWidth >= 640 ? '1.9rem' : '1.8rem',
           }"
-          :imageSrc="comment.user_avatar || comment.company_logo"
+          :imageSrc="reply.user_avatar || reply.company_logo"
         />
       </div>
     </Link>
@@ -29,22 +27,19 @@
         <div class="bg-[#f0f2f5] rounded-[18px] px-3 py-2">
           <Link
             class="font-bold text-sm"
-            :href="`/contractor/${comment.user_id}`"
+            :href="`/contractor/${reply.user_id}`"
           >
             <!-- {{  user }} -->
-            {{
-              comment.first_name + " " + comment.last_name ||
-              comment.company_name
-            }}
+            {{ reply.first_name + " " + reply.last_name || reply.company_name }}
           </Link>
           <div class="text-sm" style="white-space: pre-wrap">
-            {{ comment.body }}
+            {{ reply.body }}
           </div>
         </div>
 
         <!-- action menu -->
         <div
-          v-if="loggedInUserId === comment.user_id"
+          v-if="loggedInUserId === reply.user_id"
           class="hover:opacity-100 hover:pointer-events-auto cursor-pointer self-center"
         >
           <v-menu v-model="menuVisible">
@@ -54,7 +49,7 @@
                 :open-on-focus="true"
                 v-model="tooltip"
                 max-width="300px"
-                text="Edit or Delete the comment"
+                text="Edit or Delete the reply"
                 location="top"
               >
                 <template v-slot:activator="{ props }">
@@ -86,7 +81,7 @@
       </div>
       <div class="text-xs flex gap-4 mt-[3px] ml-3 text-[#65676B]">
         <div>
-          {{ timeAgo(comment.updated_at) }}
+          {{ timeAgo(reply.updated_at) }}
         </div>
         <div
           @click="onLike"
@@ -101,12 +96,6 @@
           :class="`${your_reaction === 'dislike' ? 'text-[#c40516]' : ''}`"
         >
           Dislike
-        </div>
-        <div
-          class="font-bold hover:underline cursor-pointer"
-          @click="showReplyBox"
-        >
-          Reply
         </div>
         <!-- Like -->
         <div
@@ -157,61 +146,19 @@
     </div>
   </div>
   <div
-    class="flex gap-2 w-full items-start overflow-auto mt-2 pl-[48px] sm:pl-[61px]"
-    v-if="showReplyTextArea"
-  >
-    <textarea
-      id="comment"
-      v-model="commentText"
-      @paste="adjustHeight"
-      ref="commentAreaRef"
-      @keydown="insertTab"
-      @input="adjustHeight"
-      :rows="1"
-      placeholder="Write your reply..."
-      class="text-base w-full py-1 min-h-[30px] overflow-hidden px-3 focus:shadow-none focus:ring-gray-600 focus:rounded bg-[#f9fafb] border-gray-400 text-grey-600 resize-none rounded focus-within:ring-gray-600 focus:border-gray-600"
-    ></textarea>
-    <Icon
-      type="button"
-      :disabled="loadingSendComment"
-      @click="onSendComment"
-      :class="`w-8 h-8 cursor-pointer text-gray-500 apply-stroke ${
-        loadingSendComment ? 'opacity-40' : 'opacity-100'
-      }`"
-      icon="carbon:send-filled"
-    />
-  </div>
-  <div
     @click="showReplies"
     class="ml-[54px] hover:underline sm:ml-[65px] text-gray-600 mt-2 flex gap-2"
-    v-if="comment.replies?.length > 0 && !isRepliesShown"
+    v-if="reply.replies?.length > 0 && !isRepliesShown"
   >
     <Icon icon="bi:arrow-return-right" />
     <div class="font-bold text-sm cursor-pointer">
       View
       {{
-        comment.replies?.length === 1
-          ? comment.replies?.length + " reply"
-          : comment.replies?.length + " replies"
+        reply.replies?.length === 1
+          ? reply.replies?.length + " reply"
+          : reply.replies?.length + " replies"
       }}
     </div>
-  </div>
-  <div
-    v-if="
-      comment && comment.replies && comment.replies.length > 0 && isRepliesShown
-    "
-    class="flex flex-col gap-1 sm:gap-2 mt-2 ml-[48px] sm:ml-[61px]"
-    ref="commentList"
-  >
-    <transition-group
-      name="comment-transition"
-      tag="div"
-      class="flex flex-col gap-1 sm:gap-2"
-    >
-      <div v-for="reply in comment.replies" :key="reply.id">
-        <Reply :reply="reply" />
-      </div>
-    </transition-group>
   </div>
 
   <teleport to="body">
@@ -230,32 +177,27 @@
         <div
           class="section_text-lg font-bold sm:pl-6 section_text-gray-800 mt-3 mb-2"
         >
-          Do you want to Delete this comment?
+          Do you want to Delete this reply?
         </div>
       </div>
     </CustomDialog>
   </teleport>
   <EditCommentModal
     ref="editRef"
-    :commentText="comment?.body"
-    :commentId="comment.id"
+    isReply
+    :commentText="reply?.body"
+    :commentId="reply.id"
   />
 </template>
 
 <script setup>
-import {
-  changesSaved,
-  filterBadWords,
-  somethingWentWrong,
-  timeAgo,
-} from "@/helpers/utilities";
+import { changesSaved, somethingWentWrong, timeAgo } from "@/helpers/utilities";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import EditCommentModal from "@/Components/PostFooter/EditCommentModal.vue";
-import Reply from "@/Components/PostFooter/Reply.vue";
 
 import Avatar from "@/Components/Ratings/Avatar.vue";
 
-import { computed, nextTick, onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
 import { Icon } from "@iconify/vue";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
@@ -263,17 +205,17 @@ import { watch } from "vue";
 import { usePage } from "@inertiajs/inertia-vue3";
 
 const props = defineProps({
-  comment: Object,
+  reply: Object,
 });
 const store = useStore();
 const visible = ref(false);
 const deleteDialogRef = ref();
-const likes_count = ref(props.comment?.likes_count ?? 0);
-const dislikes_count = ref(props.comment?.dislikes_count ?? 0);
+const likes_count = ref(props.reply?.likes_count ?? 0);
+const dislikes_count = ref(props.reply?.dislikes_count ?? 0);
 const loadingDelete = ref(false);
 const showIcon = ref(false);
 const menuVisible = ref(false);
-const your_reaction = ref(props.comment?.user_reaction ?? "");
+const your_reaction = ref(props.reply?.user_reaction ?? "");
 const editRef = ref();
 const tooltip = ref(false);
 const isRepliesShown = ref(false);
@@ -281,10 +223,6 @@ let usePageDeatails = usePage().props.value;
 const loggedInUserId = usePageDeatails.profile.user_id;
 // const longPressTimer = ref(null);
 const screenWidth = computed(() => store.getters.screenWidth);
-const showReplyTextArea = ref(false);
-const loadingSendComment = ref(false);
-const commentText = ref("");
-const commentAreaRef = ref();
 
 const openEditModal = () => {
   editRef.value.openDialogEdit();
@@ -308,12 +246,12 @@ const handleSubmitDelete = async () => {
   loadingDelete.value = true;
   try {
     const response = await axios.delete(
-      `/api/comments/${props.comment.id}`,
+      `/api/comments/${props.reply.id}`,
       getAxiosConfig()
     );
     if (response.data) {
       changesSaved(response.data.message || "Comment successfully deleted");
-      store.commit("profile/setCommentId", props.comment.id);
+      store.commit("profile/setReplyId", props.reply.id);
       console.log("after showing message");
     }
   } catch (err) {
@@ -337,7 +275,7 @@ const onLike = async () => {
 
     try {
       const response = await axios.post(
-        `/api/comments/${props.comment.id}/like`,
+        `/api/comments/${props.reply.id}/like`,
         {},
         getAxiosConfig()
       );
@@ -354,7 +292,7 @@ const onLike = async () => {
 
       try {
         const response = await axios.delete(
-          `/api/comments/${props.comment.id}/like`,
+          `/api/comments/${props.reply.id}/like`,
           getAxiosConfig()
         );
         if (response.data) {
@@ -377,7 +315,7 @@ const onDislike = async () => {
 
     try {
       const response = await axios.post(
-        `/api/comments/${props.comment.id}/dislike`,
+        `/api/comments/${props.reply.id}/dislike`,
         {},
         getAxiosConfig()
       );
@@ -394,7 +332,7 @@ const onDislike = async () => {
 
       try {
         const response = await axios.delete(
-          `/api/comments/${props.comment.id}/dislike`,
+          `/api/comments/${props.reply.id}/dislike`,
           getAxiosConfig()
         );
         if (response.data) {
@@ -407,65 +345,6 @@ const onDislike = async () => {
 };
 const showReplies = () => {
   isRepliesShown.value = true;
-};
-const showReplyBox = () => {
-  showReplyTextArea.value = !showReplyTextArea.value;
-};
-const insertTab = (event) => {
-  if (event.key === "Tab") {
-    event.preventDefault();
-    const start = event.target.selectionStart;
-    const end = event.target.selectionEnd;
-
-    // Set the value to: text before caret + four spaces + text after caret
-    commentText.value =
-      commentText.value.substring(0, start) +
-      "      " +
-      commentText.value.substring(end);
-
-    // Put caret at right position again
-    nextTick(() => {
-      event.target.selectionStart = event.target.selectionEnd = start + 60;
-    });
-  }
-};
-const onSendComment = async () => {
-  loadingSendComment.value = true;
-  if (!commentText.value && commentText.value / trim() === "") {
-    return;
-  }
-  const postComment = {
-    body: filterBadWords(commentText),
-  };
-  try {
-    const response = await axios.post(
-      `/api/comments/${props.comment.id}/reply`,
-      postComment,
-      getAxiosConfig()
-    );
-    if (response.data) {
-      // this.allComments = response.data;
-      commentText.value = "";
-      adjustHeight();
-      store.commit("profile/setReply", {
-        reply: response.data,
-        commentId: props.comment.id,
-      });
-      changesSaved("Reply Successfully added", 300, 1500);
-      showReplyTextArea.value = false;
-    }
-  } catch (err) {
-    somethingWentWrong();
-  } finally {
-    loadingSendComment.value = false;
-  }
-};
-const adjustHeight = () => {
-  nextTick(() => {
-    commentAreaRef.value.style.height = "auto"; // Reset height first to get the correct scrollHeight
-    commentAreaRef.value.style.height =
-      commentAreaRef.value.scrollHeight + "px";
-  });
 };
 
 // const handleTouchStart = () => {

@@ -8,7 +8,7 @@
       @opened="onOpened"
       :loading="loadingSending"
       :disabled="disabledSending"
-      title="Edit Comment"
+      :title="`Edit ${isReply ? 'Reply' : 'Comment'}`"
     >
       <form @submit.prevent="handleSubmit">
         <!-- response -->
@@ -36,6 +36,7 @@
     </CustomDialog>
   </Teleport>
   <v-dialog
+    v-if="showDialog"
     class="dialog-modal"
     v-model="loadingComment"
     scrim="transparent"
@@ -47,7 +48,9 @@
       bgColor="#364fc7"
       :padding="screenWidth < 640 ? '7px' : '10px'"
     >
-      <div class="text-white">Updating Comment...</div>
+      <div class="text-white">
+        Updating {{ isReply ? "Reply" : "Comment" }}...
+      </div>
       <v-progress-linear
         indeterminate
         color="#fff"
@@ -67,12 +70,20 @@ import { ref, watch, computed, nextTick } from "vue";
 import { useStore } from "vuex";
 
 //States
-const { commentText, commentId } = defineProps(["commentText", "commentId"]);
+const { commentText, commentId, isReply } = defineProps({
+  commentText: String,
+  commentId: [String, Number],
+  isReply: {
+    default: false,
+    type: Boolean,
+  },
+});
 const store = useStore();
 
 const comment_text = ref(commentText);
 
 const dialogRef = ref();
+const showDialog = ref(false);
 const responseError = ref("");
 //Computed
 const loadingSending = computed(() => store.state.ratings.loadingSending);
@@ -105,10 +116,14 @@ const validate = () => {
 const handleSubmit = async () => {
   if (validate()) {
     store.commit("ratings/setLoadingComment", true);
-    const updatedComment = {
+    let updatedComment;
+
+    updatedComment = {
       body: filterBadWords(comment_text),
       commentId: commentId,
+      isReply: isReply,
     };
+
     store.dispatch("ratings/updateComment", {
       updatedComment: updatedComment,
     });
@@ -148,6 +163,7 @@ const adjustHeight = () => {
   });
 };
 const onOpened = () => {
+  showDialog.value = true;
   adjustHeight();
 };
 </script>

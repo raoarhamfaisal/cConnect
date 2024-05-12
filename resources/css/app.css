@@ -122,10 +122,14 @@ p.default {
 .comment-transition-enter-from,
 .comment-transition-leave-to {
   opacity: 0;
+  transform: scale(0);
+
   max-height: 0;
 }
 .comment-transition-enter-to,
 .comment-transition-leave-from {
   opacity: 1;
-  max-height: 10000px; /* Adjust based on your content */
+  transform: scale(1);
+
+  max-height: 100px; /* Adjust based on your content */
 }
