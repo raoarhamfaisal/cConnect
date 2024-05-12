@@ -22,6 +22,8 @@ use App\Http\Controllers\PostImageController;
 use App\Http\Controllers\RedFlagcontroller;
 use App\Http\Controllers\PostReactionController;
 
+use App\Http\Controllers\BadWordController;
+
 
 
 
@@ -57,6 +59,10 @@ Route::get('/post/background-colors', [PostColorController::class, 'getBackgroun
     
     
     
+    // Bad Words
+    Route::get('/badwords', [BadWordController::class, 'index']);
+
+
     
     
     
@@ -148,6 +154,8 @@ Route::get('/post/background-colors', [PostColorController::class, 'getBackgroun
         // Sub finder module
         Route::get('/sub-finder/find-contractors', [ContractorProfileController::class, 'findContractors']);
         Route::post('/sub-finder/{contractor_profile}/preference-and-notes', [ContractorProfileController::class, 'setPreferenceAndNotes']);
+
+
 
 
 
@@ -253,5 +261,3 @@ Route::get('/post/background-colors', [PostColorController::class, 'getBackgroun
 
 
     });
-    
-    

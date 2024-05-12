@@ -531,14 +531,34 @@ class ContractorProfileController extends Controller
 
 
         // Search by name or company name functionality
+        // if ($searchTerm) {
+        //     $query->where(function ($q) use ($searchTerm) {
+        //         $q->where('contractor_profiles.first_name', 'like', '%' . $searchTerm . '%')
+        //         ->orWhere('contractor_profiles.last_name', 'like', '%' . $searchTerm . '%')
+        //         ->orWhere('contractor_profiles.email', 'like', '%' . $searchTerm . '%')
+        //         ->orWhere('contractor_profiles.company_name', 'like', '%' . $searchTerm . '%');
+        //     });
+        // }
+
+
+
+        // Search by name, company, city, state, phone, email, or notes
         if ($searchTerm) {
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('contractor_profiles.first_name', 'like', '%' . $searchTerm . '%')
                 ->orWhere('contractor_profiles.last_name', 'like', '%' . $searchTerm . '%')
+                ->orWhereRaw("CONCAT(contractor_profiles.first_name, ' ', contractor_profiles.last_name) LIKE ?", ["%{$searchTerm}%"]) // for full name search
+                ->orWhere('contractor_profiles.company_name', 'like', '%' . $searchTerm . '%')
+                ->orWhere('contractor_profiles.city', 'like', '%' . $searchTerm . '%')
+                ->orWhere('contractor_profiles.state', 'like', '%' . $searchTerm . '%')
+                ->orWhere('contractor_profiles.phone_cell', 'like', '%' . $searchTerm . '%')
+                ->orWhere('contractor_profiles.phone_office', 'like', '%' . $searchTerm . '%')
                 ->orWhere('contractor_profiles.email', 'like', '%' . $searchTerm . '%')
-                ->orWhere('contractor_profiles.company_name', 'like', '%' . $searchTerm . '%');
+                // Searching in notes
+                ->orWhere('contractor_profile_user.notes', 'like', '%' . $searchTerm . '%');
             });
         }
+
     
         // Sort by rating or registration date if requested
         switch ($sortBy) {

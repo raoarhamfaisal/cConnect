@@ -137,8 +137,23 @@ class PostController extends Controller
                     $query->whereIn('trades.id', $userTradeIds);
                 })
                 ->when(Request::input('postSearch'), function ($query, $postSearch) {
-                    $query->where('posts.title', 'like', "%{$postSearch}%");
-                }) 
+                    $query->where(function ($subQuery) use ($postSearch) {
+                        // Search in post's title, body1, or body2
+                        $subQuery->where('posts.title', 'like', "%{$postSearch}%")
+                            ->orWhere('posts.body1', 'like', "%{$postSearch}%")
+                            ->orWhere('posts.body2', 'like', "%{$postSearch}%");
+        
+                        // Search in user's profile details
+                        $subQuery->orWhereHas('user.profile', function ($profileQuery) use ($postSearch) {
+                            $profileQuery->where('profiles.first_name', 'like', "%{$postSearch}%")
+                                ->orWhere('profiles.last_name', 'like', "%{$postSearch}%")
+                                ->orWhereRaw("CONCAT(profiles.first_name, ' ', profiles.last_name) LIKE ?", ["%{$postSearch}%"]) // for full name search
+                                ->orWhere('profiles.company_name', 'like', "%{$postSearch}%")
+                                ->orWhere('profiles.city', 'like', "%{$postSearch}%")
+                                ->orWhere('profiles.state', 'like', "%{$postSearch}%");
+                        });
+                    });
+                })
                 ->orderBy('posts.created_at', 'desc')
                 ->orderBy('posts.id', 'desc')
                 ->paginate(5)
@@ -299,7 +314,7 @@ class PostController extends Controller
         return response()->json([
             'showit' => Auth::check(),
             'profile' => $profile,
-            'posts' => $posts
+            'posts' => $posts,
         ]);
     }
     public function selectedTrades($user_id)
