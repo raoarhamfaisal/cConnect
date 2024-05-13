@@ -268,17 +268,13 @@ export default {
         });
     },
     async checkAllFilesProcessed() {
-     
-      const allProcessed = this.$refs.pond
-      .getFiles()
-      .every((file) => {
-        console.log(file.status,file);
-       return  file.status === 5
+      const allProcessed = this.$refs.pond.getFiles().every((file) => {
+        console.log(file.status, file);
+        return file.status === 5;
       });
-      
+
       if (allProcessed) {
-        await this.handleFileReorder()
-        
+        await this.handleFileReorder();
       }
       this.isUploading = false;
     },
@@ -657,7 +653,6 @@ Array.prototype.remove = function () {
                   v-on:updatefiles="updateFiles"
                   v-on:removefile="handleFilePondProcessEnd"
                   v-on:reorderfiles="handleFileReorder"
-                 
                   v-on:processfilerevert="handleFilePondProcessEnd"
                 >
                 </file-pond>
