@@ -22,7 +22,6 @@ const props = defineProps({
   isOpen: Boolean,
   showPostButtons: Boolean,
 
-
   modelValue: String,
   postSearchFilters: Object,
 });
@@ -37,7 +36,7 @@ const dialogRef = ref();
 const contractorPageRef = ref();
 const showContractorPageModal = ref(false);
 const url = usePage().url.value;
-console.log(url,'url')
+console.log(url, "url");
 const newPostSearchValue = () => {
   emit("submitPostSearch");
 };
@@ -69,7 +68,7 @@ function handleLogout() {
 const openProfileModal = () => {
   // store.commit("profile/setActiveTab", 3);
   // if (usePage().url.value !== "/profile") {
-    dialogRef.value.openDialog();
+  dialogRef.value.openDialog();
   // }
 };
 
@@ -140,7 +139,7 @@ const truncatedName = computed(() => {
           :imageSrc="`/${profile.user_avatar}`"
           class="sm:w-24 sm:h-24"
         />
-       
+
         <h4 class="mx-2 mt-2 font-bold text-gray-800">
           {{ truncatedName }}
         </h4>
@@ -243,7 +242,9 @@ const truncatedName = computed(() => {
       <div
         class="flex flex-col justify-between flex-1 mt-6"
         :class="
-          (url === '/payment' || url === '/profile-setup' || url === '/pricing-plan')
+          url === '/payment' ||
+          url === '/profile-setup' ||
+          url === '/pricing-plan'
             ? 'pointer-events-none'
             : ''
         "
@@ -254,8 +255,9 @@ const truncatedName = computed(() => {
           <!-- MENU ITEMS -->
 
           <Link
-            :class="`flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 ${ url === '/post' && 'bg-gray-100 text-gray-700'}`"
-
+            :class="`flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 ${
+              url === '/post' && 'bg-gray-100 text-gray-700'
+            }`"
             :href="route('post')"
           >
             <img src="/images/icons/newsfeed.png" width="30" height="30" />
@@ -263,7 +265,9 @@ const truncatedName = computed(() => {
           </Link>
           <!-- SUB-FINDER SEARCH -->
           <Link
-            :class="`flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 ${ url === '/sub-finder' && 'bg-gray-100 text-gray-700'}`"
+            :class="`flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 ${
+              url === '/sub-finder' && 'bg-gray-100 text-gray-700'
+            }`"
             href="/sub-finder"
           >
             <img src="/images/icons/contractor.png" width="30" height="30" />
@@ -272,7 +276,9 @@ const truncatedName = computed(() => {
 
           <!-- RED FLAGS / SLIPPERY APPLES SEARCH -->
           <Link
-            :class="`flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 ${ url === '/red-flag' && 'bg-gray-100 text-gray-700'}`"
+            :class="`flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 ${
+              url === '/red-flag' && 'bg-gray-100 text-gray-700'
+            }`"
             href="/red-flag"
           >
             <img src="/images/icons/redflag.png" width="30" height="30" />
@@ -280,18 +286,20 @@ const truncatedName = computed(() => {
           </Link>
 
           <!-- Mentor SEARCH -->
-          <Link
+          <!-- <Link
           :class="`flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 ${ url === '#' && 'bg-gray-100 text-gray-700'}`"
             href="#"
           >
             <img src="/images/icons/mentor.png" width="30" height="30" />
             <span class="mx-4 font-medium text-cyan-600">Mentoring</span>
-          </Link>
+          </Link> -->
 
           <!-- CONTRACTOR PAGE -->
           <Link
-          :class="`flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 ${ url === `/contractor/${profile.user_id}/edit` && 'bg-gray-100 text-gray-700'}`"
-            
+            :class="`flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 ${
+              url === `/contractor/${profile.user_id}/edit` &&
+              'bg-gray-100 text-gray-700'
+            }`"
             :href="`/contractor/${profile.user_id}/edit`"
           >
             <img
@@ -314,7 +322,9 @@ const truncatedName = computed(() => {
           </button>
 
           <Link
-          :class="`flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 ${ url === `/posts/${profile.user_id}` && 'bg-gray-100 text-gray-700'}`"
+            :class="`flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 ${
+              url === `/posts/${profile.user_id}` && 'bg-gray-100 text-gray-700'
+            }`"
             :href="`/posts/${profile.user_id}`"
           >
             <svg
@@ -381,8 +391,9 @@ const truncatedName = computed(() => {
           </Link>
           <!-- Your Reviews -->
           <Link
-           
-          :class="`flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 ${ url === `/ratings/contractor` && 'bg-gray-100 text-gray-700'}`"
+            :class="`flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 ${
+              url === `/ratings/contractor` && 'bg-gray-100 text-gray-700'
+            }`"
             href="/ratings/contractor"
           >
             <Icon
@@ -396,7 +407,9 @@ const truncatedName = computed(() => {
 
           <!-- PROFILE -->
           <Link
-        :class="`flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 ${ url === `/profile` && 'bg-gray-100 text-gray-700'}`"
+            :class="`flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 ${
+              url === `/profile` && 'bg-gray-100 text-gray-700'
+            }`"
             href="/profile"
           >
             <img src="/images/icons/profile.png" width="30" height="30" />
@@ -405,7 +418,9 @@ const truncatedName = computed(() => {
 
           <!-- SETTINGS -->
           <Link
-        :class="`flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 ${ url === `/settings` && 'bg-gray-100 text-gray-700'}`"
+            :class="`flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 ${
+              url === `/settings` && 'bg-gray-100 text-gray-700'
+            }`"
             href="/settings"
           >
             <img src="/images/icons/settings_bl.png" width="30" height="30" />
@@ -414,7 +429,9 @@ const truncatedName = computed(() => {
 
           <!-- CONTACT -->
           <Link
-        :class="`flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 ${ url === `/about-us#contactUs` && 'bg-gray-100 text-gray-700'}`"
+            :class="`flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 ${
+              url === `/about-us#contactUs` && 'bg-gray-100 text-gray-700'
+            }`"
             href="/about-us#contactUs"
           >
             <img src="/images/icons/contactus.png" width="30" height="30" />
@@ -428,7 +445,9 @@ const truncatedName = computed(() => {
           />
           <Link
             v-if="isAdminUrl"
-        :class="`flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 ${ url === `/admin` && 'bg-gray-100 text-gray-700'}`"
+            :class="`flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 ${
+              url === `/admin` && 'bg-gray-100 text-gray-700'
+            }`"
             href="/admin"
           >
             <Icon

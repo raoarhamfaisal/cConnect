@@ -6,12 +6,24 @@ import DialogContractorRating from "@/Components/Ratings/Contractor/DialogContra
 import Avatar from "@/Components/Ratings/Avatar.vue";
 import { Icon } from "@iconify/vue";
 import { mapGetters } from "vuex";
+import LikedUser from "@/Components/PostFooter/LikedUser.vue";
+import AllComments from "@/Components/PostFooter/AllComments.vue";
+import WriteCommentFooter from "@/Components/PostFooter/WriteCommentFooter.vue";
+
+import { usePage } from "@inertiajs/inertia-vue3";
+import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
+import { somethingWentWrong } from "@/helpers/utilities";
+import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 
 export default {
   components: {
     PostShowTheImage,
     tContractorWord,
     StarRounded,
+    WriteCommentFooter,
+    AllComments,
+    LikedUser,
+    CustomDialog,
     DialogContractorRating,
     Avatar,
     Icon,
@@ -39,9 +51,12 @@ export default {
     },
   },
   data() {
+    let usePageDeatails = usePage().props.value;
+
     return {
       dialogRef: null,
       customBgColor: "",
+      added: false,
       text_alignment: "left",
       text_color: "",
       lineHeight: 0,
@@ -50,10 +65,161 @@ export default {
       title_text_alignment: "",
       titleCustomBgColor: "left",
       title_text_color: "",
+      your_reaction: this.postToEnlarge.your_reaction,
+      user: usePageDeatails.auth.user,
+      likes_count: this.postToEnlarge.likes_count,
+      profileId: usePageDeatails.profile.id,
+      dislikes_count: this.postToEnlarge.dislikes_count,
+      repost_count: this.postToEnlarge.repost,
+      loadingLiked: false,
+      loadingUnliked: false,
+      loadingRepost: false,
+      likedUsers: [],
+      unLikedUsers: [],
+      allComments: [],
+      loadingComments: false,
+      pagination: {},
+      addedNumber: 0,
     };
+  },
+  mounted() {
+    // Remove PostingActionMenu upon scroll
+    // ERROR ONLY WORKS IN MOBILE BECAUSE LOOKING AT WINDOW140
+    this.fetchAllComments();
+  },
+  watch: {
+    commentId(newVal) {
+      if (newVal) {
+        const index = this.allComments.findIndex(
+          (comment) => comment.id === newVal
+        );
+        if (index !== -1) {
+          this.allComments.splice(index, 1);
+          this.pagination.total = this.pagination.total - 1;
+          // this.fetchAllComments();
+        }
+      }
+    },
+    replyId(newVal) {
+      if (newVal) {
+        for (let i = 0; i < this.allComments.length; i++) {
+          const comment = this.allComments[i];
+          if (comment.replies) {
+            const replyIndex = comment.replies.findIndex(
+              (reply) => reply.id === newVal
+            );
+            if (replyIndex !== -1) {
+              comment.replies.splice(replyIndex, 1);
+              break;
+            }
+          }
+        }
+      }
+    },
+    reply(newVal) {
+      if (newVal) {
+        const commentIndex = this.allComments.findIndex((comment) => {
+          return comment.id === newVal.commentId;
+        });
+        if (commentIndex !== -1) {
+          if (!this.allComments[commentIndex].replies) {
+            // If 'replies' doesn't exist, initialize it as an empty array
+            this.allComments[commentIndex].replies = [];
+          }
+          // Now that 'replies' is guaranteed to be an array, push the new reply
+          this.allComments[commentIndex].replies.push(newVal.reply);
+        }
+      }
+    },
+    postComment: {
+      handler(newVal) {
+        if (newVal && newVal.id) {
+          const commentIndex = this.allComments.findIndex(
+            (comment) => comment.id === newVal.id
+          );
+
+          if (commentIndex !== -1) {
+            // Update the existing comment with the new data
+            this.allComments[commentIndex] = newVal;
+          }
+        }
+      },
+      deep: true,
+    },
+    postReply: {
+      handler(newVal) {
+        if (newVal && newVal.id) {
+          this.allComments.forEach((comment, index) => {
+            // Check if any reply ID matches
+            if (comment.replies) {
+              const replyIndex = comment.replies.findIndex(
+                (reply) => reply.id === newVal.id
+              );
+              if (replyIndex !== -1) {
+                this.allComments[index].replies[replyIndex] = newVal;
+              }
+            }
+          });
+        }
+      },
+      deep: true,
+    },
+    comment: {
+      handler(newVal) {
+        if (newVal && newVal.commentId) {
+          if (newVal.isReply) {
+            const commentIndex = this.allComments.findIndex((comment) => {
+              // Check if any reply ID matches
+              if (comment.replies) {
+                return comment.replies.some(
+                  (reply) => reply.id === newVal.commentId
+                );
+              }
+              return false;
+            });
+
+            if (commentIndex !== -1) {
+              // Check if the match was in the replies
+              if (this.allComments[commentIndex].replies) {
+                const replyIndex = this.allComments[
+                  commentIndex
+                ].replies.findIndex((reply) => reply.id === newVal.commentId);
+                if (replyIndex !== -1) {
+                  // Update the matching reply
+                  this.allComments[commentIndex].replies[replyIndex].body =
+                    newVal.body;
+                }
+              }
+            }
+          } else {
+            const commentIndex = this.allComments.findIndex(
+              (comment) => comment.id === newVal.commentId
+            );
+
+            if (commentIndex !== -1) {
+              // Update the existing comment with the new data
+              this.allComments[commentIndex].body = newVal.body;
+            }
+          }
+
+          setTimeout(() => {
+            this.$store.commit("ratings/setLoadingComment", false);
+          }, 300);
+        }
+      },
+      deep: true,
+    },
   },
   computed: {
     ...mapGetters(["screenWidth"]),
+    ...mapGetters("profile", [
+      "commentId",
+      "postComment",
+      "replyId",
+      "reply",
+      "postReply",
+    ]),
+    ...mapGetters("ratings", ["comment"]),
     // imageArray() {
     //   return this.postToEnlarge.image.split("|");
     // },
@@ -176,8 +342,8 @@ export default {
 
       return this.processUrls(content);
     },
-   
   },
+  emits: ["close-enlarged", "onAddingEnlargeComment"],
   methods: {
     openDialog() {
       this.$refs.dialogRef.openDialog();
@@ -192,6 +358,177 @@ export default {
     emit() {
       this.$emit("close-enlarged");
     },
+    async onLike() {
+      if (!this.your_reaction || this.your_reaction === "dislike") {
+        this.likes_count = this.likes_count + 1;
+        // if(!this.your_reaction){
+        // }
+        if (this.your_reaction === "dislike") {
+          this.dislikes_count = this.dislikes_count - 1;
+        }
+        this.your_reaction = "like";
+
+        try {
+          const response = await axios.post(
+            `/api/posts/${this.postToEnlarge.id}/like`,
+            {},
+            getAxiosConfig()
+          );
+          if (response.data) {
+          }
+        } catch (err) {
+          somethingWentWrong();
+        }
+      } else {
+        if (this.your_reaction === "like") {
+          this.likes_count = this.likes_count - 1;
+
+          this.your_reaction = null;
+
+          try {
+            const response = await axios.delete(
+              `/api/posts/${this.postToEnlarge.id}/like`,
+              getAxiosConfig()
+            );
+            if (response.data) {
+            }
+          } catch (err) {
+            somethingWentWrong();
+          }
+        }
+      }
+    },
+    async onDislike() {
+      if (!this.your_reaction || this.your_reaction === "like") {
+        this.dislikes_count = this.dislikes_count + 1;
+        // if(!this.your_reaction){
+        // }
+        if (this.your_reaction === "like") {
+          this.likes_count = this.likes_count - 1;
+        }
+        this.your_reaction = "dislike";
+
+        try {
+          const response = await axios.post(
+            `/api/posts/${this.postToEnlarge.id}/dislike`,
+            {},
+            getAxiosConfig()
+          );
+          if (response.data) {
+          }
+        } catch (err) {
+          somethingWentWrong();
+        }
+      } else {
+        if (this.your_reaction === "dislike") {
+          this.dislikes_count = this.dislikes_count - 1;
+
+          this.your_reaction = null;
+
+          try {
+            const response = await axios.delete(
+              `/api/posts/${this.postToEnlarge.id}/dislike`,
+              getAxiosConfig()
+            );
+            if (response.data) {
+            }
+          } catch (err) {
+            somethingWentWrong();
+          }
+        }
+      }
+    },
+    onOpenListofLikedUsersModel() {
+      this.$refs.likeDialogRef.openDialog();
+    },
+    async onLikeModalOpen() {
+      this.loadingLiked = true;
+      try {
+        const response = await axios.get(
+          `/api/posts/${this.postToEnlarge.id}/likes`,
+          getAxiosConfig()
+        );
+        if (response.data) {
+          this.likedUsers = response.data;
+        }
+      } catch (err) {
+        somethingWentWrong();
+      } finally {
+        this.loadingLiked = false;
+      }
+    },
+    onOpenListofDislikedUsersModel() {
+      this.$refs.dislikeDialogRef.openDialog();
+    },
+    async onDislikeModalOpen() {
+      this.loadingUnliked = true;
+      try {
+        const response = await axios.get(
+          `/api/posts/${this.postToEnlarge.id}/dislikes`,
+          getAxiosConfig()
+        );
+        if (response.data) {
+          this.unLikedUsers = response.data;
+        }
+      } catch (err) {
+        somethingWentWrong();
+      } finally {
+        this.loadingUnliked = false;
+      }
+    },
+    onOpenRepostAssuranceModel() {
+      this.$refs.repostDialogRef.openDialog();
+    },
+    async onRepost() {
+      this.loadingRepost = true;
+      try {
+        const response = await axios.post(
+          `/api/posts/${this.postToEnlarge.id}/repost`,
+          {},
+          getAxiosConfig()
+        );
+        if (response.data) {
+          this.repost_count = this.repost_count + 1;
+          this.$emit("onRepost");
+          changesSaved("Reposted Successfully");
+        }
+      } catch (err) {
+        somethingWentWrong(err.response.data.message, "inherit");
+      } finally {
+        this.loadingRepost = false;
+        this.$refs.repostDialogRef.closeDialog();
+      }
+    },
+    async fetchAllComments() {
+      this.loadingComments = true;
+      try {
+        const response = await axios.get(
+          `/api/posts/${this.postToEnlarge.id}/comments?per_page=10`,
+          getAxiosConfig()
+        );
+        if (response.data) {
+          this.allComments = response.data?.comments;
+          this.pagination = response.data?.pagination;
+        }
+      } catch (err) {
+        somethingWentWrong();
+      } finally {
+        this.loadingComments = false;
+      }
+    },
+    onOpenCommentsModal() {
+      this.$refs.commentDialogRef.openDialog();
+    },
+    onAddingComment(comment) {
+      console.log("on enlared comment");
+      this.added = true;
+      this.allComments.unshift(comment);
+      this.pagination.total = this.pagination.total + 1;
+      if (this.pagination.current_page !== this.pagination.last_page) {
+        this.addedNumber = this.addedNumber + 1;
+      }
+      this.$emit("onAddingEnlargeComment", comment);
+    },
   },
 };
 </script>
@@ -202,25 +539,123 @@ export default {
     :userId="profile.id"
     :contractorId="postToEnlarge.id"
   />
+
   <!-- Enlarged Post -->
-  <div class="fixed z-40 inset-0 overflow-y-auto ease-out duration-400">
-    <div class="relative flex items-start justify-center m-auto mt-0 mb-0 p-3">
-      <div
+  <!-- <div class="fixed z-40 inset-0 overflow-y-auto ease-out duration-400">
+    <div class="relative flex items-start justify-center m-auto mt-0 mb-0 p-3"> -->
+  <!-- <div
         @click.stop="$emit('close-enlarged')"
         class="fixed inset-0 transition-opacity"
       >
         <div class="absolute inset-0 m-0 bg-slate-200 opacity-80"></div>
-      </div>
-
+      </div> -->
+  <!-- 
       <div
-        class="inline-block align-bottom bg-white rounded-lg text-left shadow-xl transform transition-all w-full mx-0 my-0 md:max-w-4xl overflow-y-scroll"
+        class="inline-block align-bottom bg-white rounded-lg text-left shadow-xl transform transition-all w-full mx-0 my-0 md:max-w-4xl"
         role="dialog"
+      > -->
+
+  <CustomDialog
+    ref="likeDialogRef"
+    dialogWidth="w-full h-full sm:h-5/6"
+    @opened="onLikeModalOpen"
+    :showFooter="false"
+    title="People who liked the post"
+  >
+    <div v-if="loadingLiked">
+      <v-skeleton-loader
+        v-for="n in 5"
+        :key="n"
+        type="list-item-avatar"
+      ></v-skeleton-loader>
+    </div>
+    <div v-else-if="!loadingLiked && likedUsers && likedUsers.length > 0">
+      <LikedUser
+        liked
+        v-for="(user, index) in likedUsers"
+        :key="index"
+        :user="user"
+      />
+    </div>
+
+    <div v-else>
+      <div
+        class="p-2 text-xl text-grey-600 font-bold h-72 flex items-center justify-center"
       >
-        <!-- TOP BACK TO NEWS FEED -->
-        <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-        <div
-          class="bg-slate-200 px-2 mb-2 p-0 border-b-2 border-b-gray-400 w-full"
-        >
+        No Contractor Found
+      </div>
+    </div>
+  </CustomDialog>
+  <!-- dislike modal -->
+  <CustomDialog
+    ref="dislikeDialogRef"
+    dialogWidth="w-full h-full sm:h-5/6"
+    @opened="onDislikeModalOpen"
+    :showFooter="false"
+    title="People who disliked the post"
+  >
+    <div v-if="loadingUnliked">
+      <v-skeleton-loader
+        v-for="n in 3"
+        :key="n"
+        type="list-item-avatar"
+      ></v-skeleton-loader>
+    </div>
+    <div v-else-if="!loadingUnliked && unLikedUsers && unLikedUsers.length > 0">
+      <LikedUser
+        v-for="(user, index) in unLikedUsers"
+        :key="index"
+        :user="user"
+      />
+    </div>
+    <div v-else>
+      <div
+        class="p-2 text-xl text-grey-600 font-bold h-72 flex items-center justify-center"
+      >
+        No Contractor Found
+      </div>
+    </div>
+  </CustomDialog>
+  <!--  repost confirmation modal-->
+  <CustomDialog
+    ref="repostDialogRef"
+    @submit="onRepost"
+    :loading="loadingRepost"
+    :disabled="loadingRepost"
+    :shouldFetchPost="false"
+    submitText="Repost Now"
+    title="Do you wish to share this post with your audience?"
+  >
+    <!-- :showHeader="false" -->
+    <div class="mb-4">
+      <div
+        class="section_text-lg font-bold pl-6 section_text-gray-800 mt-3 mb-2"
+      >
+        Reposting allows you to share this post with your followers, spreading
+        the message further.
+      </div>
+    </div>
+  </CustomDialog>
+  <!-- TOP BACK TO NEWS FEED -->
+  <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  <div
+    class="fixed m-0 inset-0 flex items-center justify-center z-20 bg-slate-200 bg-opacity-80"
+    :style="{
+      '--tw-space-x-reverse': 'inherit',
+    }"
+    type="button"
+    @click="$emit('close-enlarged')"
+  >
+    <div
+      class="bg-white md:max-w-4xl w-full h-full sm:h-[93%] rounded-xl max-sm:rounded-none shadow-xl flex flex-col z-10"
+      type="button"
+      @click.stop
+    >
+      <!-- header -->
+      <div
+        class="flex justify-between rounded-b-none max-md:rounded-none rounded-lg items-center"
+      >
+        <div class="bg-slate-200 px-2 p-0 border-b-2 border-b-gray-400 w-full">
           <button class="w-full" @click="$emit('close-enlarged')">
             <div
               class="flex flex-row items-center justify-between w-full pt-1 pb-1"
@@ -240,326 +675,382 @@ export default {
             </div>
           </button>
         </div>
-        <div class="px-4 flex justify-start items-center flex-col">
-          <!-- TOP ROW MENUS POST ACTIONS MENU -->
-          <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-          <div
-            class="flex flex-row justify-between items-center w-full mb-2 mt-4"
-          >
-            <!-- User Avatar & User /// INDIVIDUAL POST: TOP POSTING ROW -->
-            <div class="flex flex-row gap-2 justify-start items-center">
-              <!-- Avatar -->
-              <div
-                @click="openDialog"
-                class="cursor-pointer flex justify-start items-start flex-none w=16"
-              >
-                <!-- <Link :href="route('postToEnlarge.show')" class="block "> -->
-                <div class="block">
-                  <Avatar
-                    :style="{
-                      width: screenWidth >= 640 ? '4.5rem' : '3.7rem',
-                      height: screenWidth >= 640 ? '4.5rem' : '3.7rem',
-                    }"
-                    :imageSrc="postToEnlarge.user_avatar"
-                  />
-                </div>
-              </div>
-              <!-- User Info -->
-              <div class="flex flex-col justify-center ml-1">
-                <h2
-                  class="font-bold text-lg sm:text-xl"
-                  style="line-height: 1.5rem"
-                >
-                  {{ postToEnlarge.id }}:
-                  {{ postToEnlarge.first_name + " " + postToEnlarge.last_name }}
-                </h2>
-                <div class="">
-                  {{ postToEnlarge.company_name }}
-                </div>
+      </div>
 
-                <div class="">
-                  <h2 class="font-light text-sm overflow-hidden">
-                    {{ postToEnlarge.city }} {{ postToEnlarge.state }}
-                  </h2>
-                </div>
+      <!-- Slot Content - Scrollable -->
+      <!-- <div
+          :class="`flex-1 ${
+            overflowAllowed ? 'overflow-y-auto' : ''
+          } p-2 sm:p-4 padding-none ${contentClasses}`"
+        > -->
+
+      <div
+        class="flex-1 overflow-y-auto px-2 sm:px-4 overflow-x-hidden padding-none"
+      >
+        <!-- TOP ROW MENUS POST ACTIONS MENU -->
+        <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+        <div
+          class="flex flex-row justify-between items-center w-full mb-1 mt-3"
+        >
+          <!-- User Avatar & User /// INDIVIDUAL POST: TOP POSTING ROW -->
+          <div class="flex flex-row gap-2 justify-start items-center">
+            <!-- Avatar -->
+            <div
+              @click="openDialog"
+              class="cursor-pointer flex justify-start items-start flex-none w=16"
+            >
+              <!-- <Link :href="route('postToEnlarge.show')" class="block "> -->
+              <div class="block">
+                <Avatar
+                  :style="{
+                    width: screenWidth >= 640 ? '4.5rem' : '3.7rem',
+                    height: screenWidth >= 640 ? '4.5rem' : '3.7rem',
+                  }"
+                  :imageSrc="postToEnlarge.user_avatar"
+                />
               </div>
             </div>
+            <!-- User Info -->
+            <div class="flex flex-col justify-center ml-1">
+              <h2
+                class="font-bold text-lg sm:text-xl"
+                style="line-height: 1.5rem"
+              >
+                {{ postToEnlarge.id }}:
+                {{ postToEnlarge.first_name + " " + postToEnlarge.last_name }}
+              </h2>
+              <div class="">
+                {{ postToEnlarge.company_name }}
+              </div>
 
-            <!-- Ratings / postToEnlarge action menu / posting date -->
-            <div
-              class="flex flex-row justify-end items-center self-start flex-none w-28"
-            >
-              <!-- User RATINGS /// INDIVIDUAL POST: TOP POSTING ROW -->
-              <div class="flex flex-row flex-none justify-end items-center">
-                <!-- Premium Marking -->
-                <div class="">
+              <div class="">
+                <h2 class="font-light text-sm overflow-hidden">
+                  {{ postToEnlarge.city }} {{ postToEnlarge.state }}
+                </h2>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ratings / postToEnlarge action menu / posting date -->
+          <div
+            class="flex flex-row justify-end items-center self-start flex-none w-28"
+          >
+            <!-- User RATINGS /// INDIVIDUAL POST: TOP POSTING ROW -->
+            <div class="flex flex-row flex-none justify-end items-center">
+              <!-- Premium Marking -->
+              <!-- <div class="">
                   <img
                     src="/images/icons/pre-diamond.png"
                     width="20"
                     height="30"
                   />
+                </div> -->
+
+              <div class="flex flex-col justify-center items-center">
+                <StarRounded
+                  @click="openDialog"
+                  :starWidth="15"
+                  class="h-4 cursor-pointer"
+                  indicatorClasses="text-small h-4"
+                  :starHeight="15"
+                  :rating="
+                    Number(
+                      parseFloat(
+                        postToEnlarge.average_rating
+                          ? postToEnlarge.average_rating
+                          : 0.0
+                      ).toFixed(1)
+                    )
+                  "
+                  :isIndicatorActive="false"
+                />
+
+                <div class="">
+                  <h2
+                    class="font-light text-xs overflow-hidden tracking-tighter"
+                  >
+                    {{ postToEnlarge.total_reviews }}
+                  </h2>
                 </div>
+              </div>
+            </div>
 
-                <div class="flex flex-col justify-center items-center">
-                  <StarRounded
-                    @click="openDialog"
-                    :starWidth="15"
-                    class="h-4 cursor-pointer"
-                    indicatorClasses="text-small h-4"
-                    :starHeight="15"
-                    :rating="
-                      Number(
-                        parseFloat(
-                          postToEnlarge.average_rating
-                            ? postToEnlarge.average_rating
-                            : 0.0
-                        ).toFixed(1)
-                      )
-                    "
-                    :isIndicatorActive="false"
-                  />
+            <!-- RIGHT SIDE --- POST ACTION MENU
+                                    & time since posting -->
+          </div>
+        </div>
+        <!-- END Ratings / postToEnlarge action menu / posting date -->
+        <!-- End TOP POSTING ROW -->
+        <div
+          class="self-start flex gap-2 sm:mt-[-4px] md:mt-[-6px] ml-[3px]"
+          v-if="
+            postToEnlarge.original_user_first_name &&
+            postToEnlarge.original_user_last_name
+          "
+        >
+          <div
+            :style="{
+              width: screenWidth >= 640 ? '4.5rem' : '3.7rem',
+            }"
+          ></div>
+          <Link
+            class="self-start"
+            :href="`/contractor/${postToEnlarge.original_user_id}`"
+          >
+            <div
+              v-if="
+                postToEnlarge.original_user_first_name &&
+                postToEnlarge.original_user_last_name
+              "
+              class="text-sm flex gap-1 items-center"
+            >
+              <img src="/images/icons/share_icon.png" width="15" height="15" />
+              <div class="">Reposted From</div>
+              <Icon
+                class="translate-y-[-1px]"
+                icon="ion:caret-forward"
+                width="15"
+              />
+              <div class="font-bold cursor-pointer">
+                {{
+                  postToEnlarge.original_user_first_name +
+                  " " +
+                  postToEnlarge.original_user_last_name
+                }}
+              </div>
+            </div>
+          </Link>
+        </div>
+        <div
+          :class="`${title_text_alignment} ${
+            titleCustomBgColor.startsWith('#')
+              ? ' flex-col w-full items-center  px-2 py-2 rounded-md shadow-lg border-2'
+              : 'w-full'
+          } `"
+          class="font-bold text-xl sm:text-2xl md:tex-3xl mb-1 mt-1"
+          :style="{ backgroundColor: titleCustomBgColor }"
+        >
+          <span
+            v-show="postToEnlarge.title"
+            v-html="postToEnlarge.title"
+            style="white-space: pre-wrap"
+            :style="titleTextStyle"
+            :class="`${titleClass} w-full processed-body inline`"
+            ref="titleElement"
+          ></span>
+        </div>
+        <div
+          :class="`${text_alignment} ${
+            customBgColor.startsWith('#')
+              ? ' flex-col w-full items-center  px-2 py-[87px] rounded-md shadow-lg border-2'
+              : 'w-full'
+          } `"
+          class=""
+          :style="{ backgroundColor: customBgColor }"
+        >
+          <span
+            v-show="postToEnlarge.body1"
+            v-html="displayedBody1"
+            style="white-space: pre-wrap"
+            :style="textStyle"
+            :class="`${body1Class} w-full processed-body inline`"
+            ref="textElement"
+          ></span>
+        </div>
 
+        <!-- INDIVIDUAL POST: MAIN IMAGES  -->
+        <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+        <div class="flex flex-row justify-center items-center w-full mb-1 mt-1">
+          <div v-if="imageArray.length > 0" class="w-full">
+            <div v-for="image in imageArray" :key="image.id" class="pb-2">
+              <PostShowTheImage
+                :image="image"
+                :numberOfImages="1"
+                :cropImage="false"
+                :plusImages="false"
+              >
+              </PostShowTheImage>
+            </div>
+          </div>
+        </div>
+
+        <!-- Text Body2 LOWER -->
+        <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+        <div :class="`'w-full'`" class="">
+          <span
+            v-show="postToEnlarge.body2"
+            v-html="displayedBody2"
+            style="white-space: pre-wrap"
+            :style="textStyleBody2"
+            :class="`w-full processed-body inline`"
+            ref="textElementBody2"
+          ></span>
+        </div>
+        <!-- footer icons counts -->
+        <!-- INDIVIDUAL POST: BOTTOM ROW MENU -->
+        <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+        <div
+          :class="`mb-2 ${
+            postToEnlarge.body2 ? 'mt-3' : ''
+          } border-[1px] w-1/3 border-gray-800 rounded`"
+        ></div>
+
+        <div class="pb-2 flex justify-between w-full">
+          <div class="flex gap-2">
+            <!-- Like -->
+            <div
+              class="flex gap-1 justify-center items-center cursor-pointer"
+              @click="onOpenListofLikedUsersModel"
+            >
+              <!-- <div v-if="postToEnlarge.likes_count" class=""> -->
+              <div
+                class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
+              >
+                <div class="flex flex-row justify-between items-center">
                   <div class="">
-                    <h2
-                      class="font-light text-xs overflow-hidden tracking-tighter"
-                    >
-                      {{ postToEnlarge.total_reviews }}
-                    </h2>
+                    <Icon
+                      icon="emojione-monotone:up-arrow"
+                      :class="`  text-[#16a34a]`"
+                      width="25"
+                    />
                   </div>
                 </div>
               </div>
-
-              <!-- RIGHT SIDE --- POST ACTION MENU
-                                    & time since posting -->
+              <div>{{ likes_count }}</div>
             </div>
-          </div>
-          <!-- END Ratings / postToEnlarge action menu / posting date -->
-          <!-- End TOP POSTING ROW -->
-
-          <div
-            :class="`${title_text_alignment} ${
-              titleCustomBgColor.startsWith('#')
-                ? ' flex-col w-full items-center  px-2 py-2 rounded-md shadow-lg border-2'
-                : 'w-full'
-            } `"
-            class="font-bold text-xl sm:text-2xl md:tex-3xl mb-1 mt-1"
-            :style="{ backgroundColor: titleCustomBgColor }"
-          >
-            <span
-              v-show="postToEnlarge.title"
-              v-html="postToEnlarge.title"
-              style="white-space: pre-wrap"
-              :style="titleTextStyle"
-              :class="`${titleClass} w-full processed-body inline`"
-              ref="titleElement"
-            ></span>
-          </div>
-          <div
-            :class="`${text_alignment} ${
-              customBgColor.startsWith('#')
-                ? ' flex-col w-full items-center  px-2 py-[87px] rounded-md shadow-lg border-2'
-                : 'w-full'
-            } `"
-            class=""
-            :style="{ backgroundColor: customBgColor }"
-          >
-            <span
-              v-show="postToEnlarge.body1"
-              v-html="displayedBody1"
-              style="white-space: pre-wrap"
-              :style="textStyle"
-              :class="`${body1Class} w-full processed-body inline`"
-              ref="textElement"
-            ></span>
-          </div>
-
-          <!-- INDIVIDUAL POST: MAIN IMAGES  -->
-          <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-          <div
-            class="flex flex-row justify-center items-center w-full mb-1 mt-1"
-          >
-            <div v-if="imageArray.length > 0" class="w-full">
-              <div v-for="image in imageArray" :key="image.id" class="pb-2">
-                <PostShowTheImage
-                  :image="image"
-                  :numberOfImages="1"
-                  :cropImage="false"
-                  :plusImages="false"
-                >
-                </PostShowTheImage>
-              </div>
-            </div>
-          </div>
-
-          <!-- Text Body2 LOWER -->
-          <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-        
-          <div :class="`'w-full'`" class="">
-            <span
-              v-show="postToEnlarge.body2"
-              v-html="displayedBody2"
-              style="white-space: pre-wrap"
-              :style="textStyleBody2"
-              :class="`w-full processed-body inline`"
-              ref="textElementBody2"
-            ></span>
-          </div>
-  <!-- footer icons counts -->
-    <!-- INDIVIDUAL POST: BOTTOM ROW MENU -->
-    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-    <div
-      :class="`mb-2 ${
-        postToEnlarge.body2 ? 'mt-3' : ''
-      } border-[1px] w-1/3 border-gray-800 rounded`"
-    ></div>
-
-    <div class="pb-2 flex justify-between w-full">
-      <div class="flex gap-2">
-        <!-- Like -->
-        <div class="flex gap-1 justify-center items-center cursor-pointer">
-          <!-- <div v-if="postToEnlarge.likes_count" class=""> -->
-          <div
-            class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
-          >
-            <div class="flex flex-row justify-between items-center">
-              <div class="">
-                <Icon
-                  icon="emojione-monotone:up-arrow"
-                  :class="`  text-[#16a34a]`"
-                  width="25"
-                />
-              </div>
-            </div>
-          </div>
-          <div>{{ postToEnlarge.likes_count }}</div>
-        </div>
-        <!-- dislikes -->
-        <div class="flex gap-1 justify-center items-center cursor-pointer">
-          <!-- <div v-if="postToEnlarge.likes_count" class=""> -->
-          <div
-            class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
-          >
-            <div class="flex flex-row justify-between items-center">
-              <div class="">
-                <Icon
-                  icon="emojione-monotone:up-arrow"
-                  :class="`  text-[#c40516]`"
-                  width="25"
-                  :rotate="2"
-                />
-              </div>
-            </div>
-          </div>
-          <div>{{ postToEnlarge.dislikes_count }}</div>
-        </div>
-      </div>
-      <div class="text-gray-900 flex gap-1">
-        <span class=""> 4 Comments </span>
-        &#9679;
-        <span class=""> {{ postToEnlarge.repost }} Re-posts </span>
-      </div>
-    </div>
-
-
-    <div :class="`mb-2 border-[1px] w-full border-gray-300 rounded`"></div>
-    <div class="flex flex-row justify-between items-center w-full mb-2">
-      <!-- Likes -->
-      <div class="hovered">
-        <div
-          class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
-        >
-          <div class="flex flex-row justify-between items-center">
-            <div hoveredclass="">
-          
-              <Icon
-                icon="emojione-monotone:up-arrow"
-                :class="`icon-like text-transparent stroke-[2px] stroke-green-600   `"
-                width="25"
-              />
-            </div>
-            <div class="pl-1 icon-text text-[#16a34a]">Like</div>
-          </div>
-        </div>
-      </div>
-      <!-- Dislike -->
-      <div class="hovered">
-        <a class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer">
-          <div class="flex flex-row justify-between items-center">
-            <div class="">
-              <!-- <img src="/images/icons/like_green.png" width="25" height="25" /> -->
-              <!-- <Icon icon="emojione-monotone:up-arrow" :rotate="2" color="#c40516" width="25" /> -->
-              <Icon
-                icon="emojione-monotone:up-arrow"
-                :rotate="2"
-                :class="`icon-dislike text-transparent stroke-[2px] stroke-[#c40516] `"
-                width="25"
-              />
-            </div>
-            <div class="pl-1 icon-text text-[#c40516]">Dislike</div>
-          </div>
-        </a>
-      </div>
-
-      <!-- Comments -->
-      <div class="hovered">
-        <Link href="#" class="font-medium text-xs sm:text-sm text-blue-800">
-          <div class="flex flex-row justify-between items-center">
-            <div class="">
-              <img
-                src="/images/icons/comment_icon.png"
-                width="25"
-                height="25"
-              />
-            </div>
-            <div class="pl-1 icon-text">Comment</div>
-          </div>
-        </Link>
-      </div>
-
-      <!-- Re-Posted -->
-      <div class="hovered">
-        <Link href="#" class="font-medium text-xs sm:text-sm text-blue-800">
-          <div class="flex flex-row justify-between items-center">
-            <div class="">
-              <img src="/images/icons/share_icon.png" width="25" height="25" />
-            </div>
-            <div class="pl-1 icon-text">Re-post</div>
-          </div>
-        </Link>
-      </div>
-
-     
-    </div>
-      
-        </div>
-
-        <!-- TOP BACK TO NEWS FEED -->
-        <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-        <div
-          class="bg-slate-200 px-2 mb-2 p-0 border-b-2 border-b-gray-400 w-full"
-        >
-          <button class="w-full" @click="$emit('close-enlarged')">
+            <!-- dislikes -->
             <div
-              class="flex flex-row items-center justify-between w-full pt-1 pb-1"
+              class="flex gap-1 justify-center items-center cursor-pointer"
+              @click="onOpenListofDislikedUsersModel"
             >
-              <div class="flex items-center justify-start gap-2">
-                <Icon
-                  icon="ph:arrow-fat-left-duotone"
-                  color="#232069"
-                  height="35"
-                />
-                <span class="text-lg font-bold"> News Feed...</span>
+              <!-- <div v-if="postToEnlarge.likes_count" class=""> -->
+              <div
+                class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
+              >
+                <div class="flex flex-row justify-between items-center">
+                  <div class="">
+                    <Icon
+                      icon="emojione-monotone:up-arrow"
+                      :class="`  text-[#c40516]`"
+                      width="25"
+                      :rotate="2"
+                    />
+                  </div>
+                </div>
               </div>
-              <!-- LOGO -->
-              <div class="text-lg font-bold tracking-wide text-center">
-                <tContractorWord />
+              <div>{{ dislikes_count }}</div>
+            </div>
+          </div>
+          <div class="text-gray-900 flex gap-1">
+            <span class="cursor-pointer hover:underline">
+              {{ pagination.total }} comments
+            </span>
+            &#9679;
+            <span class=""> {{ repost_count }} reposts </span>
+          </div>
+        </div>
+
+        <div :class="`mb-2 border-[1px] w-full border-gray-300 rounded`"></div>
+        <div class="flex flex-row justify-between items-center w-full mb-2">
+          <!-- Likes -->
+          <div class="hovered" @click="onLike">
+            <div
+              class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
+            >
+              <div class="flex flex-row justify-between items-center">
+                <div class="hovered">
+                  <!-- <img src="/images/icons/like_green.png" width="25" height="25" /> -->
+                  <!-- <Icon icon="emojione-monotone:up-arrow" color="#16a34a" width="25" /> -->
+                  <Icon
+                    icon="emojione-monotone:up-arrow"
+                    class="icon-like text-transparent stroke-[2px] stroke-green-600"
+                    :class="`${your_reaction === 'like' ? 'liked' : ''}`"
+                    width="25"
+                  />
+                </div>
+                <div class="pl-1 icon-text text-[#16a34a]">Like</div>
               </div>
             </div>
-          </button>
+          </div>
+          <!-- Dislike -->
+          <div class="hovered" @click="onDislike">
+            <a
+              class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
+            >
+              <div class="flex flex-row justify-between items-center">
+                <div class="">
+                  <!-- <img src="/images/icons/like_green.png" width="25" height="25" /> -->
+                  <!-- <Icon icon="emojione-monotone:up-arrow" :rotate="2" color="#c40516" width="25" /> -->
+                  <Icon
+                    icon="emojione-monotone:up-arrow"
+                    :rotate="2"
+                    :class="`${your_reaction === 'dislike' ? 'disliked' : ''}`"
+                    class="icon-dislike text-transparent stroke-[2px] stroke-[#c40516]"
+                    width="25"
+                  />
+                </div>
+                <div class="pl-1 icon-text text-[#c40516]">Dislike</div>
+              </div>
+            </a>
+          </div>
+
+          <!-- Comments -->
+          <div class="hovered cursor-pointer">
+            <div class="font-medium text-xs sm:text-sm text-blue-800">
+              <div class="flex flex-row justify-between items-center">
+                <div class="">
+                  <img
+                    src="/images/icons/comment_icon.png"
+                    width="25"
+                    height="25"
+                  />
+                </div>
+                <div class="pl-1 icon-text">Comment</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Re-Posted -->
+          <div
+            class="hovered cursor-pointer"
+            @click="onOpenRepostAssuranceModel"
+          >
+            <div class="font-medium text-xs sm:text-sm text-blue-800">
+              <div class="flex flex-row justify-between items-center">
+                <div class="">
+                  <img
+                    src="/images/icons/share_icon.png"
+                    width="25"
+                    height="25"
+                  />
+                </div>
+                <div class="pl-1 icon-text">Repost</div>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <div :class="`mb-2 border-[1px] w-full border-gray-300 rounded`"></div>
+        <AllComments
+          v-model:modelValue="allComments"
+          :loadingComments="loadingComments"
+          v-model:addedNumber="addedNumber"
+          :postId="postToEnlarge.id"
+          :pagination="pagination"
+          :added="added"
+        />
       </div>
+
+      <!-- TOP BACK TO NEWS FEED -->
+      <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+      <WriteCommentFooter
+        @unshiftIntoComments="onAddingComment"
+        :postId="postToEnlarge.id"
+      />
     </div>
   </div>
+  <!-- </div> -->
 </template>
 <style scoped>
 .processed-body a {

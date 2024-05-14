@@ -548,7 +548,7 @@ const showMore6 = ref(false);
         </div>
 
         <!-- #5 FEATURE MENTORING  -->
-        <div class="" id="mentoringFeature">
+        <!-- <div class="" id="mentoringFeature">
           <div class="flex flex-row justify-start items-center">
             <div
               class="inline-block p-3 text-blue-500 bg-blue-100 rounded-full"
@@ -649,7 +649,7 @@ const showMore6 = ref(false);
               </ScrollToLinkVue>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- #6 FEATURE NEW FEAtURES  -->
         <div class="" id="newFeatures">

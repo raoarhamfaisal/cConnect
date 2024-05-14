@@ -63,14 +63,14 @@ const props = defineProps({
         </div>
 
         <!-- Card 4 -->
-        <div class="bg-white p-6 rounded-lg shadow-lg">
+        <!-- <div class="bg-white p-6 rounded-lg shadow-lg">
           <h2 class="text-2xl font-semibold mb-3">Mentor and Be Mentored</h2>
           <p class="text-gray-700">
             Invest in mutual growth by participating in our mentoring services.
             Share your knowledge and gain new perspectives from seasoned
             professionals.
           </p>
-        </div>
+        </div> -->
         <div class="bg-white p-6 rounded-lg shadow-lg">
           <h2 class="text-2xl font-semibold mb-3">Spot Red Flag Customers</h2>
           <p class="text-gray-700">

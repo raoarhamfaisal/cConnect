@@ -333,7 +333,7 @@ const formatPrice = (price) => {
                 Red Flags
               </ResponsiveNavLink>
 
-              <ResponsiveNavLink
+              <!-- <ResponsiveNavLink
                 v-if="showit"
                 :href="
                   profile &&
@@ -354,7 +354,7 @@ const formatPrice = (price) => {
                 class="font-bold"
               >
                 Mentoring
-              </ResponsiveNavLink>
+              </ResponsiveNavLink> -->
               <ResponsiveNavLink
                 v-if="showit"
                 :href="
@@ -773,7 +773,7 @@ const formatPrice = (price) => {
                 <li>Check for slippery customers!</li>
                 <li>Questions & Answers!</li>
                 <li>Low cost targeted advertising!</li>
-                <li>Mentoring: go the next level with Mentoring!</li>
+                <!-- <li>Mentoring: go the next level with Mentoring!</li> -->
                 <li class="lg:max-w-md">
                   <span class="font-bold italic">"No-Brainer Pricing"</span>
                   &nbsp;- As contractors ourselves, seems like everyone is
