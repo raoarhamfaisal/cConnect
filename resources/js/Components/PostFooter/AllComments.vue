@@ -1,11 +1,14 @@
 <template>
   <transition name="fade">
     <div class="mb-2">
-      <Loader
-        :loading="loading || loadingComments"
-        background=""
-        height="60vh"
-      ></Loader>
+      <div v-if="loadingComments || loading">
+        <v-skeleton-loader
+          v-for="n in 5"
+          :key="n"
+          color="#e5e7eb"
+          type="list-item-avatar-two-line"
+        ></v-skeleton-loader>
+      </div>
       <!-- in case of Comments -->
       <div
         v-if="comments && comments.length > 0 && !loading"

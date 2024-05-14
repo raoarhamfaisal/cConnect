@@ -517,7 +517,7 @@ export default {
         <!-- .slice only allows 400 iterations -->
         <!-- <div v-for="post in allPosts.slice(0, 400)" :key="post.id" -->
         <Loader :loading="loading" background="inherit" height="100vh"></Loader>
-        <template v-if="!loading">
+        <template v-if="!loading && postsToShow">
           <div
             v-for="(post, index) in postsToShow"
             id="scrollPost"

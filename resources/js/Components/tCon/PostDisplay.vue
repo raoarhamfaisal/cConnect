@@ -782,7 +782,7 @@ export default {
   <!-- {{ profile }} -->
 
   <div
-    v-show="post.view"
+    v-if="post && Object.keys(post).length > 0"
     class="z-48 flex flex-col items-center justify-start my-2 py-1 lg:py-1 px-2 bg-gray-200 border-2 border-gray-300 rounded-lg drop-shadow-lg transition-all duration-1000 transitioning reveal"
   >
     <!-- INDIVIDUAL POST:
