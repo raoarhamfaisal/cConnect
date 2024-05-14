@@ -349,10 +349,8 @@ export default {
         }
       }
     },
-    // reply delted
     replyId(newVal) {
-      console.log("in reply handler post");
-
+      console.log("in replyid handler post enlarged", newVal);
       if (newVal) {
         for (let i = 0; i < this.allComments.length; i++) {
           const comment = this.allComments[i];
@@ -368,7 +366,6 @@ export default {
         }
       }
     },
-    // on reply adding
     reply(newVal, oldVal) {
       if (newVal && newVal.reply) {
         const commentIndex = this.allComments.findIndex((comment) => {
@@ -379,22 +376,24 @@ export default {
             // If 'replies' doesn't exist, initialize it as an empty array
             this.allComments[commentIndex].replies = [];
           }
+
+          const length = this.allComments[commentIndex].replies.length;
           if (
-            this.allComments[commentIndex].replies[
-              this.allComments[commentIndex].replies.length - 1
-            ].id !== newVal.reply.id
+            length > 0 &&
+            this.allComments[commentIndex].replies[length - 1].id !==
+              newVal.reply.id
           ) {
             // Now that 'replies' is guaranteed to be an array, push the new reply
+            this.allComments[commentIndex].replies.push(newVal.reply);
+          } else if (length === 0) {
             this.allComments[commentIndex].replies.push(newVal.reply);
           }
         }
       }
     },
-    // update comment on like dislike of comment
     postComment: {
       handler(newVal, oldVal) {
         if (newVal && newVal.id && newVal != oldVal) {
-          console.log("postComment postDisplay", newVal, oldVal);
           const commentIndex = this.allComments.findIndex(
             (comment) => comment.id === newVal.id
           );
@@ -407,7 +406,6 @@ export default {
       },
       deep: true,
     },
-    // update reply on like dislike of reply
     postReply: {
       handler(newVal, oldVal) {
         if (newVal && newVal.id) {
@@ -426,7 +424,6 @@ export default {
       },
       deep: true,
     },
-    // comment update and also reply updated
     comment: {
       handler(newVal, oldVal) {
         if (newVal && newVal.commentId) {
@@ -460,7 +457,6 @@ export default {
             );
 
             if (commentIndex !== -1) {
-              // Update the existing comment with the new data
               this.allComments[commentIndex].body = newVal.body;
             }
           }
