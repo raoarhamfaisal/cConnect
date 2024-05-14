@@ -33,7 +33,7 @@ export default {
       type: Object,
       required: true,
     },
-    postToEnlarge: {
+    postEnlarged: {
       type: Object,
       required: true,
     },
@@ -56,6 +56,7 @@ export default {
     return {
       dialogRef: null,
       customBgColor: "",
+      postToEnlarge: this.postEnlarged,
       added: false,
       text_alignment: "left",
       text_color: "",
@@ -65,12 +66,12 @@ export default {
       title_text_alignment: "",
       titleCustomBgColor: "left",
       title_text_color: "",
-      your_reaction: this.postToEnlarge.your_reaction,
+      your_reaction: this.postEnlarged.your_reaction,
       user: usePageDeatails.auth.user,
-      likes_count: this.postToEnlarge.likes_count,
+      likes_count: this.postEnlarged.likes_count,
       profileId: usePageDeatails.profile.id,
-      dislikes_count: this.postToEnlarge.dislikes_count,
-      repost_count: this.postToEnlarge.repost,
+      dislikes_count: this.postEnlarged.dislikes_count,
+      repost_count: this.postEnlarged.repost,
       loadingLiked: false,
       loadingUnliked: false,
       loadingRepost: false,
@@ -101,6 +102,7 @@ export default {
       }
     },
     replyId(newVal) {
+      console.log("in replyid handler post enlarged", newVal);
       if (newVal) {
         for (let i = 0; i < this.allComments.length; i++) {
           const comment = this.allComments[i];
@@ -116,8 +118,8 @@ export default {
         }
       }
     },
-    reply(newVal) {
-      if (newVal) {
+    reply(newVal, oldVal) {
+      if (newVal && newVal.reply) {
         const commentIndex = this.allComments.findIndex((comment) => {
           return comment.id === newVal.commentId;
         });
@@ -126,14 +128,21 @@ export default {
             // If 'replies' doesn't exist, initialize it as an empty array
             this.allComments[commentIndex].replies = [];
           }
-          // Now that 'replies' is guaranteed to be an array, push the new reply
-          this.allComments[commentIndex].replies.push(newVal.reply);
+
+          if (
+            this.allComments[commentIndex].replies[
+              this.allComments[commentIndex].replies.length - 1
+            ].id !== newVal.reply.id
+          ) {
+            // Now that 'replies' is guaranteed to be an array, push the new reply
+            this.allComments[commentIndex].replies.push(newVal.reply);
+          }
         }
       }
     },
     postComment: {
-      handler(newVal) {
-        if (newVal && newVal.id) {
+      handler(newVal, oldVal) {
+        if (newVal && newVal.id && newVal != oldVal) {
           const commentIndex = this.allComments.findIndex(
             (comment) => comment.id === newVal.id
           );
@@ -147,7 +156,7 @@ export default {
       deep: true,
     },
     postReply: {
-      handler(newVal) {
+      handler(newVal, oldVal) {
         if (newVal && newVal.id) {
           this.allComments.forEach((comment, index) => {
             // Check if any reply ID matches
@@ -165,7 +174,7 @@ export default {
       deep: true,
     },
     comment: {
-      handler(newVal) {
+      handler(newVal, oldVal) {
         if (newVal && newVal.commentId) {
           if (newVal.isReply) {
             const commentIndex = this.allComments.findIndex((comment) => {
@@ -197,7 +206,6 @@ export default {
             );
 
             if (commentIndex !== -1) {
-              // Update the existing comment with the new data
               this.allComments[commentIndex].body = newVal.body;
             }
           }
@@ -507,6 +515,7 @@ export default {
           getAxiosConfig()
         );
         if (response.data) {
+          console.log("comments");
           this.allComments = response.data?.comments;
           this.pagination = response.data?.pagination;
         }

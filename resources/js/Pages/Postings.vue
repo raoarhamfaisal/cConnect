@@ -362,7 +362,6 @@ export default {
     EnlargePost(clickedPost) {
       // Toggles display of indiviual post
       // click event is in PostDisplayEnlarged.vue
-
       this.postToEnlarge = clickedPost;
       this.postDisplayEnlarged = true;
     },
@@ -606,7 +605,7 @@ export default {
           <Teleport to="body">
             <PostDisplayEnlarged
               :profile="profile"
-              :postToEnlarge="postToEnlarge"
+              :postEnlarged="postToEnlarge"
               :textColors="textColors"
               :backgroundColors="backgroundColors"
               :body1Colors="body1Colors"
