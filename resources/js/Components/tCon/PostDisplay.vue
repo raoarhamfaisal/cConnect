@@ -340,7 +340,6 @@ export default {
     showFullTextBody1: "checkContentHeight",
     showFullTextBody2: "checkContentHeightBody2",
     addedCommentInEnlarge(newVal) {
-      console.log("added comment in");
       if (newVal && Object.keys(newVal).length > 0) {
         this.allComments.unshift(newVal);
       }
@@ -359,7 +358,6 @@ export default {
       }
     },
     replyId(newVal) {
-      console.log("in replyid handler post enlarged", newVal);
       if (newVal) {
         for (let i = 0; i < this.allComments.length; i++) {
           const comment = this.allComments[i];
@@ -479,6 +477,12 @@ export default {
     },
   },
   methods: {
+    onClickOutside() {
+      this.showingPostingActionMenu = false;
+    },
+    include() {
+      return [document.querySelector(".included")];
+    },
     NavPostingActionMenu(showingPostingActionMenu) {
       this.showingPostingActionMenu = !this.showingPostingActionMenu;
     },
@@ -909,7 +913,13 @@ export default {
                     </div> -->
 
           <!-- Hamburger -->
-          <div class="-mr-2 flex items-center">
+          <div
+            class="-mr-2 flex items-center"
+            v-click-outside="{
+              handler: onClickOutside,
+              include,
+            }"
+          >
             <button
               @click="NavPostingActionMenu"
               class="inline-flex items-center justify-center p-2 rounded-md text-black hover:text-gray-500 hover:bg-gray-100 dfocus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
@@ -1250,7 +1260,9 @@ export default {
     <PostingActionMenu
       :showingPostingActionMenu="showingPostingActionMenu"
       :postID="post.id"
+      :post="post"
       :postUserId="post.user_id"
+      :imageArray="imageArray"
       :currentUserId="profile.user_id"
       @NavPostingActionMenu="NavPostingActionMenu"
     >

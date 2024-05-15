@@ -93,15 +93,24 @@ const onImageLoad = () => {
     }, 0);
   }
 };
-
 </script>
 
 <template>
   <div>
     <!-- <span>Height: {{ dimensions.nHeight }}</span> -->
-   
+    <video
+      v-if="isVideo(props.image)"
+      class="w-full h-full rounded-lg"
+      controls
+      autoplay
+      loop
+      muted
+    >
+      <source :src="image_path(props.image)" type="video/mp4" />
+    </video>
+
     <div
-      v-if="plusImageNumber && allPortraits"
+      v-else-if="plusImageNumber && allPortraits"
       :style="{
         height: smallestHeight + 'px',
       }"
@@ -127,16 +136,6 @@ const onImageLoad = () => {
         +{{ plusImageNumber }}
       </div>
     </div>
-    <video
-      v-else-if="isVideo(props.image)"
-      class="w-full h-full rounded-lg"
-      controls
-      autoplay
-      loop
-      muted
-    >
-      <source :src="image_path(props.image)" type="video/mp4" />
-    </video>
 
     <div v-else>
       <img
@@ -167,7 +166,7 @@ const onImageLoad = () => {
         :src="image_path(props.image)"
         alt=""
       />
-<!-- for enlageed view -->
+      <!-- for enlageed view -->
       <img
         v-else
         class="w-full h-full object-fill object-center rounded-lg"

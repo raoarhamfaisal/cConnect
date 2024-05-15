@@ -83,7 +83,6 @@ export default {
 
       previousY: 0,
       previousRatio: 0,
-      shouldShowBackground: false,
       success: false,
       showSpinText: false,
       showingNavigationDropdown: ref(false),
@@ -130,7 +129,6 @@ export default {
   watch: {
     getProfile(newVal) {
       if (newVal) {
-        console.log("user_profile", newVal, this.user_profile);
         this.user_profile = newVal;
         this.setInitialData();
       }
@@ -162,7 +160,6 @@ export default {
       this.url !== "/payment"
     ) {
       this.$refs.paymentDialogRef.openDialog();
-      console.log("herein dialog", this.user_profile);
     }
   },
 
@@ -173,11 +170,10 @@ export default {
 
       formData.user_id = (this.profile && this.profile.user_id) || null;
       formData.is_body_bold = formData.is_body_bold ? 1 : 0;
-      console.log(formData.image, "before");
+
       formData.image = formData.image
         ? this.reverseAndJoinString(formData.image)
         : formData.image;
-      console.log(formData.image, "after");
 
       // Same method for update & create
       // if we have an item id then update
@@ -197,8 +193,6 @@ export default {
         formData._method = "PUT";
       }
 
-      console.log("saveItem: " + url);
-
       // see results - chrome: inpect/network/headers & payload
       // 1) goes to web.php router
       // 2) router listens for Route::post('/post')
@@ -208,7 +202,6 @@ export default {
         onSuccess: () => {
           this.closeModal();
           this.success = true;
-          this.shouldShowBackground = true;
           this.$store.commit("ratings/setShouldFetchFirstPagePosts", true);
           changesSaved("Post Successfully Added");
         },
@@ -219,8 +212,6 @@ export default {
       let arr = inputString.split("|");
 
       // Reverse the array
-      console.log(arr, "array");
-      console.log("addFormImage");
       arr = arr.reverse();
       // Join the array back into a string
       return arr.join("|");
@@ -246,7 +237,6 @@ export default {
     // DISPLAY POST INPUT/EDIT FORM
     // no item # is create new
     openForm(formData) {
-      // console.log(('Post button clicked'))
       this.showingNavigationDropdown = false;
       this.isFormOpen = true;
       this.isFormEdit = !!formData; // !! conversts a "truthy" or "falsey" to
@@ -277,7 +267,6 @@ export default {
     },
     // Input search from Menu_HamburgerMenu & Menu_MainSideMenu
     submitPostSearch() {
-      console.log("***** postSearch submitted: " + this.postSearch);
       this.showingNavigationDropdown = false;
       Inertia.get(
         "/post",
@@ -288,11 +277,9 @@ export default {
       );
     },
     openProfileModal() {
-      console.log(usePage().url.value, "url");
       this.$refs.dialogRef.openDialog();
     },
     RefreshPostings() {
-      console.log("Refreshed with search: " + this.postSearch);
       Inertia.get("/post", { postSearch: this.postSearch });
     },
     NavigationDropdown(showingNavigationDropdown) {
