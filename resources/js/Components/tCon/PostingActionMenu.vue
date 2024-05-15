@@ -77,7 +77,7 @@ export default {
     openBlockContactDialog() {
       this.$refs.blockDialogRef.openDialog();
     },
-
+    handleSubmitBlock() {},
     async saveItem(formData) {
       // this.success = false;
       // formData.user_id = (this.profile && this.profile.user_id) || null;
@@ -210,7 +210,7 @@ export default {
     </div>
     <!-- END: HAMBURGER Navigation Menu -->
 
-    <ReportPost ref="repostPostDialogRef" :postId="postId" />
+    <ReportPost ref="repostPostDialogRef" :postId="postID" />
     <!-- Block -->
     <teleport to="body">
       <CustomDialog
