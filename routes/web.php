@@ -191,6 +191,11 @@ Route::post('/post', [PostController::class, 'store'])
     ->middleware(['auth', 'verified', 'activeUser']);
     // ->middleware(['auth', 'verifyPayment', 'verified']);
 
+Route::patch('/post/{post_id}', [PostController::class, 'updatePost'])
+    ->name('post.updatePost')
+    ->middleware(['auth', 'verified', 'activeUser']);
+
+
 Route::post('/upload-post', [PostImageController::class, 'upload'])
     ->name('post.update')
     ->middleware(['auth', 'verified', 'activeUser']);
@@ -226,8 +231,8 @@ Route::post('/tokens/create', function (Request $request) {
 //     ->name('post.update')
 //     ->middleware(['auth', 'verified']);
 
-// Route::delete('/post/{id}', [PostController::class, 'destroy'])
-//     ->name('post.destroy')
-//     ->middleware(['auth', 'verified']);
+Route::delete('/post/{id}', [PostController::class, 'destroy'])
+    ->name('post.destroy')
+    ->middleware(['auth', 'verified', 'activeUser']);
 
 require __DIR__ . '/auth.php';

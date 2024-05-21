@@ -55,5 +55,17 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
 
+    public function blockedUsers()
+    {
+        return $this->belongsToMany(
+            User::class, 
+            'user_blocks',  // name of the pivot table
+            'user_id',      // foreign key on the pivot table for the current user
+            'blocked_user_id' // foreign key on the pivot table for the blocked user
+        );
+    }
+
+
+
 
 }

@@ -6,6 +6,7 @@ use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use App\Models\Profile;
+use App\Models\BlockUser;
 use App\Services\InsertPostProfileService;
 use App\Services\ProcessImageService;
 use Illuminate\Routing\Controller;
@@ -16,6 +17,11 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 use App\Models\SessionViewSetting;
 use App\Models\SessionTrade;
+use App\Mail\PostReportedMail;
+use Illuminate\Support\Facades\Mail;
+
+use Illuminate\Http\Request as HttpRequest;
+
 
 class PostController extends Controller
 {
@@ -68,7 +74,8 @@ class PostController extends Controller
         // dd($posts->trades);
 
 
-
+        // Retrieve the IDs of the users that the current user has blocked
+        $blockedUserIds = $userID ? BlockUser::where('user_id', $userID)->pluck('blocked_user_id')->toArray() : [];
 
     
         return Inertia::render('Postings', [
@@ -108,6 +115,8 @@ class PostController extends Controller
                 ->leftJoin('profiles', 'posts.user_id', '=', 'profiles.user_id')
                 ->leftJoin('profiles as original_profiles', 'posts.original_user_id', '=', 'original_profiles.user_id')
                 ->where('posts.region_id', $profile['region_id'])
+                ->where('posts.active_post', 1)
+                ->whereNotIn('posts.user_id', $blockedUserIds)
                 ->whereHas('user.profile', function ($query) use ($sessionViewSettings) {
                     // Ensure the post creator has matching view settings with the logged-in user
                     $query->where(function ($query) use ($sessionViewSettings) {
@@ -207,6 +216,25 @@ class PostController extends Controller
             'postSearchFilters' => Request::only(['postSearch']),
         ]);
     }
+
+
+    public function getPostTrades($postId)
+    {
+        // Fetch the post with the specified ID, along with its trades
+        $post = Post::with('trades')->find($postId);
+    
+        if (!$post) {
+            // If the post doesn't exist, return a 404 response
+            return response()->json(['message' => 'Post not found'], 404);
+        }
+    
+        // Extract only the IDs of the trades
+        $tradeIds = $post->trades->pluck('id');
+    
+        // Return the trade IDs as a JSON response
+        return response()->json(['trade_ids' => $tradeIds]);
+    }
+
 
     public function indexContractor($contractor_id)
     {
@@ -435,6 +463,88 @@ class PostController extends Controller
 
     }
 
+
+    
+
+    public function updatePost(
+        StorePostRequest $request,
+        InsertPostProfileService $InsertPostProfileService,
+        ProcessImageService $processImageService,
+        $post_id
+    ) {
+
+        // Retrieve the post to update
+        $postToUpdate = Post::findOrFail($post_id);
+
+        $validatedInput = $request->validated();
+
+        // Set user_id for post // Customize validation as needed
+        $userID = Auth()->user('')->id;
+        $validatedInput['user_id'] = $userID;
+    
+        // Get user info based on user id
+        $postersProfile = Profile::where('user_id', $userID)
+            ->first()
+            ->only(
+                'region_id'
+            );
+
+
+        if(!array_key_exists('region_id', $validatedInput) || !$validatedInput['region_id']) {
+            $validatedInput['region_id'] = $postersProfile['region_id'];
+        }
+        
+        // $validatedInput = $InsertPostProfileService->insertPostersProfile($validatedInput);
+        //dd($validatedInput);
+
+        // Place the image into it's own string
+        // Then null out image
+        $processedimages = $validatedInput['image'];
+        $validatedInput['image'] = null;
+        //dd($processedimages);
+
+        // Update the basic post details from validated input
+        $postToUpdate->fill($validatedInput);
+
+        // Process the images that are filepath/name
+        // is stored in $processedimages as a STRING
+        // call handleProcessImage from ProcessImageService Service class
+        // and pass through the string of imagaes in $processedimages
+        $newImageString = $processImageService
+            ->handleProcessImage($processedimages, $postToUpdate->id);
+
+        //dd($postToUpdate->id, $newImageString);
+
+        // only then update image field
+        Post::where("id", $postToUpdate->id)->update(["image" => $newImageString]);
+
+        // Attach trades with post
+        
+        // dd($postToUpdate, $validatedInput);
+
+        // Attach trades with post
+        if($postToUpdate) {
+
+            $trades = $request->input('trades');
+
+            if(!$trades) {
+                // Fetch the trades associated with the logged-in user's profile    
+                $profile = Profile::where('user_id', $userID)->with('trades:id')->first();
+                $trades = $profile->trades->pluck('id')->toArray();
+            }
+
+
+
+            // Sync the user trades with the postToUpdate
+            $postToUpdate->trades()->sync($trades);
+        }
+
+        return redirect()->back()
+            ->with('message', 'Post Updated');
+
+    }
+
+
     /**
      * Show the form for creating a new resource.
      *
@@ -507,12 +617,17 @@ class PostController extends Controller
     // DESTROY ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public function destroy(Post $post)
     {
-        $post->delete();
+    
+        // Set the active_post field to 0 to deactivate the post
+        $post->active_post = 0;
+        $post->save();
+    
+        // Redirect back with a message
         return redirect()
             ->back()
-            ->with('message', 'Post deleted');
+            ->with('message', 'Post deleted successfully');
     }
-
+    
     // upload ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // Uplloads files to temp storage
     public function upload(Request $request)
@@ -568,6 +683,23 @@ class PostController extends Controller
         $repost->trades()->sync($originalPostTrades);
 
         return response()->json($repost, 201);
+    }
+
+
+    public function reportPost(HttpRequest $request, $postId)
+    {
+        $post = Post::find($postId);
+
+        if (!$post) {
+            return response()->json(['message' => 'Post not found'], 404);
+        }
+
+        $reportText = $request->input('report_text', 'No details provided.');
+
+        // Send an email to the admin
+        Mail::to('ugly@tcontractor.com')->send(new PostReportedMail($post, $reportText));
+
+        return response()->json(['message' => 'Your report has been sent to the admin.']);
     }
 
             

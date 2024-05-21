@@ -7,8 +7,10 @@ use App\Http\Controllers\ContractorProfileController;
 use App\Http\Controllers\ContractorPageController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\AdminUsersController;
+use App\Http\Controllers\AdminPostsController;
 use App\Http\Controllers\ImageSectionController;
 use App\Http\Controllers\BragSectionController;
 use App\Http\Controllers\ReviewResponseController;
@@ -46,6 +48,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/post/text-colors', [PostColorController::class, 'getTextColors']);
 Route::get('/post/background-colors', [PostColorController::class, 'getBackgroundColors']);
 
+Route::get('/posts/{post}/trades', [PostController::class, 'getPostTrades']);
+
+
+
 
 // Route::middleware('auth:sanctum')->group(function () {
     Route::post('/profile/user-avatar', [ProfileController::class, 'updateUserAvatar'])->name('profile.updateUserAvatar');
@@ -77,6 +83,19 @@ Route::get('/post/background-colors', [PostColorController::class, 'getBackgroun
     
     // Your authenticated routes here
     Route::middleware('auth:sanctum')->group(function () {
+
+
+
+        // Post related rotues
+        Route::post('/posts/{post}/report', [PostController::class, 'reportPost']);
+
+        // Block user related apis
+        Route::post('/user/{user}/block', [UserController::class, 'blockUser']);
+        Route::post('/user/{user}/unblock', [UserController::class, 'unblockUser']);
+        Route::get('/user/blocked', [UserController::class, 'listBlockedUsers']);
+
+
+
 
 
         // Red Flag APIs
@@ -248,6 +267,15 @@ Route::get('/post/background-colors', [PostColorController::class, 'getBackgroun
             Route::post('/admin/users/{userId}', [AdminUsersController::class, 'updateProfile']);
             Route::get('/admin/users/{regionId}/all', [AdminUsersController::class, 'getAllUsersOfARegion']);
         });
+
+
+        // Middleware to ensure only admins with proper privileges can access these routes
+        Route::middleware('admin-with-post-privileges')->group(function () {
+            Route::get('/admin/posts', [AdminPostsController::class, 'getAllPosts']);
+            Route::post('/admin/posts/{postId}', [AdminPostsController::class, 'updatePost']);
+        });
+
+
 
         // Only Users having payments-privileges are allowed
         Route::middleware('admin-with-payments-privileges')->group(function () {

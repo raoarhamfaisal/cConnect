@@ -20,6 +20,7 @@ class Post extends Model
         'original_user_id',
         'region_id',
         'user_id',
+        'active_post',
         'title',
         'image',    
         'body1',
@@ -40,9 +41,9 @@ class Post extends Model
 
     public function trades()
     {
-        return $this->belongsToMany(Trade::class, 'post_trade');
+        return $this->belongsToMany(Trade::class, 'post_trade', 'post_id', 'trade_id');
     }
-
+        
 
     public function user()
     {
