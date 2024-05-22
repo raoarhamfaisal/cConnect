@@ -10,7 +10,7 @@
       :disabled="disabledSending"
       :title="`Report Post`"
     >
-      <form @submit.prevent="handleSubmit">
+      <form>
         <!-- response -->
         <div
           class="sm:p-4 p-3 bg-blue-100 border border-blue-200 rounded-lg mb-2"
@@ -73,25 +73,26 @@ import InputError from "@/Components/InputError.vue";
 import Card from "@/Components/Card.vue";
 
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
-import { filterBadWords } from "@/helpers/utilities";
-import { ref, watch, computed, nextTick } from "vue";
-import { useStore } from "vuex";
+import {
+  changesSaved,
+  filterBadWords,
+  somethingWentWrong,
+} from "@/helpers/utilities";
+import { ref, watch, nextTick } from "vue";
+import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 
 //States
 const { postId } = defineProps({
   postId: [String, Number],
 });
-const store = useStore();
 
 const reportText = ref("");
 
 const dialogRef = ref();
 const showDialog = ref(false);
 const reportTextError = ref("");
+const loadingSending = ref(false);
 //Computed
-const loadingSending = computed(() => store.state.ratings.loadingSending);
-const disabledSending = computed(() => store.state.ratings.disabledSending);
-const loadingComment = computed(() => store.state.ratings.loadingComment);
 
 //Watch
 
@@ -118,18 +119,28 @@ const validate = () => {
 };
 const handleSubmit = async () => {
   if (validate()) {
-    store.commit("ratings/setLoadingComment", true);
-    let updatedComment;
+    loadingSending.value = true;
 
-    updatedComment = {
-      body: filterBadWords(reportText),
-      postId: postId,
+    let report;
+
+    report = {
+      report_text: filterBadWords(reportText),
     };
-
-    store.dispatch("ratings/updateComment", {
-      updatedComment: updatedComment,
-    });
-    dialogRef.value.closeDialog();
+    try {
+      const response = await axios.post(
+        `/api/posts/${postId}/report`,
+        report,
+        getAxiosConfig()
+      );
+      if (response.data) {
+        changesSaved(response.data.message || "Post is Reported.");
+      }
+    } catch (err) {
+      somethingWentWrong(err.response.data.message, "inherit");
+    } finally {
+      loadingSending.value = false;
+      dialogRef.value.closeDialog();
+    }
   }
 };
 
@@ -158,7 +169,6 @@ const insertTab = (event) => {
   }
 };
 const adjustHeight = () => {
-  console.log("here");
   nextTick(() => {
     textRef.value.style.height = "auto"; // Reset height first to get the correct scrollHeight
     textRef.value.style.height = textRef.value.scrollHeight + "px";

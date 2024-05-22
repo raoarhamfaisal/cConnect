@@ -45,8 +45,6 @@
       </button>
     </div>
 
-  
-
     <!-- @keydown="handleKeyPress" -->
     <textarea
       ref="editor"
@@ -62,8 +60,11 @@
       }"
       :style="{
         fontSize: 16 + fontSizeIncrement + 'px',
-        height: backgroundColor.color !== 'inherit' &&
-          backgroundColor.color !== '#ffffff' ? 87+ 87 + 10 + fontSizeIncrement  + 10 + 'px' : '44px',
+        height:
+          backgroundColor.color !== 'inherit' &&
+          backgroundColor.color !== '#ffffff'
+            ? 87 + 87 + 10 + fontSizeIncrement + 10 + 'px'
+            : '44px',
         color: selectedColor.color,
         backgroundColor: backgroundColor.color,
       }"
@@ -84,9 +85,9 @@ import BackgroundColorDropdown from "@/Components/BackgroundColorDropdown.vue";
 import FontColorDropdown from "@/Components/FontColorDropdown.vue";
 const props = defineProps({
   modelValue: String,
-  fontSize: [Number,String],
-  textColorId: String,
-  backgroundColorId: String,
+  fontSize: [Number, String],
+  textColorId: [String, Number],
+  backgroundColorId: [String, Number],
   isBold: Boolean,
   textAlignment: String,
 });
@@ -112,7 +113,6 @@ const backgroundColor = ref({
 });
 
 const generateStyledContent = () => {
- 
   return `<span  class="truncate-text">${content.value}</span>`;
 };
 
@@ -197,15 +197,18 @@ const updateContent = () => {
   adjustHeight();
 };
 const insertTab = (event) => {
-  if (event.key === 'Tab') {
+  if (event.key === "Tab") {
     event.preventDefault();
     const start = event.target.selectionStart;
     const end = event.target.selectionEnd;
-if(content.value === null){
-  content.value = ''
-}
+    if (content.value === null) {
+      content.value = "";
+    }
     // Set the value to: text before caret + four spaces + text after caret
-    content.value = content.value.substring(0, start) + '      ' + content.value.substring(end);
+    content.value =
+      content.value.substring(0, start) +
+      "      " +
+      content.value.substring(end);
 
     // Put caret at right position again
     nextTick(() => {
@@ -213,7 +216,6 @@ if(content.value === null){
     });
   }
 };
-
 </script>
 
 <style scoped>

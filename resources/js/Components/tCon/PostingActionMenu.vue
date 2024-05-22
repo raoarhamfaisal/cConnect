@@ -3,7 +3,11 @@ import { Link, usePage } from "@inertiajs/inertia-vue3";
 import PostFormEdit from "@/Components/tCon/PostFormEdit.vue";
 import ReportPost from "@/Components/tCon/ReportPost.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
-import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
+import {
+  changesSaved,
+  filterBadWordsWithoutValue,
+  somethingWentWrong,
+} from "@/helpers/utilities";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 
 export default {
@@ -30,6 +34,7 @@ export default {
 
     return {
       isFormOpen: false,
+      loadingUpdate: false,
       loadingDelete: false,
       success: false,
       postToEdit: { ...this.post },
@@ -39,7 +44,6 @@ export default {
     };
   },
   mounted() {
-    this.postToEdit.imagesUploadedAlready = this.postToEdit.image;
     this.postToEdit.image = "";
   },
   methods: {
@@ -52,21 +56,20 @@ export default {
     },
     async handleSubmitDelete() {
       this.loadingDelete = true;
-      try {
-        const response = await axios.delete(
-          `/api/comments/${props.reply.id}`,
-          getAxiosConfig()
-        );
-        if (response.data) {
-          changesSaved(response.data.message || "Post successfully deleted");
-        }
-      } catch (err) {
-        console.log(err);
-        somethingWentWrong(err.response.data.message, "inherit");
-      } finally {
-        this.loadingDelete = false;
-        this.$refs.deleteDialogRef.closeDialog();
-      }
+      let url = "/post/" + this.post.id;
+
+      this.$inertia.delete(url, {
+        onFinish: () => {
+          this.loadingDelete = false;
+        },
+        onSuccess: () => {
+          this.loadingDelete = false;
+          changesSaved("Post Successfully Deleted");
+          this.$store.commit("profile/setDeletedPost", this.post);
+
+          this.$refs.deleteDialogRef.closeDialog();
+        },
+      });
     },
     openDeletedPostDialog() {
       this.$refs.deleteDialogRef.openDialog();
@@ -77,47 +80,69 @@ export default {
     openBlockContactDialog() {
       this.$refs.blockDialogRef.openDialog();
     },
-    handleSubmitBlock() {},
+    async handleSubmitBlock() {
+      this.loadingBlockContact = true;
+      try {
+        const response = await axios.post(
+          `/api/user/${this.post.user_id}/block`,
+          {},
+          getAxiosConfig()
+        );
+        if (response.data) {
+          changesSaved(response.data.message || "User Successfully Blocked");
+          this.$store.commit("profile/setDeletedPost", this.post);
+        }
+      } catch (err) {
+        console.log(err);
+        somethingWentWrong(err.response.data.message, "inherit");
+      } finally {
+        this.loadingBlockContact = false;
+        this.$refs.blockDialogRef.closeDialog();
+      }
+    },
     async saveItem(formData) {
-      // this.success = false;
-      // formData.user_id = (this.profile && this.profile.user_id) || null;
-      // formData.is_body_bold = formData.is_body_bold ? 1 : 0;
-      // console.log(formData.image, "before");
-      // formData.image = formData.image
-      //   ? this.reverseAndJoinString(formData.image)
-      //   : formData.image;
-      // console.log(formData.image, "after");
-      // // Same method for update & create
-      // // if we have an item id then update
-      // formData.region_id = +formData.region_id;
-      // formData.title = formData.title
-      //   ? await filterBadWordsWithoutValue(formData.title)
-      //   : formData.title;
-      // formData.body1 = formData.body1
-      //   ? await filterBadWordsWithoutValue(formData.body1)
-      //   : formData.body1;
-      // formData.body2 = formData.body2
-      //   ? await filterBadWordsWithoutValue(formData.body2)
-      //   : formData.body2;
-      // let url = "/post";
-      // if (formData.id) {
-      //   url = "/post/" + formData.id;
-      //   formData._method = "PUT";
-      // }
-      // console.log("saveItem: " + url);
-      // // see results - chrome: inpect/network/headers & payload
-      // // 1) goes to web.php router
-      // // 2) router listens for Route::post('/post')
-      // //    to PostController store method
-      // this.$inertia.post(url, formData, {
-      //   onError: () => {},
-      //   onSuccess: () => {
-      //     this.closeModal();
-      //     this.success = true;
-      //     this.$store.commit("ratings/setShouldFetchFirstPagePosts", true);
-      //     changesSaved("Post Successfully Added");
-      //   },
-      // });
+      this.success = false;
+      this.loadingUpdate = true;
+
+      formData.is_body_bold = formData.is_body_bold ? 1 : 0;
+
+      // Same method for update & create
+      // if we have an item id then update
+
+      formData.title = formData.title
+        ? await filterBadWordsWithoutValue(formData.title)
+        : formData.title;
+      formData.body1 = formData.body1
+        ? await filterBadWordsWithoutValue(formData.body1)
+        : formData.body1;
+      formData.body2 = formData.body2
+        ? await filterBadWordsWithoutValue(formData.body2)
+        : formData.body2;
+      let url = "/post";
+      if (formData.id) {
+        url = "/post/" + formData.id;
+        formData._method = "PATCH";
+      }
+      console.log(formData, "formData");
+      // see results - chrome: inpect/network/headers & payload
+      // 1) goes to web.php router
+      // 2) router listens for Route::post('/post')
+      //    to PostController store method
+      this.$inertia.patch(url, formData, {
+        onError: () => {
+          this.loadingUpdate = false;
+        },
+        onFinish: () => {
+          this.loadingUpdate = false;
+        },
+        onSuccess: () => {
+          this.closeEditModal();
+          this.success = true;
+          this.loadingUpdate = false;
+          this.$store.commit("profile/setUpdatedPost", formData);
+          changesSaved("Post Successfully updated");
+        },
+      });
     },
   },
 };
@@ -229,7 +254,8 @@ export default {
             class="section_text-lg font-bold sm:pl-6 section_text-gray-800 mt-3 mb-2"
           >
             Activate 'Hide Posts' to stop seeing updates from this user, keeping
-            your feed tailored to your preferences.
+            your feed tailored to your preferences.You can also unblock this
+            user from your settings.
           </div>
         </div>
       </CustomDialog>
@@ -265,6 +291,7 @@ export default {
           v-if="isFormOpen"
           :isOpen="isFormOpen"
           :id="profileId"
+          :loadingUpdate="loadingUpdate"
           :form="postToEdit"
           :success="success"
           :imageArray="imageArray"

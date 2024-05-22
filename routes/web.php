@@ -139,6 +139,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/admin/coupons', [AdminController::class, 'getCouponsPage'])->name('admin.coupons');
         Route::get('/admin/pricing', [AdminController::class, 'getPaymentsPage'])->name('admin.payments');
         Route::get('/admin/cancel-subscription', [AdminController::class, 'getCancelSubscriptionPage'])->name('admin.payments');
+        Route::get('/admin/post', [AdminController::class, 'getPostUserFunctionPage'])->name('admin.payments');
 
 
 

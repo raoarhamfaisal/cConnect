@@ -58,7 +58,29 @@
           </Link>
         </div>
       </details>
+      <!-- Post Functions Section -->
+      <details
+        class="accordion-section"
+        :open="isOpen"
+        v-if="user.posts_privileges"
+      >
+        <summary class="accordion-heading flex items-center">
+          <Link
+            class="flex items-center text-gray-600 transition-colors duration-300 transform rounded-lg"
+            href="/admin/post"
+          >
+            <Icon
+              icon="ion:person-sharp"
+              color="#364fc7"
+              width="30"
+              height="30"
+            />
+            <span class="mx-4 text-[#364fc7]">Post Functions</span>
+          </Link>
+        </summary>
 
+        <!-- Links for User Functions go here... -->
+      </details>
       <!-- User Functions Section -->
       <details
         class="accordion-section"

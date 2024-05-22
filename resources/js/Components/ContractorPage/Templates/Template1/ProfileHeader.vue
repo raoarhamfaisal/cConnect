@@ -220,7 +220,6 @@ import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import DialogContractorRating from "@/Components/Ratings/Contractor/DialogContractorRating.vue";
 import DialogContractorPosts from "@/Components/Postings/DialogContractorPosts.vue";
 
-
 import { Icon } from "@iconify/vue";
 
 import { computed, ref, onMounted } from "vue";
@@ -329,6 +328,8 @@ const goBack = () => {
     Inertia.visit(prevUrl);
   } else if (prevUrl === "/edit") {
     Inertia.visit(`/contractor/${props.loggedInUserId}/edit`);
+  } else if (prevUrl === "/settings") {
+    Inertia.visit(`/settings`);
   } else {
     Inertia.visit("/sub-finder");
   }

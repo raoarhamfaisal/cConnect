@@ -92,10 +92,10 @@ import FontColorDropdownEdit from "@/Components/FontColorDropdownEdit.vue";
 const props = defineProps({
   modelValue: String,
   fontSize: [Number, String],
-  textColorId: String,
-  backgroundColorId: String,
+  textColorId: [String, Number],
+  backgroundColorId: [String, Number],
   isBold: [Boolean, Number],
-  textAlignment: String,
+  textAlignment: [String, Number],
 });
 
 const emit = defineEmits([

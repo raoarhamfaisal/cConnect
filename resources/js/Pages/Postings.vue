@@ -182,7 +182,11 @@ export default {
       "shouldLoadPosts",
       "shouldFetchFirstPagePosts",
     ]),
-    ...mapGetters("profile", ["loadFirstPageWithNoPreserve"]),
+    ...mapGetters("profile", [
+      "loadFirstPageWithNoPreserve",
+      "updatedPost",
+      "deletedPost",
+    ]),
 
     postsToShow() {
       const allPostsToShow = this.allPosts;
@@ -200,6 +204,42 @@ export default {
     },
   },
   watch: {
+    updatedPost(newVal) {
+      if (newVal && Object.keys(newVal).length > 0) {
+        const updatedPostIndex = this.allPosts.findIndex(
+          (post) => post.id === newVal.id
+        );
+        this.allPosts[updatedPostIndex] = newVal;
+      }
+    },
+    deletedPost(newVal) {
+      if (newVal && Object.keys(newVal).length > 0) {
+        this.loadingPosts = true;
+        this.$inertia.get(
+          this.posts.first_page_url,
+          {},
+          {
+            // these preserve state keeps our position in the scroll
+            preserveState: true,
+            preserveScroll: false,
+            // 'only' makes sure that inertia only loads current post property
+            // not the whole payload. Make sure lazy load is used in controller
+            only: ["posts"],
+            onSuccess: () => {
+              // takes the object posts and appends it to allpost
+              this.allPosts = [...this.posts.data];
+              this.loadingPosts = false;
+              // 'this.initialUrl' is set in script data
+              window.history.replaceState(
+                {},
+                this.$page.title,
+                this.initialUrl
+              );
+            },
+          }
+        );
+      }
+    },
     loadFirstPageWithNoPreserve(newVal) {
       if (newVal) {
         this.$inertia.get(
