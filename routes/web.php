@@ -232,7 +232,7 @@ Route::post('/tokens/create', function (Request $request) {
 //     ->name('post.update')
 //     ->middleware(['auth', 'verified']);
 
-Route::delete('/post/{id}', [PostController::class, 'destroy'])
+Route::delete('/post/{post}', [PostController::class, 'destroy'])
     ->name('post.destroy')
     ->middleware(['auth', 'verified', 'activeUser']);
 
