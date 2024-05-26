@@ -417,7 +417,7 @@ export default {
       } else if (!this.form.image && previousImages) {
         this.form.image = previousImages;
       }
-
+      this.form.trades = this.postTrades;
       this.$emit("formsave", this.form);
     },
     reverseAndJoinString(inputString) {
