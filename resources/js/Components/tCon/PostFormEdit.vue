@@ -84,6 +84,7 @@ export default {
       original: "",
       selectedItems: null,
       selectAll: false,
+      isModalOpened: this.isOpen,
       postTrades: [],
       loadingPostTrades: false,
       tradesPost: {
@@ -123,6 +124,8 @@ export default {
     };
   },
   async mounted() {
+    this.myFiles = [];
+    console.log("mounted called");
     await this.fetchPostTrades();
     this.$store.dispatch("ratings/getRegions");
     // this.$store.dispatch("ratings/getTrades", this.id);
@@ -132,6 +135,12 @@ export default {
   },
   emits: ["formsave", "formclose"],
   watch: {
+    isModalOpened(newVal) {
+      console.log(newVal, "isOpen is called", this.myFiles);
+      if (newVal) {
+        this.myFiles = [];
+      }
+    },
     regions(newValue) {
       if (newValue.length > 0) {
         this.referenceList = this.regions.map((item) => item.name);
@@ -146,20 +155,20 @@ export default {
 
     success(newVal) {
       if (newVal) {
-        this.form.title = "";
-        this.form.body1 = "";
-        this.form.body2 = "";
-        this.form.post_text_color_id = null;
-        this.form.title_text_color_id = null;
+        // this.form.title = "";
+        // this.form.body1 = "";
+        // this.form.body2 = "";
+        // this.form.post_text_color_id = null;
+        // this.form.title_text_color_id = null;
 
-        this.form.post_background_color_id = null;
-        this.form.title_background_color_id = null;
-        this.form.is_body_bold = false;
-        this.form.font_size = "0";
-        this.form.text_alignment = "left";
-        this.form.title_text_alignment = "left";
+        // this.form.post_background_color_id = null;
+        // this.form.title_background_color_id = null;
+        // this.form.is_body_bold = false;
+        // this.form.font_size = "0";
+        // this.form.text_alignment = "left";
+        // this.form.title_text_alignment = "left";
         this.myFiles = [];
-        this.form.image = "";
+        // this.form.image = "";
         // this.$store.dispatch("ratings/getTrades", this.id);
       }
     },
