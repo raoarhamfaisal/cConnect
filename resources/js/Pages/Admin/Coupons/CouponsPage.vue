@@ -151,7 +151,11 @@
                     >
                       <template v-slot:activator="{ props }">
                         <div v-bind="props">
-                          {{ coupon?.notes?.substring(0, 60) + "..." }}
+                          {{
+                            coupon &&
+                            coupon.notes &&
+                            coupon?.notes?.substring(0, 60) + "..."
+                          }}
                         </div>
                       </template>
                     </v-tooltip>
