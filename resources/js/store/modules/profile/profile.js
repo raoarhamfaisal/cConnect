@@ -24,6 +24,7 @@ export default {
       postComment: {},
       postReply: {},
       updatedPost: {},
+      updatedPostId: 0,
       deletedPost: {},
     };
   },
@@ -43,6 +44,7 @@ export default {
     getProfile: (state) => state.profile,
     mustVerifyEmail: (state) => state.mustVerifyEmail,
     updatedPost: (state) => state.updatedPost,
+    updatedPostId: (state) => state.updatedPostId,
     deletedPost: (state) => state.deletedPost,
   },
   mutations: {
@@ -100,6 +102,9 @@ export default {
     },
     setDeletedPost(state, payload) {
       state.deletedPost = payload;
+    },
+    setUpdatedPostId(state, payload) {
+      state.updatedPostId = state.updatedPostId + 1;
     },
   },
   actions: {

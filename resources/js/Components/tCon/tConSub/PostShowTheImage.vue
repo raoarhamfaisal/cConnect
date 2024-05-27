@@ -43,7 +43,7 @@ function image_path(img) {
 
 function isVideo(img) {
   // determine if video
-  let extension = img.split(".").pop();
+  let extension = img?.split(".").pop();
   if ((extension == "mp4") | (extension == "mov")) {
     playVideo.value = true;
   } else {

@@ -185,6 +185,7 @@ export default {
     ...mapGetters("profile", [
       "loadFirstPageWithNoPreserve",
       "updatedPost",
+      "updatedPostId",
       "deletedPost",
     ]),
 
@@ -204,15 +205,21 @@ export default {
     },
   },
   watch: {
-    updatedPost(newVal) {
-      console.log("post is edited");
+    // updatedPost(newVal) {
+    //   console.log("post is edited");
 
-      if (newVal && Object.keys(newVal).length > 0) {
-        console.log("post is edited");
-        // const updatedPostIndex = this.allPosts.findIndex(
-        //   (post) => post.id === newVal.id
-        // );
-        // this.allPosts[updatedPostIndex] = newVal;
+    //   if (newVal && Object.keys(newVal).length > 0) {
+    //     console.log("post is edited");
+    //     // const updatedPostIndex = this.allPosts.findIndex(
+    //     //   (post) => post.id === newVal.id
+    //     // );
+    //     // this.allPosts[updatedPostIndex] = newVal;
+    //     this.getFirstPage();
+    //   }
+    // },
+    updatedPostId(newVal) {
+      console.log("in updated postId");
+      if (newVal > 0) {
         this.getFirstPage();
       }
     },
