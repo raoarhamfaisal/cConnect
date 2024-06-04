@@ -339,9 +339,13 @@ export default {
     },
     showFullTextBody1: "checkContentHeight",
     showFullTextBody2: "checkContentHeightBody2",
+    //adding comment on enlarged
     addedCommentInEnlarge(newVal) {
       if (newVal && Object.keys(newVal).length > 0) {
-        this.allComments.unshift(newVal);
+        if (this.post.id === newVal.post_id) {
+          this.allComments.unshift(newVal);
+          this.pagination.total = this.pagination.total + 1;
+        }
       }
     },
     // comment delte
@@ -736,7 +740,10 @@ export default {
         type="list-item-avatar"
       ></v-skeleton-loader>
     </div>
-    <div v-else-if="!loadingLiked && likedUsers && likedUsers.length > 0">
+    <div
+      class="flex flex-col gap-2"
+      v-else-if="!loadingLiked && likedUsers && likedUsers.length > 0"
+    >
       <LikedUser
         liked
         v-for="(user, index) in likedUsers"
@@ -768,7 +775,10 @@ export default {
         type="list-item-avatar"
       ></v-skeleton-loader>
     </div>
-    <div v-else-if="!loadingUnliked && unLikedUsers && unLikedUsers.length > 0">
+    <div
+      class="flex flex-col gap-2"
+      v-else-if="!loadingUnliked && unLikedUsers && unLikedUsers.length > 0"
+    >
       <LikedUser
         v-for="(user, index) in unLikedUsers"
         :key="index"

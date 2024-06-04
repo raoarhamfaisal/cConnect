@@ -30,10 +30,32 @@
       />
     </div>
   </div>
+  <v-dialog
+    v-if="showFooter"
+    class="dialog-modal"
+    v-model="loadingSendComment"
+    scrim="transparent"
+    persistent
+    width="auto"
+  >
+    <Card
+      :shadowLevel="2"
+      bgColor="#364fc7"
+      :padding="screenWidth < 640 ? '7px' : '10px'"
+    >
+      <div class="text-white">Uploading Comment...</div>
+      <v-progress-linear
+        indeterminate
+        color="#fff"
+        class="mb-0"
+      ></v-progress-linear>
+    </Card>
+  </v-dialog>
 </template>
 
 <script setup>
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
+import Card from "@/Components/Card.vue";
 
 import { filterBadWords, somethingWentWrong } from "@/helpers/utilities";
 import { Icon } from "@iconify/vue";

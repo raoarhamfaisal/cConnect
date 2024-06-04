@@ -581,7 +581,10 @@ export default {
         type="list-item-avatar"
       ></v-skeleton-loader>
     </div>
-    <div v-else-if="!loadingLiked && likedUsers && likedUsers.length > 0">
+    <div
+      class="flex flex-col gap-2"
+      v-else-if="!loadingLiked && likedUsers && likedUsers.length > 0"
+    >
       <LikedUser
         liked
         v-for="(user, index) in likedUsers"
@@ -613,7 +616,10 @@ export default {
         type="list-item-avatar"
       ></v-skeleton-loader>
     </div>
-    <div v-else-if="!loadingUnliked && unLikedUsers && unLikedUsers.length > 0">
+    <div
+      class="flex flex-col gap-2"
+      v-else-if="!loadingUnliked && unLikedUsers && unLikedUsers.length > 0"
+    >
       <LikedUser
         v-for="(user, index) in unLikedUsers"
         :key="index"
