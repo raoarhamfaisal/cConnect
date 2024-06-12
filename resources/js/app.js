@@ -76,6 +76,79 @@ const vuetify = createVuetify({
 const appName =
   window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
 
+// import Echo from "laravel-echo";
+// import Pusher from "pusher-js"; // Import Pusher
+
+// window.Pusher = Pusher;
+
+// window.Echo = new Echo({
+//   broadcaster: "pusher",
+//   key: "your-app-key", // Replace with your Pusher app key
+//   cluster: "mt1", // Replace with your Pusher cluster
+//   encrypted: false, // Use HTTPS for communication (recommended)
+// });
+
+// import Echo from "laravel-echo";
+// import Pusher from "pusher-js";
+
+// window.Pusher = Pusher;
+
+// const options = {
+//   broadcaster: "pusher",
+//   key: "your-app-key",
+//   cluster: "mt1",
+// };
+
+// window.Echo = new Echo({
+//   ...options,
+//   client: new Pusher(options.key, options),
+// });
+
+import Echo from "laravel-echo";
+
+import SocketIO from "socket.io-client";
+
+window.io = SocketIO;
+
+import Pusher from "pusher-js"; // Import Pusher
+
+window.Pusher = Pusher;
+
+window.Echo = new Echo({
+  broadcaster: "pusher",
+  host: window.location.hostname + ":6001", // Adjust the port if needed
+  // path: "/your-app-key", // Replace 'yourAppKey' with your actual app key
+  key: "221a2824fa5d4248dc08",
+  cluster: "ap2",
+  // path: "/",
+  // path: "/app/your-app-key",
+  wsPort: 6001,
+  disableStats: true,
+  encrypted: true,
+  forceTLS: true,
+});
+window.Echo.join("comments").listen("CommentPosted", (e) => {
+  console.log("Event received:", e);
+  // Handle the event (e.g., update your data or UI)
+});
+
+window.Echo.join("post").listen("PostCountersChanged", (e) => {
+  console.log("Event received:", e);
+  // Handle the event (e.g., update your data or UI)
+});
+
+window.Echo.join("commentReactions").listen(
+  "CommentReactionOrReplyChanged",
+  (e) => {
+    console.log("Event received:", e);
+    // Handle the event (e.g., update your data or UI)
+  }
+);
+
+// .listen(".server.created", function (e) {
+//   console.log("Event received:", e);
+// });
+
 createInertiaApp({
   title: (title) => `${title} - ${appName}`,
   resolve: (name) =>

@@ -19,8 +19,11 @@ use App\Models\SessionViewSetting;
 use App\Models\SessionTrade;
 use App\Mail\PostReportedMail;
 use Illuminate\Support\Facades\Mail;
+use App\Events\PostCountersChanged;
 
 use Illuminate\Http\Request as HttpRequest;
+use Illuminate\Support\Facades\Broadcast;
+
 
 
 class PostController extends Controller
@@ -671,7 +674,7 @@ class PostController extends Controller
         $repost->user_id = Auth::id();
         $repost->original_post_id = $post->id;
         $repost->original_user_id = $post->user_id; // Save the original user's ID
-        $repost->repost = 0;
+        $repost->repost = 1;
 
 
         $post->repost++;
@@ -685,6 +688,9 @@ class PostController extends Controller
 
         // Attach these trades to the repost
         $repost->trades()->sync($originalPostTrades);
+
+        broadcast(new PostCountersChanged($post));
+
 
         return response()->json($repost, 201);
     }

@@ -7,6 +7,13 @@ use App\Models\Post;
 use App\Models\Comment;
 use App\Models\CommentReaction;
 use Illuminate\Support\Facades\Auth;
+use App\Events\CommentPosted;
+use App\Events\CommentUpdated;
+use App\Events\CommentDeleted;
+use App\Events\CommentReactionOrReplyChanged;
+
+use Illuminate\Support\Facades\Broadcast;
+
 
     
 class CommentController extends Controller
@@ -97,6 +104,8 @@ class CommentController extends Controller
             $comment->body = $request->body;
             $comment->save();
 
+
+
             // Eager load the user's profile
             $comment->load('user.profile');
 
@@ -113,6 +122,10 @@ class CommentController extends Controller
             // Hide the user object from the response
             $comment->makeHidden('user');
 
+            broadcast(new CommentPosted($comment));
+
+
+
             return response()->json($comment, 201);
         }
 
@@ -123,12 +136,14 @@ class CommentController extends Controller
         {
             // Add authorization check to ensure users can only edit their comments
             $comment->update($request->all());
+            broadcast(new CommentUpdated($comment));
             return response()->json($comment);
         }
     
         public function destroy(Comment $comment)
         {
             // Add authorization check to ensure users can only delete their comments
+            broadcast(new CommentDeleted($comment));
             $comment->delete();
             return response()->json(['message' => 'Comment deleted successfully.']);
         }
@@ -143,6 +158,9 @@ class CommentController extends Controller
                 ['type' => 'like']
             );
 
+            broadcast(new CommentReactionOrReplyChanged($comment));
+
+
             return response()->json($reaction, 200);
         }
 
@@ -156,6 +174,7 @@ class CommentController extends Controller
         public function removeLikeComment(Comment $comment)
         {
             $this->removeReaction($comment, 'like');
+            broadcast(new CommentReactionOrReplyChanged($comment));
             return response()->json(['message' => 'Like removed']);
         }
 
@@ -170,6 +189,7 @@ class CommentController extends Controller
                 ],
                 ['type' => 'dislike']
             );
+            broadcast(new CommentReactionOrReplyChanged($comment));
 
             return response()->json($reaction, 200);
         }
@@ -177,6 +197,7 @@ class CommentController extends Controller
         public function removeDislikeComment(Comment $comment)
         {
             $this->removeReaction($comment, 'dislike');
+            broadcast(new CommentReactionOrReplyChanged($comment));
             return response()->json(['message' => 'Dislike removed']);
         }
 
@@ -213,6 +234,8 @@ class CommentController extends Controller
             // Add the user's reaction to the reply
             $reply->user_reaction = $reply->reactions->first()->type ?? null;
             unset($reply->user); // Remove additional user details
+
+            broadcast(new CommentReactionOrReplyChanged($parentComment));
         
             return response()->json($reply, 201);
         }
