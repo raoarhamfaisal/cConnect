@@ -71,6 +71,41 @@ class CommentController extends Controller
                 ]
             ]);
         }
+
+
+        public function getSingleComment(Request $request, $commentId)
+        {
+            $userID = Auth::id(); // Get the current user ID
+        
+            $comment = Comment::with([
+                    'replies' => function ($query) use ($userID) {
+                        $query->withCount(['likes', 'dislikes'])
+                              ->with(['user.profile', 'reactions' => function ($q) use ($userID) {
+                                  $q->where('user_id', $userID);
+                              }]);
+                    },
+                    'user.profile',
+                    'reactions' => function ($query) use ($userID) {
+                        $query->where('user_id', $userID);
+                    }
+                ])
+                ->withCount(['likes', 'dislikes'])
+                ->where('id', $commentId)
+                ->firstOrFail();
+        
+            $this->addUserDetailsToComment($comment);
+            $comment->user_reaction = $comment->reactions->first()->type ?? null;
+            unset($comment->user); // Remove the additional user details
+        
+            foreach ($comment->replies as $reply) {
+                $this->addUserDetailsToComment($reply);
+                $reply->user_reaction = $reply->reactions->first()->type ?? null;
+                unset($reply->user); // Remove the additional user details
+            }
+        
+            return response()->json($comment);
+        }
+        
                 
         private function addUserDetailsToComment($comment)
         {

@@ -76,28 +76,46 @@ export default {
     console.log("window.Echo", window.Echo);
 
     window.Echo.channel("comments") // Replace with your channel name
-      .listen("CommentPosted", (e) => {
-        console.log("Event received:", e);
-        // Handle the event (e.g., update your data or UI)
+      .listen("CommentPosted", (data) => {
+        console.log("CommentPosted", data);
+        this.$store.dispatch("profile/fetchCommentPosted", data);
+
+        // Handle the event (data.g., update your data or UI)
       })
-      .listen("CommentUpdated", (e) => {
-        console.log("Event received:", e);
-        // Handle the event (e.g., update your data or UI)
+      .listen("CommentUpdated", (data) => {
+        console.log("CommentUpdated:", data);
+        this.$store.dispatch("profile/fetchComment", data);
+        // Handle the event (data.g., update your data or UI)
       })
-      .listen("CommentDeleted", (e) => {
-        console.log("Event received:", e);
-        // Handle the event (e.g., update your data or UI)
+      .listen("CommentDeleted", (data) => {
+        console.log("Comment Deleted:", data);
+        this.$store.commit("profile/setPusherCommentToDelete", data.comment);
+        // Handle the event (data.g., update your data or UI)
       });
 
     window.Echo.channel("post") // Replace with your channel name
-      .listen("PostCountersChanged", (e) => {
-        console.log("Event received:", e);
-        // Handle the event (e.g., update your data or UI)
+      .listen("PostCountersChanged", (data) => {
+        console.log("PostCountersChanged", data);
+        const post = data.post;
+        const index = this.allPosts.findIndex(
+          (post_allPosts) => post.id === post_allPosts.id
+        );
+        if (index !== -1) {
+          this.allPosts[index].repost = post.repost;
+          if (post.likes_count) {
+            this.allPosts[index].likes_count = post.likes_count;
+          }
+          if (post.dislikes_count) {
+            this.alllPost[index].dislikes_count = post.dislikes_count;
+          }
+        }
       });
 
     window.Echo.channel("commentReactions") // Replace with your channel name
-      .listen("CommentReactionOrReplyChanged", (e) => {
-        console.log("Event received:", e);
+      .listen("CommentReactionOrReplyChanged", (data) => {
+        console.log("CommentReactionOrReplyChanged", data);
+        this.$store.dispatch("profile/fetchComment", data);
+
         // Handle the event (e.g., update your data or UI)
       });
   },

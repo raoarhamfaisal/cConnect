@@ -51,6 +51,10 @@ Route::get('/post/background-colors', [PostColorController::class, 'getBackgroun
 Route::get('/posts/{post}/trades', [PostController::class, 'getPostTrades']);
 
 
+Route::get('/posts/{post}/comments', [CommentController::class, 'index']);
+Route::get('/posts/comments/{commentId}', [CommentController::class, 'getSingleComment']);
+
+
 
 
 // Route::middleware('auth:sanctum')->group(function () {
@@ -116,7 +120,9 @@ Route::get('/posts/{post}/trades', [PostController::class, 'getPostTrades']);
         Route::get('/posts/{post}/dislikes', [PostReactionController::class, 'getPostDislikes']);
 
         // Post Comments
-        Route::get('/posts/{post}/comments', [CommentController::class, 'index']);
+        // Route::get('/posts/{post}/comments', [CommentController::class, 'index']);
+        // Route::get('/posts/comments/{commentId}', [CommentController::class, 'getSingleComment']);
+
         Route::post('/posts/{post}/comments', [CommentController::class, 'store']);
         Route::put('/comments/{comment}', [CommentController::class, 'update']);
         Route::delete('/comments/{comment}', [CommentController::class, 'destroy']);

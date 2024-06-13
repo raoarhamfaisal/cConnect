@@ -20,13 +20,6 @@ class CommentReactionOrReplyChanged implements ShouldBroadcast
 
     public function __construct(Comment $comment)
     {
-        $comment->load([
-            // Load the count of likes
-            'likes',
-            // Load the count of dislikes
-            'dislikes'
-            // Load other related data as needed
-        ]);
         $this->comment = $comment;
     }
 

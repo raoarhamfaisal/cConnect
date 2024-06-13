@@ -127,23 +127,6 @@ window.Echo = new Echo({
   encrypted: true,
   forceTLS: true,
 });
-window.Echo.join("comments").listen("CommentPosted", (e) => {
-  console.log("Event received:", e);
-  // Handle the event (e.g., update your data or UI)
-});
-
-window.Echo.join("post").listen("PostCountersChanged", (e) => {
-  console.log("Event received:", e);
-  // Handle the event (e.g., update your data or UI)
-});
-
-window.Echo.join("commentReactions").listen(
-  "CommentReactionOrReplyChanged",
-  (e) => {
-    console.log("Event received:", e);
-    // Handle the event (e.g., update your data or UI)
-  }
-);
 
 // .listen(".server.created", function (e) {
 //   console.log("Event received:", e);

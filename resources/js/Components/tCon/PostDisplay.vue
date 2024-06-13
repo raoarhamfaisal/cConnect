@@ -146,6 +146,9 @@ export default {
       "replyId",
       "reply",
       "postReply",
+      "pusherComment",
+      "pusherCommentToDelete",
+      "pusherCommentPosted",
     ]),
     ...mapGetters("ratings", ["comment"]),
     firstTwoComments() {
@@ -329,13 +332,15 @@ export default {
     //   handler: "checkContentHeight",
     //   deep: true,
     // },
-    post(newVal) {
-      if (newVal && Object.keys(newVal).length > 0) {
-        // When post becomes available
-        setTimeout(() => {
-          this.isPostVisible = true; // Set visibility to true after 1 second
-        }, 1000); // 1000 milliseconds delay
-      }
+    post: {
+      handler(newVal, oldVal) {
+        if (newVal && Object.keys(newVal).length > 0) {
+          this.repost_count = this.post.repost;
+          this.likes_count = this.post.likes_count;
+          this.dislikes_count = this.post.dislikes_count;
+        }
+      },
+      deep: true,
     },
     showFullTextBody1: "checkContentHeight",
     showFullTextBody2: "checkContentHeightBody2",
@@ -347,6 +352,26 @@ export default {
           this.pagination.total = this.pagination.total + 1;
         }
       }
+    },
+    pusherCommentPosted: {
+      handler(newVal, oldVal) {
+        if (
+          newVal &&
+          newVal.id &&
+          newVal != oldVal &&
+          this.post.id === newVal.post_id
+        ) {
+          const commentIndex = this.allComments.findIndex(
+            (comment) => comment.id === newVal.id
+          );
+          if (commentIndex === -1) {
+            console.log("in pusher comment posted");
+            this.allComments.unshift(newVal);
+            this.pagination.total = this.pagination.total + 1;
+          }
+        }
+      },
+      deep: true,
     },
     // comment delte
     commentId(newVal) {
@@ -361,6 +386,36 @@ export default {
         }
       }
     },
+    pusherCommentToDelete: {
+      handler(newVal, oldVal) {
+        if (
+          newVal &&
+          newVal.id &&
+          newVal != oldVal &&
+          this.post.id === newVal.post_id
+        ) {
+          const comment_id = newVal.parent_id ? newVal.parent_id : newVal.id;
+          const index = this.allComments.findIndex(
+            (comment) => comment.id === comment_id
+          );
+          if (comment_id === newVal.id) {
+            // for comment deletion
+            if (index !== -1) {
+              this.allComments.splice(index, 1);
+              this.pagination.total = this.pagination.total - 1;
+            }
+          } else {
+            // for reply deletion
+            const replyIndex = this.allComments[index].replies.findIndex(
+              (comment) => comment.id === newVal.id
+            );
+            this.allComments[index].replies.splice(replyIndex, 1);
+          }
+        }
+      },
+      deep: true,
+    },
+
     replyId(newVal) {
       if (newVal) {
         for (let i = 0; i < this.allComments.length; i++) {
@@ -405,6 +460,26 @@ export default {
     postComment: {
       handler(newVal, oldVal) {
         if (newVal && newVal.id && newVal != oldVal) {
+          const commentIndex = this.allComments.findIndex(
+            (comment) => comment.id === newVal.id
+          );
+
+          if (commentIndex !== -1) {
+            // Update the existing comment with the new data
+            this.allComments[commentIndex] = newVal;
+          }
+        }
+      },
+      deep: true,
+    },
+    pusherComment: {
+      handler(newVal, oldVal) {
+        if (
+          newVal &&
+          newVal.id &&
+          newVal != oldVal &&
+          this.post.id === newVal.post_id
+        ) {
           const commentIndex = this.allComments.findIndex(
             (comment) => comment.id === newVal.id
           );

@@ -21,6 +21,9 @@ export default {
       commentId: 0,
       replyId: 0,
       reply: {},
+      pusherCommentPosted: {},
+      pusherCommentToDelete: {},
+      pusherComment: {},
       postComment: {},
       postReply: {},
       updatedPost: {},
@@ -31,6 +34,9 @@ export default {
   getters: {
     status: (state) => state.status,
     commentId: (state) => state.commentId,
+    pusherComment: (state) => state.pusherComment,
+    pusherCommentPosted: (state) => state.pusherCommentPosted,
+    pusherCommentToDelete: (state) => state.pusherCommentToDelete,
     postComment: (state) => state.postComment,
     postReply: (state) => state.postReply,
     replyId: (state) => state.replyId,
@@ -56,6 +62,15 @@ export default {
     },
     setPostComment(state, payload) {
       state.postComment = payload;
+    },
+    setPusherComment(state, payload) {
+      state.pusherComment = payload;
+    },
+    setPusherCommentPosted(state, payload) {
+      state.pusherCommentPosted = payload;
+    },
+    setPusherCommentToDelete(state, payload) {
+      state.pusherCommentToDelete = payload;
     },
     setPostReply(state, payload) {
       state.postReply = payload;
@@ -122,6 +137,40 @@ export default {
         somethingWentWrong();
       } finally {
         commit("setLoadingViewSettingsProfile", false);
+      }
+    },
+    async fetchComment({ commit }, payload) {
+      const comment_id = payload.comment.parent_id
+        ? payload.comment.parent_id
+        : payload.comment.id;
+      try {
+        const response = await axios.get(
+          `/api/posts/comments/${comment_id}`,
+          getAxiosConfig()
+        );
+
+        if (response.data) {
+          commit("setPusherComment", response.data);
+        }
+      } catch (err) {
+        somethingWentWrong();
+      }
+    },
+    async fetchCommentPosted({ commit }, payload) {
+      const comment_id = payload.comment.parent_id
+        ? payload.comment.parent_id
+        : payload.comment.id;
+      try {
+        const response = await axios.get(
+          `/api/posts/comments/${comment_id}`,
+          getAxiosConfig()
+        );
+
+        if (response.data) {
+          commit("setPusherCommentPosted", response.data);
+        }
+      } catch (err) {
+        somethingWentWrong();
       }
     },
 
