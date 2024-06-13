@@ -209,7 +209,6 @@ const user = usePageDeatails.auth.user;
 // Mounted
 onMounted(async () => {
   loading.value = true;
-  console.log("6");
 
   await fetchReviews();
   loading.value = false;
@@ -240,11 +239,9 @@ const responseId = computed(() => store.state.ratings.responseId);
 const updatedReview = computed(() => store.state.ratings.updatedReview);
 const updatedResponse = computed(() => store.state.ratings.updatedResponse);
 
-
 //Watch
 
 watch(updatedReview, (newVal) => {
-  console.log(newVal, newVal.id, "updatedReview");
   if (newVal && newVal.id) {
     const reviewIndex = contractorReviews.value.findIndex(
       (review) => review.id === newVal.id
@@ -254,7 +251,6 @@ watch(updatedReview, (newVal) => {
       // Update the existing review with the new data
       Object.assign(contractorReviews.value[reviewIndex], newVal);
     }
-    console.log("5");
 
     fetchReviews(perPage.value, currentPage.value, false, true);
   }
@@ -284,8 +280,6 @@ watch(updatedResponse, (newVal) => {
   }
 });
 watch(reviewId, (newVal) => {
-  console.log(newVal, "updatedReviewId");
-
   if (newVal) {
     const index = contractorReviews.value.findIndex(
       (review) => review.id === newVal
@@ -294,7 +288,6 @@ watch(reviewId, (newVal) => {
     if (index !== -1) {
       contractorReviews.value.splice(index, 1);
     }
-    console.log("4");
 
     fetchReviews(perPage.value, currentPage.value, false, true);
   }
@@ -315,7 +308,6 @@ watch(
   () => average_rating.value,
   (newVal, oldVal) => {
     if (newVal != oldVal) {
-      console.log("averageRating: " + average_rating.value);
       store.commit("ratings/SET_AVERAGE_RATING", newVal);
       // store.commit("ratings/SET_USER_ID", newVal);
     }
@@ -326,7 +318,6 @@ watch(
   () => pagination.value.total,
   (newVal, oldVal) => {
     if (newVal != oldVal) {
-      console.log("total reviews: " + pagination.value.total);
       store.commit("ratings/SET_LENGTH", newVal);
     }
   }
@@ -337,7 +328,6 @@ watch(
 const loadMoreReviews = async () => {
   loadingNextPage.value = true;
   currentPage.value = currentPage.value + 1;
-  console.log("3");
 
   await fetchReviews(perPage.value, currentPage.value);
   loadingNextPage.value = false;
@@ -350,7 +340,6 @@ const handleFilterSelect = (selected, sortByRate) => {
 };
 const fetchReveiwsWithLoading = async (noReviewsChanges = false) => {
   loading.value = true;
-  console.log("2");
 
   await fetchReviews(perPage.value, currentPage.value, false, noReviewsChanges);
   loading.value = false;
@@ -371,7 +360,6 @@ const fetchReviews = async (
     sortByRating = sortBy.value;
   }
   try {
-    console.log("fetchReviews");
     const response = await axios.get(
       `/api/reviews/${contractorDetails.id}?per_page=${per_page}&page=${page}&sort_by_date=${sortByDate}&sort_by_rating=${sortByRating}`,
       getAxiosConfig()
@@ -446,7 +434,6 @@ const refreshPageOnAdd = async () => {
   loading.value = true;
 
   currentPage.value = 1;
-  console.log("1");
   await fetchReviews(perPage.value, currentPage.value, false);
   loading.value = false;
   handleSelect();
@@ -454,8 +441,6 @@ const refreshPageOnAdd = async () => {
 
 const onResponseAdd = (newVal) => {
   if (newVal && newVal.id) {
-    console.log("here in teh code of updatedResponse");
-
     const reviewToUpdate = contractorReviews.value.find(
       (review) => review.id === newVal.review_id
     );

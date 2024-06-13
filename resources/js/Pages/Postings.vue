@@ -95,7 +95,6 @@ export default {
 
     window.Echo.channel("post") // Replace with your channel name
       .listen("PostCountersChanged", (data) => {
-        console.log("PostCountersChanged", data);
         const post = data.post;
         const index = this.allPosts.findIndex(
           (post_allPosts) => post.id === post_allPosts.id
@@ -224,7 +223,6 @@ export default {
   computed: {
     ...mapState({
       index: (state) => {
-        console.log("index");
         return state.ratings.index;
       },
     }),
@@ -256,20 +254,7 @@ export default {
     },
   },
   watch: {
-    // updatedPost(newVal) {
-    //   console.log("post is edited");
-
-    //   if (newVal && Object.keys(newVal).length > 0) {
-    //     console.log("post is edited");
-    //     // const updatedPostIndex = this.allPosts.findIndex(
-    //     //   (post) => post.id === newVal.id
-    //     // );
-    //     // this.allPosts[updatedPostIndex] = newVal;
-    //     this.getFirstPage();
-    //   }
-    // },
     updatedPostId(newVal) {
-      console.log("in updated postId");
       if (newVal > 0) {
         this.getFirstPage();
       }
@@ -312,7 +297,6 @@ export default {
       }
     },
     shouldLoadPosts(newValue) {
-      console.log("inforLoadPosts", this.shouldLoadPosts);
       if (this.shouldLoadPosts) {
         this.loadPostsOnChange();
         this.$store.commit("ratings/setShouldLoadPosts", false);
@@ -444,7 +428,6 @@ export default {
             // Calculate the starting index in the allPosts array
             const startIndex = (pageNumber - 1) * this.posts.per_page;
 
-            console.log(pageNumber, this.index, this.allPosts, "info");
             // Replace items in this.allPosts array
             this.allPosts.splice(
               startIndex,
@@ -473,7 +456,6 @@ export default {
       this.postDisplayEnlarged = false;
     },
     onAddingEnlargeComment(comment) {
-      console.log("in postings");
       this.addedCommentInEnlarge = comment;
     },
     onRespost() {

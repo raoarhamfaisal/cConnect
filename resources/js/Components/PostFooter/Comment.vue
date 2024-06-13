@@ -385,7 +385,6 @@ const handleSubmitDelete = async () => {
       store.commit("profile/setCommentId", props.comment.id);
     }
   } catch (err) {
-    console.log(err);
     somethingWentWrong(err.response.data.message, "inherit");
   } finally {
     loadingDelete.value = false;

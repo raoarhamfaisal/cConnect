@@ -86,7 +86,6 @@ export default {
   mounted() {
     // Remove PostingActionMenu upon scroll
     // ERROR ONLY WORKS IN MOBILE BECAUSE LOOKING AT WINDOW140
-    console.log("post display enalareged");
     this.fetchAllComments();
   },
   watch: {
@@ -102,7 +101,6 @@ export default {
             (comment) => comment.id === newVal.id
           );
           if (commentIndex === -1) {
-            console.log("in pusher comment posted");
             this.allComments.unshift(newVal);
             this.pagination.total = this.pagination.total + 1;
           }
@@ -152,7 +150,6 @@ export default {
       deep: true,
     },
     replyId(newVal) {
-      console.log("in replyid handler post enlarged", newVal);
       if (newVal) {
         for (let i = 0; i < this.allComments.length; i++) {
           const comment = this.allComments[i];
@@ -179,7 +176,6 @@ export default {
             this.allComments[commentIndex].replies = [];
           }
           const length = this.allComments[commentIndex].replies.length;
-          console.log(length);
           if (
             length > 0 &&
             this.allComments[commentIndex].replies[length - 1]?.id !==
@@ -591,7 +587,6 @@ export default {
           getAxiosConfig()
         );
         if (response.data) {
-          console.log("comments");
           this.allComments = response.data?.comments;
           this.pagination = response.data?.pagination;
         }
@@ -605,7 +600,6 @@ export default {
       this.$refs.commentDialogRef.openDialog();
     },
     onAddingComment(comment) {
-      console.log("on enlared comment");
       this.added = true;
       this.allComments.unshift(comment);
       this.pagination.total = this.pagination.total + 1;

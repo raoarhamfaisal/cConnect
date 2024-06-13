@@ -365,7 +365,6 @@ export default {
             (comment) => comment.id === newVal.id
           );
           if (commentIndex === -1) {
-            console.log("in pusher comment posted");
             this.allComments.unshift(newVal);
             this.pagination.total = this.pagination.total + 1;
           }

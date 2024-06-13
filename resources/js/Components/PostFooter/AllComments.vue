@@ -113,7 +113,6 @@ watch(
   () => props.modelValue,
   (newVal) => {
     if (newVal) {
-      console.log("here");
       comments.value = newVal;
     }
   }
@@ -137,7 +136,6 @@ watch(
 watch(
   () => comments.value,
   (newValue) => {
-    console.log(newValue, "newComments after deletion");
     emit("update:modelValue", comments.value);
   }
 );
@@ -150,7 +148,6 @@ watch(
 watch(
   () => commentId.value,
   async (newValue) => {
-    console.log("commentId when deleted", newValue);
     if (newValue > 0) {
       currentPage.value = 1;
       loading.value = true;
@@ -176,12 +173,10 @@ onMounted(async () => {
       const observerCallback = (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            console.log("intersecting");
             loadMoreComments();
           }
         });
       };
-      console.log("in");
 
       const observer = new IntersectionObserver(observerCallback, {
         rootMargin: "0px 0px 0px 0px",
@@ -196,7 +191,6 @@ onMounted(async () => {
 const loadMoreComments = async () => {
   loadingNextPage.value = true;
   currentPage.value = currentPage.value + 1;
-  console.log("3");
 
   await fetchComments(perPage.value, currentPage.value);
   loadingNextPage.value = false;
@@ -209,30 +203,24 @@ const fetchComments = async (
   noReviewsChanges = false
 ) => {
   try {
-    console.log("fetchComments");
     const response = await axios.get(
       `/api/posts/${props.postId}/comments?per_page=${per_page}&page=${page}`,
       getAxiosConfig()
     );
-    console.log("fetchComments2");
 
     if (addedNumber.value > 0) {
-      console.log("in 1st", response.data.comments);
       comments.value = [
         ...comments.value,
         ...response.data.comments.slice(addedNumber.value),
       ];
       addedNumber.value = 0;
     } else if (append) {
-      console.log("in 2nd", response.data.comments);
-
       comments.value = [...comments.value, ...response.data.comments];
     } else {
       if (!noReviewsChanges) {
         currentPage.value = 1;
-        console.log("reponse comments", response.data.comments);
+
         comments.value = [...response.data.comments];
-        console.log("reponse comments", comments.value);
       }
     }
     pagination.value = response.data.pagination;
