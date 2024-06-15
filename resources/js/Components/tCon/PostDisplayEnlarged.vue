@@ -89,6 +89,17 @@ export default {
     this.fetchAllComments();
   },
   watch: {
+    postEnlarged: {
+      handler(newVal, oldVal) {
+        if (newVal && Object.keys(newVal).length > 0) {
+          this.repost_count = this.postEnlarged.repost;
+          this.likes_count = this.postEnlarged.likes_count;
+          this.dislikes_count = this.postEnlarged.dislikes_count;
+          this.your_reaction = this.postEnlarged.your_reaction;
+        }
+      },
+      deep: true,
+    },
     pusherCommentPosted: {
       handler(newVal, oldVal) {
         if (
