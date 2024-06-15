@@ -86,11 +86,18 @@ class PostController extends Controller
             'userID' => $userID,
             'profile' => $profile,
             'posts' => Post::query()
-                ->select(['posts.*', 'posts.id as post_id', 'post_reactions.type as user_reaction'])
+
+                ->select('posts.*', 'posts.id as post_id', 'post_reactions.type as user_reaction')
                 ->leftJoin('post_reactions', function ($join) use ($userID) {
                     $join->on('posts.id', '=', 'post_reactions.post_id')
-                        ->where('post_reactions.user_id', '=', $userID);
+                         ->where('post_reactions.user_id', '=', $userID);
                 })
+            //     ->select('posts.*', 
+            //     'posts.id as post_id',
+            //     DB::raw('(SELECT type FROM post_reactions WHERE post_id = posts.id AND user_id = ?) as user_reaction', [$userID]),
+            //     DB::raw('(SELECT COUNT(*) FROM post_reactions WHERE post_id = posts.id AND type = "like") as likes_count'),
+            //     DB::raw('(SELECT COUNT(*) FROM post_reactions WHERE post_id = posts.id AND type = "dislike") as dislikes_count')
+            // )
                 ->withCount(['likes', 'dislikes'])
                 ->addSelect([
                     'profiles.first_name',
@@ -689,7 +696,13 @@ class PostController extends Controller
         // Attach these trades to the repost
         $repost->trades()->sync($originalPostTrades);
 
-        broadcast(new PostCountersChanged($post));
+        try {
+            broadcast(new PostCountersChanged($comment));
+        } catch (\Exception $e) {
+            \Log::error('Error broadcasting PostCountersChanged event: ' . $e->getMessage());
+            // Optionally, handle the error further if needed
+        }
+
 
 
         return response()->json($repost, 201);

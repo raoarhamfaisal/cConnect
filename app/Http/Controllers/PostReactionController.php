@@ -16,28 +16,50 @@ class PostReactionController extends Controller
     public function like(Post $post)
     {
         $this->handleReaction($post, 'like');
-        broadcast(new PostCountersChanged($post));
+        try {
+            broadcast(new PostCountersChanged($post));
+        } catch (\Exception $e) {
+            \Log::error('Error broadcasting PostCountersChanged event: ' . $e->getMessage());
+            // Optionally, handle the error further if needed
+        }
+
+        
         return response()->json(['message' => 'Liked successfully']);
     }
 
     public function dislike(Post $post)
     {
         $this->handleReaction($post, 'dislike');
-        broadcast(new PostCountersChanged($post));
+        try {
+            broadcast(new PostCountersChanged($post));
+        } catch (\Exception $e) {
+            \Log::error('Error broadcasting PostCountersChanged event: ' . $e->getMessage());
+            // Optionally, handle the error further if needed
+        }
         return response()->json(['message' => 'Disliked successfully']);
     }
 
     public function removeLike(Post $post)
     {
         $this->removeReaction($post, 'like');
-        broadcast(new PostCountersChanged($post));
+        try {
+            broadcast(new PostCountersChanged($post));
+        } catch (\Exception $e) {
+            \Log::error('Error broadcasting PostCountersChanged event: ' . $e->getMessage());
+            // Optionally, handle the error further if needed
+        }
         return response()->json(['message' => 'Like removed']);
     }
 
     public function removeDislike(Post $post)
     {
         $this->removeReaction($post, 'dislike');
-        broadcast(new PostCountersChanged($post));
+        try {
+            broadcast(new PostCountersChanged($post));
+        } catch (\Exception $e) {
+            \Log::error('Error broadcasting PostCountersChanged event: ' . $e->getMessage());
+            // Optionally, handle the error further if needed
+        }
         return response()->json(['message' => 'Dislike removed']);
     }
 

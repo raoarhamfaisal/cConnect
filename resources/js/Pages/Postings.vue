@@ -95,17 +95,18 @@ export default {
 
     window.Echo.channel("post") // Replace with your channel name
       .listen("PostCountersChanged", (data) => {
+        console.log("data", data);
         const post = data.post;
         const index = this.allPosts.findIndex(
           (post_allPosts) => post.id === post_allPosts.id
         );
         if (index !== -1) {
           this.allPosts[index].repost = post.repost;
-          if (post.likes_count) {
-            this.allPosts[index].likes_count = post.likes_count;
+          if (data.likesCount) {
+            this.allPosts[index].likes_count = data.likesCount;
           }
-          if (post.dislikes_count) {
-            this.alllPost[index].dislikes_count = post.dislikes_count;
+          if (data.dislikesCount) {
+            this.alllPost[index].dislikes_count = data.dislikesCount;
           }
         }
       });
