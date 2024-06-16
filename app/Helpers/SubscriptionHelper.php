@@ -34,15 +34,15 @@ class SubscriptionHelper
 
         // Set base amount based on user's selected duration
         $baseAmount = $subscription->subscription_plan === 'Annual Subscription' 
-        ? ($subscription->paymentInfo && $subscription->paymentInfo->billed_annual_price ? $subscription->paymentInfo->billed_annual_price : 390) 
-        : ($subscription->paymentInfo && $subscription->paymentInfo->billed_monthly_price ? $subscription->paymentInfo->billed_monthly_price : 39);
+        ? ($subscription->paymentInfo && $subscription->paymentInfo->gold_billed_annual_price ? $subscription->paymentInfo->gold_billed_annual_price : 390) 
+        : ($subscription->paymentInfo && $subscription->paymentInfo->gold_billed_monthly_price ? $subscription->paymentInfo->gold_billed_monthly_price : 39);
             
         // Retrieve the sales tax rate
         $salesTaxRate = ($subscription->paymentInfo && $subscription->paymentInfo->sales_tax) ? ($subscription->paymentInfo->sales_tax * 0.01) : (0.02);       
 
         $finalAmount = $subscription->subscription_plan === 'Annual Subscription'
-            ? ($subscription->paymentInfo && $subscription->paymentInfo->billed_annual_price ? $subscription->paymentInfo->billed_annual_price : 390) 
-            : ($subscription->paymentInfo && $subscription->paymentInfo->billed_monthly_price ? $subscription->paymentInfo->billed_monthly_price : 39);
+            ? ($subscription->paymentInfo && $subscription->paymentInfo->gold_billed_annual_price ? $subscription->paymentInfo->gold_billed_annual_price : 390) 
+            : ($subscription->paymentInfo && $subscription->paymentInfo->gold_billed_monthly_price ? $subscription->paymentInfo->gold_billed_monthly_price : 39);
 
 
         return $isDiscountValid ? (($subscription->original_amount - $subscription->discount_amount) + (($subscription->original_amount - $subscription->discount_amount) * $salesTaxRate)) : ($subscription->original_amount + ($subscription->original_amount * $salesTaxRate));

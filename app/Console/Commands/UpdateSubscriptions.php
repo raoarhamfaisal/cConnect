@@ -61,15 +61,15 @@ class UpdateSubscriptions extends Command
 
         // // Set base amount based on user's selected duration
         // $baseAmount = $request->input('duration') === 'annual' 
-        // ? ($paymentInfo && $paymentInfo->billed_annual_price ? $paymentInfo->billed_annual_price : 390) 
-        // : ($paymentInfo && $paymentInfo->billed_monthly_price ? $paymentInfo->billed_monthly_price : 39);
+        // ? ($paymentInfo && $paymentInfo->gold_billed_annual_price ? $paymentInfo->gold_billed_annual_price : 390) 
+        // : ($paymentInfo && $paymentInfo->gold_billed_monthly_price ? $paymentInfo->gold_billed_monthly_price : 39);
             
         // // Retrieve the sales tax rate
         // $salesTaxRate = ($paymentInfo && $paymentInfo->sales_tax) ? ($paymentInfo->sales_tax / 100) : (2/100);       
 
         // $finalAmount = $request->input('duration') === 'annual' 
-        //     ? ($paymentInfo && $paymentInfo->billed_annual_price ? $paymentInfo->billed_annual_price : 390) 
-        //     : ($paymentInfo && $paymentInfo->billed_monthly_price ? $paymentInfo->billed_monthly_price : 39);
+        //     ? ($paymentInfo && $paymentInfo->gold_billed_annual_price ? $paymentInfo->gold_billed_annual_price : 390) 
+        //     : ($paymentInfo && $paymentInfo->gold_billed_monthly_price ? $paymentInfo->gold_billed_monthly_price : 39);
         
 
         $subscription->setAmount($savedSubscription->original_amount);

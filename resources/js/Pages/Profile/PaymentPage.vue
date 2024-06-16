@@ -696,11 +696,11 @@ const fetchPricingCardDetails = async () => {
       if (!coupon.value || Object.keys(coupon.value).length == 0) {
         const salesTax = +pricingPlan.value.sales_tax * 0.01;
         monthlyTotal.value =
-          +pricingPlan.value.billed_monthly_price +
-          +pricingPlan.value.billed_monthly_price * salesTax;
+          +pricingPlan.value.gold_billed_monthly_price +
+          +pricingPlan.value.gold_billed_monthly_price * salesTax;
         annualTotal.value =
-          +pricingPlan.value.billed_annual_price +
-          +pricingPlan.value.billed_annual_price * salesTax;
+          +pricingPlan.value.gold_billed_annual_price +
+          +pricingPlan.value.gold_billed_annual_price * salesTax;
       }
     }
   } catch (err) {

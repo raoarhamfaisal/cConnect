@@ -4,7 +4,7 @@
     <div
       v-if="loading"
       style="height: 500px"
-      class="card flex max-sm:flex-col max-sm:gap-10 gap-2  w-full"
+      class="card flex max-sm:flex-col max-sm:gap-10 gap-2 w-full"
     >
       <v-skeleton-loader class="w-full h-full" type="image">
       </v-skeleton-loader>
@@ -36,13 +36,13 @@
 
     <div
       v-if="!loading"
-      class="flex max-sm:flex-col mt-4 max-sm:gap-10 gap-2  w-full"
+      class="flex max-sm:flex-col mt-4 max-sm:gap-10 gap-2 w-full"
     >
       <PricingCard
         plan="MONTHLY"
         :monthlyPrice="
-          pricingPlan.billed_monthly_price
-            ? pricingPlan.billed_monthly_price
+          pricingPlan.gold_billed_monthly_price
+            ? pricingPlan.gold_billed_monthly_price
             : 0
         "
         :coupon="coupon"
@@ -56,10 +56,16 @@
       <PricingCard
         plan="ANNUAL"
         :coupon="coupon"
-        :couponDiscount="coupon && coupon.percentage_off_regular_price ? annualDiscount.toFixed(2) : 0.00"
+        :couponDiscount="
+          coupon && coupon.percentage_off_regular_price
+            ? annualDiscount.toFixed(2)
+            : 0.0
+        "
         :savingValue="annualDiscountBesideCoupon.toFixed(2)"
         :monthlyPrice="
-          pricingPlan.billed_annual_price ? pricingPlan.billed_annual_price : 0
+          pricingPlan.gold_billed_annual_price
+            ? pricingPlan.gold_billed_annual_price
+            : 0
         "
         :total="annualTotal ? parseFloat(annualTotal).toFixed(2) : 0"
         @selectedPricing="selectedPricing"
@@ -102,7 +108,7 @@ onMounted(() => {
 
 const monthlyTotal = computed(() => {
   // Calculate the original monthly price with tax
-  const originalMonthlyTotal = +pricingPlan.value.billed_monthly_price;
+  const originalMonthlyTotal = +pricingPlan.value.gold_billed_monthly_price;
 
   // If there's a coupon
   if (coupon.value && coupon.value.percentage_off_regular_price) {
@@ -121,7 +127,7 @@ const monthlyTotal = computed(() => {
 
 const annualTotal = computed(() => {
   // Calculate the original annual price with tax for 12 months
-  const originalAnnualTotal = +pricingPlan.value.billed_annual_price;
+  const originalAnnualTotal = +pricingPlan.value.gold_billed_annual_price;
 
   // If there's a coupon.value
   if (coupon.value && coupon.value.percentage_off_regular_price) {
@@ -142,26 +148,28 @@ const annualDiscount = computed(() => {
     : 0.0;
 
   const couponMonths = coupon.value.months ? coupon.value.months : 0;
-  const annualPriceDiscount = (+pricingPlan.value.billed_annual_price /12) * couponMonths
+  const annualPriceDiscount =
+    (+pricingPlan.value.gold_billed_annual_price / 12) * couponMonths;
 
-
-  return (
-    ((annualPriceDiscount * percentage_off_regular_price) /
-      100)
-  );
+  return (annualPriceDiscount * percentage_off_regular_price) / 100;
 });
 
 const annualDiscountBesideCoupon = computed(() => {
-  const originalMonthlyTotal = +pricingPlan.value.billed_monthly_price;
+  const originalMonthlyTotal = +pricingPlan.value.gold_billed_monthly_price;
 
-  const annualTotalwithRespectToMonth = (originalMonthlyTotal + +monthlyTaxPrice.value) * 12;
- console.log(annualTotalwithRespectToMonth,annualTotal.value,'annual',originalMonthlyTotal,monthlyTaxPrice.value)
-  return (
-    annualTotalwithRespectToMonth - annualTotal.value 
+  const annualTotalwithRespectToMonth =
+    (originalMonthlyTotal + +monthlyTaxPrice.value) * 12;
+  console.log(
+    annualTotalwithRespectToMonth,
+    annualTotal.value,
+    "annual",
+    originalMonthlyTotal,
+    monthlyTaxPrice.value
   );
+  return annualTotalwithRespectToMonth - annualTotal.value;
 });
 const monthlyDiscount = computed(() => {
-  const originalMonthlyTotal = +pricingPlan.value.billed_monthly_price;
+  const originalMonthlyTotal = +pricingPlan.value.gold_billed_monthly_price;
   const percentage_off_regular_price = coupon.value.percentage_off_regular_price
     ? coupon.value.percentage_off_regular_price
     : 0.0;
@@ -170,8 +178,8 @@ const monthlyDiscount = computed(() => {
 const monthlyTaxPrice = computed(() => {
   const discount = monthlyDiscount.value;
   let price = (
-    (+pricingPlan.value.sales_tax) *
-    (+pricingPlan.value.billed_monthly_price - discount)
+    +pricingPlan.value.sales_tax *
+    (+pricingPlan.value.gold_billed_monthly_price - discount)
   ).toFixed(2);
   return price === "0.00" ? "0.01" : price;
 });
@@ -179,8 +187,8 @@ const monthlyTaxPrice = computed(() => {
 const annualTaxPrice = computed(() => {
   const discount = annualDiscount.value;
   let price = (
-    (+pricingPlan.value.sales_tax ) *
-    (+pricingPlan.value.billed_annual_price - discount)
+    +pricingPlan.value.sales_tax *
+    (+pricingPlan.value.gold_billed_annual_price - discount)
   ).toFixed(2);
   return price === "0.00" ? "0.01" : price;
 });
@@ -239,9 +247,9 @@ const verifyCouponCode = () => {
   couponApiError.value = "";
   couponApiSuccessMsg.value = "";
   // Start a new timer
-  if(!form.coupon_code){
-    coupon.value = {}
-    return
+  if (!form.coupon_code) {
+    coupon.value = {};
+    return;
   }
   saveTimeout = setTimeout(async () => {
     loadingCoupon.value = true;

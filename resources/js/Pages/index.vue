@@ -800,8 +800,8 @@ const formatPrice = (price) => {
               <div class="price text-white">
                 <span>{{
                   formatPrice(
-                    pricingPlan.advertised_price
-                      ? pricingPlan.advertised_price
+                    pricingPlan.gold_advertised_price
+                      ? pricingPlan.gold_advertised_price
                       : 0
                   )
                 }}</span>

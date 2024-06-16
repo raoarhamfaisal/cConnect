@@ -5,6 +5,7 @@ import { createApp, h } from "vue";
 import "@mdi/font/css/materialdesignicons.css";
 import { createInertiaApp, Link, Head } from "@inertiajs/inertia-vue3";
 import { InertiaProgress } from "@inertiajs/progress";
+import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 import {
   VStepper,
   VStepperWindow,
@@ -13,7 +14,6 @@ import {
   VStepperActions,
   VStepperHeader,
 } from "vuetify/labs/VStepper";
-import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 import { setupCalendar } from "v-calendar";
 import {
   VDivider,

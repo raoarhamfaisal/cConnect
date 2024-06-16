@@ -116,6 +116,8 @@ class DatabaseSeeder extends Seeder
             ReplySeeder::class,
             ReplyReactionSeeder::class,
             BadWordsTableSeeder::class,
+            VersionDefaultsSeeder::class,
+
         ]);
 
         \App\Models\User::factory()->create([

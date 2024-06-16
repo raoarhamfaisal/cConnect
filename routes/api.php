@@ -25,8 +25,7 @@ use App\Http\Controllers\RedFlagcontroller;
 use App\Http\Controllers\PostReactionController;
 
 use App\Http\Controllers\BadWordController;
-
-
+use App\Http\Controllers\VersionController;
 
 
 /*
@@ -51,8 +50,8 @@ Route::get('/post/background-colors', [PostColorController::class, 'getBackgroun
 Route::get('/posts/{post}/trades', [PostController::class, 'getPostTrades']);
 
 
-Route::get('/posts/{post}/comments', [CommentController::class, 'index']);
-Route::get('/posts/comments/{commentId}', [CommentController::class, 'getSingleComment']);
+// Route::get('/posts/{post}/comments', [CommentController::class, 'index']);
+// Route::get('/posts/comments/{commentId}', [CommentController::class, 'getSingleComment']);
 
 
 
@@ -85,10 +84,13 @@ Route::get('/posts/comments/{commentId}', [CommentController::class, 'getSingleC
 
 
     
+    Route::get('/all-versions', [VersionController::class, 'getAllVersions']);
     // Your authenticated routes here
     Route::middleware('auth:sanctum')->group(function () {
 
 
+        Route::get('/user-version', [VersionController::class, 'getUserVersion']);
+    
 
         // Post related rotues
         Route::post('/posts/{post}/report', [PostController::class, 'reportPost']);
@@ -120,8 +122,8 @@ Route::get('/posts/comments/{commentId}', [CommentController::class, 'getSingleC
         Route::get('/posts/{post}/dislikes', [PostReactionController::class, 'getPostDislikes']);
 
         // Post Comments
-        // Route::get('/posts/{post}/comments', [CommentController::class, 'index']);
-        // Route::get('/posts/comments/{commentId}', [CommentController::class, 'getSingleComment']);
+        Route::get('/posts/{post}/comments', [CommentController::class, 'index']);
+        Route::get('/posts/comments/{commentId}', [CommentController::class, 'getSingleComment']);
 
         Route::post('/posts/{post}/comments', [CommentController::class, 'store']);
         Route::put('/comments/{comment}', [CommentController::class, 'update']);

@@ -12,9 +12,9 @@ class PaymentInfoController extends Controller
         $data = $request->validate([
             'region_id' => 'required|integer|exists:regions,id',
             'sales_tax' => 'required|numeric',
-            'billed_annual_price' => 'required|numeric',
-            'billed_monthly_price' => 'required|numeric',
-            'advertised_price' => 'required|numeric',
+            'gold_billed_annual_price' => 'required|numeric',
+            'gold_billed_monthly_price' => 'required|numeric',
+            'gold_advertised_price' => 'required|numeric',
         ]);
 
         $paymentInfo = PaymentInfo::create($data);
@@ -36,9 +36,9 @@ class PaymentInfoController extends Controller
         $data = $request->validate([
             'region_id' => 'integer|exists:regions,id',
             'sales_tax' => 'numeric',
-            'billed_annual_price' => 'numeric',
-            'billed_monthly_price' => 'numeric',
-            'advertised_price' => 'numeric',
+            'gold_billed_annual_price' => 'numeric',
+            'gold_billed_monthly_price' => 'numeric',
+            'gold_advertised_price' => 'numeric',
         ]);
 
         $paymentInfo = PaymentInfo::findOrFail($id);

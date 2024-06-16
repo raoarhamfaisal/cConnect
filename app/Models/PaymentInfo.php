@@ -17,8 +17,8 @@ class PaymentInfo extends Model
     protected $fillable = [
         'region_id',
         'sales_tax',
-        'billed_annual_price',
-        'billed_monthly_price',
-        'advertised_price'
+        'gold_billed_annual_price',
+        'gold_billed_monthly_price',
+        'gold_advertised_price'
     ];
 }
