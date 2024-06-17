@@ -12,14 +12,13 @@ module.exports = {
   theme: {
     screens: {
       x350: "350px",
-
       x365: "365px",
       sx: "380px",
       xs: "460px",
-      "max-sm": { max: "639px" },//640
-      "max-md": { max: "767px" },//768
-      "max-lg": { max: "1023px" },//1024
-      "max-xl": { max: "1279px" },//1280
+      "max-sm": { max: "639px" }, //640
+      "max-md": { max: "767px" }, //768
+      "max-lg": { max: "1023px" }, //1024
+      "max-xl": { max: "1279px" }, //1280
       ...defaultTheme.screens,
     },
 
@@ -34,6 +33,7 @@ module.exports = {
         "blue-30-rgba": "rgba(36, 30, 109,  0.33)", // #0d0c22
         "green-rgba": "#00cc00", // #087f5b
         "teal-green": "#16a34a",
+        "orange-accent": "#fc8c03",
         "slate-30-rgba": "rgba(226, 232, 240,  0.40)",
         "gray-30-rgba": "rgba(209, 213, 219,  0.50)",
       },

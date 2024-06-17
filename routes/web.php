@@ -45,6 +45,11 @@ Route::get('/about-us', function () {
         'showit' => Auth::check(),
     ]);
 });
+Route::get('/pricing', function () {
+    return Inertia::render('PricingPage', [
+        'showit' => Auth::check(),
+    ]);
+});
 Route::get('/terms-of-service', function () {
     return Inertia::render('TermsAndServices', [
         'showit' => Auth::check(),
