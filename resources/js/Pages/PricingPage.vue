@@ -38,7 +38,7 @@ const content = {
 <template>
   <Head title="Pricing" />
   <div
-    :class="`pt-20 sm:pt-28 pb-2 sm:pb-20 flex sm:justify-center items-center bg-white   bg-gray-100 `"
+    :class="`pt-20 sm:pt-28 pb-2  flex sm:justify-center items-center bg-white   bg-gray-100 `"
   >
     <div
       class="container max-w-7xl max-sm:px-1 sm:px-6 py-2 mx-auto overflow-hidden sm:rounded-lg"

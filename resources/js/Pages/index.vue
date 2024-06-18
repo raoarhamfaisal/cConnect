@@ -8,9 +8,10 @@ import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import ScrollToLinkVue from "@/Components/tCon/ScrollToLink.vue";
 import FeaturesGrid from "@/Components/tCon/FeaturesGrid.vue";
 import { useStore } from "vuex";
-import { getToken } from "@/helpers/localStorageHelper";
+import { getToken, removeToken } from "@/helpers/localStorageHelper";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { somethingWentWrong } from "@/helpers/utilities";
+import { Inertia } from "@inertiajs/inertia";
 
 defineProps({
   showit: Boolean,
@@ -43,6 +44,22 @@ const isAdminUrl = computed(() => {
   return false;
 });
 const profile = computed(() => store.state.profile.profile);
+const userVersion = computed(() => store.getters.userVersion);
+const notFreeVersion = computed(
+  () => userVersion.value !== 0 && userVersion.value !== 1
+);
+
+const getStartedButtonText = computed(() => {
+  if (getToken()) {
+    return userVersion.value === 0
+      ? "Get Started"
+      : userVersion.value === 1
+      ? "Upgrade"
+      : "News Feed";
+  } else {
+    return "Get Started";
+  }
+});
 
 // Methods
 
@@ -103,6 +120,13 @@ const formatPrice = (price) => {
     return Math.floor(num).toString();
   }
   return num.toString();
+};
+
+const handleLogout = () => {
+  removeToken();
+  showingNavigationDropdown.value = !showingNavigationDropdown.value;
+  Inertia.post("/logout");
+  store.commit("setUserVersion", 0);
 };
 </script>
 
@@ -473,6 +497,12 @@ const formatPrice = (price) => {
                 <ResponsiveNavLink href="/about-us#aboutUs">
                   About Us
                 </ResponsiveNavLink>
+                <ResponsiveNavLink href="/pricing" as="button">
+                  Pricing
+                </ResponsiveNavLink>
+                <ResponsiveNavLink href="/pricing#faqs" as="button">
+                  FAQs
+                </ResponsiveNavLink>
                 <div
                   v-if="isAdminUrl && showit"
                   class="pt-2 pb-2 space-y-1 border-b-2 border-t-2 border-gray-400"
@@ -507,12 +537,9 @@ const formatPrice = (price) => {
 
                 <ResponsiveNavLink
                   v-if="showit"
-                  :href="route('logout')"
                   method="post"
                   as="button"
-                  @click="
-                    showingNavigationDropdown = !showingNavigationDropdown
-                  "
+                  @click="handleLogout"
                 >
                   Log Out
                 </ResponsiveNavLink>
@@ -598,6 +625,7 @@ const formatPrice = (price) => {
 
           <!-- {{  profile }} -->
           <Link
+            v-if="getStartedButtonText === 'Get Started'"
             class="group flex items-center justify-between rounded-xl border border-red-500 bg-red-500 px-5 py-3 mt-8 transition-colors hover:bg-red-800 focus:outline-none focus:ring"
             :href="
               profile &&
@@ -619,7 +647,7 @@ const formatPrice = (price) => {
             <span
               class="text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500"
             >
-              Get Started
+              {{ getStartedButtonText }}
             </span>
 
             <!-- Arrow -->
@@ -642,6 +670,56 @@ const formatPrice = (price) => {
               </svg>
             </span>
           </Link>
+          <div
+            v-if="getStartedButtonText !== 'Get Started'"
+            class="flex justify-center space-x-3"
+          >
+            <Link
+              :href="
+                profile &&
+                profile.id &&
+                profile.is_payment_verified &&
+                profile.active_user
+                  ? route('post')
+                  : profile &&
+                    profile.id &&
+                    (!profile.is_payment_verified || !profile.active_user)
+                  ? !profile.is_payment_verified && !profile.active_user
+                    ? '/profile-setup'
+                    : !profile.is_payment_verified && profile.active_user
+                    ? '/pricing-plan'
+                    : '/inactive-account'
+                  : '/inactive-account'
+              "
+              class="group flex items-center justify-between rounded-xl border border-green-600 bg-green-600 hover:bg-green-800 px-5 py-3 mt-8 transition-colors focus:outline-none focus:ring"
+              preserve-scroll
+            >
+              <span
+                class="text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500"
+              >
+                {{ getStartedButtonText }}
+              </span>
+              <!-- Arrow -->
+              <span
+                class="ml-4 flex-shrink-0 rounded-full border border-current bg-white p-2 text-indigo-600 group-active:text-indigo-500"
+              >
+                <svg
+                  class="h-5 w-5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </span>
+            </Link>
+          </div>
         </div>
       </div>
     </section>
@@ -759,61 +837,71 @@ const formatPrice = (price) => {
                 href="/"
                 class="text-5xl md:text-6xl font-bold tracking-wide text-center"
               >
-                <tContractorWhite />
+                <tContractorWhite isOrange />
               </Link>
             </div>
             <div>
               <ul
-                class="capitalize text-xl font-semibold tracking-tighter text-[#] list-disc"
+                class="text-xl font-semibold tracking-tighter text-[#] list-disc"
               >
                 <!-- a6b9b9 -->
-                <li>Locate subs to hire</li>
-                <li>Find local work & job bids</li>
-                <li>Be aware of whats up in your area!</li>
-                <li>Check for slippery customers!</li>
-                <li>Questions & Answers!</li>
-                <li>Low cost targeted advertising!</li>
-                <!-- <li>Mentoring: go the next level with Mentoring!</li> -->
-                <li class="lg:max-w-md">
-                  <span class="font-bold italic">"No-Brainer Pricing"</span>
-                  &nbsp;- As contractors ourselves, seems like everyone is
-                  trying to sell us something at super - exorbitant prices!
-                  <span class="font-extrabold text-white normal-case"
-                    >&nbsp;Not Here at&nbsp; <tContractorWhite /></span
-                  >&nbsp;... useful tools, decently priced!
+                <li>Find Local or Statewide Subs to hire</li>
+                <li>Advertise Your Business for Free!</li>
+                <li>Post Job Bids or Look for Work!</li>
+                <li>KNOW what's happening in your local area!</li>
+                <li>Ask Questions / Get Answers!</li>
+
+                <li class="md:max-w-md lg:max-w-lg">
+                  <span class="font-bold italic"
+                    >"<strong>N</strong>o-<strong>B</strong>rainer
+                    <strong>P</strong>ricing"</span
+                  >
+                  &nbsp;- As Contractors Ourselves, Seems Like Everyone is
+                  Trying to Sell Us Something At Super - Exorbitant Prices!
+                  <div class="font-extrabold text-white normal-case">
+                    Not Here at&nbsp; <tContractorWhite isOrange />
+                  </div>
+                  <div class="inline-block mt-2">
+                    <div class="inline">We Provide</div>
+                    <div class="text-white inline text-2xl font-bold">
+                      Your Most Important Tool for Free !!
+                    </div>
+                  </div>
+                  <div class="text-orange-accent-darker font-extrabold">
+                    A few bucks a month,brings you even more!
+                  </div>
                 </li>
               </ul>
             </div>
           </div>
 
           <!-- right side or top -->
-          <div class="flex flex-col justify-center">
-            <div class="text-3xl text-[#073116] font-bold">
+          <div class="flex flex-col justify-center mb-4">
+            <!-- <div class="text-3xl text-[#073116] font-bold">
               <p class="tracking-tight">Your Top Tool For Only</p>
-            </div>
-            <div class="flex flex-row justify-center">
-              <div
-                class="flex text-5xl justify-start font-extrabold text-green-rgba"
-              >
-                <span class="pt-10">$</span>
-              </div>
-              <div class="price text-white">
-                <span>{{
-                  formatPrice(
-                    pricingPlan.gold_advertised_price
-                      ? pricingPlan.gold_advertised_price
-                      : 0
-                  )
-                }}</span>
-              </div>
-              <div
-                class="flex text-xl justify-end items-end italic text-blue-rgba pb-10"
-              >
-                <span class="text-[#073116]">/month</span>
-              </div>
-            </div>
+            </div> -->
+            <img
+              class="mb-3 h-full object-contain"
+              src="@/Components/Pricing/assets/freebox.png"
+            />
             <!-- Button Flex Item -->
             <div class="flex justify-center items-end">
+              <!-- :href="
+                  profile &&
+                  profile.id &&
+                  profile.is_payment_verified &&
+                  profile.active_user
+                    ? route('post')
+                    : profile &&
+                      profile.id &&
+                      (!profile.is_payment_verified || !profile.active_user)
+                    ? !profile.is_payment_verified && !profile.active_user
+                      ? '/profile-setup'
+                      : !profile.is_payment_verified && profile.active_user
+                      ? '/pricing-plan'
+                      : '/inactive-account'
+                    : route('signup')
+                " -->
               <Link
                 :href="
                   profile &&
@@ -832,7 +920,7 @@ const formatPrice = (price) => {
                     : route('signup')
                 "
                 class="p-3 px-6 pt-2 text-red bg-white rounded-lg border-white border-spacing-3 shadow-2xl shadow-black align-baseline hover:text-white hover:bg-blue-30-rgba"
-                >Get Started
+                >{{ getStartedButtonText }}
               </Link>
             </div>
           </div>
@@ -897,7 +985,8 @@ const formatPrice = (price) => {
           <!-- First Menu List -->
           <div class="flex flex-col space-y-3 text-white">
             <a href="#" class="hover:text-blue-400">Home</a>
-            <a href="#pricing" class="hover:text-blue-400">Pricing</a>
+            <a href="/pricing" class="hover:text-blue-400">Pricing</a>
+            <a href="/pricing#faqs" class="hover:text-blue-400">FAQs</a>
             <a href="/about-us#contactUs" class="hover:text-blue-400"
               >Contact Us</a
             >

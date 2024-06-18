@@ -16,6 +16,10 @@ import {
 } from "vuetify/labs/VStepper";
 import { setupCalendar } from "v-calendar";
 import {
+  VExpansionPanels,
+  VExpansionPanel,
+  VExpansionPanelTitle,
+  VExpansionPanelText,
   VDivider,
   VCheckbox,
   VDialog,
@@ -46,13 +50,16 @@ import * as directives from "vuetify/directives"; // You might want to fine-tune
 
 const vuetify = createVuetify({
   components: {
+    VExpansionPanels,
+    VExpansionPanel,
+    VExpansionPanelTitle,
+    VExpansionPanelText,
     VStepper,
     VCheckbox,
     VDialog,
     VSkeletonLoader,
     VTable,
     VOverlay,
-
     VSwitch,
     VMenu,
     VListItem,

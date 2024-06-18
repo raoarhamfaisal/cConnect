@@ -7,6 +7,9 @@ import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import ScrollToLinkVue from "@/Components/tCon/ScrollToLink.vue";
 import FeaturesGrid from "@/Components/tCon/FeaturesGrid.vue";
+import { Inertia } from "@inertiajs/inertia";
+import { removeToken } from "@/helpers/localStorageHelper";
+import { useStore } from "vuex";
 
 defineProps({
   canResetPassword: Boolean,
@@ -26,6 +29,7 @@ const form = useForm({
   remember: false,
 });
 const dropdownMenu = ref(null);
+const store = useStore();
 
 //Computed
 
@@ -61,6 +65,12 @@ const submit = () => {
     onFinish: () => form.reset("password"),
   });
 };
+function handleLogout() {
+  removeToken();
+  showingNavigationDropdown.value = !showingNavigationDropdown.value;
+  Inertia.post("/logout");
+  store.commit("setUserVersion", 0);
+}
 </script>
 
 <template>
@@ -234,12 +244,9 @@ const submit = () => {
 
                 <ResponsiveNavLink
                   v-if="showit"
-                  :href="route('logout')"
+                  @click="handleLogout"
                   method="post"
                   as="button"
-                  @click="
-                    showingNavigationDropdown = !showingNavigationDropdown
-                  "
                 >
                   Log Out
                 </ResponsiveNavLink>
