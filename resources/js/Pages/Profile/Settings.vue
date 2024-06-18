@@ -1,5 +1,7 @@
 <script setup>
 import Header from "@/Layouts/Header.vue";
+import MoveToTop from "@/Components/MoveToTop.vue";
+
 import { Head } from "@inertiajs/inertia-vue3";
 
 import SettingsTabs from "@/Pages/Profile/Partials/main/SettingsTabs.vue";
@@ -38,5 +40,6 @@ store.commit("profile/setActiveTab", 0);
       :profile="profile"
       :regions="regions"
     />
+    <MoveToTop />
   </Header>
 </template>
