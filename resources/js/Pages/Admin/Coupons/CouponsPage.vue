@@ -249,6 +249,18 @@
       "
     >
       <div class="py-2 p-4">
+        <v-btn-toggle
+          v-model="selected_version"
+          rounded="0"
+          color="primary"
+          class=""
+          group
+          mandatory
+        >
+          <v-btn class="bg-gray-800" value="gold"> Gold Pakage </v-btn>
+
+          <v-btn value="platinum"> Platinum Pakage</v-btn>
+        </v-btn-toggle>
         <div
           class="mt-6 space-y-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-4"
         >
@@ -550,6 +562,8 @@ const isTyping = ref(false);
 // range picker
 const range = ref({});
 const dateMode = ref("date");
+const selected_version = ref("gold");
+
 const rules = ref([
   {
     hours: 0,
@@ -846,6 +860,7 @@ const handleEditSubmit = async () => {
     });
 
     const couponToUpdate = {
+      selected_version: selected_version.value,
       region_id: region_id,
       is_valid: singleCoupon.value.is_valid,
 
@@ -923,6 +938,7 @@ const handleCreateSubmit = async () => {
     });
 
     const couponToCreate = {
+      selected_version: selected_version.value,
       region_id: region_id,
       is_valid: singleCoupon.value.is_valid,
 

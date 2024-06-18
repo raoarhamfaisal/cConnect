@@ -8,10 +8,12 @@ import {
   formatDateTime,
 } from "@/helpers/utilities";
 import { Icon } from "@iconify/vue";
+import PricingVersions from "@/Components/Pricing/PricingVersions.vue";
 
 import { Inertia } from "@inertiajs/inertia";
 import { Link } from "@inertiajs/inertia-vue3";
 import { computed, ref, onMounted } from "vue";
+import { useStore } from "vuex";
 
 const props = defineProps({
   user_id: {
@@ -27,12 +29,23 @@ const pricingPlan = ref({
   sales_tax: "0",
 });
 const coupon = ref({});
+const store = useStore();
 
 //onMounted
 
 onMounted(() => {
   fetchActiveSubscriptionDetails();
 });
+const userVersion = computed(() => store.getters.userVersion);
+const userVersionText = computed(() =>
+  userVersion.value === 1
+    ? "FREE"
+    : userVersion.value === 2
+    ? "GOLD"
+    : userVersion.value === 3
+    ? "PLATINUM"
+    : "No Pricing Plan Found"
+);
 
 //Computed
 const monthlyTotal = computed(() => {
@@ -144,10 +157,10 @@ const handleCancelSubscription = async () => {
   <section>
     <header class="flex justify-between items-center">
       <div>
-        <h2 class="text-xl font-bold text-gray-900">Billing Details</h2>
-        <p class="mt-1 text-sm text-gray-600">
+        <h2 class="text-2xl font-bold text-gray-900">Billing / Version</h2>
+        <!-- <p class="mt-1 text-sm text-gray-600">
           The next billing will be made with selected payment method below
-        </p>
+        </p> -->
       </div>
 
       <div
@@ -159,19 +172,21 @@ const handleCancelSubscription = async () => {
       >
         Under Cancellation
       </div>
-    </header>
 
-    <div
+      <div class="uppercase text-xl font-semibold text-blue-rgba">
+        Current plan : <span class="font-extrabold">{{ userVersionText }}</span>
+      </div>
+    </header>
+    <PricingVersions :showRightVersionText="false" settingTab />
+
+    <!-- <div
       class="h-96 flex items-center justify-center font-semibold"
       v-if="Object.keys(pricingPlan).length === 2 && !loading"
     >
       No Billing or Subscription Details available for you
-    </div>
+    </div> -->
     <div v-if="!loading && Object.keys(pricingPlan).length > 2">
       <div class="mb-4 mt-8">
-        <div class="uppercase text-sm font-bold text-blue-rgba">
-          Current plan
-        </div>
         <!-- <div class="font-medium text-base">Monthly</div> -->
         <div
           :class="[

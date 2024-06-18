@@ -19,6 +19,10 @@ const props = defineProps({
   platinumText: {
     type: [String, Number, Boolean],
   },
+  settingTab: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const store = useStore();
@@ -32,7 +36,14 @@ const notFreeVersion = computed(
 </script>
 <template>
   <!-- For Desktop -->
-  <div :class="`flex gap-2 `" v-if="screenWidth > 768">
+  <div
+    :class="`flex gap-2 `"
+    v-if="
+      (props.settingTab && screenWidth > 768 && screenWidth < 1024) ||
+      (props.settingTab && screenWidth > 1280) ||
+      (!props.settingTab && screenWidth > 768)
+    "
+  >
     <div class="w-[55%] text-xl text-end font-semibold">
       {{ props.featureText }}
     </div>
