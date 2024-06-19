@@ -61,6 +61,50 @@ class ProfileController extends Controller
         'postSearchFilters' => FacadeRequest::only(['postSearch']),
         ]);
     }
+
+
+    
+    /**
+     * Complete Profile And Start Free Subscription
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Inertia\Response
+     */
+    public function completeProfileAndStartFreeSubscription(Request $request)
+    {
+        // Get current user id
+        $userID = Auth()->user('')->id;
+        $profile = null;
+
+
+        // Get the profile information if the user id exists
+        if($userID) {
+            $profile = Profile::where('user_id', $userID)->first();
+
+            if($profile) {
+                $profile->active_user = 1;
+                $profile->is_payment_verified = 1;
+                $profile->version = 1;
+                $profile->save();
+            }
+        }
+
+
+        $paymentSuccessResponse = [
+            'messages' => [
+                'resultCode' => 'Success',
+                'message' => [
+                    [
+                        'text' => 'Free Version is started.'
+                    ]
+                ]
+            ]
+        ];            
+    
+
+        return response()->json($paymentSuccessResponse);
+    }
+
     public function setup(Request $request)
     {
         // Get current user id

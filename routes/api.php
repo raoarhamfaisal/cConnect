@@ -147,6 +147,9 @@ Route::get('/posts/{post}/trades', [PostController::class, 'getPostTrades']);
 
 
 
+        // Free User Subscription
+        Route::post('/profile/complete-profile-and-start-free-subscription', [ProfileController::class, 'completeProfileAndStartFreeSubscription'])->name('profile.completeProfileAndStartFreeSubscription');
+
 
 
 
