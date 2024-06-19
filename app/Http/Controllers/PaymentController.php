@@ -68,15 +68,15 @@ class PaymentController extends Controller
 
             // Set base amount based on user's selected duration
             $baseAmount = $request->input('duration') === 'annual' 
-            ? ($paymentInfo && $paymentInfo->gold_billed_annual_price ? $paymentInfo->gold_billed_annual_price : 390) 
-            : ($paymentInfo && $paymentInfo->gold_billed_monthly_price ? $paymentInfo->gold_billed_monthly_price : 39);
+            ? ($paymentInfo && ($paymentInfo->gold_billed_annual_price || $paymentInfo->platinum_billed_annual_price) ? ($profile->version === 2 ? $paymentInfo->gold_billed_annual_price : $paymentInfo->platinum_billed_annual_price) : 390) 
+            : ($paymentInfo && ($paymentInfo->gold_billed_monthly_price || $paymentInfo->platinum_billed_monthly_price) ? ($profile->version === 2 ? $paymentInfo->gold_billed_monthly_price : $paymentInfo->platinum_billed_monthly_price) : 39);
             
             // Retrieve the sales tax rate
             $salesTaxRate = ($paymentInfo && $paymentInfo->sales_tax) ? ($paymentInfo->sales_tax * 0.01) : (0.02);       
 
             $finalAmount = $request->input('duration') === 'annual' 
-                ? ($paymentInfo && $paymentInfo->gold_billed_annual_price ? $paymentInfo->gold_billed_annual_price : 390) 
-                : ($paymentInfo && $paymentInfo->gold_billed_monthly_price ? $paymentInfo->gold_billed_monthly_price : 39);
+                ? ($paymentInfo && ($paymentInfo->gold_billed_annual_price || $paymentInfo->platinum_billed_annual_price) ? ($profile->version === 2 ? $paymentInfo->gold_billed_annual_price : $paymentInfo->platinum_billed_annual_price) : 390) 
+                : ($paymentInfo && ($paymentInfo->gold_billed_monthly_price || $paymentInfo->platinum_billed_monthly_price) ? ($profile->version === 2 ? $paymentInfo->gold_billed_monthly_price : $paymentInfo->platinum_billed_monthly_price) : 39);
 
 
             $discountAmount = 0;
