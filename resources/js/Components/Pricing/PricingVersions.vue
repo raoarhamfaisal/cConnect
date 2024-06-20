@@ -3,15 +3,22 @@ import { computed, onMounted, onUnmounted, ref } from "vue";
 import PricingFeature from "@/Components/Pricing/PricingFeature.vue";
 import FAQS from "@/Components/Pricing/FAQS.vue";
 import { useStore } from "vuex";
+import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
+import { Inertia } from "@inertiajs/inertia";
+import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 
 const props = defineProps({
   showRightVersionText: {
     type: Boolean,
     default: true,
   },
-  settingTab: {
-    type: Boolean,
-    default: false,
+  pageName: {
+    type: String,
+    default: "pricing",
+  },
+  currentStep: {
+    type: Number,
+    default: 1,
   },
 });
 
@@ -19,16 +26,28 @@ const freeVersion = ref({});
 const goldVersion = ref({});
 const platinumVersion = ref({});
 const loading = ref(false);
+const loadingFree = ref(false);
 const store = useStore();
+const pricingPlan = ref({});
+const freeConfirmDialog = ref();
+const freeActivatedDialog = ref();
 
 const userVersion = computed(() => store.getters.userVersion);
 const screenWidth = computed(() => store.getters.screenWidth);
+const notPricingPageAndDesktop = computed(
+  () =>
+    props.pageName !== "pricing" &&
+    screenWidth.value > 768 &&
+    screenWidth.value < 1200
+);
 
 const notFreeVersion = computed(
   () => userVersion.value !== 0 && userVersion.value !== 1
 );
 
 onMounted(() => {
+  store.dispatch("fetchUserVersion");
+  fetchPricingCardDetails();
   fetchDefaultVersionValues();
 });
 
@@ -87,9 +106,18 @@ const handleScroll = () => {
 };
 
 onMounted(() => {
+  const prevUrlPricingPlan = localStorage.getItem("prevUrlPricingPlan");
+
+  if (prevUrlPricingPlan === "/pricing") {
+    localStorage.removeItem("prevUrlPricingPlan");
+    configurePrevUrlPricingPlan();
+    Inertia.visit("/pricing-plan");
+    return;
+  }
+
   if (screenWidth.value < 768) {
     console.log("mounted");
-    if (props.settingTab) {
+    if (props.pageName !== "pricing") {
       const newFeed = document.querySelector("#scrollable");
       newFeed.addEventListener("scroll", handleScroll);
     } else {
@@ -97,10 +125,9 @@ onMounted(() => {
     }
   }
 });
-
 onUnmounted(() => {
   if (screenWidth.value < 768) {
-    if (props.settingTab) {
+    if (props.pageName !== "pricing") {
       const newFeed = document.querySelector("#scrollable");
       newFeed.removeEventListener("scroll", handleScroll);
     } else {
@@ -108,11 +135,191 @@ onUnmounted(() => {
     }
   }
 });
+
+const fetchPricingCardDetails = async () => {
+  loading.value = true;
+  try {
+    const response = await axios.get(
+      `/api/payment-info-of-a-region/1`,
+      getAxiosConfig()
+    );
+    console.log(response, "response");
+    if (response.data) {
+      pricingPlan.value = { ...response.data.paymentInfo };
+    }
+  } catch (err) {
+    somethingWentWrong();
+  } finally {
+    loading.value = false;
+  }
+};
+
+const formatPrice = (price) => {
+  const num = parseFloat(price);
+  if (Math.floor(num) === num) {
+    return Math.floor(num).toString();
+  }
+  return num.toString();
+};
+
+const onFreeSelect = () => {
+  if (props.pageName === "pricing") {
+    Inertia.visit("profile-setup");
+  } else if (props.pageName === "profile-setup") {
+    freeConfirmDialog.value.openDialog();
+  }
+};
+
+const onFreeSubmit = async () => {
+  loadingFree.value = true;
+  try {
+    const response = await axios.post(
+      `/api/profile/complete-profile-and-start-free-subscription`,
+      {},
+      getAxiosConfig()
+    );
+    console.log(response, "response");
+    if (response.data) {
+      freeActivatedDialog.value.openDialog();
+    }
+  } catch (err) {
+    somethingWentWrong();
+  } finally {
+    loadingFree.value = false;
+  }
+};
+const configurePrevUrlPricingPlan = () => {
+  if (props.pageName === "profile-setup") {
+    localStorage.setItem("prevUrlPricingPlan", "/profile-setup");
+  } else if (props.pageName === "pricing") {
+    localStorage.setItem("prevUrlPricingPlan", "/pricing");
+  }
+};
+const configureUrlToVisit = () => {
+  if (props.pageName === "profile-setup") {
+    localStorage.setItem("stepNo", 4);
+    Inertia.visit("/pricing-plan");
+  } else if (props.pageName === "pricing" && userVersion === 0) {
+    Inertia.visit("/profile-setup");
+  } else if (props.pageName === "pricing" && userVersion !== 0) {
+    Inertia.visit("/settings");
+  }
+};
+const onGoldSelect = () => {
+  configurePrevUrlPricingPlan();
+  localStorage.setItem("choosedPlan", "gold");
+  configureUrlToVisit();
+};
+const onPlatinumSelect = () => {
+  configurePrevUrlPricingPlan();
+  localStorage.setItem("choosedPlan", "platinum");
+  configureUrlToVisit();
+};
 </script>
 <template>
+  <CustomDialog
+    @submit="onFreeSubmit"
+    :loading="loadingFree"
+    :disabled="loadingFree"
+    submitText="Confirm"
+    dialogWidth="width-40"
+    ref="freeConfirmDialog"
+    title="Are you sure you want to choose the Free Package?"
+  >
+    <div class="flex items-center justify-center flex-col">
+      <div class="w-full sm:text-lg sm:font-semibold">
+        <div>With this option, you'll get:</div>
+        <ul>
+          <li>
+            Access to the News Feed, including all postings, job opportunities,
+            and more.
+          </li>
+          <li>Post up to 8 times per month, with 3 images per posting.</li>
+          <li>Conduct 5 searches per month with the Sub Finder.</li>
+          <li>
+            Join 3 trade groups and post in member trade groups up to 3 times.
+          </li>
+          <li>The ability to view all trade group postings.</li>
+        </ul>
+        <div>
+          This package is a great way to start and engage with the community at
+          no cost.
+        </div>
+
+        <div>
+          Click <strong>"Confirm"</strong> to proceed or
+          <strong>"Cancel"</strong> to review other options.
+        </div>
+      </div>
+    </div>
+  </CustomDialog>
+  <CustomDialog
+    :dontAllowCancel="true"
+    submitText="Okay"
+    :showFooter="false"
+    dialogWidth="width-40"
+    ref="freeActivatedDialog"
+    title="Free Version has started"
+  >
+    <div class="flex items-center justify-center flex-col">
+      <div class="text-2xl font-bold self-start mb-1">
+        Welcome to tContractor
+      </div>
+      <div class="w-full sm:text-lg sm:semi-bold">
+        <div>
+          You now have access to the most powerful tool in your toolbox.<strong
+            >tContractor</strong
+          >
+          is your source to:
+        </div>
+        <ul>
+          <li>Keep up to date on whats going on in your industry</li>
+          <li>Find out what jobs are available.</li>
+          <li>
+            You can always
+            <strong>upgrade to gold or platinum version</strong> by going to
+            settings from your menu and then by selecting Billing/Version tab.
+          </li>
+          <li>
+            Press continue to enter the News Feed! This is where the action
+            starts!
+          </li>
+        </ul>
+      </div>
+
+      <Link
+        class="group flex items-center self-start justify-between rounded-xl border border-teal-500 bg-[#16a34a] px-5 py-3 mt-4 hover:bg-[#16a34a] focus:outline-none focus:ring transition transform duration-300 hover:shadow-lg active:scale-95"
+        href="/post"
+      >
+        <span class="text-lg font-bold text-white uppercase transition">
+          Continue
+        </span>
+
+        <!-- Arrow -->
+        <span
+          class="ml-4 flex-shrink-0 rounded-full border border-current bg-white p-2 text-indigo-600"
+        >
+          <svg
+            class="h-5 w-5"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M17 8l4 4m0 0l-4 4m4-4H3"
+            />
+          </svg>
+        </span>
+      </Link>
+    </div>
+  </CustomDialog>
   <div
     :class="` xl:container bg-white md:mx-auto ${
-      props.settingTab ? ' mt-4' : 'mt-4 px-2 sm:p-6 py-4'
+      props.pageName !== 'pricing' ? ' mt-4' : 'mt-4 px-2 sm:p-6 py-4'
     }   shadow-md rounded-lg`"
   >
     <div
@@ -139,14 +346,7 @@ onUnmounted(() => {
         </span>
       </div>
       <!-- tableHead  for Desktop-->
-      <div
-        class="flex gap-2"
-        v-if="
-          (props.settingTab && screenWidth > 768 && screenWidth < 1024) ||
-          (props.settingTab && screenWidth > 1280) ||
-          (!props.settingTab && screenWidth > 768)
-        "
-      >
+      <div class="flex gap-2" v-if="screenWidth > 768">
         <div class="w-[55%]"></div>
         <!-- Free -->
 
@@ -158,6 +358,7 @@ onUnmounted(() => {
           <button
             v-if="userVersion === 0"
             class="mt-[2px] checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95"
+            @click="onFreeSelect"
           >
             Select
           </button>
@@ -165,13 +366,45 @@ onUnmounted(() => {
         <!-- Gold -->
         <div :style="{ width: notFreeVersion ? '22.5%' : '15%' }">
           <div class="flex flex-col justify-center items-center h-full">
-            <div class="text-black text-xl font-bold">Gold Pakage</div>
-            <div class="flex text-green-rgba font-extrabold mt-1">
-              <div class="text-2xl self-center mt-[-30px]">$</div>
-              <div class="text-[70px] leading-[0.9]">29</div>
+            <div
+              :style="{
+                fontSize: notPricingPageAndDesktop ? '1rem' : '',
+                lineHeight: notPricingPageAndDesktop ? '1.05' : '',
+              }"
+              class="text-black text-xl font-bold"
+            >
+              Gold Pakage
             </div>
-            <div class="text-lg font-semibold">Per Month</div>
+            <div class="flex text-green-rgba font-extrabold mt-1">
+              <div
+                :style="{
+                  fontSize: notPricingPageAndDesktop ? '1.2rem' : '',
+                  lineHeight: notPricingPageAndDesktop ? '1.05' : '',
+                }"
+                class="text-2xl self-center mt-[-30px]"
+              >
+                $
+              </div>
+              <div
+                :style="{
+                  fontSize: notPricingPageAndDesktop ? '50px' : '',
+                }"
+                class="text-[70px] leading-[0.9]"
+              >
+                {{ formatPrice(pricingPlan.gold_advertised_price) }}
+              </div>
+            </div>
+            <div
+              :style="{
+                fontSize: notPricingPageAndDesktop ? '0.9rem' : '',
+                lineHeight: notPricingPageAndDesktop ? '1.05' : '',
+              }"
+              class="text-lg font-semibold"
+            >
+              Per Month
+            </div>
             <button
+              @click="onGoldSelect"
               class="checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95 mt-auto"
             >
               Select
@@ -181,13 +414,45 @@ onUnmounted(() => {
         <!-- Platinium -->
         <div :style="{ width: notFreeVersion ? '22.5%' : '15%' }">
           <div class="flex flex-col justify-center items-center h-full">
-            <div class="text-black text-xl font-bold">Platinum Pakage</div>
-            <div class="flex text-blue-rgba font-extrabold mt-1">
-              <div class="text-2xl self-center mt-[-30px]">$</div>
-              <div class="text-[70px] t leading-[0.9]">39</div>
+            <div
+              :style="{
+                fontSize: notPricingPageAndDesktop ? '1rem' : '',
+                lineHeight: notPricingPageAndDesktop ? '1.05' : '',
+              }"
+              class="text-black text-xl font-bold"
+            >
+              Platinum Pakage
             </div>
-            <div class="text-lg font-semibold">Per Month</div>
+            <div class="flex text-blue-rgba font-extrabold mt-1">
+              <div
+                :style="{
+                  fontSize: notPricingPageAndDesktop ? '1.2rem' : '',
+                  lineHeight: notPricingPageAndDesktop ? '1.05' : '',
+                }"
+                class="text-2xl self-center mt-[-30px]"
+              >
+                $
+              </div>
+              <div
+                :style="{
+                  fontSize: notPricingPageAndDesktop ? '50px' : '',
+                }"
+                class="text-[70px] t leading-[0.9]"
+              >
+                {{ formatPrice(pricingPlan.platinum_advertised_price) }}
+              </div>
+            </div>
+            <div
+              :style="{
+                fontSize: notPricingPageAndDesktop ? '0.9rem' : '',
+                lineHeight: notPricingPageAndDesktop ? '1.05' : '',
+              }"
+              class="text-lg font-semibold"
+            >
+              Per Month
+            </div>
             <button
+              @click="onPlatinumSelect"
               class="checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95 mt-auto"
             >
               Select
@@ -209,6 +474,7 @@ onUnmounted(() => {
         >
           <img class="mb-3 h-full object-contain" src="./assets/freebox.png" />
           <button
+            @click="onFreeSelect"
             v-if="userVersion === 0"
             class="mt-[2px] checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95"
           >
@@ -227,10 +493,11 @@ onUnmounted(() => {
             </div>
             <div class="flex text-green-rgba font-extrabold mt-1">
               <div class="text-lg self-center mt-[-30px]">$</div>
-              <div class="text-[50px] leading-[0.9]">29</div>
+              <div class="text-[50px] leading-[0.9]">{{}}</div>
             </div>
             <div class="text-base font-semibold">Per Month</div>
             <button
+              @click="onGoldSelect"
               class="checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95 mt-auto"
             >
               Select
@@ -243,10 +510,11 @@ onUnmounted(() => {
             <div class="text-black text-lg font-bold">Platinum Pakage</div>
             <div class="flex text-blue-rgba font-extrabold mt-1">
               <div class="text-lg self-center mt-[-30px]">$</div>
-              <div class="text-[50px] t leading-[0.9]">39</div>
+              <div class="text-[50px] t leading-[0.9]">{{}}</div>
             </div>
             <div class="text-base font-semibold">Per Month</div>
             <button
+              @click="onPlatinumSelect"
               class="checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95 mt-auto"
             >
               Select
@@ -263,7 +531,7 @@ onUnmounted(() => {
         </div>
         <div class="flex flex-col gap-2">
           <PricingFeature
-            :settingTab="props.settingTab"
+            :pageName="props.pageName"
             bgColor="#f4f8ff"
             featureText="View All Postings & Shared Information, Conversations, Available Jobs, Looking For Select Work or Subs, Questions & Answers,Opportunities and More:"
             :freeText="1"
@@ -271,7 +539,7 @@ onUnmounted(() => {
             :platinumText="1"
           />
           <PricingFeature
-            :settingTab="props.settingTab"
+            :pageName="props.pageName"
             bgColor="#f4f8ff"
             featureText="View All Postings by Trade or Geographical
     Location Like Local, Region, Statewide:"
@@ -288,7 +556,7 @@ onUnmounted(() => {
         </div>
         <div class="flex flex-col gap-2">
           <PricingFeature
-            :settingTab="props.settingTab"
+            :pageName="props.pageName"
             bgColor="#f4f8ff"
             featureText="Postings Per Month:"
             :freeText="freeVersion.nf_ppm"
@@ -296,7 +564,7 @@ onUnmounted(() => {
             :platinumText="platinumVersion.nf_ppm"
           />
           <PricingFeature
-            :settingTab="props.settingTab"
+            :pageName="props.pageName"
             bgColor="#f4f8ff"
             featureText="Images Inside Posting:"
             :freeText="freeVersion.nf_ipp"
@@ -304,7 +572,7 @@ onUnmounted(() => {
             :platinumText="platinumVersion.nf_ipp"
           />
           <PricingFeature
-            :settingTab="props.settingTab"
+            :pageName="props.pageName"
             bgColor="#f4f8ff"
             featureText="Improve Post Visibilty By Adding Title Text:"
             :freeText="freeVersion.nf_title"
@@ -312,7 +580,7 @@ onUnmounted(() => {
             :platinumText="platinumVersion.nf_title"
           />
           <PricingFeature
-            :settingTab="props.settingTab"
+            :pageName="props.pageName"
             bgColor="#f4f8ff"
             featureText="Improve Post Visibilty By Adding Closing
 Text:"
@@ -321,7 +589,7 @@ Text:"
             :platinumText="platinumVersion.nf_bottom"
           />
           <PricingFeature
-            :settingTab="props.settingTab"
+            :pageName="props.pageName"
             bgColor="#f4f8ff"
             featureText="Make Comments on Postings:"
             :freeText="freeVersion.nf_comments"
@@ -329,7 +597,7 @@ Text:"
             :platinumText="platinumVersion.nf_comments"
           />
           <PricingFeature
-            :settingTab="props.settingTab"
+            :pageName="props.pageName"
             bgColor="#f4f8ff"
             featureText="Repost Posting:"
             :freeText="freeVersion.nf_repost"
@@ -345,7 +613,7 @@ Text:"
         </div>
         <div class="flex flex-col gap-2">
           <PricingFeature
-            :settingTab="props.settingTab"
+            :pageName="props.pageName"
             bgColor="#f4f8ff"
             featureText="Searches For Contractors & Sub-Contractors:"
             :freeText="1"
@@ -353,7 +621,7 @@ Text:"
             :platinumText="1"
           />
           <PricingFeature
-            :settingTab="props.settingTab"
+            :pageName="props.pageName"
             bgColor="#f4f8ff"
             featureText="No of Contractor Searches Per Month:"
             :freeText="freeVersion.sf_search"
@@ -361,7 +629,7 @@ Text:"
             :platinumText="platinumVersion.sf_search"
           />
           <PricingFeature
-            :settingTab="props.settingTab"
+            :pageName="props.pageName"
             bgColor="#f4f8ff"
             featureText="Track Contractors & Sub-Contractors:"
             :freeText="freeVersion.sf_tracking"
@@ -369,7 +637,7 @@ Text:"
             :platinumText="platinumVersion.sf_tracking"
           />
           <PricingFeature
-            :settingTab="props.settingTab"
+            :pageName="props.pageName"
             bgColor="#f4f8ff"
             featureText="Create Personal Notes On Contractors,Full Info On Subs:"
             :freeText="freeVersion.sf_notes"
@@ -377,7 +645,7 @@ Text:"
             :platinumText="platinumVersion.sf_notes"
           />
           <PricingFeature
-            :settingTab="props.settingTab"
+            :pageName="props.pageName"
             bgColor="#f4f8ff"
             featureText="Access to Contractor Info Pages:"
             :freeText="freeVersion.sf_info"
@@ -393,7 +661,7 @@ Text:"
         </div>
         <div class="flex flex-col gap-2">
           <PricingFeature
-            :settingTab="props.settingTab"
+            :pageName="props.pageName"
             bgColor="#f4f8ff"
             featureText="Membership in No of Trade Groups:"
             :freeText="freeVersion.tg_members"
@@ -401,7 +669,7 @@ Text:"
             :platinumText="platinumVersion.tg_members"
           />
           <PricingFeature
-            :settingTab="props.settingTab"
+            :pageName="props.pageName"
             bgColor="#f4f8ff"
             featureText="Post in Member Trade Groups:"
             :freeText="freeVersion.tg_post"
@@ -409,7 +677,7 @@ Text:"
             :platinumText="platinumVersion.tg_post"
           />
           <PricingFeature
-            :settingTab="props.settingTab"
+            :pageName="props.pageName"
             bgColor="#f4f8ff"
             featureText="View All Trade Group's Postings:"
             :freeText="freeVersion.tg_view_all"
@@ -425,7 +693,7 @@ Text:"
         </div>
         <div class="flex flex-col gap-2">
           <PricingFeature
-            :settingTab="props.settingTab"
+            :pageName="props.pageName"
             bgColor="#f4f8ff"
             featureText="Search Red Flags:"
             :freeText="freeVersion.rf_access"
@@ -433,7 +701,7 @@ Text:"
             :platinumText="platinumVersion.rf_access"
           />
           <PricingFeature
-            :settingTab="props.settingTab"
+            :pageName="props.pageName"
             bgColor="#f4f8ff"
             featureText="Flagged Customers:"
             :freeText="freeVersion.rf_customers"
@@ -441,7 +709,7 @@ Text:"
             :platinumText="platinumVersion.rf_customers"
           />
           <PricingFeature
-            :settingTab="props.settingTab"
+            :pageName="props.pageName"
             bgColor="#f4f8ff"
             featureText="Flagged Sales Reps:"
             :freeText="freeVersion.rf_sales"
@@ -449,7 +717,7 @@ Text:"
             :platinumText="platinumVersion.rf_sales"
           />
           <PricingFeature
-            :settingTab="props.settingTab"
+            :pageName="props.pageName"
             bgColor="#f4f8ff"
             featureText="Flagged Contractors:"
             :freeText="freeVersion.rf_contractor"
@@ -465,7 +733,7 @@ Text:"
         </div>
         <div class="flex flex-col gap-2">
           <PricingFeature
-            :settingTab="props.settingTab"
+            :pageName="props.pageName"
             bgColor="#f4f8ff"
             featureText="Give a Review:"
             :freeText="freeVersion.re_reviews"
@@ -473,7 +741,7 @@ Text:"
             :platinumText="platinumVersion.re_reviews"
           />
           <PricingFeature
-            :settingTab="props.settingTab"
+            :pageName="props.pageName"
             bgColor="#f4f8ff"
             featureText="Provide Feedback on Review:"
             :freeText="freeVersion.re_feedback"
@@ -481,7 +749,7 @@ Text:"
             :platinumText="platinumVersion.re_feedback"
           />
           <PricingFeature
-            :settingTab="props.settingTab"
+            :pageName="props.pageName"
             bgColor="#f4f8ff"
             featureText="Appeal Review:"
             :freeText="freeVersion.re_appeal"
@@ -497,7 +765,7 @@ Text:"
         </div>
         <div class="flex flex-col gap-2">
           <PricingFeature
-            :settingTab="props.settingTab"
+            :pageName="props.pageName"
             bgColor="#f4f8ff"
             featureText="No of Free Page Templates:"
             :freeText="freeVersion.cp_template?.toString()"
@@ -505,7 +773,7 @@ Text:"
             :platinumText="platinumVersion.cp_template?.toString()"
           />
           <PricingFeature
-            :settingTab="props.settingTab"
+            :pageName="props.pageName"
             bgColor="#f4f8ff"
             featureText="No of Color Schemes:"
             :freeText="freeVersion.cp_color?.toString()"
@@ -513,7 +781,7 @@ Text:"
             :platinumText="platinumVersion.cp_color?.toString()"
           />
           <PricingFeature
-            :settingTab="props.settingTab"
+            :pageName="props.pageName"
             bgColor="#f4f8ff"
             featureText="Share Your Contractor Page With Others:"
             :freeText="freeVersion.cp_share"
@@ -533,9 +801,9 @@ Text:"
     v-if="isSticky && screenWidth < 768"
     :style="{
       top:
-        props.settingTab && screenWidth >= 640
+        props.pageName && screenWidth >= 640
           ? '64px'
-          : props.settingTab && screenWidth < 640
+          : props.pageName && screenWidth < 640
           ? '56px'
           : '0',
     }"
@@ -550,6 +818,7 @@ Text:"
       <img class="mb-3 h-full object-contain" src="./assets/freebox.png" />
       <button
         v-if="userVersion === 0"
+        @click="onFreeSelect"
         class="mt-[2px] checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95"
       >
         Select
@@ -567,10 +836,11 @@ Text:"
         </div>
         <div class="flex text-green-rgba font-extrabold mt-1">
           <div class="text-lg self-center mt-[-30px]">$</div>
-          <div class="text-[50px] leading-[0.9]">29</div>
+          <div class="text-[50px] leading-[0.9]">{{}}</div>
         </div>
         <div class="text-base font-semibold">Per Month</div>
         <button
+          @click="onGoldSelect"
           class="checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95 mt-auto"
         >
           Select
@@ -583,10 +853,11 @@ Text:"
         <div class="text-black text-lg font-bold">Platinum Pakage</div>
         <div class="flex text-blue-rgba font-extrabold mt-1">
           <div class="text-lg self-center mt-[-30px]">$</div>
-          <div class="text-[50px] t leading-[0.9]">39</div>
+          <div class="text-[50px] t leading-[0.9]">{{}}</div>
         </div>
         <div class="text-base font-semibold">Per Month</div>
         <button
+          @click="onPlatinumSelect"
           class="checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95 mt-auto"
         >
           Select
@@ -595,3 +866,9 @@ Text:"
     </div>
   </div>
 </template>
+<style scoped>
+ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+</style>
