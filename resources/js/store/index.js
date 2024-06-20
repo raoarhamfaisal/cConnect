@@ -102,7 +102,10 @@ export const store = createStore({
           });
           console.log(versionResponse.data, "versionResponse");
           if (versionResponse.data) {
-            commit("setUserVersion", versionResponse.data);
+            commit(
+              "setUserVersion",
+              versionResponse.data.logged_in_user_version
+            );
           }
         } catch (err) {
           console.log(err);

@@ -50,7 +50,7 @@ const notFreeVersion = computed(
 );
 
 const getStartedButtonText = computed(() => {
-  if (getToken()) {
+  if (getToken() && profile.value && profile.value.id) {
     return userVersion.value === 0
       ? "Get Started"
       : userVersion.value === 1

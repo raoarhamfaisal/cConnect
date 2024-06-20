@@ -43,13 +43,22 @@
                   Region
                 </th>
                 <th style="text-align: center; font-weight: bold; color: white">
-                  Monthly Price
+                  Gold Monthly Price
                 </th>
                 <th style="text-align: center; font-weight: bold; color: white">
-                  Annual Price
+                  Gold Annual Price
                 </th>
                 <th style="text-align: center; font-weight: bold; color: white">
-                  Advertised Price
+                  Gold Advertised Price
+                </th>
+                <th style="text-align: center; font-weight: bold; color: white">
+                  Platinum Monthly Price
+                </th>
+                <th style="text-align: center; font-weight: bold; color: white">
+                  Platinum Annual Price
+                </th>
+                <th style="text-align: center; font-weight: bold; color: white">
+                  Platinum Advertised Price
                 </th>
                 <th style="text-align: center; font-weight: bold; color: white">
                   Sales Tax(%)
@@ -70,6 +79,9 @@
                 <td>${{ plan?.gold_billed_monthly_price }}</td>
                 <td>${{ plan?.gold_billed_annual_price }}</td>
                 <td>${{ plan?.gold_advertised_price }}</td>
+                <td>${{ plan?.platinum_billed_monthly_price }}</td>
+                <td>${{ plan?.platinum_billed_annual_price }}</td>
+                <td>${{ plan?.platinum_advertised_price }}</td>
                 <td>{{ plan?.sales_tax }}%</td>
                 <td class="flex gap-2 justify-center items-center">
                   <Icon
@@ -129,20 +141,7 @@
       "
     >
       <div class="py-2 p-4">
-        <v-btn-toggle
-          v-model="selected_version"
-          rounded="0"
-          color="primary"
-          class=""
-          group
-          mandatory
-        >
-          <v-btn class="bg-gray-800" value="gold"> Gold Pakage </v-btn>
-
-          <v-btn value="platinum"> Platinum Pakage</v-btn>
-        </v-btn-toggle>
         <div
-          v-if="selected_version"
           class="mt-6 space-y-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-4"
         >
           <div>
@@ -159,7 +158,7 @@
             <InputLabel
               class="font-bold"
               for="gold_billed_monthly_price"
-              value="Monthly Price*"
+              value="Gold Monthly Price*"
             />
             <TextInput
               id="gold_billed_monthly_price"
@@ -179,7 +178,7 @@
             <InputLabel
               class="font-bold"
               for="gold_billed_annual_price"
-              value="Annual Price*"
+              value="Gold Annual Price*"
             />
             <TextInput
               id="gold_billed_annual_price"
@@ -199,7 +198,7 @@
             <InputLabel
               class="font-bold"
               for="gold_advertised_price"
-              value="Advertised Price*"
+              value="Gold Advertised Price*"
             />
             <TextInput
               id="gold_advertised_price"
@@ -211,6 +210,66 @@
               @input="clearErrors('gold_advertised_price')"
             />
             <InputError class="mt-2" :message="errors.gold_advertised_price" />
+          </div>
+          <div>
+            <InputLabel
+              class="font-bold"
+              for="platinum_billed_monthly_price"
+              value="Platinum Monthly Price*"
+            />
+            <TextInput
+              id="platinum_billed_monthly_price"
+              type="number"
+              class="mt-1 block w-full"
+              required
+              v-model.trim="singlePlan.platinum_billed_monthly_price"
+              placeholder="Type your Monthly Price"
+              @input="clearErrors('platinum_billed_monthly_price')"
+            />
+            <InputError
+              class="mt-2"
+              :message="errors.platinum_billed_monthly_price"
+            />
+          </div>
+          <div>
+            <InputLabel
+              class="font-bold"
+              for="platinum_billed_annual_price"
+              value="Platinum Annual Price*"
+            />
+            <TextInput
+              id="platinum_billed_annual_price"
+              type="number"
+              class="mt-1 block w-full"
+              required
+              v-model.trim="singlePlan.platinum_billed_annual_price"
+              placeholder="Type your Annual Price"
+              @input="clearErrors('platinum_billed_annual_price')"
+            />
+            <InputError
+              class="mt-2"
+              :message="errors.platinum_billed_annual_price"
+            />
+          </div>
+          <div>
+            <InputLabel
+              class="font-bold"
+              for="platinum_advertised_price"
+              value="Platinum Advertised Price*"
+            />
+            <TextInput
+              id="platinum_advertised_price"
+              type="number"
+              class="mt-1 block w-full"
+              required
+              v-model.trim="singlePlan.platinum_advertised_price"
+              placeholder="Type your Advertised Price"
+              @input="clearErrors('platinum_advertised_price')"
+            />
+            <InputError
+              class="mt-2"
+              :message="errors.platinum_advertised_price"
+            />
           </div>
           <div>
             <InputLabel
@@ -326,10 +385,11 @@ const errors = reactive({
   gold_billed_monthly_price: "",
   gold_billed_annual_price: "",
   gold_advertised_price: "",
+  platinum_billed_annual_price: "",
+  platinum_billed_monthly_price: "",
+  platinum_advertised_price: "",
   sales_tax: "",
 });
-
-const selected_version = ref("gold");
 
 // Mounted
 onMounted(async () => {
@@ -372,15 +432,27 @@ const validateForm = () => {
     isValid = false; // Set to false if validation fails
   }
   if (!singlePlan.value.gold_billed_monthly_price) {
-    errors.gold_billed_monthly_price = "Monthly Price is Required";
+    errors.gold_billed_monthly_price = "Gold Monthly Price is Required";
     isValid = false;
   }
   if (!singlePlan.value.gold_billed_annual_price) {
-    errors.gold_billed_annual_price = "Annual Price is Required";
+    errors.gold_billed_annual_price = "Gold Annual Price is Required";
     isValid = false;
   }
   if (!singlePlan.value.gold_advertised_price) {
-    errors.gold_advertised_price = "Advertised Price is Required";
+    errors.gold_advertised_price = "Gold Advertised Price is Required";
+    isValid = false;
+  }
+  if (!singlePlan.value.platinum_billed_monthly_price) {
+    errors.platinum_billed_monthly_price = "Platinum Monthly Price is Required";
+    isValid = false;
+  }
+  if (!singlePlan.value.platinum_billed_annual_price) {
+    errors.platinum_billed_annual_price = "Platinum Annual Price is Required";
+    isValid = false;
+  }
+  if (!singlePlan.value.platinum_advertised_price) {
+    errors.platinum_advertised_price = "Platinum Advertised Price is Required";
     isValid = false;
   }
   if (!singlePlan.value.sales_tax) {
@@ -480,12 +552,16 @@ const handleEditSubmit = async () => {
     }
 
     const updatedPlan = {
-      selected_version: selected_version.value,
       region_id: region_id,
       sales_tax: +singlePlan.value.sales_tax,
       gold_billed_annual_price: +singlePlan.value.gold_billed_annual_price,
       gold_billed_monthly_price: +singlePlan.value.gold_billed_monthly_price,
       gold_advertised_price: +singlePlan.value.gold_advertised_price,
+      platinum_billed_annual_price:
+        +singlePlan.value.platinum_billed_annual_price,
+      platinum_billed_monthly_price:
+        +singlePlan.value.platinum_billed_monthly_price,
+      platinum_advertised_price: +singlePlan.value.platinum_advertised_price,
     };
     loadingEdit.value = true;
     disabled.value = true;
@@ -567,18 +643,22 @@ const handleCreateSubmit = async () => {
     }
 
     const planToCreate = {
-      selected_version: selected_version.value,
       region_id: region_id,
       sales_tax: +singlePlan.value.sales_tax,
       gold_billed_annual_price: +singlePlan.value.gold_billed_annual_price,
       gold_billed_monthly_price: +singlePlan.value.gold_billed_monthly_price,
       gold_advertised_price: +singlePlan.value.gold_advertised_price,
+      platinum_billed_annual_price:
+        +singlePlan.value.platinum_billed_annual_price,
+      platinum_billed_monthly_price:
+        +singlePlan.value.platinum_billed_monthly_price,
+      platinum_advertised_price: +singlePlan.value.platinum_advertised_price,
     };
     loadingEdit.value = true;
     disabled.value = true;
     try {
       const response = await axios.post(
-        `/api/admin/payment-info`,
+        `/api/admin/payment-info    `,
         planToCreate,
         getAxiosConfig()
       );
