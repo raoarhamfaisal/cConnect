@@ -95,6 +95,9 @@
                   User Id
                 </th>
                 <th style="text-align: center; font-weight: bold; color: white">
+                  Version
+                </th>
+                <th style="text-align: center; font-weight: bold; color: white">
                   First Name
                 </th>
                 <th style="text-align: center; font-weight: bold; color: white">
@@ -123,6 +126,7 @@
                 <td>{{ user.profile?.region_id }}</td>
                 <td>{{ user.profile?.active_user }}</td>
                 <td>{{ user.profile?.user_id }}</td>
+                <td>{{ user.profile?.version }}</td>
                 <td>{{ user.first_name }}</td>
                 <td>{{ user.last_name }}</td>
                 <td>{{ user.profile?.company_name }}</td>

@@ -20,10 +20,16 @@ const props = defineProps({
 });
 
 const prevUrlPricingPlan = ref("");
-const choosedPlan = ref("");
+const choosedVersion = ref("gold");
 onMounted(() => {
   prevUrlPricingPlan.value = localStorage.getItem("prevUrlPricingPlan");
-  choosedPlan.value = localStorage.getItem("choosedPlan");
+  choosedVersion.value = localStorage.getItem("choosedVersion");
+  console.log(choosedVersion.value, "choosedVersion");
+  if (!choosedVersion.value) {
+    choosedVersion.value = "gold";
+  }
+  localStorage.removeItem("choosedVersion");
+  localStorage.removeItem("prevUrlPricingPlan");
 });
 </script>
 
@@ -43,7 +49,7 @@ onMounted(() => {
     <div class="mt-10 ml-2 sm:mt-0 p-2 sm:p-3 md:p-0">
       <div>
         <v-btn-toggle
-          v-model="choosedPlan"
+          v-model="choosedVersion"
           rounded="0"
           color="primary"
           group
@@ -65,7 +71,10 @@ onMounted(() => {
           >
         </v-btn-toggle>
       </div>
-      <PaymentStep :region_id="profile.region_id" :choosedPlan="choosedPlan" />
+      <PaymentStep
+        :region_id="profile.region_id"
+        :choosedVersion="choosedVersion"
+      />
     </div>
   </Header>
 </template>

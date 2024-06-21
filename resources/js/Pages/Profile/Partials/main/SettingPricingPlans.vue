@@ -6,6 +6,7 @@
         props.choosedVersion === "gold" ? "Gold Version" : "Platinum Version"
       }}</span>
     </h1>
+
     <div
       v-if="loading"
       style="height: 500px"
@@ -38,12 +39,35 @@
         {{ couponApiSuccessMsg }}
       </p>
     </div> -->
+    <div
+      v-if="props.subscribedPlan === 'monthly'"
+      class="sm:p-4 p-3 bg-blue-100 border border-blue-200 rounded-lg mb-2"
+    >
+      <h3 class="text-lg font-semibold">Note:</h3>
+      <p class="mt-1 sm:mt-2 text-blue-700">
+        Upgrading to Platinum will forfeit any remaining time on your current
+        Gold subscription without a refund. Ready for Platinum perks? Proceed
+        with your upgrade understanding this condition.
+      </p>
+    </div>
+    <div
+      v-else
+      class="sm:p-4 p-3 bg-blue-100 border border-blue-200 rounded-lg mb-2"
+    >
+      <h3 class="text-lg font-semibold">Note:</h3>
+      <p class="mt-1 sm:mt-2 text-blue-700">
+        As you upgrade to Platinum, your remaining Gold subscription months will
+        now be billed at the Platinum rate. No retroactive charges for past
+        months. Enjoy your new Platinum benefits!
+      </p>
+    </div>
 
     <div
       v-if="!loading"
-      class="flex max-sm:flex-col mt-4 max-sm:gap-10 gap-2 w-full"
+      class="flex max-sm:flex-col mt-4 max-sm:gap-10 gap-2 w-full justify-center"
     >
       <PricingCard
+        v-if="subscribedPlan === 'monthly'"
         plan="MONTHLY"
         :monthlyPrice="monthlyPrice"
         :coupon="coupon"
@@ -55,6 +79,7 @@
       />
 
       <PricingCard
+        v-if="subscribedPlan === 'monthly'"
         plan="ANNUAL"
         :coupon="coupon"
         :couponDiscount="
@@ -68,19 +93,100 @@
         @selectedPricing="selectedPricing"
         :salesTax="pricingPlan.sales_tax ? annualTaxPrice : 0"
       />
+      <PricingCardForAnnualGold
+        v-if="subscribedPlan === 'annual'"
+        plan="ANNUAL"
+        :billing_start_date="billing_start_date"
+        :annualPaid="annualPaid"
+        :coupon="coupon"
+        :couponDiscount="
+          coupon && coupon.percentage_off_regular_price
+            ? annualDiscount.toFixed(2)
+            : 0.0
+        "
+        :savingValue="annualDiscountBesideCoupon.toFixed(2)"
+        :monthlyPrice="annualPrice"
+        :total="annualTotal ? parseFloat(annualTotal).toFixed(2) : 0"
+        @selectedPricing="selectedPricing"
+        @priceToBePaid="onPriceToBePaid"
+        :salesTax="pricingPlan.sales_tax ? annualTaxPrice : 0"
+      />
     </div>
-    <!-- :coupon="43.88" -->
-    <!-- savings="You Save $19.5" -->
   </div>
+  <CustomDialog
+    :disableOutSideClick="false"
+    @submit="handleCancelSubscription"
+    ref="confirmPaymentMethodDialogRef"
+    :showFooter="false"
+    dialogWidth="max-h-[70vh] width50"
+    title="Confirm Payment Method"
+  >
+    <div class="mb-4">
+      <div class="pl-6 section_text-gray-700 mt-3 mb-2">
+        <div class="mb-2 text-xl font-bold">
+          Update Your Payment Details or Continue with Existing?
+        </div>
+
+        <p class="text-base">
+          Would you like to use your existing payment method for this
+          transaction, or do you need to update your payment details? Please
+          choose your preferred option to proceed.
+        </p>
+        <div class="text-base mt-4">
+          <strong>Total Amount to be charged : </strong>
+          ${{
+            selectedPlan === "monthdiff"
+              ? priceToBePaid
+              : selectedPlan === "MONTHLY"
+              ? monthlyTotal
+                ? parseFloat(monthlyTotal).toFixed(2)
+                : 0
+              : annualTotal
+              ? parseFloat(annualTotal).toFixed(2)
+              : 0
+          }}
+        </div>
+      </div>
+    </div>
+    <div :class="`flex  justify-between `">
+      <button
+        type="button"
+        @click="emit('onUpdatePaymentMethod')"
+        class="px-4 py-2 rounded text-white bg-[#364fc7]"
+      >
+        Update Payment Details
+      </button>
+      <button
+        @click="onSubscribe"
+        :disabled="loadingConfirmPayment"
+        type="button"
+        class="px-4 py-2 flex tems-center gap-2 rounded bg-[#5f3dc4] text-white"
+        :style="{
+          opacity: loadingConfirmPayment ? '0.2' : '1',
+        }"
+      >
+        <div class="flex items-center justify-center">Subscribe</div>
+        <img
+          v-show="loadingConfirmPayment"
+          src="/images/avatars/Spinner.gif"
+          alt="spinner"
+          width="25"
+        />
+      </button>
+    </div>
+  </CustomDialog>
 </template>
 
 <script setup>
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { somethingWentWrong } from "@/helpers/utilities";
 import PricingCard from "@/Pages/Profile/Partials/main/PricingCard.vue";
+import PricingCardForAnnualGold from "@/Pages/Profile/Partials/main/PricingCardForAnnualGold.vue";
 
 import { Inertia } from "@inertiajs/inertia";
 import { computed, onMounted, reactive, ref, watch } from "vue";
+import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
+
 const props = defineProps({
   region_id: {
     type: [Number, String],
@@ -89,13 +195,31 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  subscribedPlan: {
+    type: String,
+    default: "",
+  },
+  annualPaid: {
+    type: [Number, String],
+    default: 0,
+  },
+  billing_start_date: {
+    type: [Number, String],
+    default: 0,
+  },
 });
+
+const emit = defineEmits(["onUpdatePaymentMethod"]);
 const loading = ref(false);
 const pricingPlan = ref({});
 const loadingCoupon = ref(false);
 const couponApiError = ref("");
 const couponApiSuccessMsg = ref("");
 const coupon = ref({});
+const loadingConfirmPayment = ref(false);
+const selectedPlan = ref("");
+const priceToBePaid = ref(0);
+const confirmPaymentMethodDialogRef = ref(null);
 
 const form = reactive({
   coupon_code: "",
@@ -235,6 +359,10 @@ watch(
   }
 );
 
+const onPriceToBePaid = (paidPrice) => {
+  priceToBePaid.value = paidPrice;
+};
+
 const fetchPricingCardDetails = async () => {
   loading.value = true;
   try {
@@ -255,6 +383,7 @@ const fetchPricingCardDetails = async () => {
 
 const selectedPricing = (plan) => {
   console.log(plan, "plan");
+  selectedPlan.value = plan;
   localStorage.setItem("selectedPlan", plan);
   let couponData = coupon.value;
   localStorage.setItem("coupon", JSON.stringify(couponData));
@@ -266,7 +395,9 @@ const selectedPricing = (plan) => {
   // Serialize the object into a string and store it
   localStorage.setItem("total", JSON.stringify(totalData));
   localStorage.setItem("choosedVersion", props.choosedVersion);
-  Inertia.visit("/payment");
+
+  confirmPaymentMethodDialogRef.value.openDialog();
+  // Inertia.visit("/payment");
 };
 
 let saveTimeout = null;

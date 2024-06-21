@@ -61,7 +61,7 @@ class AdminUsersController extends Controller
     
         // Fetch with profile (only specified fields) and paginate
         $users = $query->with(['profile' => function($q) {
-            $q->select('user_id', 'region_id', 'active_user', 'is_payment_verified', 'first_name', 'last_name', 'company_name', 'email', 'notes_on_user');
+            $q->select('user_id', 'region_id','version', 'active_user', 'is_payment_verified', 'first_name', 'last_name', 'company_name', 'email', 'notes_on_user');
         }])->paginate($perPage, ['*'], 'page', $page);
     
         // Convert the paginated results to arrays

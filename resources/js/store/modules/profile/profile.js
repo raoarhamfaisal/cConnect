@@ -26,6 +26,7 @@ export default {
       pusherComment: {},
       postComment: {},
       postReply: {},
+      // priceToBePaid: 0,
       updatedPost: {},
       updatedPostId: 0,
       deletedPost: {},
@@ -33,6 +34,7 @@ export default {
   },
   getters: {
     status: (state) => state.status,
+    // priceToBePaid: (state) => state.priceToBePaid,
     commentId: (state) => state.commentId,
     pusherComment: (state) => state.pusherComment,
     pusherCommentPosted: (state) => state.pusherCommentPosted,
@@ -54,6 +56,9 @@ export default {
     deletedPost: (state) => state.deletedPost,
   },
   mutations: {
+    // setPriceToBePaid(state, payload) {
+    //   state.priceToBePaid = payload;
+    // },
     setStatus(state, payload) {
       state.status = payload;
     },
