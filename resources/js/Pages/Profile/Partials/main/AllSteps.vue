@@ -85,14 +85,14 @@ const disable = computed(() => {
     : false;
 });
 
-onMounted(() => {
+/*onMounted(() => {
   currentStep.value = +localStorage.getItem("stepNo");
   if (!currentStep.value) {
     currentStep.value = 1;
   } else {
     localStorage.removeItem("stepNo");
   }
-});
+});*/
 
 const screenWidth = computed(() => store.getters.screenWidth);
 const loading = computed(() => store.state.profile.loading);

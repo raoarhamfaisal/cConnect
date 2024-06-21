@@ -197,7 +197,7 @@ const configurePrevUrlPricingPlan = () => {
 };
 const configureUrlToVisit = () => {
   if (props.pageName === "profile-setup") {
-    localStorage.setItem("stepNo", 4);
+    // localStorage.setItem("stepNo", 4);
     Inertia.visit("/pricing-plan");
   } else if (props.pageName === "pricing" && userVersion === 0) {
     Inertia.visit("/profile-setup");

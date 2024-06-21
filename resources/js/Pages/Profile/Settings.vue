@@ -21,8 +21,14 @@ defineProps({
   },
 });
 const store = useStore();
-
-store.commit("profile/setActiveTab", 0);
+const activeTab = localStorage.getItem("activeTab");
+if (activeTab) {
+  console.log(activeTab, "activeTab");
+  store.commit("profile/setActiveTab", +activeTab);
+  localStorage.removeItem("activeTab");
+} else {
+  store.commit("profile/setActiveTab", 0);
+}
 </script>
 
 <template>
