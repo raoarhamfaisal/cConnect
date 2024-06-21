@@ -83,7 +83,7 @@ class UpdateSubscriptions extends Command
 
         $controller = new AnetController\ARBUpdateSubscriptionController($request);
 
-        $response = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::PRODUCTION);
+        $response = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::SANDBOX);
         
         if (($response != null) && ($response->getMessages()->getResultCode() == "Ok") )
         {
