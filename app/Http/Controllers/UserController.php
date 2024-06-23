@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\PaymentHistory;
 
 
 use Illuminate\Http\Request;
@@ -49,6 +50,14 @@ class UserController extends Controller
         });
     
         return response()->json(['blocked_users' => $blockedUsersData]);
+    }
+
+    public function getPaymentHistory(Request $request, $userId)
+    {
+
+        $paymentHistory = PaymentHistory::where('user_id', $userId)->get();
+
+        return response()->json($paymentHistory);
     }
     
 
