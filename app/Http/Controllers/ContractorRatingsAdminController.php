@@ -91,6 +91,7 @@ class ContractorRatingsAdminController extends Controller
                 'text_alignment' => $post->text_alignment,
             
                 'repost' => $post->repost,
+                'repost_comment' => $post->repost_comment,
                 'shares' => $post->shares,
             ]),
             // pass on any existing search filters that exist
@@ -171,6 +172,7 @@ class ContractorRatingsAdminController extends Controller
                 'text_alignment' => $post->text_alignment,
             
                 'repost' => $post->repost,
+                'repost_comment' => $post->repost_comment,
                 'shares' => $post->shares,
             ]),
             // pass on any existing search filters that exist

@@ -40,6 +40,8 @@ return new class extends Migration
             $table->unsignedBigInteger('repost')->default(0);
             $table->unsignedBigInteger('shares')->default(0);
 
+            $table->text('repost_comment')->nullable();
+
 
             $table->timestamps();
 
