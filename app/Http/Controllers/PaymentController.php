@@ -604,4 +604,48 @@ class PaymentController extends Controller
             ]
         );
     }
+
+    public function updatePaymentMethod(Request $request)
+    {
+        $customerProfileId = $request->customerProfileId;
+        $customerPaymentProfileId = $request->customerPaymentProfileId;
+        $cardNumber = $request->cardNumber;
+        $expirationDate = $request->expirationDate; // Format: YYYY-MM
+        $billingDetails = $request->billingDetails; // An array containing billing details
+
+        // Here, call your function to update the customer payment profile
+        $response = $this->updateCustomerPaymentProfile($customerProfileId, $customerPaymentProfileId, $cardNumber, $expirationDate, $billingDetails);
+
+        // Check response and return appropriate message
+        if ($response && $response->getMessages()->getResultCode() == "Ok") {
+            return response()->json(['message' => 'Payment method updated successfully.']);
+        } else {
+            $errorMessages = $response->getMessages()->getMessage();
+            return response()->json(['error' => $errorMessages[0]->getText()], 500);
+        }
+    }
+
+    function updateCustomerPaymentProfile($customerProfileId, $customerPaymentProfileId, $cardNumber, $expirationDate, $billingDetails)
+    {
+        // Existing code...
+
+        // Modify the credit card details
+        $creditCard->setCardNumber($cardNumber);
+        $creditCard->setExpirationDate($expirationDate);
+
+        // Modify the billing address
+        $billto->setFirstName($billingDetails['firstName']);
+        $billto->setLastName($billingDetails['lastName']);
+        $billto->setAddress($billingDetails['address']);
+        $billto->setCity($billingDetails['city']);
+        $billto->setState($billingDetails['state']);
+        $billto->setZip($billingDetails['zip']);
+        $billto->setCountry($billingDetails['country']);
+        $billto->setPhoneNumber($billingDetails['phoneNumber']);
+        // Add more fields as necessary
+
+        // Rest of the existing code...
+    }
+
+
 }

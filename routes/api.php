@@ -151,6 +151,8 @@ Route::get('/posts/{post}/trades', [PostController::class, 'getPostTrades']);
         Route::post('/profile/complete-profile-and-start-free-subscription', [ProfileController::class, 'completeProfileAndStartFreeSubscription'])->name('profile.completeProfileAndStartFreeSubscription');
 
 
+        Route::post('/payment/update-method', [PaymentController::class, 'updatePaymentMethod']);
+
 
 
         // Process Payment
