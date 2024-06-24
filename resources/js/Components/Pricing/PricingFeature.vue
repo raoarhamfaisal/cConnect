@@ -141,7 +141,10 @@ const notFreeVersion = computed(
     <div class="text-xl mb-2 text-center font-semibold">
       {{ props.featureText }}
     </div>
-    <div class="grid grid-cols-3 gap-x-1">
+    <div
+      class="grid gap-x-1"
+      :class="userVersion !== 1 ? 'grid-cols-2' : 'grid-cols-3'"
+    >
       <!-- Free -->
       <div
         v-if="userVersion === 1 || userVersion === 0"

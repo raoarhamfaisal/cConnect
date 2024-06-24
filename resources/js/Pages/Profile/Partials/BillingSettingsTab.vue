@@ -2,6 +2,8 @@
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
+import Card from "@/Components/Card.vue";
+
 import SettingPricingPlans from "@/Pages/Profile/Partials/main/SettingPricingPlans.vue";
 
 import {
@@ -38,13 +40,17 @@ const store = useStore();
 const step = ref(1);
 const updatePaymentMethodDialogRef = ref(null);
 const isUpdateAndSubscribe = ref(false);
-
+const paymentHistoryDialogRef = ref(null);
+const paymentHistoryArray = ref([]);
+const loadingPaymentHistoryDetails = ref(false);
 //onMounted
 
 onMounted(() => {
+  store.dispatch("fetchUserVersion");
   fetchActiveSubscriptionDetails();
 });
 const userVersion = computed(() => store.getters.userVersion);
+const screenWidth = computed(() => store.getters.screenWidth);
 const userVersionText = computed(() =>
   userVersion.value === 1
     ? "FREE"
@@ -166,6 +172,29 @@ const updatePaymentMethodAndSubscribe = () => {
 
   updatePaymentMethodDialogRef.value.openDialog();
 };
+
+const openPaymnetHistoryDialog = () => {
+  fetchPaymentHistoryDetails();
+  paymentHistoryDialogRef.value.openDialog();
+};
+
+const fetchPaymentHistoryDetails = async () => {
+  loadingPaymentHistoryDetails.value = true;
+
+  try {
+    const response = await axios.get(
+      `/api/user/${props.user_id}/payment-history`,
+      getAxiosConfig()
+    );
+    if (response.data) {
+      paymentHistoryArray.value = response.data.reverse();
+    }
+  } catch (err) {
+    somethingWentWrong(err.response.data.message, "inherit");
+  } finally {
+    loadingPaymentHistoryDetails.value = false;
+  }
+};
 </script>
 
 <template>
@@ -186,7 +215,7 @@ const updatePaymentMethodAndSubscribe = () => {
   </div>
   <section>
     <header
-      class="flex max-sm:flex-col max-sm:gap-4 sm:justify-between items-center"
+      class="flex max-sm:flex-col max-sm:gap-4 sm:justify-between sm;items-center"
     >
       <div>
         <h2 class="text-2xl font-bold text-gray-900">Billing / Version</h2>
@@ -252,7 +281,7 @@ const updatePaymentMethodAndSubscribe = () => {
               </button>
               <button
                 class="inline-block tex-center py-2 w-full sm:w-2/4 font-bold uppercase px-4 rounded-lg hover:bg-gray-200 border-2 border-gray-500 transition transform duration-300 hover:shadow-lg active:scale-95"
-                @click="onFreeSelect"
+                @click="openPaymnetHistoryDialog"
               >
                 Payment History
               </button>
@@ -284,9 +313,7 @@ const updatePaymentMethodAndSubscribe = () => {
                     >
                       <span class="text-lg sm:text-2xl"
                         >${{
-                          planType === "monthly"
-                            ? parseFloat(monthlyTotal).toFixed(4)
-                            : parseFloat(annualTotal).toFixed(4)
+                          parseFloat(pricingPlan.final_amount).toFixed(2)
                         }}</span
                       >
                       <span class="text-xs ml-1"
@@ -327,6 +354,15 @@ const updatePaymentMethodAndSubscribe = () => {
                           <p><strong>Discount</strong></p>
                         </div>
                         <div>${{ pricingPlan.discount_amount }}</div>
+                      </div>
+                      <div class="flex justify-between">
+                        <div class="flex items-center justify-center mb-2">
+                          <Icon icon="carbon:cost-total" class="w-5 h-5 mr-2" />
+                          <p><strong>Final Amount</strong></p>
+                        </div>
+                        <div>
+                          ${{ parseFloat(pricingPlan.final_amount).toFixed(2) }}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -417,6 +453,7 @@ const updatePaymentMethodAndSubscribe = () => {
           "
           :region_id="props.profile.region_id"
           choosedVersion="platinum"
+          :profile="profile"
           :billing_start_date="pricingPlan.started_at"
           @onUpdatePaymentMethod="updatePaymentMethodAndSubscribe"
         />
@@ -467,6 +504,78 @@ const updatePaymentMethodAndSubscribe = () => {
           <strong>email address</strong>. We understand the importance of your
           decision and are committed to processing your request promptly.
         </p>
+      </div>
+    </div>
+  </CustomDialog>
+  <!-- Payment History Dialog  -->
+  <CustomDialog
+    :showFooter="false"
+    ref="paymentHistoryDialogRef"
+    title="Payment History"
+  >
+    <div class="mb-4">
+      <div
+        v-if="loadingPaymentHistoryDetails"
+        class="h-full h-[40vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4"
+      >
+        <div class="text-center text-xl">Loading...</div>
+        <v-progress-linear
+          color="#241e6d"
+          indeterminate
+          rounded
+          height="6"
+        ></v-progress-linear>
+      </div>
+
+      <div class="flex flex-col gap-2 sm:gap-3" v-else>
+        <Card
+          v-for="(payhistory, index) in paymentHistoryArray"
+          :key="index"
+          :shadowLevel="2"
+          cardInnerClasses="h-full"
+          bgColor="#edecea"
+          :isInside="true"
+          :padding="screenWidth < 640 ? '7px' : '20px'"
+        >
+          <div
+            class="uppercase text-2xl font-semibold text-blue-rgba font-bold mb-4"
+          >
+            Pricing plan :
+            <span class="font-extrabold">{{
+              payhistory.version == 1
+                ? "FREE"
+                : payhistory.version == 2
+                ? "GOLD"
+                : payhistory.version == 3
+                ? "PLATINUM"
+                : "No Pricing Plan Found"
+            }}</span>
+          </div>
+          <div class="mb-2">
+            <div class="uppercase text-sm font-bold text-blue-rgba">
+              Subscription Plan
+            </div>
+            <div class="font-medium text-base">
+              {{ payhistory.subscription_plan }}
+            </div>
+          </div>
+          <div class="mb-2">
+            <div class="uppercase text-sm font-bold text-blue-rgba">
+              Amount Paid
+            </div>
+            <div class="font-medium text-base">
+              {{ parseFloat(payhistory.amount_paid).toFixed(2) }}
+            </div>
+          </div>
+          <div class="mb-2">
+            <div class="uppercase text-sm font-bold text-blue-rgba">
+              Charged Date
+            </div>
+            <div class="font-medium text-base">
+              {{ formatDateTime(payhistory.charged_date) }}
+            </div>
+          </div>
+        </Card>
       </div>
     </div>
   </CustomDialog>

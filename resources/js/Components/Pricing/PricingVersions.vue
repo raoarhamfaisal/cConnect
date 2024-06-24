@@ -112,17 +112,7 @@ const handleScroll = () => {
 };
 
 onMounted(() => {
-  const prevUrlPricingPlan = localStorage.getItem("prevUrlPricingPlan");
-
-  if (prevUrlPricingPlan === "/pricing") {
-    localStorage.removeItem("prevUrlPricingPlan");
-    configurePrevUrlPricingPlan();
-    Inertia.visit("/pricing-plan");
-    return;
-  }
-
   if (screenWidth.value < 768) {
-    console.log("mounted");
     if (props.pageName !== "pricing") {
       const newFeed = document.querySelector("#scrollable");
       newFeed.addEventListener("scroll", handleScroll);
@@ -208,9 +198,9 @@ const configureUrlToVisit = () => {
     props.pageName === "profile-setup" ||
     (props.pageName === "settings" && userVersion.value === 1)
   ) {
+    console.log("in pricing plan");
     Inertia.visit("/pricing-plan");
   } else if (props.pageName === "settings" && userVersion.value === 2) {
-    console.log("Inertia");
     emit("platinumSelected", {});
   } else if (props.pageName === "pricing" && userVersion.value === 0) {
     Inertia.visit("/profile-setup");
@@ -417,8 +407,9 @@ const onPlatinumSelect = () => {
             >
               Per Month
             </div>
+
             <button
-              v-if="showGoldSelect && userVersion !== 2"
+              v-if="showGoldSelect && userVersion !== 2 && userVersion !== 3"
               @click="onGoldSelect"
               class="checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95 mt-auto"
             >
@@ -478,7 +469,8 @@ const onPlatinumSelect = () => {
       <!-- tableHead  for Mobile-->
       <div
         v-else
-        class="grid grid-cols-3 gap-x-1 versions-head"
+        class="grid gap-x-1 versions-head"
+        :class="userVersion !== 1 ? 'grid-cols-2' : 'grid-cols-3'"
         ref="headerRef"
       >
         <!-- Free -->
@@ -498,21 +490,24 @@ const onPlatinumSelect = () => {
         </div>
         <!-- Gold -->
         <div>
-          <div class="flex flex-col justify-center items-center h-full">
+          <div class="flex flex-col justify-start items-center h-full">
             <div
               :class="`text-black text-lg font-bold ${
-                screenWidth < 458 && 'h-[56px]'
+                screenWidth < 458 && userVersion === 1 && 'h-[56px]'
               }`"
             >
               Gold Pakage
             </div>
             <div class="flex text-green-rgba font-extrabold mt-1">
               <div class="text-lg self-center mt-[-30px]">$</div>
-              <div class="text-[50px] leading-[0.9]">{{}}</div>
+              <div class="text-[50px] leading-[0.9]">
+                {{ formatPrice(pricingPlan.gold_advertised_price) }}
+              </div>
             </div>
             <div class="text-base font-semibold">Per Month</div>
             <button
               @click="onGoldSelect"
+              v-if="showGoldSelect && userVersion !== 2 && userVersion !== 3"
               class="checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95 mt-auto"
             >
               Select
@@ -525,7 +520,10 @@ const onPlatinumSelect = () => {
             <div class="text-black text-lg font-bold">Platinum Pakage</div>
             <div class="flex text-blue-rgba font-extrabold mt-1">
               <div class="text-lg self-center mt-[-30px]">$</div>
-              <div class="text-[50px] t leading-[0.9]">{{}}</div>
+
+              <div class="text-[50px] t leading-[0.9]">
+                {{ formatPrice(pricingPlan.platinum_advertised_price) }}
+              </div>
             </div>
             <div class="text-base font-semibold">Per Month</div>
             <button
@@ -537,6 +535,7 @@ const onPlatinumSelect = () => {
           </div>
         </div>
       </div>
+
       <div class="features pb-4">
         <!-- News Feed -->
         <div class="w-full mb-2">
@@ -816,13 +815,14 @@ Text:"
     v-if="isSticky && screenWidth < 768"
     :style="{
       top:
-        props.pageName && screenWidth >= 640
+        props.pageName !== 'pricing' && screenWidth >= 640
           ? '64px'
-          : props.pageName && screenWidth < 640
+          : props.pageName !== 'pricing' && screenWidth < 640
           ? '56px'
           : '0',
     }"
-    class="grid grid-cols-3 gap-x-1 versions-head sticky"
+    class="grid gap-x-1 versions-head sticky"
+    :class="userVersion !== 1 ? 'grid-cols-2' : 'grid-cols-3'"
   >
     <!-- Free -->
 
@@ -841,20 +841,23 @@ Text:"
     </div>
     <!-- Gold -->
     <div>
-      <div class="flex flex-col justify-center items-center h-full">
+      <div class="flex flex-col justify-start items-center h-full">
         <div
           :class="`text-black text-lg font-bold ${
-            screenWidth < 458 && 'h-[56px]'
+            screenWidth < 458 && userVersion === 1 && 'h-[56px]'
           }`"
         >
           Gold Pakage
         </div>
         <div class="flex text-green-rgba font-extrabold mt-1">
           <div class="text-lg self-center mt-[-30px]">$</div>
-          <div class="text-[50px] leading-[0.9]">{{}}</div>
+          <div class="text-[50px] leading-[0.9]">
+            {{ formatPrice(pricingPlan.gold_advertised_price) }}
+          </div>
         </div>
         <div class="text-base font-semibold">Per Month</div>
         <button
+          v-if="showGoldSelect && userVersion !== 2 && userVersion !== 3"
           @click="onGoldSelect"
           class="checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95 mt-auto"
         >
@@ -868,7 +871,10 @@ Text:"
         <div class="text-black text-lg font-bold">Platinum Pakage</div>
         <div class="flex text-blue-rgba font-extrabold mt-1">
           <div class="text-lg self-center mt-[-30px]">$</div>
-          <div class="text-[50px] t leading-[0.9]">{{}}</div>
+
+          <div class="text-[50px] t leading-[0.9]">
+            {{ formatPrice(pricingPlan.platinum_advertised_price) }}
+          </div>
         </div>
         <div class="text-base font-semibold">Per Month</div>
         <button

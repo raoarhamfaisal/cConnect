@@ -21,7 +21,7 @@
     </div>
 
     <div
-      :class="`border-8 p-4 border-white rounded-t-lg ${
+      :class="`border-8 p-1  sx:p-4 border-white rounded-t-lg ${
         activeTab === 2 ? 'py-6 ' : 'sm:p-8'
       } bg-white shadow sm:rounded-lg`"
     >

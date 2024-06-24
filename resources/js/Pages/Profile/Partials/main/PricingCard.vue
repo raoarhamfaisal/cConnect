@@ -134,12 +134,14 @@ const enter = (el, done) => {
 };
 
 const anuualOnlyMonthValue = computed(() => {
-  let result = (
-    (+props.total - +props.couponDiscount - +props.salesTax) /
-    12
-  ).toFixed(2);
+  // let result = (
+  //   (+props.total - +props.couponDiscount - +props.salesTax) /
+  //   12
+  // ).toFixed(2);
+  let result = ((+props.monthlyPrice - +props.couponDiscount) / 12).toFixed(2);
+
   if (result === 0 || result === "0.00" || result === "-0.00") {
-    return (result = (+props.total / 12).toFixed(2));
+    return (+props.total / 12).toFixed(2);
   }
   return result;
 });

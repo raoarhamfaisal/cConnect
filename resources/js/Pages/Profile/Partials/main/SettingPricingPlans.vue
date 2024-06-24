@@ -113,10 +113,10 @@
       />
     </div>
   </div>
-  <CustomDialog
+  <!-- <CustomDialog
     :disableOutSideClick="false"
     @submit="handleCancelSubscription"
-    ref="confirmPaymentMethodDialogRef"
+    ref="confirmSubscriptionDialogRef"
     :showFooter="false"
     dialogWidth="max-h-[70vh] width50"
     title="Confirm Payment Method"
@@ -174,7 +174,12 @@
         />
       </button>
     </div>
-  </CustomDialog>
+  </CustomDialog> -->
+  <DialogUpgradeSubscription
+    ref="confirmSubscriptionDialogRef"
+    :amountToBePaid="amountToBePaid"
+    :profile="profile"
+  />
 </template>
 
 <script setup>
@@ -182,6 +187,7 @@ import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { somethingWentWrong } from "@/helpers/utilities";
 import PricingCard from "@/Pages/Profile/Partials/main/PricingCard.vue";
 import PricingCardForAnnualGold from "@/Pages/Profile/Partials/main/PricingCardForAnnualGold.vue";
+import DialogUpgradeSubscription from "@/Components/Pricing/DialogUpgradeSubscription.vue";
 
 import { Inertia } from "@inertiajs/inertia";
 import { computed, onMounted, reactive, ref, watch } from "vue";
@@ -191,6 +197,8 @@ const props = defineProps({
   region_id: {
     type: [Number, String],
   },
+  profile: Object,
+
   choosedVersion: {
     type: String,
     default: "",
@@ -219,7 +227,7 @@ const coupon = ref({});
 const loadingConfirmPayment = ref(false);
 const selectedPlan = ref("");
 const priceToBePaid = ref(0);
-const confirmPaymentMethodDialogRef = ref(null);
+const confirmSubscriptionDialogRef = ref(null);
 
 const form = reactive({
   coupon_code: "",
@@ -237,6 +245,7 @@ const monthlyPrice = computed(() => {
       : +pricingPlan.value.platinum_billed_monthly_price;
   return originalMonthlyTotal ? originalMonthlyTotal : 0;
 });
+
 const annualPrice = computed(() => {
   const originalAnnualTotal =
     props.choosedVersion === "gold"
@@ -348,6 +357,18 @@ const annualTaxPrice = computed(() => {
   return price === "0.00" ? "0.01" : price;
 });
 
+const amountToBePaid = computed(() => {
+  return selectedPlan.value === "monthdiff"
+    ? priceToBePaid.value
+    : selectedPlan.value === "MONTHLY"
+    ? monthlyTotal.value
+      ? parseFloat(monthlyTotal.value).toFixed(2)
+      : 0
+    : annualTotal.value
+    ? parseFloat(annualTotal.value).toFixed(2)
+    : 0;
+});
+
 //watch
 watch(
   () => props.region_id,
@@ -396,8 +417,7 @@ const selectedPricing = (plan) => {
   localStorage.setItem("total", JSON.stringify(totalData));
   localStorage.setItem("choosedVersion", props.choosedVersion);
 
-  confirmPaymentMethodDialogRef.value.openDialog();
-  // Inertia.visit("/payment");
+  confirmSubscriptionDialogRef.value.openDialog();
 };
 
 let saveTimeout = null;
