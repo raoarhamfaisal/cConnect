@@ -14,6 +14,8 @@ import { usePage } from "@inertiajs/inertia-vue3";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import { somethingWentWrong } from "@/helpers/utilities";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
+import { filterBadWordsWithoutValue } from "@/helpers/utilities";
+import InputError from "@/Components/InputError.vue";
 
 export default {
   components: {
@@ -22,6 +24,7 @@ export default {
     StarRounded,
     WriteCommentFooter,
     AllComments,
+    InputError,
     LikedUser,
     CustomDialog,
     DialogContractorRating,
@@ -54,6 +57,8 @@ export default {
     let usePageDeatails = usePage().props.value;
 
     return {
+      commentTextError: "",
+      commentText: "",
       dialogRef: null,
       customBgColor: "",
       postToEnlarge: this.postEnlarged,
@@ -89,6 +94,11 @@ export default {
     this.fetchAllComments();
   },
   watch: {
+    commentText(newVal) {
+      if (newVal) {
+        this.commentTextError = "";
+      }
+    },
     postEnlarged: {
       handler(newVal, oldVal) {
         if (newVal && Object.keys(newVal).length > 0) {
@@ -436,6 +446,44 @@ export default {
   },
   emits: ["close-enlarged", "onAddingEnlargeComment"],
   methods: {
+    validate() {
+      let isValid = true;
+      // Reset the error messages before validating
+      this.commentTextError = "";
+      // Validate rating_text
+      if (!this.commentText || this.commentText.trim() === "") {
+        this.commentTextError = "Comment should not be empty.";
+        isValid = false;
+      }
+
+      return isValid;
+    },
+    insertTab(event) {
+      if (event.key === "Tab") {
+        event.preventDefault();
+        const start = event.target.selectionStart;
+        const end = event.target.selectionEnd;
+
+        // Set the value to: text before caret + four spaces + text after caret
+        this.commentText =
+          this.commentText.substring(0, start) +
+          "      " + // using four spaces for a tab
+          this.commentText.substring(end);
+
+        // Vue.nextTick to handle DOM updates after Vue's reactivity system updates
+        this.$nextTick(() => {
+          event.target.selectionStart = event.target.selectionEnd = start + 6;
+        });
+      }
+    },
+    adjustHeight(event) {
+      // Vue.nextTick to ensure the DOM is updated before we adjust the height
+      this.$nextTick(() => {
+        const target = event.target;
+        target.style.height = "auto"; // Reset height first to get the correct scrollHeight
+        target.style.height = `${target.scrollHeight}px`;
+      });
+    },
     openDialog() {
       this.$refs.dialogRef.openDialog();
     },
@@ -571,23 +619,28 @@ export default {
       this.$refs.repostDialogRef.openDialog();
     },
     async onRepost() {
-      this.loadingRepost = true;
-      try {
-        const response = await axios.post(
-          `/api/posts/${this.postToEnlarge.id}/repost`,
-          {},
-          getAxiosConfig()
-        );
-        if (response.data) {
-          this.repost_count = this.repost_count + 1;
-          this.$emit("onRepost");
-          changesSaved("Reposted Successfully");
+      if (this.validate()) {
+        this.loadingRepost = true;
+        const reposterComment = {
+          comment: filterBadWordsWithoutValue(this.commentText),
+        };
+        try {
+          const response = await axios.post(
+            `/api/posts/${this.postToEnlarge.id}/repost`,
+            reposterComment,
+            getAxiosConfig()
+          );
+          if (response.data) {
+            this.repost_count = this.repost_count + 1;
+            this.$emit("onRepost");
+            changesSaved("Reposted Successfully");
+          }
+        } catch (err) {
+          somethingWentWrong(err.response.data.message, "inherit");
+        } finally {
+          this.loadingRepost = false;
+          this.$refs.repostDialogRef.closeDialog();
         }
-      } catch (err) {
-        somethingWentWrong(err.response.data.message, "inherit");
-      } finally {
-        this.loadingRepost = false;
-        this.$refs.repostDialogRef.closeDialog();
       }
     },
     async fetchAllComments() {
@@ -724,12 +777,29 @@ export default {
   >
     <!-- :showHeader="false" -->
     <div class="mb-4">
-      <div
-        class="section_text-lg font-bold pl-6 section_text-gray-800 mt-3 mb-2"
-      >
+      <div class="section_text-lg font-bold section_text-gray-800 mt-3 mb-2">
         Reposting allows you to share this post with your followers, spreading
         the message further.
       </div>
+      <div class="text-md font-bold text-gray-600 mt-3 mb-2">Comment Text</div>
+      <textarea
+        id="responseText"
+        type="text"
+        :rows="5"
+        class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm overflow-hidden"
+        required
+        v-model="commentText"
+        ref="textRef"
+        @keydown="insertTab"
+        @input="adjustHeight"
+        @paste="adjustHeight"
+        placeholder="Write a Comment..."
+      />
+      <InputError
+        v-if="commentTextError"
+        class="mt-2"
+        :message="commentTextError"
+      />
     </div>
   </CustomDialog>
   <!-- TOP BACK TO NEWS FEED -->
@@ -994,56 +1064,57 @@ export default {
 
         <div class="pb-2 flex justify-between w-full">
           <div class="flex gap-2">
-            <!-- Like -->
             <div
               class="flex gap-1 justify-center items-center cursor-pointer"
               @click="onOpenListofLikedUsersModel"
             >
-              <!-- <div v-if="postToEnlarge.likes_count" class=""> -->
-              <div
-                class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
-              >
-                <div class="flex flex-row justify-between items-center">
-                  <div class="">
-                    <Icon
-                      icon="emojione-monotone:up-arrow"
-                      :class="`  text-[#16a34a]`"
-                      width="25"
-                    />
-                  </div>
-                </div>
+              <!-- <div v-if="post.likes_count" class=""> -->
+              <div class="font-medium text-blue-800 cursor-pointer">
+                <Icon
+                  icon="emojione-monotone:up-arrow"
+                  :class="`text-[17px] xs:text-[25px]  text-[#16a34a]`"
+                />
               </div>
-              <div>{{ likes_count }}</div>
+              <div
+                class="text-[13px] sx:text-[15px] sm:text-[17px] flex items-center justify-center self-center"
+              >
+                {{ likes_count }}
+              </div>
             </div>
             <!-- dislikes -->
             <div
               class="flex gap-1 justify-center items-center cursor-pointer"
               @click="onOpenListofDislikedUsersModel"
             >
-              <!-- <div v-if="postToEnlarge.likes_count" class=""> -->
-              <div
-                class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
-              >
-                <div class="flex flex-row justify-between items-center">
-                  <div class="">
-                    <Icon
-                      icon="emojione-monotone:up-arrow"
-                      :class="`  text-[#c40516]`"
-                      width="25"
-                      :rotate="2"
-                    />
-                  </div>
-                </div>
+              <!-- <div v-if="post.likes_count" class=""> -->
+              <div class="font-medium text-blue-800 cursor-pointer">
+                <Icon
+                  icon="emojione-monotone:up-arrow"
+                  :class="`text-[17px] xs:text-[25px] text-[#c40516]`"
+                  :rotate="2"
+                />
               </div>
-              <div>{{ dislikes_count }}</div>
+              <div
+                class="text-[13px] sx:text-[15px] sm:text-[17px] flex items-center justify-center"
+              >
+                {{ dislikes_count }}
+              </div>
             </div>
           </div>
-          <div class="text-gray-900 flex gap-1">
-            <span class="cursor-pointer hover:underline">
+          <div
+            class="text-gray-900 text-[13px] sx:text-[15px] sm:text-[17px] flex items-center gap-[2px]"
+          >
+            <span
+              class="cursor-pointer hover:underline"
+              @click="$emit('enlarge-post', post)"
+            >
               {{ pagination.total }} comments
             </span>
-            &#9679;
-            <span class=""> {{ repost_count }} reposts </span>
+
+            <Icon icon="octicon:dot-fill-16" width="14" />
+            <span class="text-[13px] sx:text-[14px] sm:text-[16px]">
+              {{ repost_count }} reposts
+            </span>
           </div>
         </div>
 

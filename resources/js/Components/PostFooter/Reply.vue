@@ -20,10 +20,10 @@
     </Link>
 
     <!-- User Info -->
-    <div class="flex flex-col justify-center ml-1">
+    <div class="flex flex-col justify-center sm:ml-1">
       <!-- @touchstart="handleTouchStart"
       @touchend="handleTouchEnd" -->
-      <div class="flex gap-2">
+      <div class="flex gap-1 sm:gap-2">
         <div class="bg-[#f0f2f5] rounded-[18px] px-3 py-2">
           <Link
             class="font-bold text-sm"
@@ -55,7 +55,7 @@
                 <template v-slot:activator="{ props }">
                   <div v-bind="props">
                     <button
-                      class="bg-[#f0f2f5] px-3 py-2 rounded-[18px] flex items-center"
+                      class="bg-[#f0f2f5] px-2 sm:px-3 py-1 sm:py-2 rounded-[18px] flex items-center"
                       v-bind="menuProps.props"
                     >
                       <Icon icon="pepicons-pencil:dots-x" />
@@ -79,7 +79,9 @@
           </v-menu>
         </div>
       </div>
-      <div class="text-xs flex gap-4 mt-[3px] ml-3 text-[#65676B]">
+      <div
+        class="text-xs flex gap-2 x350:gap-3 xs:gap-4 items-center mt-[3px] ml-3 text-[#65676B]"
+      >
         <div>
           {{ timeAgo(reply.updated_at) }}
         </div>
