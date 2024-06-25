@@ -29,7 +29,6 @@ const switchFields = [
 ];
 const labels = [
   "View Locale",
-
   "View Regional",
   "View Statewide",
   "View Nationwide",

@@ -5,7 +5,6 @@
     @submit="handleSubmit"
     ref="dialogRef"
     @opened="onOpened"
-
     :loading="loadingSending"
     :disabled="disabledSending"
     title="Edit Response"
@@ -14,7 +13,7 @@
       <!-- response -->
       <div class="mb-4">
         <div class="text-md font-bold text-gray-600 mt-3 mb-2">
-          Contractors Response
+          Contractor's Response
         </div>
         <textarea
           id="responseText"
@@ -24,9 +23,9 @@
           required
           v-model="response_text"
           ref="textRef"
-        @keydown="insertTab"
-        @input="adjustHeight"
-        @paste="adjustHeight"
+          @keydown="insertTab"
+          @input="adjustHeight"
+          @paste="adjustHeight"
           placeholder="Type your response text"
         />
         <InputError
@@ -105,13 +104,16 @@ const openDialogEdit = () => {
 defineExpose({ openDialogEdit });
 const textRef = ref();
 const insertTab = (event) => {
-  if (event.key === 'Tab') {
+  if (event.key === "Tab") {
     event.preventDefault();
     const start = event.target.selectionStart;
     const end = event.target.selectionEnd;
 
     // Set the value to: text before caret + four spaces + text after caret
-    response_text.value = response_text.value.substring(0, start) + '      ' + response_text.value.substring(end);
+    response_text.value =
+      response_text.value.substring(0, start) +
+      "      " +
+      response_text.value.substring(end);
 
     // Put caret at right position again
     nextTick(() => {
@@ -120,16 +122,15 @@ const insertTab = (event) => {
   }
 };
 const adjustHeight = () => {
-  console.log('here')
+  console.log("here");
   nextTick(() => {
     textRef.value.style.height = "auto"; // Reset height first to get the correct scrollHeight
     textRef.value.style.height = textRef.value.scrollHeight + "px";
   });
 };
-const onOpened = ()=>{
-  adjustHeight()
-}
-
+const onOpened = () => {
+  adjustHeight();
+};
 </script>
 
 <style></style>

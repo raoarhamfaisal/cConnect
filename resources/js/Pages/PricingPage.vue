@@ -9,31 +9,6 @@ import MoveToTop from "@/Components/MoveToTop.vue";
 const props = defineProps({
   showit: Boolean,
 });
-
-const items = [
-  "Find Local or Statewide Subs to Hire!",
-  "Hire Someone You Can Trust - Check Them Out Here!",
-  "Looking For Work - Check Out the News Feed",
-  "Advertise Your Business for Free - Post It!",
-  "Got a Job to be Done, Post it To The News Feed!",
-  "Want to KNOW, what's happening in your local area or Got a Question? Check Out the News Feed!",
-  "New Customer - Can you trust Them? See If Other Contractors Had Issues with Them With Using Our Slippery Customers!",
-  "Ask Questions / Get Answers!",
-];
-
-const content = {
-  title: "It's a GAME CHANGER!",
-  audience: "FOR CONTRACTORS & SUB-CONTRACTORS ONLY!",
-  pricing: '"No-BRAINER PRICING"',
-  message:
-    "As Contractors Ourselves, Seems Like Everyone is Trying to Sell Us Something At Super - Exorbitant Prices!",
-  notHere: "Not Here at tContractor...",
-  tool: "Your Most Important Tool for Free!!",
-
-  forBasicServices: "for basic services",
-  additional1: "And, A few bucks a month, ",
-  additional2: "brings you even more!",
-};
 </script>
 
 <template>
@@ -70,37 +45,49 @@ const content = {
               <ul
                 class="text-xl sm:text-2xl font-semibold tracking-tighter list-disc pl-8"
               >
-                <li v-for="(item, index) in items" :key="index">{{ item }}</li>
+                <li>Find Local or Statewide Subs to Hire!</li>
+                <li>Hire Someone You Can Trust - Check Them Out Here!</li>
+                <li>Looking For Work - Check Out the News Feed</li>
+                <li>Advertise Your Business for Free - Post It!</li>
+                <li>Got a Job to be Done, Post it To The News Feed!</li>
+                <li>
+                  Want to KNOW, what's happening in your local area or Got a
+                  Question? Check Out the News Feed!
+                </li>
+                <li>
+                  New Customer - Can you trust Them? See If Other Contractors
+                  Had Issues with Them With Using Our Slippery Customers!
+                </li>
+                <li>Ask Questions / Get Answers!</li>
               </ul>
             </div>
             <div class="md:w-[50%] text-center">
               <h1 class="text-3xl font-bold text-blue-rgba mb-1">
-                {{ content.title }}
+                It's a GAME CHANGER!
               </h1>
               <h2 class="text-2xl font-bold mb-1 text-orange-accent">
-                {{ content.audience }}
+                FOR CONTRACTORS & SUB-CONTRACTORS ONLY!
               </h2>
               <p class="text-xl mb-1 text-blue-rgba font-bold">
-                {{ content.pricing }}
+                No-BRAINER PRICING
               </p>
               <p class="text-sm mb-1 text-xl">
-                {{ content.message }}
+                As Contractors Ourselves, Seems Like Everyone is Trying to Sell
+                Us Something At Super - Exorbitant Prices!
               </p>
               <p class="text-xl text-blue-rgba font-bold">
-                {{ content.notHere }}
+                Not Here at tContractor...
               </p>
               <h3 class="mx-auto text-3xl font-bold text-red-600 max-w-[418px]">
-                {{ content.tool }}
+                Your Most Important Tool for Free!!
               </h3>
 
-              <p class="text-xl">
-                {{ content.forBasicServices }}
+              <p class="text-xl">for basic services</p>
+              <p class="text-xl font-bold text-orange-accent">
+                And, A few bucks a month,
               </p>
               <p class="text-xl font-bold text-orange-accent">
-                {{ content.additional1 }}
-              </p>
-              <p class="text-xl font-bold text-orange-accent">
-                {{ content.additional2 }}
+                brings you even more!
               </p>
             </div>
           </div>
