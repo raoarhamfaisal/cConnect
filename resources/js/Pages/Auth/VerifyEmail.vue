@@ -94,7 +94,7 @@ const submitVerificationCode = async () => {
         :href="route('signup')"
         style="color: rgb(36 30 109); font-weight: bold"
         >{{ user.email }}</a
-      >, please check your email’s junk & spam folders.
+      >, please check your email's junk & spam folders.
     </div>
     <div class="mt-3">
       <InputLabel class="font-bold" for="email" value="Enter Code" />
