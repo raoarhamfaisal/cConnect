@@ -79,6 +79,19 @@ export const store = createStore({
       } finally {
       }
     },
+
+    async fetchTranslations({ commit }) {
+      try {
+        const response = await axios.post(`/api/translations`);
+        if (response.data) {
+          console.log(response.data, "translation");
+        }
+      } catch (err) {
+        console.log(err);
+        somethingWentWrong("Error Fetching translations");
+      }
+    },
+
     async fetchUserVersion({ commit }) {
       if (getToken()) {
         try {
@@ -96,7 +109,7 @@ export const store = createStore({
           }
         } catch (err) {
           console.log(err);
-          somethingWentWrong("wrong in User Version Fetching");
+          somethingWentWrong("Wrong in User Version Fetching");
         }
       }
     },
