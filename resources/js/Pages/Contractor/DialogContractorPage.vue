@@ -3,7 +3,7 @@
     ref="dialogRef"
     :showFooter="false"
     dialogWidth="width-75"
-    title="Contractor Page"
+    :title="translations && translations.contractor_page"
     contentClasses="bg-gray-200 "
   >
     <ContractorPage
@@ -17,7 +17,8 @@
 <script setup>
 import CustomContractorPageDialog from "@/Pages/Contractor/CustomContractorPageDialog.vue";
 import ContractorPage from "@/Pages/Contractor/ContractorPage.vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import { useStore } from "vuex";
 
 // State
 const { profile } = defineProps({
@@ -27,6 +28,11 @@ const { profile } = defineProps({
   region_name: String,
 });
 const dialogRef = ref();
+const store = useStore();
+
+//Computed
+
+const translations = computed(() => store.getters.translations);
 // Expose
 const openDialog = () => {
   dialogRef.value.openDialog();

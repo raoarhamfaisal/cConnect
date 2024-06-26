@@ -15,6 +15,10 @@ module.exports = {
       x365: "365px",
       sx: "380px",
       xs: "460px",
+      "max-x350": { max: "349px" }, //640
+      "max-x365": { max: "364px" }, //768
+      "max-sx": { max: "379px" }, //1024
+      "max-xs": { max: "459px" }, //1280
       "max-sm": { max: "639px" }, //640
       "max-md": { max: "767px" }, //768
       "max-lg": { max: "1023px" }, //1024

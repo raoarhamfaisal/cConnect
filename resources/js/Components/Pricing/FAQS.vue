@@ -6,12 +6,13 @@ import { useStore } from "vuex";
 const store = useStore();
 
 const screenWidth = computed(() => store.getters.screenWidth);
+const translations = computed(() => store.getters.translations);
 </script>
 <template>
   <div class="mt-4" id="faqs">
     <div class="flex justify-center" ref="whatVersionAreYourRef">
       <span class="text-5xl font-extrabold mb-4 text-center text-blue-rgba">
-        FAQs
+        {{ translations && translations.faqs }}
       </span>
     </div>
     <v-expansion-panels multiple class="">

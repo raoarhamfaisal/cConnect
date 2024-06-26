@@ -7,7 +7,7 @@ const emits = defineEmits(["toggleShowState"]);
     @click="$emit('toggleShowState')"
     class="inline-flex items-center -mx-1 text-md text-blue-500 capitalize transition-colors duration-300 transform hover:underline hover:text-blue-600"
   >
-    More
+    {{ translations && translations.more }}
     <svg
       class="w-4 h-4 mx-1 rtl:-scale-x-100"
       fill="currentColor"

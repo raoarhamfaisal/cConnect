@@ -6,10 +6,17 @@ import WelcomeFooter from "@/Components/Welcome/WelcomeFooter.vue";
 import { Link } from "@inertiajs/inertia-vue3";
 
 import { Head } from "@inertiajs/inertia-vue3";
+import { useStore } from "vuex";
+import { computed } from "vue";
 
 const props = defineProps({
   showit: Boolean,
 });
+const store = useStore();
+
+//Computed
+
+const translations = computed(() => store.getters.translations);
 </script>
 
 <template>
@@ -100,7 +107,7 @@ const props = defineProps({
           <span
             class="text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500"
           >
-            Get Started
+            {{ translations && translations.get_started }}
           </span>
           <!-- Arrow -->
           <span

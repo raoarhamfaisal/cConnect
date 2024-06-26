@@ -5,10 +5,18 @@ import PricingVersions from "@/Components/Pricing/PricingVersions.vue";
 import { Head } from "@inertiajs/inertia-vue3";
 import { Link } from "@inertiajs/inertia-vue3";
 import MoveToTop from "@/Components/MoveToTop.vue";
+import { useStore } from "vuex";
+import { computed } from "vue";
 
 const props = defineProps({
   showit: Boolean,
 });
+
+const store = useStore();
+
+//Computed
+
+const translations = computed(() => store.getters.translations);
 </script>
 
 <template>
@@ -45,7 +53,9 @@ const props = defineProps({
               <ul
                 class="text-xl sm:text-2xl font-semibold tracking-tighter list-disc pl-8"
               >
-                <li>Find Local or Statewide Subs to Hire!</li>
+                <li>
+                  {{ translations && translations.find_local_statewide_subs }}!
+                </li>
                 <li>Hire Someone You Can Trust - Check Them Out Here!</li>
                 <li>Looking For Work - Check Out the News Feed</li>
                 <li>Advertise Your Business for Free - Post It!</li>
@@ -58,7 +68,9 @@ const props = defineProps({
                   New Customer - Can you trust Them? See If Other Contractors
                   Had Issues with Them With Using Our Slippery Customers!
                 </li>
-                <li>Ask Questions / Get Answers!</li>
+                <li>
+                  {{ translations && translations.ask_questions_get_answers }}
+                </li>
               </ul>
             </div>
             <div class="md:w-[50%] text-center">
@@ -69,25 +81,23 @@ const props = defineProps({
                 FOR CONTRACTORS & SUB-CONTRACTORS ONLY!
               </h2>
               <p class="text-xl mb-1 text-blue-rgba font-bold">
-                No-BRAINER PRICING
+                {{ translations && translations.no_brainer_pricing }}
               </p>
               <p class="text-sm mb-1 text-xl">
-                As Contractors Ourselves, Seems Like Everyone is Trying to Sell
-                Us Something At Super - Exorbitant Prices!
+                {{ translations && translations.contractors_trying_to_sell }}
               </p>
               <p class="text-xl text-blue-rgba font-bold">
                 Not Here at tContractor...
               </p>
               <h3 class="mx-auto text-3xl font-bold text-red-600 max-w-[418px]">
-                Your Most Important Tool for Free!!
+                {{ translations && translations.important_tool_for_free }}
               </h3>
 
               <p class="text-xl">for basic services</p>
-              <p class="text-xl font-bold text-orange-accent">
-                And, A few bucks a month,
-              </p>
-              <p class="text-xl font-bold text-orange-accent">
-                brings you even more!
+              <p
+                class="mx-auto text-xl font-bold text-orange-accent w-[17rem] text"
+              >
+                And, {{ translations && translations.few_bucks_more_benefits }}
               </p>
             </div>
           </div>

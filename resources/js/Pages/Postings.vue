@@ -242,6 +242,7 @@ export default {
       "updatedPostId",
       "deletedPost",
     ]),
+    ...mapGetters(["translations"]),
 
     postsToShow() {
       const allPostsToShow = this.allPosts;
@@ -596,7 +597,7 @@ export default {
                 </g>
               </svg>
               <div class="font-extrabold text-2xl text-[#021d91] leading-tight">
-                My Posts
+                {{ translations && translations.my_posts }}
               </div>
             </div>
           </div>

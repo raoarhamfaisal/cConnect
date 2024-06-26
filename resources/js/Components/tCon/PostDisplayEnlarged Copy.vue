@@ -230,7 +230,9 @@ export default {
                   color="#232069"
                   height="35"
                 />
-                <span class="text-lg font-bold"> News Feed...</span>
+                <span class="text-lg font-bold">
+                  {{ translations && translations.news_feed }}...</span
+                >
               </div>
               <!-- LOGO -->
               <div class="text-lg font-bold tracking-wide text-center">
@@ -560,7 +562,9 @@ export default {
                   color="#232069"
                   height="35"
                 />
-                <span class="text-lg font-bold"> News Feed...</span>
+                <span class="text-lg font-bold">
+                  {{ translations && translations.news_feed }}...</span
+                >
               </div>
               <!-- LOGO -->
               <div class="text-lg font-bold tracking-wide text-center">

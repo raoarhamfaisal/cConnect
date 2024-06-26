@@ -15,7 +15,7 @@
         <div class="flex items-center justify-start">
           <Link
             href="/"
-            class="text-2xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center"
+            class="text-xl x350:text-2xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center"
           >
             <span
               class="text-green-rgba font-extrabold italic font-serif normal-case"
@@ -32,8 +32,78 @@
             @click="$inertia.visit('/#whytContractor')"
             class="hidden md:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8"
           >
-            Why tContractor
+            {{ translations && translations.why }} tContractor
           </Link>
+
+          <Link
+            href="/about-us#contactUs"
+            class="hidden lg:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8"
+            :class="`${
+              url === 'http://0.0.0.0/about-us#contactUs' &&
+              'bg-gray-300 rounded'
+            }`"
+          >
+            {{ translations && translations.contact_us }}
+          </Link>
+          <v-menu open-on-hover open-on-click>
+            <template v-slot:activator="{ props }">
+              <div
+                class="cursor-pointer flex gap-1 items-center justify-center"
+                v-bind="props"
+              >
+                <img
+                  style="border: 1px solid #ccc"
+                  v-if="selectedLanguage === 'english'"
+                  class="h-8 w-8 sm:h-10 sm:w-10 rounded-full block object-contain"
+                  src="@/Pages/assets/usa.svg"
+                />
+                <img
+                  style="border: 1px solid #ccc"
+                  v-else
+                  class="h-8 w-8 sm:h-10 sm:w-10 rounded-full block object-contain"
+                  src="@/Pages/assets/spanish.svg"
+                />
+                <Icon
+                  class="max-sm:hidden block w-4 h-4"
+                  icon="mingcute:down-fill"
+                  color="white"
+                ></Icon>
+              </div>
+            </template>
+            <v-list class="mt-2">
+              <v-list-item
+                class="hover:bg-gray-200"
+                @click="onSelectLang('english')"
+              >
+                <div
+                  class="flex justify-left items-center gap-2 font-bold w-32"
+                >
+                  <img
+                    style="border: 1px solid #ccc"
+                    class="h-8 w-8 object-contain block rounded-full"
+                    src="@/Pages/assets/usa.svg"
+                  />
+
+                  <div>English</div>
+                </div>
+              </v-list-item>
+              <v-list-item
+                class="hover:bg-gray-200"
+                @click="onSelectLang('spanish')"
+              >
+                <div
+                  class="flex justify-left items-center gap-2 font-bold w-44"
+                >
+                  <img
+                    style="border: 1px solid #ccc"
+                    class="h-8 w-8 object-contain block rounded-full"
+                    src="@/Pages/assets/spanish.svg"
+                  />
+                  <div>Spanish / Mexican</div>
+                </div>
+              </v-list-item>
+            </v-list>
+          </v-menu>
           <!-- News Feed Button -->
           <div v-if="showit && showNewsFeed">
             <Link
@@ -49,22 +119,11 @@
                     : '/inactive-account'
                   : '/inactive-account'
               "
-              class="block flex justify-center items-center mx-2 py-2 sm:py-3 px-3 sm:px-6 font-bold rounded-lg sm:rounded-xl text-white bg-green-600 hover:bg-green-800 border-green-600"
+              class="block flex justify-center items-center mx-1 x365:mx-2 py-[6px] x365:py-2 sm:py-3 px-2 x365:px-3 sm:px-6 font-bold rounded-lg sm:rounded-xl text-white bg-green-600 max-x365:text-sm hover:bg-green-800 border-green-600"
             >
-              News Feed
+              {{ translations && translations.news_feed }}
             </Link>
           </div>
-
-          <Link
-            href="/about-us#contactUs"
-            class="hidden lg:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8"
-            :class="`${
-              url === 'http://0.0.0.0/about-us#contactUs' &&
-              'bg-gray-300 rounded'
-            }`"
-          >
-            Contact Us
-          </Link>
 
           <!-- Login Button -->
           <div v-if="!showit">
@@ -72,7 +131,7 @@
               @click="$inertia.visit('/#loginHere')"
               class="block flex justify-center items-center p-1 px-3 sm:p-2 mx-2 sm:px-6 font-bold rounded-xl text-xs sm:text-base text-white bg-blue-800 hover:bg-green-800 border-2 shadow-lg border-green-600"
             >
-              Login
+              {{ translations && translations.login }}
             </Link>
           </div>
 
@@ -82,10 +141,10 @@
             <button
               ref="dropdownMenu"
               @click="toggleDropdown"
-              class="inline-flex items-center justify-center p-2 rounded-md text-black text-gray-500 bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
+              class="inline-flex items-center justify-center p-[6px] x365:p-2 rounded-md text-black text-gray-500 bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
             >
               <svg
-                class="h-6 w-6"
+                class="h-4 w-4 x365:h-6 x365:w-6"
                 stroke="currentColor"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -128,7 +187,9 @@
           <div class="pt-4 pb-2 pl-3 border-b-2 border-gray-400">
             <div class="font-bold text-base text-gray-800">
               <div v-if="showit">{{ $page.props.auth.user.name }}</div>
-              <div v-if="!showit">Not Logged In</div>
+              <div v-if="!showit">
+                {{ translations && translations.not_logged_in }}
+              </div>
             </div>
             <div v-if="showit" class="font-medium text-sm text-gray-500">
               {{ $page.props.auth.user.email }}
@@ -137,7 +198,8 @@
 
           <div class="pt-2 pb-3 space-y-1">
             <ResponsiveNavLink href="#whytContractor">
-              Why <tContractorWord></tContractorWord>
+              {{ translations && translations.why }}
+              <tContractorWord></tContractorWord>
             </ResponsiveNavLink>
 
             <ResponsiveNavLink
@@ -156,7 +218,7 @@
               "
               class="font-bold"
             >
-              News Feed
+              {{ translations && translations.news_feed }}
             </ResponsiveNavLink>
             <ResponsiveNavLink
               v-if="showit"
@@ -174,7 +236,7 @@
               "
               class="font-bold"
             >
-              Sub Finder
+              {{ translations && translations.sub_finder }}
             </ResponsiveNavLink>
             <ResponsiveNavLink
               v-if="showit"
@@ -192,7 +254,7 @@
               "
               class="font-bold"
             >
-              Red Flags
+              {{ translations && translations.red_flags }}
             </ResponsiveNavLink>
 
             <!-- <ResponsiveNavLink
@@ -226,7 +288,7 @@
               "
               class="font-bold"
             >
-              Contractor page
+              {{ translations && translations.contractor_page }}
             </ResponsiveNavLink>
           </div>
           <!-- Responsive Settings Options -->
@@ -247,7 +309,7 @@
                     : '/inactive-account'
                 "
               >
-                My Posts
+                {{ translations && translations.my_posts }}
               </ResponsiveNavLink>
               <ResponsiveNavLink
                 v-if="showit"
@@ -264,7 +326,7 @@
                     : '/inactive-account'
                 "
               >
-                My Ratings
+                {{ translations && translations.my_ratings }}
               </ResponsiveNavLink>
               <ResponsiveNavLink
                 v-if="showit"
@@ -281,7 +343,7 @@
                     : '/inactive-account'
                 "
               >
-                My Profile
+                {{ translations && translations.my_profile }}
               </ResponsiveNavLink>
 
               <ResponsiveNavLink
@@ -299,20 +361,20 @@
                     : '/inactive-account'
                 "
               >
-                Settings
+                {{ translations && translations.settings }}
               </ResponsiveNavLink>
               <ResponsiveNavLink href="/about-us#contactUs">
-                Contact Us
+                {{ translations && translations.contact_us }}
               </ResponsiveNavLink>
 
               <ResponsiveNavLink href="/about-us#aboutUs">
-                About Us
+                {{ translations && translations.about_us }}
               </ResponsiveNavLink>
               <ResponsiveNavLink href="/pricing" as="button">
-                Pricing
+                {{ translations && translations.pricing }}
               </ResponsiveNavLink>
               <ResponsiveNavLink href="/pricing#faqs" as="button">
-                FAQs
+                {{ translations && translations.faqs }}
               </ResponsiveNavLink>
               <div
                 v-if="isAdminUrl && showit"
@@ -340,7 +402,7 @@
                       : '/inactive-account'
                   "
                 >
-                  Admin
+                  {{ translations && translations.admin }}
                 </ResponsiveNavLink>
               </div>
 
@@ -350,7 +412,7 @@
                 as="button"
                 @click="handleLogout"
               >
-                Log Out
+                {{ translations && translations.log_out }}
               </ResponsiveNavLink>
               <ResponsiveNavLink
                 v-if="!showit"
@@ -358,7 +420,7 @@
                 as="button"
                 class="text-blue-rgba font-bold"
               >
-                Sign Up
+                {{ translations && translations.sign_up }}
               </ResponsiveNavLink>
               <ResponsiveNavLink
                 v-if="!showit"
@@ -366,7 +428,7 @@
                 as="button"
                 @click="showingNavigationDropdown = !showingNavigationDropdown"
               >
-                Log In
+                {{ translations && translations.log_in }}
               </ResponsiveNavLink>
             </div>
           </div>
@@ -405,6 +467,7 @@ import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import { Inertia } from "@inertiajs/inertia";
 import { getToken, removeToken } from "@/helpers/localStorageHelper";
 import { useStore } from "vuex";
+import { Icon } from "@iconify/vue";
 
 defineProps({
   showit: Boolean,
@@ -422,9 +485,14 @@ const showingNavigationDropdown = ref(false);
 
 const dropdownMenu = ref(null);
 const url = usePage().url.value;
-console.log(url, usePage(), "url");
-const token = ref(false);
 const store = useStore();
+let lang = localStorage.getItem("lang");
+if (!lang) {
+  lang = "english";
+  localStorage.setItem("lang", "english");
+}
+const selectedLanguage = ref(lang);
+const translations = computed(() => store.getters.translations);
 
 //Computed
 
@@ -457,9 +525,7 @@ const toggleDropdown = () => {
 
 onMounted(async () => {
   if (getToken()) {
-    console.log(getToken(), token.value, "token");
     await store.dispatch("profile/fetchProfile");
-    token.value = true;
   }
 
   document.addEventListener("click", handleOutsideClick);
@@ -475,4 +541,10 @@ function handleLogout() {
   Inertia.post("/logout");
   store.commit("setUserVersion", 0);
 }
+
+const onSelectLang = (lang) => {
+  localStorage.setItem("lang", lang);
+  selectedLanguage.value = lang;
+  store.commit("setTranlations", lang);
+};
 </script>

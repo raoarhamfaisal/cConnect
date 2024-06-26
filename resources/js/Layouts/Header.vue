@@ -408,7 +408,7 @@ export default {
                       :href="route('post')"
                       class="block flex justify-center items-center mx-2 py-2 sm:py-3 px-3 sm:px-6 font-bold rounded-lg sm:rounded-xl text-white bg-green-600 hover:bg-green-800 border-green-600"
                     >
-                      News Feed
+                      {{ translations && translations.news_feed }}
                     </Link>
 
                     <!-- New Post Button -->

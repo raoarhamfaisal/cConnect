@@ -18,8 +18,8 @@ class TranslationController extends Controller
     {
         $request->validate([
             'key' => 'required|string|unique:translations',
-            'english' => 'required|string',
-            'mexican_spanish' => 'required|string',
+            'english' => 'required|text',
+            'mexican_spanish' => 'required|text',
         ]);
 
         $translation = Translation::create($request->all());

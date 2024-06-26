@@ -31,6 +31,8 @@ const props = defineProps({
 });
 
 const searchTerm = ref("");
+const store = useStore();
+
 const isSearchByCustomer = ref(1);
 const region_id = ref("");
 const redFlags = ref([]);
@@ -44,37 +46,35 @@ const selectedName = selectedObj ? selectedObj.name : undefined;
 const selectedReferal = ref(selectedName ?? "");
 
 const loading = ref(false);
-const fetchMyRedFlags = ref(false)
+const fetchMyRedFlags = ref(false);
 const currentPage = ref(1);
 const pagination = ref(0);
 const perPage = ref(15);
 const loadingNextPage = ref(false);
 const loadMoreIntersect = ref();
-const sort_order = ref('desc');
-const sort_field = ref('updated_at');
+const sort_order = ref("desc");
+const sort_field = ref("updated_at");
 
-// const store = useStore();
-
-// //Computed
+//Computed
 // const screenWidth = computed(() => store.getters.screenWidth);
+const translations = computed(() => store.getters.translations);
 
 //Mounted
 onMounted(async () => {
   fetchSearchedComplaintsWithLoading();
-  
 });
 
 // watch
 
 //
 watch(redFlags, (newVal) => {
-  if (newVal.length > 0 ) {
+  if (newVal.length > 0) {
     setTimeout(() => {
       const observerCallback = (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            if(currentPage.value < pagination.value.last_page)
-            loadMoreContractors();
+            if (currentPage.value < pagination.value.last_page)
+              loadMoreContractors();
           }
         });
       };
@@ -90,16 +90,11 @@ watch(redFlags, (newVal) => {
 });
 
 watch(region_id, (newVal) => {
- 
-    fetchSearchedComplaintsWithLoading();
-  
+  fetchSearchedComplaintsWithLoading();
 });
 watch(isSearchByCustomer, (newVal) => {
- 
-    fetchSearchedComplaintsWithLoading();
-
+  fetchSearchedComplaintsWithLoading();
 });
-
 
 //Methods
 
@@ -112,14 +107,10 @@ const submitSearchTerm = () => {
   }
 
   // Set a new timer for 1 second
-  searchTimer = setTimeout( () => {
-  
-   
-  currentPage.value = 1;
+  searchTimer = setTimeout(() => {
+    currentPage.value = 1;
 
-
-  fetchSearchedComplaintsWithLoading()
- 
+    fetchSearchedComplaintsWithLoading();
   }, 300);
 };
 
@@ -136,19 +127,24 @@ const changeReferal = (value) => {
 // apis
 
 const loadMoreContractors = async () => {
-  console.log(pagination.value , 'pagination',searchTerm.value,currentPage.value)
+  console.log(
+    pagination.value,
+    "pagination",
+    searchTerm.value,
+    currentPage.value
+  );
   loadingNextPage.value = true;
   currentPage.value = currentPage.value + 1;
   await fetchSearchedComplaints(perPage.value, currentPage.value);
   loadingNextPage.value = false;
 };
 
-const fetchComplaintsAddedByMe = ()=>{
-  fetchMyRedFlags.value = !fetchMyRedFlags.value
-  currentPage.value = 1
+const fetchComplaintsAddedByMe = () => {
+  fetchMyRedFlags.value = !fetchMyRedFlags.value;
+  currentPage.value = 1;
 
   fetchSearchedComplaintsWithLoading();
-}
+};
 
 // Fetch REviews
 const fetchSearchedComplaints = async (
@@ -158,20 +154,20 @@ const fetchSearchedComplaints = async (
 ) => {
   let response;
   try {
-   
-    if(fetchMyRedFlags.value){
+    if (fetchMyRedFlags.value) {
       response = await axios.get(
-      `/api/red-flags/my-red-flags?${
+        `/api/red-flags/my-red-flags?${
           searchTerm.value &&
           `name_of_the_contractor_or_customer=${searchTerm.value}`
         }&region_id=${region_id.value}${
           isSearchByCustomer.value !== null &&
           `&is_contractor_or_customer=${isSearchByCustomer.value}`
-        }&per_page=${per_page}&page=${page}&sort_field=${sort_field.value}&sort_order=${sort_order.value}`,
-      getAxiosConfig()
-    );
-    }else{
-
+        }&per_page=${per_page}&page=${page}&sort_field=${
+          sort_field.value
+        }&sort_order=${sort_order.value}`,
+        getAxiosConfig()
+      );
+    } else {
       response = await axios.get(
         `/api/red-flags?${
           searchTerm.value &&
@@ -179,7 +175,9 @@ const fetchSearchedComplaints = async (
         }&region_id=${region_id.value}${
           isSearchByCustomer.value !== null &&
           `&is_contractor_or_customer=${isSearchByCustomer.value}`
-        }&per_page=${per_page}&page=${page}&sort_field=${sort_field.value}&sort_order=${sort_order.value}`,
+        }&per_page=${per_page}&page=${page}&sort_field=${
+          sort_field.value
+        }&sort_order=${sort_order.value}`,
         getAxiosConfig()
       );
     }
@@ -190,7 +188,6 @@ const fetchSearchedComplaints = async (
     } else {
       redFlags.value = [...response.data.red_flags];
     }
-  
 
     pagination.value = response.data.pagination;
 
@@ -202,14 +199,13 @@ const fetchSearchedComplaints = async (
 };
 const fetchSearchedComplaintsWithLoading = async () => {
   loading.value = true;
-  await fetchSearchedComplaints(perPage.value,currentPage.value,false);
+  await fetchSearchedComplaints(perPage.value, currentPage.value, false);
   loading.value = false;
 };
 
-
-const onRemoveFlag = (id)=>{
-  redFlags.value = redFlags.value.filter(flag => flag.id !== id);
-}
+const onRemoveFlag = (id) => {
+  redFlags.value = redFlags.value.filter((flag) => flag.id !== id);
+};
 
 // Add new Red Flag and best practice open and close
 const addNewRedFlagDialogRef = ref();
@@ -332,7 +328,6 @@ const clearError = (field) => {
 const onAddNewRedFlag = async () => {
   addingRedFlag.value = true;
   if (validateForm()) {
-   
     try {
       const response = await axios.post(
         `/api/red-flags`,
@@ -359,13 +354,12 @@ const onAddNewRedFlag = async () => {
   }
 };
 
-const handleSortChange = ({sortField,sortOrder})=>{
+const handleSortChange = ({ sortField, sortOrder }) => {
   sort_field.value = sortField;
   sort_order.value = sortOrder;
-  currentPage.value = 1
+  currentPage.value = 1;
   fetchSearchedComplaintsWithLoading();
-
-}
+};
 
 // for border visibility of between two red flags
 const openAccordions = ref([]);
@@ -406,10 +400,9 @@ const determineBorderVisibility = (index) => {
         <div
           class="flex sm:absolute sm:transform sm:-translate-x-1/2 sm:left-1/2 items-center gap-2"
         >
-        
           <img src="/images/icons/redflag.png" width="30" height="30" />
           <div class="font-extrabold text-2xl text-[#021d91] leading-tight">
-            Red Flags
+            {{ translations && translations.red_flags }}
           </div>
         </div>
       </div>
@@ -441,10 +434,9 @@ const determineBorderVisibility = (index) => {
             <button
               type="button"
               @click="fetchComplaintsAddedByMe"
-
               class="w-1/5 px-1 py-1 h-[48px] rounded-lg transition transform duration-300 hover:shadow-lg active:scale-95 font-extrabold bg-[#8a0000] text-white text-sm leading-5 font-sans"
             >
-              {{ fetchMyRedFlags ? "All Red Flags" :  "My Red Flags"}}
+              {{ fetchMyRedFlags ? "All Red Flags" : "My Red Flags" }}
             </button>
           </div>
         </div>
@@ -517,11 +509,9 @@ const determineBorderVisibility = (index) => {
 
       <div class="mt-4">
         <div class="bg-white border-2 border-black table-container">
-          <TableHead  @sortChanged="handleSortChange"/>
+          <TableHead @sortChanged="handleSortChange" />
 
-          <template
-            v-if="!loading  && redFlags && redFlags.length > 0"
-          >
+          <template v-if="!loading && redFlags && redFlags.length > 0">
             <RedFlag
               v-for="(redFlag, index) in redFlags"
               :key="redFlag.id"
@@ -551,7 +541,9 @@ const determineBorderVisibility = (index) => {
             v-if="loading && !searchTerm"
             class="h-full h-[30vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4"
           >
-            <div class="text-center text-xl">Loading...</div>
+            <div class="text-center text-xl">
+              {{ translations && translations.loading }}
+            </div>
             <v-progress-linear
               color="#241e6d"
               indeterminate
@@ -576,11 +568,10 @@ const determineBorderVisibility = (index) => {
 
           <!-- lazy loading -->
           <div
-            v-show="+currentPage !== +pagination.last_page "
+            v-show="+currentPage !== +pagination.last_page"
             ref="loadMoreIntersect"
             style="width: 5px; height: 5px"
           ></div>
-       
 
           <div
             v-show="
@@ -600,7 +591,6 @@ const determineBorderVisibility = (index) => {
             background=""
             height="70px"
           ></Loader>
-         
         </div>
       </div>
     </div>

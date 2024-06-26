@@ -152,6 +152,7 @@ export default {
       "shouldFetchFirstPagePosts",
     ]),
     ...mapGetters("profile", ["loadFirstPageWithNoPreserve"]),
+    ...mapGetters(["translations"]),
   },
   watch: {
     async loadFirstPageWithNoPreserve(newVal) {

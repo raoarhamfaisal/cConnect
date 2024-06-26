@@ -40,6 +40,8 @@ const emit = defineEmits(["platinumSelected"]);
 
 const userVersion = computed(() => store.getters.userVersion);
 const screenWidth = computed(() => store.getters.screenWidth);
+const translations = computed(() => store.getters.translations);
+
 const notPricingPageAndDesktop = computed(
   () =>
     props.pageName !== "pricing" &&
@@ -330,7 +332,9 @@ const onPlatinumSelect = () => {
       v-if="loading"
       class="h-full h-[30vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4"
     >
-      <div class="text-center text-xl">Loading...</div>
+      <div class="text-center text-xl">
+        {{ translations && translations.loading }}
+      </div>
       <v-progress-linear
         color="#241e6d"
         indeterminate
@@ -540,7 +544,7 @@ const onPlatinumSelect = () => {
         <!-- News Feed -->
         <div class="w-full mb-2">
           <span class="text-2xl font-extrabold text-blue-rgba">
-            News Feed:
+            {{ translations && translations.news_feed }}:
           </span>
         </div>
         <div class="flex flex-col gap-2">
@@ -622,7 +626,7 @@ Text:"
         <!-- Sub Finder-->
         <div class="w-full my-2">
           <span class="text-2xl font-extrabold text-blue-rgba">
-            Sub Finder:
+            {{ translations && translations.sub_finder }}:
           </span>
         </div>
         <div class="flex flex-col gap-2">
@@ -774,7 +778,7 @@ Text:"
         <!-- Contractor Page-->
         <div class="w-full my-2">
           <span class="text-2xl font-extrabold text-blue-rgba">
-            Contractor Page:
+            {{ translations && translations.contractor_page }}:
           </span>
         </div>
         <div class="flex flex-col gap-2">

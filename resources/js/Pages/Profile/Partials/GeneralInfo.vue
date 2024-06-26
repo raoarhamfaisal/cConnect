@@ -6,7 +6,7 @@ import { usePage } from "@inertiajs/inertia-vue3";
 import UserAvatar from "../components/UserAvatar.vue";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 import axios from "axios";
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { useStore } from "vuex";
 
 const props = defineProps({
@@ -26,6 +26,10 @@ const user = usePage().props.value.auth.user;
 const userAvatarError = ref("");
 const user_avatar = ref(props.user_avatar);
 const emit = defineEmits(["update:form", "clearErrors"]);
+
+//Computed
+
+const translations = computed(() => store.getters.translations);
 
 watch(
   props.form,

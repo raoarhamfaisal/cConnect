@@ -7,9 +7,10 @@ import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
 import tContractorWord from "@/Components/tCon/tContractorWord.vue";
 import tContractorWhite from "@/Components/tCon/tContractorWhite.vue";
 import { checkCompatEnabled } from "@vue/compiler-core";
-import { ref, watch, onMounted } from "vue";
+import { ref, watch, onMounted, computed } from "vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import TC_SignupForm from "@/Components/TC_SignupForm.vue";
+import { useStore } from "vuex";
 
 const { showit } = defineProps({
   canResetPassword: Boolean,
@@ -20,9 +21,10 @@ const { showit } = defineProps({
   phpVersion: String,
   showit: Boolean,
 });
+const store = useStore();
 
 const showingNavigationDropdown = ref(false);
-
+const translations = computed(() => store.getters.translations);
 const form = useForm({
   email: "",
   password: "",
@@ -78,13 +80,13 @@ onMounted(() => {});
               href="#whytContractor"
               class="hidden md:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8"
             >
-              Why tContractor
+              {{ translations && translations.why }} tContractor
             </Link>
             <Link
               href="#"
               class="hidden lg:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8"
             >
-              Contact Us
+              {{ translations && translations.contact_us }}
             </Link>
 
             <!-- News Feed Button -->
@@ -93,7 +95,7 @@ onMounted(() => {});
                 :href="route('post')"
                 class="block mt-3 mr-2 p-3 px-6 pt-2 font-bold rounded-xl text-white bg-green-600 hover:bg-green-800 border-green-600"
               >
-                News Feed
+                {{ translations && translations.news_feed }}
               </Link>
             </div>
 
@@ -103,7 +105,7 @@ onMounted(() => {});
                 :href="route('post')"
                 class="block mt-3 mr-2 p-3 px-6 pt-2 font-bold rounded-xl text-white bg-blue-800 hover:bg-green-800 border-2 shadow-lg border-green-600"
               >
-                Login
+                {{ translations && translations.login }}
               </Link>
             </div>
 
@@ -158,7 +160,9 @@ onMounted(() => {});
             <div class="pt-4 pb-2 ml-3 border-b-2 border-gray-400">
               <div class="font-bold text-base text-gray-800">
                 <div v-if="showit">{{ $page.props.auth.user.name }}</div>
-                <div v-if="!showit">Not Logged In</div>
+                <div v-if="!showit">
+                  {{ translations && translations.not_logged_in }}
+                </div>
               </div>
               <div v-if="showit" class="font-medium text-sm text-gray-500">
                 {{ $page.props.auth.user.email }}
@@ -166,7 +170,8 @@ onMounted(() => {});
             </div>
             <div class="pt-2 pb-3 space-y-1">
               <ResponsiveNavLink href="#whytContractor">
-                Why <tContractorWord></tContractorWord>
+                {{ translations && translations.why }}
+                <tContractorWord></tContractorWord>
               </ResponsiveNavLink>
 
               <ResponsiveNavLink
@@ -175,15 +180,15 @@ onMounted(() => {});
                 :active="route().current('post')"
                 class="font-bold"
               >
-                News Feed
+                {{ translations && translations.news_feed }}
               </ResponsiveNavLink>
 
               <ResponsiveNavLink :href="route('index')">
-                Contact Us
+                {{ translations && translations.contact_us }}
               </ResponsiveNavLink>
 
               <ResponsiveNavLink :href="route('index')">
-                About Us
+                {{ translations && translations.about_us }}
               </ResponsiveNavLink>
             </div>
             <!-- Responsive Settings Options -->
@@ -210,7 +215,7 @@ onMounted(() => {});
                     showingNavigationDropdown = !showingNavigationDropdown
                   "
                 >
-                  Log Out
+                  {{ translations && translations.log_out }}
                 </ResponsiveNavLink>
                 <ResponsiveNavLink
                   v-if="!showit"
@@ -219,7 +224,7 @@ onMounted(() => {});
                   as="button"
                   class="text-blue-rgba font-bold"
                 >
-                  Sign Up
+                  {{ translations && translations.sign_up }}
                 </ResponsiveNavLink>
                 <ResponsiveNavLink
                   v-if="!showit"
@@ -230,7 +235,7 @@ onMounted(() => {});
                     showingNavigationDropdown = !showingNavigationDropdown
                   "
                 >
-                  Log In
+                  {{ translations && translations.log_in }}
                 </ResponsiveNavLink>
               </div>
             </div>

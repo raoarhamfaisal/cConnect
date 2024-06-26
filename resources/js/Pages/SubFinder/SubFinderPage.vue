@@ -74,6 +74,7 @@ const store = useStore();
 
 //Computed
 const screenWidth = computed(() => store.getters.screenWidth);
+const translations = computed(() => store.getters.translations);
 
 //Mounted
 onMounted(async () => {
@@ -288,7 +289,7 @@ const fetchSearchedContractorsWithLoading = async () => {
         >
           <img src="/images/icons/contractor.png" width="30" height="30" />
           <div class="font-extrabold text-2xl text-[#021d91] leading-tight">
-            Sub Finder
+            {{ translations && translations.sub_finder }}
           </div>
         </div>
       </div>

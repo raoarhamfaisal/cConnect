@@ -5,6 +5,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
+import { computed } from "vue";
 import { useStore } from "vuex";
 
 defineProps({
@@ -35,11 +36,11 @@ const submit = () => {
     onFinish: () => form.reset("password"),
   });
 };
+const translations = computed(() => store.getters.translations);
 </script>
 
 <template>
   <Head title="Log in" />
-
 
   <Link
     href="/"
@@ -103,7 +104,7 @@ const submit = () => {
         :class="{ 'opacity-25': form.processing }"
         :disabled="form.processing"
       >
-        Log in
+        {{ translations && translations.log_in }}
       </PrimaryButton>
     </div>
   </form>

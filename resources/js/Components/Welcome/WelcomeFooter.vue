@@ -49,22 +49,30 @@
       <div class="flex justify-evenly space-x-10">
         <!-- First Menu List -->
         <div class="flex flex-col space-y-3 text-white">
-          <a href="/" class="hover:text-blue-400">Home</a>
-          <a href="/pricing" class="hover:text-blue-400">Pricing</a>
-          <a href="/pricing#faqs" class="hover:text-blue-400">FAQs</a>
+          <a href="/" class="hover:text-blue-400">{{
+            translations && translations.home
+          }}</a>
+          <a href="/pricing" class="hover:text-blue-400">{{
+            translations && translations.pricing
+          }}</a>
+          <a href="/pricing#faqs" class="hover:text-blue-400">{{
+            translations && translations.faqs
+          }}</a>
 
-          <a href="/about-us#contactUs" class="hover:text-blue-400"
-            >Contact Us</a
-          >
+          <a href="/about-us#contactUs" class="hover:text-blue-400">{{
+            translations && translations.contact_us
+          }}</a>
         </div>
         <!-- Second Menu List -->
         <div class="flex flex-col space-y-3 text-white">
-          <a href="/careers" class="hover:text-blue-400"> Careers</a>
+          <a href="/careers" class="hover:text-blue-400">
+            {{ translations && translations.careers }}</a
+          >
           <a href="/terms-of-service" class="hover:text-blue-400">
-            Terms of Service</a
+            {{ translations && translations.terms_of_service }}</a
           >
           <a href="/privacy-policy" class="hover:text-blue-400">
-            Privacy Policy</a
+            {{ translations && translations.privacy_policy }}</a
           >
         </div>
       </div>
@@ -80,7 +88,7 @@
             <span
               class="text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500"
             >
-              Get Started
+              {{ translations && translations.get_started }}
             </span>
             <!-- Arrow -->
             <span
@@ -114,7 +122,7 @@
             <span
               class="text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500"
             >
-              News Feed
+              {{ translations && translations.news_feed }}
             </span>
             <!-- Arrow -->
             <span
@@ -153,8 +161,14 @@
 <script setup>
 import { Link } from "@inertiajs/inertia-vue3";
 import tContractorWhite from "@/Components/tCon/tContractorWhite.vue";
+import { useStore } from "vuex";
+import { computed } from "vue";
 
 defineProps({
   showit: Boolean,
 });
+
+const store = useStore();
+
+const translations = computed(() => store.getters.translations);
 </script>
