@@ -13,7 +13,7 @@
       <!-- response -->
       <div class="mb-4">
         <div class="text-md font-bold text-gray-600 mt-3 mb-2">
-          Contractor's Response
+          {{ translations && translations.contractors_response }}
         </div>
         <textarea
           id="responseText"
@@ -26,7 +26,7 @@
           @keydown="insertTab"
           @input="adjustHeight"
           @paste="adjustHeight"
-          placeholder="Type your response text"
+          :placeholder="translations && translations.type_your_response_text"
         />
         <InputError
           v-if="responseError"
@@ -59,6 +59,7 @@ const dialogRef = ref();
 const responseError = ref("");
 //Computed
 const loadingSending = computed(() => store.state.ratings.loadingSending);
+const translations = computed(() => store.getters.translations);
 const disabledSending = computed(() => store.state.ratings.disabledSending);
 
 //Watch

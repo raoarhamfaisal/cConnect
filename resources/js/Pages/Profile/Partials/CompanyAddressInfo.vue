@@ -153,10 +153,13 @@ onBeforeUnmount(() => {
     <header class="flex space-x-2">
       <div>
         <h2 class="text-lg font-medium font-bold text-gray-900">
-          Company & Address Information
+          {{ translations && translations.company_address_information }}
         </h2>
         <p class="mt-1 text-sm text-gray-600">
-          Provide your Company General Information and your address info.
+          {{
+            translations &&
+            translations.provide_your_company_general_information_and_your_address_info
+          }}
         </p>
       </div>
     </header>
@@ -188,7 +191,7 @@ onBeforeUnmount(() => {
           <InputLabel
             class="font-bold"
             for="company_name"
-            value="Company Name*"
+            :value="translations && translations.company_name + '*'"
           />
           <TextInput
             id="company_name"
@@ -197,7 +200,7 @@ onBeforeUnmount(() => {
             v-model="form.company_name"
             @input="clearError('company_name')"
             required
-            placeholder="Type your Company name"
+            :placeholder="translations && translations.type_your_company_name"
             autocomplete="company-name"
           />
           <InputError class="mt-2" :message="errors.company_name" />
@@ -207,7 +210,7 @@ onBeforeUnmount(() => {
           <InputLabel
             class="font-bold"
             for="phone_office"
-            value="Phone Office"
+            :value="translations && translations.phone_office"
           />
           <TextInput
             id="phone_office"
@@ -231,7 +234,7 @@ onBeforeUnmount(() => {
             @input="clearError('address_1')"
             @callback="callbackFunction"
             class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-            placeholder="Type your address 1"
+            :placeholder="translations && translations.type_your_address + 1"
           />
 
           <InputError class="mt-2" :message="errors.address_1" />
@@ -243,30 +246,38 @@ onBeforeUnmount(() => {
             id="address_2"
             v-model="form.address_2"
             class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-            placeholder="Type your address 2"
+            :placeholder="translations && translations.type_your_address + 2"
           />
         </div>
         <div class="mb-4 sm:mb-0">
-          <InputLabel class="font-bold" for="city" value="City*" />
+          <InputLabel
+            class="font-bold"
+            for="city"
+            :value="translations && translations.city + '*'"
+          />
           <TextInput
             id="city"
             type="text"
             class="mt-1 block w-full"
             v-model="form.city"
             @input="clearError('city')"
-            placeholder="Type your city"
+            :placeholder="translations && translations.type_your_city"
           />
           <InputError class="mt-2" :message="errors.city" />
         </div>
         <div class="mb-4 sm:mb-0">
-          <InputLabel for="state" class="font-bold mb-1" value="State*" />
+          <InputLabel
+            for="state"
+            class="font-bold mb-1"
+            :value="translations && translations.state + '*'"
+          />
           <TextInput
             id="state"
             type="text"
             class="mt-1 block w-full"
             v-model="form.state"
             @input="clearError('state')"
-            placeholder="Type your State"
+            :placeholder="translations && translations.type_your_state"
           />
           <!-- <SelectProfile
             :options="stateList"
@@ -282,20 +293,28 @@ onBeforeUnmount(() => {
         </div>
 
         <div class="mb-4 sm:mb-0">
-          <InputLabel class="font-bold" for="zipcode" value="Zip Code*" />
+          <InputLabel
+            class="font-bold"
+            for="zipcode"
+            :value="translations && translations.zip_code + '*'"
+          />
           <TextInput
             id="zipcode"
             type="text"
             class="mt-1 block w-full"
             v-model="form.zipcode"
             @input="clearError('zipcode')"
-            placeholder="Type your zip code"
+            :placeholder="translations && translations.type_your_zip_code"
           />
           <InputError class="mt-2" :message="errors.zipcode" />
         </div>
 
         <div class="mb-4 sm:mb-0">
-          <InputLabel class="font-bold" for="county" value="County*" />
+          <InputLabel
+            class="font-bold"
+            for="county"
+            :value="translations && translations.county + '*'"
+          />
           <TextInput
             id="county"
             type="text"
@@ -308,7 +327,10 @@ onBeforeUnmount(() => {
         </div>
 
         <div class="mb-4 sm:mb-0">
-          <InputLabel class="font-bold mb-1" value="Region*" />
+          <InputLabel
+            class="font-bold mb-1"
+            :value="translations && translations.region + '*'"
+          />
           <SelectProfile
             :options="referenceList"
             :modelValue="selectedReferal"

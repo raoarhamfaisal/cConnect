@@ -76,9 +76,9 @@
                 >
               </v-list-item>
               <v-list-item class="hover:bg-gray-200" @click="openDeleteModal">
-                <v-list-item-title class="cursor-pointer"
-                  >Delete</v-list-item-title
-                >
+                <v-list-item-title class="cursor-pointer">{{
+                  translations && translations.delete
+                }}</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -218,7 +218,7 @@
 
   <teleport to="body">
     <CustomDialog
-      submitText="Delete"
+      :submitText="translations && translations.delete"
       :disableOutSideClick="false"
       @submit="handleSubmitDelete"
       ref="deleteDialogRef"
@@ -226,13 +226,13 @@
       :disabled="loadingDelete"
       errorIcon
       dialogWidth="max-h-[70vh] width50"
-      title="Are you sure? "
+      :title="translations && translations.are_you_sure"
     >
       <div class="">
         <div
           class="section_text-lg font-bold sm:pl-6 section_text-gray-800 mt-3 mb-2"
         >
-          Do you want to Delete this comment?
+          {{ translations && translations.do_you_want_to_delete_this_comment }}
         </div>
       </div>
     </CustomDialog>
@@ -283,11 +283,13 @@ const isRepliesShown = ref(false);
 let usePageDeatails = usePage().props.value;
 const loggedInUserId = usePageDeatails.profile.user_id;
 // const longPressTimer = ref(null);
-const screenWidth = computed(() => store.getters.screenWidth);
 const showReplyTextArea = ref(false);
 const loadingSendComment = ref(false);
 const commentText = ref("");
 const commentAreaRef = ref();
+
+const screenWidth = computed(() => store.getters.screenWidth);
+const translations = computed(() => store.getters.translations);
 
 const openEditModal = () => {
   editRef.value.openDialogEdit();

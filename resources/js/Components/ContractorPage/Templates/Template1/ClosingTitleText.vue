@@ -54,7 +54,7 @@
       :timeout="2000"
       color="success"
     >
-      Link Copied to Clipboard
+      {{translations && translations.link_copied_to_clipboard}}
     </v-snackbar>
   </div> -->
 </template>

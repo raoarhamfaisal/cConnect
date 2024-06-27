@@ -227,41 +227,51 @@ const onPlatinumSelect = () => {
     @submit="onFreeSubmit"
     :loading="loadingFree"
     :disabled="loadingFree"
-    submitText="Confirm"
+    :submitText="translations && translations.confirm"
     dialogWidth="width-40"
     ref="freeConfirmDialog"
     title="Are you sure you want to choose the Free Package?"
   >
     <div class="flex items-center justify-center flex-col">
       <div class="w-full sm:text-lg sm:font-semibold">
-        <div>With this option, you'll get:</div>
+        <div>{{ translations && translations.with_this_option_you_get }}</div>
         <ul>
           <li>
-            Access to the News Feed, including all postings, job opportunities,
-            and more.
+            {{ translations && translations.access_to_news_feed }}
           </li>
-          <li>Post up to 8 times per month, with 3 images per posting.</li>
-          <li>Conduct 5 searches per month with the Sub Finder.</li>
           <li>
-            Join 3 trade groups and post in member trade groups up to 3 times.
+            {{ translations && translations.post_up_to_8_times_per_month }}
           </li>
-          <li>The ability to view all trade group postings.</li>
+          <li>
+            {{ translations && translations.conduct_5_searches_per_month }}
+          </li>
+          <li>
+            {{ translations && translations.join_3_trade_groups }}
+          </li>
+          <li>
+            {{
+              translations &&
+              translations.ability_to_view_all_trade_group_postings
+            }}
+          </li>
         </ul>
         <div>
-          This package is a great way to start and engage with the community at
-          no cost.
+          {{ translations && translations.this_package_is_great_to_start }}
         </div>
 
         <div>
-          Click <strong>"Confirm"</strong> to proceed or
-          <strong>"Cancel"</strong> to review other options.
+          {{ translations && translations.click }}
+          <strong>"{{ translations && translations.confirm }}"</strong>
+          {{ translations && translations.to_proceed_or }}
+          <strong>"{{ translations && translations.cancel }}"</strong>
+          {{ translations && translations.to_review_other_options }}
         </div>
       </div>
     </div>
   </CustomDialog>
   <CustomDialog
     :dontAllowCancel="true"
-    submitText="Okay"
+    :submitText="translations && translations.okay"
     :showFooter="false"
     dialogWidth="width-40"
     ref="freeActivatedDialog"
@@ -269,26 +279,32 @@ const onPlatinumSelect = () => {
   >
     <div class="flex items-center justify-center flex-col">
       <div class="text-2xl font-bold self-start mb-1">
-        Welcome to tContractor
+        {{ translations && translations.welcome_to_tcontractor }}
       </div>
       <div class="w-full sm:text-lg sm:semi-bold">
         <div>
-          You now have access to the most powerful tool in your toolbox.<strong
-            >tContractor</strong
-          >
-          is your source to:
+          {{ translations && translations.you_now_have_access
+          }}<strong>tContractor</strong>
+          {{ translations && translations.is_your_source_to }}
         </div>
         <ul>
-          <li>Keep up to date on whats going on in your industry</li>
-          <li>Find out what jobs are available.</li>
           <li>
-            You can always
-            <strong>upgrade to gold or platinum version</strong> by going to
-            settings from your menu and then by selecting Billing/Version tab.
+            {{ translations && translations.keep_up_to_date_on_whats_going_on }}
           </li>
           <li>
-            Press continue to enter the News Feed! This is where the action
-            starts!
+            {{ translations && translations.find_out_what_jobs_are_available }}
+          </li>
+          <li>
+            {{ translations && translations.you_can_always }}
+            <strong>{{
+              translations && translations.upgrade_to_gold_or_platinum_version
+            }}</strong>
+            {{ translations && translations.by_going_to_settings }}
+          </li>
+          <li>
+            {{
+              translations && translations.press_continue_to_enter_the_news_feed
+            }}
           </li>
         </ul>
       </div>
@@ -298,7 +314,7 @@ const onPlatinumSelect = () => {
         href="/post"
       >
         <span class="text-lg font-bold text-white uppercase transition">
-          Continue
+          {{ translations && translations.continue }}
         </span>
 
         <!-- Arrow -->
@@ -350,7 +366,7 @@ const onPlatinumSelect = () => {
         ref="whatVersionAreYourRef"
       >
         <span class="text-3xl font-extrabold mb-4 text-center text-blue-rgba">
-          What Version is Right for You!
+          {{ translations && translations.what_version_is_right_for_you }}
         </span>
       </div>
       <!-- tableHead  for Desktop-->
@@ -368,7 +384,7 @@ const onPlatinumSelect = () => {
             class="mt-[2px] checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95"
             @click="onFreeSelect"
           >
-            Select
+            {{ translations && translations.select }}
           </button>
         </div>
         <!-- Gold -->
@@ -381,7 +397,7 @@ const onPlatinumSelect = () => {
               }"
               class="text-black text-xl font-bold"
             >
-              Gold Pakage
+              {{ translations && translations.gold_package }}
             </div>
             <div class="flex text-green-rgba font-extrabold mt-1">
               <div
@@ -407,9 +423,9 @@ const onPlatinumSelect = () => {
                 fontSize: notPricingPageAndDesktop ? '0.9rem' : '',
                 lineHeight: notPricingPageAndDesktop ? '1.05' : '',
               }"
-              class="text-lg font-semibold"
+              class="text-lg font-semibold capitalize"
             >
-              Per Month
+              {{ translations && translations.per_month }}
             </div>
 
             <button
@@ -417,7 +433,7 @@ const onPlatinumSelect = () => {
               @click="onGoldSelect"
               class="checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95 mt-auto"
             >
-              Select
+              {{ translations && translations.select }}
             </button>
           </div>
         </div>
@@ -431,7 +447,7 @@ const onPlatinumSelect = () => {
               }"
               class="text-black text-xl font-bold"
             >
-              Platinum Pakage
+              {{ translations && translations.platinum_package }}
             </div>
             <div class="flex text-blue-rgba font-extrabold mt-1">
               <div
@@ -457,15 +473,15 @@ const onPlatinumSelect = () => {
                 fontSize: notPricingPageAndDesktop ? '0.9rem' : '',
                 lineHeight: notPricingPageAndDesktop ? '1.05' : '',
               }"
-              class="text-lg font-semibold"
+              class="text-lg font-semibold capitalize"
             >
-              Per Month
+              {{ translations && translations.per_month }}
             </div>
             <button
               @click="onPlatinumSelect"
               class="checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95 mt-auto"
             >
-              Select
+              {{ translations && translations.select }}
             </button>
           </div>
         </div>
@@ -489,7 +505,7 @@ const onPlatinumSelect = () => {
             v-if="userVersion === 0"
             class="mt-[2px] checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95"
           >
-            Select
+            {{ translations && translations.select }}
           </button>
         </div>
         <!-- Gold -->
@@ -500,7 +516,7 @@ const onPlatinumSelect = () => {
                 screenWidth < 458 && userVersion === 1 && 'h-[56px]'
               }`"
             >
-              Gold Pakage
+              {{ translations && translations.gold_package }}
             </div>
             <div class="flex text-green-rgba font-extrabold mt-1">
               <div class="text-lg self-center mt-[-30px]">$</div>
@@ -508,20 +524,24 @@ const onPlatinumSelect = () => {
                 {{ formatPrice(pricingPlan.gold_advertised_price) }}
               </div>
             </div>
-            <div class="text-base font-semibold">Per Month</div>
+            <div class="text-base font-semibold capitalize">
+              {{ translations && translations.per_month }}
+            </div>
             <button
               @click="onGoldSelect"
               v-if="showGoldSelect && userVersion !== 2 && userVersion !== 3"
               class="checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95 mt-auto"
             >
-              Select
+              {{ translations && translations.select }}
             </button>
           </div>
         </div>
         <!-- Platinium -->
         <div>
           <div class="flex flex-col justify-center items-center h-full">
-            <div class="text-black text-lg font-bold">Platinum Pakage</div>
+            <div class="text-black text-lg font-bold">
+              {{ translations && translations.platinum_package }}
+            </div>
             <div class="flex text-blue-rgba font-extrabold mt-1">
               <div class="text-lg self-center mt-[-30px]">$</div>
 
@@ -529,12 +549,14 @@ const onPlatinumSelect = () => {
                 {{ formatPrice(pricingPlan.platinum_advertised_price) }}
               </div>
             </div>
-            <div class="text-base font-semibold">Per Month</div>
+            <div class="text-base font-semibold capitalize">
+              {{ translations && translations.per_month }}
+            </div>
             <button
               @click="onPlatinumSelect"
               class="checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95 mt-auto"
             >
-              Select
+              {{ translations && translations.select }}
             </button>
           </div>
         </div>
@@ -551,7 +573,10 @@ const onPlatinumSelect = () => {
           <PricingFeature
             :pageName="props.pageName"
             bgColor="#f4f8ff"
-            featureText="View All Postings & Shared Information, Conversations, Available Jobs, Looking For Select Work or Subs, Questions & Answers,Opportunities and More:"
+            :featureText="
+              translations &&
+              translations.view_all_postings_and_shared_information
+            "
             :freeText="1"
             :goldText="1"
             :platinumText="1"
@@ -559,8 +584,10 @@ const onPlatinumSelect = () => {
           <PricingFeature
             :pageName="props.pageName"
             bgColor="#f4f8ff"
-            featureText="View All Postings by Trade or Geographical
-    Location Like Local, Region, Statewide:"
+            :featureText="
+              translations &&
+              translations.view_all_postings_by_trade_or_location
+            "
             :freeText="1"
             :goldText="1"
             :platinumText="1"
@@ -569,14 +596,14 @@ const onPlatinumSelect = () => {
         <!-- News Feed Postings-->
         <div class="w-full my-2">
           <span class="text-2xl font-extrabold text-blue-rgba">
-            News Feed Postings:
+            {{ translations && translations.news_feed_postings }}
           </span>
         </div>
         <div class="flex flex-col gap-2">
           <PricingFeature
             :pageName="props.pageName"
             bgColor="#f4f8ff"
-            featureText="Postings Per Month:"
+            :featureText="translations && translations.postings_per_month"
             :freeText="freeVersion.nf_ppm"
             :goldText="goldVersion.nf_ppm"
             :platinumText="platinumVersion.nf_ppm"
@@ -584,7 +611,7 @@ const onPlatinumSelect = () => {
           <PricingFeature
             :pageName="props.pageName"
             bgColor="#f4f8ff"
-            featureText="Images Inside Posting:"
+            :featureText="translations && translations.images_inside_posting"
             :freeText="freeVersion.nf_ipp"
             :goldText="goldVersion.nf_ipp"
             :platinumText="platinumVersion.nf_ipp"
@@ -592,7 +619,10 @@ const onPlatinumSelect = () => {
           <PricingFeature
             :pageName="props.pageName"
             bgColor="#f4f8ff"
-            featureText="Improve Post Visibilty By Adding Title Text:"
+            :featureText="
+              translations &&
+              translations.improve_post_visibility_by_adding_title
+            "
             :freeText="freeVersion.nf_title"
             :goldText="goldVersion.nf_title"
             :platinumText="platinumVersion.nf_title"
@@ -600,8 +630,10 @@ const onPlatinumSelect = () => {
           <PricingFeature
             :pageName="props.pageName"
             bgColor="#f4f8ff"
-            featureText="Improve Post Visibilty By Adding Closing
-Text:"
+            :featureText="
+              translations &&
+              translations.improve_post_visibility_by_adding_closing_text
+            "
             :freeText="freeVersion.nf_bottom"
             :goldText="goldVersion.nf_bottom"
             :platinumText="platinumVersion.nf_bottom"
@@ -609,7 +641,9 @@ Text:"
           <PricingFeature
             :pageName="props.pageName"
             bgColor="#f4f8ff"
-            featureText="Make Comments on Postings:"
+            :featureText="
+              translations && translations.make_comments_on_postings
+            "
             :freeText="freeVersion.nf_comments"
             :goldText="goldVersion.nf_comments"
             :platinumText="platinumVersion.nf_comments"
@@ -617,7 +651,7 @@ Text:"
           <PricingFeature
             :pageName="props.pageName"
             bgColor="#f4f8ff"
-            featureText="Repost Posting:"
+            :featureText="translations && translations.repost_posting"
             :freeText="freeVersion.nf_repost"
             :goldText="goldVersion.nf_repost"
             :platinumText="platinumVersion.nf_repost"
@@ -633,7 +667,10 @@ Text:"
           <PricingFeature
             :pageName="props.pageName"
             bgColor="#f4f8ff"
-            featureText="Searches For Contractors & Sub-Contractors:"
+            :featureText="
+              translations &&
+              translations.searches_for_contractors_and_subcontractors
+            "
             :freeText="1"
             :goldText="1"
             :platinumText="1"
@@ -641,7 +678,9 @@ Text:"
           <PricingFeature
             :pageName="props.pageName"
             bgColor="#f4f8ff"
-            featureText="No of Contractor Searches Per Month:"
+            :featureText="
+              translations && translations.no_of_contractor_searches_per_month
+            "
             :freeText="freeVersion.sf_search"
             :goldText="goldVersion.sf_search"
             :platinumText="platinumVersion.sf_search"
@@ -649,7 +688,9 @@ Text:"
           <PricingFeature
             :pageName="props.pageName"
             bgColor="#f4f8ff"
-            featureText="Track Contractors & Sub-Contractors:"
+            :featureText="
+              translations && translations.track_contractors_and_subcontractors
+            "
             :freeText="freeVersion.sf_tracking"
             :goldText="goldVersion.sf_tracking"
             :platinumText="platinumVersion.sf_tracking"
@@ -657,7 +698,9 @@ Text:"
           <PricingFeature
             :pageName="props.pageName"
             bgColor="#f4f8ff"
-            featureText="Create Personal Notes On Contractors,Full Info On Subs:"
+            :featureText="
+              translations && translations.create_personal_notes_on_contractors
+            "
             :freeText="freeVersion.sf_notes"
             :goldText="goldVersion.sf_notes"
             :platinumText="platinumVersion.sf_notes"
@@ -665,7 +708,9 @@ Text:"
           <PricingFeature
             :pageName="props.pageName"
             bgColor="#f4f8ff"
-            featureText="Access to Contractor Info Pages:"
+            :featureText="
+              translations && translations.access_to_contractor_info_pages
+            "
             :freeText="freeVersion.sf_info"
             :goldText="goldVersion.sf_info"
             :platinumText="platinumVersion.sf_info"
@@ -674,14 +719,16 @@ Text:"
         <!-- Trade Groups-->
         <div class="w-full my-2">
           <span class="text-2xl font-extrabold text-blue-rgba">
-            Trade Groups:
+            {{ translations && translations.trade_groups }}:
           </span>
         </div>
         <div class="flex flex-col gap-2">
           <PricingFeature
             :pageName="props.pageName"
             bgColor="#f4f8ff"
-            featureText="Membership in No of Trade Groups:"
+            :featureText="
+              translations && translations.membership_in_trade_groups
+            "
             :freeText="freeVersion.tg_members"
             :goldText="goldVersion.tg_members"
             :platinumText="platinumVersion.tg_members"
@@ -689,7 +736,9 @@ Text:"
           <PricingFeature
             :pageName="props.pageName"
             bgColor="#f4f8ff"
-            featureText="Post in Member Trade Groups:"
+            :featureText="
+              translations && translations.post_in_member_trade_groups
+            "
             :freeText="freeVersion.tg_post"
             :goldText="goldVersion.tg_post"
             :platinumText="platinumVersion.tg_post"
@@ -697,7 +746,9 @@ Text:"
           <PricingFeature
             :pageName="props.pageName"
             bgColor="#f4f8ff"
-            featureText="View All Trade Group's Postings:"
+            :featureText="
+              translations && translations.view_all_trade_group_postings
+            "
             :freeText="freeVersion.tg_view_all"
             :goldText="goldVersion.tg_view_all"
             :platinumText="platinumVersion.tg_view_all"
@@ -706,14 +757,14 @@ Text:"
         <!-- View Red Flags-->
         <div class="w-full my-2">
           <span class="text-2xl font-extrabold text-blue-rgba">
-            View Red Flags:
+            {{ translations && translations.view_red_flags }}:
           </span>
         </div>
         <div class="flex flex-col gap-2">
           <PricingFeature
             :pageName="props.pageName"
             bgColor="#f4f8ff"
-            featureText="Search Red Flags:"
+            :featureText="translations && translations.search_red_flags"
             :freeText="freeVersion.rf_access"
             :goldText="goldVersion.rf_access"
             :platinumText="platinumVersion.rf_access"
@@ -721,7 +772,7 @@ Text:"
           <PricingFeature
             :pageName="props.pageName"
             bgColor="#f4f8ff"
-            featureText="Flagged Customers:"
+            :featureText="translations && translations.flagged_customers"
             :freeText="freeVersion.rf_customers"
             :goldText="goldVersion.rf_customers"
             :platinumText="platinumVersion.rf_customers"
@@ -729,7 +780,7 @@ Text:"
           <PricingFeature
             :pageName="props.pageName"
             bgColor="#f4f8ff"
-            featureText="Flagged Sales Reps:"
+            :featureText="translations && translations.flagged_sales_reps"
             :freeText="freeVersion.rf_sales"
             :goldText="goldVersion.rf_sales"
             :platinumText="platinumVersion.rf_sales"
@@ -737,7 +788,7 @@ Text:"
           <PricingFeature
             :pageName="props.pageName"
             bgColor="#f4f8ff"
-            featureText="Flagged Contractors:"
+            :featureText="translations && translations.flagged_contractors"
             :freeText="freeVersion.rf_contractor"
             :goldText="goldVersion.rf_contractor"
             :platinumText="platinumVersion.rf_contractor"
@@ -746,14 +797,14 @@ Text:"
         <!-- Real Contractor Reviews-->
         <div class="w-full my-2">
           <span class="text-2xl font-extrabold text-blue-rgba">
-            Real Contractor Reviews:
+            {{ translations && translations.real_contractor_reviews }}:
           </span>
         </div>
         <div class="flex flex-col gap-2">
           <PricingFeature
             :pageName="props.pageName"
             bgColor="#f4f8ff"
-            featureText="Give a Review:"
+            :featureText="translations && translations.give_a_review"
             :freeText="freeVersion.re_reviews"
             :goldText="goldVersion.re_reviews"
             :platinumText="platinumVersion.re_reviews"
@@ -761,7 +812,9 @@ Text:"
           <PricingFeature
             :pageName="props.pageName"
             bgColor="#f4f8ff"
-            featureText="Provide Feedback on Review:"
+            :featureText="
+              translations && translations.provide_feedback_on_review
+            "
             :freeText="freeVersion.re_feedback"
             :goldText="goldVersion.re_feedback"
             :platinumText="platinumVersion.re_feedback"
@@ -769,7 +822,7 @@ Text:"
           <PricingFeature
             :pageName="props.pageName"
             bgColor="#f4f8ff"
-            featureText="Appeal Review:"
+            :featureText="translations && translations.appeal_review"
             :freeText="freeVersion.re_appeal"
             :goldText="goldVersion.re_appeal"
             :platinumText="platinumVersion.re_appeal"
@@ -785,7 +838,9 @@ Text:"
           <PricingFeature
             :pageName="props.pageName"
             bgColor="#f4f8ff"
-            featureText="No of Free Page Templates:"
+            :featureText="
+              translations && translations.no_of_free_page_templates
+            "
             :freeText="freeVersion.cp_template?.toString()"
             :goldText="goldVersion.cp_template?.toString()"
             :platinumText="platinumVersion.cp_template?.toString()"
@@ -793,7 +848,7 @@ Text:"
           <PricingFeature
             :pageName="props.pageName"
             bgColor="#f4f8ff"
-            featureText="No of Color Schemes:"
+            :featureText="translations && translations.no_of_color_schemes"
             :freeText="freeVersion.cp_color?.toString()"
             :goldText="goldVersion.cp_color?.toString()"
             :platinumText="platinumVersion.cp_color?.toString()"
@@ -801,7 +856,10 @@ Text:"
           <PricingFeature
             :pageName="props.pageName"
             bgColor="#f4f8ff"
-            featureText="Share Your Contractor Page With Others:"
+            :featureText="
+              translations &&
+              translations.share_your_contractor_page_with_others
+            "
             :freeText="freeVersion.cp_share"
             :goldText="goldVersion.cp_share"
             :platinumText="platinumVersion.cp_share"
@@ -840,7 +898,7 @@ Text:"
         @click="onFreeSelect"
         class="mt-[2px] checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95"
       >
-        Select
+        {{ translations && translations.select }}
       </button>
     </div>
     <!-- Gold -->
@@ -851,7 +909,7 @@ Text:"
             screenWidth < 458 && userVersion === 1 && 'h-[56px]'
           }`"
         >
-          Gold Pakage
+          {{ translations && translations.gold_package }}
         </div>
         <div class="flex text-green-rgba font-extrabold mt-1">
           <div class="text-lg self-center mt-[-30px]">$</div>
@@ -859,20 +917,24 @@ Text:"
             {{ formatPrice(pricingPlan.gold_advertised_price) }}
           </div>
         </div>
-        <div class="text-base font-semibold">Per Month</div>
+        <div class="text-base font-semibold capitalize">
+          {{ translations && translations.per_month }}
+        </div>
         <button
           v-if="showGoldSelect && userVersion !== 2 && userVersion !== 3"
           @click="onGoldSelect"
           class="checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95 mt-auto"
         >
-          Select
+          {{ translations && translations.select }}
         </button>
       </div>
     </div>
     <!-- Platinium -->
     <div>
       <div class="flex flex-col justify-center items-center h-full">
-        <div class="text-black text-lg font-bold">Platinum Pakage</div>
+        <div class="text-black text-lg font-bold">
+          {{ translations && translations.platinum_package }}
+        </div>
         <div class="flex text-blue-rgba font-extrabold mt-1">
           <div class="text-lg self-center mt-[-30px]">$</div>
 
@@ -880,12 +942,14 @@ Text:"
             {{ formatPrice(pricingPlan.platinum_advertised_price) }}
           </div>
         </div>
-        <div class="text-base font-semibold">Per Month</div>
+        <div class="text-base font-semibold capitalize">
+          {{ translations && translations.per_month }}
+        </div>
         <button
           @click="onPlatinumSelect"
           class="checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95 mt-auto"
         >
-          Select
+          {{ translations && translations.select }}
         </button>
       </div>
     </div>

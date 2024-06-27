@@ -12,6 +12,7 @@ import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 import { removeToken } from "@/helpers/localStorageHelper";
 import { Inertia } from "@inertiajs/inertia";
+import { useStore } from "vuex";
 
 const props = defineProps({
   status: String,
@@ -27,6 +28,9 @@ const form = reactive({
 const errors = reactive({
   verifyCode: "",
 });
+
+const store = useStore();
+const translations = computed(() => store.getters.translations);
 
 const submit = () => {
   form.post(route("verification.send"));
@@ -97,7 +101,11 @@ const submitVerificationCode = async () => {
       >, please check your email's junk & spam folders.
     </div>
     <div class="mt-3">
-      <InputLabel class="font-bold" for="email" value="Enter Code" />
+      <InputLabel
+        class="font-bold"
+        for="email"
+        :value="translations && translations.enter_code"
+      />
       <TextInput
         id="email"
         type="text"
@@ -127,9 +135,11 @@ const submitVerificationCode = async () => {
       class="mt-3 w-full flex justify-center"
     >
       <div v-show="!loadingVerifyCode" class="flex items-center justify-center">
-        Send
+        {{ translations && translations.send }}
       </div>
-      <div v-show="loadingVerifyCode">Sending...</div>
+      <div v-show="loadingVerifyCode">
+        {{ translations && translations.sending }}...
+      </div>
     </PrimaryButton>
     <PrimaryButton
       @click="resendVerificationCode"
@@ -141,9 +151,11 @@ const submitVerificationCode = async () => {
       class="w-full mt-2 flex justify-center"
     >
       <div v-show="!loading" class="flex items-center justify-center">
-        Resend Verification Code
+        {{ translations && translations.resend_verification_code }}
       </div>
-      <div v-show="loading">Sending...</div></PrimaryButton
+      <div v-show="loading">
+        {{ translations && translations.sending }}...
+      </div></PrimaryButton
     >
     <a
       :href="route('signup')"

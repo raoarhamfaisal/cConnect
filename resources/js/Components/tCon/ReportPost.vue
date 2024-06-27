@@ -8,7 +8,7 @@
       @opened="onOpened"
       :loading="loadingSending"
       :disabled="disabledSending"
-      :title="`Report Post`"
+      :title="translations && translations.report_post"
     >
       <form>
         <!-- response -->
@@ -17,9 +17,7 @@
         >
           <h3 class="text-lg font-semibold">Note:</h3>
           <p class="mt-1 sm:mt-2 text-blue-700">
-            Your report will be confidentially sent to our admin team for
-            review. We're committed to maintaining a respectful and safe
-            community for everyone.
+            {{ translations && translations.confidential_report_to_admin }}
           </p>
         </div>
         <div class="">
@@ -34,7 +32,9 @@
             @keydown="insertTab"
             @input="adjustHeight"
             @paste="adjustHeight"
-            placeholder="Describe what you find objectionable in this post..."
+            :placeholder="
+              translations && translations.describe_objectionable_content
+            "
           />
           <InputError
             v-if="reportTextError"
@@ -58,7 +58,9 @@
       bgColor="#364fc7"
       :padding="screenWidth < 640 ? '7px' : '10px'"
     >
-      <div class="text-white">Post Reporting...</div>
+      <div class="text-white">
+        {{ translations && translations.post_reporting }}
+      </div>
       <v-progress-linear
         indeterminate
         color="#fff"
@@ -78,8 +80,9 @@ import {
   filterBadWords,
   somethingWentWrong,
 } from "@/helpers/utilities";
-import { ref, watch, nextTick } from "vue";
+import { ref, watch, nextTick, computed } from "vue";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
+import { useStore } from "vuex";
 
 //States
 const { postId } = defineProps({
@@ -92,7 +95,11 @@ const dialogRef = ref();
 const showDialog = ref(false);
 const reportTextError = ref("");
 const loadingSending = ref(false);
+const store = useStore();
+
 //Computed
+
+const translations = computed(() => store.getters.translations);
 
 //Watch
 

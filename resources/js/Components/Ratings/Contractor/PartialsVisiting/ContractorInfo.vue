@@ -23,7 +23,7 @@
   <div class="mb-3">
     <div class="pl-2 text-sm xs:text-md font-bold mt-4 mb-1">
       {{ contractor.first_name + " " + contractor.last_name }}
-      {{ "'s Trades :" }}
+      {{ `'s ${translations && translations.trades} :` }}
     </div>
     <template v-for="(option, index) in options" :key="option.name">
       <Badge
@@ -45,7 +45,14 @@
 import Avatar from "@/Components/Ratings/Avatar.vue";
 import Badge from "@/Components/Ratings/Badge.vue";
 import { options } from "@/helpers/selectListsHelpters.js";
+import { computed } from "vue";
+import { useStore } from "vuex";
 
 defineProps(["contractor"]);
+
+const store = useStore();
+
+//Computed
+
+const translations = computed(() => store.getters.translations);
 </script>
-@/helpers/selectListsHelpters.js

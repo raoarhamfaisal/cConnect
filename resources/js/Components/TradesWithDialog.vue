@@ -4,7 +4,7 @@
       :showFooter="false"
       :disableOutSideClick="false"
       ref="tradeDialogRef"
-      title="Trades"
+      :title="translations && translations.trades"
     >
       <template v-for="(option, index) in options" :key="option.name">
         <Badge
@@ -62,6 +62,9 @@ const props = defineProps({
 const tradeDialogRef = ref();
 const store = useStore();
 const emit = defineEmits(["update:modelValue"]);
+
+const translations = computed(() => store.getters.translations);
+
 const firstTrade = computed(() => {
   return options.find(
     (option) =>

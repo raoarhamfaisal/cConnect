@@ -334,7 +334,7 @@ export default {
         class="mb-8"
       >
         <div class="text-gray-300 inline text-center">
-          You're all up to date! 🥳
+          {{ translations && translations.youre_all_up_to_date }} 🥳
         </div>
       </div>
 
@@ -343,7 +343,7 @@ export default {
         class="mb-8 flex items-center justify-center h-72"
       >
         <div class="text-gray-800 inline text-center">
-          No Posts found for this Contractor
+          {{ translations && translations.no_posts_found_for_this_contractor }}
         </div>
       </div>
 

@@ -429,14 +429,18 @@ const determineBorderVisibility = (index) => {
               class="w-4/5 px-1 py-1 h-[48px] rounded-lg transition transform duration-300 hover:shadow-lg active:scale-95 font-extrabold bg-[#e80000] text-white text-md sm:text-xl font-sans"
               @click="openBestPracticeCard"
             >
-              Add New Red Flag
+              {{ translations && translations.add_new_red_flag }}
             </button>
             <button
               type="button"
               @click="fetchComplaintsAddedByMe"
               class="w-1/5 px-1 py-1 h-[48px] rounded-lg transition transform duration-300 hover:shadow-lg active:scale-95 font-extrabold bg-[#8a0000] text-white text-sm leading-5 font-sans"
             >
-              {{ fetchMyRedFlags ? "All Red Flags" : "My Red Flags" }}
+              {{
+                fetchMyRedFlags
+                  ? translations && translations.all_red_flags
+                  : translations && translations.my_red_flags
+              }}
             </button>
           </div>
         </div>
@@ -464,7 +468,7 @@ const determineBorderVisibility = (index) => {
                     @click="isSearchByCustomer = 1"
                     class="w-full cursor-pointer text-sm sm:text-xl"
                   >
-                    Customer
+                    {{ translations && translations.customer }}
                   </div>
                 </div>
                 <div class="flex gap-2 items-center h-8">
@@ -528,7 +532,9 @@ const determineBorderVisibility = (index) => {
             v-if="loading && searchTerm"
             class="h-full h-[30vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4"
           >
-            <div class="text-center text-xl">Searching...</div>
+            <div class="text-center text-xl">
+              {{ translations && translations.searching }}...
+            </div>
             <v-progress-linear
               color="#241e6d"
               indeterminate
@@ -581,7 +587,7 @@ const determineBorderVisibility = (index) => {
             "
             class="text-center my-5 font-bold"
           >
-            No More Red Flags to Load
+            {{ translations && translations.no_more_red_flags_to_load }}
           </div>
           <Loader
             classes="flex gap-2"
@@ -603,17 +609,14 @@ const determineBorderVisibility = (index) => {
       ref="bestPracticeDialogRef"
     >
       <section class="card-content">
-        <p class="mt-1 mb-2 text-xl font-bold">Best Practice For Reviewers:</p>
+        <p class="mt-1 mb-2 text-xl font-bold">
+          {{ translations && translations.best_practice_for_reviewers }}:
+        </p>
         <p class="text-lg">
-          While you have every right to express your opinion, choose what you
-          write carefully to avoid any Defamation or libel. Ensure what you
-          write is only the truth. Avoid writing reviews in a way that can be
-          construed as falsehoods. Only write about what can be backed up by
-          evidence.
+          {{ translations && translations.write_carefully_to_avoid_defamation }}
         </p>
         <p class="mt-4 mb-4 text-lg">
-          As long as a review is based on facts and a personal point of view, it
-          can be less vulnerable to argument.
+          {{ translations && translations.review_based_on_facts }}
         </p>
       </section>
       <!-- agree disagree -->
@@ -635,7 +638,7 @@ const determineBorderVisibility = (index) => {
               @click="doYouAgreeBestPracticeCheck = true"
               class="w-full cursor-pointer text-sm sm:text-xl"
             >
-              I Accept
+              {{ translations && translations.i_accept }}
             </div>
           </div>
           <div class="flex gap-4 items-center h-8">
@@ -654,7 +657,7 @@ const determineBorderVisibility = (index) => {
               @click="doYouAgreeBestPracticeCheck = false"
               class="w-full cursor-pointer text-sm sm:text-xl"
             >
-              Do not Agree, Exit
+              {{ translations && translations.do_not_agree_exit }}
             </div>
           </div>
         </div>
@@ -724,7 +727,7 @@ const determineBorderVisibility = (index) => {
               @click="newRedFlag.is_contractor_or_customer = true"
               class="w-full cursor-pointer text-sm sm:text-xl"
             >
-              Customer
+              {{ translations && translations.customer }}
             </div>
           </div>
           <div class="flex gap-2 items-center h-8">
@@ -743,7 +746,7 @@ const determineBorderVisibility = (index) => {
               @click="newRedFlag.is_contractor_or_customer = false"
               class="w-full cursor-pointer text-sm sm:text-xl"
             >
-              Contractor(non-member)
+              {{ translations && translations.contractor_non_member }}
             </div>
           </div>
         </div>
@@ -775,9 +778,9 @@ const determineBorderVisibility = (index) => {
           }"
         >
           <div v-show="!addingRedFlag" class="flex items-center justify-center">
-            Save
+            {{translations && translations.save}}
           </div>
-          <div v-show="addingRedFlag">Saving...</div>
+          <div v-show="addingRedFlag">{{translations && translations.saving}}...</div>
         </button>
       </section>
 

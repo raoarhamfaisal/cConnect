@@ -29,6 +29,7 @@ const store = useStore();
 
 const userVersion = computed(() => store.getters.userVersion);
 const screenWidth = computed(() => store.getters.screenWidth);
+const translations = computed(() => store.getters.translations);
 
 const notPricingPageAndDesktop = computed(
   () =>
@@ -73,7 +74,11 @@ const notFreeVersion = computed(
         }"
         class="text-lg lg:text-2xl font-bold"
       >
-        {{ props.freeText === 99 ? "Unlimited" : props.freeText }}
+        {{
+          props.freeText === 99
+            ? translations && translations.unlimited
+            : props.freeText
+        }}
       </div>
     </div>
     <!-- Gold -->
@@ -102,7 +107,11 @@ const notFreeVersion = computed(
         }"
         class="text-lg lg:text-2xl font-bold"
       >
-        {{ props.goldText === 99 ? "Unlimited" : props.goldText }}
+        {{
+          props.goldText === 99
+            ? translations && translations.unlimited
+            : props.goldText
+        }}
       </div>
     </div>
     <!-- Platinium -->
@@ -131,7 +140,11 @@ const notFreeVersion = computed(
         }"
         class="text-lg lg:text-2xl font-bold"
       >
-        {{ props.platinumText === 99 ? "Unlimited" : props.platinumText }}
+        {{
+          props.platinumText === 99
+            ? translations && translations.unlimited
+            : props.platinumText
+        }}
       </div>
     </div>
   </div>
@@ -165,7 +178,11 @@ const notFreeVersion = computed(
           icon="clarity:remove-solid"
         />
         <div v-else class="text-lg lg:text-2xl font-extrabold">
-          {{ props.freeText === 99 ? "Unlimited" : props.freeText }}
+          {{
+            props.freeText === 99
+              ? translations && translations.unlimited
+              : props.freeText
+          }}
         </div>
       </div>
       <!-- Gold -->
@@ -185,7 +202,11 @@ const notFreeVersion = computed(
           icon="clarity:remove-solid"
         />
         <div v-else class="text-lg lg:text-2xl font-extrabold">
-          {{ props.goldText === 99 ? "Unlimited" : props.goldText }}
+          {{
+            props.goldText === 99
+              ? translations && translations.unlimited
+              : props.goldText
+          }}
         </div>
       </div>
       <!-- Platinium -->
@@ -205,7 +226,11 @@ const notFreeVersion = computed(
           icon="clarity:remove-solid"
         />
         <div v-else class="text-lg lg:text-2xl font-extrabold">
-          {{ props.platinumText === 99 ? "Unlimited" : props.platinumText }}
+          {{
+            props.platinumText === 99
+              ? translations && translations.unlimited
+              : props.platinumText
+          }}
         </div>
       </div>
     </div>

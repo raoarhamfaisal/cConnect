@@ -86,12 +86,12 @@
     </div>
   </Card>
   <CustomDialog
-    submitText="Save"
+    :submitText="translations && translations.save"
     @submit="handleSubmit"
     :loading="loading"
     :disabled="disabled"
     ref="dialogRef"
-    title="Edit Your Contact Information"
+    :title="translations && translations.edit_your_contact_information"
   >
     <div class="flex justify-center">
       <v-skeleton-loader
@@ -123,13 +123,13 @@
         <InputLabel
           class="font-bold"
           for="company_name"
-          value="Company Name*"
+          :value="translations && translations.company_name + '*'"
         />
         <TextInput
           id="company_name"
           type="text"
           class="mt-1 block w-full"
-          placeholder="Type your Company name"
+          :placeholder="translations && translations.type_your_company_name"
           @input="clearError('company_name')"
           v-model="tempCompanyProfile.company_name"
           required
@@ -138,13 +138,17 @@
         <InputError class="mt-2" :message="errors.company_name" />
       </div>
       <div>
-        <InputLabel class="font-bold" for="phone_cell" value="Phone Cell*" />
+        <InputLabel
+          class="font-bold"
+          for="phone_cell"
+          :value="translations && translations.phone_cell + '*'"
+        />
         <TextInput
           id="phone_cell"
           type="tel"
           class="mt-1 block w-full"
           v-model="tempCompanyProfile.phone_cell"
-          placeholder="Type your phone cell"
+          :placeholder="translations && translations.type_your_phone_cell"
           v-mask="'###-###-#####'"
           @input="clearError('phone_cell')"
           autocomplete="tel"
@@ -152,7 +156,11 @@
         <InputError class="mt-2" :message="errors.phone_cell" />
       </div>
       <div>
-        <InputLabel class="font-bold" for="phone_office" value="Phone Office" />
+        <InputLabel
+          class="font-bold"
+          for="phone_office"
+          :value="translations && translations.phone_office"
+        />
         <TextInput
           id="phone_office"
           type="tel"
@@ -160,7 +168,7 @@
           @input="clearError('phone_office')"
           v-mask="'###-###-#####'"
           v-model="tempCompanyProfile.phone_office"
-          placeholder="Type your phone office"
+          :placeholder="translations && translations.type_your_phone_office"
         />
         <InputError class="mt-2" :message="errors.phone_office" />
       </div>
@@ -173,7 +181,7 @@
           @input="clearError('address_1')"
           @callback="callbackFunction"
           class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-          placeholder="Type your address 1"
+          :placeholder="translations && translations.type_your_address + 1"
         />
         <InputError class="mt-2" :message="errors.address_1" />
       </div>
@@ -184,25 +192,33 @@
           id="address_2"
           v-model="tempCompanyProfile.address_2"
           class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-          placeholder="Type your address 2"
+          :placeholder="translations && translations.type_your_address + 2"
         />
       </div>
 
       <div>
-        <InputLabel class="font-bold" for="city" value="City*" />
+        <InputLabel
+          class="font-bold"
+          for="city"
+          :value="translations && translations.city + '*'"
+        />
         <TextInput
           id="city"
           type="text"
           class="mt-1 block w-full"
           @input="clearError('city')"
           v-model="tempCompanyProfile.city"
-          placeholder="Type your city"
+          :placeholder="translations && translations.type_your_city"
           autocomplete="city"
         />
         <InputError class="mt-2" :message="errors.city" />
       </div>
       <div>
-        <InputLabel class="font-bold mb-1" for="state" value="State*" />
+        <InputLabel
+          class="font-bold mb-1"
+          for="state"
+          :value="translations && translations.state + '*'"
+        />
         <SelectProfile
           :options="stateList"
           :modelValue="tempCompanyProfile.state"
@@ -217,19 +233,27 @@
       </div>
 
       <div>
-        <InputLabel class="font-bold" for="zipcode" value="Zip Code*" />
+        <InputLabel
+          class="font-bold"
+          for="zipcode"
+          :value="translations && translations.zip_code + '*'"
+        />
         <TextInput
           id="zipcode"
           type="text"
           class="mt-1 block w-full"
           @input="clearError('zipcode')"
           v-model="tempCompanyProfile.zipcode"
-          placeholder="Type your Zip Code"
+          :placeholder="translations && translations.type_your_zip_code"
         />
         <InputError class="mt-2" :message="errors.zipcode" />
       </div>
       <div>
-        <InputLabel class="font-bold" for="county" value="County*" />
+        <InputLabel
+          class="font-bold"
+          for="county"
+          :value="translations && translations.county + '*'"
+        />
         <TextInput
           id="county"
           type="text"
@@ -265,6 +289,7 @@ import {
   onMounted,
   onBeforeUnmount,
   nextTick,
+  computed,
 } from "vue";
 import {
   getAxiosConfigFormData,
@@ -272,6 +297,7 @@ import {
 } from "@/helpers/axiosConfigHelpers";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 import GoogleAddressAutocomplete from "@/Components/GoogleAddressAutoComplete.vue";
+import { useStore } from "vuex";
 
 const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 // State
@@ -320,7 +346,11 @@ const errors = reactive({
 });
 
 const dialogRef = ref();
+const store = useStore();
 
+//Computed
+
+const translations = computed(() => store.getters.translations);
 //Methods
 
 const openDialog = () => {

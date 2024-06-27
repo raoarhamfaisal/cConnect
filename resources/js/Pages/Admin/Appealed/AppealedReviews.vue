@@ -79,7 +79,10 @@
         </div>
         <!-- Filters -->
         <div class="border-gray-300 border-t-2">
-          <heading-card class="mt-3" heading="Order Reviews By" />
+          <heading-card
+            class="mt-3"
+            :heading="translations && translations.order_reviews_by"
+          />
           <div class="mb-4 mt-2">
             <div class="flex gap-3 flex-wrap">
               <Button
@@ -285,6 +288,7 @@ onBeforeMount(() => {
 
 const updatedReview = computed(() => store.state.ratings.updatedReview);
 const screenWidth = computed(() => store.getters.screenWidth);
+const translations = computed(() => store.getters.translations);
 const updatedResponse = computed(() => store.state.ratings.updatedResponse);
 
 //Watch

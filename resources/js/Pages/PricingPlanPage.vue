@@ -60,14 +60,14 @@ onMounted(() => {
             value="gold"
             style="border: 1px solid #ccc !important; border-right: 0px"
           >
-            Gold Pakage
+            {{ translations && translations.gold_package }}
           </v-btn>
 
           <v-btn
             value="platinum"
             style="border: 1px solid #ccc !important; border-left: 0px"
           >
-            Platinum Pakage</v-btn
+            {{ translations && translations.platinum_package }}</v-btn
           >
         </v-btn-toggle>
       </div>

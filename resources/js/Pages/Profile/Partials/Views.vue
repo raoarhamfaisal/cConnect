@@ -64,9 +64,11 @@ const toggleSwitch = (field) => {
               : 'text-gray-900 text-lg'
           }`"
         >
-          Views
+          {{ translations && translations.views }}
         </h2>
-        <p class="mt-1 text-sm text-gray-600">Update your Views Information.</p>
+        <p class="mt-1 text-sm text-gray-600">
+          {{ translations && translations.update_your_views_information }}
+        </p>
       </div>
     </header>
     <div class="grid mt-8 gap-3">

@@ -145,7 +145,10 @@
           class="mt-6 space-y-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-4"
         >
           <div>
-            <InputLabel class="font-bold mb-1" value="Region" />
+            <InputLabel
+              class="font-bold mb-1"
+              :value="translations && translations.region"
+            />
             <SelectProfile
               :options="referenceList"
               :modelValue="selectedReferal"
@@ -409,6 +412,7 @@ onBeforeMount(() => {
 const regions = computed(() => store.state.ratings.allRegions);
 const loadingRegions = computed(() => store.state.ratings.loading);
 const screenWidth = computed(() => store.getters.screenWidth);
+const translations = computed(() => store.getters.translations);
 
 //Watch
 watch(regions, (newVal) => {

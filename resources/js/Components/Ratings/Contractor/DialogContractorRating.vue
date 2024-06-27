@@ -3,7 +3,7 @@
     ref="dialogRef"
     :showFooter="false"
     dialogWidth="width-75 contractorDialog"
-    title="Contractor Ratings"
+    :title="translations && translations.contractor_ratings"
   >
     <Loader :loading="loading" background="white" height="70vh"></Loader>
     <ContractorRating
@@ -33,6 +33,7 @@ const store = useStore();
 
 const dialogRef = ref();
 const loading = computed(() => store.state.ratings.loading);
+const translations = computed(() => store.getters.translations);
 const contractorDetails = computed(() => store.state.ratings.contractorDetails);
 
 const openDialog = () => {

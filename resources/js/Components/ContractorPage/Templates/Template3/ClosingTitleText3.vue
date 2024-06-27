@@ -33,7 +33,7 @@
       }"
       :class="`bg-white px-4 py-1 text-xs hover:bg-[#f8f9fa] sm:text-sm font-bold rounded-full border-[1px] bg-white cursor-pointer hover:shadow-lg active:scale-95`"
     >
-      Share
+      {{ translations && translations.share }}
     </button>
     <v-snackbar
       location="bottom"
@@ -41,7 +41,7 @@
       :timeout="2000"
       color="success"
     >
-      Link Copied to Clipboard
+      {{ translations && translations.link_copied_to_clipboard }}
     </v-snackbar>
   </div>
 </template>
@@ -79,6 +79,8 @@ const shareLink = () => {
     snackbarVisible.value = true; // Show the Snackbar on successful copy
   }
 };
+const translations = computed(() => store.getters.translations);
+
 const selectedColorScheme = computed(
   () => store.state.contractor.selectedColorScheme || template1Default
 );

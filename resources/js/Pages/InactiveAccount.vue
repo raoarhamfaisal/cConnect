@@ -5,7 +5,7 @@
     <!-- Back to Main Page Link -->
     <div class="mb-3 sm:mb-6">
       <Link href="/" class="text-blue-500 hover:underline"
-        >← Back to Main Page</Link
+        >← {{ translations && translations.back_to_main_page }}</Link
       >
     </div>
     <!-- Condition for Billing Issue -->
@@ -108,12 +108,19 @@ import WelcomeFooter from "@/Components/Welcome/WelcomeFooter.vue";
 import { Head, Link } from "@inertiajs/inertia-vue3";
 import { Inertia } from "@inertiajs/inertia";
 import { removeToken } from "@/helpers/localStorageHelper";
-import { onMounted } from "vue";
+import { computed, onMounted } from "vue";
+import { useStore } from "vuex";
 
 const props = defineProps({
   showit: Boolean,
   profile: Object,
 });
+
+const store = useStore();
+
+//Computed
+
+const translations = computed(() => store.getters.translations);
 
 onMounted(() => {
   localStorage.setItem("prevUrlPricingPlan", "inactive-account");

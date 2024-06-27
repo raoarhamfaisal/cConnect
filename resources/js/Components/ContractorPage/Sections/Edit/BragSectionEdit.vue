@@ -61,18 +61,21 @@
     @click="() => openDialogEdit()"
     class="w-full flex gap-2 items-center justify-center h-[42px] rounded bg-[#087f5b] text-white active:scale-[0.99] transition transform duration-300 hover:shadow-lg"
   >
-    <Icon icon="mdi:plus-thick" /> Add Brag Section
+    <Icon icon="mdi:plus-thick" />
+    {{ translations && translations.add_brag_section }}
   </button>
 
   <!-- CustomDialog for adding -->
 
   <CustomDialog
-    submitText="Save"
+    :submitText="translations && translations.save"
     :loading="loading"
     :disabled="disabled"
     @submit="handleSubmit"
     ref="dialogRef"
-    :title="`${editMode ? 'Edit' : 'Add'} Brag Section`"
+    :title="`${
+      editMode ? translations && translations.edit : 'Add'
+    } Brag Section`"
   >
     <div v-if="isNotFile" class="bg-[#222]">
       <img
@@ -127,26 +130,26 @@
     dialogWidth="widthAuto"
     :showFooter="false"
     ref="imageIncDialogRef"
-    title="Your Image"
+    :title="translations && translations.your_image"
   >
     <img :src="selectedImage" />
   </CustomDialog>
   <!-- image Delete Dialog -->
   <CustomDialog
-    submitText="Delete"
+    :submitText="translations && translations.delete"
     @submit="handleSubmitDelete"
     ref="deleteDialogRef"
     :loading="loading"
     :disabled="disabled"
     errorIcon
     dialogWidth="max-h-[70vh] width50"
-    title="Are you sure? "
+    :title="translations && translations.are_you_sure"
   >
     <div class="mb-4">
       <div
         class="section_text-lg font-bold pl-6 section_text-gray-800 mt-3 mb-2"
       >
-        Do you want to Delete this Section?
+        {{ translations && translations.do_you_want_to_delete_this_section }}
       </div>
     </div>
   </CustomDialog>
@@ -172,6 +175,7 @@ import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
 import "filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css";
+import { useStore } from "vuex";
 const FilePond = VueFilePond(
   FilePondPluginImageExifOrientation,
   FilePondPluginFileValidateType,
@@ -214,6 +218,7 @@ const loading = ref(false);
 const disabled = ref(false);
 const files = ref([]);
 const pond = ref();
+const store = useStore();
 
 //Computed
 
@@ -222,6 +227,7 @@ const isNotFile = computed(
     !(tempSection.value.section_image instanceof File) &&
     tempSection.value.section_image
 );
+const translations = computed(() => store.getters.translations);
 
 //Watch
 watchEffect(() => {

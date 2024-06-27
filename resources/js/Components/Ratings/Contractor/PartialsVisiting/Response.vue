@@ -9,7 +9,7 @@
     <section>
       <div class="flex justify-between">
         <div class="font-bold text-md xs:text-lg sm:text-2xl text-2xl mb-2">
-          Contractor's Response
+          {{ translations && translations.contractors_response }}
         </div>
         <div
           v-if="screenWidth >= 600 && contractorId === profileId"
@@ -28,7 +28,7 @@
               bgColor="bg-red-500"
               icon="ic:baseline-delete"
               @click="openDeleteDialog"
-              >Delete</ButtonRatings
+              >{{ translations && translations.delete }}</ButtonRatings
             >
           </div>
         </div>
@@ -49,7 +49,7 @@
           bgColor="bg-red-500"
           icon="ic:baseline-delete"
           @click="openDeleteDialog"
-          >Delete</ButtonRatings
+          >{{ translations && translations.delete }}</ButtonRatings
         >
       </div>
       <div>
@@ -61,7 +61,10 @@
           </div>
         </div>
         <div class="">
-          <p class="p-2 text-sm xs:text-sm xs:text-lg"  style="white-space: pre-wrap">
+          <p
+            class="p-2 text-sm xs:text-sm xs:text-lg"
+            style="white-space: pre-wrap"
+          >
             {{
               showFullReview
                 ? response.response_text
@@ -73,14 +76,14 @@
               @click="showFullReview = true"
               class="cursor-pointer text-sky-700"
             >
-              See more
+              {{ translations && translations.see_more }}
             </span>
             <span
               v-if="showFullReview && response.response_text.length > 400"
               @click="showFullReview = false"
               class="cursor-pointer text-sky-700"
             >
-              See less
+              {{ translations && translations.see_less }}
             </span>
           </p>
         </div>
@@ -99,10 +102,11 @@
 import Card from "@/Components/Card.vue";
 import EditResponseModal from "@/Pages/Ratings/Edit/EditResponseModal.vue";
 import DeleteResponseModal from "@/Pages/Ratings/Edit/DeleteResponseModal.vue";
-import { onMounted, onUnmounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import { convertDateFormat } from "@/helpers/utilities";
 
 import ButtonRatings from "@/Components/Ratings/ButtonRatings.vue";
+import { useStore } from "vuex";
 
 defineProps({
   response: {
@@ -118,6 +122,12 @@ defineProps({
 const showFullReview = ref(false);
 const editRef = ref();
 const deleteRef = ref();
+const store = useStore();
+
+//Computed
+
+const translations = computed(() => store.getters.translations);
+const screenWidth = computed(() => store.getters.screenWidth);
 
 const openEditDialog = () => {
   editRef.value.openDialogEdit();
@@ -126,20 +136,6 @@ const openEditDialog = () => {
 const openDeleteDialog = () => {
   deleteRef.value.openDialogDelete();
 };
-const screenWidth = ref(window.innerWidth);
-
-// Update the screen width whenever the window is resized
-const updateWidth = () => {
-  screenWidth.value = window.innerWidth;
-};
-
-onMounted(() => {
-  window.addEventListener("resize", updateWidth);
-});
-
-onUnmounted(() => {
-  window.removeEventListener("resize", updateWidth);
-});
 </script>
 
 <style scoped></style>

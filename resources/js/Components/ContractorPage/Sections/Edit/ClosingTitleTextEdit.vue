@@ -7,7 +7,7 @@
     >
       <div class="flex justify-between">
         <div class="flex text-blue-rgba items-center font-extrabold text-2xl">
-          Closing Text
+          {{ translations && translations.closing_text }}
         </div>
         <IconButton
           @click="openDialogEdit"
@@ -24,19 +24,20 @@
       @click="openDialogEdit"
       class="w-full flex gap-2 items-center justify-center h-[42px] rounded bg-[#087f5b] text-white active:scale-[0.99] transition transform duration-300 hover:shadow-lg"
     >
-      <Icon icon="mdi:plus-thick" /> Add Closing Text
+      <Icon icon="mdi:plus-thick" />
+      {{ translations && translations.add_closing_text }}
     </button>
 
     <!-- CustomDialog for adding -->
     <CustomDialog
-      submitText="Save"
+      :submitText="translations && translations.save"
       :loading="loading"
       :disabled="disabled"
       :overflowAllowed="true"
       @submit="handleSubmit"
       @closed="handleClosed"
       ref="dialogRef"
-      title="Add Closing Text"
+      :title="translations && translations.add_closing_text"
     >
       <ckeditor
         class="default"
@@ -59,6 +60,7 @@ import { toolbarConfigPost } from "@/helpers/utilities";
 
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
+import { useStore } from "vuex";
 
 const props = defineProps({
   screenWidth: {
@@ -97,6 +99,9 @@ const onReady = (editor) => {
       editor.ui.getEditableElement()
     );
 };
+const store = useStore();
+
+const translations = computed(() => store.getters.translations);
 
 const processedClosingText = computed(() => {
   const parser = new DOMParser();

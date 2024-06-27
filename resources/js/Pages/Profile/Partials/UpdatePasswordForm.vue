@@ -4,7 +4,8 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { useForm } from "@inertiajs/inertia-vue3";
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import { useStore } from "vuex";
 
 const passwordInput = ref(null);
 const currentPasswordInput = ref(null);
@@ -14,6 +15,9 @@ const form = useForm({
   password: "",
   password_confirmation: "",
 });
+
+const store = useStore();
+const translations = computed(() => store.getters.translations);
 
 const updatePassword = () => {
   form.put(route("password.update"), {
@@ -36,15 +40,23 @@ const updatePassword = () => {
 <template>
   <section>
     <header>
-      <h2 class="text-lg font-medium text-gray-900">Update Password</h2>
+      <h2 class="text-lg font-medium text-gray-900">
+        {{ translations && translations.update_password }}
+      </h2>
       <p class="mt-1 text-sm text-gray-600">
-        Ensure your account is using a long, random password to stay secure.
+        {{
+          translations &&
+          translations.ensure_your_account_is_using_a_long_random_password
+        }}
       </p>
     </header>
 
     <form @submit.prevent="updatePassword" class="mt-6 space-y-6">
       <div>
-        <InputLabel for="current_password" value="Current Password" />
+        <InputLabel
+          for="current_password"
+          :value="translations && translations.current_password"
+        />
         <TextInput
           id="current_password"
           ref="currentPasswordInput"
@@ -57,7 +69,10 @@ const updatePassword = () => {
       </div>
 
       <div>
-        <InputLabel for="password" value="New Password" />
+        <InputLabel
+          for="password"
+          :value="translations && translations.new_password"
+        />
         <TextInput
           id="password"
           ref="passwordInput"
@@ -70,7 +85,10 @@ const updatePassword = () => {
       </div>
 
       <div>
-        <InputLabel for="password_confirmation" value="Confirm Password" />
+        <InputLabel
+          for="password_confirmation"
+          :value="translations && translations.confirm_password"
+        />
         <TextInput
           id="password_confirmation"
           v-model="form.password_confirmation"
@@ -82,14 +100,16 @@ const updatePassword = () => {
       </div>
 
       <div class="flex items-center gap-4">
-        <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+        <PrimaryButton :disabled="form.processing">{{
+          translations && translations.save
+        }}</PrimaryButton>
         <Transition
           enter-from-class="opacity-0"
           leave-to-class="opacity-0"
           class="transition ease-in-out"
         >
           <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">
-            Saved.
+            {{ translations && translations.saved }}.
           </p>
         </Transition>
       </div>

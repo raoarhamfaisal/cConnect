@@ -73,6 +73,8 @@ const errors = reactive({
 });
 const loading = computed(() => store.state.profile.loading);
 
+const translations = computed(() => store.getters.translations);
+
 const validateForm = () => {
   //Computed
 
@@ -229,7 +231,9 @@ const submitDetails = async () => {
 <template>
   <header v-if="showHeader" class="bg-gray-200">
     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 max-lg:pt-10">
-      <h2 class="font-bold text-xl text-blue-rgba leading-tight">Profile</h2>
+      <h2 class="font-bold text-xl text-blue-rgba leading-tight">
+        {{ translations && translations.profile }}
+      </h2>
     </div>
   </header>
   <div class="bg-gray-200">
@@ -284,7 +288,9 @@ const submitDetails = async () => {
                 "
                 class="w-full flex justify-center"
               >
-                <div class="flex items-center justify-center">Save</div>
+                <div class="flex items-center justify-center">
+                  {{ translations && translations.save }}
+                </div>
                 <img
                   v-show="loading"
                   src="/images/avatars/Spinner.gif"

@@ -98,7 +98,7 @@
     dialogWidth="widthAuto"
     :showFooter="false"
     ref="imageIncDialogRef"
-    title="Your Image"
+    :title="translations && translations.your_image"
   >
     <div
       class="max-h-[400px] md:max-h-[500px] w-full flex justify-center xs:w-[400px] md:w-[600px] bg-[#222]"
@@ -140,6 +140,7 @@ const imageIncDialogRef = ref();
 const selectedColorScheme = computed(
   () => store.state.contractor.selectedColorScheme || template1Default
 );
+const translations = computed(() => store.getters.translations);
 
 // Methods
 

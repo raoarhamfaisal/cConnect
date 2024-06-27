@@ -20,7 +20,7 @@
         <button
           class="bg-white px-4 py-1 uppercase text-xs hover:bg-[#f8f9fa] sm:text-sm font-bold rounded-full border-[#1864ab] border-2 sm:border-[3px] bg-white text-[#1864ab] cursor-pointer hover:shadow-lg active:scale-95"
         >
-          See Live View
+          {{ translations && translations.see_live_view }}
         </button>
       </Link>
     </div>
@@ -37,7 +37,11 @@
         <!-- <InputError class="mt-2" :message="form.errors.phone_cell" /> -->
       </div>
       <div>
-        <InputLabel class="font-bold mb-1" for="state" value="Color Scheme" />
+        <InputLabel
+          class="font-bold mb-1"
+          for="state"
+          :value="translations && translations.color_scheme"
+        />
         <ColorSelect
           :options="colorSchemeList"
           :modelValue="form.selectedColorScheme"
@@ -77,14 +81,16 @@ const props = defineProps({
 });
 
 const form = reactive({
-  selectedTemplate: props.templateList && props.templateList.length > 0 ? props.templateList.find(
-    (item) => props.profile.template_id === item.id
-  ).name : "",
+  selectedTemplate:
+    props.templateList && props.templateList.length > 0
+      ? props.templateList.find((item) => props.profile.template_id === item.id)
+          .name
+      : "",
   selectedColorScheme: "",
 });
 
 const colorSchemeList = computed(() => store.state.contractor.colorSchemeList);
-
+const translations = computed(() => store.getters.translations);
 watch(props.templateList, () => {
   if (props.profile && props.templateList.value.length > 0) {
     form.selectedTemplate = props.templateList.value.find(
@@ -124,6 +130,5 @@ onMounted(() => {
       (item) => props.profile.color_scheme_id === item.id
     ).name;
   }
-
 });
 </script>

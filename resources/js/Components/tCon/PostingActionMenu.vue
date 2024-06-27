@@ -179,7 +179,9 @@ export default {
               class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
             >
               <img src="/images/icons/edit.png" width="20" height="20" />
-              <span class="mx-4 font-medium">Edit Post</span>
+              <span class="mx-4 font-medium">{{
+                translations && translations.edit_post
+              }}</span>
             </button>
 
             <!-- DELETE Posting Action Menu -->
@@ -188,7 +190,9 @@ export default {
               class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
             >
               <img src="/images/icons/delete.png" width="20" height="20" />
-              <span class="mx-4 font-medium">Delete Post</span>
+              <span class="mx-4 font-medium">{{
+                translations && translations.delete_post
+              }}</span>
             </button>
           </div>
           <div v-else>
@@ -198,7 +202,9 @@ export default {
               class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
             >
               <img src="/images/icons/Icon-report.png" width="20" height="20" />
-              <span class="mx-4 font-medium">Report Post</span>
+              <span class="mx-4 font-medium">{{
+                translations && translations.report_post
+              }}</span>
             </button>
 
             <!-- DropDown: BLOCK THIS CONTACT -->
@@ -211,7 +217,9 @@ export default {
                 width="20"
                 height="20"
               />
-              <span class="mx-4 font-medium">Block This Contact</span>
+              <span class="mx-4 font-medium">{{
+                translations && translations.block_this_contact
+              }}</span>
             </button>
 
             <!-- DropDown: FOLLOW CONTACT -->
@@ -224,7 +232,9 @@ export default {
                 width="20"
                 height="20"
               />
-              <span class="mx-4 font-medium">Follow Contact</span>
+              <span class="mx-4 font-medium">{{
+                translations && translations.follow_contact
+              }}</span>
             </Link>
 
             <!-- DropDown: UN-FOLLOW -->
@@ -237,7 +247,9 @@ export default {
                 width="20"
                 height="20"
               />
-              <span class="mx-4 font-medium">Un-Follow Contact</span>
+              <span class="mx-4 font-medium">{{
+                translations && translations.un_follow_contact
+              }}</span>
             </Link>
           </div>
         </div>
@@ -257,15 +269,15 @@ export default {
         :disabled="loadingBlockContact"
         errorIcon
         dialogWidth="max-h-[70vh] width50"
-        title="Are you sure about Blocking this Contact? "
+        :title="
+          translations && translations.are_you_sure_about_blocking_this_contact
+        "
       >
         <div class="">
           <div
             class="section_text-lg font-bold sm:pl-6 section_text-gray-800 mt-3 mb-2"
           >
-            Activate 'Hide Posts' to stop seeing updates from this user, keeping
-            your feed tailored to your preferences.You can also unblock this
-            user from your settings.
+            {{ translations && translations.activate_hide_posts }}
           </div>
         </div>
       </CustomDialog>
@@ -274,7 +286,7 @@ export default {
     <!-- Delete post -->
     <teleport to="body">
       <CustomDialog
-        submitText="Delete"
+        :submitText="translations && translations.delete"
         :disableOutSideClick="true"
         @submit="handleSubmitDelete"
         ref="deleteDialogRef"
@@ -282,15 +294,13 @@ export default {
         :disabled="loadingDelete"
         errorIcon
         dialogWidth="max-h-[70vh] width50"
-        title="Are you sure? "
+        :title="translations && translations.are_you_sure"
       >
         <div class="">
           <div
             class="section_text-lg font-bold sm:pl-6 section_text-gray-800 mt-3 mb-2"
           >
-            Please confirm if you wish to proceed with the deletion of this
-            post. Be advised that this action is irreversible and the post will
-            be permanently removed.
+            {{ translations && translations.please_confirm_deletion }}
           </div>
         </div>
       </CustomDialog>

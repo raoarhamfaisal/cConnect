@@ -80,7 +80,7 @@
 
       <PricingCard
         v-if="subscribedPlan === 'monthly'"
-        plan="ANNUAL"
+        :plan="translations && translations.annual_cap"
         :coupon="coupon"
         :couponDiscount="
           coupon && coupon.percentage_off_regular_price
@@ -95,7 +95,7 @@
       />
       <PricingCardForAnnualGold
         v-if="subscribedPlan === 'annual'"
-        plan="ANNUAL"
+        :plan="translations && translations.annual_cap"
         :billing_start_date="billing_start_date"
         :annualPaid="annualPaid"
         :coupon="coupon"
@@ -192,6 +192,7 @@ import DialogUpgradeSubscription from "@/Components/Pricing/DialogUpgradeSubscri
 import { Inertia } from "@inertiajs/inertia";
 import { computed, onMounted, reactive, ref, watch } from "vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
+import { useStore } from "vuex";
 
 const props = defineProps({
   region_id: {
@@ -228,6 +229,8 @@ const loadingConfirmPayment = ref(false);
 const selectedPlan = ref("");
 const priceToBePaid = ref(0);
 const confirmSubscriptionDialogRef = ref(null);
+const store = useStore();
+const translations = computed(() => store.getters.translations);
 
 const form = reactive({
   coupon_code: "",

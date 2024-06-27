@@ -152,7 +152,9 @@ const handleCancelSubscription = async () => {
       getAxiosConfig()
     );
     if (response.data) {
-      changesSaved("Cancellation Request Recieved");
+      changesSaved(
+        translations.value && translations.value.cancellation_request_received
+      );
       cancelSubscriptionDialogRef.value.closeDialog();
     }
   } catch (err) {
@@ -303,7 +305,11 @@ const fetchPaymentHistoryDetails = async () => {
                 >
                   <div class="flex flex-col items-center justify-center">
                     <h2 class="text-xl sm:text-2xl font-bold mb-2">
-                      {{ planType === "monthly" ? "MONTHLY" : "ANNUAL" }}
+                      {{
+                        planType === "monthly"
+                          ? "MONTHLY"
+                          : translations && translations.annual_cap
+                      }}
                     </h2>
                     <div
                       class="price-tag bg-white w-40 h-40 sm:w-40 sm:h-40 border-2 rounded-full flex items-center justify-center"
@@ -331,7 +337,9 @@ const fetchPaymentHistoryDetails = async () => {
                           <p>
                             <strong>
                               {{
-                                planType === "monthly" ? "Monthly" : "Annually"
+                                planType === "monthly"
+                                  ? "Monthly"
+                                  : translations && translations.annually
                               }}</strong
                             >
                           </p>
@@ -342,7 +350,11 @@ const fetchPaymentHistoryDetails = async () => {
                       <div class="flex justify-between">
                         <div class="flex items-center justify-center mb-2">
                           <Icon icon="mdi:cash-register" class="w-5 h-5 mr-2" />
-                          <p><strong>Sales Tax</strong></p>
+                          <p>
+                            <strong>{{
+                              translations && translations.sales_tax
+                            }}</strong>
+                          </p>
                         </div>
                         <div>{{ pricingPlan.sales_tax }}%</div>
                       </div>

@@ -156,6 +156,7 @@ export default {
       "pusherCommentPosted",
     ]),
     ...mapGetters("ratings", ["comment"]),
+    ...mapGetters(["translations"]),
     firstTwoComments() {
       return this.allComments.slice(0, 2);
     },
@@ -859,7 +860,7 @@ export default {
     dialogWidth="w-full h-full sm:h-5/6"
     @opened="onLikeModalOpen"
     :showFooter="false"
-    title="People who liked the post"
+    :title="translations && translations.people_who_liked_the_post"
   >
     <div v-if="loadingLiked">
       <v-skeleton-loader
@@ -880,11 +881,11 @@ export default {
       />
     </div>
 
-    <div v-else>
+    <div v-else class="h-full">
       <div
-        class="p-2 text-xl text-grey-600 font-bold h-72 flex items-center justify-center"
+        class="p-2 text-xl text-grey-600 font-bold h-full flex items-center justify-center"
       >
-        No Contractor Found
+        {{ translations && translations.no_contractor_found }}
       </div>
     </div>
   </CustomDialog>
@@ -894,7 +895,7 @@ export default {
     dialogWidth="w-full h-full sm:h-5/6"
     @opened="onDislikeModalOpen"
     :showFooter="false"
-    title="People who disliked the post"
+    :title="translations && translations.people_who_disliked_the_post"
   >
     <div v-if="loadingUnliked">
       <v-skeleton-loader
@@ -913,11 +914,11 @@ export default {
         :user="user"
       />
     </div>
-    <div v-else>
+    <div v-else class="h-full">
       <div
-        class="p-2 text-xl text-grey-600 font-bold h-72 flex items-center justify-center"
+        class="p-2 text-xl text-grey-600 font-bold h-full flex items-center justify-center"
       >
-        No Contractor Found
+        {{ translations && translations.no_contractor_found }}
       </div>
     </div>
   </CustomDialog>
@@ -929,15 +930,16 @@ export default {
     :disabled="loadingRepost"
     :shouldFetchPost="false"
     submitText="Repost Now"
-    title="Do you wish to share this post with your audience?"
+    :title="translations && translations.do_you_wish_to_share_this_post"
   >
     <!-- :showHeader="false" -->
     <div class="mb-4">
       <div class="section_text-lg font-bold section_text-gray-800 mt-3 mb-2">
-        Reposting allows you to share this post with your followers, spreading
-        the message further.
+        {{ translations && translations.reposting_allows_you_to_share }}
       </div>
-      <div class="text-md font-bold text-gray-600 mt-3 mb-2">Comment Text</div>
+      <div class="text-md font-bold text-gray-600 mt-3 mb-2">
+        {{ translations && translations.comment_text }}
+      </div>
       <textarea
         id="responseText"
         type="text"
@@ -949,7 +951,7 @@ export default {
         @keydown="insertTab"
         @input="adjustHeight"
         @paste="adjustHeight"
-        placeholder="Write a Comment..."
+        :placeholder="translations && translations.write_a_comment"
       />
       <InputError
         v-if="commentTextError"

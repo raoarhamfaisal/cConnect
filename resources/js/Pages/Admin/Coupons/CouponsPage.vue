@@ -253,7 +253,10 @@
           class="mt-6 space-y-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-4"
         >
           <div>
-            <InputLabel class="font-bold mb-1" value="Region*" />
+            <InputLabel
+              class="font-bold mb-1"
+              :value="translations && translations.region + '*'"
+            />
             <SelectProfile
               :options="referenceList"
               :modelValue="selectedReferal"
@@ -370,7 +373,7 @@
             id="notes"
             v-model="singleCoupon.notes"
             style="height: 10.4rem; border: 1px solid grey"
-            placeholder="Type your Notes"
+            :placeholder="translations && translations.type_your_notes"
             class="text-sm w-full py-1 px-3 focus:shadow-none focus:ring-gray-600 focus:rounded font-semibold text-grey-600 border-none resize-none bg-transparent rounded"
           ></textarea>
         </div>
@@ -429,7 +432,7 @@
               ref="adminTextAreaRef"
               style="height: 10.4rem; border: 1px solid grey"
               @keydown="saveNotes"
-              placeholder="Type your Notes"
+              :placeholder="translations && translations.type_your_notes"
               class="text-sm w-full py-1 px-3 focus:shadow-none focus:ring-gray-600 focus:rounded text-grey-600 border-none resize-none bg-transparent rounded"
               :rows="numberOfRows"
             ></textarea>
@@ -605,7 +608,7 @@ onBeforeMount(() => {
 const regions = computed(() => store.state.ratings.allRegions);
 const loadingRegions = computed(() => store.state.ratings.loading);
 const screenWidth = computed(() => store.getters.screenWidth);
-
+const translations = computed(() => store.getters.translations);
 const numberOfRows = computed(() => {
   if (!note.value) return 1; // if there's no content, return a default row number
   const charsPerLine = 90;

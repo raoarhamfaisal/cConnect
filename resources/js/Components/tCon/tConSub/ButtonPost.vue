@@ -1,4 +1,5 @@
 <script>
+import { mapGetters } from "vuex";
 // import { InertiaLink } from "@inertiajs/inertia-vue3";
 // import { Link, useForm } from '@inertiajs/inertia-vue3';
 
@@ -14,6 +15,9 @@ export default {
       isOpen: true, this.$emit("postClicked", this.isOpen);
     },
   },
+  computed: {
+    ...mapGetters(["translations"]),
+  },
 };
 </script>
 
@@ -26,6 +30,6 @@ export default {
       src="/images/icons/post_b.png"
       class="w-5 h-5 x350:w-[23px] x350:h-[23px]"
     />
-    <span class="mx-1">Post</span>
+    <span class="mx-1">{{ translations && translations.post }}</span>
   </button>
 </template>

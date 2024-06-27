@@ -1,8 +1,14 @@
 <script setup>
 import { InertiaLink } from "@inertiajs/inertia-vue3";
+import { computed } from "vue";
+import { useStore } from "vuex";
 
 const emit = defineEmits(["RefreshPostings"]);
+const store = useStore();
 
+//Computed
+
+const translations = computed(() => store.getters.translations);
 const RefreshPostings = () => {
   console.log("in the referesh");
   window.location = window.location.origin + window.location.pathname;
@@ -26,6 +32,6 @@ const RefreshPostings = () => {
     class="hidden xs:flex flex-shrink-0 items-center justify-center mt-0 mx-auto px-2 py-1 font-bold text-lg tracking-tight sm:tracking-wide text-white capitalize transition-colors duration-300 transform bg-green-600 rounded-lg hover:bg-green-800 focus:outline-none focus:ring focus:ring-green-300 focus:ring-opacity-80"
   >
     <img src="/images/icons/refresh.png" width="23" height="23" />
-    <span class="mx-1">Refresh</span>
+    <span class="mx-1">{{ translations && translations.refresh }}</span>
   </button>
 </template>

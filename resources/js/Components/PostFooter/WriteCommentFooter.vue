@@ -16,7 +16,7 @@
         @keydown="insertTab"
         @input="adjustHeight"
         :rows="1"
-        placeholder="Write a comment..."
+        :placeholder="translations && translations.write_a_comment"
         class="text-xl w-full py-1 min-h-[40px] overflow-hidden px-3 focus:shadow-none focus:ring-gray-600 focus:rounded bg-[#f9fafb] border-gray-400 text-grey-600 resize-none rounded focus-within:ring-gray-600 focus:border-gray-600"
       ></textarea>
       <Icon
@@ -43,7 +43,9 @@
       bgColor="#364fc7"
       :padding="screenWidth < 640 ? '7px' : '10px'"
     >
-      <div class="text-white">Uploading Comment...</div>
+      <div class="text-white">
+        {{ translations && translations.uploading }} Comment...
+      </div>
       <v-progress-linear
         indeterminate
         color="#fff"
@@ -89,6 +91,7 @@ const loadingSendComment = ref(false);
 
 //Computed
 const screenWidth = computed(() => store.getters.screenWidth);
+const translations = computed(() => store.getters.translations);
 
 onMounted(() => {
   if (screenWidth.value > 640) {

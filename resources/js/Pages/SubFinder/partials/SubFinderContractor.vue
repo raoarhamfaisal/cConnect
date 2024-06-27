@@ -160,12 +160,12 @@
                 </button>
 
                 <div :class="`cursor-pointer hover:underline text-sm`">
-                  Contractor's Postings
+                  {{ translations && translations.contractors_postings }}
                 </div>
               </div>
             </div>
             <label for="notes" class="text-base text-gray-700 font-semibold">
-              My Notes
+              {{ translations && translations.my_notes }}
             </label>
           </div>
           <!-- social and postings -->
@@ -284,7 +284,7 @@
               </button>
 
               <div :class="`cursor-pointer hover:underline text-sm`">
-                Contractor's Postings
+                {{ translations && translations.contractors_postings }}
               </div>
             </div>
           </div>
@@ -298,7 +298,7 @@
           @blur="stopTyping"
           @keydown="insertTab"
           @input="saveNotes"
-          placeholder="Type your Notes"
+          :placeholder="translations && translations.type_your_notes"
           class="text-sm w-full py-1 min-h-[100px] overflow-y-hidden px-3 focus:shadow-none focus:ring-gray-600 focus:rounded bg-[#f9fafb] border-gray-200 text-grey-600 resize-none rounded focus-within:ring-gray-600 focus:border-gray-600"
         ></textarea>
       </div>
@@ -324,7 +324,6 @@
     ref="postDialogRef"
     :contractorId="contractor.user_id"
   />
-  
 </template>
 
 <script setup>
@@ -391,9 +390,9 @@ const tradesPost = reactive({
 });
 
 const screenWidth = computed(() => store.getters.screenWidth);
+const translations = computed(() => store.getters.translations);
 
 // methods
-
 
 const stopTyping = () => {
   isTyping.value = false;
@@ -407,13 +406,14 @@ const adjustHeight = () => {
   });
 };
 const insertTab = (event) => {
-  if (event.key === 'Tab') {
+  if (event.key === "Tab") {
     event.preventDefault();
     const start = event.target.selectionStart;
     const end = event.target.selectionEnd;
 
     // Set the value to: text before caret + four spaces + text after caret
-    note.value = note.value.substring(0, start) + '      ' + note.value.substring(end);
+    note.value =
+      note.value.substring(0, start) + "      " + note.value.substring(end);
 
     // Put caret at right position again
     nextTick(() => {

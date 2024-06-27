@@ -25,7 +25,7 @@
               padding: '5px 10px',
             }"
             class="w-full text-lg text-gray-600 font-semibold text-left rounded-lg"
-            >Write Your Response</Button
+            >{{ translations && translations.write_your_response }}</Button
           >
           <transition name="accordion">
             <div class="mb-4 mt-3" v-if="showResponseArea">
@@ -40,7 +40,9 @@
                 @keydown="insertTab"
                 @input="adjustHeight"
                 @paste="adjustHeight"
-                placeholder="Type your response text"
+                :placeholder="
+                  translations && translations.type_your_response_text
+                "
               />
               <InputError
                 v-if="responseError"
@@ -128,6 +130,7 @@ const emit = defineEmits(["responseAdded"]);
 //Computed
 
 const screenWidth = computed(() => store.getters.screenWidth);
+const translations = computed(() => store.getters.translations);
 
 //Watch
 
@@ -146,13 +149,9 @@ watch(
 );
 watch(
   () => showResponseArea.value,
-  () => {
-    
-  }
+  () => {}
 );
 //Methods
-
-
 
 const validateResponse = () => {
   let isValid = true;

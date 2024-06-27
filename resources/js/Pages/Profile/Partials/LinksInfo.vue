@@ -2,12 +2,15 @@
 import InputLabel from "@/Components/InputLabel.vue";
 import InputError from "@/Components/InputError.vue";
 import InputIcon from "@/Components/InputIcon.vue";
-import { watch } from "vue";
+import { computed, watch } from "vue";
+import { useStore } from "vuex";
 
 const props = defineProps({
   form: Object,
   errors: Object,
 });
+const store = useStore();
+const translations = computed(() => store.getters.translations);
 
 //Emits
 const emit = defineEmits(["update:form", "clearErrors"]);
@@ -32,11 +35,10 @@ const clearError = (field) => {
     <header class="flex space-x-2">
       <div>
         <h2 class="text-lg font-medium font-bold text-gray-900">
-          Submit Your Links
+          {{ translations && translations.submit_your_links }}
         </h2>
         <p class="mt-1 text-sm text-gray-600">
-          Please enter the relevant links for the following platforms. This
-          helps us to better understand and connect with your online presence.
+          {{ translations && translations.please_enter_the_relevant_links }}
         </p>
       </div>
     </header>
@@ -52,7 +54,7 @@ const clearError = (field) => {
           <InputLabel
             class="font-bold"
             for="website_url"
-            value="Personal / Company Website"
+            :value="translations && translations.personal_company_website"
           />
           <input-icon
             id="website_url"
@@ -61,7 +63,7 @@ const clearError = (field) => {
             color="#241e6d"
             v-model="form.website_url"
             @input="clearError('website_url')"
-            placeholder="Type your Website URL"
+            :placeholder="translations && translations.type_your_website_url"
           />
           <InputError class="mt-2" :message="errors.website_url" />
         </div>

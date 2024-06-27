@@ -2,7 +2,7 @@
   <!-- edit dialog -->
   <Teleport to="body">
     <CustomDialog
-      submitText="Update"
+      :submitText="translations && translations.update"
       @submit="handleSubmit"
       ref="dialogRef"
       @opened="onOpened"
@@ -24,7 +24,7 @@
             @keydown="insertTab"
             @input="adjustHeight"
             @paste="adjustHeight"
-            placeholder="Type your response text"
+            :placeholder="translations && translations.type_your_response_text"
           />
           <InputError
             v-if="responseError"
@@ -49,7 +49,8 @@
       :padding="screenWidth < 640 ? '7px' : '10px'"
     >
       <div class="text-white">
-        Updating {{ isReply ? "Reply" : "Comment" }}...
+        {{ translations && translations.updating }}
+        {{ isReply ? "Reply" : "Comment" }}...
       </div>
       <v-progress-linear
         indeterminate
@@ -89,6 +90,7 @@ const responseError = ref("");
 const loadingSending = computed(() => store.state.ratings.loadingSending);
 const disabledSending = computed(() => store.state.ratings.disabledSending);
 const loadingComment = computed(() => store.state.ratings.loadingComment);
+const translations = computed(() => store.state.ratings.translations);
 
 //Watch
 

@@ -6,11 +6,10 @@
   >
     <!-- Accordion header -->
     <div
-      class="redFlag-item flex justify-start items-center "
-      
+      class="redFlag-item flex justify-start items-center"
       v-show="!isAccordionOpen"
     >
-      <div class="w-[65px] sm:w-[50px] cursor-pointer"   @click="toggleAccordion">
+      <div class="w-[65px] sm:w-[50px] cursor-pointer" @click="toggleAccordion">
         <Icon
           :icon="'clarity:eye-show-line'"
           class="w-7 h-7 transition-transform duration-500 mx-auto"
@@ -26,8 +25,12 @@
           <template v-slot:activator="{ props }">
             <div v-bind="props" class="text-sm font-medium">
               {{
-                redFlag.name_of_the_contractor_or_customer && redFlag.name_of_the_contractor_or_customer.length > 25
-                  ? redFlag.name_of_the_contractor_or_customer?.substring(0, 25) + "..."
+                redFlag.name_of_the_contractor_or_customer &&
+                redFlag.name_of_the_contractor_or_customer.length > 25
+                  ? redFlag.name_of_the_contractor_or_customer?.substring(
+                      0,
+                      25
+                    ) + "..."
                   : redFlag.name_of_the_contractor_or_customer
               }}
             </div>
@@ -118,11 +121,11 @@
           <div>
             <div class="flex gap-1">
               <div>
-                {{ redFlag.profile.first_name + " "+ redFlag.profile.last_name }}
+                {{
+                  redFlag.profile.first_name + " " + redFlag.profile.last_name
+                }}
               </div>
-              <div>
-                {{ redFlag.profile.city }}, {{ redFlag.profile.state }}
-              </div>
+              <div>{{ redFlag.profile.city }}, {{ redFlag.profile.state }}</div>
             </div>
           </div>
           <div>
@@ -136,15 +139,21 @@
           <div v-if="screenWidth >= 640" class="w-[31%] text-sm">
             <div class="flex sm:flex-col">
               <div>
-                {{ redFlag.profile.first_name + " "+ redFlag.profile.last_name }}
+                {{
+                  redFlag.profile.first_name + " " + redFlag.profile.last_name
+                }}
               </div>
-              <div>
-                {{ redFlag.profile.city }}, {{ redFlag.profile.state }}
-              </div>
+              <div>{{ redFlag.profile.city }}, {{ redFlag.profile.state }}</div>
             </div>
           </div>
           <!-- complaint text -->
-          <div :class="`${+profileId === +redFlag.profile_id ? 'w-[80%] sm:w-[54%]': 'w-full sm:w-[69%]'} text-center text-sm`">
+          <div
+            :class="`${
+              +profileId === +redFlag.profile_id
+                ? 'w-[80%] sm:w-[54%]'
+                : 'w-full sm:w-[69%]'
+            } text-center text-sm`"
+          >
             <textarea
               id="notes"
               ref="redFlagComplaintTextRef"
@@ -153,14 +162,17 @@
               @paste="adjustHeight"
               @blur="stopTyping"
               @input="saveRedFlagComplaint"
-              placeholder="Type your Notes"
+               :placeholder="translations && translations.type_your_notes"
               class="text-sm w-full py-1 min-h-[100px] overflow-y-hidden px-3 focus:shadow-none focus:ring-gray-600 focus:rounded bg-[#f9fafb] border-gray-200 text-grey-600 resize-none rounded focus-within:ring-gray-600 focus:border-gray-600"
             ></textarea>
           </div>
           <!-- complaint buttons -->
-        
-          <div class="w-[20%] sm:w-[15%] text-sm text-center" v-if="+profileId === +redFlag.profile_id">
-            <div class="flex flex-col justify-start items-center" >
+
+          <div
+            class="w-[20%] sm:w-[15%] text-sm text-center"
+            v-if="+profileId === +redFlag.profile_id"
+          >
+            <div class="flex flex-col justify-start items-center">
               <Icon
                 @click="focusTextarea"
                 icon="nimbus:edit"
@@ -180,7 +192,7 @@
   </div>
 
   <CustomDialog
-    submitText="Delete"
+    :submitText="translations && translations.delete"
     :disableOutSideClick="true"
     @submit="onSubmitDeleteComplaint"
     ref="deleteDialogRef"
@@ -188,13 +200,13 @@
     :loading="loadingAcceptDelete"
     :disabled="loadingAcceptDelete"
     dialogWidth="max-h-[70vh] width50"
-    title="Are you sure? "
+    :title="translations && translations.are_you_sure"
   >
     <div class="mb-4">
       <div
         class="section_text-lg font-bold pl-6 section_text-gray-800 mt-3 mb-2"
       >
-        Do you want to remove this red flag ?
+        {{translations && translations.do_you_want_to_remove_this_red_flag}} ?
       </div>
     </div>
   </CustomDialog>
@@ -207,7 +219,11 @@ import { ref, watch, computed, nextTick } from "vue";
 import { Icon } from "@iconify/vue";
 import { useStore } from "vuex";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
-import { changesSaved, convertDateFormatWith2DigitsYear, filterBadWordsWithoutValue } from "@/helpers/utilities";
+import {
+  changesSaved,
+  convertDateFormatWith2DigitsYear,
+  filterBadWordsWithoutValue,
+} from "@/helpers/utilities";
 import { usePage } from "@inertiajs/inertia-vue3";
 
 const props = defineProps({
@@ -226,7 +242,7 @@ const props = defineProps({
 let usePageDeatails = usePage().props.value;
 const profileId = usePageDeatails?.profile.id;
 const store = useStore();
-const emit = defineEmits(["accordion-toggled","removeFlag"]);
+const emit = defineEmits(["accordion-toggled", "removeFlag"]);
 
 const isAccordionOpen = ref(false);
 
@@ -242,6 +258,7 @@ const getRegionName = (regionId) => {
 
 //Computed
 const screenWidth = computed(() => store.getters.screenWidth);
+const translations = computed(() => store.getters.translations);
 
 // Ensure the accordion recalculates its height when window resizes
 watch(
@@ -296,13 +313,18 @@ const saveRedFlagComplaint = () => {
 
   // Start a new timer
   saveTimeout = setTimeout(async () => {
-    const {region_id,name_of_the_contractor_or_customer,is_contractor_or_customer}= props.redFlag
-    const updatedRedFlag  = {
+    const {
+      region_id,
+      name_of_the_contractor_or_customer,
+      is_contractor_or_customer,
+    } = props.redFlag;
+    const updatedRedFlag = {
       complaint: redFlagComplaintText.value
         ? filterBadWordsWithoutValue(redFlagComplaintText.value)
         : redFlagComplaintText.value,
-region_id,name_of_the_contractor_or_customer,is_contractor_or_customer
-
+      region_id,
+      name_of_the_contractor_or_customer,
+      is_contractor_or_customer,
     };
     console.log(redFlagComplaintText.value, "selectedNote");
     try {
@@ -345,8 +367,7 @@ const onSubmitDeleteComplaint = async () => {
       changesSaved(
         response.data.message || "Cancel request successfully accepted"
       );
-     emit('removeFlag',props.redFlag.id)
-  
+      emit("removeFlag", props.redFlag.id);
     }
   } catch (err) {
     console.log(err);

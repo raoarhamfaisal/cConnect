@@ -90,7 +90,7 @@ const handleLogout = () => {
                     </DropdownLink>
 
                     <DropdownLink :href="route('profile.edit')">
-                      Profile
+                      {{ translations && translations.profile }}
                     </DropdownLink>
                     <DropdownLink
                       method="post"
@@ -179,7 +179,7 @@ const handleLogout = () => {
 
             <div class="mt-3 space-y-1">
               <ResponsiveNavLink :href="route('profile.edit')">
-                Profile
+                {{ translations && translations.profile }}
               </ResponsiveNavLink>
               <ResponsiveNavLink
                 @click="handleLogout"

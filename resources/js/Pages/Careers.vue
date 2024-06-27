@@ -27,45 +27,44 @@ const translations = computed(() => store.getters.translations);
     <div class="bg-gray-100 min-h-screen p-3 sm:p-5 max-sm:rounded">
       <div class="mb-3 sm:mb-6">
         <Link href="/" class="text-blue-500 hover:underline"
-          >← Back to Main Page</Link
+          >← {{ translations && translations.back_to_main_page }}</Link
         >
       </div>
       <h1 class="text-4xl font-bold mb-3 sm:mb-6">
-        Join Our Network of Contractors
+        {{ translations && translations.join_our_network_of_contractors }}
       </h1>
       <p class="text-lg mb-3 sm:mb-6">
-        At tcontractor.com, we're building a community where contractors help
-        each other succeed. Whether you're looking to hire, seek guidance, or
-        find new opportunities, you’re in the right place.
+        {{ translations && translations.building_community_at_tcontractor }}
       </p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Card 1 -->
         <div class="bg-white p-6 rounded-lg shadow-lg">
-          <h2 class="text-2xl font-semibold mb-3">Hire Talented Contractors</h2>
+          <h2 class="text-2xl font-semibold mb-3">
+            {{ translations && translations.hire_talented_contractors }}
+          </h2>
           <p class="text-gray-700">
-            Find skilled professionals and grow your projects. Navigate through
-            our vast network of contractors to hire experienced individuals in
-            various fields.
+            {{ translations && translations.find_skilled_professionals }}
           </p>
         </div>
 
         <!-- Card 2 -->
         <div class="bg-white p-6 rounded-lg shadow-lg">
-          <h2 class="text-2xl font-semibold mb-3">Find Work Opportunities</h2>
+          <h2 class="text-2xl font-semibold mb-3">
+            {{ translations && translations.find_work_opportunities }}
+          </h2>
           <p class="text-gray-700">
-            Explore new work opportunities and collaborate on exciting projects.
-            Our platform connects you with contractors looking for your
-            expertise.
+            {{ translations && translations.explore_new_work_opportunities }}
           </p>
         </div>
 
         <!-- Card 3 -->
         <div class="bg-white p-6 rounded-lg shadow-lg">
-          <h2 class="text-2xl font-semibold mb-3">Offer and Receive Help</h2>
+          <h2 class="text-2xl font-semibold mb-3">
+            {{ translations && translations.offer_and_receive_help }}
+          </h2>
           <p class="text-gray-700">
-            Engage in a give-and-take of valuable industry insights. Support
-            other contractors and find assistance when you need it.
+            {{ translations && translations.engage_in_give_and_take }}
           </p>
         </div>
 
@@ -79,23 +78,21 @@ const translations = computed(() => store.getters.translations);
           </p>
         </div> -->
         <div class="bg-white p-6 rounded-lg shadow-lg">
-          <h2 class="text-2xl font-semibold mb-3">Spot Red Flag Customers</h2>
+          <h2 class="text-2xl font-semibold mb-3">
+            {{ translations && translations.spot_red_flag_customers }}
+          </h2>
           <p class="text-gray-700">
-            Easily identify difficult customers through our red flag system.
-            Learn from others' experiences to ensure a smooth workflow and avoid
-            potential pitfalls.
+            {{ translations && translations.identify_difficult_customers }}
           </p>
         </div>
 
         <!-- Card 6 -->
         <div class="bg-white p-6 rounded-lg shadow-lg">
           <h2 class="text-2xl font-semibold mb-3">
-            Stay Updated with News Feed
+            {{ translations && translations.stay_updated_with_news_feed }}
           </h2>
           <p class="text-gray-700">
-            Keep yourself informed about the latest opportunities, trends, and
-            community updates. Be the first to know and stay ahead of the
-            competition.
+            {{ translations && translations.keep_yourself_informed }}
           </p>
         </div>
       </div>

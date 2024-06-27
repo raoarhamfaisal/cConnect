@@ -25,14 +25,6 @@
           </div>
         </transition-group>
       </div>
-
-      <!-- if no Comment -->
-      <!-- <div
-        v-if="comments && comments.length === 0"
-        class="p-2 text-xl text-grey-600 font-bold h-full flex items-center justify-center"
-      >
-        No Comments Yet
-      </div> -->
       <div
         v-if="+currentPage !== +pagination.last_page"
         ref="loadMoreIntersect"
@@ -46,7 +38,7 @@
         "
         class="text-center font-bold mt-4"
       >
-        No More Comments to Load
+        {{ translations && translations.no_comments_yet }}
       </div>
       <Loader
         classes="flex gap-2"
@@ -108,6 +100,7 @@ const loading = ref(false);
 
 //Computed
 const commentId = computed(() => store.state.profile.commentId);
+const translations = computed(() => store.state.profile.translations);
 
 watch(
   () => props.modelValue,

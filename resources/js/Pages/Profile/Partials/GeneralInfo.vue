@@ -80,13 +80,15 @@ const clearError = (field) => {
     <header class="flex space-x-2">
       <div>
         <h2 class="text-lg font-medium font-bold text-gray-900">
-          General Information
+          {{ translations && translations.general_information }}
         </h2>
         <p class="mt-1 text-sm text-gray-600">
           {{
             mode === "profile"
-              ? "Update your account's General Information."
-              : "Provide your account's General Information to get started"
+              ? translations &&
+                translations.update_your_accounts_general_information
+              : translations &&
+                translations.provide_your_accounts_general_information_to_get_started
           }}
         </p>
       </div>
@@ -128,14 +130,18 @@ const clearError = (field) => {
         </div>
         <div></div>
         <div>
-          <InputLabel class="font-bold" for="first_name" value="First Name*" />
+          <InputLabel
+            class="font-bold"
+            for="first_name"
+            :value="translations && translations.first_name + '*'"
+          />
           <TextInput
             id="first_name"
             type="text"
             class="mt-1 block w-full"
             required
             v-model="form.first_name"
-            placeholder="Type your first name"
+            :placeholder="translations && translations.type_your_first_name"
             @input="clearError('first_name')"
             autocomplete="given-name"
           />
@@ -143,14 +149,18 @@ const clearError = (field) => {
         </div>
 
         <div>
-          <InputLabel class="font-bold" for="last_name" value="Last Name*" />
+          <InputLabel
+            class="font-bold"
+            for="last_name"
+            :value="translations && translations.last_name + '*'"
+          />
           <TextInput
             class="mt-1 block w-full"
             id="last_name"
             type="text"
             v-model="form.last_name"
             required
-            placeholder="Type your last name"
+            :placeholder="translations && translations.type_your_last_name"
             @input="clearError('last_name')"
             autocomplete="family-name"
           />
@@ -158,7 +168,11 @@ const clearError = (field) => {
         </div>
 
         <div>
-          <InputLabel class="font-bold" for="phone_cell" value="Phone Cell*" />
+          <InputLabel
+            class="font-bold"
+            for="phone_cell"
+            :value="translations && translations.phone_cell + '*'"
+          />
           <TextInput
             class="mt-1 block w-full"
             id="phone_cell"
@@ -167,7 +181,7 @@ const clearError = (field) => {
             required
             @input="clearError('phone_cell')"
             autocomplete="phone_cell"
-            placeholder="Type your phone number"
+            :placeholder="translations && translations.type_your_phone_number"
             v-mask="'###-###-#####'"
           />
           <!-- placeholder="###-###-####" -->

@@ -11,7 +11,7 @@
       style="text-align: left; font-weight: bold; color: white"
     >
       <div class="flex gap-2 justify-start items-center">
-        <div>Customer Name</div>
+        <div>{{ translations && translations.customer_name }}</div>
 
         <div class="flex flex-col">
           <Icon
@@ -38,7 +38,7 @@
         padding-left: 20px;
       "
     >
-      Complaint
+      {{ translations && translations.complaint }}
     </div>
     <div
       :class="` w-[20%] header-cell`"
@@ -50,15 +50,13 @@
 
         <div class="flex flex-col">
           <Icon
-          @click="emitSortEvent('region_id', 'asc')"
-
+            @click="emitSortEvent('region_id', 'asc')"
             icon="el:caret-up"
             class="inline-block cursor-pointer w-3 h-3"
           ></Icon>
           <Icon
             icon="el:caret-up"
-          @click="emitSortEvent('region_id', 'desc')"
-
+            @click="emitSortEvent('region_id', 'desc')"
             class="inline-block cursor-pointer w-3 h-3"
             :rotate="2"
           ></Icon>
@@ -75,14 +73,12 @@
         <div class="flex flex-col">
           <Icon
             icon="el:caret-up"
-          @click="emitSortEvent('updated_at', 'asc')"
-
+            @click="emitSortEvent('updated_at', 'asc')"
             class="inline-block cursor-pointer w-3 h-3"
           ></Icon>
           <Icon
             icon="el:caret-up"
-          @click="emitSortEvent('updated_at', 'desc')"
-
+            @click="emitSortEvent('updated_at', 'desc')"
             class="inline-block cursor-pointer w-3 h-3"
             :rotate="2"
           ></Icon>
@@ -98,15 +94,15 @@ import { computed } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
-const emit = defineEmits(['sortChanged']);
+const emit = defineEmits(["sortChanged"]);
 
 //Computed
 const screenWidth = computed(() => store.getters.screenWidth);
+const translations = computed(() => store.getters.translations);
 
 const emitSortEvent = (sortField, sortOrder) => {
-  emit('sortChanged', { sortField, sortOrder });
+  emit("sortChanged", { sortField, sortOrder });
 };
-
 </script>
 
 <style scoped>

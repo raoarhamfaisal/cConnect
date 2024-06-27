@@ -35,7 +35,10 @@
           />
           <!-- Filters -->
           <div class="border-t-2 border-gray-300">
-            <heading-card class="mt-4" heading="Order Reviews By" />
+            <heading-card
+              class="mt-4"
+              :heading="translations && translations.order_reviews_by"
+            />
             <div class="mb-6">
               <div class="flex gap-3 flex-wrap">
                 <Button
@@ -43,7 +46,7 @@
                   @onSelect="
                     (selected) => handleFilterSelect(selected, 'latest')
                   "
-                  >Latest</Button
+                  >{{ translations && translations.latest }}</Button
                 >
 
                 <Button
@@ -51,14 +54,14 @@
                   @onSelect="
                     (selected) => handleFilterSelect(selected, 'oldest')
                   "
-                  >Oldest</Button
+                  >{{ translations && translations.oldest }}</Button
                 >
                 <Button
                   :selected="sortBy === 'highest'"
                   @onSelect="
                     (selected) => handleFilterSelect(selected, 'highest')
                   "
-                  >Highest rated</Button
+                  >{{ translations && translations.highest_rated }}</Button
                 >
 
                 <Button
@@ -66,7 +69,7 @@
                   @onSelect="
                     (selected) => handleFilterSelect(selected, 'middle')
                   "
-                  >Middle Rated</Button
+                  >{{ translations && translations.middle_rated }}</Button
                 >
 
                 <Button
@@ -74,7 +77,7 @@
                   @onSelect="
                     (selected) => handleFilterSelect(selected, 'lowest')
                   "
-                  >Low Rated</Button
+                  >{{ translations && translations.low_rated }}</Button
                 >
               </div>
             </div>
@@ -99,7 +102,10 @@
               <div
                 class="p-2 text-xl text-grey-600 font-bold h-60 flex items-center justify-center"
               >
-                No reviews Available for this Contractor
+                {{
+                  translations &&
+                  translations.no_reviews_available_for_this_contractor
+                }}
               </div>
             </div>
           </div>
@@ -117,7 +123,7 @@
           "
           class="text-center font-bold"
         >
-          No More Reviews to Load
+          {{ translations && translations.no_more_reviews_to_load }}
         </div>
         <Loader
           classes="flex gap-2"
@@ -208,6 +214,7 @@ const updatedResponse = computed(() => store.state.ratings.updatedResponse);
 const screenWidth = computed(() => store.getters.screenWidth);
 const reviewId = computed(() => store.state.ratings.reviewId);
 const responseId = computed(() => store.state.ratings.responseId);
+const translations = computed(() => store.getters.translations);
 
 //Watch
 watch(updatedReview, (newVal) => {
