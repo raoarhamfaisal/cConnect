@@ -30,14 +30,14 @@ class CommentController extends Controller
             $userID = Auth::id(); // Get the current user ID
             $perPage = $request->query('per_page', 10); // Default to 10 if not provided
             $page = $request->query('page', 1);         // Default to page 1 if not provided
-        
+
             $comments = $post->comments()
                 ->with([
                     'replies' => function ($query) use ($userID) {
                         $query->withCount(['likes', 'dislikes'])
-                              ->with(['user.profile', 'reactions' => function ($q) use ($userID) {
-                                  $q->where('user_id', $userID);
-                              }]);
+                            ->with(['user.profile', 'reactions' => function ($q) use ($userID) {
+                                $q->where('user_id', $userID);
+                            }]);
                     },
                     'user.profile',
                     'reactions' => function ($query) use ($userID) {
@@ -48,21 +48,27 @@ class CommentController extends Controller
                 ->whereNull('parent_id')
                 ->latest()
                 ->paginate($perPage, ['*'], 'page', $page);
-        
+
+            $totalNumberOfCommentsWithReplies = 0;
+
             foreach ($comments as $comment) {
                 $this->addUserDetailsToComment($comment);
                 $comment->user_reaction = $comment->reactions->first()->type ?? null;
                 unset($comment->user); // Remove the additional user details
-        
+
+                // Add reply count to total count
+                $totalNumberOfCommentsWithReplies += 1 + $comment->replies->count();
+
                 foreach ($comment->replies as $reply) {
                     $this->addUserDetailsToComment($reply);
                     $reply->user_reaction = $reply->reactions->first()->type ?? null;
                     unset($reply->user); // Remove the additional user details
                 }
             }
-        
+
             return response()->json([
                 'comments' => $comments->items(),
+                'total_number_of_comments_with_replies' => $totalNumberOfCommentsWithReplies,
                 'pagination' => [
                     'current_page' => $comments->currentPage(),
                     'last_page' => $comments->lastPage(),
@@ -71,6 +77,7 @@ class CommentController extends Controller
                 ]
             ]);
         }
+
 
 
         public function getSingleComment(Request $request, $commentId)
@@ -333,6 +340,23 @@ class CommentController extends Controller
 
         
             return response()->json($reply, 201);
+        }
+
+
+        public function getCommentLikes(Comment $comment)
+        {
+            $likes = $comment->likes()->with('user.profile')->get()->map(function ($like) {
+                return $like->user->profile;
+            });
+            return response()->json($likes);
+        }
+
+        public function getCommentDislikes(Comment $comment)
+        {
+            $dislikes = $comment->dislikes()->with('user.profile')->get()->map(function ($dislike) {
+                return $dislike->user->profile;
+            });
+            return response()->json($dislikes);
         }
         
 
