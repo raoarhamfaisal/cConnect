@@ -213,7 +213,7 @@ const fetchPaymentHistoryDetails = async () => {
   >
     <Icon class="w-6 h-6" icon="ion:arrow-back" color="#241e6d" />
     <div class="font-bold text-xl text-blue-rgba leading-tight">
-      <div>Back</div>
+      <div>{{ translations && translations.back }}</div>
     </div>
   </div>
   <section>
@@ -221,7 +221,9 @@ const fetchPaymentHistoryDetails = async () => {
       class="flex max-sm:flex-col max-sm:gap-4 sm:justify-between sm;items-center"
     >
       <div>
-        <h2 class="text-2xl font-bold text-gray-900">Billing / Version</h2>
+        <h2 class="text-2xl font-bold text-gray-900">
+          {{ translations && translations.billing_version }}
+        </h2>
         <!-- <p class="mt-1 text-sm text-gray-600">
           The next billing will be made with selected payment method below
         </p> -->
@@ -234,14 +236,15 @@ const fetchPaymentHistoryDetails = async () => {
           pricingPlan.is_cancellation_requested
         "
       >
-        Under Cancellation
+        {{ translations && translations.under_cancellation }}
       </div>
 
       <div
         class="uppercase text-xl font-semibold text-blue-rgba"
         v-if="step !== 3"
       >
-        Current plan : <span class="font-extrabold">{{ userVersionText }}</span>
+        {{ translations && translations.current_plan }} :
+        <span class="font-extrabold">{{ userVersionText }}</span>
       </div>
     </header>
     <PricingVersions
@@ -274,19 +277,19 @@ const fetchPaymentHistoryDetails = async () => {
                 class="inline-block tex-center text-white py-2 w-full sm:w-2/3 font-bold uppercase px-4 rounded-lg hover:bg-teal-600 bg-teal-green transition transform duration-300 hover:shadow-lg active:scale-95 border-2"
                 @click="step = 2"
               >
-                Upgrade
+                {{ translations && translations.upgrade }}
               </button>
               <button
                 class="inline-block tex-center py-2 w-full sm:w-2/3 font-bold uppercase px-4 rounded-lg hover:bg-gray-200 border-2 border-gray-500 transition transform duration-300 hover:shadow-lg active:scale-95"
                 @click="onUpdatePaymentMethod"
               >
-                Update Payment Method
+                {{ translations && translations.update_payment_method }}
               </button>
               <button
                 class="inline-block tex-center py-2 w-full sm:w-2/4 font-bold uppercase px-4 rounded-lg hover:bg-gray-200 border-2 border-gray-500 transition transform duration-300 hover:shadow-lg active:scale-95"
                 @click="openPaymnetHistoryDialog"
               >
-                Payment History
+                {{ translations && translations.payment_history }}
               </button>
             </div>
             <!-- pricing plan side -->
@@ -371,7 +374,11 @@ const fetchPaymentHistoryDetails = async () => {
                       <div class="flex justify-between">
                         <div class="flex items-center justify-center mb-2">
                           <Icon icon="carbon:cost-total" class="w-5 h-5 mr-2" />
-                          <p><strong>Final Amount</strong></p>
+                          <p>
+                            <strong>{{
+                              translations && translations.final_amount
+                            }}</strong>
+                          </p>
                         </div>
                         <div>
                           ${{ parseFloat(pricingPlan.final_amount).toFixed(2) }}
@@ -383,7 +390,7 @@ const fetchPaymentHistoryDetails = async () => {
               </div>
               <div class="mb-2">
                 <div class="uppercase text-sm font-bold text-blue-rgba">
-                  Billing Start Date
+                  {{ translations && translations.billing_start_date }}
                 </div>
                 <div class="font-medium text-base">
                   {{ formatDateTime(pricingPlan.started_at) }}
@@ -391,7 +398,7 @@ const fetchPaymentHistoryDetails = async () => {
               </div>
               <div class="mb-2">
                 <div class="uppercase text-sm font-bold text-blue-rgba">
-                  Next Billing Date
+                  {{ translations && translations.next_billing_date }}
                 </div>
                 <div class="font-medium text-base">
                   {{ formatDateTime(pricingPlan.ends_at) }}
@@ -399,7 +406,7 @@ const fetchPaymentHistoryDetails = async () => {
               </div>
               <div class="mb-2" v-if="pricingPlan.discount_end_date">
                 <div class="uppercase text-sm font-bold text-blue-rgba">
-                  Discount end date
+                  {{ translations && translations.discount_end_date }}
                 </div>
                 <div class="font-medium text-base">
                   {{ pricingPlan.discount_end_date.replace(/-/g, "/") }}
@@ -416,20 +423,27 @@ const fetchPaymentHistoryDetails = async () => {
               "
               class="flex"
             >
-              <div class="">For cancelling your subscription ,</div>
+              <div class="">
+                {{
+                  translations && translations.for_cancelling_your_subscription
+                }}
+                ,
+              </div>
               <div
                 @click="openAssuringCancelSubDialog"
                 class="font-bold ml-1 text-blue-rgba cursor-pointer"
               >
-                click here.
+                {{ translations && translations.click_here }}.
               </div>
             </div>
             <div class="flex">
-              <div class="sm:ml-1">For billing inquiries ,</div>
+              <div class="sm:ml-1">
+                {{ translations && translations.for_billing_inquiries }} ,
+              </div>
               <a
                 href="mailto:tcontractor@gmail.com"
                 class="font-bold ml-1 text-blue-rgba"
-                >please contact us.</a
+                >{{ translations && translations.please_contact_us }}.</a
               >
             </div>
           </div>
@@ -490,34 +504,51 @@ const fetchPaymentHistoryDetails = async () => {
     <div class="mb-4">
       <div class="pl-6 section_text-gray-700 mt-3 mb-2">
         <div class="mb-2 text-xl">
-          Are you sure you want to cancel your subscription with
+          {{
+            translations &&
+            translations.are_you_sure_you_want_to_cancel_your_subscription_with
+          }}
           <span class="font-bold">tContractor</span>?
 
           <p class="text-lg font-semibold">Upon cancellation:</p>
         </div>
         <ul class="list-disc pl-5 text-base">
           <li class="mb-1">
-            You will lose access to all exclusive services and benefits
-            immediately.
+            {{
+              translations &&
+              translations.you_will_lose_access_to_all_exclusive_services_and_benefits
+            }}
           </li>
           <li class="mb-1">
-            Any unused time or services from your current subscription will not
-            be refunded or prorated.
+            {{
+              translations &&
+              translations.any_unused_time_or_services_from_your_current_subscription_will_not_be_refunded
+            }}
           </li>
           <li class="mb-1">
-            Reactivating your subscription may be subject to prevailing rates
-            and terms.
+            {{
+              translations &&
+              translations.reactivating_your_subscription_may_be_subject_to_prevailing_rates_and_terms
+            }}
           </li>
         </ul>
         <p class="mt-2 font-semibold">
-          Please consider carefully, as this action is
+          {{
+            translations &&
+            translations.please_consider_carefully_as_this_action_is
+          }}
           <strong>irreversible </strong>.
         </p>
         <p class="text-base">
-          Upon receiving your request to cancel, we will carefully review it and
-          notify you of the outcome via your registered
-          <strong>email address</strong>. We understand the importance of your
-          decision and are committed to processing your request promptly.
+          {{
+            translations && translations.upon_receiving_your_request_to_cancel
+          }}
+          <strong>{{ translations && translations.email_address }}</strong
+          >.
+          {{
+            translations &&
+            translations.we_understand_the_importance_of_your_decision
+          }}
         </p>
       </div>
     </div>
@@ -526,7 +557,7 @@ const fetchPaymentHistoryDetails = async () => {
   <CustomDialog
     :showFooter="false"
     ref="paymentHistoryDialogRef"
-    title="Payment History"
+    :title="translations && translations.payment_history"
   >
     <div class="mb-4">
       <div
@@ -557,7 +588,7 @@ const fetchPaymentHistoryDetails = async () => {
           <div
             class="uppercase text-2xl font-semibold text-blue-rgba font-bold mb-4"
           >
-            Pricing plan :
+            {{ translations && translations.pricing_plan }} :
             <span class="font-extrabold">{{
               payhistory.version == 1
                 ? "FREE"
@@ -570,7 +601,7 @@ const fetchPaymentHistoryDetails = async () => {
           </div>
           <div class="mb-2">
             <div class="uppercase text-sm font-bold text-blue-rgba">
-              Subscription Plan
+              {{ translations && translations.subscription_plan }}
             </div>
             <div class="font-medium text-base">
               {{ payhistory.subscription_plan }}
@@ -578,7 +609,7 @@ const fetchPaymentHistoryDetails = async () => {
           </div>
           <div class="mb-2">
             <div class="uppercase text-sm font-bold text-blue-rgba">
-              Amount Paid
+              {{ translations && translations.amount_paid }}
             </div>
             <div class="font-medium text-base">
               {{ parseFloat(payhistory.amount_paid).toFixed(2) }}
@@ -586,7 +617,7 @@ const fetchPaymentHistoryDetails = async () => {
           </div>
           <div class="mb-2">
             <div class="uppercase text-sm font-bold text-blue-rgba">
-              Charged Date
+              {{ translations && translations.charged_date }}
             </div>
             <div class="font-medium text-base">
               {{ formatDateTime(payhistory.charged_date) }}

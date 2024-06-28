@@ -75,7 +75,7 @@ const errors = reactive({
 const currentStep = ref(1);
 const editableAllowed = ref(1);
 const steps = ref(4);
-const stepTitles = ["General Info", "Trades", "Views", "Billing"];
+// const stepTitles = ["General Info", "Trades", "Views", "Billing"];
 
 const disable = computed(() => {
   return currentStep.value === 1
@@ -96,6 +96,15 @@ const disable = computed(() => {
 
 const screenWidth = computed(() => store.getters.screenWidth);
 const translations = computed(() => store.getters.translations);
+
+const stepTitles = computed(() => {
+  return [
+    translations.value && translations.value.general_info,
+    translations.value && translations.value.trades,
+    translations.value && translations.value.views,
+    translations.value && translations.value.billing,
+  ];
+});
 const loading = computed(() => store.state.profile.loading);
 const areAllTradesSetToZeroError = ref("");
 const clickedTradeContinue = ref(false);

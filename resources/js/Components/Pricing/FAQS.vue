@@ -112,8 +112,7 @@ const translations = computed(() => store.getters.translations);
           expand-icon="mdi-plus"
           collapse-icon="mdi-minus"
           class="text-3xl-imp"
-        >
-          What are Red Flag Customers?
+          >{{ translations && translations.what_are_red_flag_customers }}
         </v-expansion-panel-title>
         <v-expansion-panel-text
           class="p-3 sm:p-6 flex-col text-lg font-semibold text-gray-900"

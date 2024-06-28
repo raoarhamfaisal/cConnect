@@ -32,12 +32,21 @@ const store = useStore();
 
 const translations = computed(() => store.getters.translations);
 
-const tabNames = [
-  "Update Email",
-  "Change Password",
-  "Billing / Version",
-  "Blocked Users",
-];
+const tabNames = computed(() => {
+  return [
+    translations.value && translations.value.update_email,
+    translations.value && translations.value.billing_version,
+    translations.value && translations.value.change_password,
+    translations.value && translations.value.blocked_users,
+  ];
+});
+
+// const tabNames = ref([
+//   "Update Email",
+//   "Change Password",
+//   "Billing / Version",
+//   "Blocked Users",
+// ]);
 const verifyDialogRef = ref();
 const loading = ref(false);
 const loadingVerifyCode = ref(false);

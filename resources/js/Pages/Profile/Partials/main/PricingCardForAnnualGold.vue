@@ -35,7 +35,9 @@
       <div class="flex justify-between">
         <div class="flex items-center justify-center mb-2">
           <Icon icon="mdi-tag" class="w-5 h-5 mr-2" />
-          <p><strong>Coupon</strong></p>
+          <p>
+            <strong>{{ translations && translations.coupon }}</strong>
+          </p>
         </div>
         <div>- ${{ couponDiscount ? couponDiscount : "0.00" }}</div>
       </div>
@@ -51,21 +53,29 @@
       <div class="flex justify-between">
         <div class="flex items-center justify-center mb-2">
           <Icon icon="carbon:cost-total" class="w-5 h-5 mr-2" />
-          <p><strong>Total Annual</strong></p>
+          <p>
+            <strong>{{ translations && translations.total_annual }}</strong>
+          </p>
         </div>
         <div>${{ total }}</div>
       </div>
       <div v-if="annualPaid !== 0" class="flex justify-between">
         <div class="flex items-center justify-center mb-2">
           <Icon icon="flat-color-icons:paid" class="w-5 h-5 mr-2" />
-          <p><strong>Paid Amount</strong></p>
+          <p>
+            <strong>{{ translations && translations.paid_amount }}</strong>
+          </p>
         </div>
         <div>- ${{ annualPaid }}</div>
       </div>
       <div v-if="annualPaid !== 0" class="flex justify-between">
         <div class="flex items-center justify-center mb-2">
           <Icon icon="material-symbols:paid" class="w-5 h-5 mr-2" />
-          <p><strong>Amount to be Paid</strong></p>
+          <p>
+            <strong>{{
+              translations && translations.amount_to_be_paid
+            }}</strong>
+          </p>
         </div>
         <div>${{ amountToBePaid }}</div>
       </div>

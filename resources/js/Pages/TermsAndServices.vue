@@ -33,19 +33,15 @@ const translations = computed(() => store.getters.translations);
     <!-- Additional Sections Go Here -->
     <section class="mb-6 closing">
       <h2 class="text-xl font-semibold mb-2">{{ translations && translations.description_of_service }}</h2>
-      <p class="mb-2">TContractor.com provides a platform that connects contractors with customers seeking contractor
-        services ('Services'). The Site allows contractors to advertise their services, create profiles, and communicate
-        with potential clients.</p>
+      <p class="mb-2">{{ translations && translations.tcontractor_platform_description }}</p>
     </section>
     <section class="mb-6 closing">
       <h2 class="text-xl font-semibold mb-2">{{ translations && translations.registration_and_account_security }}</h2>
-      <p class="mb-2">Users may be required to register in order to access certain features of the Site. You agree to
-        provide accurate, current, and complete information during the registration process and to update such information
-        to keep it accurate, current, and complete.</p>
+      <p class="mb-2">{{ translations && translations.user_registration_requirements }}</p>
     </section>
     <section class="mb-6 closing">
       <h2 class="text-xl font-semibold mb-2">{{ translations && translations.user_conduct }}</h2>
-      <p class="mb-2">All users agree not to use the Site to:
+      <p class="mb-2">{{ translations && translations.site_usage_restrictions }}
       <ul>
         <li>{{ translations && translations.post_upload_distribute }}</li>
         <li>{{ translations && translations.violate_legal_rights }}</li>

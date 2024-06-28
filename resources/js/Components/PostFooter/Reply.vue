@@ -154,7 +154,7 @@
   >
     <Icon icon="bi:arrow-return-right" />
     <div class="font-bold text-sm cursor-pointer">
-      View
+      {{ translations && translations.view }}
       {{
         reply.replies?.length === 1
           ? reply.replies?.length + " reply"

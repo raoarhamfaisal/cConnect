@@ -1,7 +1,7 @@
 <template>
   <div class="xl:p-5">
     <h1 class="text-3xl font-bold mb-6 sm:mb-8">
-      Choose Your Pricing Plan :
+      {{ translations && translations.choose_your_pricing_plan }} :
       <span class="text-blue-rgba">{{
         props.choosedVersion === "gold" ? "Gold Version" : "Platinum Version"
       }}</span>
@@ -17,7 +17,9 @@
       </v-skeleton-loader>
     </div>
     <div class="flex gap-2 mb-2 sm:mb-2 justify-center items-center">
-      <div class="font-bold text-xl">Coupon Code</div>
+      <div class="font-bold text-xl">
+        {{ translations && translations.coupon_code }}
+      </div>
       <input
         type="text"
         class="border-b-2 border-0 focus:border-b-2 focus:border-black w-36 text-center pt-0 focus:ring-0 pb-1"

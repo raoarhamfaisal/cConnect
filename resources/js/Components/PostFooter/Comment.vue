@@ -190,11 +190,11 @@
   >
     <Icon icon="bi:arrow-return-right" />
     <div class="font-bold text-sm cursor-pointer">
-      View
+      {{ translations && translations.view }}
       {{
         comment.replies?.length === 1
-          ? comment.replies?.length + " reply"
-          : comment.replies?.length + " replies"
+          ? comment.replies?.length + " " + translations && translations.reply
+          : comment.replies?.length + " " + translations && translations.replies
       }}
     </div>
   </div>

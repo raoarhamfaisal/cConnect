@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('translations', function (Blueprint $table) {
             $table->id();
-            $table->string('key'); // Unique key to identify the translation
+            $table->text('key'); // Unique key to identify the translation
             $table->text('english'); // English translation
             $table->text('mexican_spanish'); // Mexican Spanish translation
             $table->timestamps();

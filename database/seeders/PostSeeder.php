@@ -16,7 +16,7 @@ class PostSeeder extends Seeder
     public function run()
     {
         // Create 500 posts
-        $posts = Post::factory(500)->create();
+        $posts = Post::factory(200)->create();
 
         foreach ($posts as $post) {
             // Associate random trades with the post

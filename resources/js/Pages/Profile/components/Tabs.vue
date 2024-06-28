@@ -8,7 +8,7 @@
         class="cursor-pointer whitespace-nowrap"
       >
         <div
-          class="py-2 px-4 text-xs border-b-4 uppercase text-center font-bold w-36 ml-2"
+          class="py-2 px-4 text-xs border-b-4 uppercase text-center font-bold w-auto ml-2"
           :class="{
             'rounded border-b-4 border-blue-rgba font-bold text-blue-rgba text-xs uppercase':
               activeTab === index,

@@ -61,7 +61,9 @@ const resendVerificationCode = async (openDialog = true) => {
 
 const submitVerificationCode = async () => {
   if (form.verifyCode?.trim().length < 6) {
-    errors.verifyCode = "The token must be of 6 characters.";
+    errors.verifyCode =
+      translations.value &&
+      translations.value.the_token_must_be_of_6_characters;
     return;
   }
   const formData = {
@@ -92,13 +94,15 @@ const submitVerificationCode = async () => {
     <WelcomeHeader :showit="showit" :showSignUp="false" />
 
     <div class="mb-4 text-sm text-gray-600">
-      Please enter the one-time password sent to your email by
-      tcontractorapp@gmail.com. If you cannot locate this email at
+      {{ translations && translations.please_enter_the_one_time_password }}
       <a
         :href="route('signup')"
         style="color: rgb(36 30 109); font-weight: bold"
         >{{ user.email }}</a
-      >, please check your email's junk & spam folders.
+      >,
+      {{
+        translations && translations.please_check_your_email_junk_spam_folders
+      }}
     </div>
     <div class="mt-3">
       <InputLabel
@@ -122,7 +126,7 @@ const submitVerificationCode = async () => {
       class="mt-2 font-medium text-base text-green-600"
       v-if="verificationCodeSent"
     >
-      A new verification code has been sent to your email address.
+      {{ translations && translations.a_new_verification_code_has_been_sent }}
     </div>
     <PrimaryButton
       @click="submitVerificationCode"
@@ -161,7 +165,7 @@ const submitVerificationCode = async () => {
       :href="route('signup')"
       class="border-2 border-blue-rgba w-full mt-2 flex justify-center items-center text-blue-rgba font-bold py-2 uppercase px-4 rounded cursor-pointer transition transform duration-300 hover:shadow-lg active:scale-95"
     >
-      Change Email
+      {{ translations && translations.change_email }}
     </a>
   </GuestLayout>
   <WelcomeFooter :showit="showit" />

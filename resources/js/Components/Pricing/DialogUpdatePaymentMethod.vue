@@ -6,7 +6,7 @@
     :title="
       props.isUpdateAndSubscribe
         ? 'Update Payment Method and Subscribe'
-        : 'Update Payment Method'
+        : translations && translations.update_payment_method
     "
   >
     <div class="mt-5 sm:mt-1 flex-col">
@@ -390,9 +390,10 @@
       >
         <div class="flex items-center justify-center flex-col">
           <div class="">
-            Your payment details have been successfully updated and will be used
-            for future payments. Thank you for keeping your account information
-            current!
+            {{
+              translations &&
+              translations.your_payment_details_have_been_successfully_updated
+            }}
           </div>
         </div>
       </CustomDialog>

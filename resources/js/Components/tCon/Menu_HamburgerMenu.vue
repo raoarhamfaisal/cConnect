@@ -314,7 +314,9 @@ const onSelectLang = (lang) => {
             :class="`flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700 `"
           >
             <img src="/images/icons/news_view.png" width="20" height="20" />
-            <span class="mx-4 font-medium">View</span>
+            <span class="mx-4 font-medium">{{
+              translations && translations.view
+            }}</span>
           </button>
           <Link
             :href="`/posts/${profile.user_id}`"

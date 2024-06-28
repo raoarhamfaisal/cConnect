@@ -348,7 +348,9 @@ const onSelectLang = (lang) => {
             href="/sub-finder"
           >
             <img src="/images/icons/contractor.png" width="30" height="30" />
-            <span class="mx-4 font-medium">Sub-Finder</span>
+            <span class="mx-4 font-medium">{{
+              translations && translations.sub_finder
+            }}</span>
           </Link>
 
           <!-- RED FLAGS / SLIPPERY APPLES SEARCH -->
@@ -399,7 +401,9 @@ const onSelectLang = (lang) => {
             class="flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
           >
             <img src="/images/icons/news_view.png" width="30" height="30" />
-            <span class="mx-4 font-medium hover:text-cyan-600">View</span>
+            <span class="mx-4 font-medium hover:text-cyan-600">{{
+              translations && translations.view
+            }}</span>
           </button>
 
           <Link
