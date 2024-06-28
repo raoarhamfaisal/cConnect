@@ -35,8 +35,8 @@ const translations = computed(() => store.getters.translations);
 const tabNames = computed(() => {
   return [
     translations.value && translations.value.update_email,
-    translations.value && translations.value.billing_version,
     translations.value && translations.value.change_password,
+    translations.value && translations.value.billing_version,
     translations.value && translations.value.blocked_users,
   ];
 });

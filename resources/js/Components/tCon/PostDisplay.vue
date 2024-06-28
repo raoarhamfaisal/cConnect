@@ -140,9 +140,10 @@ export default {
       loadingComments: false,
       pagination: {},
       addedNumber: 0,
+      total_number_of_comments_with_replies: 0,
     };
   },
-  emits: ["onRepost", "enlarge-post"],
+  emits: ["onRepost", "enlarge-post", "repostEdited"],
   computed: {
     ...mapGetters(["screenWidth"]),
     ...mapGetters("profile", [
@@ -361,7 +362,8 @@ export default {
       if (newVal && Object.keys(newVal).length > 0) {
         if (this.post.id === newVal.post_id) {
           this.allComments.unshift(newVal);
-          this.pagination.total = this.pagination.total + 1;
+          this.total_number_of_comments_with_replies =
+            this.total_number_of_comments_with_replies + 1;
         }
       }
     },
@@ -378,7 +380,8 @@ export default {
           );
           if (commentIndex === -1) {
             this.allComments.unshift(newVal);
-            this.pagination.total = this.pagination.total + 1;
+            this.total_number_of_comments_with_replies =
+              this.total_number_of_comments_with_replies + 1;
           }
         }
       },
@@ -392,7 +395,8 @@ export default {
         );
         if (index !== -1) {
           this.allComments.splice(index, 1);
-          this.pagination.total = this.pagination.total - 1;
+          this.total_number_of_comments_with_replies =
+            this.total_number_of_comments_with_replies - 1;
           // this.fetchAllComments();
         }
       }
@@ -413,7 +417,8 @@ export default {
             // for comment deletion
             if (index !== -1) {
               this.allComments.splice(index, 1);
-              this.pagination.total = this.pagination.total - 1;
+              this.total_number_of_comments_with_replies =
+                this.total_number_of_comments_with_replies - 1;
             }
           } else {
             // for reply deletion
@@ -573,7 +578,8 @@ export default {
       this.commentTextError = "";
       // Validate rating_text
       if (!this.commentText || this.commentText.trim() === "") {
-        this.commentTextError = "Comment should not be empty.";
+        this.commentTextError =
+          this.translations && this.translations.repost_should_not_be_empty;
         isValid = false;
       }
 
@@ -789,18 +795,20 @@ export default {
       if (this.validate()) {
         this.loadingRepost = true;
         const reposterComment = {
-          comment: filterBadWordsWithoutValue(this.commentText),
+          repost_comment: filterBadWordsWithoutValue(this.commentText),
         };
         try {
           const response = await axios.post(
             `/api/posts/${this.post.id}/repost`,
-            {},
+            reposterComment,
             getAxiosConfig()
           );
           if (response.data) {
             this.repost_count = this.repost_count + 1;
             this.$emit("onRepost");
-            changesSaved("Reposted Successfully");
+            changesSaved(
+              this.translations && this.translations.repost_successfully
+            );
           }
         } catch (err) {
           somethingWentWrong(err.response.data.message, "inherit");
@@ -820,6 +828,8 @@ export default {
         if (response.data) {
           this.allComments = response.data?.comments;
           this.pagination = response.data?.pagination;
+          this.total_number_of_comments_with_replies =
+            response.data?.total_number_of_comments_with_replies;
         }
       } catch (err) {
         somethingWentWrong();
@@ -832,8 +842,12 @@ export default {
     },
     onAddingComment(comment) {
       this.allComments.unshift(comment);
-      this.pagination.total = this.pagination.total + 1;
+      this.total_number_of_comments_with_replies =
+        this.total_number_of_comments_with_replies + 1;
       this.addedNumber = this.addedNumber + 1;
+    },
+    onRepostEdit(repostedComment, postId) {
+      this.$emit("repostEdited", repostedComment, postId);
     },
   },
 };
@@ -929,7 +943,7 @@ export default {
     :loading="loadingRepost"
     :disabled="loadingRepost"
     :shouldFetchPost="false"
-    submitText="Repost Now"
+    :submitText="translations && translations.repost_now"
     :title="translations && translations.do_you_wish_to_share_this_post"
   >
     <!-- :showHeader="false" -->
@@ -938,7 +952,7 @@ export default {
         {{ translations && translations.reposting_allows_you_to_share }}
       </div>
       <div class="text-md font-bold text-gray-600 mt-3 mb-2">
-        {{ translations && translations.comment_text }}
+        {{ translations && translations.repost_text }}
       </div>
       <textarea
         id="responseText"
@@ -951,7 +965,7 @@ export default {
         @keydown="insertTab"
         @input="adjustHeight"
         @paste="adjustHeight"
-        :placeholder="translations && translations.write_a_comment"
+        :placeholder="translations && translations.say_something_about_the_post"
       />
       <InputError
         v-if="commentTextError"
@@ -1123,7 +1137,7 @@ export default {
       <!-- END Ratings / post action menu / posting date -->
     </div>
     <div
-      class="self-start flex gap-2 sm:mt-[-4px] md:mt-[-6px] ml-[3px]"
+      class="flex gap-2 self-start sm:mt-[-4px] md:mt-[-6px] ml-[3px]"
       v-if="post.original_user_first_name && post.original_user_last_name"
     >
       <div
@@ -1137,7 +1151,7 @@ export default {
           class="text-sm flex gap-1 items-center"
         >
           <img src="/images/icons/share_icon.png" width="15" height="15" />
-          <div class="">Reposted From</div>
+          <div class="">{{ translations && translations.reposted_from }}</div>
           <Icon
             class="translate-y-[-1px]"
             icon="ion:caret-forward"
@@ -1155,6 +1169,16 @@ export default {
 
     <!-- Text Body1 UPPER -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+    <!-- Reposted Comment -->
+
+    <div
+      class="self-start"
+      style="white-space: pre-wrap"
+      v-if="post.repost_comment"
+    >
+      {{ post.repost_comment }}
+    </div>
 
     <div
       :class="`${title_text_alignment} ${
@@ -1252,8 +1276,8 @@ export default {
       } border-[1px] w-1/3 border-gray-800 rounded`"
     ></div>
 
-    <div class="pb-2 flex justify-between w-full">
-      <div class="flex gap-2">
+    <div class="pb-2 flex justify-between items-center w-full">
+      <div class="flex items-center gap-2">
         <!-- Like -->
         <div
           class="flex gap-1 justify-center items-center cursor-pointer"
@@ -1267,7 +1291,7 @@ export default {
             />
           </div>
           <div
-            class="text-[13px] sx:text-[15px] sm:text-[17px] flex items-center justify-center self-center"
+            class="text-[13px] sx:text-[15px] sm:text-[17px] flex items-center justify-center leading-3 self-center"
           >
             {{ likes_count }}
           </div>
@@ -1286,25 +1310,28 @@ export default {
             />
           </div>
           <div
-            class="text-[13px] sx:text-[15px] sm:text-[17px] flex items-center justify-center"
+            class="text-[13px] sx:text-[15px] sm:text-[17px] flex items-center justify-center leading-3"
           >
             {{ dislikes_count }}
           </div>
         </div>
       </div>
       <div
-        class="text-gray-900 text-[13px] sx:text-[15px] sm:text-[17px] flex items-center gap-[2px]"
+        class="text-gray-900 text-[13px] sx:text-[15px] sm:text-[17px] flex items-center self-center gap-[2px]"
       >
         <span
-          class="cursor-pointer hover:underline"
+          class="cursor-pointer hover:underline leading-3"
           @click="$emit('enlarge-post', post)"
         >
-          {{ pagination.total }} comments
+          {{ total_number_of_comments_with_replies }}
+          {{ translations && translations.comments }}
         </span>
 
-        <Icon icon="octicon:dot-fill-16" width="14" />
-        <span class="text-[13px] sx:text-[15px] sm:text-[17px]">
-          {{ repost_count }} reposts
+        <Icon icon="octicon:dot-fill-16" width="11" />
+        <span
+          class="text-[13px] sx:text-[15px] flex items-center justify-center sm:text-[17px] leading-3"
+        >
+          {{ repost_count }} {{ translations && translations.reposts }}
         </span>
       </div>
     </div>
@@ -1326,7 +1353,9 @@ export default {
                 :class="`${your_reaction === 'like' ? 'liked' : ''}`"
               />
             </div>
-            <div class="pl-1 icon-text text-[#16a34a]">Like</div>
+            <div class="pl-1 icon-text text-[#16a34a]">
+              {{ translations && translations.like }}
+            </div>
           </div>
         </div>
       </div>
@@ -1344,7 +1373,9 @@ export default {
                 class="text-[20px] sm:text-[25px] icon-dislike text-transparent stroke-[2px] stroke-[#c40516]"
               />
             </div>
-            <div class="pl-1 icon-text text-[#c40516]">Dislike</div>
+            <div class="pl-1 icon-text text-[#c40516]">
+              {{ translations && translations.dislike }}
+            </div>
           </div>
         </a>
       </div>
@@ -1359,7 +1390,9 @@ export default {
                 class="w-[20px] sm:w-[25px] h-[20px] sm:h-[25px]"
               />
             </div>
-            <div class="pl-1 icon-text">Comment</div>
+            <div class="pl-1 icon-text">
+              {{ translations && translations.comment }}
+            </div>
           </div>
         </div>
       </div>
@@ -1374,7 +1407,9 @@ export default {
                 class="w-[20px] sm:w-[25px] h-[20px] sm:h-[25px]"
               />
             </div>
-            <div class="pl-1 icon-text">Repost</div>
+            <div class="pl-1 icon-text">
+              {{ translations && translations.repost }}
+            </div>
           </div>
         </div>
       </div>
@@ -1421,6 +1456,7 @@ export default {
       :imageArray="imageArray"
       :currentUserId="profile.user_id"
       @NavPostingActionMenu="NavPostingActionMenu"
+      @repostEdited="onRepostEdit"
     >
     </PostingActionMenu>
   </div>

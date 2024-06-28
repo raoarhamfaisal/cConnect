@@ -93,7 +93,7 @@
         <transition name="accordion">
           <div class="mt-4" v-if="paymentMethod">
             <div class="font-bold text-2xl text-blue-rgba leading-tight">
-              Payment Details
+              {{ translations && translations.payment_details }}
             </div>
             <!--  -->
             <div class="mt-0">
@@ -627,38 +627,44 @@ const validateForm = () => {
 
   // Validate first_name
   if (!form.first_name?.trim()) {
-    errors.first_name = "First name is required";
+    errors.first_name =
+      translations.value && translations.value.first_name_is_required;
     isValid = false;
   }
   if (!form.last_name?.trim()) {
-    errors.last_name = "Last name is required";
+    errors.last_name =
+      translations.value && translations.value.last_name_is_required;
     isValid = false;
   }
 
   if (!form.address?.trim()) {
-    errors.address = "Address is required";
+    errors.address =
+      translations.value && translations.value.address_is_required;
     isValid = false;
   }
 
   // Validate city
   if (!form.city?.trim()) {
-    errors.city = "City is required";
+    errors.city = translations.value && translations.value.city_is_required;
     isValid = false;
   }
 
   // Validate state
   if (!form.state?.trim()) {
-    errors.state = "State is required";
+    errors.state = translations.value && translations.value.state_is_required;
     isValid = false;
   }
 
   // Validate zipcode
   if (form.zipcode?.trim().length < 5) {
-    errors.zipcode = "ZipCode  cannot be less than 5 characters";
+    errors.zipcode =
+      translations.value &&
+      translations.value.zipcode_cannot_be_less_than_5_characters;
     isValid = false;
   }
   if (!form.zipcode?.trim()) {
-    errors.zipcode = "Zipcode is required";
+    errors.zipcode =
+      translations.value && translations.value.zipcode_is_required;
     isValid = false;
   }
 
@@ -668,20 +674,24 @@ const validateForm = () => {
   //   isValid = false;
   // }
   if (!form.country?.trim()) {
-    errors.country = "Country is required";
+    errors.country =
+      translations.value && translations.value.country_is_required;
     isValid = false;
   }
   if (!form.card_number?.trim()) {
-    errors.card_number = "Card number is required";
+    errors.card_number =
+      translations.value && translations.value.card_number_is_required;
     isValid = false;
   } else if (!/^(\d{4}-){2,3}\d{4,13}$/.test(form.card_number.trim())) {
-    errors.card_number = "Invalid card number format";
+    errors.card_number =
+      translations.value && translations.value.invalid_card_number_format;
     isValid = false;
   }
 
   // Validate expiration date
   if (!form.expiration_date?.trim()) {
-    errors.expiration_date = "Expiration date is required";
+    errors.expiration_date =
+      translations.value && translations.value.expiration_date_is_required;
     isValid = false;
   } else {
     let [month, year] = form.expiration_date.split("/");
@@ -691,22 +701,24 @@ const validateForm = () => {
     month = parseInt(month, 10);
 
     if (year < currentYear || (year === currentYear && month < currentMonth)) {
-      errors.expiration_date = "Expiration date should be in the future";
+      errors.expiration_date =
+        translations.value &&
+        translations.value.expiration_date_should_be_in_the_future;
       isValid = false;
     } else if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(form.expiration_date)) {
       errors.expiration_date =
-        "Invalid expiration date format. Should be MM/YY";
+        translations.value && translations.value.invalid_expiration_date_format;
       isValid = false;
     }
   }
 
   // Validate CVV
   if (!form.cvv?.trim()) {
-    errors.cvv = "CVV is required";
+    errors.cvv = translations.value && translations.value.cvv_is_required;
     isValid = false;
   } else if (!/^\d{3,4}$/.test(form.cvv)) {
     // This regex checks for a 3 or 4 digit CVV.
-    errors.cvv = "Invalid CVV format";
+    errors.cvv = translations.value && translations.value.invalid_cvv_format;
     isValid = false;
   }
 

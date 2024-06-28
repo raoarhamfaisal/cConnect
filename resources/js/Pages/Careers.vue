@@ -21,7 +21,7 @@ const translations = computed(() => store.getters.translations);
 
 <template>
   <SignUpLayout>
-    <Head title="Careers" />
+    <Head :title="translations && translations.careers" />
     <WelcomeHeader :showNewsFeed="true" :showit="showit" :showSignUp="true" />
 
     <div class="bg-gray-100 min-h-screen p-3 sm:p-5 max-sm:rounded">

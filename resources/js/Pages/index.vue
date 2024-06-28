@@ -202,7 +202,7 @@ const onSelectLang = (lang) => {
 </script>
 
 <template>
-  <Head title="Welcome" />
+  <Head :title="translations && translations.welcome" />
   <div
     v-if="loading"
     class="h-full h-[100vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4"

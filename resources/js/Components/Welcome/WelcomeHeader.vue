@@ -48,7 +48,7 @@
           <v-menu open-on-hover open-on-click>
             <template v-slot:activator="{ props }">
               <div
-                class="cursor-pointer flex gap-1 items-center justify-center"
+                class="cursor-pointer flex gap-1 mr-2 items-center justify-center"
                 v-bind="props"
               >
                 <img

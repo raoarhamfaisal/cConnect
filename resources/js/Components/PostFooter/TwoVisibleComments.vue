@@ -66,7 +66,8 @@
       :padding="screenWidth < 640 ? '7px' : '10px'"
     >
       <div class="text-white">
-        {{ translations && translations.uploading }} Comment...
+        {{ translations && translations.uploading }}
+        {{ translations && translations.comment }}...
       </div>
       <v-progress-linear
         indeterminate

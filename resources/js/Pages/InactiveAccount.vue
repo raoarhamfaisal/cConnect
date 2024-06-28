@@ -1,6 +1,6 @@
 <template>
   <SignUpLayout>
-    <Head title="Account Inactive" />
+    <Head :title="translations && translations.account_inactive" />
     <WelcomeHeader :showNewsFeed="false" :showit="showit" :showSignUp="false" />
     <!-- Back to Main Page Link -->
     <div class="mb-3 sm:mb-6">
@@ -82,12 +82,7 @@
           translations.it_appears_you_have_not_completed_the_registration_process
         }}
       </div>
-      <p class="mb-4">
-        {{
-          translations &&
-          translations.if_you_have_any_questions_please_contact_our_support_team
-        }}
-      </p>
+
       <p class="mb-4">
         {{
           translations &&

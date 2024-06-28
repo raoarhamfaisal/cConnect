@@ -1,5 +1,5 @@
 <template>
-  <Head title="Contractor Page" />
+  <Head :title="translations && translations.contractor_page" />
 
   <div
     class=""

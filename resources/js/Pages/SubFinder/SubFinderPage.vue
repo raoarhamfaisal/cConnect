@@ -152,13 +152,30 @@ const onFindASub = () => {
 
 // Display contractor logic
 
-const buttonData = [
-  { value: "", label: "All" },
-  { value: "Preferred", label: "Preferred" },
-  { value: "Back-Up", label: "Back-Up" },
-  { value: "Possible", label: "Possible" },
-  { value: "Rejected", label: "Rejected" },
-];
+// const buttonData = [
+//   { value: "", label: "All" },
+//   { value: "Preferred", label: "Preferred" },
+//   { value: "Back-Up", label: "Back-Up" },
+//   { value: "Possible", label: "Possible" },
+//   { value: "Rejected", label: "Rejected" },
+// ];
+
+const buttonData = computed(() => [
+  { value: "", label: translations.value && translations.value.all },
+  {
+    value: "Preferred",
+    label: translations.value && translations.value.preferred,
+  },
+  { value: "Back-Up", label: translations.value && translations.value.back_up },
+  {
+    value: "Possible",
+    label: translations.value && translations.value.possible,
+  },
+  {
+    value: "Rejected",
+    label: translations.value && translations.value.back_up,
+  },
+]);
 
 const preference_status = ref(""); // Use the value from buttonData as default
 
@@ -185,12 +202,31 @@ const buttonClass = (value) => [
 ];
 
 // Define the button data for sort options
-const sortButtonData = [
-  { value: "high_rated", label: "High Rated" },
-  { value: "low_rated", label: "Low Rated" },
-  { value: "newly_registered", label: "Newly Registered" },
-  { value: "oldest_registered", label: "Oldest Registered" },
-];
+// const sortButtonData = [
+//   { value: "high_rated", label: "High Rated" },
+//   { value: "low_rated", label: "Low Rated" },
+//   { value: "newly_registered", label: "Newly Registered" },
+//   { value: "oldest_registered", label: "Oldest Registered" },
+// ];
+
+const sortButtonData = computed(() => [
+  {
+    value: "high_rated",
+    label: translations.value && translations.value.high_rated,
+  },
+  {
+    value: "low_rated",
+    label: translations.value && translations.value.low_rated,
+  },
+  {
+    value: "newly_registered",
+    label: translations.value && translations.value.newly_registered,
+  },
+  {
+    value: "oldest_registered",
+    label: translations.value && translations.value.oldest_registered,
+  },
+]);
 
 const selectedSort = ref("high_rated"); // Default selected value
 
@@ -268,7 +304,7 @@ const fetchSearchedContractorsWithLoading = async () => {
 </script>
 
 <template>
-  <Head title="Sub Finder" />
+  <Head :title="translations && translations.sub_finder" />
 
   <Header
     :profile="profile"
@@ -421,7 +457,7 @@ const fetchSearchedContractorsWithLoading = async () => {
           <!-- Find A Sub -->
           <button
             @click="onFindASub"
-            class="border-2 mt-5 w-full sm:w-40 flex items-center justify-center border-2 border-teal-green bg-teal-green text-white font-semibold text-xl py-2 px-4 rounded transition transform duration-300 hover:shadow-lg active:scale-95"
+            class="border-2 mt-5 w-full sm:w-auto flex items-center justify-center border-2 border-teal-green bg-teal-green text-white font-semibold text-xl py-2 px-4 rounded transition transform duration-300 hover:shadow-lg active:scale-95"
           >
             {{ translations && translations.find_a_sub }}
           </button>

@@ -9,12 +9,15 @@ import {
   somethingWentWrong,
 } from "@/helpers/utilities";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
+import InputError from "@/Components/InputError.vue";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
     Link,
     CustomDialog,
     ReportPost,
+    InputError,
     PostFormEdit,
   },
 
@@ -40,20 +43,72 @@ export default {
       postToEdit: { ...this.post },
       profileId: usePageDeatails.profile.id,
       loadingBlockContact: false,
+      loadingEditRepost: false,
+      commentText: "",
+      commentTextError: "",
+
       //
     };
+  },
+  emits: ["repostEdited"],
+  computed: {
+    ...mapGetters(["translations"]),
   },
   mounted() {
     this.postToEdit.image = "";
   },
   methods: {
     openEditForm(formData) {
-      this.postToEdit = { ...this.post };
-      this.showingNavigationDropdown = false;
-      this.isFormOpen = true;
+      if (!this.post.repost_comment) {
+        this.postToEdit = { ...this.post };
+        this.showingNavigationDropdown = false;
+        this.isFormOpen = true;
+      } else {
+        this.commentText = this.post.repost_comment;
+        this.$refs.editRepostCommentDialogRef.openDialog();
+      }
     },
     closeEditModal() {
       this.isFormOpen = false;
+    },
+    validate() {
+      let isValid = true;
+      // Reset the error messages before validating
+      this.commentTextError = "";
+      // Validate rating_text
+      if (!this.commentText || this.commentText.trim() === "") {
+        this.commentTextError =
+          this.translations && this.translations.repost_should_not_be_empty;
+        isValid = false;
+      }
+
+      return isValid;
+    },
+    async onEditRepost() {
+      if (this.validate()) {
+        this.loadingEditRepost = true;
+        const reposterComment = {
+          repost_comment: filterBadWordsWithoutValue(this.commentText),
+        };
+        try {
+          const response = await axios.patch(
+            `/api/posts/${this.post.id}/edit-repost`,
+            reposterComment,
+            getAxiosConfig()
+          );
+          if (response.data) {
+            this.$emit("repostEdited", this.commentText, this.post.id);
+            changesSaved(
+              this.translations && this.translations.changes_successfully_saved
+            );
+          }
+        } catch (err) {
+          somethingWentWrong(err.response.data.message, "inherit");
+        } finally {
+          this.loadingEditRepost = false;
+          this.$refs.editRepostCommentDialogRef.closeDialog();
+        }
+      }
     },
     async handleSubmitDelete() {
       this.loadingDelete = true;
@@ -261,7 +316,7 @@ export default {
     <!-- Block -->
     <teleport to="body">
       <CustomDialog
-        submitText="Block Now"
+        :submitText="translations && translations.block_now"
         :disableOutSideClick="true"
         @submit="handleSubmitBlock"
         ref="blockDialogRef"
@@ -303,6 +358,42 @@ export default {
             {{ translations && translations.please_confirm_deletion }}
           </div>
         </div>
+      </CustomDialog>
+    </teleport>
+    <teleport to="body">
+      <CustomDialog
+        ref="editRepostCommentDialogRef"
+        @submit="onEditRepost"
+        :loading="loadingEditRepost"
+        :disabled="loadingEditRepost"
+        :shouldFetchPost="false"
+        :submitText="translations && translations.save"
+        :title="
+          translations &&
+          translations.edit + translations &&
+          translations.repost_text
+        "
+      >
+        <textarea
+          id="responseText"
+          type="text"
+          :rows="5"
+          class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm overflow-hidden"
+          required
+          v-model="commentText"
+          ref="textRef"
+          @keydown="insertTab"
+          @input="adjustHeight"
+          @paste="adjustHeight"
+          :placeholder="
+            translations && translations.say_something_about_the_post
+          "
+        />
+        <InputError
+          v-if="commentTextError"
+          class="mt-2"
+          :message="commentTextError"
+        />
       </CustomDialog>
     </teleport>
     <Teleport to="body">

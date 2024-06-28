@@ -121,96 +121,113 @@ const validateForm = () => {
 
   // Validate first_name
   if (!form.first_name?.trim()) {
-    errors.first_name = "First name is required";
+    errors.first_name =
+      translations.value && translations.value.first_name_is_required;
     isValid = false;
   }
   if (!form.last_name?.trim()) {
-    errors.last_name = "Last name is required";
+    errors.last_name =
+      translations.value && translations.value.last_name_is_required;
     isValid = false;
   }
   if (!form.phone_cell?.trim()) {
-    errors.phone_cell = "Phone number is required";
+    errors.phone_cell =
+      translations.value && translations.value.phone_number_is_required;
     isValid = false;
   }
   if (form.phone_cell?.trim().length > 13) {
-    errors.phone_cell = "Phone number must not be greater than 13 numbers";
+    errors.phone_cell =
+      translations.value &&
+      translations.value.phone_number_must_not_be_greater_than_13_numbers;
     isValid = false;
   }
   if (form.phone_office?.trim().length > 13) {
-    errors.phone_office = "Phone Office must not be greater than 13 numbers";
+    errors.phone_office =
+      translations.value &&
+      translations.value.phone_office_must_not_be_greater_than_13_numbers;
     isValid = false;
   }
   // Validate address_1
   if (!form.address_1?.trim()) {
-    errors.address_1 = "Address 1 is required";
+    errors.address_1 =
+      translations.value && translations.value.address_1_is_required;
     isValid = false;
   }
   // Validate company_name
   if (!form.company_name?.trim()) {
-    errors.company_name = "Company name is required";
+    errors.company_name =
+      translations.value && translations.value.company_name_is_required;
     isValid = false;
   }
 
   // Validate city
   if (!form.city?.trim()) {
-    errors.city = "City is required";
+    errors.city = translations.value && translations.value.city_is_required;
     isValid = false;
   }
 
   // Validate state
   if (!form.state?.trim()) {
-    errors.state = "State is required";
+    errors.state = translations.value && translations.value.state_is_required;
     isValid = false;
   }
 
   // Validate zipcode
   if (form.zipcode?.trim().length < 5) {
-    errors.zipcode = "ZipCode  cannot be less than 5 characters";
+    errors.zipcode =
+      translations.value &&
+      translations.value.zipcode_cannot_be_less_than_5_characters;
     isValid = false;
   }
   if (!form.zipcode?.trim()) {
-    errors.zipcode = "Zipcode is required";
+    errors.zipcode =
+      translations.value && translations.value.zipcode_is_required;
     isValid = false;
   }
 
   // Validate county
   if (!form.county?.trim()) {
-    errors.county = "County is required";
+    errors.county = translations.value && translations.value.county_is_required;
     isValid = false;
   }
 
   // Validate region
   if (!form.region_id?.trim()) {
-    errors.region_id = "Region is required";
+    errors.region_id =
+      translations.value && translations.value.region_is_required;
     isValid = false;
   }
   // Validate website_url
   if (form.website_url && !isValidUrl(form.website_url)) {
-    errors.website_url = "Invalid website URL";
+    errors.website_url =
+      translations.value && translations.value.invalid_website_url;
     isValid = false;
   }
 
   // Validate facebook
   if (form.facebook && !isValidUrl(form.facebook)) {
-    errors.facebook = "Invalid Facebook URL";
+    errors.facebook =
+      translations.value && translations.value.invalid_facebook_url;
     isValid = false;
   }
 
   // Validate twitter
   if (form.twitter && !isValidUrl(form.twitter)) {
-    errors.twitter = "Invalid Twitter URL";
+    errors.twitter =
+      translations.value && translations.value.invalid_twitter_url;
     isValid = false;
   }
 
   // Validate tiktok
   if (form.tiktok && !isValidUrl(form.tiktok)) {
-    errors.tiktok = "Invalid TikTok URL";
+    errors.tiktok = translations.value && translations.value.invalid_tiktok_url;
     isValid = false;
   }
 
   // Validate instagram
   if (form.instagram && !isValidUrl(form.instagram)) {
-    errors.instagram = "Invalid Instagram URL";
+    errors.instagram =
+      translations.value && translations.value.invalid_instagram_url;
     isValid = false;
   }
 
@@ -263,7 +280,9 @@ const nextClick = async () => {
         showSuccess: false,
       });
     } else {
-      somethingWentWrong("Validation error  ");
+      somethingWentWrong(
+        translations.value && translations.value.validation_error
+      );
       return;
     }
   }
@@ -290,8 +309,8 @@ const dontProceed = (areAllTradesSetToZero) => {
 
 <template>
   <v-stepper
-    prev-text="back"
-    next-text="Continue"
+    :prev-text="translations && translations.back"
+    :next-text="translations && translations.continue"
     alt-labels
     v-model="currentStep"
   >

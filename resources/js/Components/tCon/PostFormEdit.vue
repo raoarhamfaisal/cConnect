@@ -25,7 +25,7 @@ import FilePondPluginImageTransform from "filepond-plugin-image-transform";
 import FilePondPluginImageResize from "filepond-plugin-image-resize";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 
-// Note: Need both plugins image transform & resize for resize options to work
+// {{translations. && translations..note}}: Need both plugins image transform & resize for resize options to work
 
 // import filepond css
 import "filepond/dist/filepond.min.css";
@@ -768,7 +768,7 @@ Array.prototype.remove = function () {
                   class="w-full py-2 px-3 shadow appearance-none text-gray-900 font-semibold border rounded border-gray-600 leading-tight focus:outline-none focus:shadow-outline placeholder:italic placeholder:text-slate-500"
                   rows="3"
                   id="formPostbody2"
-                  placeholder="{{translations && translations.bottom_text}}"
+                  :placeholder="translations && translations.bottom_text"
                 >
                 </textarea>
 
@@ -796,7 +796,7 @@ Array.prototype.remove = function () {
                     @click="openDialog"
                     class="cursor-pointer text-base font-bold self-center text-[#241e6d]"
                   >
-                    Edit
+                    {{ translations && translations.edit }}
                   </div>
                 </div>
                 <TradesWithDialog v-model="tradesPost" />
@@ -819,7 +819,7 @@ Array.prototype.remove = function () {
                 {{
                   loadingUpdate
                     ? translations && translations.updating
-                    : "Update"
+                    : translations && translations.update
                 }}
                 {{ translations && translations.post }}
               </button>
@@ -835,7 +835,8 @@ Array.prototype.remove = function () {
                 @click="$emit('formclose')"
                 class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5"
               >
-                Edit Cancel
+                {{ translations && translations.edit }}
+                {{ translations && translations.cancel }}
               </button>
             </span>
           </div>

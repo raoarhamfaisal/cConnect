@@ -1,5 +1,5 @@
 <template>
-  <Head title="My  Ratings" />
+  <Head :title="translations && translations.my_ratings" />
 
   <Header
     :profile="profile"

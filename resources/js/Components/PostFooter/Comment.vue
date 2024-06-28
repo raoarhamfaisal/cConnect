@@ -95,25 +95,25 @@
           class="font-bold hover:underline hover:text-[#16a34a] cursor-pointer"
           :class="`${your_reaction === 'like' ? 'text-[#16a34a]' : ''}`"
         >
-          Like
+          {{ translations && translations.like }}
         </div>
         <div
           @click="onDislike"
           class="font-bold hover:underline cursor-pointer hover:text-[#c40516]"
           :class="`${your_reaction === 'dislike' ? 'text-[#c40516]' : ''}`"
         >
-          Dislike
+          {{ translations && translations.dislike }}
         </div>
         <div
           class="font-bold hover:underline cursor-pointer"
           @click="showReplyBox"
         >
-          Reply
+          {{ translations && translations.reply_first_cap }}
         </div>
         <!-- Like -->
         <div
           class="flex gap-1 justify-center items-center cursor-pointer"
-          @click="onOpenListofLikedUsersModel"
+          @click="() => onOpenListofLikedUsersModel()"
         >
           <!-- <div v-if="post.likes_count.value" class=""> -->
           <div
@@ -135,7 +135,7 @@
         <!-- dislikes -->
         <div
           class="flex gap-1 justify-center items-center cursor-pointer"
-          @click="onOpenListofDislikedUsersModel"
+          @click="() => onOpenListofDislikedUsersModel()"
         >
           <!-- <div v-if="post.likes_count" class=""> -->
           <div
@@ -191,10 +191,11 @@
     <Icon icon="bi:arrow-return-right" />
     <div class="font-bold text-sm cursor-pointer">
       {{ translations && translations.view }}
+      {{ comment.replies?.length > 1 ? comment.replies.length : "" }}
       {{
         comment.replies?.length === 1
-          ? comment.replies?.length + " " + translations && translations.reply
-          : comment.replies?.length + " " + translations && translations.replies
+          ? translations && translations.reply
+          : translations && translations.replies
       }}
     </div>
   </div>
@@ -211,7 +212,11 @@
       class="flex flex-col gap-1 sm:gap-2"
     >
       <div v-for="reply in comment.replies" :key="reply.id">
-        <Reply :reply="reply" />
+        <Reply
+          :reply="reply"
+          @openLikedUserModal="onOpenListofLikedUsersModel"
+          @openDislikedUserModal="onOpenListofDislikedUsersModel"
+        />
       </div>
     </transition-group>
   </div>
@@ -242,6 +247,84 @@
     :commentText="comment?.body"
     :commentId="comment.id"
   />
+  <Teleport to="body">
+    <CustomDialog
+      ref="likeDialogRef"
+      dialogWidth="w-full h-full sm:h-5/6"
+      @opened="onLikeModalOpen"
+      :showFooter="false"
+      :title="
+        isForReplyDialog
+          ? translations && translations.people_who_liked_the_reply
+          : translations && translations.people_who_liked_the_comment
+      "
+    >
+      <div v-if="loadingLiked">
+        <v-skeleton-loader
+          v-for="n in 5"
+          :key="n"
+          type="list-item-avatar"
+        ></v-skeleton-loader>
+      </div>
+      <div
+        class="flex flex-col gap-2"
+        v-else-if="!loadingLiked && likedUsers && likedUsers.length > 0"
+      >
+        <LikedUser
+          liked
+          v-for="(user, index) in likedUsers"
+          :key="index"
+          :user="user"
+        />
+      </div>
+
+      <div v-else class="h-full">
+        <div
+          class="p-2 text-xl text-grey-600 font-bold h-full flex items-center justify-center"
+        >
+          {{ translations && translations.no_contractor_found }}
+        </div>
+      </div>
+    </CustomDialog>
+  </Teleport>
+  <Teleport to="body">
+    <CustomDialog
+      ref="dislikeDialogRef"
+      dialogWidth="w-full h-full sm:h-5/6"
+      @opened="onDislikeModalOpen"
+      :showFooter="false"
+      :title="
+        isForReplyDialog
+          ? translations && translations.people_who_disliked_the_reply
+          : translations && translations.people_who_disliked_the_comment
+      "
+    >
+      <div v-if="loadingUnliked">
+        <v-skeleton-loader
+          v-for="n in 3"
+          :key="n"
+          type="list-item-avatar"
+        ></v-skeleton-loader>
+      </div>
+      <div
+        class="flex flex-col gap-2"
+        v-else-if="!loadingUnliked && unLikedUsers && unLikedUsers.length > 0"
+      >
+        <LikedUser
+          v-for="(user, index) in unLikedUsers"
+          :key="index"
+          :user="user"
+        />
+      </div>
+      <div v-else class="h-full">
+        <div
+          class="p-2 text-xl text-grey-600 font-bold h-full flex items-center justify-center"
+        >
+          {{ translations && translations.no_contractor_found }}
+        </div>
+      </div>
+    </CustomDialog>
+  </Teleport>
 </template>
 
 <script setup>
@@ -252,6 +335,8 @@ import {
   timeAgo,
 } from "@/helpers/utilities";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
+import LikedUser from "@/Components/PostFooter/LikedUser.vue";
+
 import EditCommentModal from "@/Components/PostFooter/EditCommentModal.vue";
 import Reply from "@/Components/PostFooter/Reply.vue";
 
@@ -264,6 +349,7 @@ import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { watch } from "vue";
 import { usePage } from "@inertiajs/inertia-vue3";
 import { reactive } from "vue";
+import axios from "axios";
 
 const props = defineProps({
   comment: Object,
@@ -287,6 +373,14 @@ const showReplyTextArea = ref(false);
 const loadingSendComment = ref(false);
 const commentText = ref("");
 const commentAreaRef = ref();
+const likeDialogRef = ref(null);
+const dislikeDialogRef = ref(null);
+const likedUsers = ref([]);
+const unLikedUsers = ref([]);
+const loadingLiked = ref(false);
+const loadingUnliked = ref(false);
+const isForReplyDialog = ref(false);
+const replyId = ref(0);
 
 const screenWidth = computed(() => store.getters.screenWidth);
 const translations = computed(() => store.getters.translations);
@@ -538,7 +632,54 @@ const adjustHeight = () => {
       commentAreaRef.value.scrollHeight + "px";
   });
 };
+const onOpenListofLikedUsersModel = (isforReply = false, repId = 0) => {
+  isForReplyDialog.value = isforReply;
+  console.log("onOpenListofLikedUsersModel", isForReplyDialog.value);
+  replyId.value = repId;
+  likeDialogRef.value.openDialog();
+};
+const onOpenListofDislikedUsersModel = (isforReply = false, repId = 0) => {
+  isForReplyDialog.value = isforReply;
+  replyId.value = repId;
+  dislikeDialogRef.value.openDialog();
+};
+const onLikeModalOpen = async () => {
+  loadingLiked.value = true;
+  try {
+    const response = await axios.get(
+      `/api/comments/${
+        isForReplyDialog.value ? replyId.value : props.comment.id
+      }/likes`,
+      getAxiosConfig()
+    );
+    if (response.data) {
+      likedUsers.value = response.data;
+    }
+  } catch (err) {
+    somethingWentWrong();
+  } finally {
+    loadingLiked.value = false;
+  }
+};
 
+const onDislikeModalOpen = async () => {
+  loadingUnliked.value = true;
+  try {
+    const response = await axios.get(
+      `/api/comments/${
+        isForReplyDialog.value ? replyId.value : props.comment.id
+      }/dislikes`,
+      getAxiosConfig()
+    );
+    if (response.data) {
+      unLikedUsers.value = response.data;
+    }
+  } catch (err) {
+    somethingWentWrong();
+  } finally {
+    loadingUnliked.value = false;
+  }
+};
 // const handleTouchStart = () => {
 //   if (longPressTimer.value) clearTimeout(longPressTimer.value);
 //   longPressTimer.value = setTimeout(() => {

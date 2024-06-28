@@ -290,11 +290,13 @@ const validateForm = () => {
   console.log(tempProfile, "form");
   // Validate first_name
   if (!tempProfile.first_name.trim()) {
-    errors.first_name = "First name is required";
+    errors.first_name =
+      translations.value && translations.value.first_name_is_required;
     isValid = false;
   }
   if (!tempProfile.last_name.trim()) {
-    errors.last_name = "Last name is required";
+    errors.last_name =
+      translations.value && translations.value.last_name_is_required;
     isValid = false;
   }
   // Validate company_name
@@ -305,13 +307,13 @@ const validateForm = () => {
 
   // Validate city
   if (!tempProfile.city.trim()) {
-    errors.city = "City is required";
+    errors.city = translations.value && translations.value.city_is_required;
     isValid = false;
   }
 
   // Validate state
   if (!tempProfile.state.trim()) {
-    errors.state = "State is required";
+    errors.state = translations.value && translations.value.state_is_required;
     isValid = false;
   }
 

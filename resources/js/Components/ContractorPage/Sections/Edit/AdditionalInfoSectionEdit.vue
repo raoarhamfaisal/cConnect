@@ -399,7 +399,8 @@ const validateForm = () => {
     errors[field] = "";
   }
   if (!tempCompanyProfile.phone_cell?.trim()) {
-    errors.phone_cell = "Phone number is required";
+    errors.phone_cell =
+      translations.value && translations.value.phone_number_is_required;
     isValid = false;
   }
   if (tempCompanyProfile.phone_cell?.trim().length > 13) {
@@ -423,24 +424,26 @@ const validateForm = () => {
 
   // Validate city
   if (!tempCompanyProfile.city?.trim()) {
-    errors.city = "City is required";
+    errors.city = translations.value && translations.value.city_is_required;
     isValid = false;
   }
 
   // Validate state
   if (!tempCompanyProfile.state?.trim()) {
-    errors.state = "State is required";
+    errors.state = translations.value && translations.value.state_is_required;
     isValid = false;
   }
 
   // Validate zipcode
   if (!tempCompanyProfile.zipcode?.trim()) {
-    errors.zipcode = "Zipcode is required";
+    errors.zipcode =
+      translations.value && translations.value.zipcode_is_required;
     isValid = false;
   }
 
   if (!tempCompanyProfile.zipcode?.trim()) {
-    errors.zipcode = "Zipcode is required";
+    errors.zipcode =
+      translations.value && translations.value.zipcode_is_required;
     isValid = false;
   }
   // Validate county

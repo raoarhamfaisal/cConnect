@@ -192,7 +192,7 @@ const onSelectLang = (lang) => {
         <template v-slot:activator="{ props }">
           <!-- border-2 border-[#ced0d4] -->
           <div
-            class="cursor-pointer mt-2 flex gap-1 items-center justify-center p-1 rounded-md"
+            class="cursor-pointer mt-2 flex gap-1 items-center justify-center p-1 rounded-md hover:bg-[#ced0d4]"
             v-bind="props"
           >
             <div

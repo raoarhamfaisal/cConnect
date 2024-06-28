@@ -381,7 +381,7 @@ const determineBorderVisibility = (index) => {
 </script>
 
 <template>
-  <Head title="Red Flags" />
+  <Head :title="translations && translations.red_flags" />
 
   <Header
     :profile="profile"
@@ -778,9 +778,11 @@ const determineBorderVisibility = (index) => {
           }"
         >
           <div v-show="!addingRedFlag" class="flex items-center justify-center">
-            {{translations && translations.save}}
+            {{ translations && translations.save }}
           </div>
-          <div v-show="addingRedFlag">{{translations && translations.saving}}...</div>
+          <div v-show="addingRedFlag">
+            {{ translations && translations.saving }}...
+          </div>
         </button>
       </section>
 

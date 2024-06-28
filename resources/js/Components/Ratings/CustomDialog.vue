@@ -71,7 +71,11 @@
             v-show="showCancel"
             class="px-4 py-2 rounded text-white bg-[#364fc7]"
           >
-            {{ cancelText }}
+            {{
+              cancelText === "Cancel"
+                ? translations && translations.cancel
+                : cancelText
+            }}
           </button>
           <button
             @click="submit"
@@ -83,7 +87,13 @@
               opacity: disabled ? '0.2' : '1',
             }"
           >
-            <div class="flex items-center justify-center">{{ submitText }}</div>
+            <div class="flex items-center justify-center">
+              {{
+                submitText === "Submit"
+                  ? translations && translations.cancel
+                  : submitText
+              }}
+            </div>
             <img
               v-show="loading"
               src="/images/avatars/Spinner.gif"
@@ -173,6 +183,7 @@ const isVisible = ref(false);
 const shouldFetchPostsOnClose = computed(
   () => store.state.ratings.shouldFetchPostsOnClose
 );
+const translations = computed(() => store.getters.translations);
 //Methods
 const closeDialog = () => {
   if (props.dontAllowCancel) {

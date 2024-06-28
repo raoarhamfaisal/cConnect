@@ -338,6 +338,10 @@ export default {
     },
   },
   methods: {
+    onRepostEdit(repostedComment, postId) {
+      const postIndex = this.allPosts.findIndex((post) => post.id === postId);
+      this.allPosts[postIndex].repost_comment = repostedComment;
+    },
     fetchColors() {
       this.loading = true;
 
@@ -505,7 +509,7 @@ export default {
 </script>
 
 <template>
-  <Head title="News Feed" />
+  <Head :title="translations && translations.news_feed" />
 
   <Header
     :profile="profile"
@@ -615,6 +619,7 @@ export default {
           >
             <!-- INDIVIDUAL POST DISPLAY WITH MENUS -->
             <PostDisplay
+              @repostEdited="onRepostEdit"
               @onRepost="onRespost"
               :addedCommentInEnlarge="addedCommentInEnlarge"
               :showit="showit"
@@ -686,7 +691,7 @@ export default {
           <!-- 'next_page_url' is set to null in script -->
           <div v-if="posts.next_page_url === null" class="mt-6">
             <div class="text-white font-semibold text-2xl inline text-center">
-              {{translations && translations.youre_all_up_to_date}} 🥳
+              {{ translations && translations.youre_all_up_to_date }} 🥳
             </div>
           </div>
         </template>

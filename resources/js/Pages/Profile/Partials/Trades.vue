@@ -202,18 +202,18 @@ const displayedText = computed(() => {
           <!-- {{ displayedText }} -->
           <span
             v-if="!isExpanded"
-            class="text-blue-500 cursor-pointer translate-y-[1px] ml-1"
+            class="text-blue-500 cursor-pointer translate-y-[1px] ml-1 lowercase"
             @click="toggleText"
           >
-            …more
+            ... {{ translations && translations.more }}
           </span>
 
           <span
             v-if="isExpanded"
-            class="text-blue-500 cursor-pointer translate-y-[1px] ml-1"
+            class="text-blue-500 cursor-pointer translate-y-[1px] ml-1 lowercase"
             @click="toggleText"
           >
-            …less
+            ...{{ translations && translations.less }}
           </span>
         </div>
         <div v-if="apiChoice === '3'" class="w-full">
@@ -221,8 +221,10 @@ const displayedText = computed(() => {
             <strong class="text-sm">{{
               translations && translations.hint
             }}</strong>
-            Selecting Trade Groups allows you to control what postings you see
-            in the News Feed.
+            {{
+              translations &&
+              translations.selecting_your_trade_group_allows_you_to_control
+            }}
           </span>
         </div>
       </div>

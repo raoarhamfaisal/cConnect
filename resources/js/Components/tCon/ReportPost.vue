@@ -2,7 +2,7 @@
   <!-- edit dialog -->
   <Teleport to="body">
     <CustomDialog
-      submitText="Report Now"
+      :submitText="translations && translations.report_now"
       @submit="handleSubmit"
       ref="dialogRef"
       @opened="onOpened"
@@ -15,7 +15,9 @@
         <div
           class="sm:p-4 p-3 bg-blue-100 border border-blue-200 rounded-lg mb-2"
         >
-          <h3 class="text-lg font-semibold">Note:</h3>
+          <h3 class="text-lg font-semibold">
+            {{ translations && translations.note }}:
+          </h3>
           <p class="mt-1 sm:mt-2 text-blue-700">
             {{ translations && translations.confidential_report_to_admin }}
           </p>

@@ -45,7 +45,9 @@
       v-if="props.subscribedPlan === 'monthly'"
       class="sm:p-4 p-3 bg-blue-100 border border-blue-200 rounded-lg mb-2"
     >
-      <h3 class="text-lg font-semibold">Note:</h3>
+      <h3 class="text-lg font-semibold">
+        {{ translations && translations.note }}:
+      </h3>
       <p class="mt-1 sm:mt-2 text-blue-700">
         {{
           translations &&
@@ -57,7 +59,9 @@
       v-else
       class="sm:p-4 p-3 bg-blue-100 border border-blue-200 rounded-lg mb-2"
     >
-      <h3 class="text-lg font-semibold">Note:</h3>
+      <h3 class="text-lg font-semibold">
+        {{ translations && translations.note }}:
+      </h3>
       <p class="mt-1 sm:mt-2 text-blue-700">
         {{
           translations &&
@@ -117,68 +121,6 @@
       />
     </div>
   </div>
-  <!-- <CustomDialog
-    :disableOutSideClick="false"
-    @submit="handleCancelSubscription"
-    ref="confirmSubscriptionDialogRef"
-    :showFooter="false"
-    dialogWidth="max-h-[70vh] width50"
-    title="Confirm Payment Method"
-  >
-    <div class="mb-4">
-      <div class="pl-6 section_text-gray-700 mt-3 mb-2">
-        <div class="mb-2 text-xl font-bold">
-          Update Your Payment Details or Continue with Existing?
-        </div>
-
-        <p class="text-base">
-          Would you like to use your existing payment method for this
-          transaction, or do you need to update your payment details? Please
-          choose your preferred option to proceed.
-        </p>
-        <div class="text-base mt-4">
-          <strong>Total Amount to be charged : </strong>
-          ${{
-            selectedPlan === "monthdiff"
-              ? priceToBePaid
-              : selectedPlan === "MONTHLY"
-              ? monthlyTotal
-                ? parseFloat(monthlyTotal).toFixed(2)
-                : 0
-              : annualTotal
-              ? parseFloat(annualTotal).toFixed(2)
-              : 0
-          }}
-        </div>
-      </div>
-    </div>
-    <div :class="`flex  justify-between `">
-      <button
-        type="button"
-        @click="emit('onUpdatePaymentMethod')"
-        class="px-4 py-2 rounded text-white bg-[#364fc7]"
-      >
-        Update Payment Details
-      </button>
-      <button
-        @click="onSubscribe"
-        :disabled="loadingConfirmPayment"
-        type="button"
-        class="px-4 py-2 flex tems-center gap-2 rounded bg-[#5f3dc4] text-white"
-        :style="{
-          opacity: loadingConfirmPayment ? '0.2' : '1',
-        }"
-      >
-        <div class="flex items-center justify-center">Subscribe</div>
-        <img
-          v-show="loadingConfirmPayment"
-          src="/images/avatars/Spinner.gif"
-          alt="spinner"
-          width="25"
-        />
-      </button>
-    </div>
-  </CustomDialog> -->
   <DialogUpgradeSubscription
     ref="confirmSubscriptionDialogRef"
     :amountToBePaid="amountToBePaid"

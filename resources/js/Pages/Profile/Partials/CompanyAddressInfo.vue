@@ -219,7 +219,7 @@ onBeforeUnmount(() => {
             @input="clearError('phone_office')"
             v-model="form.phone_office"
             v-mask="'###-###-#####'"
-            placeholder="Type your office phone "
+            :placeholder="translations && translations.type_your_phone_office"
             autocomplete="tel"
           />
 
@@ -321,7 +321,7 @@ onBeforeUnmount(() => {
             class="mt-1 block w-full"
             v-model="form.county"
             @input="clearError('county')"
-            placeholder="Type your county"
+            :placeholder="translations && translations.type_your_county"
           />
           <InputError class="mt-2" :message="errors.county" />
         </div>

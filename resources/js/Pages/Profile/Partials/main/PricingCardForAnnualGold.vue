@@ -5,7 +5,13 @@
     :class="hover ? 'hovered' : ''"
     class="pricing-card flex flex-col justify-between items-center w-full sm:w-1/2 p-6 sm:p-9 lg:p-6 xl:p-14 bg-white border border-gray-300 rounded-lg shadow-md transition-all duration-300 ease-in-out transform hover:scale-105 relative"
   >
-    <h2 class="text-2xl font-bold mb-4">{{ plan }}</h2>
+    <h2 class="text-2xl font-bold mb-4">
+      {{
+        plan === "MONTHLY"
+          ? translations && translations.monthly
+          : translations && translations.annual_cap
+      }}
+    </h2>
     <div
       class="price-tag bg-[#4169E1] text-white w-48 h-48 rounded-full flex items-center justify-center mb-6"
     >
@@ -22,10 +28,10 @@
         <div class="flex items-center justify-center mb-2">
           <Icon icon="mdi:calendar-month" class="w-5 h-5 mr-2" />
           <p>
-            <strong>{{
+            <strong class="capitalize">{{
               plan === "MONTHLY"
                 ? translations && translations.monthly
-                : translations && translations.annually
+                : translations && translations.annual_cap
             }}</strong>
           </p>
         </div>

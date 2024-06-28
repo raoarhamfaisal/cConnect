@@ -32,7 +32,7 @@ if (activeTab) {
 </script>
 
 <template>
-  <Head title="Profile" />
+  <Head :title="translations && translations.settings" />
 
   <Header
     :profile="profile"
