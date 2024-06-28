@@ -607,14 +607,30 @@ class PaymentController extends Controller
 
     public function updatePaymentMethod(Request $request)
     {
-        $customerProfileId = $request->customerProfileId;
-        $customerPaymentProfileId = $request->customerPaymentProfileId;
-        $cardNumber = $request->cardNumber;
-        $expirationDate = $request->expirationDate; // Format: YYYY-MM
-        $billingDetails = $request->billingDetails; // An array containing billing details
+        // Validate the request data
+        $validatedData = $request->validate([
+            'customerProfileId' => 'required|string',
+            'customerPaymentProfileId' => 'required|string',
+            'cardNumber' => 'required|string',
+            'expirationDate' => 'required|date_format:Y-m',
+            'cvv' => 'required|string',
+            'firstName' => 'required|string',
+            'lastName' => 'required|string',
+            'address' => 'required|string',
+            'city' => 'required|string',
+            'state' => 'required|string',
+            'zip' => 'required|string',
+            'country' => 'required|string'
+        ]);
 
-        // Here, call your function to update the customer payment profile
-        $response = $this->updateCustomerPaymentProfile($customerProfileId, $customerPaymentProfileId, $cardNumber, $expirationDate, $billingDetails);
+        // Call the function to update the customer payment profile
+        $response = $this->updateCustomerPaymentProfile(
+            $validatedData['customerProfileId'],
+            $validatedData['customerPaymentProfileId'],
+            $validatedData['cardNumber'],
+            $validatedData['expirationDate'],
+            $validatedData
+        );
 
         // Check response and return appropriate message
         if ($response && $response->getMessages()->getResultCode() == "Ok") {
@@ -625,15 +641,27 @@ class PaymentController extends Controller
         }
     }
 
-    function updateCustomerPaymentProfile($customerProfileId, $customerPaymentProfileId, $cardNumber, $expirationDate, $billingDetails)
+    private function updateCustomerPaymentProfile($customerProfileId, $customerPaymentProfileId, $cardNumber, $expirationDate, $billingDetails)
     {
-        // Existing code...
+        // Setup merchant authentication
+        $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+        $merchantAuthentication->setName("5KP3u95bQpv");
+        $merchantAuthentication->setTransactionKey("346HZ32z3fP4hTG2");
 
-        // Modify the credit card details
+        // Set the transaction's refId
+        $refId = 'ref' . time();
+
+        // Create the payment data for a credit card
+        $creditCard = new AnetAPI\CreditCardType();
         $creditCard->setCardNumber($cardNumber);
         $creditCard->setExpirationDate($expirationDate);
+        $creditCard->setCardCode($billingDetails['cvv']);
 
-        // Modify the billing address
+        $paymentCreditCard = new AnetAPI\PaymentType();
+        $paymentCreditCard->setCreditCard($creditCard);
+
+        // Create the Bill To info
+        $billto = new AnetAPI\CustomerAddressType();
         $billto->setFirstName($billingDetails['firstName']);
         $billto->setLastName($billingDetails['lastName']);
         $billto->setAddress($billingDetails['address']);
@@ -641,11 +669,30 @@ class PaymentController extends Controller
         $billto->setState($billingDetails['state']);
         $billto->setZip($billingDetails['zip']);
         $billto->setCountry($billingDetails['country']);
-        $billto->setPhoneNumber($billingDetails['phoneNumber']);
-        // Add more fields as necessary
 
-        // Rest of the existing code...
+        // Create a new Customer Payment Profile object
+        $paymentprofile = new AnetAPI\CustomerPaymentProfileExType();
+        $paymentprofile->setCustomerPaymentProfileId($customerPaymentProfileId);
+        $paymentprofile->setPayment($paymentCreditCard);
+        $paymentprofile->setBillTo($billto);
+
+        // Assemble the complete transaction request
+        $paymentprofileRequest = new AnetAPI\UpdateCustomerPaymentProfileRequest();
+        $paymentprofileRequest->setMerchantAuthentication($merchantAuthentication);
+        $paymentprofileRequest->setCustomerProfileId($customerProfileId);
+        $paymentprofileRequest->setPaymentProfile($paymentprofile);
+        $paymentprofileRequest->setValidationMode("liveMode");
+
+        // Create the controller and get the response
+        $controller = new AnetController\UpdateCustomerPaymentProfileController($paymentprofileRequest);
+        $response = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::SANDBOX); // or PRODUCTION
+
+        return $response;
     }
+
+   
+
+   
 
 
 }
