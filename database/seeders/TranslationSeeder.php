@@ -683,11 +683,19 @@ class TranslationSeeder extends Seeder
              ['key' => 'possible', 'english' => 'Possible', 'mexican_spanish' => 'Posible', 'created_at' => now(), 'updated_at' => now()],
              ['key' => 'rejected', 'english' => 'Rejected', 'mexican_spanish' => 'Rechazado', 'created_at' => now(), 'updated_at' => now()],
              ['key' => 'back_up', 'english' => 'Back-Up', 'mexican_spanish' => 'Respaldo', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'submit', 'english' => 'Submit', 'mexican_spanish' => 'Entregar', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'max', 'english' => 'max', 'mexican_spanish' => 'máx.', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'upgrade_required', 'english' => 'Upgrade Required', 'mexican_spanish' => 'Se requiere actualización', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'unlock_platinum_features_now', 'english' => 'Unlock Platinum Features Now!', 'mexican_spanish' => '¡Desbloquea las funciones Platinum ahora!', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'you_have_exceeded_your_free_allotment_or_this_feature_requires_the_gold_or_platinum_version_to_access', 'english' => 'You have exceeded your free allotment, or this feature requires the Gold or Platinum version to access!', 'mexican_spanish' => '¡Has excedido tu asignación gratuita o esta función requiere la versión Gold o Platinum para acceder!', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'do_not_miss_out_on_any_more_features_for_a_few_dollars_a_month_we_encourage_you_to_upgrade_to_the_gold_version', 'english' => 'Do not miss out on any more features! For a few dollars a month, we encourage you to upgrade to the Gold Version!', 'mexican_spanish' => '¡No te pierdas más funciones! Por solo unos dólares al mes, te animamos a actualizar a la Versión Gold.', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'this_feature_requires_the_platinum_version_to_access', 'english' => 'This feature requires the Platinum version to access!', 'mexican_spanish' => '¡Esta función requiere la versión Platinum para acceder!', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'upgrade_to_gold_version_for_15_images', 'english' => 'Upgrade to Gold version for 15 images', 'mexican_spanish' => 'Actualiza a la versión Gold para obtener 15 imágenes', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'upgrade_to_platinum_version_for_20_images', 'english' => 'Upgrade to Platinum version for 20 images', 'mexican_spanish' => 'Actualiza a la versión Platinum para obtener 20 imágenes', 'created_at' => now(), 'updated_at' => now()],
 
 
-   
-           
 
+            
    
             // ['key' => 'goodbye', 'english' => 'Goodbye', 'mexican_spanish' => 'Adiós', 'created_at' => now(), 'updated_at' => now()],
             // ['key' => 'goodbye', 'english' => 'Goodbye', 'mexican_spanish' => 'Adiós', 'created_at' => now(), 'updated_at' => now()],

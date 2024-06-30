@@ -512,6 +512,7 @@ export default {
   <Head :title="translations && translations.news_feed" />
 
   <Header
+    shouldFetchUserDetails
     :profile="profile"
     :post-search-filters="postSearchFilters"
     :showit="showit"

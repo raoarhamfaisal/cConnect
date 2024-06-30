@@ -34,7 +34,9 @@
               icon="icon-park:back"
               color="red"
             />
-            <h3 class="text-lg sx:text-xl font-bold">{{ title }}</h3>
+            <h3 class="text-lg sx:text-xl font-bold">
+              {{ title }}
+            </h3>
             <Icon
               class="w-6 h-6"
               v-if="errorIcon"
@@ -90,7 +92,7 @@
             <div class="flex items-center justify-center">
               {{
                 submitText === "Submit"
-                  ? translations && translations.cancel
+                  ? translations && translations.submit
                   : submitText
               }}
             </div>

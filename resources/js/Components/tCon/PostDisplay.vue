@@ -18,6 +18,7 @@ import { ref } from "vue";
 import { mapGetters } from "vuex";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import DialogContractorRating from "@/Components/Ratings/Contractor/DialogContractorRating.vue";
+import DialogUpgradeToGoldPlatinum from "@/Components/DialogUpgradeToGoldPlatinum.vue";
 import TwoVisibleComments from "@/Components/PostFooter/TwoVisibleComments.vue";
 
 import { Icon } from "@iconify/vue";
@@ -29,6 +30,7 @@ import InputError from "@/Components/InputError.vue";
 export default {
   components: {
     TwoVisibleComments,
+    DialogUpgradeToGoldPlatinum,
     tContractorWord,
     ButtonPost,
     ButtonRefresh,
@@ -111,7 +113,7 @@ export default {
       commentTextError: "",
       commentText: "",
       showingPostingActionMenu: ref(false),
-      dialogRef: ref(),
+      contractorRatingDialogRef: ref(),
       customBgColor: "",
       isPostVisible: false,
       text_alignment: "left",
@@ -157,7 +159,7 @@ export default {
       "pusherCommentPosted",
     ]),
     ...mapGetters("ratings", ["comment"]),
-    ...mapGetters(["translations"]),
+    ...mapGetters(["translations", "userVersion"]),
     firstTwoComments() {
       return this.allComments.slice(0, 2);
     },
@@ -653,7 +655,7 @@ export default {
       this.showingPostingActionMenu = false;
     },
     openDialog() {
-      this.$refs.dialogRef.openDialog();
+      this.$refs.contractorRatingDialogRef.openDialog();
       this.$store.commit("ratings/setIndex", this.index);
     },
     processUrls(body) {
@@ -789,7 +791,11 @@ export default {
       }
     },
     onOpenRepostAssuranceModel() {
-      this.$refs.repostDialogRef.openDialog();
+      if (this.userVersion !== 1) {
+        this.$refs.repostDialogRef.openDialog();
+      } else {
+        this.$refs.upgradeToGoldPlatinumDialogRef.openDialog();
+      }
     },
     async onRepost() {
       if (this.validate()) {
@@ -855,10 +861,11 @@ export default {
 
 <template>
   <DialogContractorRating
-    ref="dialogRef"
+    ref="contractorRatingDialogRef"
     :loggedInUserId="profileId"
     :userId="post.user_id"
   />
+  <DialogUpgradeToGoldPlatinum ref="upgradeToGoldPlatinumDialogRef" />
   <!-- commentModal -->
   <!-- <DialogAllComments
     ref="commentDialogRef"

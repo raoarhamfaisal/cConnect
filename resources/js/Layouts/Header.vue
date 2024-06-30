@@ -12,6 +12,7 @@ import DialogProfileTabs from "@/Pages/Profile/Partials/main/DialogProfileTabs.v
 import { ref } from "vue";
 import { mapActions, mapGetters } from "vuex";
 import { changesSaved, filterBadWordsWithoutValue } from "@/helpers/utilities";
+import { getToken } from "../helpers/localStorageHelper";
 
 const defaultPostFormObject = {
   user_id: 0,
@@ -62,6 +63,10 @@ export default {
     },
     profile: {
       type: Object,
+      required: false,
+    },
+    shouldFetchUserDetails: {
+      type: Boolean,
       required: false,
     },
 
@@ -149,7 +154,6 @@ export default {
     }
     this.paymentCompleted =
       this.user_profile.is_payment_verified && this.user_profile.active_user;
-    const user = usePage().props.value;
 
     if (
       this.user_profile &&
@@ -162,10 +166,14 @@ export default {
     ) {
       this.$refs.paymentDialogRef.openDialog();
     }
+    if (this.shouldFetchUserDetails) {
+      this.fetchUserDetails();
+    }
   },
 
   methods: {
     ...mapActions("profile", ["fetchProfile"]),
+    ...mapActions(["fetchUserDetails"]),
     async saveItem(formData) {
       this.success = false;
 
@@ -209,6 +217,7 @@ export default {
             this.translations && this.translations.post_successfully_added,
             "post Successfully added text"
           );
+          this.fetchUserDetails();
           changesSaved(
             this.translations && this.translations.post_successfully_added
           );
@@ -372,7 +381,9 @@ export default {
               <nav class="container max-w-7xl px-1 py-1 pt-2 mx-auto md:px-12">
                 <div class="flex items-center justify-between">
                   <!-- LOGO -->
-                  <div class="flex items-center justify-start pl-1 space-x-2">
+                  <div
+                    class="flex items-center justify-start pl-[2px] x365:pl-1 space-x-2"
+                  >
                     <!-- <Link href="/" class="xs:hidden md:flex w-12">
                       <img
                         src="/images/logo/icon_blue.png"
@@ -383,7 +394,7 @@ export default {
 
                     <Link
                       href="/"
-                      class="flex text-2xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center"
+                      class="flex text-xl sx:text-2xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center"
                     >
                       <tContractorWord />
                     </Link>
@@ -407,7 +418,7 @@ export default {
                       <button @click="openProfileModal">
                         <img
                           src="/images/icons/news_view.png"
-                          class="w-7 h-7 x350:w-[38px] x350:h-[38px]"
+                          class="h-6 w-6 x330:w-7 x330:h-7 xs:w-[38px] xs:h-[38px]"
                         />
                       </button>
                     </div>
@@ -430,10 +441,10 @@ export default {
 
                     <!-- Hamburger menu button -->
                     <!-- Hamburger -->
-                    <div class="-mr-2 flex items-center">
+                    <div class="-mr-1 x365:-mr-2 flex items-center">
                       <button
                         @click="NavigationDropdown"
-                        class="inline-flex items-center justify-center pl-0 py-2 pr-2 x365:p-2 rounded-md text-black hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
+                        class="inline-flex items-center justify-center pl-0 py-2 pr-[2px] x365:pr-2 xs:p-2 rounded-md text-black hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
                       >
                         <svg
                           class="h-6 w-6"
