@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\PaymentHistory;
+use App\Models\UserVersionDetail;
+use App\Models\VersionDefault;
+use Illuminate\Support\Facades\Auth;
+
 
 
 use Illuminate\Http\Request;
@@ -60,6 +64,20 @@ class UserController extends Controller
         return response()->json($paymentHistory);
     }
     
+
+    public function getUserVersionDetails(Request $request)
+    {
+        $user = Auth::user();
+
+        // Fetch user version details
+        $userVersionDetail = UserVersionDetail::where('user_id', $user->id)->first();
+
+        if (!$userVersionDetail) {
+            return response()->json(['message' => 'User version details not found.'], 404);
+        }
+
+        return response()->json(['versionDetails' => $userVersionDetail]);
+    }
 
 
 }

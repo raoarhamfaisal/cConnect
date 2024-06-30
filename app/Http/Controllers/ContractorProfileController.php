@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use App\Models\VersionDefault;
+
 
 
 use Illuminate\Support\Facades\Storage;
@@ -468,6 +470,48 @@ class ContractorProfileController extends Controller
 
     public function findContractors(Request $request)
     {
+
+
+        $authenticatedUser = Auth::user();
+        $userVersion = $authenticatedUser->profile->version; // Fetch the version identifier from the authenticatedUser's profile
+        // dd($authenticatedUser);
+    
+        // Fetch version defaults based on the authenticatedUser's version
+        $versionDefault = VersionDefault::find($userVersion);
+        if (!$versionDefault) {
+
+            // Construct the response with contractors and pagination information
+            return response()->json([
+                'contractors' => [],
+                'error' => "No Version Available For This User",
+                'pagination' => [
+                    'current_page' => 1,
+                    'last_page' => 1,
+                    'per_page' => 15,
+                    'total' => 0,
+                ],
+            ]);
+        }
+
+
+        $userVersionDetail = $authenticatedUser->versionDetail()->firstOrCreate([
+            'user_id' => $authenticatedUser->id,
+        ], [
+            'nf_title' => false
+        ]);
+
+        // dd($userVersionDetail);
+        // Check if it's a new month since the last search
+        $currentMonth = now()->month;
+        if ($userVersionDetail->sf_last_search_month != $currentMonth) {
+            // Reset the search count for the new month
+            $userVersionDetail->sf_search = $versionDefault->sf_search; // Reset to max allowed searches
+            $userVersionDetail->sf_last_search_month = $currentMonth;
+            $userVersionDetail->save();
+        }
+
+
+
         $user = $request->user();
         $regionId = $request->query('region_id');
         $tradeId = $request->query('trade_id');
@@ -476,156 +520,168 @@ class ContractorProfileController extends Controller
         $sortBy = $request->query('sort_by', '');
         $searchTerm = $request->query('search_term');
         $preferenceStatus = $request->query('preference_status');
+
+
+        // Decrement the search count if a search is being made
+        if ($userVersionDetail->sf_search > 0) {
+            // Proceed with search logic only if searches are remaining or unlimited (sf_search is null for Gold/Platinum versions)
+            
+            if($userVersionDetail->sf_search !== 99) {
+                $userVersionDetail->sf_search--;
+                $userVersionDetail->save();
+            }
+      
     
-        // Subquery for average rating and total reviews
-        $ratingSubquery = \DB::table('reviews')
-            ->select('contractor_id', 
-                \DB::raw('AVG(rating) as average_rating'),
-                \DB::raw('COUNT(*) as total_reviews'))
-            ->whereNull('deleted_at')  // Exclude soft-deleted records
-            ->groupBy('contractor_id');
-    
-        // Start the query for contractor_profiles
-        $query = ContractorProfile::with('trades:id')
-            ->join('profiles', 'profiles.user_id', '=', 'contractor_profiles.user_id')
-            ->leftJoin('contractor_profile_user', function($join) use ($user) {
-                $join->on('contractor_profile_user.contractor_profile_id', '=', 'contractor_profiles.id')
-                    ->where('contractor_profile_user.user_id', '=', $user->id);
-            })
-            ->leftJoinSub($ratingSubquery, 'rating_info', function ($join) {
-                $join->on('rating_info.contractor_id', '=', 'profiles.id');
-            })
-            ->select('contractor_profiles.*', 
-                    'rating_info.average_rating', 
-                    'rating_info.total_reviews',
-                    'contractor_profile_user.notes as user_preference_notes',
-                    'contractor_profile_user.preference_status as user_preference_status');  // Selecting the preference status
+            // Subquery for average rating and total reviews
+            $ratingSubquery = \DB::table('reviews')
+                ->select('contractor_id', 
+                    \DB::raw('AVG(rating) as average_rating'),
+                    \DB::raw('COUNT(*) as total_reviews'))
+                ->whereNull('deleted_at')  // Exclude soft-deleted records
+                ->groupBy('contractor_id');
         
-        // Apply the where clause for preference status conditionally
-        if ($preferenceStatus) {
-            $query->where('contractor_profile_user.preference_status', $preferenceStatus);
-        }                
-        // Filtering by region
-        if ($regionId) {
-            $query->where('contractor_profiles.region_id', $regionId);
-        }
-
-        // Filtering by preference status
-        if ($preferenceStatus) {
-            // Use a WHERE EXISTS clause to check if a preference_status meets the condition
-            $query->whereExists(function ($subQuery) use ($user, $preferenceStatus) {
-                $subQuery->select(\DB::raw(1))
-                        ->from('contractor_profile_user')
-                        ->whereRaw('contractor_profile_user.contractor_profile_id = contractor_profiles.id')
-                        ->where('contractor_profile_user.user_id', '=', $user->id)
-                        ->where('contractor_profile_user.preference_status', '=', $preferenceStatus);
-            });
-        }
-    
-        // If trade is specified, add a constraint for it
-        if ($tradeId) {
-            $query->whereHas('trades', function ($subQuery) use ($tradeId) {
-                $subQuery->where('trades.id', $tradeId);
-            });
-        }
-
-
-        // Search by name or company name functionality
-        // if ($searchTerm) {
-        //     $query->where(function ($q) use ($searchTerm) {
-        //         $q->where('contractor_profiles.first_name', 'like', '%' . $searchTerm . '%')
-        //         ->orWhere('contractor_profiles.last_name', 'like', '%' . $searchTerm . '%')
-        //         ->orWhere('contractor_profiles.email', 'like', '%' . $searchTerm . '%')
-        //         ->orWhere('contractor_profiles.company_name', 'like', '%' . $searchTerm . '%');
-        //     });
-        // }
-
-
-
-        // Search by name, company, city, state, phone, email, or notes
-        if ($searchTerm) {
-            $query->where(function ($q) use ($searchTerm) {
-                $q->where('contractor_profiles.first_name', 'like', '%' . $searchTerm . '%')
-                ->orWhere('contractor_profiles.last_name', 'like', '%' . $searchTerm . '%')
-                ->orWhereRaw("CONCAT(contractor_profiles.first_name, ' ', contractor_profiles.last_name) LIKE ?", ["%{$searchTerm}%"]) // for full name search
-                ->orWhere('contractor_profiles.company_name', 'like', '%' . $searchTerm . '%')
-                ->orWhere('contractor_profiles.city', 'like', '%' . $searchTerm . '%')
-                ->orWhere('contractor_profiles.state', 'like', '%' . $searchTerm . '%')
-                ->orWhere('contractor_profiles.phone_cell', 'like', '%' . $searchTerm . '%')
-                ->orWhere('contractor_profiles.phone_office', 'like', '%' . $searchTerm . '%')
-                ->orWhere('contractor_profiles.email', 'like', '%' . $searchTerm . '%')
-                // Searching in notes
-                ->orWhere('contractor_profile_user.notes', 'like', '%' . $searchTerm . '%');
-            });
-        }
-
-    
-        // Sort by rating or registration date if requested
-        switch ($sortBy) {
-            case 'high_rated':
-                $query->orderByDesc('average_rating');
-                break;
-            case 'low_rated':
-                $query->orderBy('average_rating');
-                break;
-            case 'newly_registered':
-                $query->orderByDesc('contractor_profiles.created_at');
-                break;
-            case 'oldest_registered':
-                $query->orderBy('contractor_profiles.created_at');
-                break;
-        }
-    
-        // Get the paginated result
-        $contractors = $query->paginate($perPage, ['*'], 'page', $page);
-    
-        // Transform the pagination result to include trades in the specified format
-        $contractors->getCollection()->transform(function ($contractor) {
-            $tradesArray = [];
-
-            // Initialize all trades to 0
-            for ($i = 1; $i <= 30; $i++) {
-                $tradesArray["trade$i"] = 0;
+            // Start the query for contractor_profiles
+            $query = ContractorProfile::with('trades:id')
+                ->join('profiles', 'profiles.user_id', '=', 'contractor_profiles.user_id')
+                ->leftJoin('contractor_profile_user', function($join) use ($user) {
+                    $join->on('contractor_profile_user.contractor_profile_id', '=', 'contractor_profiles.id')
+                        ->where('contractor_profile_user.user_id', '=', $user->id);
+                })
+                ->leftJoinSub($ratingSubquery, 'rating_info', function ($join) {
+                    $join->on('rating_info.contractor_id', '=', 'profiles.id');
+                })
+                ->select('contractor_profiles.*', 
+                        'rating_info.average_rating', 
+                        'rating_info.total_reviews',
+                        'contractor_profile_user.notes as user_preference_notes',
+                        'contractor_profile_user.preference_status as user_preference_status');  // Selecting the preference status
+            
+            // Apply the where clause for preference status conditionally
+            if ($preferenceStatus) {
+                $query->where('contractor_profile_user.preference_status', $preferenceStatus);
+            }                
+            // Filtering by region
+            if ($regionId) {
+                $query->where('contractor_profiles.region_id', $regionId);
             }
 
-            // Now set to 1 if the trade is present for the contractor
-            foreach ($contractor->trades as $trade) {
-                $tradesArray["trade{$trade->id}"] = 1;
+            // Filtering by preference status
+            if ($preferenceStatus) {
+                // Use a WHERE EXISTS clause to check if a preference_status meets the condition
+                $query->whereExists(function ($subQuery) use ($user, $preferenceStatus) {
+                    $subQuery->select(\DB::raw(1))
+                            ->from('contractor_profile_user')
+                            ->whereRaw('contractor_profile_user.contractor_profile_id = contractor_profiles.id')
+                            ->where('contractor_profile_user.user_id', '=', $user->id)
+                            ->where('contractor_profile_user.preference_status', '=', $preferenceStatus);
+                });
+            }
+        
+            // If trade is specified, add a constraint for it
+            if ($tradeId) {
+                $query->whereHas('trades', function ($subQuery) use ($tradeId) {
+                    $subQuery->where('trades.id', $tradeId);
+                });
             }
 
-            // Remove the original trades relationship
-            unset($contractor->trades);
 
-            // Convert the Eloquent Model to an array for modification
-            $contractorArray = $contractor->toArray();
-                
-            // Merge the transformed trades into the contractor object
-            $contractor = array_merge($contractorArray, $tradesArray);
 
-            // Add preference status and notes to the contractor object with a fallback to null
-            $contractor['preference_status'] = $contractorArray['preference_status'] ?? null;
-            $contractor['notes'] = $contractorArray['user_preference_notes'] ?? null;
+            // Search by name, company, city, state, phone, email, or notes
+            if ($searchTerm) {
+                $query->where(function ($q) use ($searchTerm) {
+                    $q->where('contractor_profiles.first_name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('contractor_profiles.last_name', 'like', '%' . $searchTerm . '%')
+                    ->orWhereRaw("CONCAT(contractor_profiles.first_name, ' ', contractor_profiles.last_name) LIKE ?", ["%{$searchTerm}%"]) // for full name search
+                    ->orWhere('contractor_profiles.company_name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('contractor_profiles.city', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('contractor_profiles.state', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('contractor_profiles.phone_cell', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('contractor_profiles.phone_office', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('contractor_profiles.email', 'like', '%' . $searchTerm . '%')
+                    // Searching in notes
+                    ->orWhere('contractor_profile_user.notes', 'like', '%' . $searchTerm . '%');
+                });
+            }
 
-            // Add total_reviews to the contractor object
-            // Accessing 'total_reviews' from $contractorArray since it's an array
-            $contractor['total_reviews'] = $contractorArray['total_reviews'];
+        
+            // Sort by rating or registration date if requested
+            switch ($sortBy) {
+                case 'high_rated':
+                    $query->orderByDesc('average_rating');
+                    break;
+                case 'low_rated':
+                    $query->orderBy('average_rating');
+                    break;
+                case 'newly_registered':
+                    $query->orderByDesc('contractor_profiles.created_at');
+                    break;
+                case 'oldest_registered':
+                    $query->orderBy('contractor_profiles.created_at');
+                    break;
+            }
+        
+            // Get the paginated result
+            $contractors = $query->paginate($perPage, ['*'], 'page', $page);
+        
+            // Transform the pagination result to include trades in the specified format
+            $contractors->getCollection()->transform(function ($contractor) {
+                $tradesArray = [];
 
-            // Add user preference status to the contractor object
-            $contractor['preference_status'] = $contractor['user_preference_status'] ?? null;
+                // Initialize all trades to 0
+                for ($i = 1; $i <= 30; $i++) {
+                    $tradesArray["trade$i"] = 0;
+                }
 
-            return $contractor;          
-        });
-    
-        // Construct the response with contractors and pagination information
-        return response()->json([
-            'contractors' => $contractors->items(),
-            'pagination' => [
-                'current_page' => $contractors->currentPage(),
-                'last_page' => $contractors->lastPage(),
-                'per_page' => $contractors->perPage(),
-                'total' => $contractors->total(),
-            ],
-        ]);
+                // Now set to 1 if the trade is present for the contractor
+                foreach ($contractor->trades as $trade) {
+                    $tradesArray["trade{$trade->id}"] = 1;
+                }
+
+                // Remove the original trades relationship
+                unset($contractor->trades);
+
+                // Convert the Eloquent Model to an array for modification
+                $contractorArray = $contractor->toArray();
+                    
+                // Merge the transformed trades into the contractor object
+                $contractor = array_merge($contractorArray, $tradesArray);
+
+                // Add preference status and notes to the contractor object with a fallback to null
+                $contractor['preference_status'] = $contractorArray['preference_status'] ?? null;
+                $contractor['notes'] = $contractorArray['user_preference_notes'] ?? null;
+
+                // Add total_reviews to the contractor object
+                // Accessing 'total_reviews' from $contractorArray since it's an array
+                $contractor['total_reviews'] = $contractorArray['total_reviews'];
+
+                // Add user preference status to the contractor object
+                $contractor['preference_status'] = $contractor['user_preference_status'] ?? null;
+
+                return $contractor;          
+            });
+        
+            // Construct the response with contractors and pagination information
+            return response()->json([
+                'contractors' => $contractors->items(),
+                'pagination' => [
+                    'current_page' => $contractors->currentPage(),
+                    'last_page' => $contractors->lastPage(),
+                    'per_page' => $contractors->perPage(),
+                    'total' => $contractors->total(),
+                ],
+            ]);
+        } else {
+            return response()->json([
+                'contractors' => [],
+                'error' => "You have reached your search limit for this month.",
+                'pagination' => [
+                    'current_page' => 1,
+                    'last_page' => 1,
+                    'per_page' => 15,
+                    'total' => 0,
+                ],
+            ]);
+        }
     }
         
 

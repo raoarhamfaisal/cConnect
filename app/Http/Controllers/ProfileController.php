@@ -9,6 +9,8 @@ use App\Models\Post;
 use App\Models\Profile;
 use App\Models\ContractorProfile;
 use App\Models\Region;
+use App\Models\UserVersionDetail;
+use App\Models\VersionDefault;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request as FacadeRequest;
@@ -99,7 +101,64 @@ class ProfileController extends Controller
                     ]
                 ]
             ]
-        ];            
+        ];  
+        
+        $versionDefault = VersionDefault::find(1);
+    
+
+        // Update or create user version details with the fetched version defaults
+        $userVersionDetail = UserVersionDetail::updateOrCreate(
+            ['user_id' => $userID], // Conditions to find the record
+            [ // Values to update or create
+                'nf_ppm' => $versionDefault->nf_ppm,
+                'nf_ipp' => $versionDefault->nf_ipp,
+                'nf_title' => $versionDefault->nf_title,
+                'nf_bottom' => $versionDefault->nf_bottom,
+                'nf_comments' => $versionDefault->nf_comments,
+                'nf_repost' => $versionDefault->nf_repost,
+                'sf_search' => $versionDefault->sf_search,
+                'sf_tracking' => $versionDefault->sf_tracking,
+                'sf_notes' => $versionDefault->sf_notes,
+                'sf_info' => $versionDefault->sf_info,
+                'nf_ppm' => $versionDefault->nf_ppm,
+                'nf_ipp' => $versionDefault->nf_ipp,
+                'nf_title' => $versionDefault->nf_title,
+                'nf_bottom' => $versionDefault->nf_bottom,
+                'nf_comments' => $versionDefault->nf_comments,
+                'nf_repost' => $versionDefault->nf_repost,
+                'nf_future1' => $versionDefault->nf_future1,
+                'nf_future2' => $versionDefault->nf_future2,
+                'sf_search' => $versionDefault->sf_search,
+                'sf_last_search_month' => now()->month,
+                'sf_tracking' => $versionDefault->sf_tracking,
+                'sf_notes' => $versionDefault->sf_notes,
+                'sf_info' => $versionDefault->sf_info,
+                'sf_future1' => $versionDefault->sf_future1,
+                'sf_future2' => $versionDefault->sf_future2,
+                'tg_members' => $versionDefault->tg_members,
+                'tg_post' => $versionDefault->tg_post,
+                'tg_view_all' => $versionDefault->tg_view_all,
+                'tg_future1' => $versionDefault->tg_future1,
+                'tg_future2' => $versionDefault->tg_future2,
+                'rf_access' => $versionDefault->rf_access,
+                'rf_customers' => $versionDefault->rf_customers,
+                'rf_sales' => $versionDefault->rf_sales,
+                'rf_contractor' => $versionDefault->rf_contractor,
+                'rf_future1' => $versionDefault->rf_future1,
+                'rf_future2' => $versionDefault->rf_future2,
+                're_reviews' => $versionDefault->re_reviews,
+                're_feedback' => $versionDefault->re_feedback,
+                're_appeal' => $versionDefault->re_appeal,
+                're_future1' => $versionDefault->re_future1,
+                're_future2' => $versionDefault->re_future2,
+                'cp_template' => $versionDefault->cp_template,
+                'cp_color' => $versionDefault->cp_color,
+                'cp_share' => $versionDefault->cp_share,
+                'cp_future1' => $versionDefault->cp_future1,
+                'cp_future2' => $versionDefault->cp_future2,
+                // Add other fields from $versionDefault as needed
+            ]
+        );
     
 
         return response()->json($paymentSuccessResponse);

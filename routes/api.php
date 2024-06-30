@@ -153,6 +153,9 @@ Route::post('/translations', [TranslationController::class, 'store']);
         Route::patch('/posts/{post}/edit-repost', [PostController::class, 'editRepost']);
 
 
+        
+        Route::get('/user/version-details', [UserController::class, 'getUserVersionDetails']);
+
 
         
 

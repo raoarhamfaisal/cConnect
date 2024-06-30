@@ -66,6 +66,12 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
 
+    public function versionDetail()
+    {
+        return $this->hasOne(UserVersionDetail::class);
+    }
+
+
 
 
 }
