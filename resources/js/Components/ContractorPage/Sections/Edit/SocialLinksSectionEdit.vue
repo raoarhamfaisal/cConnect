@@ -14,7 +14,7 @@
           marginBottom: '8px',
           fontSize: screenWidth > 640 ? '24px' : '20px',
         }"
-        :heading="`Social Links`"
+        :heading="translations && translations.social_links"
       />
       <IconButton @click="openDialog" icon="nimbus:edit" color="#1864ab" />
     </div>
@@ -97,9 +97,11 @@
     ref="dialogRef"
     :title="`${
       !website_url && !facebook && !twitter && !tiktok && !instagram
-        ? 'Add'
+        ? translations && translations.add
         : translations && translations.edit
-    } Your Social Links`"
+    } ${translations && translations.your} ${
+      translations && translations.social_links
+    } `"
   >
     <div
       class="mt-6 space-y-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-4"

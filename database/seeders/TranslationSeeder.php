@@ -697,12 +697,12 @@ class TranslationSeeder extends Seeder
              ['key' => 'paid_on_time', 'english' => 'Paid on time', 'mexican_spanish' => 'Pagado a Tiempo', 'created_at' => now(), 'updated_at' => now()],
              ['key' => 'give_full_payment', 'english' => 'Give full payment', 'mexican_spanish' => 'Realizar el Pago Completo', 'created_at' => now(), 'updated_at' => now()],
              ['key' => 'reviews', 'english' => 'Reviews', 'mexican_spanish' => 'Opiniones', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'follow_us_on', 'english' => 'Follow us on', 'mexican_spanish' => 'Síguenos en', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'contact_info', 'english' => 'Contact Info', 'mexican_spanish' => 'Información de Contacto', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'social_links', 'english' => 'Social Links', 'mexican_spanish' => 'Enlaces Sociales', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'your', 'english' => 'Your', 'mexican_spanish' => 'Su', 'created_at' => now(), 'updated_at' => now()],
 
-
-            ['key' => 'goodbye', 'english' => 'Follow us on', 'mexican_spanish' => 'Adiós', 'created_at' => now(), 'updated_at' => now()],
-            ['key' => 'goodbye', 'english' => 'Contact Info', 'mexican_spanish' => 'Adiós', 'created_at' => now(), 'updated_at' => now()],
-            ['key' => 'welcome', 'english' => 'Social Links', 'mexican_spanish' => 'Bienvenido', 'created_at' => now(), 'updated_at' => now()],
-            ['key' => 'goodbye', 'english' => 'Goodbye', 'mexican_spanish' => 'Adiós', 'created_at' => now(), 'updated_at' => now()],
+    
 
     
             

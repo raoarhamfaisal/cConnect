@@ -14,7 +14,7 @@
           marginBottom: '8px',
           fontSize: screenWidth > 640 ? '24px' : '20px',
         }"
-        :heading="`Social Links`"
+        :heading="translations && translations.social_links"
       />
     </div>
     <div
@@ -71,12 +71,16 @@ import Card from "@/Components/Card.vue";
 
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import { ref } from "vue";
+import { useStore } from "vuex";
 
 // State
 const props = defineProps({
   profile: Object,
   screenWidth: Number,
 });
+const store = useStore();
+
+const translations = computed(() => store.getters.translations);
 
 const website_url = ref(props.profile.website_url);
 const facebook = ref(props.profile.facebook);

@@ -132,7 +132,7 @@
             <Icon v-bind="props" icon="logos:facebook" class="" />
           </template>
         </v-tooltip>
-        <div>Follow us on Facebook</div>
+        <div>{{ translations && translations.follow_us_on }} Facebook</div>
       </a>
 
       <!-- For Twitter -->
@@ -147,7 +147,7 @@
             />
           </template>
         </v-tooltip>
-        <div>Follow us on Twitter</div>
+        <div>{{ translations && translations.follow_us_on }} Twitter</div>
       </a>
 
       <!-- For TikTok -->
@@ -157,7 +157,7 @@
             <Icon v-bind="props" icon="logos:tiktok-icon" class="" />
           </template>
         </v-tooltip>
-        <div>Follow us on Tiktok</div>
+        <div>{{ translations && translations.follow_us_on }} Tiktok</div>
       </a>
 
       <!-- For Instagram -->
@@ -167,7 +167,7 @@
             <Icon v-bind="props" icon="skill-icons:instagram" class="" />
           </template>
         </v-tooltip>
-        <div>Follow us on Instagram</div>
+        <div>{{ translations && translations.follow_us_on }} Instagram</div>
       </a>
     </div>
   </div>
@@ -206,6 +206,8 @@ const zipcode = ref(props.profile.zipcode);
 const selectedColorScheme = computed(
   () => store.state.contractor.selectedColorScheme || template1Default
 );
+const translations = computed(() => store.getters.translations);
+
 const absoluteUrl = (url) => {
   if (!url) return "";
   if (url.startsWith("http://") || url.startsWith("https://")) {

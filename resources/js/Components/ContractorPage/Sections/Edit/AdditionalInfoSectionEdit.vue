@@ -14,7 +14,7 @@
           fontWeight: 800,
           fontSize: screenWidth > 640 ? '24px' : '20px',
         }"
-        :heading="`Contact Info`"
+        :heading="translations && translations.contact_info"
       />
       <IconButton @click="openDialog" icon="nimbus:edit" color="#1864ab" />
     </div>
@@ -404,21 +404,27 @@ const validateForm = () => {
     isValid = false;
   }
   if (tempCompanyProfile.phone_cell?.trim().length > 13) {
-    errors.phone_cell = "Phone number must not be greater than 13 numbers";
+    errors.phone_cell =
+      translations.value &&
+      translations.value.phone_number_must_not_be_greater_than_13_numbers;
     isValid = false;
   }
   if (tempCompanyProfile.phone_office?.trim().length > 13) {
-    errors.phone_office = "Phone Office must not be greater than 13 numbers";
+    errors.phone_office =
+      translations.value &&
+      translations.value.phone_office_must_not_be_greater_than_13_numbers;
     isValid = false;
   }
   // Validate address_1
   if (!tempCompanyProfile.address_1?.trim()) {
-    errors.address_1 = "Address 1 is required";
+    errors.address_1 =
+      translations.value && translations.value.address_1_is_required;
     isValid = false;
   }
   // Validate company_name
   if (!tempCompanyProfile.company_name?.trim()) {
-    errors.company_name = "Company name is required";
+    errors.company_name =
+      translations.value && translations.value.company_name_is_required;
     isValid = false;
   }
 
@@ -448,7 +454,7 @@ const validateForm = () => {
   }
   // Validate county
   if (!tempCompanyProfile.county?.trim()) {
-    errors.county = "County is required";
+    errors.county = translations.value && translations.value.county_is_required;
     isValid = false;
   }
 
