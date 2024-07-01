@@ -27,6 +27,10 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  alwaysFalse: {
+    type: Boolean,
+    default: false,
+  },
   tooltipText: {
     type: String,
     default: "",
@@ -40,7 +44,9 @@ const showTooltip = ref(false);
 
 // Toggle the isSelected state
 const toggleSelect = () => {
-  if (!props.allowToggle) {
+  if (props.alwaysFalse) {
+    isSelected.value = false;
+  } else if (!props.allowToggle) {
     isSelected.value = true;
   } else if (props.allowToggle) {
     isSelected.value = !isSelected.value;

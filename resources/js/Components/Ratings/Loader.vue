@@ -7,7 +7,9 @@
     <component v-if="customLoader" :is="customLoader"></component>
     <div v-else :class="classes">
       <div :class="`loading-circle ${circleClasses}`"></div>
-      <p :class="`loading-text ${textClasses}`">{{ text }}</p>
+      <p :class="`loading-text ${textClasses}`">
+        {{ text === "Loading" ? translations && translations.loading : text }}
+      </p>
     </div>
   </div>
 </template>

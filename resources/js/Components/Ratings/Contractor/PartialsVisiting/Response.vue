@@ -21,7 +21,7 @@
               bgColor="bg-lime-700"
               icon="material-symbols:edit-sharp"
               @click="openEditDialog"
-              >Edit</ButtonRatings
+              >{{ translations && translations.edit }}</ButtonRatings
             >
 
             <ButtonRatings

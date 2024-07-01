@@ -238,24 +238,13 @@
             >
               {{ translations && translations.sub_finder }}
             </ResponsiveNavLink>
-            <ResponsiveNavLink
+            <div
+              class="block w-full pl-3 pr-4 py-2 border-l-4 border-transparent text-left text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out font-bold cursor-pointer"
               v-if="showit"
-              :href="
-                profile && profile.is_payment_verified && profile.active_user
-                  ? 'red-flag'
-                  : profile &&
-                    (!profile.is_payment_verified || !profile.active_user)
-                  ? !profile.is_payment_verified && !profile.active_user
-                    ? '/profile-setup'
-                    : !profile.is_payment_verified && profile.active_user
-                    ? '/pricing-plan'
-                    : '/inactive-account'
-                  : '/inactive-account'
-              "
-              class="font-bold"
+              @click="goToRedFlagPage"
             >
               {{ translations && translations.red_flags }}
-            </ResponsiveNavLink>
+            </div>
 
             <!-- <ResponsiveNavLink
                 v-if="showit"
@@ -458,6 +447,9 @@
       </div>
     </nav>
   </header>
+  <Teleport to="body">
+    <DialogUpgradeToGoldPlatinum ref="upgradeToGoldPlatinumDialogRef" />
+  </Teleport>
 </template>
 <script setup>
 import { Link, usePage } from "@inertiajs/inertia-vue3";
@@ -468,6 +460,7 @@ import { Inertia } from "@inertiajs/inertia";
 import { getToken, removeToken } from "@/helpers/localStorageHelper";
 import { useStore } from "vuex";
 import { Icon } from "@iconify/vue";
+import DialogUpgradeToGoldPlatinum from "@/Components/DialogUpgradeToGoldPlatinum.vue";
 
 defineProps({
   showit: Boolean,
@@ -492,7 +485,11 @@ if (!lang) {
   localStorage.setItem("lang", "english");
 }
 const selectedLanguage = ref(lang);
+const upgradeToGoldPlatinumDialogRef = ref(null);
+
 const translations = computed(() => store.getters.translations);
+const userVersion = computed(() => store.getters.userVersion);
+const profile = computed(() => store.state.profile.profile);
 
 //Computed
 
@@ -508,8 +505,6 @@ const isAdminUrl = computed(() => {
   }
   return false;
 });
-
-const profile = computed(() => store.state.profile.profile);
 
 // Methods
 
@@ -546,5 +541,36 @@ const onSelectLang = (lang) => {
   localStorage.setItem("lang", lang);
   selectedLanguage.value = lang;
   store.commit("setTranlations", lang);
+};
+const goToRedFlagPage = (event) => {
+  if (
+    profile.value &&
+    profile.value.id &&
+    profile.value.is_payment_verified &&
+    profile.value.active_user &&
+    userVersion.value !== 0 &&
+    userVersion.value !== 1
+  ) {
+    Inertia.visit("red-flag");
+  } else if (
+    profile.value &&
+    profile.value.id &&
+    (!profile.value.is_payment_verified || !profile.value.active_user)
+  ) {
+    if (!profile.value.is_payment_verified && !profile.value.active_user) {
+      Inertia.visit("/profile-setup");
+    } else if (
+      !profile.value.is_payment_verified &&
+      profile.value.active_user
+    ) {
+      Inertia.visit("/pricing-plan");
+    } else {
+      Inertia.visit("/inactive-account");
+    }
+  } else if (userVersion.value === 0 || userVersion.value === 1) {
+    upgradeToGoldPlatinumDialogRef.value.openDialog();
+  } else {
+    Inertia.visit("/inactive-account");
+  }
 };
 </script>

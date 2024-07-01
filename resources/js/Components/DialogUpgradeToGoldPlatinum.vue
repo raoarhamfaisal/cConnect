@@ -4,6 +4,8 @@
     :showFooter="false"
     :disableOutSideClick="false"
     dialogWidth="width-40"
+    upgradeDialog
+    style="z-index: 100"
     :title="translations && translations.upgrade_required"
     contentClasses="max-sm:p-0 bg-gray-200 sm:pt-4"
   >
@@ -64,6 +66,13 @@ import { Inertia } from "@inertiajs/inertia";
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 
+const props = defineProps({
+  additionalMessage: {
+    type: String,
+    default: null,
+  },
+});
+
 const store = useStore();
 
 const dialogRef = ref();
@@ -75,8 +84,19 @@ const onUpgrade = () => {
   Inertia.visit("/settings");
 };
 //Exposed
+let closeDialogTimeoutId;
 const openDialog = () => {
-  return dialogRef.value.openDialog();
+  dialogRef.value.openDialog();
+  if (closeDialogTimeoutId) {
+    clearTimeout(closeDialogTimeoutId);
+  }
+
+  // Set a new timeout to automatically close the dialog after 5 seconds
+  closeDialogTimeoutId = setTimeout(() => {
+    if (dialogRef.value) {
+      dialogRef.value.closeDialog();
+    }
+  }, 5000);
 };
 defineExpose({ openDialog });
 </script>

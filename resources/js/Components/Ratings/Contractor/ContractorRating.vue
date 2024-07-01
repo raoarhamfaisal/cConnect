@@ -115,7 +115,10 @@
         :padding="screenWidth < 640 ? '7px' : '20px'"
       >
         <div class="mb-6 border-gray-300">
-          <heading-card heading="Reviews" class="mt-4 mb-6" />
+          <heading-card
+            :heading="translations && translations.reviews"
+            class="mt-4 mb-6"
+          />
 
           <div
             v-if="contractorReviews && contractorReviews.length > 0"
@@ -240,6 +243,7 @@ onMounted(async () => {
 //Computed
 
 const screenWidth = computed(() => store.getters.screenWidth);
+const translations = computed(() => store.getters.translations);
 const reviewId = computed(() => store.state.ratings.reviewId);
 const responseId = computed(() => store.state.ratings.responseId);
 const updatedReview = computed(() => store.state.ratings.updatedReview);

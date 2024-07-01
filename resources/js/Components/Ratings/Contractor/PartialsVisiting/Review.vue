@@ -64,8 +64,9 @@
           </div>
         </div>
         <Badge
-          class="bg-orange-500 self-end"
-          v-if="review.is_under_appeal && screenWidth < 900"
+          class="bg-orange-500"
+          :class="`${screenWidth <= 390 ? 'self-start mt-1' : 'self-end'}`"
+          v-if="review.is_under_appeal && screenWidth <= 900"
           :style="{
             transform:
               screenWidth < 640 && screenWidth > 460
@@ -74,6 +75,29 @@
           }"
           >{{ translations && translations.under_appeal }}</Badge
         >
+        <!-- Submit appeal -->
+        <div
+          class="text-left mt-1"
+          v-if="
+            !review.is_under_appeal &&
+            !review.is_appeal_already_accepted_or_rejected &&
+            showAppeal &&
+            screenWidth <= 900
+          "
+        >
+          <Button
+            @onSelect="handleAppeal"
+            :alwaysFalse="userVersion === 1"
+            tooltipText="Submit your appeal"
+            :style="{
+              boxShadow:
+                '0px 0px 3px rgba(0, 0, 0, 0.12), 0px 0px 2px rgba(0, 0, 0, 0.12)',
+              padding: '5px 10px',
+            }"
+            class="text-lg text-gray-600 font-semibold rounded-lg"
+            ><Icon icon="mdi:hand"
+          /></Button>
+        </div>
       </div>
     </div>
 
@@ -95,7 +119,7 @@
           bgColor="bg-lime-700"
           icon="material-symbols:edit-sharp"
           @click="openEditDialog"
-          >Edit</ButtonRatings
+          >{{ translations && translations.edit }}</ButtonRatings
         >
 
         <ButtonRatings
@@ -105,9 +129,9 @@
           >{{ translations && translations.delete }}</ButtonRatings
         >
       </div>
-      <Badge class="bg-orange-500" v-if="review.is_under_appeal"
-        >Under Appeal</Badge
-      >
+      <Badge class="bg-orange-500" v-if="review.is_under_appeal">{{
+        translations && translations.under_appeal
+      }}</Badge>
       <!-- Submit appeal -->
       <div
         class="text-right"
@@ -118,6 +142,7 @@
         "
       >
         <Button
+          :alwaysFalse="userVersion === 1"
           @onSelect="handleAppeal"
           tooltipText="Submit your appeal"
           :style="{
@@ -212,7 +237,7 @@
       bgColor="bg-lime-700"
       icon="material-symbols:edit-sharp"
       @click="openEditDialog"
-      >Edit</ButtonRatings
+      >{{ translations && translations.edit }}</ButtonRatings
     >
 
     <ButtonRatings
@@ -338,6 +363,7 @@ const appealReasonError = ref("");
 const loading = computed(() => store.state.ratings.loading);
 const screenWidth = computed(() => store.getters.screenWidth);
 const translations = computed(() => store.getters.translations);
+const userVersion = computed(() => store.getters.userVersion);
 const disabled = computed(() => store.state.ratings.disabled);
 //watch
 
@@ -380,6 +406,10 @@ const handleAppealSubmit = async () => {
   }
 };
 const handleAppeal = () => {
+  if (userVersion.value === 1) {
+    store.commit("setIsUpgradeToGoldPlatinumDialogOpen", true);
+    return;
+  }
   showAppealArea.value = !showAppealArea.value;
 };
 
@@ -397,22 +427,22 @@ const showFullReview = ref(false);
 const questionsMapping = [
   {
     field: "hired_by_contractor",
-    question: "I Hired Contractor",
+    question: translations.value && translations.value.i_hired_contractor,
     id: 1,
   },
   {
     field: "hired_contractor",
-    question: "Contractor hired me",
+    question: translations.value && translations.value.contractor_hired_me,
     id: 2,
   },
   {
     field: "paid_on_time",
-    question: "Paid on time",
+    question: translations.value && translations.value.paid_on_time,
     id: 3,
   },
   {
     field: "give_full_payment",
-    question: "Give full payment",
+    question: translations.value && translations.value.give_full_payment,
     id: 4,
   },
 ];

@@ -172,6 +172,10 @@ const props = defineProps({
     type: String,
     default: "Cancel",
   },
+  upgradeDialog: {
+    type: Boolean,
+    default: false,
+  },
 });
 const emit = defineEmits(["submit", "closed", "opened"]);
 const submit = () => {
@@ -191,9 +195,13 @@ const closeDialog = () => {
   if (props.dontAllowCancel) {
     return;
   }
-  console.log("false");
+
+  if (props.upgradeDialog) {
+    store.commit("setIsUpgradeToGoldPlatinumDialogOpen", false);
+  }
   isVisible.value = false;
   emit("closed");
+
   if (shouldFetchPostsOnClose.value && props.shouldFetchPost) {
     console.log("inLoadingPost");
     store.commit("ratings/setShouldLoadPosts", true);
@@ -264,6 +272,9 @@ defineExpose({ openDialog, closeDialog });
     width: 95%;
     max-height: 95%;
     border-radius: 10px;
+  }
+  .width-75.contractorDialog div {
+    padding: 0px;
   }
 }
 

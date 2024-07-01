@@ -32,7 +32,9 @@
               :isIndicatorActive="false"
             />
           </div>
-          <span class="ml-6">{{ length }} reviews</span>
+          <span class="ml-6 lowercase"
+            >{{ length }} {{ translations && translations.reviews }}</span
+          >
         </div>
         <div v-if="contractorId" class="self-end">
           <Link :href="`/ratings/${contractorId}`">

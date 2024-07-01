@@ -43,10 +43,14 @@
     />
   </div>
   <Loader :loading="loading" background="transparent" height="70vh"></Loader>
+  <Teleport to="body">
+    <DialogUpgradeToGoldPlatinum ref="upgradeToGoldPlatinumDialogRef" />
+  </Teleport>
 </template>
 
 <script setup>
 import { Head } from "@inertiajs/inertia-vue3";
+import DialogUpgradeToGoldPlatinum from "@/Components/DialogUpgradeToGoldPlatinum.vue";
 
 import Loader from "@/Components/Ratings/Loader.vue";
 import ContractorLayout from "@/Components/ContractorPage/ContractorLayout.vue";
@@ -72,6 +76,8 @@ const firstTime = ref(true);
 const starPercentages = ref([]);
 const average_rating = ref(null);
 const contractorProfile = ref({});
+const upgradeToGoldPlatinumDialogRef = ref(null);
+
 const total_reviews = ref(0);
 
 onMounted(() => {
@@ -82,10 +88,24 @@ onMounted(() => {
 const selectedTemplate = computed(
   () => store.state.contractor.selectedTemplate
 );
+const isUpgradeToGoldPlatinumDialogOpen = computed(
+  () => store.getters.isUpgradeToGoldPlatinumDialogOpen
+);
+
 const selectedColorScheme = computed(
   () => store.state.contractor.selectedColorScheme || template1Default
 );
 const shouldLoad = computed(() => store.state.ratings.shouldFetchPostsOnClose);
+
+watch(
+  () => isUpgradeToGoldPlatinumDialogOpen.value,
+  (newVal, oldVal) => {
+    if (newVal) {
+      upgradeToGoldPlatinumDialogRef.value.openDialog();
+    }
+    // Optionally, handle oldVal or add logic for when newVal is false
+  }
+);
 watch(shouldLoad, async () => {
   if (shouldLoad) {
     try {

@@ -75,6 +75,8 @@ const store = useStore();
 //Computed
 const screenWidth = computed(() => store.getters.screenWidth);
 const translations = computed(() => store.getters.translations);
+const userVersion = computed(() => store.getters.userVersion);
+const userDetails = computed(() => store.getters.userDetails);
 
 //Mounted
 onMounted(async () => {
@@ -112,13 +114,15 @@ const handleSelect = async () => {
 };
 
 const submitSearchTerm = () => {
-  atButtonClickSearchTerm.value = searchTerm.value;
-  basedOnSearch.value = true;
-  if (screenWidth.value < 640) {
-    showAdvanceFiltersButton.value = true;
-    showAdvanceFilters.value = false;
+  if (searchCounterNotZero()) {
+    atButtonClickSearchTerm.value = searchTerm.value;
+    basedOnSearch.value = true;
+    if (screenWidth.value < 640) {
+      showAdvanceFiltersButton.value = true;
+      showAdvanceFilters.value = false;
+    }
+    fetchSearchedContractorsWithLoading();
   }
-  fetchSearchedContractorsWithLoading();
 };
 const changeReferal = (value) => {
   selectedReferal.value = value;
@@ -141,13 +145,15 @@ const changeTrade = (value) => {
   console.log(tradeKeys[0], "tradeKeys[0]", trade_id.value);
 };
 const onFindASub = () => {
-  atButtonClickSearchTerm.value = "true";
-  if (screenWidth.value < 640) {
-    showAdvanceFiltersButton.value = true;
-    showAdvanceFilters.value = false;
+  if (searchCounterNotZero()) {
+    atButtonClickSearchTerm.value = "true";
+    if (screenWidth.value < 640) {
+      showAdvanceFiltersButton.value = true;
+      showAdvanceFilters.value = false;
+    }
+    basedOnSearch.value = false;
+    fetchSearchedContractorsWithLoading();
   }
-  basedOnSearch.value = false;
-  fetchSearchedContractorsWithLoading();
 };
 
 // Display contractor logic
@@ -180,7 +186,9 @@ const buttonData = computed(() => [
 const preference_status = ref(""); // Use the value from buttonData as default
 
 const selectButton = (value) => {
-  preference_status.value = value;
+  if (searchCounterNotZero()) {
+    preference_status.value = value;
+  }
 };
 
 const buttonClass = (value) => [
@@ -231,7 +239,9 @@ const sortButtonData = computed(() => [
 const selectedSort = ref("high_rated"); // Default selected value
 
 const selectSort = (value) => {
-  selectedSort.value = value;
+  if (searchCounterNotZero()) {
+    selectedSort.value = value;
+  }
 };
 
 const sortButtonClass = (value) => [
@@ -289,6 +299,7 @@ const fetchSearchedContractors = async (
       foundContractors.value = [...response.data.contractors];
     }
     pagination.value = response.data.pagination;
+    store.dispatch("fetchUserDetails");
 
     // Extracting the star counts
   } catch (err) {
@@ -301,12 +312,28 @@ const fetchSearchedContractorsWithLoading = async () => {
   await fetchSearchedContractors();
   loading.value = false;
 };
+
+const searchCounterNotZero = () => {
+  let isValid = true;
+  if (userDetails.value.sf_search === 0) {
+    if (userVersion.value === 1) {
+      opneUpgradeToGoldPlatinumDialog();
+      isValid = false;
+    }
+  }
+  return isValid;
+};
+
+const opneUpgradeToGoldPlatinumDialog = () => {
+  store.commit("setIsUpgradeToGoldPlatinumDialogOpen", true);
+};
 </script>
 
 <template>
   <Head :title="translations && translations.sub_finder" />
 
   <Header
+    shouldFetchUserDetails
     :profile="profile"
     :show-post-buttons="false"
     :post-search-filters="postSearchFilters"
@@ -349,7 +376,7 @@ const fetchSearchedContractorsWithLoading = async () => {
 
             <button
               @click="submitSearchTerm"
-              class="absolute right-0 top-0 h-[42px] z-10 flex items-center px-4 py-1.5 text-xs font-medium uppercase leading-tight rounded-r-md border-l border-solid border-gray-600 text-white bg-blue-600 transition duration-150 ease-in-out hover:bg-blue-800 hover:shadow-lg"
+              class="absolute right-0 top-0 h-[42px] z-[2] flex items-center px-3 py-1.5 text-xs font-medium uppercase leading-tight rounded-r-md border-l border-solid border-gray-600 text-white bg-blue-600 transition duration-150 ease-in-out hover:bg-blue-800 hover:shadow-lg"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -363,6 +390,17 @@ const fetchSearchedContractorsWithLoading = async () => {
                   clip-rule="evenodd"
                 />
               </svg>
+              <div
+                v-if="
+                  userDetails.sf_search !== 99 &&
+                  userVersion === 1 &&
+                  userDetails &&
+                  Object.keys(userDetails).length > 0
+                "
+                class="flex justify-center xs:ml-[2px] items-center px-2 py-[6px] text-[10px] xs:text-[12px] rounded-full bg-gray-600 text-white leading-[1] font-bold"
+              >
+                {{ userDetails.sf_search }}
+              </div>
             </button>
           </div>
         </div>
@@ -460,6 +498,17 @@ const fetchSearchedContractorsWithLoading = async () => {
             class="border-2 mt-5 w-full sm:w-auto flex items-center justify-center border-2 border-teal-green bg-teal-green text-white font-semibold text-xl py-2 px-4 rounded transition transform duration-300 hover:shadow-lg active:scale-95"
           >
             {{ translations && translations.find_a_sub }}
+            <div
+              v-if="
+                userDetails.sf_search !== 99 &&
+                userVersion === 1 &&
+                userDetails &&
+                Object.keys(userDetails).length > 0
+              "
+              class="flex justify-center ml-2 items-center px-[8px] py-[5px] text-[12px] xs:text-[14px] rounded-full bg-white text-black leading-[0.95] font-bold"
+            >
+              {{ userDetails.sf_search }}
+            </div>
           </button>
         </div>
       </transition>
@@ -491,6 +540,7 @@ const fetchSearchedContractorsWithLoading = async () => {
             :key="contractor.id"
             :contractor="contractor"
             :region_name="selectedName"
+            @opneUpgradeToGoldPlatinumDialog="opneUpgradeToGoldPlatinumDialog"
           />
         </div>
         <div v-if="foundContractors && foundContractors.length === 0">

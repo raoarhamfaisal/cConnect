@@ -13,6 +13,7 @@ import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { somethingWentWrong } from "@/helpers/utilities";
 import { Inertia } from "@inertiajs/inertia";
 import { Icon } from "@iconify/vue";
+import DialogUpgradeToGoldPlatinum from "@/Components/DialogUpgradeToGoldPlatinum.vue";
 
 defineProps({
   showit: Boolean,
@@ -21,6 +22,7 @@ defineProps({
 const animate = ref(false);
 const loading = ref(false);
 const showingNavigationDropdown = ref(false);
+const upgradeToGoldPlatinumDialogRef = ref(null);
 const pricingPlan = ref({});
 const form = useForm({
   email: "",
@@ -199,10 +201,45 @@ const onSelectLang = (lang) => {
   selectedLanguage.value = lang;
   store.commit("setTranlations", lang);
 };
+
+const goToRedFlagPage = (event) => {
+  if (
+    profile.value &&
+    profile.value.id &&
+    profile.value.is_payment_verified &&
+    profile.value.active_user &&
+    userVersion.value !== 0 &&
+    userVersion.value !== 1
+  ) {
+    Inertia.visit("red-flag");
+  } else if (
+    profile.value &&
+    profile.value.id &&
+    (!profile.value.is_payment_verified || !profile.value.active_user)
+  ) {
+    if (!profile.value.is_payment_verified && !profile.value.active_user) {
+      Inertia.visit("/profile-setup");
+    } else if (
+      !profile.value.is_payment_verified &&
+      profile.value.active_user
+    ) {
+      Inertia.visit("/pricing-plan");
+    } else {
+      Inertia.visit("/inactive-account");
+    }
+  } else if (userVersion.value === 0 || userVersion.value === 1) {
+    upgradeToGoldPlatinumDialogRef.value.openDialog();
+  } else {
+    Inertia.visit("/inactive-account");
+  }
+};
 </script>
 
 <template>
   <Head :title="translations && translations.welcome" />
+  <Teleport to="body">
+    <DialogUpgradeToGoldPlatinum ref="upgradeToGoldPlatinumDialogRef" />
+  </Teleport>
   <div
     v-if="loading"
     class="h-full h-[100vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4"
@@ -448,28 +485,13 @@ const onSelectLang = (lang) => {
               >
                 {{ translations && translations.sub_finder }}
               </ResponsiveNavLink>
-              <ResponsiveNavLink
+              <div
+                class="block w-full pl-3 pr-4 py-2 border-l-4 border-transparent text-left text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out font-bold cursor-pointer"
                 v-if="showit"
-                :href="
-                  profile &&
-                  profile.id &&
-                  profile.is_payment_verified &&
-                  profile.active_user
-                    ? 'red-flag'
-                    : profile &&
-                      profile.id &&
-                      (!profile.is_payment_verified || !profile.active_user)
-                    ? !profile.is_payment_verified && !profile.active_user
-                      ? '/profile-setup'
-                      : !profile.is_payment_verified && profile.active_user
-                      ? '/pricing-plan'
-                      : '/inactive-account'
-                    : '/inactive-account'
-                "
-                class="font-bold"
+                @click="goToRedFlagPage"
               >
                 {{ translations && translations.red_flags }}
-              </ResponsiveNavLink>
+              </div>
 
               <!-- <ResponsiveNavLink
                 v-if="showit"

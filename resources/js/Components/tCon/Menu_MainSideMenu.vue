@@ -65,6 +65,7 @@ const isAdminUrl = computed(() => {
 });
 const loadingImage = computed(() => store.state.profile.loadingImage);
 const translations = computed(() => store.getters.translations);
+const userVersion = computed(() => store.getters.userVersion);
 
 function handleLogout() {
   removeToken();
@@ -109,6 +110,14 @@ const onSelectLang = (lang) => {
   localStorage.setItem("lang", lang);
   selectedLanguage.value = lang;
   store.commit("setTranlations", lang);
+};
+
+const goToRedFlagPage = () => {
+  if (userVersion.value === 1) {
+    store.commit("setIsUpgradeToGoldPlatinumDialogOpen", true);
+  } else {
+    Inertia.visit("/red-flag");
+  }
 };
 // const openContractorPageModal = () => {
 //   contractorPageRef.value.openDialog();
@@ -354,17 +363,17 @@ const onSelectLang = (lang) => {
           </Link>
 
           <!-- RED FLAGS / SLIPPERY APPLES SEARCH -->
-          <Link
-            :class="`flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 ${
+          <div
+            :class="`flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 cursor-pointer ${
               url === '/red-flag' && 'bg-gray-100 text-gray-700'
             }`"
-            href="/red-flag"
+            @click="goToRedFlagPage"
           >
             <img src="/images/icons/redflag.png" width="30" height="30" />
             <span class="mx-4 font-medium">{{
               translations && translations.red_flags
             }}</span>
-          </Link>
+          </div>
 
           <!-- Mentor SEARCH -->
           <!-- <Link

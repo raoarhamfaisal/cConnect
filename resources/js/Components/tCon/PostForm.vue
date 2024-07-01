@@ -1,6 +1,7 @@
 <script>
 import axios from "axios";
 import VueFilePond from "vue-filepond";
+
 import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
 import InputLabel from "@/Components/InputLabel.vue";
 import MultiSelect from "@/Components/MultiSelect.vue";
@@ -105,8 +106,8 @@ export default {
         trade23: false,
         trade24: false,
         trade25: false,
-        trade26: false,
-        trade27: false,
+        trade26: true,
+        trade27: true,
         trade28: true,
         trade29: true,
         trade30: true,
@@ -220,10 +221,30 @@ export default {
   },
   methods: {
     toggleSwitch(field) {
+      // Check if userVersion is 0 and if any 8 trades are set to 1
+      if (this.userVersion === 1 && !this.tradesPost[field]) {
+        // Count how many trades are set to 1
+        const numberOfTradesSetToOne = Object.values(this.tradesPost).reduce(
+          (count, value) => count + (value ? true : false),
+          0
+        );
+
+        // Check if 8 or more trades are set to 1
+        if (numberOfTradesSetToOne >= 8) {
+          this.$store.commit("setIsUpgradeToGoldPlatinumDialogOpen", true);
+          return; // Return early to stop further execution
+        }
+      }
+
       if (field === "trade1") {
         const newState = !this.tradesPost["trade1"];
-        for (let i = 1; i <= 24; i++) {
-          this.tradesPost["trade" + i] = newState;
+        if (this.userVersion !== 1) {
+          for (let i = 1; i <= 24; i++) {
+            this.tradesPost["trade" + i] = newState;
+          }
+        } else {
+          // for free version
+          this.tradesPost["trade" + 1] = newState;
         }
       } else {
         this.tradesPost[field] = !this.tradesPost[field];
@@ -467,7 +488,7 @@ Array.prototype.remove = function () {
       </span>
     </div>
     <div class="mb-4 sm:mb-0 mt-4">
-      <div class="flex items-center gap-4 mt-4 mb-5">
+      <div class="flex items-center gap-4 mt-4 mb-5" v-if="userVersion !== 1">
         <div class="switch-trades" @click="selectAllTrades">
           <div
             :class="[

@@ -13,7 +13,7 @@
       class="grid grid-cols-2 gap-x-1 items-center gap-y-2 mt-2 mb-2 xs:gap-x-2 xs:px-0 sm:px-2 xl:px-8 w-full"
     >
       <div
-        class="flex items-center sx:gap-2 w-full xs:gap-4"
+        class="flex max-sx:col-span-2 items-center sx:gap-2 w-full xs:gap-4"
         v-for="question in questionsSwitch"
         :key="question.id"
       >

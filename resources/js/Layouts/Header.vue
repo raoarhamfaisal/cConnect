@@ -12,6 +12,7 @@ import DialogProfileTabs from "@/Pages/Profile/Partials/main/DialogProfileTabs.v
 import { ref } from "vue";
 import { mapActions, mapGetters } from "vuex";
 import { changesSaved, filterBadWordsWithoutValue } from "@/helpers/utilities";
+import DialogUpgradeToGoldPlatinum from "@/Components/DialogUpgradeToGoldPlatinum.vue";
 import { getToken } from "../helpers/localStorageHelper";
 
 const defaultPostFormObject = {
@@ -39,6 +40,8 @@ export default {
     ButtonPost,
     ButtonRefresh,
     PostForm,
+    DialogUpgradeToGoldPlatinum,
+
     Link,
     MainSideMenu,
     Menu_Hamburger,
@@ -130,9 +133,14 @@ export default {
   },
   computed: {
     ...mapGetters("profile", ["getProfile"]),
-    ...mapGetters(["translations"]),
+    ...mapGetters(["translations", "isUpgradeToGoldPlatinumDialogOpen"]),
   },
   watch: {
+    isUpgradeToGoldPlatinumDialogOpen(newVal) {
+      if (newVal) {
+        this.$refs.upgradeToGoldPlatinumDialogRef.openDialog();
+      }
+    },
     getProfile(newVal) {
       if (newVal) {
         this.user_profile = newVal;
@@ -310,6 +318,9 @@ export default {
 </script>
 
 <template>
+  <Teleport to="body">
+    <DialogUpgradeToGoldPlatinum ref="upgradeToGoldPlatinumDialogRef" />
+  </Teleport>
   <CustomDialog
     :submitText="translations && translations.okay"
     @submit="handleSubmit"

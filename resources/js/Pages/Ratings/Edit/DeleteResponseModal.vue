@@ -34,7 +34,7 @@ const store = useStore();
 //Computed
 const loadingSending = computed(() => store.state.ratings.loadingSending);
 const disabledSending = computed(() => store.state.ratings.disabledSending);
-const translations = computed(() => store.state.ratings.translations);
+const translations = computed(() => store.getters.translations);
 
 //Methods
 

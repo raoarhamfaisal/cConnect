@@ -6,7 +6,10 @@
     :padding="screenWidth < 640 ? '0px' : '20px'"
   >
     <div class="flex space-x-2 justify-between">
-      <span class="cursor-pointer" @click="openContractorPageDiaglog">
+      <span
+        :class="userVersion !== 1 && 'cursor-pointer'"
+        @click="openContractorPageDiaglog"
+      >
         <div class="flex justify-center items-center space-x-2">
           <div class="self-start">
             <Avatar
@@ -36,8 +39,12 @@
               :textLengthToShow="screenWidth < 380 ? 20 : 23"
               textClass="leading-4 text-xs  xs:text-base "
             />
-            <div class="max-sm:text-xs">{{ contractor.phone_cell || contractor.phone_office }}</div>
-            <div class="max-sm:text-xs">{{ contractor.email }}</div>
+            <div class="max-sm:text-xs" v-if="userVersion !== 1">
+              {{ contractor.phone_cell || contractor.phone_office }}
+            </div>
+            <div class="max-sm:text-xs" v-if="userVersion !== 1">
+              {{ contractor.email }}
+            </div>
           </div>
         </div>
       </span>
@@ -46,9 +53,10 @@
           <!-- @click="openContractorRatingDialog" -->
           <StarRounded
             @click="openContractorRatingDialog"
+            :class="userVersion !== 1 && 'cursor-pointer'"
             :innerStarRadius="screenWidth > 768 ? 17 : 13"
             :starWidth="screenWidth > 768 ? 24 : 15"
-            :class="`h-4 md:h-6 cursor-pointer`"
+            class="`h-4 md:h-6 `"
             :indicatorClasses="`text-small h-4 md:h-6 `"
             :starHeight="screenWidth > 768 ? 24 : 15"
             :rating="
@@ -98,18 +106,21 @@ const ratingDialogRef = ref();
 console.log("contractor", props.contractor);
 const store = useStore();
 
-
 let usePageDeatails = usePage().props.value;
 const loggedInUserId = usePageDeatails?.profile?.id;
 const profile = usePageDeatails?.profile;
-console.log(usePageDeatails.profile,'profile');
+console.log(usePageDeatails.profile, "profile");
 const total_reviews = ref(props.contractor.total_reviews ?? 0);
 const averageRating = ref(props.contractor.average_rating);
 const contractorPageDialogRef = ref();
 
+// Emits
+
+// const emit = defineEmits("checkIfNotUpgradeRequired");
 //Computed
 
 const screenWidth = computed(() => store.getters.screenWidth);
+const userVersion = computed(() => store.getters.userVersion);
 const shouldLoadPosts = computed(() => store.state.ratings.shouldLoadPosts);
 const averageRatingFromDialog = computed(
   () => store.state.ratings.averageRating
@@ -139,9 +150,15 @@ watch(shouldLoadPosts, (newValue) => {
 });
 
 const openContractorRatingDialog = () => {
+  if (userVersion.value === 1) {
+    return;
+  }
   ratingDialogRef.value.openDialog();
 };
 const openContractorPageDiaglog = () => {
+  if (userVersion.value === 1) {
+    return;
+  }
   localStorage.setItem("showGoBack", "false");
   contractorPageDialogRef.value.openDialog();
 };

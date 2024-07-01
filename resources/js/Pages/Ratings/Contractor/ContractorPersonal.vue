@@ -84,7 +84,10 @@
           </div>
 
           <div class="mb-4 mt-6 mt-7 border-t-2 border-gray-300">
-            <heading-card heading="Reviews" class="mt-4 mb-6" />
+            <heading-card
+              :heading="translations && translations.reviews"
+              class="mt-4 mb-6"
+            />
 
             <div
               v-if="contractorReviews.length > 0"

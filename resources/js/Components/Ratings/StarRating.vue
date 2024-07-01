@@ -240,5 +240,8 @@ export default {
     font-size: 0.75rem;
     padding-bottom: 8px;
   }
+  .star-container:not(:last-child) {
+    margin-right: 0px;
+  }
 }
 </style>

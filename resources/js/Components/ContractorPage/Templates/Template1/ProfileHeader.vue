@@ -57,7 +57,7 @@
                 borderColor: '#c78b22',
               }"
             >
-              Edit
+              {{ translations && translations.edit }}
             </button>
           </Link>
           <button
@@ -262,6 +262,7 @@ const store = useStore();
 //Computed
 
 const translations = computed(() => store.getters.translations);
+const userVersion = computed(() => store.getters.userVersion);
 
 function image_path(img) {
   // function adds the filepath
@@ -306,6 +307,10 @@ const ratingDialogRef = ref();
 const postDialogRef = ref();
 
 const shareLink = () => {
+  if (userVersion.value !== 3) {
+    store.commit("setIsUpgradeToGoldPlatinumDialogOpen", true);
+    return;
+  }
   const success = copyToClipboard(window.location.href);
   if (success) {
     snackbarVisible.value = true; // Show the Snackbar on successful copy

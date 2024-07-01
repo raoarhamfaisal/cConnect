@@ -54,19 +54,30 @@ const loadingNextPage = ref(false);
 const loadMoreIntersect = ref();
 const sort_order = ref("desc");
 const sort_field = ref("updated_at");
+const upgradeToGoldPlatinumDialogRef = ref(null);
 
 //Computed
 // const screenWidth = computed(() => store.getters.screenWidth);
 const translations = computed(() => store.getters.translations);
+const userVersion = computed(() => store.getters.userVersion);
 
 //Mounted
 onMounted(async () => {
-  fetchSearchedComplaintsWithLoading();
+  if (userVersion.value !== 0 || userVersion.value !== 1) {
+    fetchSearchedComplaintsWithLoading();
+  }
 });
 
 // watch
 
-//
+watch(
+  () => userVersion.value,
+  (newVal) => {
+    if (newVal === 0 || newVal === 1) {
+      store.commit("setIsUpgradeToGoldPlatinumDialogOpen", true);
+    }
+  }
+);
 watch(redFlags, (newVal) => {
   if (newVal.length > 0) {
     setTimeout(() => {
@@ -391,7 +402,10 @@ const determineBorderVisibility = (index) => {
     color="#f9fafb"
   >
     <!-- color="#edecea" -->
-    <div class="mt-4 sm:mt-4 p-2 sm:p-4">
+    <div
+      class="mt-4 sm:mt-4 p-2 sm:p-4"
+      v-if="userVersion !== 1 && userVersion !== 0"
+    >
       <!-- back page -->
       <div class="flex relative gap-4 mb-4 sm:mb-8 items-center">
         <Link href="/post">
@@ -426,7 +440,7 @@ const determineBorderVisibility = (index) => {
           <div class="flex gap-2">
             <button
               type="button"
-              class="w-4/5 px-1 py-1 h-[48px] rounded-lg transition transform duration-300 hover:shadow-lg active:scale-95 font-extrabold bg-[#e80000] text-white text-md sm:text-xl font-sans"
+              class="w-4/5 px-1 py-1 min-h-[48px] rounded-lg transition transform duration-300 hover:shadow-lg active:scale-95 font-extrabold bg-[#e80000] text-white text-md sm:text-xl font-sans"
               @click="openBestPracticeCard"
             >
               {{ translations && translations.add_new_red_flag }}
@@ -434,7 +448,7 @@ const determineBorderVisibility = (index) => {
             <button
               type="button"
               @click="fetchComplaintsAddedByMe"
-              class="w-1/5 px-1 py-1 h-[48px] rounded-lg transition transform duration-300 hover:shadow-lg active:scale-95 font-extrabold bg-[#8a0000] text-white text-sm leading-5 font-sans"
+              class="w-1/5 px-1 py-1 min-h-[48px] rounded-lg transition transform duration-300 hover:shadow-lg active:scale-95 font-extrabold bg-[#8a0000] text-white text-sm leading-5 font-sans"
             >
               {{
                 fetchMyRedFlags
