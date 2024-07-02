@@ -157,11 +157,6 @@ Route::post('/translations', [TranslationController::class, 'store']);
         Route::get('/user/version-details', [UserController::class, 'getUserVersionDetails']);
 
 
-        
-
-
-
-
         // Free User Subscription
         Route::post('/profile/complete-profile-and-start-free-subscription', [ProfileController::class, 'completeProfileAndStartFreeSubscription'])->name('profile.completeProfileAndStartFreeSubscription');
 

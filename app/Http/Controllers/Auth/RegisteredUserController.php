@@ -10,6 +10,7 @@ use App\Models\ContractorProfile;
 use App\Models\ContractorImageSectionsDefault;
 use App\Models\ImageSection;
 use App\Models\BragSection;
+use App\Models\UserVersionDetail;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -240,6 +241,65 @@ class RegisteredUserController extends Controller
                 'token' => $token,
                 'expires_at' => Carbon::now()->addMinutes(5),
             ]);
+
+
+            // $versionDefault = VersionDefault::find($request->version);
+    
+
+            // Update or create user version details with the fetched version defaults
+            $userVersionDetail = UserVersionDetail::updateOrCreate(
+                ['user_id' => $user->id], // Conditions to find the record
+                [ // Values to update or create
+                    'nf_ppm' => 0,
+                    'nf_ipp' => 0,
+                    'nf_title' => false,
+                    'nf_bottom' => false,
+                    'nf_comments' => false,
+                    'nf_repost' => false,
+                    'sf_search' => 0,
+                    'sf_tracking' => false,
+                    'sf_notes' => false,
+                    'sf_info' => false,
+                    'nf_ppm' => false,
+                    'nf_ipp' => false,
+                    'nf_title' => false,
+                    'nf_bottom' => false,
+                    'nf_comments' => false,
+                    'nf_repost' => false,
+                    'nf_future1' => false,
+                    'nf_future2' => false,
+                    'sf_search' => false,
+                    'sf_tracking' => false,
+                    'sf_notes' => false,
+                    'sf_info' => false,
+                    'sf_future1' => false,
+                    'sf_future2' => false,
+                    'tg_members' => 0,
+                    'tg_post' => 0,
+                    'tg_view_all' => false,
+                    'tg_future1' => false,
+                    'tg_future2' => false,
+                    'rf_access' => false,
+                    'rf_customers' => false,
+                    'rf_sales' => false,
+                    'rf_contractor' => false,
+                    'rf_future1' => false,
+                    'rf_future2' => false,
+                    're_reviews' => false,
+                    're_feedback' => false,
+                    're_appeal' => false,
+                    're_future1' => false,
+                    're_future2' => false,
+                    'cp_template' => 0,
+                    'cp_color' => 0,
+                    'cp_share' => false,
+                    'cp_future1' => false,
+                    'cp_future2' => false,
+                    // Add other fields from $versionDefault as needed
+                ]
+            );
+
+
             // Auth::login($user);
             $authenticatedSessionController = new AuthenticatedSessionController();
             return $authenticatedSessionController->loginUser($user, $request);

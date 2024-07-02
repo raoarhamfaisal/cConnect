@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\EmailVerificationCode;
 use App\Models\SessionViewSetting;
 use App\Models\SessionTrade;
+use App\Models\ProfileTrade;
 
 
 class ProfileController extends Controller
@@ -74,6 +75,7 @@ class ProfileController extends Controller
      */
     public function completeProfileAndStartFreeSubscription(Request $request)
     {
+        // dd(now()->month);
         // Get current user id
         $userID = Auth()->user('')->id;
         $profile = null;
@@ -159,6 +161,43 @@ class ProfileController extends Controller
                 // Add other fields from $versionDefault as needed
             ]
         );
+
+        // Start a database transaction
+        DB::beginTransaction();
+
+        try {
+            $profile = Profile::where('user_id', $userID)->first();
+
+            if ($profile) {
+                // For profile_trade
+                $profileTrades = ProfileTrade::where('profile_id', $profile->id)->get();
+
+                if ($profileTrades->count() > 3) {
+                    // Assuming you want to keep the latest 3 trades
+                    $tradesToKeep = $profileTrades->sortByDesc('created_at')->take(3)->pluck('trade_id');
+                    ProfileTrade::where('profile_id', $profile->id)->whereNotIn('trade_id', $tradesToKeep)->delete();
+                }
+
+                // For session_trades
+                $sessionTrades = SessionTrade::where('profile_id', $profile->id)->get();
+
+                if ($sessionTrades->count() > 3) {
+                    // Assuming you want to keep the latest 3 trades
+                    $tradesToKeep = $sessionTrades->sortByDesc('created_at')->take(3)->pluck('trade_id');
+                    SessionTrade::where('profile_id', $profile->id)->whereNotIn('trade_id', $tradesToKeep)->delete();
+                }
+            }
+
+            // Commit the transaction
+            DB::commit();
+        } catch (\Exception $e) {
+            \Log::error('Err: ' . $e->getMessage());
+
+            // Rollback the transaction in case of an error
+            DB::rollback();
+            // Handle error (log it, return a response, etc.)
+        }
+        
     
 
         return response()->json($paymentSuccessResponse);
