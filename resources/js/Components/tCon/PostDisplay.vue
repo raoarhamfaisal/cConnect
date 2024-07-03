@@ -811,6 +811,7 @@ export default {
           );
           if (response.data) {
             this.repost_count = this.repost_count + 1;
+            console.log(this.repost_count, "repost count");
             this.$emit("onRepost");
             changesSaved(
               this.translations && this.translations.repost_successfully
@@ -910,6 +911,7 @@ export default {
       </div>
     </div>
   </CustomDialog>
+
   <!-- dislike modal -->
   <CustomDialog
     ref="dislikeDialogRef"

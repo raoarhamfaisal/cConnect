@@ -181,20 +181,13 @@ export default {
       }
     },
     trades(newVal) {
-      // Resetting tradesPost object to all false
-      for (let key in this.tradesPost) {
-        this.tradesPost[key] = false;
-      }
-
       // Iterating over the trades array and setting the corresponding key in tradesPost to true
       newVal.forEach((trade) => {
         if (this.tradesPost.hasOwnProperty(trade.name)) {
           this.tradesPost[trade.name] = true;
         }
       });
-      this.tradesPost["trade28"] = true;
-      this.tradesPost["trade29"] = true;
-      this.tradesPost["trade30"] = true;
+
       const allSelected = Object.values(this.tradesPost).every(
         (value) => value === 1 || value === true
       );

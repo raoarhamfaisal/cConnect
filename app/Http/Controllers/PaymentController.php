@@ -739,7 +739,7 @@ class PaymentController extends Controller
         $validatedData = $request->validate([
             'userId' => 'required|integer',
             'card_number' => 'required|string',
-            'expiration_date' => 'required|date_format:Y-m',
+            'expiration_date' => 'required',
             'cvv' => 'required|string',
             'first_name' => 'required|string',
             'last_name' => 'required|string',

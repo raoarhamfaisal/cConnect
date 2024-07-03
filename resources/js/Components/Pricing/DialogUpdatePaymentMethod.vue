@@ -288,20 +288,20 @@
                   <div class="mb-4 sm:mb-0">
                     <InputLabel
                       class="font-bold"
-                      for="zipcode"
+                      for="zip"
                       :value="translations && translations.zip_code + '*'"
                     />
                     <TextInput
-                      id="zipcode"
+                      id="zip"
                       type="text"
                       class="mt-1 block w-full"
-                      v-model="form.zipcode"
-                      @input="clearError('zipcode')"
+                      v-model="form.zip"
+                      @input="clearError('zip')"
                       :placeholder="
                         translations && translations.type_your_zip_code
                       "
                     />
-                    <InputError class="mt-2" :message="errors.zipcode" />
+                    <InputError class="mt-2" :message="errors.zip" />
                   </div>
 
                   <!-- <div class="mb-4 sm:mb-0">
@@ -386,7 +386,7 @@
         :showCancel="false"
         dialogWidth="width-40"
         ref="paymentMethodUpdatedDialogRef"
-        title="Payment Method Updated Successfully"
+        :title="translations && translations.payment_method_updated"
       >
         <div class="flex items-center justify-center flex-col">
           <div class="">
@@ -462,12 +462,11 @@ const form = reactive({
   expiration_date: "",
   address: "",
   city: "",
-  duration: "",
+
   state: "",
-  zipcode: "",
+  zip: "",
   // county: "",
   country: "",
-  coupon_code: "",
 });
 
 const errors = reactive({
@@ -479,17 +478,12 @@ const errors = reactive({
   address: "",
   city: "",
   state: "",
-  zipcode: "",
+  zip: "",
   // county: "",
   country: "",
-  coupon_code: "",
 });
 const loadingSubscribing = ref(false);
-const loadingCoupon = ref(false);
-const verifyCouponDialogRef = ref();
-const couponApiError = ref("");
 const subscriptionApiError = ref("");
-const coupon = ref({});
 const paymentDetailsRef = ref();
 const paymentMethodUpdatedDialogRef = ref();
 const choosedVersion = ref("");
@@ -520,7 +514,7 @@ watch(
       form.address = props.profile.address_1;
       form.city = props.profile.city;
       form.state = props.profile.state;
-      form.zipcode = props.profile.zipcode;
+      form.zip = props.profile.zipcode;
       // form.county = props.profile.county;
       form.country = "US";
     } else {
@@ -530,7 +524,7 @@ watch(
       form.address = "";
       form.city = "";
       form.state = "";
-      form.zipcode = "";
+      form.zip = "";
       // form.county = "";
       form.country = "";
     }
@@ -610,7 +604,7 @@ const callbackFunction = (place) => {
       form.country = component.short_name;
     }
     if (componentType == "postal_code") {
-      form.zipcode = component.long_name;
+      form.zip = component.long_name;
     }
   }
 };
@@ -655,16 +649,15 @@ const validateForm = () => {
     isValid = false;
   }
 
-  // Validate zipcode
-  if (form.zipcode?.trim().length < 5) {
-    errors.zipcode =
+  // Validate zip
+  if (form.zip?.trim().length < 5) {
+    errors.zip =
       translations.value &&
       translations.value.zipcode_cannot_be_less_than_5_characters;
     isValid = false;
   }
-  if (!form.zipcode?.trim()) {
-    errors.zipcode =
-      translations.value && translations.value.zipcode_is_required;
+  if (!form.zip?.trim()) {
+    errors.zip = translations.value && translations.value.zipcode_is_required;
     isValid = false;
   }
 
@@ -730,11 +723,6 @@ const startSubscription = async () => {
     subscriptionApiError.value = "";
 
     loadingSubscribing.value = true;
-    if (coupon.value && coupon.value.coupon_code) {
-      form.coupon_code = coupon.value.coupon_code;
-    } else {
-      delete form.coupon_code;
-    }
     const processedForm = { ...form };
 
     // Remove '-' from card_number
@@ -742,12 +730,12 @@ const startSubscription = async () => {
 
     // Replace '/' with '-' in expiration_date
     processedForm.expiration_date = form.expiration_date.replace(/\//g, "-");
-    processedForm.duration =
-      planType.value === "MONTHLY" ? "monthly" : "annual";
-    processedForm.version = choosedVersion.value === "gold" ? 2 : 3;
+
+    processedForm.userId = props.profile.user_id;
+
     try {
       const response = await axios.post(
-        `/api/payment/start-subscription`,
+        `/api/payment/update-method`,
         processedForm,
         getAxiosConfig()
       );

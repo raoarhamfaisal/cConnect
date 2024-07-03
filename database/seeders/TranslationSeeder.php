@@ -701,7 +701,7 @@ class TranslationSeeder extends Seeder
              ['key' => 'contact_info', 'english' => 'Contact Info', 'mexican_spanish' => 'Información de Contacto', 'created_at' => now(), 'updated_at' => now()],
              ['key' => 'social_links', 'english' => 'Social Links', 'mexican_spanish' => 'Enlaces Sociales', 'created_at' => now(), 'updated_at' => now()],
              ['key' => 'your', 'english' => 'Your', 'mexican_spanish' => 'Su', 'created_at' => now(), 'updated_at' => now()],
-
+             ['key' => 'payment_method_updated', 'english' => 'Payment Method Updated Successfully', 'mexican_spanish' => 'Método de pago actualizado exitosamente', 'created_at' => now(), 'updated_at' => now()],
     
 
     
