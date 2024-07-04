@@ -71,9 +71,9 @@
             </template>
             <v-list>
               <v-list-item class="hover:bg-gray-200" @click="openEditModal">
-                <v-list-item-title class="cursor-pointer"
-                  >Edit</v-list-item-title
-                >
+                <v-list-item-title class="cursor-pointer">{{
+                  translations && translations.edit
+                }}</v-list-item-title>
               </v-list-item>
               <v-list-item class="hover:bg-gray-200" @click="openDeleteModal">
                 <v-list-item-title class="cursor-pointer">{{

@@ -26,6 +26,7 @@ import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { filterBadWordsWithoutValue } from "@/helpers/utilities";
 import InputError from "@/Components/InputError.vue";
+import { timeAgo } from "@/helpers/utilities";
 
 export default {
   components: {
@@ -1138,7 +1139,7 @@ export default {
             <h2
               class="flex flex-nowrap font-light text-xs tracking-tighter italic"
             >
-              20 hrs
+              {{ timeAgo(post.updated_at) }}
             </h2>
           </div>
         </div>
