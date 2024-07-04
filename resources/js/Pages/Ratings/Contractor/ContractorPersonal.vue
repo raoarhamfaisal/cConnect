@@ -14,7 +14,10 @@
         bgColor="white"
         :padding="screenWidth < 640 ? '7px' : '20px'"
       >
-        <PageTitle linkUrl="/post" pageTitle="My  Ratings" />
+        <PageTitle
+          linkUrl="/post"
+          :pageTitle="translations && translations.my_ratings"
+        />
         <ContractorInfo
           v-if="Object.keys(contractor).length > 0"
           :contractor="contractor"

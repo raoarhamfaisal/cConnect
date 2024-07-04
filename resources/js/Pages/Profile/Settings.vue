@@ -6,6 +6,7 @@ import { Head } from "@inertiajs/inertia-vue3";
 
 import SettingsTabs from "@/Pages/Profile/Partials/main/SettingsTabs.vue";
 import { useStore } from "vuex";
+import { computed } from "vue";
 
 defineProps({
   mustVerifyEmail: Boolean,
@@ -21,6 +22,9 @@ defineProps({
   },
 });
 const store = useStore();
+
+const translations = computed(() => store.getters.translations);
+
 const activeTab = localStorage.getItem("activeTab");
 if (activeTab) {
   console.log(activeTab, "activeTab");

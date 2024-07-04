@@ -501,7 +501,7 @@ const determineBorderVisibility = (index) => {
                     @click="isSearchByCustomer = 0"
                     class="w-full cursor-pointer text-sm sm:text-xl"
                   >
-                    Contractor(non-member)
+                    {{ translations && translations.contractor_non_member }}
                   </div>
                 </div>
               </div>
@@ -571,11 +571,11 @@ const determineBorderVisibility = (index) => {
               height="6"
             ></v-progress-linear>
           </div>
-          <div class="" v-if="redFlags && redFlags.length === 0">
+          <div class="" v-if="redFlags && redFlags.length === 0 && !loading">
             <div
               class="p-2 text-xl text-grey-600 font-bold h-72 flex items-center justify-center"
             >
-              Nothing Found
+              {{ translations && translations.nothing_found }}
             </div>
           </div>
           <!-- <div class="" v-if="!searchTerm">

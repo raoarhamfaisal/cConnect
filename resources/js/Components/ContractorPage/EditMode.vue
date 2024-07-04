@@ -30,8 +30,11 @@
           @click="openDialogEdit"
           class="w-full flex gap-2 mt-3 items-center justify-center h-[42px] rounded bg-[#087f5b] text-white active:scale-[0.99] transition transform duration-300 hover:shadow-lg"
         >
-          <Icon icon="mdi:plus-thick" /> About Us - Why You Should Work For or
-          Hire Us
+          <Icon icon="mdi:plus-thick" />
+          {{
+            translations &&
+            translations.about_us_why_you_should_work_for_or_hire_us
+          }}
         </button>
 
         <!-- CustomDialog for adding -->
@@ -71,7 +74,7 @@
               fontWeight: 800,
               fontSize: screenWidth > 640 ? '24px' : '20px',
             }"
-            :heading="`Title/Image Sections`"
+            :heading="translations && translations.title_image_section"
           />
           <ImageTextSectionEdit
             :image_sections="profile.image_sections"

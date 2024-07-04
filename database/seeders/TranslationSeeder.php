@@ -308,7 +308,7 @@ class TranslationSeeder extends Seeder
             ['key' => 'updating', 'english' => 'Updating', 'mexican_spanish' => 'Actualizando', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'do_you_want_to_delete_this_reply', 'english' => 'Do you want to Delete this reply?', 'mexican_spanish' => '¿Quieres Eliminar esta respuesta?', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'edit_post', 'english' => 'Edit Post', 'mexican_spanish' => 'Editar Publicación', 'created_at' => now(), 'updated_at' => now()],
-            ['key' => 'trades_are_what_you_do', 'english' => 'Trades are what you do… If you are a landscaper, you would be a member of the Landscaping Trade Group. If you are a Painter, you would be a member of the Painting & Staining Group. Same if you did Concrete, you would be a member of the Concrete, Masonry & Foundations Group.', 'mexican_spanish' => 'Trades are what you do… If you are a landscaper, you would be a member of the Landscaping Trade Group. If you are a Painter, you would be a member of the Painting & Staining Group. Same if you did Concrete, you would be a member of the Concrete, Masonry & Foundations Group.', 'created_at' => now(), 'updated_at' => now()],
+            ['key' => 'trades_are_what_you_do', 'english' => 'Trades are what you do… If you are a landscaper, you would be a member of the Landscaping Trade Group. If you are a Painter, you would be a member of the Painting & Staining Group. Same if you did Concrete, you would be a member of the Concrete, Masonry & Foundations Group.', 'mexican_spanish' => 'Los oficios son lo que haces... Si eres paisajista, serías miembro del Landscaping Trade Group. Si eres pintor, serías miembro del Grupo de Pintura y Tinción. Lo mismo si hicieras Concrete, serías miembro del Grupo Concrete, Masonry & Foundations.', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'has_26_plus_trade_groups', 'english' => 'has 26+ trade groups.', 'mexican_spanish' => 'tiene más de 26 grupos de oficios.', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'allows_you_to_view_only_your_trade_group', 'english' => 'allows you to view only your trade group post or all the trade groups. Search only your trade group or others. Search locally, Regionally, Statewide, or nationally.', 'mexican_spanish' => 'le permite ver solo la publicación de su grupo comercial o todos los grupos comerciales. Busque solo su grupo comercial u otros. Busque a nivel local, regional, estatal o nacional.', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'what_are_regions', 'english' => 'What are Regions?', 'mexican_spanish' => '¿Qué son las Regiones?', 'created_at' => now(), 'updated_at' => now()],
@@ -440,7 +440,7 @@ class TranslationSeeder extends Seeder
             ['key' => 'title_image_section', 'english' => 'Title/Image Section', 'mexican_spanish' => 'Sección de Título/Imagen', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'do_you_want_to_delete_this_section', 'english' => 'Do you want to Delete this Section?', 'mexican_spanish' => '¿Quieres Eliminar esta Sección?', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'your_image', 'english' => 'Your Image', 'mexican_spanish' => 'Tu Imagen', 'created_at' => now(), 'updated_at' => now()],
-            ['key' => 'type_your_description', 'english' => 'Type your description', 'mexican_spanish' => 'Escribe tu descripción', 'created_at' => now(), 'updated_at' => now()],
+            ['key' => 'type_your_description', 'english' => 'Type your description...', 'mexican_spanish' => 'Escribe tu descripción...', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'title', 'english' => 'Title', 'mexican_spanish' => 'Título', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'add_brag_section', 'english' => 'Add Brag Section', 'mexican_spanish' => 'Añadir Sección de Autopromoción', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'see_user_posts', 'english' => 'See User Posts', 'mexican_spanish' => 'Ver Publicaciones de Usuario', 'created_at' => now(), 'updated_at' => now()],
@@ -702,8 +702,14 @@ class TranslationSeeder extends Seeder
              ['key' => 'social_links', 'english' => 'Social Links', 'mexican_spanish' => 'Enlaces Sociales', 'created_at' => now(), 'updated_at' => now()],
              ['key' => 'your', 'english' => 'Your', 'mexican_spanish' => 'Su', 'created_at' => now(), 'updated_at' => now()],
              ['key' => 'payment_method_updated', 'english' => 'Payment Method Updated Successfully', 'mexican_spanish' => 'Método de pago actualizado exitosamente', 'created_at' => now(), 'updated_at' => now()],
-    
-
+             ['key' => 'brag_section', 'english' => 'Brag Section', 'mexican_spanish' => 'Sección de Autopromoción', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'drag_and_drop_files_or', 'english' => 'Drag & Drop your files or', 'mexican_spanish' => 'Arrastra y Suelta tus archivos o', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'browse', 'english' => 'Browse', 'mexican_spanish' => 'Buscar', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'drag_and_drop', 'english' => 'Drag & Drop', 'mexican_spanish' => 'Arrastra y Suelta', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'your_image_or', 'english' => 'your image or', 'mexican_spanish' => 'tu imagen o', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'to_replace', 'english' => 'to replace', 'mexican_spanish' => 'para reemplazar', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'address', 'english' => 'Address', 'mexican_spanish' => 'Dirección', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'nothing_found', 'english' => 'Nothing Found', 'mexican_spanish' => 'Nada Encontrado', 'created_at' => now(), 'updated_at' => now()],
     
             
    

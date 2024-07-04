@@ -2,6 +2,7 @@
   <CustomDialog
     :disableOutSideClick="false"
     ref="dialogRef"
+    @opened="onOpened"
     :showFooter="false"
     :title="translations && translations.confirm_payment"
   >
@@ -240,7 +241,7 @@
                     <InputLabel
                       class="font-bold"
                       for="address"
-                      value="Address*"
+                      :value="`${translations && translations.address}*`"
                     />
                     <GoogleAddressAutocomplete
                       id="address"
@@ -517,7 +518,7 @@ const annualTotal = ref(0.0);
 
 //onMounted
 
-onMounted(async () => {
+const onOpened = async () => {
   const selectedPlan = localStorage.getItem("selectedPlan");
   coupon.value = JSON.parse(localStorage.getItem("coupon"));
   const total = JSON.parse(localStorage.getItem("total"));
@@ -527,7 +528,7 @@ onMounted(async () => {
     monthlyTotal.value = total.monthlyTotal;
     annualTotal.value = total.annualTotal;
   }
-
+  console.log(selectedPlan, "selectedPlan");
   if (selectedPlan) {
     planType.value = selectedPlan;
   }
@@ -541,7 +542,7 @@ onMounted(async () => {
   } catch (error) {
     console.error("Failed to load Google Maps API", error);
   }
-});
+};
 
 //Computed
 const screenWidth = computed(() => store.getters.screenWidth);

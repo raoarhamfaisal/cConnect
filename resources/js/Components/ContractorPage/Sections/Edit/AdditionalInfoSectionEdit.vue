@@ -63,12 +63,12 @@
       />
       <InfoWithIcon
         icon="entypo:address"
-        tooltipText="Address 1"
+        :tooltipText="`${translations && translations.address} 1`"
         :text="address_1"
       />
       <InfoWithIcon
         icon="entypo:address"
-        tooltipText="Address 2"
+        :tooltipText="`${translations && translations.address} 2`"
         :text="address_2"
       />
       <InfoWithIcon icon="mdi:city" tooltipText="City" :text="city" />
@@ -174,7 +174,11 @@
       </div>
 
       <div>
-        <InputLabel class="font-bold" for="address_1" value="Address 1*" />
+        <InputLabel
+          class="font-bold"
+          for="address_1"
+          :value="`${translations && translations.address} 1*`"
+        />
         <GoogleAddressAutocomplete
           id="address_1"
           v-model="tempCompanyProfile.address_1"
@@ -187,7 +191,11 @@
       </div>
 
       <div>
-        <InputLabel class="font-bold" for="address_2" value="Address 2" />
+        <InputLabel
+          class="font-bold"
+          for="address_2"
+          :value="`${translations && translations.address} 2*`"
+        />
         <GoogleAddressAutocomplete
           id="address_2"
           v-model="tempCompanyProfile.address_2"

@@ -227,7 +227,11 @@ onBeforeUnmount(() => {
         </div>
 
         <div class="mb-4 sm:mb-0">
-          <InputLabel class="font-bold" for="address_1" value="Address 1*" />
+          <InputLabel
+            class="font-bold"
+            for="address_1"
+            :value="`${translations && translations.address} 1*`"
+          />
           <GoogleAddressAutocomplete
             id="address_1"
             v-model="form.address_1"
@@ -241,7 +245,11 @@ onBeforeUnmount(() => {
         </div>
 
         <div class="mb-4 sm:mb-0">
-          <InputLabel class="font-bold" for="address_2" value="Address 2" />
+          <InputLabel
+            class="font-bold"
+            for="address_2"
+            :value="`${translations && translations.address} 2`"
+          />
           <GoogleAddressAutocomplete
             id="address_2"
             v-model="form.address_2"

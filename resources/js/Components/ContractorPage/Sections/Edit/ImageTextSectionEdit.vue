@@ -108,13 +108,22 @@
       @addfilestart="handleProcessStart"
       @addfile="handleProcessEnd"
       @error="handleProcessEnd"
-      :labelIdle="`Drag & Drop ${
-        editMode ? 'to replace ' : ''
-      }your image or <span class='filepond--label-action'> Browse </span>`"
+      :labelIdle="`${translations && translations.drag_and_drop} ${
+        editMode ? translations && translations.to_replace : ''
+      } ${
+        translations && translations.your_image_or
+      } <span class='filepond--label-action'> ${
+        translations && translations.browse
+      } </span>`"
     />
 
     <!-- Textarea -->
-    <label for="text_section" class="font-bold">Title(max 70char)</label>
+    <label for="text_section" class="font-bold"
+      >{{ translations && translations.title }}({{
+        translations && translations.max
+      }}
+      70char)</label
+    >
     <textarea
       v-model="tempSection.section_text"
       id="text_section"
@@ -122,7 +131,7 @@
       type="text"
       :rows="screenWidth > 760 ? 1 : 2"
       class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-      placeholder="Type your description..."
+      :placeholder="translations && translations.type_your_description"
     ></textarea>
     <div v-if="textError" class="text-red-500 mt-2">
       {{ textError }}
