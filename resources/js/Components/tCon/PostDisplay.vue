@@ -1351,7 +1351,7 @@ export default {
         </div>
       </div>
       <div
-        class="text-gray-900 text-[13px] sx:text-[15px] sm:text-[17px] flex items-center self-center gap-[2px]"
+        class="text-gray-900 text-[11px] x350:text-[13px] sx:text-[15px] sm:text-[17px] flex items-center self-center gap-[2px]"
       >
         <span
           class="cursor-pointer hover:underline leading-3"
@@ -1363,7 +1363,7 @@ export default {
 
         <Icon icon="octicon:dot-fill-16" width="11" />
         <span
-          class="text-[13px] sx:text-[15px] flex items-center justify-center sm:text-[17px] leading-3"
+          class="text-[11px] x350:text-[13px] sx:text-[15px] flex items-center justify-center sm:text-[17px] leading-3"
         >
           {{ repost_count }} {{ translations && translations.reposts }}
         </span>
@@ -1372,18 +1372,18 @@ export default {
 
     <div :class="`mb-2 border-[1px] w-full border-gray-300 rounded`"></div>
     <div
-      class="flex flex-row max-sm:gap-2 justify-between items-center w-full mb-2"
+      class="flex flex-row max-sm:gap-1 justify-between items-center w-full mb-2"
     >
       <!-- Likes -->
       <div class="hovered" @click="onLike">
         <div
-          class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer"
+          class="font-medium text-[10px] x350:text-xs sm:text-sm text-blue-800 cursor-pointer"
         >
           <div class="flex flex-row justify-between items-center">
             <div class="hovered">
               <Icon
                 icon="emojione-monotone:up-arrow"
-                class="text-[20px] sm:text-[25px] icon-like text-transparent stroke-[2px] stroke-green-600"
+                class="text-[17px] x350:text-[20px] sm:text-[25px] icon-like text-transparent stroke-[2px] stroke-green-600"
                 :class="`${your_reaction === 'like' ? 'liked' : ''}`"
               />
             </div>
@@ -1395,7 +1395,9 @@ export default {
       </div>
       <!-- Dislike -->
       <div class="hovered" @click="onDislike">
-        <a class="font-medium text-xs sm:text-sm text-blue-800 cursor-pointer">
+        <a
+          class="font-medium text-[10px] x350:text-xs sm:text-sm text-blue-800 cursor-pointer"
+        >
           <div class="flex flex-row justify-between items-center">
             <div class="">
               <!-- <img src="/images/icons/like_green.png" width="25" height="25" /> -->
@@ -1404,7 +1406,7 @@ export default {
                 icon="emojione-monotone:up-arrow"
                 :rotate="2"
                 :class="`${your_reaction === 'dislike' ? 'disliked' : ''}`"
-                class="text-[20px] sm:text-[25px] icon-dislike text-transparent stroke-[2px] stroke-[#c40516]"
+                class="text-[17px] x350:text-[20px] sm:text-[25px] icon-dislike text-transparent stroke-[2px] stroke-[#c40516]"
               />
             </div>
             <div class="pl-1 icon-text text-[#c40516]">
@@ -1416,12 +1418,14 @@ export default {
 
       <!-- Comments -->
       <div class="hovered cursor-pointer" @click="$emit('enlarge-post', post)">
-        <div class="font-medium text-xs sm:text-sm text-blue-800">
+        <div
+          class="font-medium text-[10px] x350:text-xs sm:text-sm text-blue-800"
+        >
           <div class="flex flex-row justify-between items-center">
             <div class="">
               <img
                 src="/images/icons/comment_icon.png"
-                class="w-[20px] sm:w-[25px] h-[20px] sm:h-[25px]"
+                class="w-[17px] x350:w-[20px] sm:w-[25px] h-[17px] x350:h-[20px] sm:h-[25px]"
               />
             </div>
             <div class="pl-1 icon-text">
@@ -1433,12 +1437,14 @@ export default {
 
       <!-- Re-Posted -->
       <div class="hovered cursor-pointer" @click="onOpenRepostAssuranceModel">
-        <div class="font-medium text-xs sm:text-sm text-blue-800">
+        <div
+          class="font-medium text-[10px] x350:text-xs sm:text-sm text-blue-800"
+        >
           <div class="flex flex-row justify-between items-center">
             <div class="">
               <img
                 src="/images/icons/share_icon.png"
-                class="w-[20px] sm:w-[25px] h-[20px] sm:h-[25px]"
+                class="w-[17px] x350:w-[20px] sm:w-[25px] h-[17px] x350:h-[20px] sm:h-[25px]"
               />
             </div>
             <div class="pl-1 icon-text">

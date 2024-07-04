@@ -712,6 +712,15 @@ class TranslationSeeder extends Seeder
              ['key' => 'nothing_found', 'english' => 'Nothing Found', 'mexican_spanish' => 'Nada Encontrado', 'created_at' => now(), 'updated_at' => now()],
              ['key' => 'write_your_reply', 'english' => 'Write your reply...', 'mexican_spanish' => 'Escribe tu respuesta...', 'created_at' => now(), 'updated_at' => now()],
              ['key' => 'successfully_added', 'english' => 'Successfully added', 'mexican_spanish' => 'Añadido exitosamente', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'free_version_has_started', 'english' => 'Free Version has started', 'mexican_spanish' => 'La versión gratuita ha comenzado', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'search_by', 'english' => 'Search By:', 'mexican_spanish' => 'Búsqueda por:', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'coupon_not_found', 'english' => 'Coupon not found.', 'mexican_spanish' => 'Cupón no encontrado.', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'coupon_is_valid', 'english' => 'Coupon is valid.', 'mexican_spanish' => 'El cupón es válido.', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'name', 'english' => 'Name', 'mexican_spanish' => 'Nombre', 'created_at' => now(), 'updated_at' => now()],
+             ['key' => 'edit_or_delete_comment', 'english' => 'Edit or Delete the comment', 'mexican_spanish' => 'Editar o eliminar el comentario', 'created_at' => now(), 'updated_at' => now()],
+    
+    
+    
     
             
    

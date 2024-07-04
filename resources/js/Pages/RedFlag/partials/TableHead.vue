@@ -46,7 +46,7 @@
       style="text-align: center; font-weight: bold; color: white"
     >
       <div class="flex gap-2 justify-center items-center">
-        <div>Region</div>
+        <div>{{ translations && translations.region }}</div>
 
         <div class="flex flex-col">
           <Icon

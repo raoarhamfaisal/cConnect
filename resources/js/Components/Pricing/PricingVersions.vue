@@ -275,7 +275,7 @@ const onPlatinumSelect = () => {
     :showFooter="false"
     dialogWidth="width-40"
     ref="freeActivatedDialog"
-    title="Free Version has started"
+    :title="translations && translations.free_version_has_started"
   >
     <div class="flex items-center justify-center flex-col">
       <div class="text-2xl font-bold self-start mb-1">
