@@ -382,6 +382,7 @@
       ></Loader>
 
       <CustomDialog
+        @submit="closeDialog"
         :submitText="translations && translations.okay"
         :showCancel="false"
         dialogWidth="width-40"
@@ -753,6 +754,9 @@ const startSubscription = async () => {
       loadingSubscribing.value = false;
     }
   }
+};
+const closeDialog = () => {
+  paymentMethodUpdatedDialogRef.value.closeDialog();
 };
 
 const openDialog = () => {
