@@ -26,12 +26,10 @@ import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { filterBadWordsWithoutValue } from "@/helpers/utilities";
 import InputError from "@/Components/InputError.vue";
-import { timeAgo } from "@/helpers/utilities";
 
 export default {
   components: {
     TwoVisibleComments,
-
     tContractorWord,
     ButtonPost,
     ButtonRefresh,
@@ -575,6 +573,23 @@ export default {
     },
   },
   methods: {
+    timeAgo(dateString) {
+      const date = new Date(dateString);
+      const now = new Date();
+      const seconds = Math.floor((now - date) / 1000);
+      const minutes = Math.floor(seconds / 60);
+      const hours = Math.floor(minutes / 60);
+      const days = Math.floor(hours / 24);
+      const weeks = Math.floor(days / 7);
+      const years = Math.floor(weeks / 52);
+
+      if (years > 0) return `${years}y`;
+      if (weeks > 0) return `${weeks}w`;
+      if (days > 0) return `${days}d`;
+      if (hours > 0) return `${hours}h`;
+      if (minutes > 0) return `${minutes}m`;
+      return "just now";
+    },
     validate() {
       let isValid = true;
       // Reset the error messages before validating
