@@ -170,7 +170,7 @@
       @keydown="insertTab"
       @input="adjustHeight"
       :rows="1"
-      placeholder="Write your reply..."
+      :placeholder="translations && translations.write_your_reply"
       class="text-base w-full py-1 min-h-[30px] overflow-hidden px-3 focus:shadow-none focus:ring-gray-600 focus:rounded bg-[#f9fafb] border-gray-400 text-grey-600 resize-none rounded focus-within:ring-gray-600 focus:border-gray-600"
     ></textarea>
     <Icon
@@ -325,6 +325,31 @@
       </div>
     </CustomDialog>
   </Teleport>
+
+  <v-dialog
+    v-if="loadingSendComment"
+    class="dialog-modal"
+    v-model="loadingSendComment"
+    scrim="transparent"
+    persistent
+    width="auto"
+  >
+    <Card
+      :shadowLevel="2"
+      bgColor="#364fc7"
+      :padding="screenWidth < 640 ? '7px' : '10px'"
+    >
+      <div class="text-white">
+        {{ translations && translations.uploading }}
+        {{ translations && translations.reply_first_cap }}...
+      </div>
+      <v-progress-linear
+        indeterminate
+        color="#fff"
+        class="mb-0"
+      ></v-progress-linear>
+    </Card>
+  </v-dialog>
 </template>
 
 <script setup>
@@ -334,6 +359,8 @@ import {
   somethingWentWrong,
   timeAgo,
 } from "@/helpers/utilities";
+import Card from "@/Components/Card.vue";
+
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import LikedUser from "@/Components/PostFooter/LikedUser.vue";
 
@@ -355,6 +382,7 @@ const props = defineProps({
   comment: Object,
 });
 const store = useStore();
+
 const visible = ref(false);
 const deleteDialogRef = ref();
 const likes_count = ref(props.comment?.likes_count ?? 0);
@@ -595,6 +623,7 @@ const insertTab = (event) => {
   }
 };
 const onSendComment = async () => {
+  console.log("loading comment");
   loadingSendComment.value = true;
   if (!commentText.value && commentText.value / trim() === "") {
     return;
@@ -616,7 +645,16 @@ const onSendComment = async () => {
         reply: response.data,
         commentId: props.comment.id,
       });
-      changesSaved("Reply Successfully added", 300, 1500);
+
+      store.commit("profile/setIsCommentAdded", true);
+      store.commit("profile/setIsCommentAddedEnlarged", true);
+      changesSaved(
+        translations.value &&
+          translations.value.reply_first_cap + " " + translations.value &&
+          translations.value.successfully_added,
+        300,
+        1500
+      );
       showReplyTextArea.value = false;
     }
   } catch (err) {

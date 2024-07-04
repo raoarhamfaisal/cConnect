@@ -96,7 +96,154 @@ export default {
     // ERROR ONLY WORKS IN MOBILE BECAUSE LOOKING AT WINDOW140
     this.fetchAllComments();
   },
+  computed: {
+    ...mapGetters(["screenWidth"]),
+    ...mapGetters("profile", [
+      "commentId",
+      "postComment",
+      "replyId",
+      "reply",
+      "postReply",
+      "pusherComment",
+      "pusherCommentToDelete",
+      "pusherCommentPosted",
+      "isCommentAddedEnlarged",
+    ]),
+    ...mapGetters(["translations", "userVersion"]),
+    ...mapGetters("ratings", ["comment"]),
+    // imageArray() {
+    //   return this.postToEnlarge.image.split("|");
+    // },
+    imageArray: {
+      get: function () {
+        if (
+          this.postToEnlarge &&
+          this.postToEnlarge.image &&
+          this.postToEnlarge.image.length > 0
+        ) {
+          // split string into an array
+          let videoArray = [];
+
+          let newImageArray = this.postToEnlarge.image.split("|");
+          return newImageArray;
+        } else {
+          return [];
+        }
+      },
+    },
+    textStyle() {
+      return {
+        fontSize: `${16 + +this.postToEnlarge.font_size}px`,
+        lineHeight:
+          +this.postToEnlarge.font_size > 3 &&
+          +this.postToEnlarge.font_size < 10
+            ? "1.7rem"
+            : +this.postToEnlarge.font_size >= 10
+            ? "2rem"
+            : "inherit",
+        display: "block",
+
+        color: this.text_color,
+      };
+    },
+    textStyleBody2() {
+      return {
+        overflow: "hidden",
+        display: "block",
+      };
+    },
+    titleTextStyle() {
+      return {
+        color: this.title_text_color,
+      };
+    },
+    titleClass: function () {
+      let className, className2;
+
+      if (this.postToEnlarge.title_text_alignment) {
+        this.title_text_alignment =
+          this.postToEnlarge.title_text_alignment === "left"
+            ? " text-left"
+            : this.postToEnlarge.title_text_alignment === "center"
+            ? " text-center"
+            : " text-right";
+      }
+      if (this.postToEnlarge.title_text_color_id) {
+        this.textColors.forEach((color) => {
+          if (color.id === this.postToEnlarge.title_text_color_id) {
+            this.title_text_color = color.color;
+          }
+        });
+      }
+      if (this.postToEnlarge.title_background_color_id) {
+        this.backgroundColors.forEach((color) => {
+          if (color.id === this.postToEnlarge.title_background_color_id) {
+            this.titleCustomBgColor = color.color;
+          }
+        });
+      }
+
+      return className + " " + className2;
+    },
+
+    body1Class: function () {
+      let className, className2;
+      if (this.postToEnlarge.is_body_bold) {
+        className = "font-bold";
+      }
+      if (this.postToEnlarge.text_alignment) {
+        this.text_alignment =
+          this.postToEnlarge.text_alignment === "left"
+            ? " text-left"
+            : this.postToEnlarge.text_alignment === "center"
+            ? " text-center"
+            : " text-right";
+      }
+      if (this.postToEnlarge.post_text_color_id) {
+        this.textColors.forEach((color) => {
+          if (color.id === this.postToEnlarge.post_text_color_id) {
+            this.text_color = color.color;
+          }
+        });
+      }
+      if (this.postToEnlarge.post_background_color_id) {
+        this.backgroundColors.forEach((color) => {
+          if (color.id === this.postToEnlarge.post_background_color_id) {
+            this.customBgColor = color.color;
+          }
+        });
+      }
+      return className + " " + className2;
+    },
+
+    displayedBody1() {
+      let content = this.postToEnlarge.body1;
+      if (content) {
+        content = content.replace(/\/n/g, "<br>"); // Replace /n with <br>
+      }
+
+      return this.processUrls(content);
+    },
+
+    displayedBody2() {
+      let content = this.postToEnlarge.body2;
+      if (content) {
+        content = content.replace(/\/n/g, "<br>"); // Replace /n with <br>
+      }
+
+      return this.processUrls(content);
+    },
+  },
+  emits: ["close-enlarged", "onAddingEnlargeComment"],
   watch: {
+    isCommentAddedEnlarged(newVal) {
+      console.log("comment added");
+      if (newVal) {
+        this.total_number_of_comments_with_replies =
+          this.total_number_of_comments_with_replies + 1;
+        this.$store.commit("profile/setIsCommentAddedEnlarged", false);
+      }
+    },
     commentText(newVal) {
       if (newVal) {
         this.commentTextError = "";
@@ -314,144 +461,7 @@ export default {
       deep: true,
     },
   },
-  computed: {
-    ...mapGetters(["screenWidth"]),
-    ...mapGetters("profile", [
-      "commentId",
-      "postComment",
-      "replyId",
-      "reply",
-      "postReply",
-      "pusherComment",
-      "pusherCommentToDelete",
-      "pusherCommentPosted",
-    ]),
-    ...mapGetters(["translations", "userVersion"]),
-    ...mapGetters("ratings", ["comment"]),
-    // imageArray() {
-    //   return this.postToEnlarge.image.split("|");
-    // },
-    imageArray: {
-      get: function () {
-        if (
-          this.postToEnlarge &&
-          this.postToEnlarge.image &&
-          this.postToEnlarge.image.length > 0
-        ) {
-          // split string into an array
-          let videoArray = [];
 
-          let newImageArray = this.postToEnlarge.image.split("|");
-          return newImageArray;
-        } else {
-          return [];
-        }
-      },
-    },
-    textStyle() {
-      return {
-        fontSize: `${16 + +this.postToEnlarge.font_size}px`,
-        lineHeight:
-          +this.postToEnlarge.font_size > 3 &&
-          +this.postToEnlarge.font_size < 10
-            ? "1.7rem"
-            : +this.postToEnlarge.font_size >= 10
-            ? "2rem"
-            : "inherit",
-        display: "block",
-
-        color: this.text_color,
-      };
-    },
-    textStyleBody2() {
-      return {
-        overflow: "hidden",
-        display: "block",
-      };
-    },
-    titleTextStyle() {
-      return {
-        color: this.title_text_color,
-      };
-    },
-    titleClass: function () {
-      let className, className2;
-
-      if (this.postToEnlarge.title_text_alignment) {
-        this.title_text_alignment =
-          this.postToEnlarge.title_text_alignment === "left"
-            ? " text-left"
-            : this.postToEnlarge.title_text_alignment === "center"
-            ? " text-center"
-            : " text-right";
-      }
-      if (this.postToEnlarge.title_text_color_id) {
-        this.textColors.forEach((color) => {
-          if (color.id === this.postToEnlarge.title_text_color_id) {
-            this.title_text_color = color.color;
-          }
-        });
-      }
-      if (this.postToEnlarge.title_background_color_id) {
-        this.backgroundColors.forEach((color) => {
-          if (color.id === this.postToEnlarge.title_background_color_id) {
-            this.titleCustomBgColor = color.color;
-          }
-        });
-      }
-
-      return className + " " + className2;
-    },
-
-    body1Class: function () {
-      let className, className2;
-      if (this.postToEnlarge.is_body_bold) {
-        className = "font-bold";
-      }
-      if (this.postToEnlarge.text_alignment) {
-        this.text_alignment =
-          this.postToEnlarge.text_alignment === "left"
-            ? " text-left"
-            : this.postToEnlarge.text_alignment === "center"
-            ? " text-center"
-            : " text-right";
-      }
-      if (this.postToEnlarge.post_text_color_id) {
-        this.textColors.forEach((color) => {
-          if (color.id === this.postToEnlarge.post_text_color_id) {
-            this.text_color = color.color;
-          }
-        });
-      }
-      if (this.postToEnlarge.post_background_color_id) {
-        this.backgroundColors.forEach((color) => {
-          if (color.id === this.postToEnlarge.post_background_color_id) {
-            this.customBgColor = color.color;
-          }
-        });
-      }
-      return className + " " + className2;
-    },
-
-    displayedBody1() {
-      let content = this.postToEnlarge.body1;
-      if (content) {
-        content = content.replace(/\/n/g, "<br>"); // Replace /n with <br>
-      }
-
-      return this.processUrls(content);
-    },
-
-    displayedBody2() {
-      let content = this.postToEnlarge.body2;
-      if (content) {
-        content = content.replace(/\/n/g, "<br>"); // Replace /n with <br>
-      }
-
-      return this.processUrls(content);
-    },
-  },
-  emits: ["close-enlarged", "onAddingEnlargeComment"],
   methods: {
     validate() {
       let isValid = true;

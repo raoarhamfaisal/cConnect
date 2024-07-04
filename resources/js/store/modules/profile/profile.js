@@ -30,12 +30,16 @@ export default {
       updatedPost: {},
       updatedPostId: 0,
       deletedPost: {},
+      isCommentAdded: false,
+      isCommentAddedEnlarged: false,
     };
   },
   getters: {
     status: (state) => state.status,
     // priceToBePaid: (state) => state.priceToBePaid,
     commentId: (state) => state.commentId,
+    isCommentAdded: (state) => state.isCommentAdded,
+    isCommentAddedEnlarged: (state) => state.isCommentAddedEnlarged,
     pusherComment: (state) => state.pusherComment,
     pusherCommentPosted: (state) => state.pusherCommentPosted,
     pusherCommentToDelete: (state) => state.pusherCommentToDelete,
@@ -61,6 +65,12 @@ export default {
     // },
     setStatus(state, payload) {
       state.status = payload;
+    },
+    setIsCommentAdded(state, isAdded) {
+      state.isCommentAdded = isAdded;
+    },
+    setIsCommentAddedEnlarged(state, isAdded) {
+      state.isCommentAddedEnlarged = isAdded;
     },
     setCommentId(state, payload) {
       state.commentId = payload;
