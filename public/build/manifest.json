@@ -1,22 +1,34 @@
 {
   "node_modules/@mdi/font/fonts/materialdesignicons-webfont.eot": {
-    "file": "assets/materialdesignicons-webfont.67d24abe.eot",
+    "file": "assets/materialdesignicons-webfont.0b183104.eot",
     "src": "node_modules/@mdi/font/fonts/materialdesignicons-webfont.eot"
   },
   "node_modules/@mdi/font/fonts/materialdesignicons-webfont.woff2": {
-    "file": "assets/materialdesignicons-webfont.c1c004a9.woff2",
+    "file": "assets/materialdesignicons-webfont.662fefa8.woff2",
     "src": "node_modules/@mdi/font/fonts/materialdesignicons-webfont.woff2"
   },
   "node_modules/@mdi/font/fonts/materialdesignicons-webfont.woff": {
-    "file": "assets/materialdesignicons-webfont.80bb28b3.woff",
+    "file": "assets/materialdesignicons-webfont.a5928a0d.woff",
     "src": "node_modules/@mdi/font/fonts/materialdesignicons-webfont.woff"
   },
   "node_modules/@mdi/font/fonts/materialdesignicons-webfont.ttf": {
-    "file": "assets/materialdesignicons-webfont.a58ecb54.ttf",
+    "file": "assets/materialdesignicons-webfont.61e8aba5.ttf",
     "src": "node_modules/@mdi/font/fonts/materialdesignicons-webfont.ttf"
   },
+  "resources/js/Pages/assets/usa.svg": {
+    "file": "assets/usa.a7588245.svg",
+    "src": "resources/js/Pages/assets/usa.svg"
+  },
+  "resources/js/Pages/assets/spanish.svg": {
+    "file": "assets/spanish.91e759ba.svg",
+    "src": "resources/js/Pages/assets/spanish.svg"
+  },
+  "resources/js/Components/Pricing/assets/freebox.png": {
+    "file": "assets/freebox.e6bd09b1.png",
+    "src": "resources/js/Components/Pricing/assets/freebox.png"
+  },
   "resources/js/app.js": {
-    "file": "assets/app.59272a87.js",
+    "file": "assets/app.1440a0ce.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "dynamicImports": [
@@ -63,11 +75,9 @@
       "resources/js/Pages/Contractor/CustomContractorPageDialog.vue",
       "resources/js/Pages/Contractor/DialogContractorPage.vue",
       "resources/js/Pages/Dashboard.vue",
-      "resources/js/Pages/InactiveAccount copy.vue",
       "resources/js/Pages/InactiveAccount.vue",
-      "resources/js/Pages/PaymentVerification.vue",
       "resources/js/Pages/Postings.vue",
-      "resources/js/Pages/Postingssetup.vue",
+      "resources/js/Pages/PricingPage.vue",
       "resources/js/Pages/PricingPlanPage.vue",
       "resources/js/Pages/PrivacyPolicy.vue",
       "resources/js/Pages/Profile/Edit.vue",
@@ -85,6 +95,8 @@
       "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
       "resources/js/Pages/Profile/Partials/main/PaymentStep.vue",
       "resources/js/Pages/Profile/Partials/main/PricingCard.vue",
+      "resources/js/Pages/Profile/Partials/main/PricingCardForAnnualGold.vue",
+      "resources/js/Pages/Profile/Partials/main/SettingPricingPlans.vue",
       "resources/js/Pages/Profile/Partials/main/SettingsTabs.vue",
       "resources/js/Pages/Profile/PaymentPage.vue",
       "resources/js/Pages/Profile/ProfileSetup.vue",
@@ -107,119 +119,166 @@
       "resources/js/Pages/SubFinder/partials/ContractorHeader.vue",
       "resources/js/Pages/SubFinder/partials/SubFinderContractor.vue",
       "resources/js/Pages/TermsAndServices.vue",
-      "resources/js/Pages/Welcome.vue",
-      "resources/js/Pages/index copy.vue",
       "resources/js/Pages/index.vue"
     ],
     "css": [
-      "assets/app.81225ed2.css"
+      "assets/app.816213da.css"
     ],
     "assets": [
-      "assets/materialdesignicons-webfont.67d24abe.eot",
-      "assets/materialdesignicons-webfont.c1c004a9.woff2",
-      "assets/materialdesignicons-webfont.80bb28b3.woff",
-      "assets/materialdesignicons-webfont.a58ecb54.ttf"
+      "assets/materialdesignicons-webfont.0b183104.eot",
+      "assets/materialdesignicons-webfont.662fefa8.woff2",
+      "assets/materialdesignicons-webfont.a5928a0d.woff",
+      "assets/materialdesignicons-webfont.61e8aba5.ttf"
     ]
   },
   "resources/js/Pages/AboutUs.vue": {
-    "file": "assets/AboutUs.b21a8bea.js",
+    "file": "assets/AboutUs.141b8d2d.js",
     "src": "resources/js/Pages/AboutUs.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_SignUpLayout.f17e311e.js",
-      "_WelcomeFooter.b4f6561b.js",
+      "_SignUpLayout.1fd0fe62.js",
+      "_WelcomeFooter.b53dde7c.js",
       "resources/js/app.js",
-      "_tContractorWord.f0a33fa4.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_ResponsiveNavLink.5c3e17ee.js",
-      "_tContractorWhite.4f7ad68a.js"
+      "_ResponsiveNavLink.08fcec0b.js",
+      "_iconify.e7607712.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
+      "_CustomDialog.23fc1797.js",
+      "_tContractorWhite.de6506fc.js"
     ]
   },
-  "_SignUpLayout.f17e311e.js": {
-    "file": "assets/SignUpLayout.f17e311e.js",
+  "_SignUpLayout.1fd0fe62.js": {
+    "file": "assets/SignUpLayout.1fd0fe62.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_WelcomeFooter.b4f6561b.js": {
-    "file": "assets/WelcomeFooter.b4f6561b.js",
+  "_WelcomeFooter.b53dde7c.js": {
+    "file": "assets/WelcomeFooter.b53dde7c.js",
     "imports": [
+      "_spanish.afd7e950.js",
       "resources/js/app.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_ResponsiveNavLink.5c3e17ee.js",
-      "_tContractorWhite.4f7ad68a.js"
+      "_tContractorWord.3399d2af.js",
+      "_ResponsiveNavLink.08fcec0b.js",
+      "_iconify.e7607712.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
+      "_tContractorWhite.de6506fc.js"
     ]
   },
-  "_tContractorWord.f0a33fa4.js": {
-    "file": "assets/tContractorWord.f0a33fa4.js",
+  "_spanish.afd7e950.js": {
+    "file": "assets/spanish.afd7e950.js",
+    "assets": [
+      "assets/usa.a7588245.svg",
+      "assets/spanish.91e759ba.svg"
+    ]
+  },
+  "_tContractorWord.3399d2af.js": {
+    "file": "assets/tContractorWord.3399d2af.js",
     "imports": [
       "__plugin-vue_export-helper.cdc0426e.js",
       "resources/js/app.js"
     ]
   },
-  "_ResponsiveNavLink.5c3e17ee.js": {
-    "file": "assets/ResponsiveNavLink.5c3e17ee.js",
+  "_ResponsiveNavLink.08fcec0b.js": {
+    "file": "assets/ResponsiveNavLink.08fcec0b.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_tContractorWhite.4f7ad68a.js": {
-    "file": "assets/tContractorWhite.4f7ad68a.js",
+  "_iconify.e7607712.js": {
+    "file": "assets/iconify.e7607712.js",
     "imports": [
-      "__plugin-vue_export-helper.cdc0426e.js",
+      "resources/js/app.js"
+    ]
+  },
+  "_DialogUpgradeToGoldPlatinum.2a1c8714.js": {
+    "file": "assets/DialogUpgradeToGoldPlatinum.2a1c8714.js",
+    "imports": [
+      "_CustomDialog.23fc1797.js",
+      "resources/js/app.js"
+    ]
+  },
+  "_tContractorWhite.de6506fc.js": {
+    "file": "assets/tContractorWhite.de6506fc.js",
+    "imports": [
       "resources/js/app.js"
     ]
   },
   "__plugin-vue_export-helper.cdc0426e.js": {
     "file": "assets/_plugin-vue_export-helper.cdc0426e.js"
   },
-  "resources/js/Pages/Admin/AdminPage.vue": {
-    "file": "assets/AdminPage.cf7b787d.js",
-    "src": "resources/js/Pages/Admin/AdminPage.vue",
-    "isDynamicEntry": true,
+  "_CustomDialog.23fc1797.js": {
+    "file": "assets/CustomDialog.23fc1797.js",
     "imports": [
-      "_Header.8cbac9c9.js",
       "resources/js/app.js",
-      "_Card.fae93276.js",
-      "_PageTitle.5140671a.js",
-      "_iconify.9ffa3d85.js",
-      "__plugin-vue_export-helper.cdc0426e.js",
-      "_PostForm.9f8b1102.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_CustomDialog.08753e88.js",
-      "_Badge.59df51b3.js",
-      "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
-      "resources/js/Pages/Profile/Partials/Trades.vue",
-      "resources/js/Pages/Profile/Partials/Views.vue",
-      "_Loader.348c47cb.js",
-      "_Avatar.90d40591.js",
-      "_InputLabel.2ed1580b.js",
-      "_InputError.b7fce308.js",
-      "_SelectProfile.74872fec.js"
-    ],
-    "css": [
-      "assets/AdminPage.9aa202f5.css"
-    ]
-  },
-  "_Header.8cbac9c9.js": {
-    "file": "assets/Header.8cbac9c9.js",
-    "imports": [
-      "_PostForm.9f8b1102.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_tContractorWord.f0a33fa4.js",
-      "resources/js/app.js",
-      "_CustomDialog.08753e88.js",
-      "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ],
     "css": [
-      "assets/Header.4153b688.css"
+      "assets/CustomDialog.b9fbe597.css"
     ]
   },
-  "_Card.fae93276.js": {
-    "file": "assets/Card.fae93276.js",
+  "resources/js/Pages/Admin/AdminPage.vue": {
+    "file": "assets/AdminPage.b3bbb191.js",
+    "src": "resources/js/Pages/Admin/AdminPage.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_Header.e6b0f8ce.js",
+      "resources/js/app.js",
+      "_Card.9778af2d.js",
+      "_PageTitle.7160322e.js",
+      "_iconify.e7607712.js",
+      "__plugin-vue_export-helper.cdc0426e.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_CustomDialog.23fc1797.js",
+      "_selectListsHelpters.9480c284.js",
+      "_Badge.555c93ca.js",
+      "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
+      "resources/js/Pages/Profile/Partials/Trades.vue",
+      "resources/js/Pages/Profile/Partials/Views.vue",
+      "_Loader.3dd162f1.js",
+      "_Avatar.8bfab00d.js",
+      "_InputLabel.fe3013ba.js",
+      "_InputError.ea13c7ed.js",
+      "_SelectProfile.c89157a7.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js"
+    ],
+    "css": [
+      "assets/AdminPage.9aa202f5.css",
+      "assets/Card.1d96bec8.css",
+      "assets/PageTitle.e3b0c442.css"
+    ]
+  },
+  "_Header.e6b0f8ce.js": {
+    "file": "assets/Header.e6b0f8ce.js",
+    "imports": [
+      "resources/js/app.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
+      "_iconify.e7607712.js",
+      "_Avatar.8bfab00d.js",
+      "_InputLabel.fe3013ba.js",
+      "_InputError.ea13c7ed.js",
+      "__plugin-vue_export-helper.cdc0426e.js",
+      "_SelectProfile.c89157a7.js",
+      "_CustomDialog.23fc1797.js",
+      "_Badge.555c93ca.js",
+      "_Loader.3dd162f1.js",
+      "_selectListsHelpters.9480c284.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js"
+    ],
+    "css": [
+      "assets/Header.751436c7.css"
+    ]
+  },
+  "_Card.9778af2d.js": {
+    "file": "assets/Card.9778af2d.js",
     "imports": [
       "__plugin-vue_export-helper.cdc0426e.js",
       "resources/js/app.js"
@@ -228,10 +287,10 @@
       "assets/Card.1d96bec8.css"
     ]
   },
-  "_PageTitle.5140671a.js": {
-    "file": "assets/PageTitle.5140671a.js",
+  "_PageTitle.7160322e.js": {
+    "file": "assets/PageTitle.7160322e.js",
     "imports": [
-      "_iconify.9ffa3d85.js",
+      "_iconify.e7607712.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ],
@@ -239,78 +298,39 @@
       "assets/PageTitle.e3b0c442.css"
     ]
   },
-  "_iconify.9ffa3d85.js": {
-    "file": "assets/iconify.9ffa3d85.js",
-    "imports": [
-      "resources/js/app.js"
-    ]
-  },
-  "_PostForm.9f8b1102.js": {
-    "file": "assets/PostForm.9f8b1102.js",
+  "_filepond-plugin-file-poster.a3c64f80.js": {
+    "file": "assets/filepond-plugin-file-poster.a3c64f80.js",
     "imports": [
       "resources/js/app.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
-      "_iconify.9ffa3d85.js",
-      "_Avatar.90d40591.js",
-      "_InputLabel.2ed1580b.js",
-      "_InputError.b7fce308.js",
+      "_CustomDialog.23fc1797.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_SelectProfile.74872fec.js",
-      "_CustomDialog.08753e88.js",
-      "_Badge.59df51b3.js",
-      "_Loader.348c47cb.js",
-      "_selectListsHelpters.38ce783f.js"
+      "_iconify.e7607712.js",
+      "_selectListsHelpters.9480c284.js",
+      "_Badge.555c93ca.js"
     ],
     "css": [
-      "assets/PostForm.30ecbcd1.css"
-    ]
-  },
-  "_filepond-plugin-file-poster.cacb38b7.js": {
-    "file": "assets/filepond-plugin-file-poster.cacb38b7.js",
-    "imports": [
-      "__plugin-vue_export-helper.cdc0426e.js",
-      "resources/js/app.js",
-      "_iconify.9ffa3d85.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_CustomDialog.08753e88.js",
-      "_Badge.59df51b3.js"
-    ],
-    "css": [
-      "assets/filepond-plugin-file-poster.81db39e2.css"
-    ]
-  },
-  "_CustomDialog.08753e88.js": {
-    "file": "assets/CustomDialog.08753e88.js",
-    "imports": [
-      "resources/js/app.js",
-      "_iconify.9ffa3d85.js",
-      "__plugin-vue_export-helper.cdc0426e.js"
-    ],
-    "css": [
-      "assets/CustomDialog.13d25e87.css"
+      "assets/filepond-plugin-file-poster.21f7dee0.css"
     ]
   },
   "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue": {
-    "file": "assets/DialogProfileTabs.982593c1.js",
+    "file": "assets/DialogProfileTabs.ef91acf4.js",
     "src": "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/Pages/Profile/Partials/Trades.vue",
       "resources/js/Pages/Profile/Partials/Views.vue",
-      "_CustomDialog.08753e88.js",
-      "_Loader.348c47cb.js",
+      "_CustomDialog.23fc1797.js",
+      "_Loader.3dd162f1.js",
       "resources/js/app.js",
-      "_selectListsHelpters.38ce783f.js",
+      "_selectListsHelpters.9480c284.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_iconify.9ffa3d85.js"
+      "_iconify.e7607712.js"
     ]
   },
-  "_Avatar.90d40591.js": {
-    "file": "assets/Avatar.90d40591.js",
+  "_Avatar.8bfab00d.js": {
+    "file": "assets/Avatar.8bfab00d.js",
     "imports": [
-      "_iconify.9ffa3d85.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "resources/js/app.js"
     ],
@@ -318,31 +338,31 @@
       "assets/Avatar.504d113e.css"
     ]
   },
-  "_InputLabel.2ed1580b.js": {
-    "file": "assets/InputLabel.2ed1580b.js",
+  "_InputLabel.fe3013ba.js": {
+    "file": "assets/InputLabel.fe3013ba.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_InputError.b7fce308.js": {
-    "file": "assets/InputError.b7fce308.js",
+  "_InputError.ea13c7ed.js": {
+    "file": "assets/InputError.ea13c7ed.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_SelectProfile.74872fec.js": {
-    "file": "assets/SelectProfile.74872fec.js",
+  "_SelectProfile.c89157a7.js": {
+    "file": "assets/SelectProfile.c89157a7.js",
     "imports": [
       "resources/js/app.js",
-      "_iconify.9ffa3d85.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ],
     "css": [
-      "assets/SelectProfile.bc23939f.css"
+      "assets/SelectProfile.d6e736a7.css"
     ]
   },
-  "_Badge.59df51b3.js": {
-    "file": "assets/Badge.59df51b3.js",
+  "_Badge.555c93ca.js": {
+    "file": "assets/Badge.555c93ca.js",
     "imports": [
       "__plugin-vue_export-helper.cdc0426e.js",
       "resources/js/app.js"
@@ -351,34 +371,34 @@
       "assets/Badge.22fb2435.css"
     ]
   },
-  "_Loader.348c47cb.js": {
-    "file": "assets/Loader.348c47cb.js",
+  "_Loader.3dd162f1.js": {
+    "file": "assets/Loader.3dd162f1.js",
     "imports": [
       "resources/js/app.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ],
     "css": [
-      "assets/Loader.2ab54bcb.css"
+      "assets/Loader.0ce7ec1e.css"
     ]
   },
-  "_selectListsHelpters.38ce783f.js": {
-    "file": "assets/selectListsHelpters.38ce783f.js"
+  "_selectListsHelpters.9480c284.js": {
+    "file": "assets/selectListsHelpters.9480c284.js"
   },
   "resources/js/Pages/Profile/Partials/Trades.vue": {
-    "file": "assets/Trades.834feb79.js",
+    "file": "assets/Trades.7719e057.js",
     "src": "resources/js/Pages/Profile/Partials/Trades.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_selectListsHelpters.38ce783f.js",
+      "_selectListsHelpters.9480c284.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ],
     "css": [
-      "assets/Trades.824c2c35.css"
+      "assets/Trades.d27b3ce7.css"
     ]
   },
   "resources/js/Pages/Profile/Partials/Views.vue": {
-    "file": "assets/Views.1ec49b2d.js",
+    "file": "assets/Views.9efd80c5.js",
     "src": "resources/js/Pages/Profile/Partials/Views.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -386,271 +406,297 @@
       "__plugin-vue_export-helper.cdc0426e.js"
     ],
     "css": [
-      "assets/Views.d84d65b5.css"
+      "assets/Views.36973f2b.css"
     ]
   },
   "resources/js/Pages/Admin/AdminPostUserFunctionPage.vue": {
-    "file": "assets/AdminPostUserFunctionPage.e6d43c8b.js",
+    "file": "assets/AdminPostUserFunctionPage.e21225f6.js",
     "src": "resources/js/Pages/Admin/AdminPostUserFunctionPage.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_Header.8cbac9c9.js",
-      "_Avatar.90d40591.js",
-      "_iconify.9ffa3d85.js",
-      "_CustomDialog.08753e88.js",
+      "_Header.e6b0f8ce.js",
+      "_Avatar.8bfab00d.js",
+      "_iconify.e7607712.js",
+      "_CustomDialog.23fc1797.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_Card.fae93276.js",
-      "_SearchInput.5c26335d.js",
-      "_PageTitle.5140671a.js",
-      "_PostForm.9f8b1102.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_Badge.59df51b3.js",
+      "_Card.9778af2d.js",
+      "_SearchInput.7e5673bd.js",
+      "_PageTitle.7160322e.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_selectListsHelpters.9480c284.js",
+      "_Badge.555c93ca.js",
       "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
       "resources/js/Pages/Profile/Partials/Trades.vue",
       "resources/js/Pages/Profile/Partials/Views.vue",
-      "_Loader.348c47cb.js",
-      "_InputLabel.2ed1580b.js",
-      "_InputError.b7fce308.js",
-      "_SelectProfile.74872fec.js"
+      "_Loader.3dd162f1.js",
+      "_InputLabel.fe3013ba.js",
+      "_InputError.ea13c7ed.js",
+      "_SelectProfile.c89157a7.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js"
     ],
     "css": [
-      "assets/AdminPostUserFunctionPage.7e474778.css"
+      "assets/AdminPostUserFunctionPage.7e474778.css",
+      "assets/Card.1d96bec8.css",
+      "assets/PageTitle.e3b0c442.css"
     ]
   },
-  "_SearchInput.5c26335d.js": {
-    "file": "assets/SearchInput.5c26335d.js",
+  "_SearchInput.7e5673bd.js": {
+    "file": "assets/SearchInput.7e5673bd.js",
     "imports": [
       "resources/js/app.js",
-      "_iconify.9ffa3d85.js"
+      "_iconify.e7607712.js"
     ]
   },
   "resources/js/Pages/Admin/Appealed/AppealedRegions.vue": {
-    "file": "assets/AppealedRegions.4886f269.js",
+    "file": "assets/AppealedRegions.4f3647fd.js",
     "src": "resources/js/Pages/Admin/Appealed/AppealedRegions.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Header.8cbac9c9.js",
+      "_Header.e6b0f8ce.js",
       "resources/js/Pages/Admin/Ratings/partials/AllContractors/AllRegions.vue",
       "resources/js/app.js",
-      "_PostForm.9f8b1102.js",
-      "_tContractorWord.f0a33fa4.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_iconify.9ffa3d85.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_CustomDialog.08753e88.js",
-      "_Badge.59df51b3.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_CustomDialog.23fc1797.js",
+      "_iconify.e7607712.js",
+      "_selectListsHelpters.9480c284.js",
+      "_Badge.555c93ca.js",
       "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
       "resources/js/Pages/Profile/Partials/Trades.vue",
       "resources/js/Pages/Profile/Partials/Views.vue",
-      "_Loader.348c47cb.js",
-      "_Avatar.90d40591.js",
-      "_InputLabel.2ed1580b.js",
-      "_InputError.b7fce308.js",
-      "_SelectProfile.74872fec.js",
-      "_HeadingCard.40a65dbd.js",
-      "_Card.fae93276.js",
-      "_PageTitle.5140671a.js"
+      "_Loader.3dd162f1.js",
+      "_Avatar.8bfab00d.js",
+      "_InputLabel.fe3013ba.js",
+      "_InputError.ea13c7ed.js",
+      "_SelectProfile.c89157a7.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
+      "_HeadingCard.964389d2.js",
+      "_Card.9778af2d.js",
+      "_PageTitle.7160322e.js"
+    ],
+    "css": [
+      "assets/Card.1d96bec8.css",
+      "assets/PageTitle.e3b0c442.css"
     ]
   },
   "resources/js/Pages/Admin/Ratings/partials/AllContractors/AllRegions.vue": {
-    "file": "assets/AllRegions.3719085b.js",
+    "file": "assets/AllRegions.c34358ea.js",
     "src": "resources/js/Pages/Admin/Ratings/partials/AllContractors/AllRegions.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_HeadingCard.40a65dbd.js",
-      "_Loader.348c47cb.js",
-      "_Card.fae93276.js",
+      "_HeadingCard.964389d2.js",
+      "_Loader.3dd162f1.js",
+      "_Card.9778af2d.js",
       "resources/js/app.js",
-      "_PageTitle.5140671a.js",
-      "_iconify.9ffa3d85.js",
+      "_PageTitle.7160322e.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js"
+    ],
+    "css": [
+      "assets/Card.1d96bec8.css",
+      "assets/PageTitle.e3b0c442.css"
     ]
   },
-  "_HeadingCard.40a65dbd.js": {
-    "file": "assets/HeadingCard.40a65dbd.js",
+  "_HeadingCard.964389d2.js": {
+    "file": "assets/HeadingCard.964389d2.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
   "resources/js/Pages/Admin/Appealed/AppealedReviews.vue": {
-    "file": "assets/AppealedReviews.debe2cf5.js",
+    "file": "assets/AppealedReviews.098c0fb2.js",
     "src": "resources/js/Pages/Admin/Appealed/AppealedReviews.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Header.8cbac9c9.js",
+      "_Header.e6b0f8ce.js",
       "resources/js/app.js",
-      "_Button.ed86f1b5.js",
+      "_Button.3a799bb4.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ReviewResponseAdmin.vue",
-      "_HeadingCard.40a65dbd.js",
-      "_Card.fae93276.js",
-      "_Loader.348c47cb.js",
-      "_SearchInput.5c26335d.js",
-      "_PageTitle.5140671a.js",
+      "_HeadingCard.964389d2.js",
+      "_Card.9778af2d.js",
+      "_Loader.3dd162f1.js",
+      "_SearchInput.7e5673bd.js",
+      "_PageTitle.7160322e.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_PostForm.9f8b1102.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_iconify.9ffa3d85.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_CustomDialog.08753e88.js",
-      "_Badge.59df51b3.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_CustomDialog.23fc1797.js",
+      "_iconify.e7607712.js",
+      "_selectListsHelpters.9480c284.js",
+      "_Badge.555c93ca.js",
       "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
       "resources/js/Pages/Profile/Partials/Trades.vue",
       "resources/js/Pages/Profile/Partials/Views.vue",
-      "_Avatar.90d40591.js",
-      "_InputLabel.2ed1580b.js",
-      "_InputError.b7fce308.js",
-      "_SelectProfile.74872fec.js",
+      "_Avatar.8bfab00d.js",
+      "_InputLabel.fe3013ba.js",
+      "_InputError.ea13c7ed.js",
+      "_SelectProfile.c89157a7.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ReviewAdmin.vue",
       "resources/js/Pages/Ratings/Edit/EditRatingModal.vue",
-      "_StarRatingEditable.92223be5.js",
+      "_StarRatingEditable.b955dfbd.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/Appeal.vue",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/DecisionNotes.vue",
-      "_StarRating.2d3b8bfe.js",
-      "_ButtonRatings.1b9093ba.js",
+      "_StarRating.6dd35ff0.js",
+      "_ButtonRatings.b8d61906.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/QualifyingQuestionsAdmin.vue",
-      "_Tooltip.16a29e70.js",
+      "_Tooltip.c8b0b4cf.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ResponseAdmin.vue"
     ],
     "css": [
-      "assets/AppealedReviews.6bf224ab.css",
-      "assets/Button.edfd387f.css"
+      "assets/AppealedReviews.e6365542.css",
+      "assets/Button.80ea3968.css",
+      "assets/Card.1d96bec8.css",
+      "assets/PageTitle.e3b0c442.css"
     ]
   },
-  "_Button.ed86f1b5.js": {
-    "file": "assets/Button.ed86f1b5.js",
+  "_Button.3a799bb4.js": {
+    "file": "assets/Button.3a799bb4.js",
     "imports": [
       "__plugin-vue_export-helper.cdc0426e.js",
       "resources/js/app.js"
     ],
     "css": [
-      "assets/Button.edfd387f.css"
+      "assets/Button.80ea3968.css"
     ]
   },
   "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ReviewResponseAdmin.vue": {
-    "file": "assets/ReviewResponseAdmin.b304050a.js",
+    "file": "assets/ReviewResponseAdmin.a8174e38.js",
     "src": "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ReviewResponseAdmin.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Card.fae93276.js",
+      "_Card.9778af2d.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ReviewAdmin.vue",
       "resources/js/app.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "resources/js/Pages/Ratings/Edit/EditRatingModal.vue",
-      "_InputError.b7fce308.js",
-      "_StarRatingEditable.92223be5.js",
-      "_iconify.9ffa3d85.js",
-      "_CustomDialog.08753e88.js",
-      "_Avatar.90d40591.js",
+      "_InputError.ea13c7ed.js",
+      "_StarRatingEditable.b955dfbd.js",
+      "_iconify.e7607712.js",
+      "_CustomDialog.23fc1797.js",
+      "_Avatar.8bfab00d.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/Appeal.vue",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/DecisionNotes.vue",
-      "_StarRating.2d3b8bfe.js",
-      "_ButtonRatings.1b9093ba.js",
-      "_Badge.59df51b3.js",
+      "_StarRating.6dd35ff0.js",
+      "_ButtonRatings.b8d61906.js",
+      "_Badge.555c93ca.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/QualifyingQuestionsAdmin.vue",
-      "_Tooltip.16a29e70.js",
+      "_Tooltip.c8b0b4cf.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ResponseAdmin.vue",
-      "_selectListsHelpters.38ce783f.js"
+      "_selectListsHelpters.9480c284.js"
+    ],
+    "css": [
+      "assets/Card.1d96bec8.css"
     ]
   },
   "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ReviewAdmin.vue": {
-    "file": "assets/ReviewAdmin.b7558fce.js",
+    "file": "assets/ReviewAdmin.50b006a0.js",
     "src": "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ReviewAdmin.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/Pages/Ratings/Edit/EditRatingModal.vue",
-      "_Avatar.90d40591.js",
+      "_Avatar.8bfab00d.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/Appeal.vue",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/DecisionNotes.vue",
-      "_StarRating.2d3b8bfe.js",
-      "_ButtonRatings.1b9093ba.js",
-      "_Badge.59df51b3.js",
+      "_StarRating.6dd35ff0.js",
+      "_ButtonRatings.b8d61906.js",
+      "_Badge.555c93ca.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/QualifyingQuestionsAdmin.vue",
-      "_Tooltip.16a29e70.js",
-      "_Card.fae93276.js",
+      "_Tooltip.c8b0b4cf.js",
+      "_Card.9778af2d.js",
       "resources/js/app.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ResponseAdmin.vue",
-      "_selectListsHelpters.38ce783f.js",
-      "_iconify.9ffa3d85.js",
+      "_selectListsHelpters.9480c284.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_InputError.b7fce308.js",
-      "_StarRatingEditable.92223be5.js",
-      "_CustomDialog.08753e88.js"
+      "_InputError.ea13c7ed.js",
+      "_StarRatingEditable.b955dfbd.js",
+      "_CustomDialog.23fc1797.js"
     ],
     "css": [
-      "assets/ReviewAdmin.ffc8dc64.css"
+      "assets/ReviewAdmin.ffc8dc64.css",
+      "assets/Card.1d96bec8.css"
     ]
   },
   "resources/js/Pages/Ratings/Edit/EditRatingModal.vue": {
-    "file": "assets/EditRatingModal.7802eb54.js",
+    "file": "assets/EditRatingModal.d65caae8.js",
     "src": "resources/js/Pages/Ratings/Edit/EditRatingModal.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_InputError.b7fce308.js",
-      "_StarRatingEditable.92223be5.js",
-      "_CustomDialog.08753e88.js",
-      "_iconify.9ffa3d85.js",
+      "_InputError.ea13c7ed.js",
+      "_StarRatingEditable.b955dfbd.js",
+      "_CustomDialog.23fc1797.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ]
   },
   "resources/js/Pages/Admin/Ratings/partials/SingleContractor/Appeal.vue": {
-    "file": "assets/Appeal.bb6cda45.js",
+    "file": "assets/Appeal.cddef267.js",
     "src": "resources/js/Pages/Admin/Ratings/partials/SingleContractor/Appeal.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Card.fae93276.js",
+      "_Card.9778af2d.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper.cdc0426e.js"
+    ],
+    "css": [
+      "assets/Card.1d96bec8.css"
     ]
   },
   "resources/js/Pages/Admin/Ratings/partials/SingleContractor/DecisionNotes.vue": {
-    "file": "assets/DecisionNotes.bbbd981c.js",
+    "file": "assets/DecisionNotes.85efb76d.js",
     "src": "resources/js/Pages/Admin/Ratings/partials/SingleContractor/DecisionNotes.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_Card.fae93276.js",
+      "_Card.9778af2d.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ],
     "css": [
-      "assets/DecisionNotes.fbcf1a53.css"
+      "assets/DecisionNotes.3a19126f.css",
+      "assets/Card.1d96bec8.css"
     ]
   },
-  "_StarRating.2d3b8bfe.js": {
-    "file": "assets/StarRating.2d3b8bfe.js",
+  "_StarRating.6dd35ff0.js": {
+    "file": "assets/StarRating.6dd35ff0.js",
     "imports": [
       "__plugin-vue_export-helper.cdc0426e.js",
       "resources/js/app.js"
     ],
     "css": [
-      "assets/StarRating.3bcb70bd.css"
+      "assets/StarRating.cd7497d8.css"
     ]
   },
-  "_ButtonRatings.1b9093ba.js": {
-    "file": "assets/ButtonRatings.1b9093ba.js",
+  "_ButtonRatings.b8d61906.js": {
+    "file": "assets/ButtonRatings.b8d61906.js",
     "imports": [
-      "_iconify.9ffa3d85.js",
+      "_iconify.e7607712.js",
       "resources/js/app.js"
     ]
   },
   "resources/js/Pages/Admin/Ratings/partials/SingleContractor/QualifyingQuestionsAdmin.vue": {
-    "file": "assets/QualifyingQuestionsAdmin.2abf2571.js",
+    "file": "assets/QualifyingQuestionsAdmin.a5bdfdd2.js",
     "src": "resources/js/Pages/Admin/Ratings/partials/SingleContractor/QualifyingQuestionsAdmin.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Card.fae93276.js",
-      "_iconify.9ffa3d85.js",
+      "_Card.9778af2d.js",
+      "_iconify.e7607712.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper.cdc0426e.js"
+    ],
+    "css": [
+      "assets/Card.1d96bec8.css"
     ]
   },
-  "_Tooltip.16a29e70.js": {
-    "file": "assets/Tooltip.16a29e70.js",
+  "_Tooltip.c8b0b4cf.js": {
+    "file": "assets/Tooltip.c8b0b4cf.js",
     "imports": [
       "resources/js/app.js"
     ],
@@ -659,172 +705,182 @@
     ]
   },
   "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ResponseAdmin.vue": {
-    "file": "assets/ResponseAdmin.20ee4268.js",
+    "file": "assets/ResponseAdmin.7f32858f.js",
     "src": "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ResponseAdmin.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_Card.fae93276.js",
-      "_ButtonRatings.1b9093ba.js",
+      "_Card.9778af2d.js",
+      "_ButtonRatings.b8d61906.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_iconify.9ffa3d85.js"
+      "_iconify.e7607712.js"
     ],
     "css": [
-      "assets/ResponseAdmin.986168e9.css"
+      "assets/ResponseAdmin.986168e9.css",
+      "assets/Card.1d96bec8.css"
     ]
   },
-  "_StarRatingEditable.92223be5.js": {
-    "file": "assets/StarRatingEditable.92223be5.js",
+  "_StarRatingEditable.b955dfbd.js": {
+    "file": "assets/StarRatingEditable.b955dfbd.js",
     "imports": [
       "resources/js/app.js",
-      "_iconify.9ffa3d85.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ],
     "css": [
-      "assets/StarRatingEditable.056e115b.css"
+      "assets/StarRatingEditable.a516f5cf.css"
     ]
   },
   "resources/js/Pages/Admin/Coupons/CouponsPage.vue": {
-    "file": "assets/CouponsPage.7b76bd17.js",
+    "file": "assets/CouponsPage.ca6583b2.js",
     "src": "resources/js/Pages/Admin/Coupons/CouponsPage.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_Header.8cbac9c9.js",
-      "_Button.ed86f1b5.js",
-      "_InputError.b7fce308.js",
-      "_InputLabel.2ed1580b.js",
-      "_TextInput.e7dce2cb.js",
-      "_SelectProfile.74872fec.js",
-      "_CustomDialog.08753e88.js",
-      "_HeadingCard.40a65dbd.js",
-      "_InputIcon.ce529e9c.js",
-      "_iconify.9ffa3d85.js",
-      "_Card.fae93276.js",
-      "_SearchInput.5c26335d.js",
-      "_PageTitle.5140671a.js",
+      "_Header.e6b0f8ce.js",
+      "_Button.3a799bb4.js",
+      "_InputError.ea13c7ed.js",
+      "_InputLabel.fe3013ba.js",
+      "_TextInput.e3b79f39.js",
+      "_SelectProfile.c89157a7.js",
+      "_CustomDialog.23fc1797.js",
+      "_HeadingCard.964389d2.js",
+      "_InputIcon.16db76ec.js",
+      "_iconify.e7607712.js",
+      "_Card.9778af2d.js",
+      "_SearchInput.7e5673bd.js",
+      "_PageTitle.7160322e.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_PostForm.9f8b1102.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_Badge.59df51b3.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_selectListsHelpters.9480c284.js",
+      "_Badge.555c93ca.js",
       "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
       "resources/js/Pages/Profile/Partials/Trades.vue",
       "resources/js/Pages/Profile/Partials/Views.vue",
-      "_Loader.348c47cb.js",
-      "_Avatar.90d40591.js"
+      "_Loader.3dd162f1.js",
+      "_Avatar.8bfab00d.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js"
     ],
     "css": [
-      "assets/CouponsPage.fabea70b.css",
-      "assets/Button.edfd387f.css"
+      "assets/CouponsPage.775afe2f.css",
+      "assets/Button.80ea3968.css",
+      "assets/Card.1d96bec8.css",
+      "assets/PageTitle.e3b0c442.css"
     ]
   },
-  "_TextInput.e7dce2cb.js": {
-    "file": "assets/TextInput.e7dce2cb.js",
+  "_TextInput.e3b79f39.js": {
+    "file": "assets/TextInput.e3b79f39.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_InputIcon.ce529e9c.js": {
-    "file": "assets/InputIcon.ce529e9c.js",
+  "_InputIcon.16db76ec.js": {
+    "file": "assets/InputIcon.16db76ec.js",
     "imports": [
-      "_iconify.9ffa3d85.js",
+      "_iconify.e7607712.js",
       "resources/js/app.js"
     ]
   },
   "resources/js/Pages/Admin/History/ContractorHistory.vue": {
-    "file": "assets/ContractorHistory.14765c15.js",
+    "file": "assets/ContractorHistory.5ea0162a.js",
     "src": "resources/js/Pages/Admin/History/ContractorHistory.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_Header.8cbac9c9.js",
-      "_Button.ed86f1b5.js",
-      "_ContractorInfo.5ddeeff9.js",
+      "_Header.e6b0f8ce.js",
+      "_Button.3a799bb4.js",
+      "_ContractorInfo.df7966f9.js",
       "resources/js/Pages/Admin/History/partials/HistoryReviewResponse.vue",
-      "_HeadingCard.40a65dbd.js",
-      "_Card.fae93276.js",
-      "_Loader.348c47cb.js",
-      "_PageTitle.5140671a.js",
+      "_HeadingCard.964389d2.js",
+      "_Card.9778af2d.js",
+      "_Loader.3dd162f1.js",
+      "_PageTitle.7160322e.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_PostForm.9f8b1102.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_iconify.9ffa3d85.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_CustomDialog.08753e88.js",
-      "_Badge.59df51b3.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_CustomDialog.23fc1797.js",
+      "_iconify.e7607712.js",
+      "_selectListsHelpters.9480c284.js",
+      "_Badge.555c93ca.js",
       "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
       "resources/js/Pages/Profile/Partials/Trades.vue",
       "resources/js/Pages/Profile/Partials/Views.vue",
-      "_Avatar.90d40591.js",
-      "_InputLabel.2ed1580b.js",
-      "_InputError.b7fce308.js",
-      "_SelectProfile.74872fec.js",
-      "_StarRating.2d3b8bfe.js",
+      "_Avatar.8bfab00d.js",
+      "_InputLabel.fe3013ba.js",
+      "_InputError.ea13c7ed.js",
+      "_SelectProfile.c89157a7.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
+      "_StarRating.6dd35ff0.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ReviewAdmin.vue",
       "resources/js/Pages/Ratings/Edit/EditRatingModal.vue",
-      "_StarRatingEditable.92223be5.js",
+      "_StarRatingEditable.b955dfbd.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/Appeal.vue",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/DecisionNotes.vue",
-      "_ButtonRatings.1b9093ba.js",
+      "_ButtonRatings.b8d61906.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/QualifyingQuestionsAdmin.vue",
-      "_Tooltip.16a29e70.js",
+      "_Tooltip.c8b0b4cf.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ResponseAdmin.vue"
     ],
     "css": [
-      "assets/ContractorHistory.e039e2ce.css",
-      "assets/Button.edfd387f.css"
+      "assets/ContractorHistory.9912d579.css",
+      "assets/Button.80ea3968.css",
+      "assets/Card.1d96bec8.css",
+      "assets/PageTitle.e3b0c442.css"
     ]
   },
-  "_ContractorInfo.5ddeeff9.js": {
-    "file": "assets/ContractorInfo.5ddeeff9.js",
+  "_ContractorInfo.df7966f9.js": {
+    "file": "assets/ContractorInfo.df7966f9.js",
     "imports": [
       "__plugin-vue_export-helper.cdc0426e.js",
       "resources/js/app.js",
-      "_StarRating.2d3b8bfe.js",
-      "_Avatar.90d40591.js",
-      "_Badge.59df51b3.js",
-      "_selectListsHelpters.38ce783f.js"
+      "_StarRating.6dd35ff0.js",
+      "_Avatar.8bfab00d.js",
+      "_Badge.555c93ca.js",
+      "_selectListsHelpters.9480c284.js"
     ],
     "css": [
-      "assets/ContractorInfo.203b6983.css"
+      "assets/ContractorInfo.aade7409.css"
     ]
   },
   "resources/js/Pages/Admin/History/partials/HistoryReviewResponse.vue": {
-    "file": "assets/HistoryReviewResponse.1bd7f12e.js",
+    "file": "assets/HistoryReviewResponse.e1d39091.js",
     "src": "resources/js/Pages/Admin/History/partials/HistoryReviewResponse.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Card.fae93276.js",
+      "_Card.9778af2d.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ReviewAdmin.vue",
       "resources/js/app.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "resources/js/Pages/Ratings/Edit/EditRatingModal.vue",
-      "_InputError.b7fce308.js",
-      "_StarRatingEditable.92223be5.js",
-      "_iconify.9ffa3d85.js",
-      "_CustomDialog.08753e88.js",
-      "_Avatar.90d40591.js",
+      "_InputError.ea13c7ed.js",
+      "_StarRatingEditable.b955dfbd.js",
+      "_iconify.e7607712.js",
+      "_CustomDialog.23fc1797.js",
+      "_Avatar.8bfab00d.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/Appeal.vue",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/DecisionNotes.vue",
-      "_StarRating.2d3b8bfe.js",
-      "_ButtonRatings.1b9093ba.js",
-      "_Badge.59df51b3.js",
+      "_StarRating.6dd35ff0.js",
+      "_ButtonRatings.b8d61906.js",
+      "_Badge.555c93ca.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/QualifyingQuestionsAdmin.vue",
-      "_Tooltip.16a29e70.js",
+      "_Tooltip.c8b0b4cf.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ResponseAdmin.vue",
-      "_selectListsHelpters.38ce783f.js"
+      "_selectListsHelpters.9480c284.js"
+    ],
+    "css": [
+      "assets/Card.1d96bec8.css"
     ]
   },
   "resources/js/Pages/Admin/History/partials/AdminNote.vue": {
-    "file": "assets/AdminNote.de8be576.js",
+    "file": "assets/AdminNote.73ff7d27.js",
     "src": "resources/js/Pages/Admin/History/partials/AdminNote.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_iconify.9ffa3d85.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ],
     "css": [
@@ -832,79 +888,85 @@
     ]
   },
   "resources/js/Pages/Admin/Payments/AdminPricingPlanPage.vue": {
-    "file": "assets/AdminPricingPlanPage.7d2a44c2.js",
+    "file": "assets/AdminPricingPlanPage.661cc3c4.js",
     "src": "resources/js/Pages/Admin/Payments/AdminPricingPlanPage.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Header.8cbac9c9.js",
+      "_Header.e6b0f8ce.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_InputError.b7fce308.js",
-      "_InputLabel.2ed1580b.js",
-      "_TextInput.e7dce2cb.js",
-      "_SelectProfile.74872fec.js",
-      "_CustomDialog.08753e88.js",
-      "_iconify.9ffa3d85.js",
-      "_Card.fae93276.js",
-      "_PageTitle.5140671a.js",
-      "_PostForm.9f8b1102.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_Badge.59df51b3.js",
+      "_InputError.ea13c7ed.js",
+      "_InputLabel.fe3013ba.js",
+      "_TextInput.e3b79f39.js",
+      "_SelectProfile.c89157a7.js",
+      "_CustomDialog.23fc1797.js",
+      "_iconify.e7607712.js",
+      "_Card.9778af2d.js",
+      "_PageTitle.7160322e.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_selectListsHelpters.9480c284.js",
+      "_Badge.555c93ca.js",
       "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
       "resources/js/Pages/Profile/Partials/Trades.vue",
       "resources/js/Pages/Profile/Partials/Views.vue",
-      "_Loader.348c47cb.js",
-      "_Avatar.90d40591.js"
+      "_Loader.3dd162f1.js",
+      "_Avatar.8bfab00d.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js"
     ],
     "css": [
-      "assets/AdminPricingPlanPage.21b6360c.css",
-      "assets/Button.edfd387f.css"
+      "assets/AdminPricingPlanPage.bac90374.css",
+      "assets/Button.80ea3968.css",
+      "assets/Card.1d96bec8.css",
+      "assets/PageTitle.e3b0c442.css"
     ]
   },
   "resources/js/Pages/Admin/Ratings/AllContractors.vue": {
-    "file": "assets/AllContractors.ffa0dab3.js",
+    "file": "assets/AllContractors.10cee794.js",
     "src": "resources/js/Pages/Admin/Ratings/AllContractors.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Header.8cbac9c9.js",
+      "_Header.e6b0f8ce.js",
       "resources/js/app.js",
-      "_Loader.348c47cb.js",
-      "_Card.fae93276.js",
+      "_Loader.3dd162f1.js",
+      "_Card.9778af2d.js",
       "resources/js/Pages/Admin/Ratings/partials/AllContractors/Contractor.vue",
-      "_SearchInput.5c26335d.js",
-      "_PageTitle.5140671a.js",
+      "_SearchInput.7e5673bd.js",
+      "_PageTitle.7160322e.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_PostForm.9f8b1102.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_iconify.9ffa3d85.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_CustomDialog.08753e88.js",
-      "_Badge.59df51b3.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_CustomDialog.23fc1797.js",
+      "_iconify.e7607712.js",
+      "_selectListsHelpters.9480c284.js",
+      "_Badge.555c93ca.js",
       "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
       "resources/js/Pages/Profile/Partials/Trades.vue",
       "resources/js/Pages/Profile/Partials/Views.vue",
-      "_Avatar.90d40591.js",
-      "_InputLabel.2ed1580b.js",
-      "_InputError.b7fce308.js",
-      "_SelectProfile.74872fec.js",
-      "_StarRating.2d3b8bfe.js"
+      "_Avatar.8bfab00d.js",
+      "_InputLabel.fe3013ba.js",
+      "_InputError.ea13c7ed.js",
+      "_SelectProfile.c89157a7.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
+      "_StarRating.6dd35ff0.js"
     ],
     "css": [
-      "assets/AllContractors.82127028.css"
+      "assets/AllContractors.82127028.css",
+      "assets/Card.1d96bec8.css",
+      "assets/PageTitle.e3b0c442.css"
     ]
   },
   "resources/js/Pages/Admin/Ratings/partials/AllContractors/Contractor.vue": {
-    "file": "assets/Contractor.60e00da2.js",
+    "file": "assets/Contractor.976cfa46.js",
     "src": "resources/js/Pages/Admin/Ratings/partials/AllContractors/Contractor.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Avatar.90d40591.js",
-      "_StarRating.2d3b8bfe.js",
+      "_Avatar.8bfab00d.js",
+      "_StarRating.6dd35ff0.js",
       "resources/js/app.js",
-      "_iconify.9ffa3d85.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ],
     "css": [
@@ -912,683 +974,700 @@
     ]
   },
   "resources/js/Pages/Admin/Ratings/ContractorGivenReviews.vue": {
-    "file": "assets/ContractorGivenReviews.5c6f08b6.js",
+    "file": "assets/ContractorGivenReviews.77a5419c.js",
     "src": "resources/js/Pages/Admin/Ratings/ContractorGivenReviews.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Header.8cbac9c9.js",
+      "_Header.e6b0f8ce.js",
       "resources/js/app.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ContractorDetails.vue",
-      "_PostForm.9f8b1102.js",
-      "_tContractorWord.f0a33fa4.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_iconify.9ffa3d85.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_CustomDialog.08753e88.js",
-      "_Badge.59df51b3.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_CustomDialog.23fc1797.js",
+      "_iconify.e7607712.js",
+      "_selectListsHelpters.9480c284.js",
+      "_Badge.555c93ca.js",
       "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
       "resources/js/Pages/Profile/Partials/Trades.vue",
       "resources/js/Pages/Profile/Partials/Views.vue",
-      "_Loader.348c47cb.js",
-      "_Avatar.90d40591.js",
-      "_InputLabel.2ed1580b.js",
-      "_InputError.b7fce308.js",
-      "_SelectProfile.74872fec.js",
-      "_Button.ed86f1b5.js",
-      "_ContractorInfo.5ddeeff9.js",
-      "_StarRating.2d3b8bfe.js",
+      "_Loader.3dd162f1.js",
+      "_Avatar.8bfab00d.js",
+      "_InputLabel.fe3013ba.js",
+      "_InputError.ea13c7ed.js",
+      "_SelectProfile.c89157a7.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
+      "_Button.3a799bb4.js",
+      "_ContractorInfo.df7966f9.js",
+      "_StarRating.6dd35ff0.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ReviewResponseAdmin.vue",
-      "_Card.fae93276.js",
+      "_Card.9778af2d.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ReviewAdmin.vue",
       "resources/js/Pages/Ratings/Edit/EditRatingModal.vue",
-      "_StarRatingEditable.92223be5.js",
+      "_StarRatingEditable.b955dfbd.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/Appeal.vue",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/DecisionNotes.vue",
-      "_ButtonRatings.1b9093ba.js",
+      "_ButtonRatings.b8d61906.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/QualifyingQuestionsAdmin.vue",
-      "_Tooltip.16a29e70.js",
+      "_Tooltip.c8b0b4cf.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ResponseAdmin.vue",
-      "_HeadingCard.40a65dbd.js",
-      "_PageTitle.5140671a.js"
+      "_HeadingCard.964389d2.js",
+      "_PageTitle.7160322e.js"
     ],
     "css": [
-      "assets/Button.edfd387f.css"
+      "assets/Button.80ea3968.css",
+      "assets/Card.1d96bec8.css",
+      "assets/PageTitle.e3b0c442.css"
     ]
   },
   "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ContractorDetails.vue": {
-    "file": "assets/ContractorDetails.210a2397.js",
+    "file": "assets/ContractorDetails.315fbceb.js",
     "src": "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ContractorDetails.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Button.ed86f1b5.js",
-      "_ContractorInfo.5ddeeff9.js",
+      "_Button.3a799bb4.js",
+      "_ContractorInfo.df7966f9.js",
       "resources/js/app.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ReviewResponseAdmin.vue",
-      "_HeadingCard.40a65dbd.js",
-      "_Card.fae93276.js",
-      "_Loader.348c47cb.js",
-      "_PageTitle.5140671a.js",
+      "_HeadingCard.964389d2.js",
+      "_Card.9778af2d.js",
+      "_Loader.3dd162f1.js",
+      "_PageTitle.7160322e.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_StarRating.2d3b8bfe.js",
-      "_Avatar.90d40591.js",
-      "_iconify.9ffa3d85.js",
-      "_Badge.59df51b3.js",
-      "_selectListsHelpters.38ce783f.js",
+      "_StarRating.6dd35ff0.js",
+      "_Avatar.8bfab00d.js",
+      "_iconify.e7607712.js",
+      "_Badge.555c93ca.js",
+      "_selectListsHelpters.9480c284.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ReviewAdmin.vue",
       "resources/js/Pages/Ratings/Edit/EditRatingModal.vue",
-      "_InputError.b7fce308.js",
-      "_StarRatingEditable.92223be5.js",
-      "_CustomDialog.08753e88.js",
+      "_InputError.ea13c7ed.js",
+      "_StarRatingEditable.b955dfbd.js",
+      "_CustomDialog.23fc1797.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/Appeal.vue",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/DecisionNotes.vue",
-      "_ButtonRatings.1b9093ba.js",
+      "_ButtonRatings.b8d61906.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/QualifyingQuestionsAdmin.vue",
-      "_Tooltip.16a29e70.js",
+      "_Tooltip.c8b0b4cf.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ResponseAdmin.vue"
     ],
     "css": [
-      "assets/Button.edfd387f.css"
+      "assets/Button.80ea3968.css",
+      "assets/Card.1d96bec8.css",
+      "assets/PageTitle.e3b0c442.css"
     ]
   },
   "resources/js/Pages/Admin/Ratings/ContractorGotReviews.vue": {
-    "file": "assets/ContractorGotReviews.8e0f9788.js",
+    "file": "assets/ContractorGotReviews.f6e43015.js",
     "src": "resources/js/Pages/Admin/Ratings/ContractorGotReviews.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Header.8cbac9c9.js",
+      "_Header.e6b0f8ce.js",
       "resources/js/app.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ContractorDetails.vue",
-      "_PostForm.9f8b1102.js",
-      "_tContractorWord.f0a33fa4.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_iconify.9ffa3d85.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_CustomDialog.08753e88.js",
-      "_Badge.59df51b3.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_CustomDialog.23fc1797.js",
+      "_iconify.e7607712.js",
+      "_selectListsHelpters.9480c284.js",
+      "_Badge.555c93ca.js",
       "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
       "resources/js/Pages/Profile/Partials/Trades.vue",
       "resources/js/Pages/Profile/Partials/Views.vue",
-      "_Loader.348c47cb.js",
-      "_Avatar.90d40591.js",
-      "_InputLabel.2ed1580b.js",
-      "_InputError.b7fce308.js",
-      "_SelectProfile.74872fec.js",
-      "_Button.ed86f1b5.js",
-      "_ContractorInfo.5ddeeff9.js",
-      "_StarRating.2d3b8bfe.js",
+      "_Loader.3dd162f1.js",
+      "_Avatar.8bfab00d.js",
+      "_InputLabel.fe3013ba.js",
+      "_InputError.ea13c7ed.js",
+      "_SelectProfile.c89157a7.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
+      "_Button.3a799bb4.js",
+      "_ContractorInfo.df7966f9.js",
+      "_StarRating.6dd35ff0.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ReviewResponseAdmin.vue",
-      "_Card.fae93276.js",
+      "_Card.9778af2d.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ReviewAdmin.vue",
       "resources/js/Pages/Ratings/Edit/EditRatingModal.vue",
-      "_StarRatingEditable.92223be5.js",
+      "_StarRatingEditable.b955dfbd.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/Appeal.vue",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/DecisionNotes.vue",
-      "_ButtonRatings.1b9093ba.js",
+      "_ButtonRatings.b8d61906.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/QualifyingQuestionsAdmin.vue",
-      "_Tooltip.16a29e70.js",
+      "_Tooltip.c8b0b4cf.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ResponseAdmin.vue",
-      "_HeadingCard.40a65dbd.js",
-      "_PageTitle.5140671a.js"
+      "_HeadingCard.964389d2.js",
+      "_PageTitle.7160322e.js"
     ],
     "css": [
-      "assets/Button.edfd387f.css"
+      "assets/Button.80ea3968.css",
+      "assets/Card.1d96bec8.css",
+      "assets/PageTitle.e3b0c442.css"
     ]
   },
   "resources/js/Pages/Admin/Ratings/ContractorRegions.vue": {
-    "file": "assets/ContractorRegions.b6010d99.js",
+    "file": "assets/ContractorRegions.ae10cd53.js",
     "src": "resources/js/Pages/Admin/Ratings/ContractorRegions.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Header.8cbac9c9.js",
+      "_Header.e6b0f8ce.js",
       "resources/js/Pages/Admin/Ratings/partials/AllContractors/AllRegions.vue",
       "resources/js/app.js",
-      "_PostForm.9f8b1102.js",
-      "_tContractorWord.f0a33fa4.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_iconify.9ffa3d85.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_CustomDialog.08753e88.js",
-      "_Badge.59df51b3.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_CustomDialog.23fc1797.js",
+      "_iconify.e7607712.js",
+      "_selectListsHelpters.9480c284.js",
+      "_Badge.555c93ca.js",
       "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
       "resources/js/Pages/Profile/Partials/Trades.vue",
       "resources/js/Pages/Profile/Partials/Views.vue",
-      "_Loader.348c47cb.js",
-      "_Avatar.90d40591.js",
-      "_InputLabel.2ed1580b.js",
-      "_InputError.b7fce308.js",
-      "_SelectProfile.74872fec.js",
-      "_HeadingCard.40a65dbd.js",
-      "_Card.fae93276.js",
-      "_PageTitle.5140671a.js"
+      "_Loader.3dd162f1.js",
+      "_Avatar.8bfab00d.js",
+      "_InputLabel.fe3013ba.js",
+      "_InputError.ea13c7ed.js",
+      "_SelectProfile.c89157a7.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
+      "_HeadingCard.964389d2.js",
+      "_Card.9778af2d.js",
+      "_PageTitle.7160322e.js"
+    ],
+    "css": [
+      "assets/Card.1d96bec8.css",
+      "assets/PageTitle.e3b0c442.css"
     ]
   },
   "resources/js/Pages/Admin/Ratings/partials/SingleContractor/Edit/DeleteRatingModal.vue": {
-    "file": "assets/DeleteRatingModal.e09da844.js",
+    "file": "assets/DeleteRatingModal.fdcc7349.js",
     "src": "resources/js/Pages/Admin/Ratings/partials/SingleContractor/Edit/DeleteRatingModal.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_InputError.b7fce308.js",
-      "_CustomDialog.08753e88.js",
-      "_iconify.9ffa3d85.js",
+      "_InputError.ea13c7ed.js",
+      "_CustomDialog.23fc1797.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ]
   },
   "resources/js/Pages/Admin/Ratings/partials/SingleContractor/Edit/DeleteResponseModal.vue": {
-    "file": "assets/DeleteResponseModal.3f6deded.js",
+    "file": "assets/DeleteResponseModal.1e7780e1.js",
     "src": "resources/js/Pages/Admin/Ratings/partials/SingleContractor/Edit/DeleteResponseModal.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_InputError.b7fce308.js",
-      "_CustomDialog.08753e88.js",
-      "_iconify.9ffa3d85.js",
+      "_InputError.ea13c7ed.js",
+      "_CustomDialog.23fc1797.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ]
   },
   "resources/js/Pages/Admin/Ratings/partials/SingleContractor/Edit/EditRatingModal.vue": {
-    "file": "assets/EditRatingModal.c650afa5.js",
+    "file": "assets/EditRatingModal.b532a416.js",
     "src": "resources/js/Pages/Admin/Ratings/partials/SingleContractor/Edit/EditRatingModal.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_InputError.b7fce308.js",
-      "_StarRatingEditable.92223be5.js",
-      "_CustomDialog.08753e88.js",
-      "_iconify.9ffa3d85.js",
+      "_InputError.ea13c7ed.js",
+      "_StarRatingEditable.b955dfbd.js",
+      "_CustomDialog.23fc1797.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ]
   },
   "resources/js/Pages/Admin/Ratings/partials/SingleContractor/Edit/EditResponseModal.vue": {
-    "file": "assets/EditResponseModal.5eaeb5bc.js",
+    "file": "assets/EditResponseModal.517288e2.js",
     "src": "resources/js/Pages/Admin/Ratings/partials/SingleContractor/Edit/EditResponseModal.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_InputError.b7fce308.js",
-      "_CustomDialog.08753e88.js",
-      "_iconify.9ffa3d85.js",
+      "_InputError.ea13c7ed.js",
+      "_CustomDialog.23fc1797.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ]
   },
   "resources/js/Pages/Admin/Ratings/partials/SingleContractor/Edit/InActiveRatingModal.vue": {
-    "file": "assets/InActiveRatingModal.7c62039b.js",
+    "file": "assets/InActiveRatingModal.1859f2bd.js",
     "src": "resources/js/Pages/Admin/Ratings/partials/SingleContractor/Edit/InActiveRatingModal.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_InputError.b7fce308.js",
-      "_CustomDialog.08753e88.js",
-      "_iconify.9ffa3d85.js",
+      "_InputError.ea13c7ed.js",
+      "_CustomDialog.23fc1797.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ]
   },
   "resources/js/Pages/Admin/Ratings/partials/SingleContractor/Edit/InActiveResponseModal.vue": {
-    "file": "assets/InActiveResponseModal.07660fa3.js",
+    "file": "assets/InActiveResponseModal.6205388d.js",
     "src": "resources/js/Pages/Admin/Ratings/partials/SingleContractor/Edit/InActiveResponseModal.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_InputError.b7fce308.js",
-      "_CustomDialog.08753e88.js",
-      "_iconify.9ffa3d85.js",
+      "_InputError.ea13c7ed.js",
+      "_CustomDialog.23fc1797.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ]
   },
   "resources/js/Pages/Admin/Subscription/AdminCancelSubscriptionPage.vue": {
-    "file": "assets/AdminCancelSubscriptionPage.efc2d56d.js",
+    "file": "assets/AdminCancelSubscriptionPage.8edbd3c3.js",
     "src": "resources/js/Pages/Admin/Subscription/AdminCancelSubscriptionPage.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Header.8cbac9c9.js",
+      "_Header.e6b0f8ce.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_iconify.9ffa3d85.js",
-      "_SelectProfile.74872fec.js",
-      "_CustomDialog.08753e88.js",
-      "_Card.fae93276.js",
-      "_PageTitle.5140671a.js",
-      "_PostForm.9f8b1102.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_Badge.59df51b3.js",
+      "_iconify.e7607712.js",
+      "_SelectProfile.c89157a7.js",
+      "_CustomDialog.23fc1797.js",
+      "_Card.9778af2d.js",
+      "_PageTitle.7160322e.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_selectListsHelpters.9480c284.js",
+      "_Badge.555c93ca.js",
       "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
       "resources/js/Pages/Profile/Partials/Trades.vue",
       "resources/js/Pages/Profile/Partials/Views.vue",
-      "_Loader.348c47cb.js",
-      "_Avatar.90d40591.js",
-      "_InputLabel.2ed1580b.js",
-      "_InputError.b7fce308.js"
+      "_Loader.3dd162f1.js",
+      "_Avatar.8bfab00d.js",
+      "_InputLabel.fe3013ba.js",
+      "_InputError.ea13c7ed.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js"
     ],
     "css": [
-      "assets/AdminCancelSubscriptionPage.7c23d342.css",
-      "assets/Button.edfd387f.css"
+      "assets/AdminCancelSubscriptionPage.3fb9f501.css",
+      "assets/Button.80ea3968.css",
+      "assets/Card.1d96bec8.css",
+      "assets/PageTitle.e3b0c442.css"
     ]
   },
   "resources/js/Pages/Admin/Users/AllUsers.vue": {
-    "file": "assets/AllUsers.90fd9e15.js",
+    "file": "assets/AllUsers.1d56ac2e.js",
     "src": "resources/js/Pages/Admin/Users/AllUsers.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_Header.8cbac9c9.js",
-      "_SelectProfile.74872fec.js",
-      "_Button.ed86f1b5.js",
-      "_InputError.b7fce308.js",
-      "_InputLabel.2ed1580b.js",
-      "_TextInput.e7dce2cb.js",
-      "_CustomDialog.08753e88.js",
-      "_HeadingCard.40a65dbd.js",
-      "_iconify.9ffa3d85.js",
-      "_Card.fae93276.js",
-      "_SearchInput.5c26335d.js",
-      "_PageTitle.5140671a.js",
+      "_Header.e6b0f8ce.js",
+      "_SelectProfile.c89157a7.js",
+      "_Button.3a799bb4.js",
+      "_InputError.ea13c7ed.js",
+      "_InputLabel.fe3013ba.js",
+      "_TextInput.e3b79f39.js",
+      "_CustomDialog.23fc1797.js",
+      "_HeadingCard.964389d2.js",
+      "_iconify.e7607712.js",
+      "_Card.9778af2d.js",
+      "_SearchInput.7e5673bd.js",
+      "_PageTitle.7160322e.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_PostForm.9f8b1102.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_Badge.59df51b3.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_selectListsHelpters.9480c284.js",
+      "_Badge.555c93ca.js",
       "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
       "resources/js/Pages/Profile/Partials/Trades.vue",
       "resources/js/Pages/Profile/Partials/Views.vue",
-      "_Loader.348c47cb.js",
-      "_Avatar.90d40591.js"
+      "_Loader.3dd162f1.js",
+      "_Avatar.8bfab00d.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js"
     ],
     "css": [
-      "assets/AllUsers.cec10cd5.css",
-      "assets/Button.edfd387f.css"
+      "assets/AllUsers.50994715.css",
+      "assets/Button.80ea3968.css",
+      "assets/Card.1d96bec8.css",
+      "assets/PageTitle.e3b0c442.css"
     ]
   },
   "resources/js/Pages/Auth/ConfirmPassword.vue": {
-    "file": "assets/ConfirmPassword.95e575f2.js",
+    "file": "assets/ConfirmPassword.9c159e74.js",
     "src": "resources/js/Pages/Auth/ConfirmPassword.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_GuestLayout.5855bb23.js",
-      "_InputError.b7fce308.js",
-      "_InputLabel.2ed1580b.js",
-      "_PrimaryButton.7c143719.js",
-      "_TextInput.e7dce2cb.js"
+      "_GuestLayout.f837913b.js",
+      "_InputError.ea13c7ed.js",
+      "_InputLabel.fe3013ba.js",
+      "_PrimaryButton.9346bcf5.js",
+      "_TextInput.e3b79f39.js"
     ]
   },
-  "_GuestLayout.5855bb23.js": {
-    "file": "assets/GuestLayout.5855bb23.js",
+  "_GuestLayout.f837913b.js": {
+    "file": "assets/GuestLayout.f837913b.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_PrimaryButton.7c143719.js": {
-    "file": "assets/PrimaryButton.7c143719.js",
+  "_PrimaryButton.9346bcf5.js": {
+    "file": "assets/PrimaryButton.9346bcf5.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
   "resources/js/Pages/Auth/ForgotPassword.vue": {
-    "file": "assets/ForgotPassword.9b2ea997.js",
+    "file": "assets/ForgotPassword.b2f93b66.js",
     "src": "resources/js/Pages/Auth/ForgotPassword.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_GuestLayout.5855bb23.js",
-      "_InputError.b7fce308.js",
-      "_InputLabel.2ed1580b.js",
-      "_PrimaryButton.7c143719.js",
-      "_TextInput.e7dce2cb.js"
+      "_GuestLayout.f837913b.js",
+      "_InputError.ea13c7ed.js",
+      "_InputLabel.fe3013ba.js",
+      "_PrimaryButton.9346bcf5.js",
+      "_TextInput.e3b79f39.js"
     ]
   },
   "resources/js/Pages/Auth/Login.vue": {
-    "file": "assets/Login.5826c860.js",
+    "file": "assets/Login.2cbb5808.js",
     "src": "resources/js/Pages/Auth/Login.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_Checkbox.e23d8706.js",
-      "_GuestLayout.5855bb23.js",
-      "_InputError.b7fce308.js",
-      "_InputLabel.2ed1580b.js",
-      "_PrimaryButton.7c143719.js",
-      "_TextInput.e7dce2cb.js"
+      "_Checkbox.60b261ec.js",
+      "_GuestLayout.f837913b.js",
+      "_InputError.ea13c7ed.js",
+      "_InputLabel.fe3013ba.js",
+      "_PrimaryButton.9346bcf5.js",
+      "_TextInput.e3b79f39.js"
     ]
   },
-  "_Checkbox.e23d8706.js": {
-    "file": "assets/Checkbox.e23d8706.js",
+  "_Checkbox.60b261ec.js": {
+    "file": "assets/Checkbox.60b261ec.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
   "resources/js/Pages/Auth/Register.vue": {
-    "file": "assets/Register.0ddc2cb6.js",
+    "file": "assets/Register.25595b47.js",
     "src": "resources/js/Pages/Auth/Register.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_SignUpLayout.f17e311e.js",
-      "_InputError.b7fce308.js",
-      "_InputLabel.2ed1580b.js",
-      "_WelcomeFooter.b4f6561b.js",
-      "_PrimaryButton.7c143719.js",
-      "_iconify.9ffa3d85.js",
-      "_TextInput.e7dce2cb.js",
-      "_InputIcon.ce529e9c.js",
-      "_tContractorWord.f0a33fa4.js",
+      "_SignUpLayout.1fd0fe62.js",
+      "_InputError.ea13c7ed.js",
+      "_InputLabel.fe3013ba.js",
+      "_WelcomeFooter.b53dde7c.js",
+      "_PrimaryButton.9346bcf5.js",
+      "_iconify.e7607712.js",
+      "_TextInput.e3b79f39.js",
+      "_InputIcon.16db76ec.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_ResponsiveNavLink.5c3e17ee.js",
-      "_tContractorWhite.4f7ad68a.js"
+      "_ResponsiveNavLink.08fcec0b.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
+      "_CustomDialog.23fc1797.js",
+      "_tContractorWhite.de6506fc.js"
     ]
   },
   "resources/js/Pages/Auth/ResetPassword.vue": {
-    "file": "assets/ResetPassword.a1c7ce2f.js",
+    "file": "assets/ResetPassword.022cb885.js",
     "src": "resources/js/Pages/Auth/ResetPassword.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_GuestLayout.5855bb23.js",
-      "_InputError.b7fce308.js",
-      "_InputLabel.2ed1580b.js",
-      "_PrimaryButton.7c143719.js",
-      "_TextInput.e7dce2cb.js"
+      "_GuestLayout.f837913b.js",
+      "_InputError.ea13c7ed.js",
+      "_InputLabel.fe3013ba.js",
+      "_PrimaryButton.9346bcf5.js",
+      "_TextInput.e3b79f39.js"
     ]
   },
   "resources/js/Pages/Auth/VerifyEmail.vue": {
-    "file": "assets/VerifyEmail.d1a4c9d8.js",
+    "file": "assets/VerifyEmail.cab87fbc.js",
     "src": "resources/js/Pages/Auth/VerifyEmail.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_GuestLayout.5855bb23.js",
-      "_PrimaryButton.7c143719.js",
-      "_WelcomeFooter.b4f6561b.js",
-      "_TextInput.e7dce2cb.js",
-      "_InputError.b7fce308.js",
-      "_InputLabel.2ed1580b.js",
-      "_tContractorWord.f0a33fa4.js",
+      "_GuestLayout.f837913b.js",
+      "_PrimaryButton.9346bcf5.js",
+      "_WelcomeFooter.b53dde7c.js",
+      "_TextInput.e3b79f39.js",
+      "_InputError.ea13c7ed.js",
+      "_InputLabel.fe3013ba.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_ResponsiveNavLink.5c3e17ee.js",
-      "_tContractorWhite.4f7ad68a.js"
+      "_ResponsiveNavLink.08fcec0b.js",
+      "_iconify.e7607712.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
+      "_CustomDialog.23fc1797.js",
+      "_tContractorWhite.de6506fc.js"
     ]
   },
   "resources/js/Pages/Careers.vue": {
-    "file": "assets/Careers.c588d0db.js",
+    "file": "assets/Careers.71f5b831.js",
     "src": "resources/js/Pages/Careers.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_SignUpLayout.f17e311e.js",
-      "_WelcomeFooter.b4f6561b.js",
+      "_SignUpLayout.1fd0fe62.js",
+      "_WelcomeFooter.b53dde7c.js",
       "resources/js/app.js",
-      "_tContractorWord.f0a33fa4.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_ResponsiveNavLink.5c3e17ee.js",
-      "_tContractorWhite.4f7ad68a.js"
+      "_ResponsiveNavLink.08fcec0b.js",
+      "_iconify.e7607712.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
+      "_CustomDialog.23fc1797.js",
+      "_tContractorWhite.de6506fc.js"
     ]
   },
   "resources/js/Pages/Contractor/ContractorPage.vue": {
-    "file": "assets/ContractorPage.f41e07ec.js",
+    "file": "assets/ContractorPage.0dc1a8cf.js",
     "src": "resources/js/Pages/Contractor/ContractorPage.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_Loader.348c47cb.js",
-      "_MoveToTop.21420448.js",
-      "_ContractorInfo.5ddeeff9.js",
-      "_StarRating.2d3b8bfe.js",
-      "_Card.fae93276.js",
-      "_iconify.9ffa3d85.js",
-      "_ImageTextSection.vue_vue_type_style_index_0_scoped_9f8da2da_lang.642484d1.js",
-      "_SelectProfile.74872fec.js",
-      "_CustomDialog.08753e88.js",
-      "_Avatar.90d40591.js",
-      "_Badge.59df51b3.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_PostDisplay.cb6480b8.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
+      "_Loader.3dd162f1.js",
+      "_MoveToTop.00b66a0e.js",
+      "_ContractorInfo.df7966f9.js",
+      "_StarRating.6dd35ff0.js",
+      "_iconify.e7607712.js",
+      "_ImageTextSection.vue_vue_type_style_index_0_scoped_a4e46067_lang.c2c3d5e4.js",
+      "_SelectProfile.c89157a7.js",
+      "_CustomDialog.23fc1797.js",
+      "_Avatar.8bfab00d.js",
+      "_Badge.555c93ca.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_Card.9778af2d.js",
+      "_PostDisplayEnlarged.8b5ada29.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_HeadingCard.40a65dbd.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_ResponsiveNavLink.5c3e17ee.js",
-      "_PostDisplayEnlarged.ebd5326f.js",
-      "_InputError.b7fce308.js",
-      "_InputLabel.2ed1580b.js",
-      "_ContractorRating.02cca272.js",
-      "_Review.a87bbdeb.js",
+      "_HeadingCard.964389d2.js",
+      "_selectListsHelpters.9480c284.js",
+      "_tContractorWord.3399d2af.js",
+      "_ResponsiveNavLink.08fcec0b.js",
+      "_InputLabel.fe3013ba.js",
+      "_InputError.ea13c7ed.js",
+      "_ContractorRating.62ce5f79.js",
+      "_Review.21cdd317.js",
       "resources/js/Pages/Ratings/Edit/EditResponseModal.vue",
       "resources/js/Pages/Ratings/Edit/DeleteResponseModal.vue",
-      "_ButtonRatings.1b9093ba.js",
-      "_PrimaryButton.7c143719.js",
-      "_Button.ed86f1b5.js",
-      "_Tooltip.16a29e70.js",
+      "_ButtonRatings.b8d61906.js",
+      "_PrimaryButton.9346bcf5.js",
+      "_Button.3a799bb4.js",
+      "_Tooltip.c8b0b4cf.js",
       "resources/js/Pages/Ratings/Edit/EditRatingModal.vue",
-      "_StarRatingEditable.92223be5.js",
+      "_StarRatingEditable.b955dfbd.js",
       "resources/js/Pages/Ratings/Edit/DeleteRatingModal.vue",
       "resources/js/Pages/Ratings/PartialsPersonal/QualifyingQuestions.vue"
     ],
     "css": [
-      "assets/ContractorPage.502e70a0.css",
+      "assets/ContractorPage.bf1a1502.css",
+      "assets/Card.1d96bec8.css",
       "assets/UserAvatar.814e2ac1.css",
-      "assets/Button.edfd387f.css"
+      "assets/Button.80ea3968.css"
     ]
   },
-  "_MoveToTop.21420448.js": {
-    "file": "assets/MoveToTop.21420448.js",
+  "_MoveToTop.00b66a0e.js": {
+    "file": "assets/MoveToTop.00b66a0e.js",
     "imports": [
-      "_iconify.9ffa3d85.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "resources/js/app.js"
     ],
     "css": [
-      "assets/MoveToTop.ce0f4de8.css"
+      "assets/MoveToTop.ddf3aae9.css"
     ]
   },
-  "_ImageTextSection.vue_vue_type_style_index_0_scoped_9f8da2da_lang.642484d1.js": {
-    "file": "assets/ImageTextSection.vue_vue_type_style_index_0_scoped_9f8da2da_lang.642484d1.js",
+  "_ImageTextSection.vue_vue_type_style_index_0_scoped_a4e46067_lang.c2c3d5e4.js": {
+    "file": "assets/ImageTextSection.vue_vue_type_style_index_0_scoped_a4e46067_lang.c2c3d5e4.js",
     "imports": [
       "resources/js/app.js",
-      "_CustomDialog.08753e88.js",
-      "_Loader.348c47cb.js",
-      "_PostDisplay.cb6480b8.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_ResponsiveNavLink.5c3e17ee.js",
-      "_PostDisplayEnlarged.ebd5326f.js",
+      "_CustomDialog.23fc1797.js",
+      "_Loader.3dd162f1.js",
+      "_PostDisplayEnlarged.8b5ada29.js",
+      "_tContractorWord.3399d2af.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_ResponsiveNavLink.08fcec0b.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_iconify.9ffa3d85.js"
+      "_iconify.e7607712.js"
     ],
     "css": [
-      "assets/ImageTextSection.6cda7eda.css"
+      "assets/ImageTextSection.b6085b52.css"
     ]
   },
-  "_PostDisplay.cb6480b8.js": {
-    "file": "assets/PostDisplay.cb6480b8.js",
+  "_PostDisplayEnlarged.8b5ada29.js": {
+    "file": "assets/PostDisplayEnlarged.8b5ada29.js",
     "imports": [
       "resources/js/app.js",
-      "_Avatar.90d40591.js",
+      "_Avatar.8bfab00d.js",
+      "_tContractorWord.3399d2af.js",
+      "_Loader.3dd162f1.js",
+      "_iconify.e7607712.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_InputLabel.fe3013ba.js",
+      "_InputError.ea13c7ed.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_iconify.9ffa3d85.js",
-      "_Loader.348c47cb.js",
-      "_CustomDialog.08753e88.js",
-      "_InputError.b7fce308.js",
-      "_Card.fae93276.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_InputLabel.2ed1580b.js",
-      "_SelectProfile.74872fec.js",
-      "_Badge.59df51b3.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_ContractorRating.02cca272.js"
+      "_SelectProfile.c89157a7.js",
+      "_CustomDialog.23fc1797.js",
+      "_Badge.555c93ca.js",
+      "_selectListsHelpters.9480c284.js",
+      "_Card.9778af2d.js",
+      "_ContractorRating.62ce5f79.js"
     ],
     "css": [
-      "assets/PostDisplay.61800b34.css"
+      "assets/PostDisplayEnlarged.04253401.css"
     ]
   },
-  "_PostDisplayEnlarged.ebd5326f.js": {
-    "file": "assets/PostDisplayEnlarged.ebd5326f.js",
-    "imports": [
-      "_PostDisplay.cb6480b8.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_Avatar.90d40591.js",
-      "_iconify.9ffa3d85.js",
-      "resources/js/app.js",
-      "_Loader.348c47cb.js",
-      "_Card.fae93276.js",
-      "_CustomDialog.08753e88.js",
-      "__plugin-vue_export-helper.cdc0426e.js"
-    ],
-    "css": [
-      "assets/PostDisplayEnlarged.5cc9ca55.css"
-    ]
-  },
-  "_ContractorRating.02cca272.js": {
-    "file": "assets/ContractorRating.02cca272.js",
+  "_ContractorRating.62ce5f79.js": {
+    "file": "assets/ContractorRating.62ce5f79.js",
     "imports": [
       "resources/js/app.js",
-      "_Review.a87bbdeb.js",
-      "_Card.fae93276.js",
-      "_Button.ed86f1b5.js",
-      "_PrimaryButton.7c143719.js",
-      "_InputError.b7fce308.js",
-      "_ContractorInfo.5ddeeff9.js",
-      "_HeadingCard.40a65dbd.js",
-      "_Loader.348c47cb.js",
-      "_StarRatingEditable.92223be5.js"
+      "_Review.21cdd317.js",
+      "_Card.9778af2d.js",
+      "_Button.3a799bb4.js",
+      "_PrimaryButton.9346bcf5.js",
+      "_InputError.ea13c7ed.js",
+      "_ContractorInfo.df7966f9.js",
+      "_HeadingCard.964389d2.js",
+      "_Loader.3dd162f1.js",
+      "_StarRatingEditable.b955dfbd.js"
     ]
   },
-  "_Review.a87bbdeb.js": {
-    "file": "assets/Review.a87bbdeb.js",
+  "_Review.21cdd317.js": {
+    "file": "assets/Review.21cdd317.js",
     "imports": [
-      "_Card.fae93276.js",
+      "_Card.9778af2d.js",
       "resources/js/Pages/Ratings/Edit/EditResponseModal.vue",
       "resources/js/Pages/Ratings/Edit/DeleteResponseModal.vue",
       "resources/js/app.js",
-      "_ButtonRatings.1b9093ba.js",
-      "_PrimaryButton.7c143719.js",
-      "_Button.ed86f1b5.js",
-      "_InputError.b7fce308.js",
-      "_Tooltip.16a29e70.js",
-      "_Avatar.90d40591.js",
-      "_StarRating.2d3b8bfe.js",
-      "_CustomDialog.08753e88.js",
-      "_Badge.59df51b3.js",
+      "_ButtonRatings.b8d61906.js",
+      "_PrimaryButton.9346bcf5.js",
+      "_Button.3a799bb4.js",
+      "_InputError.ea13c7ed.js",
+      "_Tooltip.c8b0b4cf.js",
+      "_Avatar.8bfab00d.js",
+      "_StarRating.6dd35ff0.js",
+      "_CustomDialog.23fc1797.js",
+      "_Badge.555c93ca.js",
       "resources/js/Pages/Ratings/Edit/EditRatingModal.vue",
       "resources/js/Pages/Ratings/Edit/DeleteRatingModal.vue",
       "resources/js/Pages/Ratings/PartialsPersonal/QualifyingQuestions.vue",
-      "_iconify.9ffa3d85.js",
-      "_selectListsHelpters.38ce783f.js",
+      "_iconify.e7607712.js",
+      "_selectListsHelpters.9480c284.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ],
     "css": [
-      "assets/Review.f0a31902.css"
+      "assets/Review.c322b435.css"
     ]
   },
   "resources/js/Pages/Ratings/Edit/EditResponseModal.vue": {
-    "file": "assets/EditResponseModal.b64bccb3.js",
+    "file": "assets/EditResponseModal.f99190be.js",
     "src": "resources/js/Pages/Ratings/Edit/EditResponseModal.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_InputError.b7fce308.js",
-      "_CustomDialog.08753e88.js",
-      "_iconify.9ffa3d85.js",
+      "_InputError.ea13c7ed.js",
+      "_CustomDialog.23fc1797.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ]
   },
   "resources/js/Pages/Ratings/Edit/DeleteResponseModal.vue": {
-    "file": "assets/DeleteResponseModal.00930043.js",
+    "file": "assets/DeleteResponseModal.f114e196.js",
     "src": "resources/js/Pages/Ratings/Edit/DeleteResponseModal.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_CustomDialog.08753e88.js",
-      "_iconify.9ffa3d85.js",
+      "_CustomDialog.23fc1797.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ]
   },
   "resources/js/Pages/Ratings/Edit/DeleteRatingModal.vue": {
-    "file": "assets/DeleteRatingModal.dfd7ab4b.js",
+    "file": "assets/DeleteRatingModal.e53dbcea.js",
     "src": "resources/js/Pages/Ratings/Edit/DeleteRatingModal.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_CustomDialog.08753e88.js",
+      "_CustomDialog.23fc1797.js",
       "resources/js/app.js",
-      "_iconify.9ffa3d85.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ]
   },
   "resources/js/Pages/Ratings/PartialsPersonal/QualifyingQuestions.vue": {
-    "file": "assets/QualifyingQuestions.d95844c0.js",
+    "file": "assets/QualifyingQuestions.fd8843b5.js",
     "src": "resources/js/Pages/Ratings/PartialsPersonal/QualifyingQuestions.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Card.fae93276.js",
-      "_iconify.9ffa3d85.js",
+      "_Card.9778af2d.js",
+      "_iconify.e7607712.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper.cdc0426e.js"
+    ],
+    "css": [
+      "assets/Card.1d96bec8.css"
     ]
   },
   "resources/js/Pages/Contractor/ContractorPageEdit.vue": {
-    "file": "assets/ContractorPageEdit.6cc1e5d3.js",
+    "file": "assets/ContractorPageEdit.14c7dcb0.js",
     "src": "resources/js/Pages/Contractor/ContractorPageEdit.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Header.8cbac9c9.js",
-      "_Loader.348c47cb.js",
-      "_iconify.9ffa3d85.js",
+      "_Header.e6b0f8ce.js",
+      "_Loader.3dd162f1.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "resources/js/app.js",
-      "_ContractorInfo.5ddeeff9.js",
-      "_HeadingCard.40a65dbd.js",
-      "_Card.fae93276.js",
-      "_ImageTextSection.vue_vue_type_style_index_0_scoped_9f8da2da_lang.642484d1.js",
-      "_SelectProfile.74872fec.js",
+      "_ContractorInfo.df7966f9.js",
+      "_HeadingCard.964389d2.js",
+      "_Card.9778af2d.js",
+      "_ImageTextSection.vue_vue_type_style_index_0_scoped_a4e46067_lang.c2c3d5e4.js",
+      "_SelectProfile.c89157a7.js",
       "resources/js/Pages/Profile/components/UserAvatar.vue",
-      "_InputError.b7fce308.js",
-      "_InputLabel.2ed1580b.js",
-      "_TextInput.e7dce2cb.js",
-      "_StarRating.2d3b8bfe.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_CustomDialog.08753e88.js",
-      "_Avatar.90d40591.js",
-      "_Badge.59df51b3.js",
-      "_InputIcon.ce529e9c.js",
-      "_GoogleAddressAutoComplete.d22178df.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_PostDisplay.cb6480b8.js",
-      "_Tooltip.16a29e70.js",
-      "_StarRatingEditable.92223be5.js",
-      "_Review.a87bbdeb.js",
-      "_PostForm.9f8b1102.js",
-      "_tContractorWord.f0a33fa4.js",
+      "_InputError.ea13c7ed.js",
+      "_InputLabel.fe3013ba.js",
+      "_TextInput.e3b79f39.js",
+      "_StarRating.6dd35ff0.js",
+      "_selectListsHelpters.9480c284.js",
+      "_CustomDialog.23fc1797.js",
+      "_Avatar.8bfab00d.js",
+      "_Badge.555c93ca.js",
+      "_InputIcon.16db76ec.js",
+      "_GoogleAddressAutoComplete.6d4a5d07.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_PostDisplayEnlarged.8b5ada29.js",
+      "_Tooltip.c8b0b4cf.js",
+      "_StarRatingEditable.b955dfbd.js",
+      "_Review.21cdd317.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
       "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
       "resources/js/Pages/Profile/Partials/Trades.vue",
       "resources/js/Pages/Profile/Partials/Views.vue",
-      "_ResponsiveNavLink.5c3e17ee.js",
-      "_PostDisplayEnlarged.ebd5326f.js",
-      "_ContractorRating.02cca272.js",
-      "_Button.ed86f1b5.js",
-      "_PrimaryButton.7c143719.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
+      "_ResponsiveNavLink.08fcec0b.js",
+      "_ContractorRating.62ce5f79.js",
+      "_Button.3a799bb4.js",
+      "_PrimaryButton.9346bcf5.js",
       "resources/js/Pages/Ratings/Edit/EditResponseModal.vue",
       "resources/js/Pages/Ratings/Edit/DeleteResponseModal.vue",
-      "_ButtonRatings.1b9093ba.js",
+      "_ButtonRatings.b8d61906.js",
       "resources/js/Pages/Ratings/Edit/EditRatingModal.vue",
       "resources/js/Pages/Ratings/Edit/DeleteRatingModal.vue",
       "resources/js/Pages/Ratings/PartialsPersonal/QualifyingQuestions.vue"
     ],
     "css": [
       "assets/ContractorPageEdit.6f48132e.css",
-      "assets/Button.edfd387f.css",
+      "assets/Card.1d96bec8.css",
+      "assets/Button.80ea3968.css",
       "assets/UserAvatar.814e2ac1.css"
     ]
   },
   "resources/js/Pages/Profile/components/UserAvatar.vue": {
-    "file": "assets/UserAvatar.32833351.js",
+    "file": "assets/UserAvatar.4cb2e9a8.js",
     "src": "resources/js/Pages/Profile/components/UserAvatar.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_iconify.9ffa3d85.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "resources/js/app.js"
     ],
@@ -1596,378 +1675,351 @@
       "assets/UserAvatar.814e2ac1.css"
     ]
   },
-  "_GoogleAddressAutoComplete.d22178df.js": {
-    "file": "assets/GoogleAddressAutoComplete.d22178df.js",
+  "_GoogleAddressAutoComplete.6d4a5d07.js": {
+    "file": "assets/GoogleAddressAutoComplete.6d4a5d07.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
   "resources/js/Pages/Contractor/CustomContractorPageDialog.vue": {
-    "file": "assets/CustomContractorPageDialog.460d0f39.js",
+    "file": "assets/CustomContractorPageDialog.6cc43591.js",
     "src": "resources/js/Pages/Contractor/CustomContractorPageDialog.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_iconify.9ffa3d85.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ],
     "css": [
-      "assets/CustomContractorPageDialog.886224a6.css"
+      "assets/CustomContractorPageDialog.992f93ad.css"
     ]
   },
   "resources/js/Pages/Contractor/DialogContractorPage.vue": {
-    "file": "assets/DialogContractorPage.c1265873.js",
+    "file": "assets/DialogContractorPage.bceb134c.js",
     "src": "resources/js/Pages/Contractor/DialogContractorPage.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/Pages/Contractor/CustomContractorPageDialog.vue",
       "resources/js/Pages/Contractor/ContractorPage.vue",
       "resources/js/app.js",
-      "_iconify.9ffa3d85.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_Loader.348c47cb.js",
-      "_MoveToTop.21420448.js",
-      "_ContractorInfo.5ddeeff9.js",
-      "_StarRating.2d3b8bfe.js",
-      "_Avatar.90d40591.js",
-      "_Badge.59df51b3.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_Card.fae93276.js",
-      "_ImageTextSection.vue_vue_type_style_index_0_scoped_9f8da2da_lang.642484d1.js",
-      "_CustomDialog.08753e88.js",
-      "_PostDisplay.cb6480b8.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_InputError.b7fce308.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_InputLabel.2ed1580b.js",
-      "_SelectProfile.74872fec.js",
-      "_ContractorRating.02cca272.js",
-      "_Review.a87bbdeb.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
+      "_CustomDialog.23fc1797.js",
+      "_Loader.3dd162f1.js",
+      "_MoveToTop.00b66a0e.js",
+      "_ContractorInfo.df7966f9.js",
+      "_StarRating.6dd35ff0.js",
+      "_Avatar.8bfab00d.js",
+      "_Badge.555c93ca.js",
+      "_selectListsHelpters.9480c284.js",
+      "_ImageTextSection.vue_vue_type_style_index_0_scoped_a4e46067_lang.c2c3d5e4.js",
+      "_PostDisplayEnlarged.8b5ada29.js",
+      "_tContractorWord.3399d2af.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_InputLabel.fe3013ba.js",
+      "_InputError.ea13c7ed.js",
+      "_SelectProfile.c89157a7.js",
+      "_Card.9778af2d.js",
+      "_ContractorRating.62ce5f79.js",
+      "_Review.21cdd317.js",
       "resources/js/Pages/Ratings/Edit/EditResponseModal.vue",
       "resources/js/Pages/Ratings/Edit/DeleteResponseModal.vue",
-      "_ButtonRatings.1b9093ba.js",
-      "_PrimaryButton.7c143719.js",
-      "_Button.ed86f1b5.js",
-      "_Tooltip.16a29e70.js",
+      "_ButtonRatings.b8d61906.js",
+      "_PrimaryButton.9346bcf5.js",
+      "_Button.3a799bb4.js",
+      "_Tooltip.c8b0b4cf.js",
       "resources/js/Pages/Ratings/Edit/EditRatingModal.vue",
-      "_StarRatingEditable.92223be5.js",
+      "_StarRatingEditable.b955dfbd.js",
       "resources/js/Pages/Ratings/Edit/DeleteRatingModal.vue",
       "resources/js/Pages/Ratings/PartialsPersonal/QualifyingQuestions.vue",
-      "_HeadingCard.40a65dbd.js",
-      "_ResponsiveNavLink.5c3e17ee.js",
-      "_PostDisplayEnlarged.ebd5326f.js"
+      "_HeadingCard.964389d2.js",
+      "_ResponsiveNavLink.08fcec0b.js"
     ],
     "css": [
-      "assets/Button.edfd387f.css",
+      "assets/Card.1d96bec8.css",
+      "assets/Button.80ea3968.css",
       "assets/UserAvatar.814e2ac1.css"
     ]
   },
   "resources/js/Pages/Dashboard.vue": {
-    "file": "assets/Dashboard.dca65436.js",
+    "file": "assets/Dashboard.1809a514.js",
     "src": "resources/js/Pages/Dashboard.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_AuthenticatedLayout.47c48a9b.js",
+      "_AuthenticatedLayout.01998afd.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_ResponsiveNavLink.5c3e17ee.js"
+      "_ResponsiveNavLink.08fcec0b.js"
     ]
   },
-  "_AuthenticatedLayout.47c48a9b.js": {
-    "file": "assets/AuthenticatedLayout.47c48a9b.js",
+  "_AuthenticatedLayout.01998afd.js": {
+    "file": "assets/AuthenticatedLayout.01998afd.js",
     "imports": [
       "__plugin-vue_export-helper.cdc0426e.js",
       "resources/js/app.js",
-      "_ResponsiveNavLink.5c3e17ee.js"
-    ]
-  },
-  "resources/js/Pages/InactiveAccount copy.vue": {
-    "file": "assets/InactiveAccount copy.e99afc59.js",
-    "src": "resources/js/Pages/InactiveAccount copy.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_SignUpLayout.f17e311e.js",
-      "_WelcomeFooter.b4f6561b.js",
-      "resources/js/app.js",
-      "_tContractorWord.f0a33fa4.js",
-      "__plugin-vue_export-helper.cdc0426e.js",
-      "_ResponsiveNavLink.5c3e17ee.js",
-      "_tContractorWhite.4f7ad68a.js"
+      "_ResponsiveNavLink.08fcec0b.js"
     ]
   },
   "resources/js/Pages/InactiveAccount.vue": {
-    "file": "assets/InactiveAccount.22ddbeb7.js",
+    "file": "assets/InactiveAccount.b1d93c35.js",
     "src": "resources/js/Pages/InactiveAccount.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_SignUpLayout.f17e311e.js",
-      "_WelcomeFooter.b4f6561b.js",
+      "_SignUpLayout.1fd0fe62.js",
+      "_WelcomeFooter.b53dde7c.js",
       "resources/js/app.js",
-      "_tContractorWord.f0a33fa4.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_ResponsiveNavLink.5c3e17ee.js",
-      "_tContractorWhite.4f7ad68a.js"
-    ]
-  },
-  "resources/js/Pages/PaymentVerification.vue": {
-    "file": "assets/PaymentVerification.d76a2556.js",
-    "src": "resources/js/Pages/PaymentVerification.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_tContractorWhite.4f7ad68a.js",
-      "_ResponsiveNavLink.5c3e17ee.js",
-      "_ScrollToLink.7b97a786.js",
-      "__plugin-vue_export-helper.cdc0426e.js"
-    ],
-    "css": [
-      "assets/PaymentVerification.7337ff26.css"
-    ]
-  },
-  "_ScrollToLink.7b97a786.js": {
-    "file": "assets/ScrollToLink.7b97a786.js",
-    "imports": [
-      "resources/js/app.js",
-      "__plugin-vue_export-helper.cdc0426e.js"
+      "_ResponsiveNavLink.08fcec0b.js",
+      "_iconify.e7607712.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
+      "_CustomDialog.23fc1797.js",
+      "_tContractorWhite.de6506fc.js"
     ]
   },
   "resources/js/Pages/Postings.vue": {
-    "file": "assets/Postings.3f000c3a.js",
+    "file": "assets/Postings.6d8f892f.js",
     "src": "resources/js/Pages/Postings.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_AuthenticatedLayout.47c48a9b.js",
-      "_Header.8cbac9c9.js",
-      "_PostDisplay.cb6480b8.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_iconify.9ffa3d85.js",
+      "_AuthenticatedLayout.01998afd.js",
+      "_Header.e6b0f8ce.js",
+      "_PostDisplayEnlarged.8b5ada29.js",
+      "_tContractorWord.3399d2af.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_iconify.e7607712.js",
       "resources/js/app.js",
-      "_Loader.348c47cb.js",
-      "_PostDisplayEnlarged.ebd5326f.js",
+      "_Loader.3dd162f1.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_ResponsiveNavLink.5c3e17ee.js",
-      "_PostForm.9f8b1102.js",
+      "_ResponsiveNavLink.08fcec0b.js",
+      "_spanish.afd7e950.js",
       "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
       "resources/js/Pages/Profile/Partials/Trades.vue",
-      "_selectListsHelpters.38ce783f.js",
+      "_selectListsHelpters.9480c284.js",
       "resources/js/Pages/Profile/Partials/Views.vue",
-      "_CustomDialog.08753e88.js",
-      "_Avatar.90d40591.js",
-      "_InputLabel.2ed1580b.js",
-      "_InputError.b7fce308.js",
-      "_SelectProfile.74872fec.js",
-      "_Badge.59df51b3.js",
-      "_Card.fae93276.js",
-      "_ContractorRating.02cca272.js",
-      "_Review.a87bbdeb.js",
+      "_CustomDialog.23fc1797.js",
+      "_Avatar.8bfab00d.js",
+      "_InputLabel.fe3013ba.js",
+      "_InputError.ea13c7ed.js",
+      "_SelectProfile.c89157a7.js",
+      "_Badge.555c93ca.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
+      "_Card.9778af2d.js",
+      "_ContractorRating.62ce5f79.js",
+      "_Review.21cdd317.js",
       "resources/js/Pages/Ratings/Edit/EditResponseModal.vue",
       "resources/js/Pages/Ratings/Edit/DeleteResponseModal.vue",
-      "_ButtonRatings.1b9093ba.js",
-      "_PrimaryButton.7c143719.js",
-      "_Button.ed86f1b5.js",
-      "_Tooltip.16a29e70.js",
-      "_StarRating.2d3b8bfe.js",
+      "_ButtonRatings.b8d61906.js",
+      "_PrimaryButton.9346bcf5.js",
+      "_Button.3a799bb4.js",
+      "_Tooltip.c8b0b4cf.js",
+      "_StarRating.6dd35ff0.js",
       "resources/js/Pages/Ratings/Edit/EditRatingModal.vue",
-      "_StarRatingEditable.92223be5.js",
+      "_StarRatingEditable.b955dfbd.js",
       "resources/js/Pages/Ratings/Edit/DeleteRatingModal.vue",
       "resources/js/Pages/Ratings/PartialsPersonal/QualifyingQuestions.vue",
-      "_ContractorInfo.5ddeeff9.js",
-      "_HeadingCard.40a65dbd.js"
+      "_ContractorInfo.df7966f9.js",
+      "_HeadingCard.964389d2.js"
     ],
     "css": [
       "assets/Postings.0aace970.css",
-      "assets/Button.edfd387f.css"
+      "assets/Card.1d96bec8.css",
+      "assets/Button.80ea3968.css"
     ]
   },
-  "resources/js/Pages/Postingssetup.vue": {
-    "file": "assets/Postingssetup.4c5148a0.js",
-    "src": "resources/js/Pages/Postingssetup.vue",
+  "resources/js/Pages/PricingPage.vue": {
+    "file": "assets/PricingPage.10c37ae6.js",
+    "src": "resources/js/Pages/PricingPage.vue",
     "isDynamicEntry": true,
     "imports": [
+      "_WelcomeFooter.b53dde7c.js",
+      "_PricingVersions.df25e223.js",
       "resources/js/app.js",
-      "_PostDisplay.cb6480b8.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
+      "_MoveToTop.00b66a0e.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_PostForm.9f8b1102.js",
-      "_Avatar.90d40591.js",
-      "_iconify.9ffa3d85.js",
-      "_Loader.348c47cb.js",
-      "_CustomDialog.08753e88.js",
-      "_InputError.b7fce308.js",
-      "_Card.fae93276.js",
-      "_InputLabel.2ed1580b.js",
-      "_SelectProfile.74872fec.js",
-      "_Badge.59df51b3.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_ContractorRating.02cca272.js",
-      "_Review.a87bbdeb.js",
-      "resources/js/Pages/Ratings/Edit/EditResponseModal.vue",
-      "resources/js/Pages/Ratings/Edit/DeleteResponseModal.vue",
-      "_ButtonRatings.1b9093ba.js",
-      "_PrimaryButton.7c143719.js",
-      "_Button.ed86f1b5.js",
-      "_Tooltip.16a29e70.js",
-      "_StarRating.2d3b8bfe.js",
-      "resources/js/Pages/Ratings/Edit/EditRatingModal.vue",
-      "_StarRatingEditable.92223be5.js",
-      "resources/js/Pages/Ratings/Edit/DeleteRatingModal.vue",
-      "resources/js/Pages/Ratings/PartialsPersonal/QualifyingQuestions.vue",
-      "_ContractorInfo.5ddeeff9.js",
-      "_HeadingCard.40a65dbd.js",
-      "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
-      "resources/js/Pages/Profile/Partials/Trades.vue",
-      "resources/js/Pages/Profile/Partials/Views.vue"
+      "_ResponsiveNavLink.08fcec0b.js",
+      "_iconify.e7607712.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
+      "_CustomDialog.23fc1797.js",
+      "_tContractorWhite.de6506fc.js",
+      "_freebox.8421bda3.js"
+    ]
+  },
+  "_PricingVersions.df25e223.js": {
+    "file": "assets/PricingVersions.df25e223.js",
+    "imports": [
+      "_freebox.8421bda3.js",
+      "_iconify.e7607712.js",
+      "resources/js/app.js",
+      "__plugin-vue_export-helper.cdc0426e.js",
+      "_CustomDialog.23fc1797.js"
     ],
     "css": [
-      "assets/Postingssetup.3d81a95e.css",
-      "assets/Button.edfd387f.css"
+      "assets/PricingVersions.89f7a5d6.css"
+    ]
+  },
+  "_freebox.8421bda3.js": {
+    "file": "assets/freebox.8421bda3.js",
+    "assets": [
+      "assets/freebox.e6bd09b1.png"
     ]
   },
   "resources/js/Pages/PricingPlanPage.vue": {
-    "file": "assets/PricingPlanPage.21cea0b5.js",
+    "file": "assets/PricingPlanPage.2e692e87.js",
     "src": "resources/js/Pages/PricingPlanPage.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Header.8cbac9c9.js",
+      "_Header.e6b0f8ce.js",
       "resources/js/app.js",
       "resources/js/Pages/Profile/Partials/main/PaymentStep.vue",
-      "_PostForm.9f8b1102.js",
-      "_tContractorWord.f0a33fa4.js",
+      "_PageTitle.7160322e.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_iconify.9ffa3d85.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_CustomDialog.08753e88.js",
-      "_Badge.59df51b3.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_CustomDialog.23fc1797.js",
+      "_iconify.e7607712.js",
+      "_selectListsHelpters.9480c284.js",
+      "_Badge.555c93ca.js",
       "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
       "resources/js/Pages/Profile/Partials/Trades.vue",
       "resources/js/Pages/Profile/Partials/Views.vue",
-      "_Loader.348c47cb.js",
-      "_Avatar.90d40591.js",
-      "_InputLabel.2ed1580b.js",
-      "_InputError.b7fce308.js",
-      "_SelectProfile.74872fec.js",
+      "_Loader.3dd162f1.js",
+      "_Avatar.8bfab00d.js",
+      "_InputLabel.fe3013ba.js",
+      "_InputError.ea13c7ed.js",
+      "_SelectProfile.c89157a7.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
       "resources/js/Pages/Profile/Partials/main/PricingCard.vue"
+    ],
+    "css": [
+      "assets/PageTitle.e3b0c442.css"
     ]
   },
   "resources/js/Pages/Profile/Partials/main/PaymentStep.vue": {
-    "file": "assets/PaymentStep.ae2d2399.js",
+    "file": "assets/PaymentStep.489fbabc.js",
     "src": "resources/js/Pages/Profile/Partials/main/PaymentStep.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
       "resources/js/Pages/Profile/Partials/main/PricingCard.vue",
-      "_iconify.9ffa3d85.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ]
   },
   "resources/js/Pages/Profile/Partials/main/PricingCard.vue": {
-    "file": "assets/PricingCard.a7c85a4b.js",
+    "file": "assets/PricingCard.1378684c.js",
     "src": "resources/js/Pages/Profile/Partials/main/PricingCard.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_iconify.9ffa3d85.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ],
     "css": [
-      "assets/PricingCard.465b54cb.css"
+      "assets/PricingCard.2524a261.css"
     ]
   },
   "resources/js/Pages/PrivacyPolicy.vue": {
-    "file": "assets/PrivacyPolicy.24eacc6c.js",
+    "file": "assets/PrivacyPolicy.bcaecbb1.js",
     "src": "resources/js/Pages/PrivacyPolicy.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_SignUpLayout.f17e311e.js",
-      "_WelcomeFooter.b4f6561b.js",
+      "_SignUpLayout.1fd0fe62.js",
+      "_WelcomeFooter.b53dde7c.js",
       "resources/js/app.js",
-      "_tContractorWord.f0a33fa4.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_ResponsiveNavLink.5c3e17ee.js",
-      "_tContractorWhite.4f7ad68a.js"
+      "_ResponsiveNavLink.08fcec0b.js",
+      "_iconify.e7607712.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
+      "_CustomDialog.23fc1797.js",
+      "_tContractorWhite.de6506fc.js"
     ]
   },
   "resources/js/Pages/Profile/Edit.vue": {
-    "file": "assets/Edit.2373fa35.js",
+    "file": "assets/Edit.ca0105b0.js",
     "src": "resources/js/Pages/Profile/Edit.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Header.8cbac9c9.js",
+      "_Header.e6b0f8ce.js",
       "resources/js/app.js",
       "resources/js/Pages/Profile/Partials/main/AllTabs.vue",
-      "_PostForm.9f8b1102.js",
-      "_tContractorWord.f0a33fa4.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_iconify.9ffa3d85.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_CustomDialog.08753e88.js",
-      "_Badge.59df51b3.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_CustomDialog.23fc1797.js",
+      "_iconify.e7607712.js",
+      "_selectListsHelpters.9480c284.js",
+      "_Badge.555c93ca.js",
       "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
       "resources/js/Pages/Profile/Partials/Trades.vue",
       "resources/js/Pages/Profile/Partials/Views.vue",
-      "_Loader.348c47cb.js",
-      "_Avatar.90d40591.js",
-      "_InputLabel.2ed1580b.js",
-      "_InputError.b7fce308.js",
-      "_SelectProfile.74872fec.js",
-      "_PrimaryButton.7c143719.js",
+      "_Loader.3dd162f1.js",
+      "_Avatar.8bfab00d.js",
+      "_InputLabel.fe3013ba.js",
+      "_InputError.ea13c7ed.js",
+      "_SelectProfile.c89157a7.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
+      "_PrimaryButton.9346bcf5.js",
       "resources/js/Pages/Profile/Partials/GeneralInfo.vue",
-      "_TextInput.e7dce2cb.js",
+      "_TextInput.e3b79f39.js",
       "resources/js/Pages/Profile/components/UserAvatar.vue",
       "resources/js/Pages/Profile/components/Tabs.vue",
       "resources/js/Pages/Profile/Partials/CompanyAddressInfo.vue",
-      "_GoogleAddressAutoComplete.d22178df.js",
+      "_GoogleAddressAutoComplete.6d4a5d07.js",
       "resources/js/Pages/Profile/Partials/LinksInfo.vue",
-      "_InputIcon.ce529e9c.js"
+      "_InputIcon.16db76ec.js"
     ],
     "css": [
       "assets/UserAvatar.814e2ac1.css"
     ]
   },
   "resources/js/Pages/Profile/Partials/main/AllTabs.vue": {
-    "file": "assets/AllTabs.a611aec3.js",
+    "file": "assets/AllTabs.ab8af41c.js",
     "src": "resources/js/Pages/Profile/Partials/main/AllTabs.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_PrimaryButton.7c143719.js",
+      "_PrimaryButton.9346bcf5.js",
       "resources/js/Pages/Profile/Partials/GeneralInfo.vue",
       "resources/js/Pages/Profile/components/Tabs.vue",
       "resources/js/Pages/Profile/Partials/CompanyAddressInfo.vue",
       "resources/js/Pages/Profile/Partials/Trades.vue",
       "resources/js/Pages/Profile/Partials/Views.vue",
       "resources/js/Pages/Profile/Partials/LinksInfo.vue",
-      "_InputError.b7fce308.js",
-      "_InputLabel.2ed1580b.js",
-      "_TextInput.e7dce2cb.js",
+      "_InputError.ea13c7ed.js",
+      "_InputLabel.fe3013ba.js",
+      "_TextInput.e3b79f39.js",
       "resources/js/Pages/Profile/components/UserAvatar.vue",
-      "_iconify.9ffa3d85.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_SelectProfile.74872fec.js",
-      "_GoogleAddressAutoComplete.d22178df.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_InputIcon.ce529e9c.js"
+      "_SelectProfile.c89157a7.js",
+      "_GoogleAddressAutoComplete.6d4a5d07.js",
+      "_selectListsHelpters.9480c284.js",
+      "_InputIcon.16db76ec.js"
     ],
     "css": [
       "assets/UserAvatar.814e2ac1.css"
     ]
   },
   "resources/js/Pages/Profile/Partials/GeneralInfo.vue": {
-    "file": "assets/GeneralInfo.0c2d9c95.js",
+    "file": "assets/GeneralInfo.b11e3f3c.js",
     "src": "resources/js/Pages/Profile/Partials/GeneralInfo.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_InputError.b7fce308.js",
-      "_InputLabel.2ed1580b.js",
-      "_TextInput.e7dce2cb.js",
+      "_InputError.ea13c7ed.js",
+      "_InputLabel.fe3013ba.js",
+      "_TextInput.e3b79f39.js",
       "resources/js/Pages/Profile/components/UserAvatar.vue",
-      "_iconify.9ffa3d85.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ],
     "css": [
@@ -1975,7 +2027,7 @@
     ]
   },
   "resources/js/Pages/Profile/components/Tabs.vue": {
-    "file": "assets/Tabs.88e4d0b2.js",
+    "file": "assets/Tabs.69a60a48.js",
     "src": "resources/js/Pages/Profile/components/Tabs.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -1983,18 +2035,18 @@
     ]
   },
   "resources/js/Pages/Profile/Partials/CompanyAddressInfo.vue": {
-    "file": "assets/CompanyAddressInfo.cd4842c1.js",
+    "file": "assets/CompanyAddressInfo.ec8ad018.js",
     "src": "resources/js/Pages/Profile/Partials/CompanyAddressInfo.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_InputLabel.2ed1580b.js",
-      "_SelectProfile.74872fec.js",
-      "_InputError.b7fce308.js",
-      "_TextInput.e7dce2cb.js",
+      "_InputLabel.fe3013ba.js",
+      "_SelectProfile.c89157a7.js",
+      "_InputError.ea13c7ed.js",
+      "_TextInput.e3b79f39.js",
       "resources/js/Pages/Profile/components/UserAvatar.vue",
-      "_GoogleAddressAutoComplete.d22178df.js",
-      "_iconify.9ffa3d85.js",
+      "_GoogleAddressAutoComplete.6d4a5d07.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ],
     "css": [
@@ -2002,89 +2054,150 @@
     ]
   },
   "resources/js/Pages/Profile/Partials/LinksInfo.vue": {
-    "file": "assets/LinksInfo.57bd763e.js",
+    "file": "assets/LinksInfo.0e7cd874.js",
     "src": "resources/js/Pages/Profile/Partials/LinksInfo.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_InputLabel.2ed1580b.js",
-      "_InputError.b7fce308.js",
-      "_InputIcon.ce529e9c.js",
-      "_iconify.9ffa3d85.js"
+      "_InputLabel.fe3013ba.js",
+      "_InputError.ea13c7ed.js",
+      "_InputIcon.16db76ec.js",
+      "_iconify.e7607712.js"
     ]
   },
   "resources/js/Pages/Profile/Partials/BillingSettingsTab.vue": {
-    "file": "assets/BillingSettingsTab.2aefe97f.js",
+    "file": "assets/BillingSettingsTab.e28d3ad8.js",
     "src": "resources/js/Pages/Profile/Partials/BillingSettingsTab.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_CustomDialog.08753e88.js",
+      "_CustomDialog.23fc1797.js",
       "resources/js/app.js",
-      "_iconify.9ffa3d85.js",
+      "_Card.9778af2d.js",
+      "resources/js/Pages/Profile/Partials/main/SettingPricingPlans.vue",
+      "_iconify.e7607712.js",
+      "_PricingVersions.df25e223.js",
+      "__plugin-vue_export-helper.cdc0426e.js",
+      "_InputError.ea13c7ed.js",
+      "_InputLabel.fe3013ba.js",
+      "_TextInput.e3b79f39.js",
+      "_SelectProfile.c89157a7.js",
+      "_Loader.3dd162f1.js",
+      "_selectListsHelpters.9480c284.js",
+      "_InputIcon.16db76ec.js",
+      "_GoogleAddressAutoComplete.6d4a5d07.js",
+      "resources/js/Pages/Profile/Partials/main/PricingCard.vue",
+      "resources/js/Pages/Profile/Partials/main/PricingCardForAnnualGold.vue",
+      "_freebox.8421bda3.js"
+    ],
+    "css": [
+      "assets/BillingSettingsTab.f3bbe498.css",
+      "assets/Button.80ea3968.css",
+      "assets/Card.1d96bec8.css",
+      "assets/PageTitle.e3b0c442.css"
+    ]
+  },
+  "resources/js/Pages/Profile/Partials/main/SettingPricingPlans.vue": {
+    "file": "assets/SettingPricingPlans.3c44c7ce.js",
+    "src": "resources/js/Pages/Profile/Partials/main/SettingPricingPlans.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "resources/js/Pages/Profile/Partials/main/PricingCard.vue",
+      "resources/js/Pages/Profile/Partials/main/PricingCardForAnnualGold.vue",
+      "_CustomDialog.23fc1797.js",
+      "__plugin-vue_export-helper.cdc0426e.js",
+      "_InputError.ea13c7ed.js",
+      "_InputLabel.fe3013ba.js",
+      "_TextInput.e3b79f39.js",
+      "_SelectProfile.c89157a7.js",
+      "_Loader.3dd162f1.js",
+      "_iconify.e7607712.js",
+      "_selectListsHelpters.9480c284.js",
+      "_InputIcon.16db76ec.js",
+      "_GoogleAddressAutoComplete.6d4a5d07.js"
+    ],
+    "css": [
+      "assets/SettingPricingPlans.4f9cc444.css",
+      "assets/Button.80ea3968.css",
+      "assets/Card.1d96bec8.css",
+      "assets/PageTitle.e3b0c442.css"
+    ]
+  },
+  "resources/js/Pages/Profile/Partials/main/PricingCardForAnnualGold.vue": {
+    "file": "assets/PricingCardForAnnualGold.beb495b1.js",
+    "src": "resources/js/Pages/Profile/Partials/main/PricingCardForAnnualGold.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js"
+    ],
+    "css": [
+      "assets/PricingCardForAnnualGold.60890558.css"
     ]
   },
   "resources/js/Pages/Profile/Partials/BlockUsersList.vue": {
-    "file": "assets/BlockUsersList.a2ec6b15.js",
+    "file": "assets/BlockUsersList.4c85ad36.js",
     "src": "resources/js/Pages/Profile/Partials/BlockUsersList.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_Loader.348c47cb.js",
-      "_Avatar.90d40591.js",
+      "_Loader.3dd162f1.js",
+      "_Avatar.8bfab00d.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_iconify.9ffa3d85.js"
+      "_iconify.e7607712.js"
     ],
     "css": [
-      "assets/BlockUsersList.e65a916f.css"
+      "assets/BlockUsersList.a2757a69.css"
     ]
   },
   "resources/js/Pages/Profile/Partials/DeleteUserForm.vue": {
-    "file": "assets/DeleteUserForm.bf64a7bb.js",
+    "file": "assets/DeleteUserForm.eb797d5b.js",
     "src": "resources/js/Pages/Profile/Partials/DeleteUserForm.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_InputError.b7fce308.js",
-      "_InputLabel.2ed1580b.js",
-      "_TextInput.e7dce2cb.js"
+      "_InputError.ea13c7ed.js",
+      "_InputLabel.fe3013ba.js",
+      "_TextInput.e3b79f39.js"
     ]
   },
   "resources/js/Pages/Profile/Partials/UpdatePasswordForm.vue": {
-    "file": "assets/UpdatePasswordForm.dd9e5e49.js",
+    "file": "assets/UpdatePasswordForm.f8c65203.js",
     "src": "resources/js/Pages/Profile/Partials/UpdatePasswordForm.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_InputError.b7fce308.js",
-      "_InputLabel.2ed1580b.js",
-      "_PrimaryButton.7c143719.js",
-      "_TextInput.e7dce2cb.js"
+      "_InputError.ea13c7ed.js",
+      "_InputLabel.fe3013ba.js",
+      "_PrimaryButton.9346bcf5.js",
+      "_TextInput.e3b79f39.js"
     ]
   },
   "resources/js/Pages/Profile/Partials/main/AllSteps.vue": {
-    "file": "assets/AllSteps.cca5b11f.js",
+    "file": "assets/AllSteps.35f0e1e3.js",
     "src": "resources/js/Pages/Profile/Partials/main/AllSteps.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/Pages/Profile/Partials/GeneralInfo.vue",
-      "_InputError.b7fce308.js",
+      "_InputError.ea13c7ed.js",
       "resources/js/Pages/Profile/Partials/CompanyAddressInfo.vue",
       "resources/js/Pages/Profile/Partials/Trades.vue",
       "resources/js/Pages/Profile/Partials/Views.vue",
       "resources/js/Pages/Profile/Partials/LinksInfo.vue",
       "resources/js/app.js",
-      "resources/js/Pages/Profile/Partials/main/PaymentStep.vue",
-      "_InputLabel.2ed1580b.js",
-      "_TextInput.e7dce2cb.js",
+      "_PricingVersions.df25e223.js",
+      "_InputLabel.fe3013ba.js",
+      "_TextInput.e3b79f39.js",
       "resources/js/Pages/Profile/components/UserAvatar.vue",
-      "_iconify.9ffa3d85.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_SelectProfile.74872fec.js",
-      "_GoogleAddressAutoComplete.d22178df.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_InputIcon.ce529e9c.js",
-      "resources/js/Pages/Profile/Partials/main/PricingCard.vue"
+      "_SelectProfile.c89157a7.js",
+      "_GoogleAddressAutoComplete.6d4a5d07.js",
+      "_selectListsHelpters.9480c284.js",
+      "_InputIcon.16db76ec.js",
+      "_freebox.8421bda3.js",
+      "_CustomDialog.23fc1797.js"
     ],
     "css": [
       "assets/AllSteps.bf4791cf.css",
@@ -2092,780 +2205,784 @@
     ]
   },
   "resources/js/Pages/Profile/Partials/main/SettingsTabs.vue": {
-    "file": "assets/SettingsTabs.b614d3ea.js",
+    "file": "assets/SettingsTabs.5729e8c9.js",
     "src": "resources/js/Pages/Profile/Partials/main/SettingsTabs.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
       "resources/js/Pages/Profile/Partials/UpdatePasswordForm.vue",
       "resources/js/Pages/Profile/components/Tabs.vue",
-      "_PrimaryButton.7c143719.js",
-      "_TextInput.e7dce2cb.js",
-      "_InputError.b7fce308.js",
-      "_InputLabel.2ed1580b.js",
+      "_PrimaryButton.9346bcf5.js",
+      "_TextInput.e3b79f39.js",
+      "_InputError.ea13c7ed.js",
+      "_InputLabel.fe3013ba.js",
       "resources/js/Pages/Profile/Partials/BillingSettingsTab.vue",
       "resources/js/Pages/Profile/Partials/BlockUsersList.vue",
-      "_CustomDialog.08753e88.js",
-      "_iconify.9ffa3d85.js",
+      "_CustomDialog.23fc1797.js",
+      "_Card.9778af2d.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_Loader.348c47cb.js",
-      "_Avatar.90d40591.js"
+      "resources/js/Pages/Profile/Partials/main/SettingPricingPlans.vue",
+      "resources/js/Pages/Profile/Partials/main/PricingCard.vue",
+      "_iconify.e7607712.js",
+      "resources/js/Pages/Profile/Partials/main/PricingCardForAnnualGold.vue",
+      "_SelectProfile.c89157a7.js",
+      "_Loader.3dd162f1.js",
+      "_selectListsHelpters.9480c284.js",
+      "_InputIcon.16db76ec.js",
+      "_GoogleAddressAutoComplete.6d4a5d07.js",
+      "_PricingVersions.df25e223.js",
+      "_freebox.8421bda3.js",
+      "_Avatar.8bfab00d.js"
+    ],
+    "css": [
+      "assets/Card.1d96bec8.css",
+      "assets/Button.80ea3968.css",
+      "assets/PageTitle.e3b0c442.css"
     ]
   },
   "resources/js/Pages/Profile/PaymentPage.vue": {
-    "file": "assets/PaymentPage.8a776475.js",
+    "file": "assets/PaymentPage.c57474c4.js",
     "src": "resources/js/Pages/Profile/PaymentPage.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_Header.8cbac9c9.js",
+      "_Header.e6b0f8ce.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_InputError.b7fce308.js",
-      "_InputLabel.2ed1580b.js",
-      "_TextInput.e7dce2cb.js",
-      "_SelectProfile.74872fec.js",
-      "_CustomDialog.08753e88.js",
-      "_Loader.348c47cb.js",
-      "_Card.fae93276.js",
-      "_PageTitle.5140671a.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_InputIcon.ce529e9c.js",
-      "_GoogleAddressAutoComplete.d22178df.js",
-      "_PostForm.9f8b1102.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_iconify.9ffa3d85.js",
-      "_Badge.59df51b3.js",
+      "_InputError.ea13c7ed.js",
+      "_InputLabel.fe3013ba.js",
+      "_TextInput.e3b79f39.js",
+      "_SelectProfile.c89157a7.js",
+      "_CustomDialog.23fc1797.js",
+      "_Loader.3dd162f1.js",
+      "_Card.9778af2d.js",
+      "_PageTitle.7160322e.js",
+      "_selectListsHelpters.9480c284.js",
+      "_InputIcon.16db76ec.js",
+      "_GoogleAddressAutoComplete.6d4a5d07.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_iconify.e7607712.js",
+      "_Badge.555c93ca.js",
       "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
       "resources/js/Pages/Profile/Partials/Trades.vue",
       "resources/js/Pages/Profile/Partials/Views.vue",
-      "_Avatar.90d40591.js"
+      "_Avatar.8bfab00d.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js"
     ],
     "css": [
-      "assets/PaymentPage.6f3a48d3.css",
-      "assets/Button.edfd387f.css"
+      "assets/PaymentPage.41b1634d.css",
+      "assets/Button.80ea3968.css",
+      "assets/Card.1d96bec8.css",
+      "assets/PageTitle.e3b0c442.css"
     ]
   },
   "resources/js/Pages/Profile/ProfileSetup.vue": {
-    "file": "assets/ProfileSetup.462bd168.js",
+    "file": "assets/ProfileSetup.6bb1ddf2.js",
     "src": "resources/js/Pages/Profile/ProfileSetup.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Header.8cbac9c9.js",
+      "_Header.e6b0f8ce.js",
       "resources/js/app.js",
       "resources/js/Pages/Profile/Partials/main/AllSteps.vue",
-      "_PostForm.9f8b1102.js",
-      "_tContractorWord.f0a33fa4.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_iconify.9ffa3d85.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_CustomDialog.08753e88.js",
-      "_Badge.59df51b3.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_CustomDialog.23fc1797.js",
+      "_iconify.e7607712.js",
+      "_selectListsHelpters.9480c284.js",
+      "_Badge.555c93ca.js",
       "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
       "resources/js/Pages/Profile/Partials/Trades.vue",
       "resources/js/Pages/Profile/Partials/Views.vue",
-      "_Loader.348c47cb.js",
-      "_Avatar.90d40591.js",
-      "_InputLabel.2ed1580b.js",
-      "_InputError.b7fce308.js",
-      "_SelectProfile.74872fec.js",
+      "_Loader.3dd162f1.js",
+      "_Avatar.8bfab00d.js",
+      "_InputLabel.fe3013ba.js",
+      "_InputError.ea13c7ed.js",
+      "_SelectProfile.c89157a7.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
       "resources/js/Pages/Profile/Partials/GeneralInfo.vue",
-      "_TextInput.e7dce2cb.js",
+      "_TextInput.e3b79f39.js",
       "resources/js/Pages/Profile/components/UserAvatar.vue",
       "resources/js/Pages/Profile/Partials/CompanyAddressInfo.vue",
-      "_GoogleAddressAutoComplete.d22178df.js",
+      "_GoogleAddressAutoComplete.6d4a5d07.js",
       "resources/js/Pages/Profile/Partials/LinksInfo.vue",
-      "_InputIcon.ce529e9c.js",
-      "resources/js/Pages/Profile/Partials/main/PaymentStep.vue",
-      "resources/js/Pages/Profile/Partials/main/PricingCard.vue"
+      "_InputIcon.16db76ec.js",
+      "_PricingVersions.df25e223.js",
+      "_freebox.8421bda3.js"
     ],
     "css": [
       "assets/UserAvatar.814e2ac1.css"
     ]
   },
   "resources/js/Pages/Profile/Settings.vue": {
-    "file": "assets/Settings.c796c3f9.js",
+    "file": "assets/Settings.662300e0.js",
     "src": "resources/js/Pages/Profile/Settings.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Header.8cbac9c9.js",
+      "_Header.e6b0f8ce.js",
+      "_MoveToTop.00b66a0e.js",
       "resources/js/app.js",
       "resources/js/Pages/Profile/Partials/main/SettingsTabs.vue",
-      "_PostForm.9f8b1102.js",
-      "_tContractorWord.f0a33fa4.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_iconify.9ffa3d85.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_CustomDialog.08753e88.js",
-      "_Badge.59df51b3.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_CustomDialog.23fc1797.js",
+      "_iconify.e7607712.js",
+      "_selectListsHelpters.9480c284.js",
+      "_Badge.555c93ca.js",
       "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
       "resources/js/Pages/Profile/Partials/Trades.vue",
       "resources/js/Pages/Profile/Partials/Views.vue",
-      "_Loader.348c47cb.js",
-      "_Avatar.90d40591.js",
-      "_InputLabel.2ed1580b.js",
-      "_InputError.b7fce308.js",
-      "_SelectProfile.74872fec.js",
+      "_Loader.3dd162f1.js",
+      "_Avatar.8bfab00d.js",
+      "_InputLabel.fe3013ba.js",
+      "_InputError.ea13c7ed.js",
+      "_SelectProfile.c89157a7.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
       "resources/js/Pages/Profile/Partials/UpdatePasswordForm.vue",
-      "_PrimaryButton.7c143719.js",
-      "_TextInput.e7dce2cb.js",
+      "_PrimaryButton.9346bcf5.js",
+      "_TextInput.e3b79f39.js",
       "resources/js/Pages/Profile/components/Tabs.vue",
       "resources/js/Pages/Profile/Partials/BillingSettingsTab.vue",
+      "_Card.9778af2d.js",
+      "resources/js/Pages/Profile/Partials/main/SettingPricingPlans.vue",
+      "resources/js/Pages/Profile/Partials/main/PricingCard.vue",
+      "resources/js/Pages/Profile/Partials/main/PricingCardForAnnualGold.vue",
+      "_InputIcon.16db76ec.js",
+      "_GoogleAddressAutoComplete.6d4a5d07.js",
+      "_PricingVersions.df25e223.js",
+      "_freebox.8421bda3.js",
       "resources/js/Pages/Profile/Partials/BlockUsersList.vue"
+    ],
+    "css": [
+      "assets/Card.1d96bec8.css",
+      "assets/Button.80ea3968.css",
+      "assets/PageTitle.e3b0c442.css"
     ]
   },
   "resources/js/Pages/Ratings/Contractor/ContractorPersonal.vue": {
-    "file": "assets/ContractorPersonal.ed59442e.js",
+    "file": "assets/ContractorPersonal.3921eea5.js",
     "src": "resources/js/Pages/Ratings/Contractor/ContractorPersonal.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_Header.8cbac9c9.js",
-      "_PageTitle.5140671a.js",
-      "_ContractorInfo.5ddeeff9.js",
+      "_Header.e6b0f8ce.js",
+      "_PageTitle.7160322e.js",
+      "_ContractorInfo.df7966f9.js",
       "resources/js/Pages/Ratings/PartialsPersonal/QuestionsReview.vue",
-      "_Button.ed86f1b5.js",
-      "_HeadingCard.40a65dbd.js",
-      "_Card.fae93276.js",
-      "_Loader.348c47cb.js",
+      "_Button.3a799bb4.js",
+      "_HeadingCard.964389d2.js",
+      "_Card.9778af2d.js",
+      "_Loader.3dd162f1.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_PostForm.9f8b1102.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_iconify.9ffa3d85.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_CustomDialog.08753e88.js",
-      "_Badge.59df51b3.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_CustomDialog.23fc1797.js",
+      "_iconify.e7607712.js",
+      "_selectListsHelpters.9480c284.js",
+      "_Badge.555c93ca.js",
       "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
       "resources/js/Pages/Profile/Partials/Trades.vue",
       "resources/js/Pages/Profile/Partials/Views.vue",
-      "_Avatar.90d40591.js",
-      "_InputLabel.2ed1580b.js",
-      "_InputError.b7fce308.js",
-      "_SelectProfile.74872fec.js",
-      "_StarRating.2d3b8bfe.js",
-      "_PrimaryButton.7c143719.js",
-      "_Review.a87bbdeb.js",
+      "_Avatar.8bfab00d.js",
+      "_InputLabel.fe3013ba.js",
+      "_InputError.ea13c7ed.js",
+      "_SelectProfile.c89157a7.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
+      "_StarRating.6dd35ff0.js",
+      "_PrimaryButton.9346bcf5.js",
+      "_Review.21cdd317.js",
       "resources/js/Pages/Ratings/Edit/EditResponseModal.vue",
       "resources/js/Pages/Ratings/Edit/DeleteResponseModal.vue",
-      "_ButtonRatings.1b9093ba.js",
-      "_Tooltip.16a29e70.js",
+      "_ButtonRatings.b8d61906.js",
+      "_Tooltip.c8b0b4cf.js",
       "resources/js/Pages/Ratings/Edit/EditRatingModal.vue",
-      "_StarRatingEditable.92223be5.js",
+      "_StarRatingEditable.b955dfbd.js",
       "resources/js/Pages/Ratings/Edit/DeleteRatingModal.vue",
       "resources/js/Pages/Ratings/PartialsPersonal/QualifyingQuestions.vue"
     ],
     "css": [
-      "assets/ContractorPersonal.d5f33191.css",
-      "assets/Button.edfd387f.css"
+      "assets/ContractorPersonal.938a7f8b.css",
+      "assets/PageTitle.e3b0c442.css",
+      "assets/Card.1d96bec8.css",
+      "assets/Button.80ea3968.css"
     ]
   },
   "resources/js/Pages/Ratings/PartialsPersonal/QuestionsReview.vue": {
-    "file": "assets/QuestionsReview.eedb5eb5.js",
+    "file": "assets/QuestionsReview.a75c93f4.js",
     "src": "resources/js/Pages/Ratings/PartialsPersonal/QuestionsReview.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_PrimaryButton.7c143719.js",
-      "_InputError.b7fce308.js",
-      "_Review.a87bbdeb.js",
-      "_Button.ed86f1b5.js",
-      "_Card.fae93276.js",
+      "_PrimaryButton.9346bcf5.js",
+      "_InputError.ea13c7ed.js",
+      "_Review.21cdd317.js",
+      "_Button.3a799bb4.js",
+      "_Card.9778af2d.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "resources/js/Pages/Ratings/Edit/EditResponseModal.vue",
-      "_CustomDialog.08753e88.js",
-      "_iconify.9ffa3d85.js",
+      "_CustomDialog.23fc1797.js",
+      "_iconify.e7607712.js",
       "resources/js/Pages/Ratings/Edit/DeleteResponseModal.vue",
-      "_ButtonRatings.1b9093ba.js",
-      "_Tooltip.16a29e70.js",
-      "_Avatar.90d40591.js",
-      "_StarRating.2d3b8bfe.js",
-      "_Badge.59df51b3.js",
+      "_ButtonRatings.b8d61906.js",
+      "_Tooltip.c8b0b4cf.js",
+      "_Avatar.8bfab00d.js",
+      "_StarRating.6dd35ff0.js",
+      "_Badge.555c93ca.js",
       "resources/js/Pages/Ratings/Edit/EditRatingModal.vue",
-      "_StarRatingEditable.92223be5.js",
+      "_StarRatingEditable.b955dfbd.js",
       "resources/js/Pages/Ratings/Edit/DeleteRatingModal.vue",
       "resources/js/Pages/Ratings/PartialsPersonal/QualifyingQuestions.vue",
-      "_selectListsHelpters.38ce783f.js"
+      "_selectListsHelpters.9480c284.js"
     ],
     "css": [
-      "assets/Button.edfd387f.css"
+      "assets/Card.1d96bec8.css",
+      "assets/Button.80ea3968.css"
     ]
   },
   "resources/js/Pages/Ratings/ContractorRating.vue": {
-    "file": "assets/ContractorRating.0dd94467.js",
+    "file": "assets/ContractorRating.8c3db8f2.js",
     "src": "resources/js/Pages/Ratings/ContractorRating.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Header.8cbac9c9.js",
-      "_ContractorRating.02cca272.js",
+      "_Header.e6b0f8ce.js",
+      "_ContractorRating.62ce5f79.js",
       "resources/js/app.js",
-      "_PostForm.9f8b1102.js",
-      "_tContractorWord.f0a33fa4.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_iconify.9ffa3d85.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_CustomDialog.08753e88.js",
-      "_Badge.59df51b3.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_CustomDialog.23fc1797.js",
+      "_iconify.e7607712.js",
+      "_selectListsHelpters.9480c284.js",
+      "_Badge.555c93ca.js",
       "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
       "resources/js/Pages/Profile/Partials/Trades.vue",
       "resources/js/Pages/Profile/Partials/Views.vue",
-      "_Loader.348c47cb.js",
-      "_Avatar.90d40591.js",
-      "_InputLabel.2ed1580b.js",
-      "_InputError.b7fce308.js",
-      "_SelectProfile.74872fec.js",
-      "_Review.a87bbdeb.js",
-      "_Card.fae93276.js",
+      "_Loader.3dd162f1.js",
+      "_Avatar.8bfab00d.js",
+      "_InputLabel.fe3013ba.js",
+      "_InputError.ea13c7ed.js",
+      "_SelectProfile.c89157a7.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
+      "_Review.21cdd317.js",
+      "_Card.9778af2d.js",
       "resources/js/Pages/Ratings/Edit/EditResponseModal.vue",
       "resources/js/Pages/Ratings/Edit/DeleteResponseModal.vue",
-      "_ButtonRatings.1b9093ba.js",
-      "_PrimaryButton.7c143719.js",
-      "_Button.ed86f1b5.js",
-      "_Tooltip.16a29e70.js",
-      "_StarRating.2d3b8bfe.js",
+      "_ButtonRatings.b8d61906.js",
+      "_PrimaryButton.9346bcf5.js",
+      "_Button.3a799bb4.js",
+      "_Tooltip.c8b0b4cf.js",
+      "_StarRating.6dd35ff0.js",
       "resources/js/Pages/Ratings/Edit/EditRatingModal.vue",
-      "_StarRatingEditable.92223be5.js",
+      "_StarRatingEditable.b955dfbd.js",
       "resources/js/Pages/Ratings/Edit/DeleteRatingModal.vue",
       "resources/js/Pages/Ratings/PartialsPersonal/QualifyingQuestions.vue",
-      "_ContractorInfo.5ddeeff9.js",
-      "_HeadingCard.40a65dbd.js"
+      "_ContractorInfo.df7966f9.js",
+      "_HeadingCard.964389d2.js"
     ],
     "css": [
-      "assets/Button.edfd387f.css"
+      "assets/Card.1d96bec8.css",
+      "assets/Button.80ea3968.css"
     ]
   },
   "resources/js/Pages/RedFlag/RedFlagPage.vue": {
-    "file": "assets/RedFlagPage.69b784ef.js",
+    "file": "assets/RedFlagPage.b253456f.js",
     "src": "resources/js/Pages/RedFlag/RedFlagPage.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_Header.8cbac9c9.js",
-      "_iconify.9ffa3d85.js",
-      "_MoveToTop.21420448.js",
-      "_SelectProfile.74872fec.js",
-      "_InputError.b7fce308.js",
-      "_InputLabel.2ed1580b.js",
-      "_Loader.348c47cb.js",
+      "_Header.e6b0f8ce.js",
+      "_iconify.e7607712.js",
+      "_MoveToTop.00b66a0e.js",
+      "_SelectProfile.c89157a7.js",
+      "_InputError.ea13c7ed.js",
+      "_InputLabel.fe3013ba.js",
+      "_Loader.3dd162f1.js",
       "resources/js/Pages/RedFlag/partials/TableHead.vue",
       "resources/js/Pages/RedFlag/partials/RedFlag.vue",
-      "_CustomDialog.08753e88.js",
+      "_CustomDialog.23fc1797.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_PostForm.9f8b1102.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_Badge.59df51b3.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_selectListsHelpters.9480c284.js",
+      "_Badge.555c93ca.js",
       "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
       "resources/js/Pages/Profile/Partials/Trades.vue",
       "resources/js/Pages/Profile/Partials/Views.vue",
-      "_Avatar.90d40591.js"
+      "_Avatar.8bfab00d.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js"
     ],
     "css": [
-      "assets/RedFlagPage.6271860e.css"
+      "assets/RedFlagPage.a83e262d.css"
     ]
   },
   "resources/js/Pages/RedFlag/partials/TableHead.vue": {
-    "file": "assets/TableHead.ad267d1a.js",
+    "file": "assets/TableHead.a0509bf9.js",
     "src": "resources/js/Pages/RedFlag/partials/TableHead.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_iconify.9ffa3d85.js",
+      "_iconify.e7607712.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ],
     "css": [
-      "assets/TableHead.ebecc527.css"
+      "assets/TableHead.56741868.css"
     ]
   },
   "resources/js/Pages/RedFlag/partials/RedFlag.vue": {
-    "file": "assets/RedFlag.e9e00f49.js",
+    "file": "assets/RedFlag.f55c0cd7.js",
     "src": "resources/js/Pages/RedFlag/partials/RedFlag.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_CustomDialog.08753e88.js",
-      "_iconify.9ffa3d85.js",
+      "_CustomDialog.23fc1797.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ],
     "css": [
-      "assets/RedFlag.d545fc7a.css"
+      "assets/RedFlag.e2753ea5.css"
     ]
   },
   "resources/js/Pages/Signup.vue": {
-    "file": "assets/Signup.e3bb6042.js",
+    "file": "assets/Signup.8f03d604.js",
     "src": "resources/js/Pages/Signup.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_ResponsiveNavLink.5c3e17ee.js",
+      "_tContractorWord.3399d2af.js",
+      "_ResponsiveNavLink.08fcec0b.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ]
   },
   "resources/js/Pages/SubFinder/SubFinderPage.vue": {
-    "file": "assets/SubFinderPage.f4ece32c.js",
+    "file": "assets/SubFinderPage.cd85bfae.js",
     "src": "resources/js/Pages/SubFinder/SubFinderPage.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_Header.8cbac9c9.js",
-      "_iconify.9ffa3d85.js",
-      "_MoveToTop.21420448.js",
-      "_SelectProfile.74872fec.js",
-      "_InputLabel.2ed1580b.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_Loader.348c47cb.js",
+      "_Header.e6b0f8ce.js",
+      "_iconify.e7607712.js",
+      "_MoveToTop.00b66a0e.js",
+      "_SelectProfile.c89157a7.js",
+      "_InputLabel.fe3013ba.js",
+      "_selectListsHelpters.9480c284.js",
+      "_Loader.3dd162f1.js",
       "resources/js/Pages/SubFinder/partials/SubFinderContractor.vue",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_PostForm.9f8b1102.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_CustomDialog.08753e88.js",
-      "_Badge.59df51b3.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_CustomDialog.23fc1797.js",
+      "_Badge.555c93ca.js",
       "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
       "resources/js/Pages/Profile/Partials/Trades.vue",
       "resources/js/Pages/Profile/Partials/Views.vue",
-      "_Avatar.90d40591.js",
-      "_InputError.b7fce308.js",
-      "_Card.fae93276.js",
+      "_Avatar.8bfab00d.js",
+      "_InputError.ea13c7ed.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
+      "_Card.9778af2d.js",
       "resources/js/Pages/SubFinder/partials/ContractorHeader.vue",
-      "_PostDisplay.cb6480b8.js",
-      "_ContractorRating.02cca272.js",
-      "_Review.a87bbdeb.js",
+      "_PostDisplayEnlarged.8b5ada29.js",
+      "_ContractorRating.62ce5f79.js",
+      "_Review.21cdd317.js",
       "resources/js/Pages/Ratings/Edit/EditResponseModal.vue",
       "resources/js/Pages/Ratings/Edit/DeleteResponseModal.vue",
-      "_ButtonRatings.1b9093ba.js",
-      "_PrimaryButton.7c143719.js",
-      "_Button.ed86f1b5.js",
-      "_Tooltip.16a29e70.js",
-      "_StarRating.2d3b8bfe.js",
+      "_ButtonRatings.b8d61906.js",
+      "_PrimaryButton.9346bcf5.js",
+      "_Button.3a799bb4.js",
+      "_Tooltip.c8b0b4cf.js",
+      "_StarRating.6dd35ff0.js",
       "resources/js/Pages/Ratings/Edit/EditRatingModal.vue",
-      "_StarRatingEditable.92223be5.js",
+      "_StarRatingEditable.b955dfbd.js",
       "resources/js/Pages/Ratings/Edit/DeleteRatingModal.vue",
       "resources/js/Pages/Ratings/PartialsPersonal/QualifyingQuestions.vue",
-      "_ContractorInfo.5ddeeff9.js",
-      "_HeadingCard.40a65dbd.js",
+      "_ContractorInfo.df7966f9.js",
+      "_HeadingCard.964389d2.js",
       "resources/js/Pages/Contractor/DialogContractorPage.vue",
       "resources/js/Pages/Contractor/CustomContractorPageDialog.vue",
       "resources/js/Pages/Contractor/ContractorPage.vue",
-      "_ImageTextSection.vue_vue_type_style_index_0_scoped_9f8da2da_lang.642484d1.js",
-      "_ResponsiveNavLink.5c3e17ee.js",
-      "_PostDisplayEnlarged.ebd5326f.js"
+      "_ImageTextSection.vue_vue_type_style_index_0_scoped_a4e46067_lang.c2c3d5e4.js",
+      "_ResponsiveNavLink.08fcec0b.js"
     ],
     "css": [
-      "assets/SubFinderPage.b4ded6ef.css",
-      "assets/Button.edfd387f.css",
+      "assets/SubFinderPage.a1f956a1.css",
+      "assets/Card.1d96bec8.css",
+      "assets/Button.80ea3968.css",
       "assets/UserAvatar.814e2ac1.css"
     ]
   },
   "resources/js/Pages/SubFinder/partials/SubFinderContractor.vue": {
-    "file": "assets/SubFinderContractor.a675bbe6.js",
+    "file": "assets/SubFinderContractor.eb8350b3.js",
     "src": "resources/js/Pages/SubFinder/partials/SubFinderContractor.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_Card.fae93276.js",
+      "_Card.9778af2d.js",
       "resources/js/Pages/SubFinder/partials/ContractorHeader.vue",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_iconify.9ffa3d85.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_ImageTextSection.vue_vue_type_style_index_0_scoped_9f8da2da_lang.642484d1.js",
-      "_Avatar.90d40591.js",
-      "_PostDisplay.cb6480b8.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_Loader.348c47cb.js",
-      "_CustomDialog.08753e88.js",
-      "_InputError.b7fce308.js",
-      "_InputLabel.2ed1580b.js",
-      "_SelectProfile.74872fec.js",
-      "_Badge.59df51b3.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_ContractorRating.02cca272.js",
-      "_Review.a87bbdeb.js",
+      "_ImageTextSection.vue_vue_type_style_index_0_scoped_a4e46067_lang.c2c3d5e4.js",
+      "_Avatar.8bfab00d.js",
+      "_PostDisplayEnlarged.8b5ada29.js",
+      "_tContractorWord.3399d2af.js",
+      "_Loader.3dd162f1.js",
+      "_InputLabel.fe3013ba.js",
+      "_InputError.ea13c7ed.js",
+      "_SelectProfile.c89157a7.js",
+      "_CustomDialog.23fc1797.js",
+      "_Badge.555c93ca.js",
+      "_selectListsHelpters.9480c284.js",
+      "_ContractorRating.62ce5f79.js",
+      "_Review.21cdd317.js",
       "resources/js/Pages/Ratings/Edit/EditResponseModal.vue",
       "resources/js/Pages/Ratings/Edit/DeleteResponseModal.vue",
-      "_ButtonRatings.1b9093ba.js",
-      "_PrimaryButton.7c143719.js",
-      "_Button.ed86f1b5.js",
-      "_Tooltip.16a29e70.js",
-      "_StarRating.2d3b8bfe.js",
+      "_ButtonRatings.b8d61906.js",
+      "_PrimaryButton.9346bcf5.js",
+      "_Button.3a799bb4.js",
+      "_Tooltip.c8b0b4cf.js",
+      "_StarRating.6dd35ff0.js",
       "resources/js/Pages/Ratings/Edit/EditRatingModal.vue",
-      "_StarRatingEditable.92223be5.js",
+      "_StarRatingEditable.b955dfbd.js",
       "resources/js/Pages/Ratings/Edit/DeleteRatingModal.vue",
       "resources/js/Pages/Ratings/PartialsPersonal/QualifyingQuestions.vue",
-      "_ContractorInfo.5ddeeff9.js",
-      "_HeadingCard.40a65dbd.js",
+      "_ContractorInfo.df7966f9.js",
+      "_HeadingCard.964389d2.js",
       "resources/js/Pages/Contractor/DialogContractorPage.vue",
       "resources/js/Pages/Contractor/CustomContractorPageDialog.vue",
       "resources/js/Pages/Contractor/ContractorPage.vue",
-      "_MoveToTop.21420448.js",
-      "_ResponsiveNavLink.5c3e17ee.js",
-      "_PostDisplayEnlarged.ebd5326f.js"
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
+      "_MoveToTop.00b66a0e.js",
+      "_ResponsiveNavLink.08fcec0b.js"
     ],
     "css": [
       "assets/SubFinderContractor.779481f5.css",
-      "assets/Button.edfd387f.css",
+      "assets/Card.1d96bec8.css",
+      "assets/Button.80ea3968.css",
       "assets/UserAvatar.814e2ac1.css"
     ]
   },
   "resources/js/Pages/SubFinder/partials/ContractorHeader.vue": {
-    "file": "assets/ContractorHeader.c10c3d5a.js",
+    "file": "assets/ContractorHeader.4fde9556.js",
     "src": "resources/js/Pages/SubFinder/partials/ContractorHeader.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Avatar.90d40591.js",
-      "_PostDisplay.cb6480b8.js",
+      "_Avatar.8bfab00d.js",
+      "_PostDisplayEnlarged.8b5ada29.js",
       "resources/js/Pages/Contractor/DialogContractorPage.vue",
       "resources/js/app.js",
-      "_Card.fae93276.js",
-      "_Tooltip.16a29e70.js",
-      "_iconify.9ffa3d85.js",
+      "_Card.9778af2d.js",
+      "_Tooltip.c8b0b4cf.js",
+      "_iconify.e7607712.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_Loader.348c47cb.js",
-      "_CustomDialog.08753e88.js",
-      "_InputError.b7fce308.js",
-      "_filepond-plugin-file-poster.cacb38b7.js",
-      "_selectListsHelpters.38ce783f.js",
-      "_Badge.59df51b3.js",
-      "_InputLabel.2ed1580b.js",
-      "_SelectProfile.74872fec.js",
-      "_ContractorRating.02cca272.js",
-      "_Review.a87bbdeb.js",
+      "_tContractorWord.3399d2af.js",
+      "_Loader.3dd162f1.js",
+      "_filepond-plugin-file-poster.a3c64f80.js",
+      "_CustomDialog.23fc1797.js",
+      "_selectListsHelpters.9480c284.js",
+      "_Badge.555c93ca.js",
+      "_InputLabel.fe3013ba.js",
+      "_InputError.ea13c7ed.js",
+      "_SelectProfile.c89157a7.js",
+      "_ContractorRating.62ce5f79.js",
+      "_Review.21cdd317.js",
       "resources/js/Pages/Ratings/Edit/EditResponseModal.vue",
       "resources/js/Pages/Ratings/Edit/DeleteResponseModal.vue",
-      "_ButtonRatings.1b9093ba.js",
-      "_PrimaryButton.7c143719.js",
-      "_Button.ed86f1b5.js",
-      "_StarRating.2d3b8bfe.js",
+      "_ButtonRatings.b8d61906.js",
+      "_PrimaryButton.9346bcf5.js",
+      "_Button.3a799bb4.js",
+      "_StarRating.6dd35ff0.js",
       "resources/js/Pages/Ratings/Edit/EditRatingModal.vue",
-      "_StarRatingEditable.92223be5.js",
+      "_StarRatingEditable.b955dfbd.js",
       "resources/js/Pages/Ratings/Edit/DeleteRatingModal.vue",
       "resources/js/Pages/Ratings/PartialsPersonal/QualifyingQuestions.vue",
-      "_ContractorInfo.5ddeeff9.js",
-      "_HeadingCard.40a65dbd.js",
+      "_ContractorInfo.df7966f9.js",
+      "_HeadingCard.964389d2.js",
       "resources/js/Pages/Contractor/CustomContractorPageDialog.vue",
       "resources/js/Pages/Contractor/ContractorPage.vue",
-      "_MoveToTop.21420448.js",
-      "_ImageTextSection.vue_vue_type_style_index_0_scoped_9f8da2da_lang.642484d1.js",
-      "_ResponsiveNavLink.5c3e17ee.js",
-      "_PostDisplayEnlarged.ebd5326f.js"
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
+      "_MoveToTop.00b66a0e.js",
+      "_ImageTextSection.vue_vue_type_style_index_0_scoped_a4e46067_lang.c2c3d5e4.js",
+      "_ResponsiveNavLink.08fcec0b.js"
     ],
     "css": [
       "assets/ContractorHeader.45b33eb6.css",
-      "assets/Button.edfd387f.css",
+      "assets/Button.80ea3968.css",
+      "assets/Card.1d96bec8.css",
       "assets/UserAvatar.814e2ac1.css"
     ]
   },
   "resources/js/Pages/TermsAndServices.vue": {
-    "file": "assets/TermsAndServices.741d5c01.js",
+    "file": "assets/TermsAndServices.9329731f.js",
     "src": "resources/js/Pages/TermsAndServices.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_SignUpLayout.f17e311e.js",
-      "_WelcomeFooter.b4f6561b.js",
+      "_SignUpLayout.1fd0fe62.js",
+      "_WelcomeFooter.b53dde7c.js",
       "resources/js/app.js",
-      "_tContractorWord.f0a33fa4.js",
+      "_spanish.afd7e950.js",
+      "_tContractorWord.3399d2af.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_ResponsiveNavLink.5c3e17ee.js",
-      "_tContractorWhite.4f7ad68a.js"
-    ]
-  },
-  "resources/js/Pages/Welcome.vue": {
-    "file": "assets/Welcome.2b06c84f.js",
-    "src": "resources/js/Pages/Welcome.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js"
-    ]
-  },
-  "resources/js/Pages/index copy.vue": {
-    "file": "assets/index copy.878c2867.js",
-    "src": "resources/js/Pages/index copy.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_FeaturesGrid.782b663f.js",
-      "resources/js/app.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_tContractorWhite.4f7ad68a.js",
-      "_ResponsiveNavLink.5c3e17ee.js",
-      "_ScrollToLink.7b97a786.js",
-      "_Checkbox.e23d8706.js",
-      "_InputError.b7fce308.js",
-      "_InputLabel.2ed1580b.js",
-      "_PrimaryButton.7c143719.js",
-      "_TextInput.e7dce2cb.js",
-      "__plugin-vue_export-helper.cdc0426e.js"
-    ],
-    "css": [
-      "assets/index copy.7337ff26.css"
-    ]
-  },
-  "_FeaturesGrid.782b663f.js": {
-    "file": "assets/FeaturesGrid.782b663f.js",
-    "imports": [
-      "resources/js/app.js",
-      "_Checkbox.e23d8706.js",
-      "_InputError.b7fce308.js",
-      "_InputLabel.2ed1580b.js",
-      "_PrimaryButton.7c143719.js",
-      "_TextInput.e7dce2cb.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_ScrollToLink.7b97a786.js"
+      "_ResponsiveNavLink.08fcec0b.js",
+      "_iconify.e7607712.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
+      "_CustomDialog.23fc1797.js",
+      "_tContractorWhite.de6506fc.js"
     ]
   },
   "resources/js/Pages/index.vue": {
-    "file": "assets/index.66cc6511.js",
+    "file": "assets/index.df7a1565.js",
     "src": "resources/js/Pages/index.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_FeaturesGrid.782b663f.js",
+      "_spanish.afd7e950.js",
+      "_freebox.8421bda3.js",
       "resources/js/app.js",
-      "_tContractorWord.f0a33fa4.js",
-      "_tContractorWhite.4f7ad68a.js",
-      "_ResponsiveNavLink.5c3e17ee.js",
-      "_ScrollToLink.7b97a786.js",
-      "_Checkbox.e23d8706.js",
-      "_InputError.b7fce308.js",
-      "_InputLabel.2ed1580b.js",
-      "_PrimaryButton.7c143719.js",
-      "_TextInput.e7dce2cb.js",
-      "__plugin-vue_export-helper.cdc0426e.js"
+      "_Checkbox.60b261ec.js",
+      "_InputError.ea13c7ed.js",
+      "_InputLabel.fe3013ba.js",
+      "_PrimaryButton.9346bcf5.js",
+      "_TextInput.e3b79f39.js",
+      "_tContractorWord.3399d2af.js",
+      "_tContractorWhite.de6506fc.js",
+      "_ResponsiveNavLink.08fcec0b.js",
+      "__plugin-vue_export-helper.cdc0426e.js",
+      "_iconify.e7607712.js",
+      "_DialogUpgradeToGoldPlatinum.2a1c8714.js",
+      "_CustomDialog.23fc1797.js"
     ],
     "css": [
       "assets/index.5678016b.css"
     ]
   },
+  "MoveToTop.css": {
+    "file": "assets/MoveToTop.ddf3aae9.css",
+    "src": "MoveToTop.css"
+  },
+  "resources/js/Pages/RedFlag/RedFlagPage.css": {
+    "file": "assets/RedFlagPage.a83e262d.css",
+    "src": "resources/js/Pages/RedFlag/RedFlagPage.css"
+  },
+  "resources/js/Pages/Admin/Users/AllUsers.css": {
+    "file": "assets/AllUsers.50994715.css",
+    "src": "resources/js/Pages/Admin/Users/AllUsers.css"
+  },
   "Review.css": {
-    "file": "assets/Review.f0a31902.css",
+    "file": "assets/Review.c322b435.css",
     "src": "Review.css"
   },
-  "SelectProfile.css": {
-    "file": "assets/SelectProfile.bc23939f.css",
-    "src": "SelectProfile.css"
-  },
-  "resources/js/Pages/Profile/Partials/Views.css": {
-    "file": "assets/Views.d84d65b5.css",
-    "src": "resources/js/Pages/Profile/Partials/Views.css"
-  },
-  "Badge.css": {
-    "file": "assets/Badge.22fb2435.css",
-    "src": "Badge.css"
-  },
-  "Avatar.css": {
-    "file": "assets/Avatar.504d113e.css",
-    "src": "Avatar.css"
-  },
-  "resources/js/Pages/Admin/AdminPostUserFunctionPage.css": {
-    "file": "assets/AdminPostUserFunctionPage.7e474778.css",
-    "src": "resources/js/Pages/Admin/AdminPostUserFunctionPage.css"
+  "resources/js/Pages/SubFinder/partials/SubFinderContractor.css": {
+    "file": "assets/SubFinderContractor.779481f5.css",
+    "src": "resources/js/Pages/SubFinder/partials/SubFinderContractor.css"
   },
   "resources/js/Pages/Admin/Appealed/AppealedReviews.css": {
-    "file": "assets/AppealedReviews.6bf224ab.css",
+    "file": "assets/AppealedReviews.e6365542.css",
     "src": "resources/js/Pages/Admin/Appealed/AppealedReviews.css"
   },
+  "resources/js/Pages/Ratings/Contractor/ContractorPersonal.css": {
+    "file": "assets/ContractorPersonal.938a7f8b.css",
+    "src": "resources/js/Pages/Ratings/Contractor/ContractorPersonal.css"
+  },
   "resources/js/Pages/Admin/History/ContractorHistory.css": {
-    "file": "assets/ContractorHistory.e039e2ce.css",
+    "file": "assets/ContractorHistory.9912d579.css",
     "src": "resources/js/Pages/Admin/History/ContractorHistory.css"
   },
-  "resources/js/Pages/Admin/Ratings/AllContractors.css": {
-    "file": "assets/AllContractors.82127028.css",
-    "src": "resources/js/Pages/Admin/Ratings/AllContractors.css"
+  "StarRating.css": {
+    "file": "assets/StarRating.cd7497d8.css",
+    "src": "StarRating.css"
   },
-  "resources/js/Pages/Admin/Payments/AdminPricingPlanPage.css": {
-    "file": "assets/AdminPricingPlanPage.21b6360c.css",
-    "src": "resources/js/Pages/Admin/Payments/AdminPricingPlanPage.css"
+  "Card.css": {
+    "file": "assets/Card.1d96bec8.css",
+    "src": "Card.css"
   },
   "resources/js/Pages/Profile/Partials/Trades.css": {
-    "file": "assets/Trades.824c2c35.css",
+    "file": "assets/Trades.d27b3ce7.css",
     "src": "resources/js/Pages/Profile/Partials/Trades.css"
   },
   "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ReviewAdmin.css": {
     "file": "assets/ReviewAdmin.ffc8dc64.css",
     "src": "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ReviewAdmin.css"
   },
-  "resources/js/Pages/Admin/Subscription/AdminCancelSubscriptionPage.css": {
-    "file": "assets/AdminCancelSubscriptionPage.7c23d342.css",
-    "src": "resources/js/Pages/Admin/Subscription/AdminCancelSubscriptionPage.css"
+  "resources/js/Pages/Admin/AdminPostUserFunctionPage.css": {
+    "file": "assets/AdminPostUserFunctionPage.7e474778.css",
+    "src": "resources/js/Pages/Admin/AdminPostUserFunctionPage.css"
   },
-  "resources/js/Pages/Admin/History/partials/AdminNote.css": {
-    "file": "assets/AdminNote.cca2b14e.css",
-    "src": "resources/js/Pages/Admin/History/partials/AdminNote.css"
-  },
-  "UserAvatar.css": {
-    "file": "assets/UserAvatar.814e2ac1.css",
-    "src": "UserAvatar.css"
-  },
-  "resources/js/Pages/Contractor/ContractorPageEdit.css": {
-    "file": "assets/ContractorPageEdit.6f48132e.css",
-    "src": "resources/js/Pages/Contractor/ContractorPageEdit.css"
-  },
-  "resources/js/Pages/Postingssetup.css": {
-    "file": "assets/Postingssetup.3d81a95e.css",
-    "src": "resources/js/Pages/Postingssetup.css"
-  },
-  "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ResponseAdmin.css": {
-    "file": "assets/ResponseAdmin.986168e9.css",
-    "src": "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ResponseAdmin.css"
-  },
-  "resources/js/Pages/Profile/PaymentPage.css": {
-    "file": "assets/PaymentPage.6f3a48d3.css",
-    "src": "resources/js/Pages/Profile/PaymentPage.css"
-  },
-  "resources/js/Pages/Profile/Partials/main/PricingCard.css": {
-    "file": "assets/PricingCard.465b54cb.css",
-    "src": "resources/js/Pages/Profile/Partials/main/PricingCard.css"
-  },
-  "resources/js/Pages/Ratings/Contractor/ContractorPersonal.css": {
-    "file": "assets/ContractorPersonal.d5f33191.css",
-    "src": "resources/js/Pages/Ratings/Contractor/ContractorPersonal.css"
-  },
-  "resources/js/Pages/PaymentVerification.css": {
-    "file": "assets/PaymentVerification.7337ff26.css",
-    "src": "resources/js/Pages/PaymentVerification.css"
-  },
-  "resources/js/Pages/SubFinder/partials/SubFinderContractor.css": {
-    "file": "assets/SubFinderContractor.779481f5.css",
-    "src": "resources/js/Pages/SubFinder/partials/SubFinderContractor.css"
-  },
-  "resources/js/Pages/RedFlag/RedFlagPage.css": {
-    "file": "assets/RedFlagPage.6271860e.css",
-    "src": "resources/js/Pages/RedFlag/RedFlagPage.css"
-  },
-  "resources/js/Pages/Admin/Ratings/partials/SingleContractor/DecisionNotes.css": {
-    "file": "assets/DecisionNotes.fbcf1a53.css",
-    "src": "resources/js/Pages/Admin/Ratings/partials/SingleContractor/DecisionNotes.css"
-  },
-  "resources/js/Pages/index copy.css": {
-    "file": "assets/index copy.7337ff26.css",
-    "src": "resources/js/Pages/index copy.css"
-  },
-  "PageTitle.css": {
-    "file": "assets/PageTitle.e3b0c442.css",
-    "src": "PageTitle.css"
-  },
-  "resources/js/Pages/Admin/AdminPage.css": {
-    "file": "assets/AdminPage.9aa202f5.css",
-    "src": "resources/js/Pages/Admin/AdminPage.css"
+  "Button.css": {
+    "file": "assets/Button.80ea3968.css",
+    "src": "Button.css"
   },
   "Header.css": {
-    "file": "assets/Header.4153b688.css",
+    "file": "assets/Header.751436c7.css",
     "src": "Header.css"
   },
-  "resources/js/Pages/SubFinder/SubFinderPage.css": {
-    "file": "assets/SubFinderPage.b4ded6ef.css",
-    "src": "resources/js/Pages/SubFinder/SubFinderPage.css"
+  "SelectProfile.css": {
+    "file": "assets/SelectProfile.d6e736a7.css",
+    "src": "SelectProfile.css"
   },
-  "resources/js/Pages/Profile/Partials/BlockUsersList.css": {
-    "file": "assets/BlockUsersList.e65a916f.css",
-    "src": "resources/js/Pages/Profile/Partials/BlockUsersList.css"
-  },
-  "PostDisplayEnlarged.css": {
-    "file": "assets/PostDisplayEnlarged.5cc9ca55.css",
-    "src": "PostDisplayEnlarged.css"
-  },
-  "resources/js/Pages/SubFinder/partials/ContractorHeader.css": {
-    "file": "assets/ContractorHeader.45b33eb6.css",
-    "src": "resources/js/Pages/SubFinder/partials/ContractorHeader.css"
-  },
-  "resources/js/Pages/Profile/Partials/main/AllSteps.css": {
-    "file": "assets/AllSteps.bf4791cf.css",
-    "src": "resources/js/Pages/Profile/Partials/main/AllSteps.css"
-  },
-  "Loader.css": {
-    "file": "assets/Loader.2ab54bcb.css",
-    "src": "Loader.css"
-  },
-  "resources/js/Pages/Admin/Ratings/partials/AllContractors/Contractor.css": {
-    "file": "assets/Contractor.45b33eb6.css",
-    "src": "resources/js/Pages/Admin/Ratings/partials/AllContractors/Contractor.css"
-  },
-  "CustomDialog.css": {
-    "file": "assets/CustomDialog.13d25e87.css",
-    "src": "CustomDialog.css"
-  },
-  "ImageTextSection.css": {
-    "file": "assets/ImageTextSection.6cda7eda.css",
-    "src": "ImageTextSection.css"
-  },
-  "resources/js/Pages/RedFlag/partials/RedFlag.css": {
-    "file": "assets/RedFlag.d545fc7a.css",
-    "src": "resources/js/Pages/RedFlag/partials/RedFlag.css"
-  },
-  "StarRating.css": {
-    "file": "assets/StarRating.3bcb70bd.css",
-    "src": "StarRating.css"
-  },
-  "PostDisplay.css": {
-    "file": "assets/PostDisplay.61800b34.css",
-    "src": "PostDisplay.css"
-  },
-  "PostForm.css": {
-    "file": "assets/PostForm.30ecbcd1.css",
-    "src": "PostForm.css"
-  },
-  "resources/js/Pages/Contractor/CustomContractorPageDialog.css": {
-    "file": "assets/CustomContractorPageDialog.886224a6.css",
-    "src": "resources/js/Pages/Contractor/CustomContractorPageDialog.css"
+  "resources/js/Pages/Admin/Ratings/partials/SingleContractor/DecisionNotes.css": {
+    "file": "assets/DecisionNotes.3a19126f.css",
+    "src": "resources/js/Pages/Admin/Ratings/partials/SingleContractor/DecisionNotes.css"
   },
   "Tooltip.css": {
     "file": "assets/Tooltip.e6542ebc.css",
     "src": "Tooltip.css"
   },
   "StarRatingEditable.css": {
-    "file": "assets/StarRatingEditable.056e115b.css",
+    "file": "assets/StarRatingEditable.a516f5cf.css",
     "src": "StarRatingEditable.css"
+  },
+  "PricingVersions.css": {
+    "file": "assets/PricingVersions.89f7a5d6.css",
+    "src": "PricingVersions.css"
+  },
+  "resources/js/Pages/Profile/Partials/main/PricingCardForAnnualGold.css": {
+    "file": "assets/PricingCardForAnnualGold.60890558.css",
+    "src": "resources/js/Pages/Profile/Partials/main/PricingCardForAnnualGold.css"
+  },
+  "resources/js/Pages/Profile/Partials/Views.css": {
+    "file": "assets/Views.36973f2b.css",
+    "src": "resources/js/Pages/Profile/Partials/Views.css"
+  },
+  "resources/js/Pages/Profile/Partials/BillingSettingsTab.css": {
+    "file": "assets/BillingSettingsTab.f3bbe498.css",
+    "src": "resources/js/Pages/Profile/Partials/BillingSettingsTab.css"
+  },
+  "resources/js/Pages/Profile/Partials/main/PricingCard.css": {
+    "file": "assets/PricingCard.2524a261.css",
+    "src": "resources/js/Pages/Profile/Partials/main/PricingCard.css"
+  },
+  "resources/js/Pages/SubFinder/partials/ContractorHeader.css": {
+    "file": "assets/ContractorHeader.45b33eb6.css",
+    "src": "resources/js/Pages/SubFinder/partials/ContractorHeader.css"
+  },
+  "resources/js/Pages/Profile/Partials/main/SettingPricingPlans.css": {
+    "file": "assets/SettingPricingPlans.4f9cc444.css",
+    "src": "resources/js/Pages/Profile/Partials/main/SettingPricingPlans.css"
+  },
+  "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ResponseAdmin.css": {
+    "file": "assets/ResponseAdmin.986168e9.css",
+    "src": "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ResponseAdmin.css"
+  },
+  "Badge.css": {
+    "file": "assets/Badge.22fb2435.css",
+    "src": "Badge.css"
+  },
+  "UserAvatar.css": {
+    "file": "assets/UserAvatar.814e2ac1.css",
+    "src": "UserAvatar.css"
+  },
+  "resources/js/Pages/Profile/Partials/main/AllSteps.css": {
+    "file": "assets/AllSteps.bf4791cf.css",
+    "src": "resources/js/Pages/Profile/Partials/main/AllSteps.css"
   },
   "resources/js/Pages/index.css": {
     "file": "assets/index.5678016b.css",
     "src": "resources/js/Pages/index.css"
   },
-  "ContractorInfo.css": {
-    "file": "assets/ContractorInfo.203b6983.css",
-    "src": "ContractorInfo.css"
+  "resources/js/Pages/Profile/PaymentPage.css": {
+    "file": "assets/PaymentPage.41b1634d.css",
+    "src": "resources/js/Pages/Profile/PaymentPage.css"
   },
-  "filepond-plugin-file-poster.css": {
-    "file": "assets/filepond-plugin-file-poster.81db39e2.css",
-    "src": "filepond-plugin-file-poster.css"
-  },
-  "MoveToTop.css": {
-    "file": "assets/MoveToTop.ce0f4de8.css",
-    "src": "MoveToTop.css"
+  "resources/js/Pages/SubFinder/SubFinderPage.css": {
+    "file": "assets/SubFinderPage.a1f956a1.css",
+    "src": "resources/js/Pages/SubFinder/SubFinderPage.css"
   },
   "resources/js/Pages/Postings.css": {
     "file": "assets/Postings.0aace970.css",
     "src": "resources/js/Pages/Postings.css"
   },
-  "Button.css": {
-    "file": "assets/Button.edfd387f.css",
-    "src": "Button.css"
+  "resources/js/Pages/RedFlag/partials/RedFlag.css": {
+    "file": "assets/RedFlag.e2753ea5.css",
+    "src": "resources/js/Pages/RedFlag/partials/RedFlag.css"
   },
-  "resources/js/Pages/Admin/Users/AllUsers.css": {
-    "file": "assets/AllUsers.cec10cd5.css",
-    "src": "resources/js/Pages/Admin/Users/AllUsers.css"
+  "PostDisplayEnlarged.css": {
+    "file": "assets/PostDisplayEnlarged.04253401.css",
+    "src": "PostDisplayEnlarged.css"
   },
-  "Card.css": {
-    "file": "assets/Card.1d96bec8.css",
-    "src": "Card.css"
-  },
-  "resources/js/Pages/RedFlag/partials/TableHead.css": {
-    "file": "assets/TableHead.ebecc527.css",
-    "src": "resources/js/Pages/RedFlag/partials/TableHead.css"
+  "resources/js/Pages/Admin/Ratings/partials/AllContractors/Contractor.css": {
+    "file": "assets/Contractor.45b33eb6.css",
+    "src": "resources/js/Pages/Admin/Ratings/partials/AllContractors/Contractor.css"
   },
   "resources/js/Pages/Contractor/ContractorPage.css": {
-    "file": "assets/ContractorPage.502e70a0.css",
+    "file": "assets/ContractorPage.bf1a1502.css",
     "src": "resources/js/Pages/Contractor/ContractorPage.css"
   },
+  "CustomDialog.css": {
+    "file": "assets/CustomDialog.b9fbe597.css",
+    "src": "CustomDialog.css"
+  },
+  "ContractorInfo.css": {
+    "file": "assets/ContractorInfo.aade7409.css",
+    "src": "ContractorInfo.css"
+  },
+  "resources/js/Pages/RedFlag/partials/TableHead.css": {
+    "file": "assets/TableHead.56741868.css",
+    "src": "resources/js/Pages/RedFlag/partials/TableHead.css"
+  },
+  "ImageTextSection.css": {
+    "file": "assets/ImageTextSection.b6085b52.css",
+    "src": "ImageTextSection.css"
+  },
+  "resources/js/Pages/Admin/History/partials/AdminNote.css": {
+    "file": "assets/AdminNote.cca2b14e.css",
+    "src": "resources/js/Pages/Admin/History/partials/AdminNote.css"
+  },
   "resources/js/Pages/Admin/Coupons/CouponsPage.css": {
-    "file": "assets/CouponsPage.fabea70b.css",
+    "file": "assets/CouponsPage.775afe2f.css",
     "src": "resources/js/Pages/Admin/Coupons/CouponsPage.css"
   },
+  "Loader.css": {
+    "file": "assets/Loader.0ce7ec1e.css",
+    "src": "Loader.css"
+  },
+  "resources/js/Pages/Admin/Ratings/AllContractors.css": {
+    "file": "assets/AllContractors.82127028.css",
+    "src": "resources/js/Pages/Admin/Ratings/AllContractors.css"
+  },
+  "resources/js/Pages/Admin/Payments/AdminPricingPlanPage.css": {
+    "file": "assets/AdminPricingPlanPage.bac90374.css",
+    "src": "resources/js/Pages/Admin/Payments/AdminPricingPlanPage.css"
+  },
+  "resources/js/Pages/Contractor/CustomContractorPageDialog.css": {
+    "file": "assets/CustomContractorPageDialog.992f93ad.css",
+    "src": "resources/js/Pages/Contractor/CustomContractorPageDialog.css"
+  },
+  "resources/js/Pages/Admin/Subscription/AdminCancelSubscriptionPage.css": {
+    "file": "assets/AdminCancelSubscriptionPage.3fb9f501.css",
+    "src": "resources/js/Pages/Admin/Subscription/AdminCancelSubscriptionPage.css"
+  },
+  "resources/js/Pages/Admin/AdminPage.css": {
+    "file": "assets/AdminPage.9aa202f5.css",
+    "src": "resources/js/Pages/Admin/AdminPage.css"
+  },
+  "filepond-plugin-file-poster.css": {
+    "file": "assets/filepond-plugin-file-poster.21f7dee0.css",
+    "src": "filepond-plugin-file-poster.css"
+  },
+  "Avatar.css": {
+    "file": "assets/Avatar.504d113e.css",
+    "src": "Avatar.css"
+  },
+  "resources/js/Pages/Profile/Partials/BlockUsersList.css": {
+    "file": "assets/BlockUsersList.a2757a69.css",
+    "src": "resources/js/Pages/Profile/Partials/BlockUsersList.css"
+  },
+  "PageTitle.css": {
+    "file": "assets/PageTitle.e3b0c442.css",
+    "src": "PageTitle.css"
+  },
+  "resources/js/Pages/Contractor/ContractorPageEdit.css": {
+    "file": "assets/ContractorPageEdit.6f48132e.css",
+    "src": "resources/js/Pages/Contractor/ContractorPageEdit.css"
+  },
   "resources/js/app.css": {
-    "file": "assets/app.81225ed2.css",
+    "file": "assets/app.816213da.css",
     "src": "resources/js/app.css"
   }
 }
