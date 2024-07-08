@@ -15,7 +15,7 @@ import { Inertia } from "@inertiajs/inertia";
 import { Icon } from "@iconify/vue";
 import DialogUpgradeToGoldPlatinum from "@/Components/DialogUpgradeToGoldPlatinum.vue";
 
-defineProps({
+const props = defineProps({
   showit: Boolean,
 });
 
@@ -62,22 +62,27 @@ const notFreeVersion = computed(
 
 const getStartedButtonText = computed(() => {
   if (getToken() && profile.value && profile.value.id) {
-    console.log("this get executed successfully");
     return userVersion.value === 0
       ? translations.value && translations.value.get_started
       : userVersion.value === 1
       ? translations.value && translations.value.upgrade_now
       : translations.value && translations.value.news_feed;
+    // ? translations.value && translations.value.upgrade_now
   } else {
     return translations.value && translations.value.get_started;
   }
 });
+
+// const showUpgradeGoldText = computed(() => {
+//   return (
+//     getToken() && profile.value && profile.value.id && userVersion.value === 1
+//   );
+// });
 const newsFeedUrl = computed(() => {
   return profile.value &&
     profile.value.id &&
     profile.value.is_payment_verified &&
-    profile.value.active_user &&
-    userVersion.value !== 0
+    profile.value.active_user
     ? route("post")
     : profile.value &&
       profile.value.id &&
@@ -138,12 +143,16 @@ const toggleDropdown = () => {
 };
 
 onMounted(async () => {
+  console.log("in index mounted");
+  if (!props.showit && userVersion.value !== 0) {
+    localStorage.removeItem("token");
+    store.commit("setUserVersion", 0);
+  }
   await store.dispatch("fetchUserVersion");
   if (userVersion.value !== 0) {
     fetchPricingCardDetails();
   }
   if (getToken()) {
-    console.log("inside token");
     await store.dispatch("profile/fetchProfile");
   }
   document.addEventListener("click", handleOutsideClick);
@@ -192,8 +201,9 @@ const formatPrice = (price) => {
 const handleLogout = () => {
   removeToken();
   showingNavigationDropdown.value = !showingNavigationDropdown.value;
-  Inertia.post("/logout");
   store.commit("setUserVersion", 0);
+  Inertia.post("/logout");
+  store.commit("profile/setProfile", {});
 };
 
 const onSelectLang = (lang) => {
@@ -242,7 +252,7 @@ const goToRedFlagPage = (event) => {
   </Teleport>
   <div
     v-if="loading"
-    class="h-full h-[100vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4"
+    class="h-[100vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4"
   >
     <div class="text-center text-xl">
       {{ translations && translations.loading }}
@@ -961,7 +971,7 @@ const goToRedFlagPage = (event) => {
                 href="/"
                 class="text-5xl md:text-6xl font-bold tracking-wide text-center"
               >
-                <tContractorWhite isOrange />
+                <tContractorWhite />
               </Link>
             </div>
             <div>
@@ -994,17 +1004,20 @@ const goToRedFlagPage = (event) => {
                   &nbsp;-
                   {{ translations && translations.everyone_trying_to_sell }}
                   <div class="font-extrabold text-white normal-case">
-                    Not Here at&nbsp; <tContractorWhite isOrange />
+                    {{ translations && translations.not_here_at }}&nbsp;
+                    <tContractorWhite />
                   </div>
                   <div class="inline-block mt-2">
-                    <div class="inline">We Provide</div>
+                    <div class="inline">
+                      {{ translations && translations.we_provide }}
+                    </div>
                     <div class="text-white inline text-2xl font-bold">
                       &nbsp;{{
                         translations && translations.important_tool_for_free
                       }}
                     </div>
                   </div>
-                  <div class="text-orange-accent-darker font-extrabold">
+                  <div class="text-white font-bold">
                     {{ translations && translations.few_bucks_more_benefits }}
                   </div>
                 </li>
@@ -1019,20 +1032,22 @@ const goToRedFlagPage = (event) => {
             </div> -->
             <img
               v-if="userVersion !== 1"
-              class="mb-3 h-full object-contain"
+              class="mb-3 max-h-[17rem] h-[17rem] object-contain"
               src="@/Components/Pricing/assets/freebox.png"
             />
             <div
               v-else-if="userVersion === 1"
-              class="flex text-orange-accent font-extrabold mb-4 justify-center"
+              class="flex text-white font-extrabold mb-4 justify-center"
             >
-              <div class="text-2xl self-center mt-[-40px]">$</div>
-              <div class="text-[90px] leading-[0.9]">
+              <div class="text-[70px] self-center mt-[-50px] text-green-rgba">
+                $
+              </div>
+              <div class="text-[170px] leading-[0.9]">
                 {{ formatPrice(pricingPlan.gold_advertised_price) }}
               </div>
             </div>
             <!-- Button Flex Item -->
-            <div class="flex justify-center items-end">
+            <div class="flex flex-col justify-center items-center">
               <!-- :href="
                   profile &&
                   profile.id &&
@@ -1049,12 +1064,13 @@ const goToRedFlagPage = (event) => {
                       : '/inactive-account'
                     : route('signup')
                 " -->
+
               <Link
                 @click="settingTabBillingSelection"
                 :href="getStartedButtonUrl"
-                class="p-3 px-6 pt-2 text-red bg-white rounded-lg border-white border-spacing-3 shadow-2xl shadow-black align-baseline hover:text-white hover:bg-blue-30-rgba"
-                >{{ getStartedButtonText }}
-              </Link>
+                class="p-3 px-6 pt-2 text-3xl text-center bg-white rounded-lg border-white border-spacing-3 font-bold text-white bg-blue-30-rgba cursor-pointer"
+                >{{ getStartedButtonText }}</Link
+              >
             </div>
           </div>
         </div>
@@ -1123,9 +1139,9 @@ const goToRedFlagPage = (event) => {
             <a href="/pricing" class="hover:text-blue-400">{{
               translations && translations.pricing
             }}</a>
-            <a href="/pricing#faqs" class="hover:text-blue-400">{{
+            <Link href="/pricing#faqs" class="hover:text-blue-400">{{
               translations && translations.faqs
-            }}</a>
+            }}</Link>
             <a href="/about-us#contactUs" class="hover:text-blue-400">{{
               translations && translations.contact_us
             }}</a>

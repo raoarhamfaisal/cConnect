@@ -197,7 +197,7 @@
           </div>
 
           <div class="pt-2 pb-3 space-y-1">
-            <ResponsiveNavLink href="#whytContractor">
+            <ResponsiveNavLink href="/#whytContractor">
               {{ translations && translations.why }}
               <tContractorWord></tContractorWord>
             </ResponsiveNavLink>
@@ -413,7 +413,7 @@
               </ResponsiveNavLink>
               <ResponsiveNavLink
                 v-if="!showit"
-                href="#loginHere"
+                href="/#loginHere"
                 as="button"
                 @click="showingNavigationDropdown = !showingNavigationDropdown"
               >

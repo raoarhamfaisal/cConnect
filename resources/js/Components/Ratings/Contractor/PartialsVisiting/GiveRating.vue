@@ -219,13 +219,16 @@ const validate = () => {
 
   // Validate rating value
   if (form.rating.value <= 0 || form.rating.value > 5) {
-    ratingError.value = "Rating should be greater than 0.";
+    ratingError.value =
+      translations.value &&
+      translations.value.rating_should_be_greate_than_zero;
     isValid = false;
   }
 
   // Validate rating_reason
   if (!form.rating_reason.value || form.rating_reason.value.trim() === "") {
-    ratingReasonError.value = "Rating reason should not be empty.";
+    ratingReasonError.value =
+      translations.value && translations.value.rating_should_not_be_empty;
     isValid = false;
   }
 

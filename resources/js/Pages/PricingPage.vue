@@ -22,6 +22,7 @@ const translations = computed(() => store.getters.translations);
 <template>
   <Head :title="translations && translations.pricing" />
   <div
+    v-if="translations && Object.keys(translations).length > 0"
     :class="`pt-20 sm:pt-28 pb-2  flex sm:justify-center items-center bg-white   bg-gray-100 `"
   >
     <div

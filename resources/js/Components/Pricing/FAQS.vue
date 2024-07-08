@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from "vue";
-import { Icon } from "@iconify/vue";
+
 import { useStore } from "vuex";
 
 const store = useStore();
@@ -9,7 +9,7 @@ const screenWidth = computed(() => store.getters.screenWidth);
 const translations = computed(() => store.getters.translations);
 </script>
 <template>
-  <div class="mt-4" id="faqs">
+  <div class="mt-4">
     <div class="flex justify-center" ref="whatVersionAreYourRef">
       <span class="text-5xl font-extrabold mb-4 text-center text-blue-rgba">
         {{ translations && translations.faqs }}
