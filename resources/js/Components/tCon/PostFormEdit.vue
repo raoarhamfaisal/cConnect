@@ -40,7 +40,6 @@ import {
 } from "@/helpers/axiosConfigHelpers";
 import { POSTS_IMAGES_FULL_PATH } from "@/config/constants";
 import { somethingWentWrong } from "@/helpers/utilities";
-// import { toolbarConfigPost } from "@/helpers/utilities";
 
 const FilePond = VueFilePond(
   FilePondPluginImageExifOrientation,
@@ -138,6 +137,15 @@ export default {
     ...mapGetters(["translations", "userVersion"]),
     maxImages() {
       if (this.userVersion === 1) {
+        return 3 - this.previousImages.length;
+      } else if (this.userVersion === 2) {
+        return 15 - this.previousImages.length;
+      } else if (this.userVersion === 3) {
+        return 20 - this.previousImages.length;
+      }
+    },
+    maxImageForErrorMsg() {
+      if (this.userVersion === 1) {
         return 3;
       } else if (this.userVersion === 2) {
         return 15;
@@ -218,6 +226,15 @@ export default {
     },
   },
   methods: {
+    onWarning(error) {
+      console.log(error);
+      if (error.body === "Max files") {
+        somethingWentWrong(
+          `Maximum Number of Images cannot exceed ${this.maxImageForErrorMsg}`,
+          "inherit"
+        );
+      }
+    },
     toggleSwitch(field) {
       // Check if userVersion is 0 and if any 8 trades are set to 1
       if (this.userVersion === 1 && !this.tradesPost[field]) {
@@ -776,6 +793,7 @@ Array.prototype.remove = function () {
                   "
                   v-on:addfilestart="handleFilePondProcessStart"
                   @processfilestart="() => {}"
+                  @warning="onWarning"
                   v-on:addfile="handleFilePondProcessEnd"
                   v-on:processfileabort="handleFilePondError"
                   v-on:updatefiles="updateFiles"

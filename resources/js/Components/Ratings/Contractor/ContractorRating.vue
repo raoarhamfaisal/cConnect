@@ -84,7 +84,7 @@
                 boxShadow:
                   '0px 0px 3px rgba(0, 0, 0, 0.12), 0px 0px 2px rgba(0, 0, 0, 0.12)',
               }"
-              class="w-full text-2xl text-left rounded-lg"
+              class="w-full lg:text-2xl text-left rounded-lg"
               >{{ translations && translations.write_a_review }}</Button
             >
             <!-- {{ profileId }} -->

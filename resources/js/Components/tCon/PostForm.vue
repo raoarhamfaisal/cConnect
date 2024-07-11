@@ -34,7 +34,7 @@ import { mapGetters } from "vuex";
 import { nextTick, ref } from "vue";
 import { options } from "@/helpers/selectListsHelpters.js";
 import { getAxiosConfigFormData } from "@/helpers/axiosConfigHelpers";
-// import { toolbarConfigPost } from "@/helpers/utilities";
+import { somethingWentWrong } from "@/helpers/utilities";
 
 const FilePond = VueFilePond(
   FilePondPluginImageExifOrientation,
@@ -213,6 +213,14 @@ export default {
     },
   },
   methods: {
+    onWarning(error) {
+      console.log(error);
+      if (error.body === "Max files") {
+        somethingWentWrong(
+          `Maximum Number of Images cannot exceed ${this.maxImages}`,'inherit'
+        );
+      }
+    },
     toggleSwitch(field) {
       // Check if userVersion is 0 and if any 8 trades are set to 1
       if (this.userVersion === 1 && !this.tradesPost[field]) {
@@ -669,6 +677,7 @@ Array.prototype.remove = function () {
                   v-on:error="isUploading = false"
                   v-on:addfilestart="handleFilePondProcessStart"
                   @processfilestart="() => {}"
+                  @warning="onWarning"
                   v-on:addfile="handleFilePondProcessEnd"
                   v-on:processfileabort="handleFilePondError"
                   v-on:updatefiles="updateFiles"
