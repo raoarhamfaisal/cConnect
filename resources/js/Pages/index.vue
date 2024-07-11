@@ -202,8 +202,9 @@ const handleLogout = () => {
   removeToken();
   showingNavigationDropdown.value = !showingNavigationDropdown.value;
   store.commit("setUserVersion", 0);
-  Inertia.post("/logout");
   store.commit("profile/setProfile", {});
+  store.commit("setUserDetails", {});
+  Inertia.post("/logout");
 };
 
 const onSelectLang = (lang) => {

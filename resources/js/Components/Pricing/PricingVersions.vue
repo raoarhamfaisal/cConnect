@@ -165,7 +165,7 @@ const formatPrice = (price) => {
 
 const onFreeSelect = () => {
   if (props.pageName === "pricing") {
-    Inertia.visit("profile-setup");
+    Inertia.visit("/signup");
   } else if (props.pageName === "profile-setup") {
     freeConfirmDialog.value.openDialog();
   }
@@ -208,7 +208,7 @@ const configureUrlToVisit = () => {
   } else if (props.pageName === "settings" && userVersion.value === 2) {
     emit("platinumSelected", {});
   } else if (props.pageName === "pricing" && userVersion.value === 0) {
-    Inertia.visit("/profile-setup");
+    Inertia.visit("/signup");
   } else if (props.pageName === "pricing" && userVersion.value !== 0) {
     localStorage.setItem("activeTab", 2);
     Inertia.visit("/settings");

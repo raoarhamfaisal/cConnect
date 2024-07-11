@@ -63,9 +63,10 @@ onMounted(() => {
     selectAll.value = true;
   }
   if (props.apiChoice === "2") {
-    const areAllTradesSetToZero = Object.values(form).every(
-      (value) => value !== 1
-    );
+    console.log(Object.values(form).slice(0, 25), "only 25");
+    const areAllTradesSetToZero = Object.values(form)
+      .slice(0, 25)
+      .every((value) => value !== 1);
     if (areAllTradesSetToZero) {
       emit("dontProceed", true);
     }
@@ -144,9 +145,9 @@ const selectAllTrades = async () => {
   }
 
   if (props.apiChoice === "2") {
-    const areAllTradesSetToZero = Object.values(form).every(
-      (value) => value !== 1
-    );
+    const areAllTradesSetToZero = Object.values(form)
+      .slice(0, 25)
+      .every((value) => value !== 1);
     if (areAllTradesSetToZero) {
       emit("dontProceed", true);
     } else {

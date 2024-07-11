@@ -69,9 +69,10 @@ const userVersion = computed(() => store.getters.userVersion);
 
 function handleLogout() {
   removeToken();
-
-  Inertia.post("/logout");
   store.commit("setUserVersion", 0);
+  store.commit("profile/setProfile", {});
+  store.commit("setUserDetails", {});
+  Inertia.post("/logout");
 }
 
 const openProfileModal = () => {
