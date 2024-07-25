@@ -8,6 +8,7 @@ use App\Http\Controllers\ContractorPageController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TranslationController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\AdminUsersController;
@@ -59,6 +60,7 @@ Route::post('/translations', [TranslationController::class, 'store']);
 // Route::get('/posts/comments/{commentId}', [CommentController::class, 'getSingleComment']);
 
 
+Route::post('/contact', [ContactController::class, 'sendEmail']);
 
 
 // Route::middleware('auth:sanctum')->group(function () {
