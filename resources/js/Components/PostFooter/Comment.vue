@@ -37,9 +37,11 @@
               comment.company_name
             }}
           </Link>
-          <div class="text-xs x350:text-sm" style="white-space: pre-wrap">
-            {{ comment.body }}
-          </div>
+          <div
+            class="text-xs x350:text-sm processed-body"
+            v-html="processUrls(comment.body)"
+            style="white-space: pre-wrap"
+          ></div>
         </div>
 
         <!-- action menu -->
@@ -714,15 +716,15 @@ const onDislikeModalOpen = async () => {
     loadingUnliked.value = false;
   }
 };
-// const handleTouchStart = () => {
-//   if (longPressTimer.value) clearTimeout(longPressTimer.value);
-//   longPressTimer.value = setTimeout(() => {
-//     menuVisible.value = true; // Open the menu
-//   }, 500); // Time in milliseconds
-// };
-// const handleTouchEnd = () => {
-//   if (longPressTimer.value) clearTimeout(longPressTimer.value);
-// };
+
+const processUrls = (body) => {
+  // Improved regex: capture URLs but stop if a '<' character (start of a potential HTML tag) is encountered
+  const urlRegex = /(https?:\/\/[^<\s]+|www\.[^<\s]+)/g;
+  return body?.replace(urlRegex, function (url) {
+    let actualUrl = url.startsWith("http") ? url : "http://" + url;
+    return `<a @click.self.stop="()=>{}" href="${actualUrl}" target="_blank">${url}</a>`;
+  });
+};
 </script>
 
 <style>

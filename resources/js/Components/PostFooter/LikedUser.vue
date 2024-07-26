@@ -1,7 +1,8 @@
 <template>
-  <Link
-    :href="`/contractor/${user.user_id}`"
-    class="flex flex-row gap-2 justify-start items-center"
+  <!-- :href="`/contractor/${user.user_id}`" -->
+  <div
+    @click="openContractorPageDiaglog"
+    class="flex flex-row gap-2 justify-start items-center cursor-pointer"
   >
     <!-- Avatar -->
     <div class="cursor-pointer flex justify-start items-start flex-none w=16">
@@ -30,12 +31,21 @@
         {{ user.company_name }}
       </div>
     </div>
-  </Link>
+  </div>
+  <Teleport to="body">
+    <DialogContractorPage
+      ref="contractorPageDialogRef"
+      :contractor_id="user.user_id"
+      :region_name="getRegionName(user.region_id)"
+      :profile="user"
+    />
+  </Teleport>
 </template>
 
 <script setup>
 import AvatarWithIcon from "@/Components/PostFooter/AvatarWithIcon.vue";
-import { computed } from "vue";
+// import DialogContractorPage from "@/Pages/Contractor/DialogContractorPage.vue";
+import { defineAsyncComponent, ref, computed } from "vue";
 import { useStore } from "vuex";
 
 const props = defineProps({
@@ -45,9 +55,26 @@ const props = defineProps({
     type: Boolean,
   },
 });
+
+// Dynamically import DialogContractorPage
+const DialogContractorPage = defineAsyncComponent(() =>
+  import("@/Pages/Contractor/DialogContractorPage.vue")
+);
+
 const store = useStore();
+const contractorPageDialogRef = ref();
 
 const screenWidth = computed(() => store.getters.screenWidth);
+const regions = computed(() => store.state.ratings.allRegions);
+
+const openContractorPageDiaglog = () => {
+  localStorage.setItem("showGoBack", "false");
+  contractorPageDialogRef.value.openDialog();
+};
+
+const getRegionName = (regionId) => {
+  return regions.value.find((item) => item.id === regionId).name;
+};
 </script>
 
 <style></style>

@@ -187,6 +187,10 @@ const preference_status = ref(""); // Use the value from buttonData as default
 
 const selectButton = (value) => {
   if (searchCounterNotZero()) {
+    if (value !== "" && userVersion.value === 1) {
+      opneUpgradeToGoldOrPlatinumDialog();
+      return;
+    }
     preference_status.value = value;
   }
 };
@@ -324,6 +328,11 @@ const searchCounterNotZero = () => {
 };
 
 const opneUpgradeToGoldPlatinumDialog = () => {
+  store.commit("setIsUpgradeToGoldPlatinumDialogOpen", true);
+};
+const opneUpgradeToGoldOrPlatinumDialog = () => {
+  store.commit("setGoldOrPlatinum", true);
+
   store.commit("setIsUpgradeToGoldPlatinumDialogOpen", true);
 };
 </script>
