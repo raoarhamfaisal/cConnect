@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="length > 2"
-    @click="emit('openAllComments')"
+    @click="openAllComments"
     class="cursor-pointer hover:underline font-bold text-gray-600 text-sm w-fit"
   >
     {{ translations && translations.view_all_comments }}
@@ -166,4 +166,9 @@ const adjustHeight = () => {
 //Computed
 const screenWidth = computed(() => store.getters.screenWidth);
 const translations = computed(() => store.getters.translations);
+
+const openAllComments = () => {
+  store.commit("setGoToComments", true);
+  emit("openAllComments");
+};
 </script>

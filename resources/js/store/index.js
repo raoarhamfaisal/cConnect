@@ -24,9 +24,11 @@ export const store = createStore({
     userDetails: {},
     goldOrPlatinum: false,
     isUpgradeToGoldPlatinumDialogOpen: false,
+    goToComments: false,
   },
   getters: {
     screenWidth: (state) => state.screenWidth,
+    goToComments: (state) => state.goToComments,
     userDetails: (state) => state.userDetails,
     goldOrPlatinum: (state) => state.goldOrPlatinum,
     isUpgradeToGoldPlatinumDialogOpen: (state) =>
@@ -35,6 +37,9 @@ export const store = createStore({
     translations: (state) => state.translations,
   },
   mutations: {
+    setGoToComments(state, newValue) {
+      state.goToComments = newValue;
+    },
     setScreenWidth(state, width) {
       state.screenWidth = width;
     },

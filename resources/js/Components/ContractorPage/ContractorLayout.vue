@@ -58,13 +58,11 @@
 
 <script setup>
 import MoveToTop from "@/Components/MoveToTop.vue";
-import EditMode from "@/Components/ContractorPage/EditMode.vue";
 import Template1 from "@/Components/ContractorPage/Templates/Template1.vue";
 import Template2 from "@/Components/ContractorPage/Templates/Template2.vue";
 import Template3 from "@/Components/ContractorPage/Templates/Template3.vue";
 import Template4 from "@/Components/ContractorPage/Templates/Template4.vue";
 import Template5 from "@/Components/ContractorPage/Templates/Template5.vue";
-
 
 import { computed, ref } from "vue";
 import { useStore } from "vuex";

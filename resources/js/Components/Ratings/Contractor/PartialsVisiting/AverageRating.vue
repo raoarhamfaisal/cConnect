@@ -54,6 +54,10 @@
 import ProgressBar from "@/Components/Ratings/ProgressBar.vue";
 import StarRating from "@/Components/Ratings/StarRating.vue";
 import { Link } from "@inertiajs/inertia-vue3";
+import { computed } from "vue";
+import { useStore } from "vuex";
+const store = useStore();
+
 defineProps({
   averageRating: {
     type: Number,
@@ -72,6 +76,8 @@ defineProps({
     default: "",
   },
 });
+
+const translations = computed(() => store.getters.translations);
 </script>
 <style scoped>
 .star-row {

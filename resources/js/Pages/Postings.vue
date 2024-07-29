@@ -53,8 +53,13 @@ export default {
     this.getRegions();
     localStorage.setItem("prevUrl", "/post");
     setTimeout(() => {
-      const newFeed = this.$refs.postingsRef;
-      newFeed.addEventListener("scroll", this.handleScroll.bind(this));
+      if (this.screenWidth < 1024) {
+        const mobilePostings = document.querySelector("#scrollable");
+        mobilePostings.addEventListener("scroll", this.handleScroll.bind(this));
+      } else {
+        const postingsRef = this.$refs.postingsRef;
+        postingsRef.addEventListener("scroll", this.handleScroll.bind(this));
+      }
     }, 1000);
     this.fetchColors();
 
@@ -229,7 +234,7 @@ export default {
       "updatedPostId",
       "deletedPost",
     ]),
-    ...mapGetters(["translations"]),
+    ...mapGetters(["translations", "screenWidth"]),
 
     postsToShow() {
       const allPostsToShow = this.allPosts;
@@ -330,10 +335,10 @@ export default {
     ...mapActions("ratings", ["getRegions"]),
     handleScroll() {
       const lastPost = this.$refs.loadingPostsRef[0];
-
       if (lastPost) {
         const headerTop = lastPost.getBoundingClientRect().top;
-        if (headerTop <= 100) {
+
+        if (headerTop <= 500) {
           if (!this.loadingPosts) {
             this.loadMorePosts();
           }
@@ -422,6 +427,9 @@ export default {
             this.loadingPosts = false;
             // 'this.initialUrl' is set in script data
             window.history.replaceState({}, this.$page.title, this.initialUrl);
+          },
+          onError: () => {
+            this.loadingPosts = false;
           },
         }
       );
@@ -659,17 +667,20 @@ export default {
 
           <div
             v-show="loadingPosts"
-            class="flex mb-8 mt-8"
+            class="flex max-lg:pt-5 max-lg:pb-6 lg:pt-8"
             style="height: 250px; justify-content: center; align-items: center"
           >
             <div class="loader"></div>
             <div class="px-5 text-gray-300">LOADING MORE POSTS!</div>
           </div>
 
-          <div class="h-5"></div>
+          <!-- <div class="h-5"></div> -->
 
           <!-- 'next_page_url' is set to null in script -->
-          <div v-if="posts.next_page_url === null" class="mt-6">
+          <div
+            v-if="posts.next_page_url === null"
+            class="max-lg:pb-6 pt-4 lg:pt-6"
+          >
             <div class="text-white font-semibold text-2xl inline text-center">
               {{ translations && translations.youre_all_up_to_date }} 🥳
             </div>
