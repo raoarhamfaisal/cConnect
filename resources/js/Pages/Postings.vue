@@ -118,9 +118,28 @@ export default {
     window.Echo.channel("commentReplies") // Replace with your channel name
       .listen("CommentReplyAdded", (data) => {
         console.log("CommentReplyAdded", data);
-
+        this.$store.dispatch("profile/fetchCommentPosted", data);
         // Handle the event (e.g., update your data or UI)
       });
+    window.Echo.channel("postUpdatedChannel").listen("PostUpdated", (data) => {
+      const postIndex = this.allPosts.findIndex(
+        (post) => post.id === data.post.id
+      );
+
+      if (postIndex !== -1) {
+        this.allPosts[postIndex] = data.post;
+      }
+    });
+    window.Echo.channel("postDeletedChannel").listen("PostDeleted", (data) => {
+      const postIndex = this.allPosts.findIndex(
+        (post) => post.id === data.post.id
+      );
+
+      if (postIndex !== -1) {
+        console.log(postIndex, "index", this.allPosts.slice(postIndex, 1));
+        this.allPosts.splice(postIndex, 1);
+      }
+    });
   },
 
   // beforeDestroy() {
