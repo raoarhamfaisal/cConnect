@@ -205,6 +205,15 @@ export default {
         };
       }
     },
+    userVersionMemberText() {
+      if (this.post.version === 1) {
+        return this.translations && this.translations.free_member;
+      } else if (this.post.version === 2) {
+        return this.translations && this.translations.gold_member;
+      } else if (this.post.version === 3) {
+        return this.translations && this.translations.platinum_member;
+      }
+    },
     textStyleBody2() {
       if (this.showFullTextBody2) {
         return {
@@ -1154,7 +1163,11 @@ export default {
                 {{ post.total_reviews }}
               </h2>
             </div>
-            <div class="mt-[-2px] text-[11px] xs:text-xs sm:text-sm">{{}}</div>
+            <div
+              class="sm:mt-[-2px] text-gray-800 text-[11px] xs:text-xs sm:text-sm"
+            >
+              {{ userVersionMemberText }}
+            </div>
           </div>
         </div>
 

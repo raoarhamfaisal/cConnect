@@ -53,6 +53,15 @@ const userVersion = computed(() => store.getters.userVersion);
 const isAdminUrl = computed(() => {
   return usePage().props.value.auth.user.appeals_privileges === 1;
 });
+const userVersionMemberText = computed(() => {
+  if (props.profile.version === 1) {
+    return translations.value && translations.value.free_member;
+  } else if (props.profile.version === 2) {
+    return translations.value && translations.value.gold_member;
+  } else if (props.profile.version === 3) {
+    return translations.value && translations.value.platinum_member;
+  }
+});
 function handleLogout() {
   removeToken();
 
@@ -104,6 +113,11 @@ const goToRedFlagPage = () => {
       <div class="">
         <div v-if="showit" class="pt-2 pb-0 ml-3">
           <Avatar :imageSrc="`/${profile.user_avatar}`" class="mt-2" />
+          <div
+            class="mt-2 mb-[-4px] text-gray-800 text-[11px] xs:text-xs sm:text-sm"
+          >
+            {{ userVersionMemberText }}
+          </div>
           <h4 class="mt-1 text-base font-bold text-gray-800">
             <!-- Tienary cuts off string if over 20 chrs and adds "..."
                                         the end  1st checks if combined string is over 20 chrs,

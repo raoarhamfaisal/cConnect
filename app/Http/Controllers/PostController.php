@@ -109,6 +109,7 @@ class PostController extends Controller
                     'profiles.first_name',
                     'profiles.last_name',
                     'profiles.company_name',
+                    'profiles.version',
                     'profiles.city',
                     'profiles.state',
                     'profiles.user_avatar',
@@ -185,6 +186,7 @@ class PostController extends Controller
                 ->withQueryString()
                 ->through(fn($post) => [
                     'id' => $post->post_id,
+                    'version' => $post->version,
                     'your_reaction' => $post->user_reaction,
                     'user_id' => $post->user_id,
                     'view' => $post->view,
@@ -279,6 +281,7 @@ class PostController extends Controller
                     ->addSelect([
                         'profiles.first_name',
                         'profiles.last_name',
+                        'profiles.version',
                         'profiles.company_name',
                         'profiles.city',
                         'profiles.state',
@@ -297,6 +300,7 @@ class PostController extends Controller
                         'id' => $post->post_id,
                         'user_id' => $post->user_id,
                         'view' => $post->view,
+                        'version' => $post->version,
                         'title' => $post->title,
                         'image' => $post->image,
                         'body1' => $post->body1,
@@ -345,6 +349,7 @@ class PostController extends Controller
             ->addSelect([
                 'profiles.first_name',
                 'profiles.last_name',
+                'profiles.version',
                 'profiles.company_name',
                 'profiles.city',
                 'profiles.state',

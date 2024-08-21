@@ -1,4 +1,9 @@
 <template>
+  <div
+    class="ml-16 sm:ml-[5.55rem] mb-[-4px] sm:mb-0 text-gray-600 text-[11px] sm:text-[13px]"
+  >
+    {{ userVersionMemberText }}
+  </div>
   <div class="flex space-x-2 justify-between">
     <div
       class="flex justify-center items-center space-x-2"
@@ -365,6 +370,15 @@ const screenWidth = computed(() => store.getters.screenWidth);
 const translations = computed(() => store.getters.translations);
 const userVersion = computed(() => store.getters.userVersion);
 const disabled = computed(() => store.state.ratings.disabled);
+const userVersionMemberText = computed(() => {
+  if (review.reviewer.version === 1) {
+    return translations.value && translations.value.free_member;
+  } else if (review.reviewer.version === 2) {
+    return translations.value && translations.value.gold_member;
+  } else if (review.reviewer.version === 3) {
+    return translations.value && translations.value.platinum_member;
+  }
+});
 //watch
 
 watch(

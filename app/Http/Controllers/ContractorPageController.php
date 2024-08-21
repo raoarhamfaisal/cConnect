@@ -294,7 +294,8 @@ class ContractorPageController extends Controller
             if (!$contractorProfile) {
                 $profile = Profile::where('user_id', $contractor_id)->with('trades')->first();
     
-                // If profile is found in the Profile model, save it to the ContractorProfile model
+                // If profile is found in the Profile model, save it to the ContractorProfile 
+           
                 if ($profile) {
                     // Fetch the default values
                     $defaults = ContractorImageSectionsDefault::first();

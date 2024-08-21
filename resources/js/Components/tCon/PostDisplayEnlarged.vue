@@ -140,6 +140,15 @@ export default {
         }
       },
     },
+    userVersionMemberText() {
+      if (this.postEnlarged.version === 1) {
+        return this.translations && this.translations.free_member;
+      } else if (this.postEnlarged.version === 2) {
+        return this.translations && this.translations.gold_member;
+      } else if (this.postEnlarged.version === 3) {
+        return this.translations && this.translations.platinum_member;
+      }
+    },
     textStyle() {
       return {
         fontSize: `${16 + +this.postToEnlarge.font_size}px`,
@@ -1009,6 +1018,11 @@ export default {
                   >
                     {{ postToEnlarge.total_reviews }}
                   </h2>
+                </div>
+                <div
+                  class="sm:mt-[-2px] text-gray-800 text-[11px] xs:text-xs sm:text-sm"
+                >
+                  {{ userVersionMemberText }}
                 </div>
               </div>
             </div>
