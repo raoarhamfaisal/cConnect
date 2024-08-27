@@ -22,7 +22,7 @@
     <!-- Dropdown content -->
     <div
       v-if="isOpen"
-      class="absolute w-full flex flex-col items-center flex-wrap w-40 mt-2 bg-white border border-gray-200 p-2 rounded z-10"
+      class="absolute flex flex-col items-center flex-wrap w-40 mt-2 bg-white border border-gray-200 p-2 rounded z-10"
     >
       <button
         type="button"

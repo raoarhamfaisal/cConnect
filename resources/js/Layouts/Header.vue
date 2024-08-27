@@ -348,7 +348,7 @@ export default {
     class="bg-gray-100"
   >
     <!-- Section Container -->
-    <div class="relative mx-auto mt-0 pt-10 lg:pt-0 h-screen">
+    <div class="relative mx-auto mt-0 lg:pt-0 h-screen">
       <div
         :style="{
           maxWidth: contentWidth,

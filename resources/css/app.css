@@ -154,3 +154,47 @@ p.default {
   ).rounded-lg-imp {
   border-radius: 0.5rem !important;
 }
+
+.postings::-webkit-scrollbar-track {
+  /* background: #a1a1a1; */
+  background: transparent;
+}
+
+/* Targets the scrollbar handle */
+.postings::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 8px;
+}
+
+/* targets the scrollbar itself */
+.postings::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* For Firefox */
+.postings {
+  scrollbar-color: #c1c1c1 transparent; /* thumb and track color */
+  scrollbar-width: thin;
+}
+
+.side-header::-webkit-scrollbar-track {
+  /* background: #a1a1a1; */
+  background: transparent;
+}
+
+/* Targets the scrollbar handle */
+.side-header::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 8px;
+}
+
+/* targets the scrollbar itself */
+.side-header::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* For Firefox */
+.side-header {
+  scrollbar-color: #c1c1c1 transparent; /* thumb and track color */
+  scrollbar-width: thin;
+}
