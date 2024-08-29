@@ -12,7 +12,10 @@
       <!-- Only Text -->
       <div
         class="bg-[#f8f8f8] py-10 sm:py-20"
-        v-if="!section.section_image && section.section_text"
+        v-if="
+          (!section.section_image || section.imageFailedToLoad) &&
+          section.section_text
+        "
       >
         <div
           class="w-full p-4 md:p-6 font-bold md:font-extrabold text-xl md:text-3xl font-bold md:font-extrabold text-center w-full max-w-[1400px] px-3 sm:px-10 mx-auto"
@@ -22,10 +25,15 @@
       </div>
       <!-- Only Image -->
       <div
-        v-if="section.section_image && !section.section_text"
+        v-if="
+          section.section_image &&
+          !section.section_text &&
+          !section.imageFailedToLoad
+        "
         class="w-full h-full bg-[#2d2c2b] py-10 sm:py-20"
       >
         <img
+          @error="onImageError(index)"
           @click="openImage(section.section_image)"
           :src="section.section_image"
           alt="Section Image"
@@ -42,7 +50,12 @@
             threshold: [0.1],
           },
         }"
-        v-if="section.section_image && section.section_text && index % 2 !== 0"
+        v-if="
+          section.section_image &&
+          !section.imageFailedToLoad &&
+          section.section_text &&
+          index % 2 !== 0
+        "
       >
         <div
           class="flex max-md:flex-col gap-2 md:gap-4 items-center max-w-[1400px] mx-auto w-full px-3 sm:px-10"
@@ -66,6 +79,7 @@
             }"
           >
             <img
+              @error="onImageError(index)"
               @click="openImage(section.section_image)"
               :src="section.section_image"
               alt="Section Image"
@@ -77,11 +91,17 @@
 
       <!-- For odd items overlayed -->
       <div
-        v-if="section.section_image && section.section_text && index % 2 === 0"
+        v-if="
+          section.section_image &&
+          !section.imageFailedToLoad &&
+          section.section_text &&
+          index % 2 === 0
+        "
         @click="openImage(section.section_image)"
         class="bg-[#2d2c2b] py-10 sm:py-20 relative"
       >
         <img
+          @error="onImageError(index)"
           class="max-w-[1400px] px-3 sm:px-10 overflow-hidden hover:scale-110 hover:cursor-pointer z-50 mx-auto w-full object-cover w-full rounded-md"
           :src="section.section_image"
           alt="Section Image"
@@ -101,19 +121,11 @@
               rgba(0, 0, 0, 0.5) 0%,
               rgba(0, 0, 0, 0) 55%
             );
-            /* background: radial-gradient(
-              circle at center,
-              rgba(0, 0, 0, 0.7),
-              transparent
-            ); */
           "
         >
           <span
             :style="{
               color: '#fff',
-
-              // boxShadow:
-              //   '0px 0px 15px #000000, -1px -1px 15px #000000, 1px -1px 15px #000000, -1px 1px 15px #000000, 1px 1px 15px #000000',
             }"
             :class="{
               'translate-y-0': screenWidth > 768 && isOvelayedVisible[index],
@@ -145,11 +157,9 @@
 </template>
 
 <script setup>
-import { Icon } from "@iconify/vue";
-
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 
-import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import { template1Default } from "@/helpers/templateDefaults";
 
 import { useStore } from "vuex";
@@ -181,8 +191,6 @@ const translations = computed(() => store.getters.translations);
 const isSectionVisible = ref(Array(sections.value.length).fill(false));
 const isOvelayedVisible = ref(Array(sections.value.length).fill(false));
 
-const observeTarget = ref();
-
 const showAnimcation = (index) => {
   const dialogContainer = document.getElementById("dialogContainer");
   if (window.scrollY > 100 || dialogContainer.scrollTop > 100) {
@@ -198,6 +206,10 @@ const overlayedAnimcation = (index) => {
 };
 
 // Methods
+
+const onImageError = (index) => {
+  sections.value[index].imageFailedToLoad = true;
+};
 
 const openImage = (imageSrc) => {
   selectedImage.value = imageSrc;

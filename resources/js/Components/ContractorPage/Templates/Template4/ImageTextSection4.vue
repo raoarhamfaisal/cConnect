@@ -15,7 +15,10 @@
       <!-- class="rounded-md border relative border-gray-300 p-2 sm:p-2" -->
       <!-- Only Text -->
       <div
-        v-if="!section.section_image && section.section_text"
+        v-if="
+          (!section.section_image || section.imageFailedToLoad) &&
+          section.section_text
+        "
         class="w-full p-4 md:p-6 text-xl md:text-2xl font-bold md:font-extrabold text-xl md:text-3xl font-bold md:font-extrabold text-center"
       >
         {{ section.section_text }}
@@ -23,10 +26,15 @@
 
       <!-- Only Image -->
       <div
-        v-if="section.section_image && !section.section_text"
+        v-if="
+          section.section_image &&
+          !section.imageFailedToLoad &&
+          !section.section_text
+        "
         class="w-full h-full bg-[#222] rounded-md"
       >
         <img
+          @error="onImageError(index)"
           @click="openImage(section.section_image)"
           :src="section.section_image"
           alt="Section Image"
@@ -35,7 +43,12 @@
       </div>
       <!-- For even items -->
       <div
-        v-if="section.section_image && section.section_text && index % 2 !== 0"
+        v-if="
+          section.section_image &&
+          !section.imageFailedToLoad &&
+          section.section_text &&
+          index % 2 !== 0
+        "
         class="flex max-md:flex-col gap-2 md:gap-4 items-center"
       >
         <div
@@ -45,6 +58,7 @@
         </div>
         <div class="relative w-full md:w-3/5 h-3/5 rounded-md">
           <img
+            @error="onImageError(index)"
             @click="openImage(section.section_image)"
             :src="section.section_image"
             alt="Section Image"
@@ -55,11 +69,17 @@
 
       <!-- For odd items -->
       <div
-        v-if="section.section_image && section.section_text && index % 2 === 0"
+        v-if="
+          section.section_image &&
+          !section.imageFailedToLoad &&
+          section.section_text &&
+          index % 2 === 0
+        "
         class="flex max-md:flex-col gap-2 md:gap-4 items-center max-md:flex-col-reverse"
       >
         <div class="relative w-full md:w-3/5 h-3/5 bg-[#222] rounded-md">
           <img
+            @error="onImageError(index)"
             @click="openImage(section.section_image)"
             :src="section.section_image"
             alt="Section Image"
@@ -85,7 +105,7 @@
     <div
       class="max-h-[400px] md:max-h-[500px] w-full flex justify-center xs:w-[400px] md:w-[600px] bg-[#222]"
     >
-      <img :src="selectedImage" />
+      <img @error="onImageError(index)" :src="selectedImage" />
     </div>
   </CustomDialog>
 </template>
@@ -125,6 +145,9 @@ const selectedColorScheme = computed(
 const translations = computed(() => store.getters.translations);
 
 // Methods
+const onImageError = (index) => {
+  sections.value[index].imageFailedToLoad = true;
+};
 
 const openImage = (imageSrc) => {
   selectedImage.value = imageSrc;

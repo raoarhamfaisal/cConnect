@@ -15,9 +15,6 @@
 <script setup>
 import MoveToTopEdit from "@/Components/MoveToTopEdit.vue";
 import EditMode from "@/Components/ContractorPage/EditMode.vue";
-import Template1 from "@/Components/ContractorPage/Templates/Template1.vue";
-
-import Loader from "@/Components/Ratings/Loader.vue";
 
 import { computed, ref } from "vue";
 import { useStore } from "vuex";

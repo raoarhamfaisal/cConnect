@@ -43,6 +43,16 @@ const userVersion = computed(() => store.getters.userVersion);
 const screenWidth = computed(() => store.getters.screenWidth);
 const translations = computed(() => store.getters.translations);
 
+const displayVersions = computed(() => {
+  if (userVersion.value > 1) {
+    // User version is Gold (2) or Platinum (3), so display only those versions
+    return ["Gold", "Platinum"];
+  } else {
+    // User version is Free (1) or lower, so display all versions
+    return ["Free", "Gold", "Platinum"];
+  }
+});
+
 const notPricingPageAndDesktop = computed(
   () =>
     props.pageName !== "pricing" &&
@@ -368,7 +378,7 @@ const scrollToFAQs = () => {
       ></v-progress-linear>
     </div>
     <!-- Pricing Versions Desktop -->
-    <section v-if="!loading" id="pricing" class="">
+    <section v-if="!loading && screenWidth >= 768" id="pricing" class="">
       <div
         v-if="props.showRightVersionText"
         class="flex justify-center"
@@ -379,7 +389,7 @@ const scrollToFAQs = () => {
         </span>
       </div>
       <!-- tableHead  for Desktop-->
-      <div class="flex gap-2" v-if="screenWidth > 768">
+      <div class="flex gap-2">
         <div class="w-[55%]"></div>
         <!-- Free -->
 
@@ -484,77 +494,6 @@ const scrollToFAQs = () => {
               }"
               class="text-lg font-semibold capitalize"
             >
-              {{ translations && translations.per_month }}
-            </div>
-            <button
-              @click="onPlatinumSelect"
-              class="checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95 mt-auto"
-            >
-              {{ translations && translations.select }}
-            </button>
-          </div>
-        </div>
-      </div>
-      <!-- tableHead  for Mobile-->
-      <div
-        v-else
-        class="grid gap-x-1 versions-head"
-        :class="userVersion !== 1 ? 'grid-cols-2' : 'grid-cols-3'"
-        ref="headerRef"
-      >
-        <!-- Free -->
-
-        <div
-          v-if="userVersion === 1 || userVersion === 0"
-          class="flex flex-col justify-between"
-        >
-          <img class="mb-3 h-full object-contain" src="./assets/freebox.png" />
-          <button
-            @click="onFreeSelect"
-            v-if="userVersion === 0"
-            class="mt-[2px] checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95"
-          >
-            {{ translations && translations.select }}
-          </button>
-        </div>
-        <!-- Gold -->
-        <div>
-          <div class="flex flex-col justify-start items-center h-full">
-            <div :class="`text-black text-lg font-bold `">
-              {{ translations && translations.gold }}
-            </div>
-            <div class="flex text-green-rgba font-extrabold mt-1">
-              <div class="text-lg self-center mt-[-30px]">$</div>
-              <div class="text-[50px] leading-[0.9]">
-                {{ formatPrice(pricingPlan.gold_advertised_price) }}
-              </div>
-            </div>
-            <div class="text-base font-semibold capitalize">
-              {{ translations && translations.per_month }}
-            </div>
-            <button
-              @click="onGoldSelect"
-              v-if="showGoldSelect && userVersion !== 2 && userVersion !== 3"
-              class="checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95 mt-auto"
-            >
-              {{ translations && translations.select }}
-            </button>
-          </div>
-        </div>
-        <!-- Platinium -->
-        <div>
-          <div class="flex flex-col justify-center items-center h-full">
-            <div class="text-black text-lg font-bold">
-              {{ translations && translations.platinum }}
-            </div>
-            <div class="flex text-blue-rgba font-extrabold mt-1">
-              <div class="text-lg self-center mt-[-30px]">$</div>
-
-              <div class="text-[50px] t leading-[0.9]">
-                {{ formatPrice(pricingPlan.platinum_advertised_price) }}
-              </div>
-            </div>
-            <div class="text-base font-semibold capitalize">
               {{ translations && translations.per_month }}
             </div>
             <button
@@ -872,6 +811,428 @@ const scrollToFAQs = () => {
         </div>
       </div>
     </section>
+    <!-- Pricing Versions Mobile -->
+
+    <section v-if="!loading && screenWidth < 768" id="pricing" class="">
+      <div
+        v-if="props.showRightVersionText"
+        class="flex justify-center"
+        ref="whatVersionAreYourRef"
+      >
+        <span class="text-3xl font-extrabold mb-4 text-center text-blue-rgba">
+          {{ translations && translations.what_version_is_right_for_you }}
+        </span>
+      </div>
+
+      <!-- tableHead  for Mobile-->
+      <template v-for="version in displayVersions" :key="version">
+        <div
+          class="grid gap-x-1 versions-head"
+          :class="'grid-cols-3'"
+          ref="headerRef"
+        >
+          <!-- Free -->
+
+          <div
+            v-if="version === 'Free'"
+            class="flex flex-col justify-between col-end-4"
+          >
+            <img
+              class="mb-3 h-full object-contain"
+              src="./assets/freebox.png"
+            />
+            <button
+              @click="onFreeSelect"
+              v-if="userVersion === 0"
+              class="mt-[2px] checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95"
+            >
+              {{ translations && translations.select }}
+            </button>
+          </div>
+          <!-- Gold -->
+          <div v-else-if="version === 'Gold'" class="col-end-4">
+            <div class="flex flex-col justify-start items-center h-full">
+              <div :class="`text-black text-lg font-bold `">
+                {{ translations && translations.gold }}
+              </div>
+              <div class="flex text-green-rgba font-extrabold mt-1">
+                <div class="text-lg self-center mt-[-30px]">$</div>
+                <div class="text-[50px] leading-[0.9]">
+                  {{ formatPrice(pricingPlan.gold_advertised_price) }}
+                </div>
+              </div>
+              <div class="text-base font-semibold capitalize">
+                {{ translations && translations.per_month }}
+              </div>
+              <button
+                @click="onGoldSelect"
+                v-if="showGoldSelect && userVersion !== 2 && userVersion !== 3"
+                class="checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95 mt-auto"
+              >
+                {{ translations && translations.select }}
+              </button>
+            </div>
+          </div>
+          <!-- Platinium -->
+          <div v-else-if="version === 'Platinum'" class="col-end-4">
+            <div class="flex flex-col justify-center items-center h-full">
+              <div class="text-black text-lg font-bold">
+                {{ translations && translations.platinum }}
+              </div>
+              <div class="flex text-blue-rgba font-extrabold mt-1">
+                <div class="text-lg self-center mt-[-30px]">$</div>
+
+                <div class="text-[50px] t leading-[0.9]">
+                  {{ formatPrice(pricingPlan.platinum_advertised_price) }}
+                </div>
+              </div>
+              <div class="text-base font-semibold capitalize">
+                {{ translations && translations.per_month }}
+              </div>
+              <button
+                @click="onPlatinumSelect"
+                class="checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95 mt-auto"
+              >
+                {{ translations && translations.select }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="features pb-4">
+          <!-- News Feed -->
+          <div class="w-full mb-2">
+            <span class="text-2xl font-extrabold text-blue-rgba">
+              {{ translations && translations.news_feed }}:
+            </span>
+          </div>
+          <div class="flex flex-col gap-2">
+            <PricingFeature
+              :version="version"
+              :pageName="props.pageName"
+              bgColor="#f4f8ff"
+              :featureText="
+                translations &&
+                translations.view_all_postings_and_shared_information
+              "
+              :freeText="1"
+              :goldText="1"
+              :platinumText="1"
+            />
+            <PricingFeature
+              :version="version"
+              :pageName="props.pageName"
+              bgColor="#f4f8ff"
+              :featureText="
+                translations &&
+                translations.view_all_postings_by_trade_or_location
+              "
+              :freeText="1"
+              :goldText="1"
+              :platinumText="1"
+            />
+          </div>
+          <!-- News Feed Postings-->
+          <div class="w-full my-2">
+            <span class="text-2xl font-extrabold text-blue-rgba">
+              {{ translations && translations.news_feed_postings }}
+            </span>
+          </div>
+          <div class="flex flex-col gap-2">
+            <PricingFeature
+              :version="version"
+              :pageName="props.pageName"
+              bgColor="#f4f8ff"
+              :featureText="translations && translations.postings_per_month"
+              :freeText="freeVersion.nf_ppm"
+              :goldText="goldVersion.nf_ppm"
+              :platinumText="platinumVersion.nf_ppm"
+            />
+            <PricingFeature
+              :version="version"
+              :pageName="props.pageName"
+              bgColor="#f4f8ff"
+              :featureText="translations && translations.images_inside_posting"
+              :freeText="freeVersion.nf_ipp"
+              :goldText="goldVersion.nf_ipp"
+              :platinumText="platinumVersion.nf_ipp"
+            />
+            <PricingFeature
+              :version="version"
+              :pageName="props.pageName"
+              bgColor="#f4f8ff"
+              :featureText="
+                translations &&
+                translations.improve_post_visibility_by_adding_title
+              "
+              :freeText="freeVersion.nf_title"
+              :goldText="goldVersion.nf_title"
+              :platinumText="platinumVersion.nf_title"
+            />
+            <PricingFeature
+              :version="version"
+              :pageName="props.pageName"
+              bgColor="#f4f8ff"
+              :featureText="
+                translations &&
+                translations.improve_post_visibility_by_adding_closing_text
+              "
+              :freeText="freeVersion.nf_bottom"
+              :goldText="goldVersion.nf_bottom"
+              :platinumText="platinumVersion.nf_bottom"
+            />
+            <PricingFeature
+              :version="version"
+              :pageName="props.pageName"
+              bgColor="#f4f8ff"
+              :featureText="
+                translations && translations.make_comments_on_postings
+              "
+              :freeText="freeVersion.nf_comments"
+              :goldText="goldVersion.nf_comments"
+              :platinumText="platinumVersion.nf_comments"
+            />
+            <PricingFeature
+              :version="version"
+              :pageName="props.pageName"
+              bgColor="#f4f8ff"
+              :featureText="translations && translations.repost_posting"
+              :freeText="freeVersion.nf_repost"
+              :goldText="goldVersion.nf_repost"
+              :platinumText="platinumVersion.nf_repost"
+            />
+          </div>
+          <!-- Sub Finder-->
+          <div class="w-full my-2">
+            <span class="text-2xl font-extrabold text-blue-rgba">
+              {{ translations && translations.sub_finder }}:
+            </span>
+          </div>
+          <div class="flex flex-col gap-2">
+            <PricingFeature
+              :version="version"
+              :pageName="props.pageName"
+              bgColor="#f4f8ff"
+              :featureText="
+                translations &&
+                translations.searches_for_contractors_and_subcontractors
+              "
+              :freeText="1"
+              :goldText="1"
+              :platinumText="1"
+            />
+            <PricingFeature
+              :version="version"
+              :pageName="props.pageName"
+              bgColor="#f4f8ff"
+              :featureText="
+                translations && translations.no_of_contractor_searches_per_month
+              "
+              :freeText="freeVersion.sf_search"
+              :goldText="goldVersion.sf_search"
+              :platinumText="platinumVersion.sf_search"
+            />
+            <PricingFeature
+              :version="version"
+              :pageName="props.pageName"
+              bgColor="#f4f8ff"
+              :featureText="
+                translations &&
+                translations.track_contractors_and_subcontractors
+              "
+              :freeText="freeVersion.sf_tracking"
+              :goldText="goldVersion.sf_tracking"
+              :platinumText="platinumVersion.sf_tracking"
+            />
+            <PricingFeature
+              :version="version"
+              :pageName="props.pageName"
+              bgColor="#f4f8ff"
+              :featureText="
+                translations &&
+                translations.create_personal_notes_on_contractors
+              "
+              :freeText="freeVersion.sf_notes"
+              :goldText="goldVersion.sf_notes"
+              :platinumText="platinumVersion.sf_notes"
+            />
+            <PricingFeature
+              :version="version"
+              :pageName="props.pageName"
+              bgColor="#f4f8ff"
+              :featureText="
+                translations && translations.access_to_contractor_info_pages
+              "
+              :freeText="freeVersion.sf_info"
+              :goldText="goldVersion.sf_info"
+              :platinumText="platinumVersion.sf_info"
+            />
+          </div>
+          <!-- Trade Groups-->
+          <div class="w-full my-2">
+            <span class="text-2xl font-extrabold text-blue-rgba">
+              {{ translations && translations.trade_groups }}:
+            </span>
+          </div>
+          <div class="flex flex-col gap-2">
+            <PricingFeature
+              :version="version"
+              :pageName="props.pageName"
+              bgColor="#f4f8ff"
+              :featureText="
+                translations && translations.membership_in_trade_groups
+              "
+              :freeText="freeVersion.tg_members"
+              :goldText="goldVersion.tg_members"
+              :platinumText="platinumVersion.tg_members"
+            />
+            <PricingFeature
+              :version="version"
+              :pageName="props.pageName"
+              bgColor="#f4f8ff"
+              :featureText="
+                translations && translations.post_in_member_trade_groups
+              "
+              :freeText="freeVersion.tg_post"
+              :goldText="goldVersion.tg_post"
+              :platinumText="platinumVersion.tg_post"
+            />
+            <PricingFeature
+              :version="version"
+              :pageName="props.pageName"
+              bgColor="#f4f8ff"
+              :featureText="
+                translations && translations.view_all_trade_group_postings
+              "
+              :freeText="freeVersion.tg_view_all"
+              :goldText="goldVersion.tg_view_all"
+              :platinumText="platinumVersion.tg_view_all"
+            />
+          </div>
+          <!-- View Red Flags-->
+          <div class="w-full my-2">
+            <span class="text-2xl font-extrabold text-blue-rgba">
+              {{ translations && translations.view_red_flags }}:
+            </span>
+          </div>
+          <div class="flex flex-col gap-2">
+            <PricingFeature
+              :version="version"
+              :pageName="props.pageName"
+              bgColor="#f4f8ff"
+              :featureText="translations && translations.search_red_flags"
+              :freeText="freeVersion.rf_access"
+              :goldText="goldVersion.rf_access"
+              :platinumText="platinumVersion.rf_access"
+            />
+            <PricingFeature
+              :version="version"
+              :pageName="props.pageName"
+              bgColor="#f4f8ff"
+              :featureText="translations && translations.flagged_customers"
+              :freeText="freeVersion.rf_customers"
+              :goldText="goldVersion.rf_customers"
+              :platinumText="platinumVersion.rf_customers"
+            />
+            <PricingFeature
+              :version="version"
+              :pageName="props.pageName"
+              bgColor="#f4f8ff"
+              :featureText="translations && translations.flagged_sales_reps"
+              :freeText="freeVersion.rf_sales"
+              :goldText="goldVersion.rf_sales"
+              :platinumText="platinumVersion.rf_sales"
+            />
+            <PricingFeature
+              :version="version"
+              :pageName="props.pageName"
+              bgColor="#f4f8ff"
+              :featureText="translations && translations.flagged_contractors"
+              :freeText="freeVersion.rf_contractor"
+              :goldText="goldVersion.rf_contractor"
+              :platinumText="platinumVersion.rf_contractor"
+            />
+          </div>
+          <!-- Real Contractor Reviews-->
+          <div class="w-full my-2">
+            <span class="text-2xl font-extrabold text-blue-rgba">
+              {{ translations && translations.real_contractor_reviews }}:
+            </span>
+          </div>
+          <div class="flex flex-col gap-2">
+            <PricingFeature
+              :version="version"
+              :pageName="props.pageName"
+              bgColor="#f4f8ff"
+              :featureText="translations && translations.give_a_review"
+              :freeText="freeVersion.re_reviews"
+              :goldText="goldVersion.re_reviews"
+              :platinumText="platinumVersion.re_reviews"
+            />
+            <PricingFeature
+              :version="version"
+              :pageName="props.pageName"
+              bgColor="#f4f8ff"
+              :featureText="
+                translations && translations.provide_feedback_on_review
+              "
+              :freeText="freeVersion.re_feedback"
+              :goldText="goldVersion.re_feedback"
+              :platinumText="platinumVersion.re_feedback"
+            />
+            <PricingFeature
+              :version="version"
+              :pageName="props.pageName"
+              bgColor="#f4f8ff"
+              :featureText="translations && translations.appeal_review"
+              :freeText="freeVersion.re_appeal"
+              :goldText="goldVersion.re_appeal"
+              :platinumText="platinumVersion.re_appeal"
+            />
+          </div>
+          <!-- Contractor Page-->
+          <div class="w-full my-2">
+            <span class="text-2xl font-extrabold text-blue-rgba">
+              {{ translations && translations.contractor_page }}:
+            </span>
+          </div>
+          <div class="flex flex-col gap-2">
+            <PricingFeature
+              :version="version"
+              :pageName="props.pageName"
+              bgColor="#f4f8ff"
+              :featureText="
+                translations && translations.no_of_free_page_templates
+              "
+              :freeText="freeVersion.cp_template?.toString()"
+              :goldText="goldVersion.cp_template?.toString()"
+              :platinumText="platinumVersion.cp_template?.toString()"
+            />
+            <PricingFeature
+              :version="version"
+              :pageName="props.pageName"
+              bgColor="#f4f8ff"
+              :featureText="translations && translations.no_of_color_schemes"
+              :freeText="freeVersion.cp_color?.toString()"
+              :goldText="goldVersion.cp_color?.toString()"
+              :platinumText="platinumVersion.cp_color?.toString()"
+            />
+            <PricingFeature
+              :version="version"
+              :pageName="props.pageName"
+              bgColor="#f4f8ff"
+              :featureText="
+                translations &&
+                translations.share_your_contractor_page_with_others
+              "
+              :freeText="freeVersion.cp_share"
+              :goldText="goldVersion.cp_share"
+              :platinumText="platinumVersion.cp_share"
+            />
+          </div>
+        </div>
+      </template>
+    </section>
   </div>
   <div loadingclass="faqs" ref="faqsRef">
     <FAQS />
@@ -889,7 +1250,7 @@ const scrollToFAQs = () => {
           : '0',
     }"
     class="grid gap-x-1 versions-head sticky"
-    :class="userVersion !== 1 ? 'grid-cols-2' : 'grid-cols-3'"
+    :class="userVersion > 1 ? 'grid-cols-2' : 'grid-cols-3'"
   >
     <!-- Free -->
 

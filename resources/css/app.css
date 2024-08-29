@@ -155,24 +155,29 @@ p.default {
   border-radius: 0.5rem !important;
 }
 
-.postings::-webkit-scrollbar-track {
+.postings::-webkit-scrollbar-track,
+#scrollable::-webkit-scrollbar-track {
   /* background: #a1a1a1; */
   background: transparent;
 }
 
 /* Targets the scrollbar handle */
-.postings::-webkit-scrollbar-thumb {
+.postings::-webkit-scrollbar-thumb,
+#scrollable::-webkit-scrollbar-thumb {
   background: #c1c1c1;
   border-radius: 8px;
 }
 
 /* targets the scrollbar itself */
-.postings::-webkit-scrollbar {
-  width: 6px;
+.postings::-webkit-scrollbar,
+#scrollable::-webkit-scrollbar {
+  width: 8px;
 }
 
 /* For Firefox */
-.postings {
+.postings,
+#scrollable,
+#scrollableContainer {
   scrollbar-color: #c1c1c1 transparent; /* thumb and track color */
   scrollbar-width: thin;
 }

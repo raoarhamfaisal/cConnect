@@ -1,10 +1,9 @@
 <template>
   <Head
-    :title="
-      translations &&
-      translations.edit + ' ' + translations &&
-      translations.contractor_page
-    "
+    :title="`${translations && translations.edit} ${
+      translations && translations.contractor_page
+    }
+    `"
   />
 
   <Header
@@ -14,7 +13,18 @@
     :show-post-buttons="true"
     color="rgb(229 231 235 / var(--tw-bg-opacity))"
   >
-    <div class="pt-8 sm:pt-8" v-if="!loading">
+    <div
+      class="pt-8 sm:pt-8"
+      v-if="
+        !loading &&
+        contractorProfile &&
+        Object.keys(contractorProfile).length > 0 &&
+        templateList &&
+        templateList.length > 0 &&
+        colorSchemeArray &&
+        colorSchemeArray.length > 0
+      "
+    >
       <ContractorLayoutEdit
         :profile="contractorProfile"
         :templateList="templateList"
@@ -24,7 +34,16 @@
         :region_name="region_name"
       />
     </div>
-    <Loader :loading="loading" background="transparent" height="70vh"></Loader>
+    <Loader
+      :loading="
+        loading ||
+        (contractorProfile && Object.keys(contractorProfile).length === 0) ||
+        (templateList && templateList.length === 0) ||
+        (colorSchemeArray && colorSchemeArray.length === 0)
+      "
+      background="transparent"
+      height="70vh"
+    ></Loader>
   </Header>
 </template>
 
@@ -35,8 +54,6 @@ import ContractorLayoutEdit from "@/Components/ContractorPage/ContractorLayoutEd
 import { onMounted, computed, ref, watchEffect } from "vue";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { somethingWentWrong, startOptionToArray } from "@/helpers/utilities";
-
-import { template1Default } from "@/helpers/templateDefaults";
 
 import { useStore } from "vuex";
 import { usePage } from "@inertiajs/inertia-vue3";
@@ -66,12 +83,12 @@ const starPercentages = ref([]);
 const average_rating = ref(null);
 const contractorProfile = ref({});
 const total_reviews = ref(0);
+const colorSchemeArray = ref([]);
 
 const userVersion = computed(() => store.getters.userVersion);
 const translations = computed(() => store.getters.translations);
 
 onMounted(() => {
-  console.log("onMounted");
   localStorage.setItem("prevUrl", "/edit");
   fetchContractorDetails();
   const url = usePage().url.value;
@@ -157,8 +174,9 @@ const fetchColors = async () => {
         return item.id === contractorProfile.value.color_scheme_id;
       });
       const selectedScheme = startOptionToArray(selectedOption);
-      console.log(selectedScheme, selectedOption, "optionSelected");
+
       store.commit("contractor/setSelectedColorScheme", selectedScheme);
+      colorSchemeArray.value = colorSchemeList;
     }
   } catch (err) {
     somethingWentWrong();

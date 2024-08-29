@@ -23,7 +23,6 @@ const imageFailed = ref(false);
 const disabled = ref(false);
 
 const handleImageError = () => {
-  cover;
   imageFailed.value = true;
 };
 
@@ -91,7 +90,7 @@ watch(
         cover ? 'cover ' : 'contain border-2 border-gray-300 '
       } ${
         rounded ? 'rounded-full' : 'rounded-md'
-      }  w-full h-full  border-2 border-gray-100 flex items-center justify-center`"
+      }  w-full h-full  border-2 border-gray-200 flex items-center justify-center`"
     >
       <Icon icon="mdi:camera" color="#777" width="24" />
     </div>

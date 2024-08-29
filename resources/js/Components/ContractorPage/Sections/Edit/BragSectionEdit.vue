@@ -2,7 +2,7 @@
   <!-- Display Saved Sections -->
   <div v-if="sections && sections.length > 0" class="flex gap-4 flex-col">
     <div
-      v-for="section in sections"
+      v-for="(section, index) in sections"
       :key="section.id"
       class="rounded-md border relative border-gray-300 p-2"
     >
@@ -27,10 +27,11 @@
         class="flex gap-4 relative flex-col justify-center items-center sm:flex-row"
       >
         <div
-          v-if="section.section_image"
+          v-if="section.section_image && !section.imageFailedToLoad"
           class="relative w-full flex justify-center object-cover sm:w-[280px] sm:h-[190px] md:w-[350px] md:h-[215px] rounded-md border-2 border-gray-300 bg-[#222]"
         >
           <img
+            @error="onImageError(index)"
             :src="section.section_image"
             alt="Section Image"
             class="object-cover h-full w-full"
@@ -434,5 +435,8 @@ const handleProcessStart = () => {
 
 const handleProcessEnd = () => {
   disabled.value = false;
+};
+const onImageError = (index) => {
+  sections.value[index].imageFailedToLoad = true;
 };
 </script>
