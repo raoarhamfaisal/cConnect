@@ -42,7 +42,7 @@ const translations = computed(() => store.getters.translations);
         <section id="powerfull tool" class="">
           <div class="flex justify-center">
             <span
-              class="text-3xl font-bold mb-4 text-center text-blue-rgba border-b-2 border-black"
+              class="text-xl sm:text-3xl font-bold mb-4 text-center text-blue-rgba border-b-2 border-black"
             >
               {{
                 translations &&
@@ -94,10 +94,10 @@ const translations = computed(() => store.getters.translations);
               </ul>
             </div>
             <div class="md:w-[50%] text-center">
-              <h1 class="text-3xl font-bold text-blue-rgba mb-1">
+              <h1 class="text-xl sm:text-3xl font-bold text-blue-rgba mb-1">
                 {{ translations && translations.its_a_game_changer }}
               </h1>
-              <h2 class="text-2xl font-bold mb-1 text-orange-accent">
+              <h2 class="text-xl sm:text-2xl font-bold mb-1 text-orange-accent">
                 {{
                   translations &&
                   translations.for_contractors_and_subcontractors_only
@@ -112,7 +112,9 @@ const translations = computed(() => store.getters.translations);
               <p class="text-xl text-blue-rgba font-bold">
                 {{ translations && translations.not_here_at_tcontractor }}
               </p>
-              <h3 class="mx-auto text-3xl font-bold text-red-600 max-w-[418px]">
+              <h3
+                class="mx-auto text-xl sm:text-3xl font-bold text-red-600 max-w-[418px]"
+              >
                 {{ translations && translations.important_tool_for_free }}
               </h3>
 
@@ -131,7 +133,22 @@ const translations = computed(() => store.getters.translations);
       <PricingVersions pageName="pricing" />
     </div>
   </div>
+  <div
+    v-else
+    class="h-[100vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4"
+  >
+    <div class="text-center text-xl">Loading...</div>
+    <v-progress-linear
+      color="#241e6d"
+      indeterminate
+      rounded
+      height="6"
+    ></v-progress-linear>
+  </div>
 
-  <WelcomeFooter :showit="showit" />
+  <WelcomeFooter
+    v-if="translations && Object.keys(translations).length > 0"
+    :showit="showit"
+  />
   <MoveToTop scrollableContainer="app" />
 </template>
