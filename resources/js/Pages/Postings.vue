@@ -11,7 +11,7 @@ import { Icon } from "@iconify/vue";
 
 import PostDisplay from "@/Components/tCon/PostDisplay.vue";
 
-import { Head, Link } from "@inertiajs/inertia-vue3";
+import { Head, Link, usePage } from "@inertiajs/inertia-vue3";
 import Loader from "@/Components/Ratings/Loader.vue";
 
 import { ref } from "vue";
@@ -184,7 +184,7 @@ export default {
       allPosts: this.posts.data,
       // (2) sets the URL to the first url - for looks
       initialUrl: this.$page.url,
-
+      url: usePage().url.value,
       textColors: [],
       backgroundColors: [],
 
@@ -561,7 +561,7 @@ export default {
     <!-- color="rgb(156 163 175)" -->
     <!-- POSTING CONTAINER -->
     <div
-      class="flex flex-col items-center justify-start mx-auto lg:mr-1 mt-[3.5rem] sm:mt-[4rem] lg:mt-0 shadow-md sm:rounded-3xl"
+      :class="`flex flex-col items-center justify-start mx-auto lg:mr-1 mt-2 lg:mt-0 shadow-md sm:rounded-3xl`"
     >
       <!-- FULL POST WRAPPER News Feed -->
       <div
@@ -569,7 +569,10 @@ export default {
         ref="postingsRef"
       >
         <!-- back page -->
-        <div v-if="contractor_id" class="self-start w-full mt-6 px-2">
+        <div
+          v-if="contractor_id"
+          class="self-start w-full mt-3 sm:mt-6 px-1 sm:px-2"
+        >
           <div class="flex relative gap-4 mb-4 items-center">
             <Link href="/post">
               <Icon
@@ -659,20 +662,22 @@ export default {
             :ref="index === postsToShow.length - 1 ? 'loadingPostsRef' : ''"
           >
             <!-- INDIVIDUAL POST DISPLAY WITH MENUS -->
-            <PostDisplay
-              @repostEdited="onRepostEdit"
-              @onRepost="onRespost"
-              :addedCommentInEnlarge="addedCommentInEnlarge"
-              :showit="showit"
-              :index="index"
-              :profile="profile"
-              :textColors="textColors"
-              :backgroundColors="backgroundColors"
-              :post="post"
-              :body1Colors="body1Colors"
-              @enlarge-post="EnlargePost"
-            >
-            </PostDisplay>
+            <transition name="accordion">
+              <PostDisplay
+                @repostEdited="onRepostEdit"
+                @onRepost="onRespost"
+                :addedCommentInEnlarge="addedCommentInEnlarge"
+                :showit="showit"
+                :index="index"
+                :profile="profile"
+                :textColors="textColors"
+                :backgroundColors="backgroundColors"
+                :post="post"
+                :body1Colors="body1Colors"
+                @enlarge-post="EnlargePost"
+              >
+              </PostDisplay>
+            </transition>
           </div>
 
           <div

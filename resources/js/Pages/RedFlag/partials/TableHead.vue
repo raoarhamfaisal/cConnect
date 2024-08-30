@@ -64,7 +64,7 @@
       </div>
     </div>
     <div
-      :class="`w-[20%] sm:w-[15%] header-cell`"
+      :class="`w-[30%] sm:w-[15%] header-cell`"
       style="text-align: center; font-weight: bold; color: white"
     >
       <div class="flex gap-2 justify-center items-center">

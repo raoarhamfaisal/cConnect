@@ -1,5 +1,5 @@
 <template>
-  <div v-if="contractor" class="bg-gray-200 mt-10 flex flex-col gap-10">
+  <div v-if="contractor" class="bg-gray-200 mt-1 flex flex-col gap-10">
     <Card
       :shadowLevel="2"
       bgColor="white"

@@ -131,15 +131,17 @@
         }}</label>
       </div>
 
-      <div class="grid grid-cols-2 gap-x-14 gap-y-3">
+      <div class="grid grid-cols-2 gap-x-2 sm:gap-x-14 gap-y-3">
         <div
           v-for="(option, index) in options"
           :key="index"
           class="flex items-center justify-between"
         >
-          <label :for="option.id" class="mr-2 text-xs font-bold">{{
-            option.name
-          }}</label>
+          <label
+            :for="option.id"
+            class="mr-2 text-[11px] sm:text-xs font-bold"
+            >{{ option.name }}</label
+          >
           <div class="switch-post" @click="toggleSwitch(option.id)">
             <div
               :class="[

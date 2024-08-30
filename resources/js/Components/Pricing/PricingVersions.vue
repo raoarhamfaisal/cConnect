@@ -36,6 +36,7 @@ const store = useStore();
 const pricingPlan = ref({});
 const freeConfirmDialog = ref();
 const freeActivatedDialog = ref();
+const stickyVersions = ref([]);
 
 const emit = defineEmits(["platinumSelected"]);
 
@@ -100,29 +101,68 @@ const faqsRef = ref(null);
 
 // Fetch your version values and define other component logic here...
 
+// const handleScroll = () => {
+//   console.log("in scroll mode");
+//   const headerElement = headerRef.value;
+//   const faqsElement = faqsRef.value;
+
+//   console.log(
+//     headerElement,
+//     // headerElement.getBoundingClientRect().top,
+//     // faqsElement.getBoundingClientRect().top,
+//     "top"
+//   );
+//   if (headerElement && faqsElement) {
+//     const headerTop = headerElement.getBoundingClientRect().top;
+//     const faqsTop = faqsElement.getBoundingClientRect().top;
+
+//     if (headerTop <= 0 && faqsTop >= 400) {
+//       // The header is at the top of the viewport and the FAQs are not at the top yet.
+//       isSticky.value = true;
+//     } else if (faqsTop < 400 || headerTop > 0) {
+//       // The header is no longer at the top or the FAQs are at the top of the viewport.
+//       isSticky.value = false;
+//     }
+//   }
+// };
+
 const handleScroll = () => {
-  console.log("in scroll mode");
-  const headerElement = headerRef.value;
-  const faqsElement = faqsRef.value;
+  if (!headerRef.value.length || !faqsRef.value) return;
 
-  console.log(
-    headerElement.getBoundingClientRect().top,
-
-    faqsElement.getBoundingClientRect().top,
-    "top"
+  // Getting bounding client rect for each header
+  const headerPositions = headerRef.value.map(
+    (header) => header.getBoundingClientRect().top
   );
-  if (headerElement && faqsElement) {
-    const headerTop = headerElement.getBoundingClientRect().top;
-    const faqsTop = faqsElement.getBoundingClientRect().top;
-
-    if (headerTop <= 0 && faqsTop >= 400) {
-      // The header is at the top of the viewport and the FAQs are not at the top yet.
-      isSticky.value = true;
-    } else if (faqsTop < 400 || headerTop > 0) {
-      // The header is no longer at the top or the FAQs are at the top of the viewport.
-      isSticky.value = false;
+  const faqsPosition = faqsRef.value.getBoundingClientRect().top;
+  console.log(headerPositions, faqsPosition, "header faqs position");
+  let elementTop = 30;
+  if (headerPositions.length === 3) {
+    if (headerPositions[0] <= elementTop && headerPositions[1] >= 400) {
+      // Only Free version should be shown
+      stickyVersions.value = ["Free"];
+    } else if (headerPositions[1] <= elementTop && headerPositions[2] >= 400) {
+      // Only Gold version should be shown
+      stickyVersions.value = ["Gold"];
+    } else if (headerPositions[2] <= elementTop && faqsPosition >= 400) {
+      // Platinum conditions, assuming FAQ position check is relevant here as well
+      stickyVersions.value = ["Platinum"];
+    } else {
+      stickyVersions.value = [""];
+    }
+  } else if (headerPositions.length === 2) {
+    if (headerPositions[0] <= elementTop && headerPositions[1] >= 400) {
+      // If there are only two headers (Gold and Platinum) and Gold is at the top, show only Gold
+      stickyVersions.value = ["Gold"];
+    } else if (headerPositions[1] <= elementTop && faqsPosition >= 400) {
+      // Only Gold version should be shown
+      stickyVersions.value = ["Platinum"];
+    } else {
+      stickyVersions.value = [""];
     }
   }
+
+  // Update isSticky based on first header's position
+  isSticky.value = headerPositions[0] <= elementTop;
 };
 
 onMounted(() => {
@@ -189,7 +229,7 @@ const onFreeSubmit = async () => {
       {},
       getAxiosConfig()
     );
-    console.log(response, "response");
+
     if (response.data) {
       freeActivatedDialog.value.openDialog();
     }
@@ -213,7 +253,6 @@ const configureUrlToVisit = () => {
     props.pageName === "profile-setup" ||
     (props.pageName === "settings" && userVersion.value === 1)
   ) {
-    console.log("in pricing plan");
     Inertia.visit("/pricing-plan");
   } else if (props.pageName === "settings" && userVersion.value === 2) {
     emit("platinumSelected", {});
@@ -824,7 +863,6 @@ const scrollToFAQs = () => {
         </span>
       </div>
 
-      <!-- tableHead  for Mobile-->
       <template v-for="version in displayVersions" :key="version">
         <div
           class="grid gap-x-1 versions-head"
@@ -1249,72 +1287,73 @@ const scrollToFAQs = () => {
           ? '56px'
           : '0',
     }"
-    class="grid gap-x-1 versions-head sticky"
-    :class="userVersion > 1 ? 'grid-cols-2' : 'grid-cols-3'"
+    class="grid grid-cols-3 versions-head sticky"
   >
     <!-- Free -->
-
-    <div
-      v-if="userVersion === 1 || userVersion === 0"
-      class="flex flex-col justify-between"
-    >
-      <img class="mb-3 h-full object-contain" src="./assets/freebox.png" />
-      <button
-        v-if="userVersion === 0"
-        @click="onFreeSelect"
-        class="mt-[2px] checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95"
+    <template v-for="version in stickyVersions" :key="version">
+      <div
+        v-if="version === 'Free'"
+        class="flex flex-col justify-between col-end-4 pt-1"
       >
-        {{ translations && translations.select }}
-      </button>
-    </div>
-    <!-- Gold -->
-    <div>
-      <div class="flex flex-col justify-start items-center h-full">
-        <div :class="`text-black text-lg font-bold `">
-          {{ translations && translations.gold }}
-        </div>
-        <div class="flex text-green-rgba font-extrabold mt-1">
-          <div class="text-lg self-center mt-[-30px]">$</div>
-          <div class="text-[50px] leading-[0.9]">
-            {{ formatPrice(pricingPlan.gold_advertised_price) }}
-          </div>
-        </div>
-        <div class="text-base font-semibold capitalize">
-          {{ translations && translations.per_month }}
-        </div>
+        <img class="mb-3 h-full object-contain" src="./assets/freebox.png" />
         <button
-          v-if="showGoldSelect && userVersion !== 2 && userVersion !== 3"
-          @click="onGoldSelect"
-          class="checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95 mt-auto"
+          @click="onFreeSelect"
+          v-if="userVersion === 0"
+          class="mt-[2px] checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95"
         >
           {{ translations && translations.select }}
         </button>
       </div>
-    </div>
-    <!-- Platinium -->
-    <div>
-      <div class="flex flex-col justify-center items-center h-full">
-        <div class="text-black text-lg font-bold">
-          {{ translations && translations.platinum }}
-        </div>
-        <div class="flex text-blue-rgba font-extrabold mt-1">
-          <div class="text-lg self-center mt-[-30px]">$</div>
+      <!-- Gold -->
 
-          <div class="text-[50px] t leading-[0.9]">
-            {{ formatPrice(pricingPlan.platinum_advertised_price) }}
+      <div v-else-if="version === 'Gold'" class="col-end-4 pt-1">
+        <div class="flex flex-col justify-start items-center h-full">
+          <div :class="`text-black text-lg font-bold `">
+            {{ translations && translations.gold }}
           </div>
+          <div class="flex text-green-rgba font-extrabold mt-1">
+            <div class="text-lg self-center mt-[-30px]">$</div>
+            <div class="text-[50px] leading-[0.9]">
+              {{ formatPrice(pricingPlan.gold_advertised_price) }}
+            </div>
+          </div>
+          <div class="text-base font-semibold capitalize">
+            {{ translations && translations.per_month }}
+          </div>
+          <button
+            @click="onGoldSelect"
+            v-if="showGoldSelect && userVersion !== 2 && userVersion !== 3"
+            class="checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95 mt-auto"
+          >
+            {{ translations && translations.select }}
+          </button>
         </div>
-        <div class="text-base font-semibold capitalize">
-          {{ translations && translations.per_month }}
-        </div>
-        <button
-          @click="onPlatinumSelect"
-          class="checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95 mt-auto"
-        >
-          {{ translations && translations.select }}
-        </button>
       </div>
-    </div>
+      <!-- Platinium -->
+      <div v-else-if="version === 'Platinum'" class="col-end-4 pt-1">
+        <div class="flex flex-col justify-center items-center h-full">
+          <div class="text-black text-lg font-bold">
+            {{ translations && translations.platinum }}
+          </div>
+          <div class="flex text-blue-rgba font-extrabold mt-1">
+            <div class="text-lg self-center mt-[-30px]">$</div>
+
+            <div class="text-[50px] t leading-[0.9]">
+              {{ formatPrice(pricingPlan.platinum_advertised_price) }}
+            </div>
+          </div>
+          <div class="text-base font-semibold capitalize">
+            {{ translations && translations.per_month }}
+          </div>
+          <button
+            @click="onPlatinumSelect"
+            class="checkout-button inline-block bg-blue-500 w-full text-white py-2 px-4 rounded-lg hover:bg-blue-600 bg-[#4169E1] transition transform duration-300 hover:shadow-lg active:scale-95 mt-auto"
+          >
+            {{ translations && translations.select }}
+          </button>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 <style scoped>

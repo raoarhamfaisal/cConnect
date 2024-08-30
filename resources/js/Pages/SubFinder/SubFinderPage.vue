@@ -349,7 +349,7 @@ const opneUpgradeToGoldOrPlatinumDialog = () => {
     color="#f9fafb"
   >
     <!-- color="#edecea" -->
-    <div class="mt-4 sm:mt-4 p-2 sm:p-4">
+    <div class="sm:mt-4 p-2 sm:p-4">
       <!-- back page -->
       <div class="flex relative gap-4 mb-8 items-center">
         <Link href="/post">

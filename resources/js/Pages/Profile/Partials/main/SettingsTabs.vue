@@ -221,7 +221,7 @@ const submitVerificationCode = async () => {
     <!-- </Card> -->
   </CustomDialog>
   <header v-if="showHeader" class="bg-gray-200">
-    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 max-lg:pt-10">
+    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
       <h2 class="font-bold text-xl text-blue-rgba leading-tight">
         {{ translations && translations.settings }}
       </h2>

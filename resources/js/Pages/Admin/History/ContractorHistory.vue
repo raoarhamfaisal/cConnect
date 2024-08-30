@@ -9,7 +9,7 @@
     :show-post-buttons="true"
     color="rgb(229 231 235 / var(--tw-bg-opacity))"
   >
-    <div class="bg-gray-200 mt-10 flex flex-col gap-6">
+    <div class="bg-gray-200 mt-1 flex flex-col gap-6">
       <div v-if="contractor" class="bg-gray-200">
         <Card
           :shadowLevel="2"

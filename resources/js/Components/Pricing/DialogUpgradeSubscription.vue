@@ -812,19 +812,6 @@ defineExpose({ openDialog });
 </script>
 
 <style scoped>
-.accordion-enter-active,
-.accordion-leave-active {
-  transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
-}
-.accordion-enter-from, .accordion-leave-to /* .accordion-leave-active in <2.6 */ {
-  max-height: 0;
-  opacity: 0;
-}
-.accordion-enter-to, .accordion-leave-from /* .accordion-enter-active in <2.6 */ {
-  max-height: 100em; /* large enough for content to fit */
-  opacity: 1;
-}
-
 ul {
   list-style-type: disc;
   padding-left: 20px;

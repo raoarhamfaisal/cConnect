@@ -317,7 +317,7 @@ const dontProceed = (areAllTradesSetToZero) => {
     <template v-slot:default="{ prev }">
       <v-stepper-header class="flex-col">
         <header v-if="showHeader" class="w-full">
-          <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 max-lg:pt-10">
+          <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <h2
               class="font-bold text-2xl sm:text-3xl text-blue-rgba leading-tight"
             >

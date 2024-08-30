@@ -67,7 +67,7 @@
       <div v-if="screenWidth >= 640" class="sm:w-[20%] text-center text-sm">
         {{ getRegionName(redFlag.region_id) }}
       </div>
-      <div class="w-[20%] sm:w-[15%] text-sm text-center">
+      <div class="w-[30%] sm:w-[15%] text-sm text-center">
         {{ convertDateFormatWith2DigitsYear(redFlag.updated_at) }}
       </div>
     </div>
@@ -162,7 +162,7 @@
               @paste="adjustHeight"
               @blur="stopTyping"
               @input="saveRedFlagComplaint"
-               :placeholder="translations && translations.type_your_notes"
+              :placeholder="translations && translations.type_your_notes"
               class="text-sm w-full py-1 min-h-[100px] overflow-y-hidden px-3 focus:shadow-none focus:ring-gray-600 focus:rounded bg-[#f9fafb] border-gray-200 text-grey-600 resize-none rounded focus-within:ring-gray-600 focus:border-gray-600"
             ></textarea>
           </div>
@@ -206,7 +206,7 @@
       <div
         class="section_text-lg font-bold pl-6 section_text-gray-800 mt-3 mb-2"
       >
-        {{translations && translations.do_you_want_to_remove_this_red_flag}} ?
+        {{ translations && translations.do_you_want_to_remove_this_red_flag }} ?
       </div>
     </div>
   </CustomDialog>

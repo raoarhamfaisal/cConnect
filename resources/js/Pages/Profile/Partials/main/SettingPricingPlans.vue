@@ -1,6 +1,6 @@
 <template>
   <div class="xl:p-5">
-    <h1 class="text-3xl font-bold mb-6 sm:mb-8">
+    <h1 class="text-xl sm:text-3xl font-bold mb-6 sm:mb-8">
       {{ translations && translations.choose_your_pricing_plan }} :
       <span class="text-blue-rgba">{{
         props.choosedVersion === "gold" ? "Gold Version" : "Platinum Version"
