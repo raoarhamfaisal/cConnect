@@ -162,7 +162,6 @@
   </footer>
 </template>
 <script setup>
-import { Link } from "@inertiajs/inertia-vue3";
 import tContractorWhite from "@/Components/tCon/tContractorWhite.vue";
 import { useStore } from "vuex";
 import { computed } from "vue";
