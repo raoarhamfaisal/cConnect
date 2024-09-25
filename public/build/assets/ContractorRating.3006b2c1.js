@@ -1,1 +1,1221 @@
-import{u as te,r as i,c as O,w as C,d as _,K as E,s as w,f as t,h as v,e as j,y as ve,g as B,t as y,R as Y,v as H,x as fe,l as b,z as Z,a7 as _e,X as ae,A as ge,B as se,m as J,p as ye,a2 as xe,n as N,D as Ie,o as Re,Z as ke,i as Se,F as $e,j as Ce}from"./app.907bb242.js";import{R as Te,_ as Oe}from"./Review.a038e96e.js";import{C as X}from"./Card.0c51827f.js";import{B as L}from"./Button.f68cd005.js";import{_ as pe}from"./PrimaryButton.d6b2dece.js";import{_ as ee}from"./InputError.a485c9eb.js";import{_ as Ee,A as je}from"./ContractorInfo.6f4506f5.js";import{_ as Q}from"./HeadingCard.ac3646cb.js";import{L as ce}from"./Loader.9dfd413c.js";import{S as Ae,C as Pe}from"./StarRatingEditable.6da32187.js";const De={key:0},Ne={class:"py-4 border-t-2 border-b-2 border-gray-300"},Be={key:0,class:"mb-4 mt-3"},Le=["placeholder"],Ue={class:"flex items-center gap-4 mt-6 w-full"},Ge={src:"/images/avatars/Spinner.gif",alt:"spinner",width:"30"},Fe={key:1},We={__name:"ReviewResponse",props:{review:{type:Object},profileId:{type:Number},contractorId:{type:Number}},emits:["responseAdded"],setup(c,{emit:U}){const{review:z}=c,x=te(),u=i(""),d=i(!1),k=i(""),e=i(!1),h=i(!1),I=i(""),$=i("");O(()=>x.getters.screenWidth);const g=O(()=>x.getters.translations),p=O(()=>x.getters.userVersion);C(()=>u.value,()=>{I.value=""}),C(()=>k.value,()=>{$.value=""}),C(()=>d.value,()=>{});const r=()=>{let f=!0;return I.value="",(!u.value||u.value.trim()==="")&&(I.value="Response should not be empty.",f=!1),f},T=async()=>{if(r()){const f={response_text:_e(u),review_id:z.id};e.value=!0,h.value=!0,console.log("payload.responseData",f);try{const l=await axios.post("/api/review-responses",f,ae());l.data&&(ge(l.data.message||"Review response added successfully!"),U("responseAdded",l.data.review_response))}catch{se()}finally{e.value=!1,h.value=!1}u.value="",A()}},A=()=>{if(p.value===1){x.commit("setIsUpgradeToGoldPlatinumDialogOpen",!0);return}d.value=!d.value},S=i(),V=f=>{if(f.key==="Tab"){f.preventDefault();const l=f.target.selectionStart,P=f.target.selectionEnd;u.value=u.value.substring(0,l)+"      "+u.value.substring(P),J(()=>{f.target.selectionStart=f.target.selectionEnd=l+6})}},G=()=>{console.log("here"),J(()=>{S.value.style.height="auto",S.value.style.height=S.value.scrollHeight+"px"})};return(f,l)=>(_(),E(X,{shadowLevel:4,bgColor:"#fff",isInside:!0,padding:"10px"},{default:w(()=>{var P;return[t("section",null,[v(Te,{review:c.review,nonEditableReview:!1,"show-appeal":c.contractorId===c.profileId,profileId:c.profileId,contractorId:c.contractorId},null,8,["review","show-appeal","profileId","contractorId"]),(!((P=c.review)!=null&&P.review_response)||Object.keys(c.review.review_response).length<1)&&c.contractorId===c.profileId?(_(),j("div",De,[t("div",Ne,[v(L,{onOnSelect:A,alwaysFalse:p.value===1,style:ve({boxShadow:"0px 0px 3px rgba(0, 0, 0, 0.12), 0px 0px 2px rgba(0, 0, 0, 0.12)",padding:"5px 10px"}),class:"w-full text-lg text-gray-600 font-semibold text-left rounded-lg"},{default:w(()=>[B(y(g.value&&g.value.write_your_response),1)]),_:1},8,["alwaysFalse","style"]),v(Y,{name:"accordion"},{default:w(()=>[d.value?(_(),j("div",Be,[H(t("textarea",{id:"responseText",type:"text",rows:5,class:"mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm overflow-hidden",required:"","onUpdate:modelValue":l[0]||(l[0]=n=>u.value=n),ref_key:"textRef",ref:S,onKeydown:V,onInput:G,onPaste:G,placeholder:g.value&&g.value.type_your_response_text},null,40,Le),[[fe,u.value]]),I.value?(_(),E(ee,{key:0,class:"mt-2",message:I.value},null,8,["message"])):b("",!0),t("div",Ue,[v(pe,{style:{height:"42px"},onClick:T,disabled:h.value,class:"w-full flex justify-center gap-2"},{default:w(()=>[t("div",null,y(g.value&&g.value.add),1),H(t("img",Ge,null,512),[[Z,e.value]])]),_:1},8,["disabled"])])])):b("",!0)]),_:1})])])):b("",!0),c.review.review_response&&Object.keys(c.review.review_response).length>1?(_(),j("div",Fe,[v(Oe,{response:c.review.review_response,contractorId:c.contractorId,profileId:c.profileId},null,8,["response","contractorId","profileId"])])):b("",!0)])]}),_:1}))}},Me={class:"text-sm font-bold mb-3 text-gray-600"},He={class:"mb-4"},ze={class:"text-sm font-bold text-gray-600 mt-3 mb-2"},Ke=["placeholder"],qe={class:"flex items-center justify-between sm:w-96 mb-5"},Je={class:"text-md font-bold text-gray-600 mt-3 mb-2"},Ve={class:"flex items-center justify-between sm:w-96 mb-5"},Xe={class:"text-md font-bold text-gray-600 mt-3 mb-2"},Ze={class:"flex items-center justify-between sm:w-96 mb-5"},Qe={class:"text-md font-bold text-gray-600 mt-3 mb-2"},Ye={class:"flex items-center justify-between sm:w-96 mb-5"},et={class:"text-md font-bold text-gray-600 mt-3 mb-2"},tt={class:"flex items-center gap-4 mt-6 w-full"},at=t("div",null,"Add",-1),st={src:"/images/avatars/Spinner.gif",alt:"spinner",width:"30"},lt={__name:"GiveRating",props:{profileId:{type:Number},contractorId:{type:Number}},emits:["addReview"],setup(c,{emit:U}){const{profileId:z,contractorId:x}=c,u=["tContractor Referral","Friend Referral","Other Contractor","Job Site","Store/Gas Station","Other"],d=ye({rating_reason:"",hired_by_contractor:!1,paid_on_time:!1,hired_contractor:!1,paid_them:!1,rating:0}),k=te(),e=xe(d),h=i("tContractor Referral"),I=i(!1),$=i(!1),g=i(""),p=i(""),r=O(()=>k.getters.translations);C(()=>e.rating.value,()=>{g.value=""}),C(()=>e.rating_reason.value,()=>{p.value=""});function T(n){e.rating.value=n}const A=n=>{h.value=n},S=n=>{e[n].value=!e[n].value},V=()=>{let n=!0;return g.value="",p.value="",(e.rating.value<=0||e.rating.value>5)&&(g.value=r.value&&r.value.rating_should_be_greate_than_zero,n=!1),(!e.rating_reason.value||e.rating_reason.value.trim()==="")&&(p.value=r.value&&r.value.rating_should_not_be_empty,n=!1),n},G=async()=>{if(V())try{console.log("profileId",z),I.value=!0,$.value=!0;const n={rating_text:_e(e.rating_reason),hired_by_contractor:e.hired_by_contractor.value,paid_on_time:e.paid_on_time.value,hired_contractor:e.hired_contractor.value,give_full_payment:e.paid_them.value,how_did_you_meet_this_contractor:h.value,rating:e.rating.value,reviewer_id:z,contractor_id:x,is_under_appeal:!1};(await axios.post("/api/reviews",n,ae())).data&&(ge("Review Successfully Created"),setTimeout(()=>{U("addReview"),console.log("this executed3"),k.commit("ratings/setShouldLoadPosts",!1),k.commit("ratings/setShouldFetchPostsOnClose",!0)},2e3))}catch(n){console.log(n),se(n.response.data.message,500)}finally{I.value=!1,$.value=!1}},f=i(),l=n=>{if(n.key==="Tab"){n.preventDefault();const m=n.target.selectionStart,D=n.target.selectionEnd;d.rating_reason=d.rating_reason.substring(0,m)+"      "+d.rating_reason.substring(D),J(()=>{n.target.selectionStart=n.target.selectionEnd=m+6})}},P=()=>{J(()=>{f.value.style.height="auto",f.value.style.height=f.value.scrollHeight+"px"})};return(n,m)=>(_(),j("div",null,[t("div",Me,y(r.value&&r.value.select_your_rating),1),v(Ae,{ratingGlobal:d.rating,"onUpdate:rating":T},null,8,["ratingGlobal"]),g.value?(_(),E(ee,{key:0,class:"mt-2",message:g.value},null,8,["message"])):b("",!0),t("div",He,[t("div",ze,y(r.value&&r.value.please_provide_the_basis_for_your_rating),1),H(t("textarea",{id:"rating_reason",type:"text",rows:3,class:"mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm overflow-hidden",required:"","onUpdate:modelValue":m[0]||(m[0]=D=>d.rating_reason=D),ref_key:"textRef",ref:f,onKeydown:l,onInput:P,onPaste:P,placeholder:r.value&&r.value.type_reason_for_your_rating},null,40,Ke),[[fe,d.rating_reason]]),p.value?(_(),E(ee,{key:0,class:"mt-2",message:p.value},null,8,["message"])):b("",!0)]),t("div",qe,[t("div",Je,y(r.value&&r.value.were_you_hired_by_this_contractor),1),t("div",{class:"switch",onClick:m[1]||(m[1]=D=>S("hired_by_contractor"))},[t("div",{class:N([d.hired_by_contractor?"switch-bg-on":"switch-bg-off"])},[t("div",{class:N([d.hired_by_contractor?"switch-knob-on":"switch-knob-off"])},null,2)],2)])]),t("div",Ve,[t("div",Xe,y(r.value&&r.value.were_you_paid_on_time),1),t("div",{class:"switch",onClick:m[2]||(m[2]=D=>S("paid_on_time"))},[t("div",{class:N([d.paid_on_time?"switch-bg-on":"switch-bg-off"])},[t("div",{class:N([d.paid_on_time?"switch-knob-on":"switch-knob-off"])},null,2)],2)])]),t("div",Ze,[t("div",Qe,y(r.value&&r.value.did_you_hire_this_contractor),1),t("div",{class:"switch",onClick:m[3]||(m[3]=D=>S("hired_contractor"))},[t("div",{class:N([d.hired_contractor?"switch-bg-on":"switch-bg-off"])},[t("div",{class:N([d.hired_contractor?"switch-knob-on":"switch-knob-off"])},null,2)],2)])]),t("div",Ye,[t("div",et,y(r.value&&r.value.did_you_give_full_payment),1),t("div",{class:"switch",onClick:m[4]||(m[4]=D=>S("paid_them"))},[t("div",{class:N([d.paid_them?"switch-bg-on":"switch-bg-off"])},[t("div",{class:N([d.paid_them?"switch-knob-on":"switch-knob-off"])},null,2)],2)])]),v(Pe,{options:u,modelValue:h.value,"onUpdate:modelValue":A,label:r.value&&r.value.how_did_you_meet_this_contractor},null,8,["modelValue","label"]),t("div",tt,[v(pe,{style:{height:"42px"},onClick:G,disabled:$.value,class:"w-full flex justify-center gap-2"},{default:w(()=>[at,H(t("img",st,null,512),[[Z,I.value]])]),_:1},8,["disabled"])])]))}},ot={key:0},rt={class:"flex flex-col gap-10"},nt={key:1},it={class:"border-t-2 border-gray-300"},dt={class:"mb-6"},ut={class:"flex gap-3 flex-wrap"},ct={key:2,class:"py-4 border-t-2 border-b-2 border-gray-300"},vt={class:"mb-6 border-gray-300"},ft={key:0,class:"flex gap-8 flex-col"},_t={key:1},gt={class:"p-2 text-xl text-grey-600 font-bold h-60 flex items-center justify-center"},St={__name:"ContractorRating",props:{contractorDetails:Object,profileId:[Number,String]},setup(c){const{contractorDetails:U,profileId:z}=c,x=te(),u=i(1),d=i(!1),k=i(null),e=i([]),h=i(!1),I=i([]),$=i(null),g=i({}),p=i("latest"),r=i(0),T=i(15),A=i(!1),S=i(),G=Ie().props.value.auth.user;Re(async()=>{h.value=!0,await F(),h.value=!1,g.value=U,setTimeout(()=>{const a=o=>{o.forEach(R=>{R.isIntersecting&&he()})};new IntersectionObserver(a,{rootMargin:"0px 0px 0px 0px",threshold:0}).observe(S.value)},1e3)});const f=O(()=>x.getters.screenWidth),l=O(()=>x.getters.translations),P=O(()=>x.state.ratings.reviewId),n=O(()=>x.state.ratings.responseId),m=O(()=>x.state.ratings.updatedReview),D=O(()=>x.state.ratings.updatedResponse);C(m,a=>{if(a&&a.id){const s=e.value.findIndex(o=>o.id===a.id);s!==-1&&Object.assign(e.value[s],a),F(T.value,u.value,!1,!0)}}),C(D,a=>{if(a&&a.id){const s=e.value.find(o=>o.id===a.review_id);if(s){s.review_response=a;const o=e.value.findIndex(R=>R.id===a.review_id);o!==-1&&(e.value=e.value.map((R,W)=>W===o?s:R))}}}),C(P,a=>{if(a){const s=e.value.findIndex(o=>o.id===a);s!==-1&&e.value.splice(s,1),F(T.value,u.value,!1,!0)}}),C(n,a=>{if(a){const s=e.value.findIndex(o=>o.review_response.id===a);s!==-1&&delete e.value[s].review_response}}),C(()=>$.value,(a,s)=>{a!=s&&x.commit("ratings/SET_AVERAGE_RATING",a)}),C(()=>r.value.total,(a,s)=>{a!=s&&x.commit("ratings/SET_LENGTH",a)});const he=async()=>{A.value=!0,u.value=u.value+1,await F(T.value,u.value),A.value=!1},K=(a,s)=>{a&&(p.value=s),me()},me=async(a=!1)=>{h.value=!0,await F(T.value,u.value,!1,a),h.value=!1},F=async(a=T.value,s=1,o=!0,R=!1)=>{let W="",oe="";p.value==="latest"||p.value==="oldest"?W=p.value:oe=p.value;try{const M=await ke.get(`/api/reviews/${U.id}?per_page=${a}&page=${s}&sort_by_date=${W}&sort_by_rating=${oe}`,ae());o?e.value=[...e.value,...M.data.reviews]:R||(e.value=[...M.data.reviews]),r.value=M.data.pagination,$.value=M.data.average_rating;const{five_stars_count:re,four_stars_count:ne,three_stars_count:ie,two_stars_count:de,one_star_count:ue}=M.data,q=re+ne+ie+de+ue;I.value=[re/q*100,ne/q*100,ie/q*100,de/q*100,ue/q*100]}catch{se()}},le=async()=>{d.value=!d.value,d.value&&(await J(),setTimeout(()=>{k.value&&k.value.$el&&k.value.$el.scrollIntoView?(k.value.$el||k.value).scrollIntoView({behavior:"smooth",block:"start",inline:"start"}):console.error("Unexpected issue with the ref")},250))},we=async()=>{h.value=!0,u.value=1,await F(T.value,u.value,!1),h.value=!1,le()},be=a=>{if(a&&a.id){const s=e.value.find(o=>o.id===a.review_id);if(s){s.review_response=a;const o=e.value.findIndex(R=>R.id===a.review_id);o!==-1&&(e.value=e.value.map((R,W)=>W===o?s:R))}}};return(a,s)=>g.value?(_(),j("div",ot,[t("div",rt,[v(X,{shadowLevel:2,bgColor:"white",padding:f.value<640?"7px":"20px"},{default:w(()=>[Object.keys(g.value).length>0?(_(),E(Ee,{key:0,contractor:g.value},null,8,["contractor"])):b("",!0),v(ce,{loading:h.value,background:"",height:"60vh"},null,8,["loading"]),h.value?b("",!0):(_(),j("div",nt,[$.value&&I.value?(_(),E(Q,{key:0,heading:l.value&&l.value.average_ratings,class:"mb-6"},null,8,["heading"])):b("",!0),$.value&&I.value?(_(),E(je,{key:1,averageRating:$.value,starPercentages:I.value,length:r.value.total,class:"mb-6"},null,8,["averageRating","starPercentages","length"])):b("",!0),t("div",it,[v(Q,{class:"mt-4",heading:l.value&&l.value.order_reviews_by},null,8,["heading"]),t("div",dt,[t("div",ut,[v(L,{selected:p.value==="latest",onOnSelect:s[0]||(s[0]=o=>K(o,"latest"))},{default:w(()=>[B(y(l.value&&l.value.latest),1)]),_:1},8,["selected"]),v(L,{selected:p.value==="oldest",onOnSelect:s[1]||(s[1]=o=>K(o,"oldest"))},{default:w(()=>[B(y(l.value&&l.value.oldest),1)]),_:1},8,["selected"]),v(L,{selected:p.value==="highest",onOnSelect:s[2]||(s[2]=o=>K(o,"highest"))},{default:w(()=>[B(y(l.value&&l.value.highest_rated),1)]),_:1},8,["selected"]),v(L,{selected:p.value==="middle",onOnSelect:s[3]||(s[3]=o=>K(o,"middle"))},{default:w(()=>[B(y(l.value&&l.value.middle_rated),1)]),_:1},8,["selected"]),v(L,{selected:p.value==="lowest",onOnSelect:s[4]||(s[4]=o=>K(o,"lowest"))},{default:w(()=>[B(y(l.value&&l.value.low_rated),1)]),_:1},8,["selected"])])])]),parseInt(Se(G).id)!==parseInt(c.contractorDetails.user_id)?(_(),j("div",ct,[v(L,{ref_key:"cardRef",ref:k,onOnSelect:le,style:ve({boxShadow:"0px 0px 3px rgba(0, 0, 0, 0.12), 0px 0px 2px rgba(0, 0, 0, 0.12)"}),class:"w-full text-2xl text-left rounded-lg"},{default:w(()=>[B(y(l.value&&l.value.write_a_review),1)]),_:1},8,["style"]),v(Y,{name:"accordion"},{default:w(()=>[d.value?(_(),E(X,{key:0,shadowLevel:1,bgColor:"white",padding:"10px",class:"mt-8"},{default:w(()=>[v(Y,{name:"accordion"},{default:w(()=>[v(lt,{profileId:c.profileId,contractorId:g.value.id,onAddReview:we},null,8,["profileId","contractorId"])]),_:1})]),_:1})):b("",!0)]),_:1})])):b("",!0)]))]),_:1},8,["padding"]),h.value?b("",!0):(_(),E(X,{key:0,shadowLevel:2,bgColor:"#fff",padding:f.value<640?"7px":"20px"},{default:w(()=>[t("div",vt,[v(Q,{heading:l.value&&l.value.reviews,class:"mt-4 mb-6"},null,8,["heading"]),e.value&&e.value.length>0?(_(),j("div",ft,[(_(!0),j($e,null,Ce(e.value,(o,R)=>(_(),E(We,{key:R,review:o,onResponseAdded:be,contractorId:g.value.id,profileId:c.profileId},null,8,["review","contractorId","profileId"]))),128))])):b("",!0),e.value&&e.value.length===0?(_(),j("div",_t,[t("div",gt,y(l.value&&l.value.no_reviews_available_for_this_contractor),1)])):b("",!0)]),H(t("div",{ref_key:"loadMoreIntersect",ref:S,style:{width:"5px",height:"5px"}},null,512),[[Z,+u.value!=+r.value.last_page]]),H(t("div",{class:"text-center font-bold"},y(l.value&&l.value.no_more_reviews_to_load),513),[[Z,u.value>1&&!A.value&&+u.value==+r.value.last_page]]),v(ce,{classes:"flex gap-2",loading:A.value,circleClasses:"small-circle",textClasses:"small-text",background:"",height:"70px"},null,8,["loading"])]),_:1},8,["padding"]))])])):b("",!0)}};export{St as _};
+import {
+  u as te,
+  r as i,
+  c as O,
+  w as C,
+  d as _,
+  K as E,
+  s as w,
+  f as t,
+  h as v,
+  e as j,
+  y as ve,
+  g as B,
+  t as y,
+  R as Y,
+  v as H,
+  x as fe,
+  l as b,
+  z as Z,
+  a7 as _e,
+  X as ae,
+  A as ge,
+  B as se,
+  m as J,
+  p as ye,
+  a2 as xe,
+  n as N,
+  D as Ie,
+  o as Re,
+  Z as ke,
+  i as Se,
+  F as $e,
+  j as Ce,
+} from "./app.907bb242.js";
+import { R as Te, _ as Oe } from "./Review.a038e96e.js";
+import { C as X } from "./Card.0c51827f.js";
+import { B as L } from "./Button.f68cd005.js";
+import { _ as pe } from "./PrimaryButton.d6b2dece.js";
+import { _ as ee } from "./InputError.a485c9eb.js";
+import { _ as Ee, A as je } from "./ContractorInfo.6f4506f5.js";
+import { _ as Q } from "./HeadingCard.ac3646cb.js";
+import { L as ce } from "./Loader.9dfd413c.js";
+import { S as Ae, C as Pe } from "./StarRatingEditable.6da32187.js";
+const De = { key: 0 },
+  Ne = { class: "py-4 border-t-2 border-b-2 border-gray-300" },
+  Be = { key: 0, class: "mb-4 mt-3" },
+  Le = ["placeholder"],
+  Ue = { class: "flex items-center gap-4 mt-6 w-full" },
+  Ge = { src: "/images/avatars/Spinner.gif", alt: "spinner", width: "30" },
+  Fe = { key: 1 },
+  We = {
+    __name: "ReviewResponse",
+    props: {
+      review: { type: Object },
+      profileId: { type: Number },
+      contractorId: { type: Number },
+    },
+    emits: ["responseAdded"],
+    setup(c, { emit: U }) {
+      const { review: z } = c,
+        x = te(),
+        u = i(""),
+        d = i(!1),
+        k = i(""),
+        e = i(!1),
+        h = i(!1),
+        I = i(""),
+        $ = i("");
+      O(() => x.getters.screenWidth);
+      const g = O(() => x.getters.translations),
+        p = O(() => x.getters.userVersion);
+      C(
+        () => u.value,
+        () => {
+          I.value = "";
+        }
+      ),
+        C(
+          () => k.value,
+          () => {
+            $.value = "";
+          }
+        ),
+        C(
+          () => d.value,
+          () => {}
+        );
+      const r = () => {
+          let f = !0;
+          return (
+            (I.value = ""),
+            (!u.value || u.value.trim() === "") &&
+              ((I.value = "Response should not be empty."), (f = !1)),
+            f
+          );
+        },
+        T = async () => {
+          if (r()) {
+            const f = { response_text: _e(u), review_id: z.id };
+            (e.value = !0),
+              (h.value = !0),
+              console.log("payload.responseData", f);
+            try {
+              const l = await axios.post("/api/review-responses", f, ae());
+              l.data &&
+                (ge(l.data.message || "Review response added successfully!"),
+                U("responseAdded", l.data.review_response));
+            } catch {
+              se();
+            } finally {
+              (e.value = !1), (h.value = !1);
+            }
+            (u.value = ""), A();
+          }
+        },
+        A = () => {
+          if (p.value === 1) {
+            x.commit("setIsUpgradeToGoldPlatinumDialogOpen", !0);
+            return;
+          }
+          d.value = !d.value;
+        },
+        S = i(),
+        V = (f) => {
+          if (f.key === "Tab") {
+            f.preventDefault();
+            const l = f.target.selectionStart,
+              P = f.target.selectionEnd;
+            (u.value =
+              u.value.substring(0, l) + "      " + u.value.substring(P)),
+              J(() => {
+                f.target.selectionStart = f.target.selectionEnd = l + 6;
+              });
+          }
+        },
+        G = () => {
+          console.log("here"),
+            J(() => {
+              (S.value.style.height = "auto"),
+                (S.value.style.height = S.value.scrollHeight + "px");
+            });
+        };
+      return (f, l) => (
+        _(),
+        E(
+          X,
+          { shadowLevel: 4, bgColor: "#fff", isInside: !0, padding: "10px" },
+          {
+            default: w(() => {
+              var P;
+              return [
+                t("section", null, [
+                  v(
+                    Te,
+                    {
+                      review: c.review,
+                      nonEditableReview: !1,
+                      "show-appeal": c.contractorId === c.profileId,
+                      profileId: c.profileId,
+                      contractorId: c.contractorId,
+                    },
+                    null,
+                    8,
+                    ["review", "show-appeal", "profileId", "contractorId"]
+                  ),
+                  (!((P = c.review) != null && P.review_response) ||
+                    Object.keys(c.review.review_response).length < 1) &&
+                  c.contractorId === c.profileId
+                    ? (_(),
+                      j("div", De, [
+                        t("div", Ne, [
+                          v(
+                            L,
+                            {
+                              onOnSelect: A,
+                              alwaysFalse: p.value === 1,
+                              style: ve({
+                                boxShadow:
+                                  "0px 0px 3px rgba(0, 0, 0, 0.12), 0px 0px 2px rgba(0, 0, 0, 0.12)",
+                                padding: "5px 10px",
+                              }),
+                              class:
+                                "w-full text-lg text-gray-600 font-semibold text-left rounded-lg",
+                            },
+                            {
+                              default: w(() => [
+                                B(y(g.value && g.value.write_your_response), 1),
+                              ]),
+                              _: 1,
+                            },
+                            8,
+                            ["alwaysFalse", "style"]
+                          ),
+                          v(
+                            Y,
+                            { name: "accordion" },
+                            {
+                              default: w(() => [
+                                d.value
+                                  ? (_(),
+                                    j("div", Be, [
+                                      H(
+                                        t(
+                                          "textarea",
+                                          {
+                                            id: "responseText",
+                                            type: "text",
+                                            rows: 5,
+                                            class:
+                                              "mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm overflow-hidden",
+                                            required: "",
+                                            "onUpdate:modelValue":
+                                              l[0] ||
+                                              (l[0] = (n) => (u.value = n)),
+                                            ref_key: "textRef",
+                                            ref: S,
+                                            onKeydown: V,
+                                            onInput: G,
+                                            onPaste: G,
+                                            placeholder:
+                                              g.value &&
+                                              g.value.type_your_response_text,
+                                          },
+                                          null,
+                                          40,
+                                          Le
+                                        ),
+                                        [[fe, u.value]]
+                                      ),
+                                      I.value
+                                        ? (_(),
+                                          E(
+                                            ee,
+                                            {
+                                              key: 0,
+                                              class: "mt-2",
+                                              message: I.value,
+                                            },
+                                            null,
+                                            8,
+                                            ["message"]
+                                          ))
+                                        : b("", !0),
+                                      t("div", Ue, [
+                                        v(
+                                          pe,
+                                          {
+                                            style: { height: "42px" },
+                                            onClick: T,
+                                            disabled: h.value,
+                                            class:
+                                              "w-full flex justify-center gap-2",
+                                          },
+                                          {
+                                            default: w(() => [
+                                              t(
+                                                "div",
+                                                null,
+                                                y(g.value && g.value.add),
+                                                1
+                                              ),
+                                              H(t("img", Ge, null, 512), [
+                                                [Z, e.value],
+                                              ]),
+                                            ]),
+                                            _: 1,
+                                          },
+                                          8,
+                                          ["disabled"]
+                                        ),
+                                      ]),
+                                    ]))
+                                  : b("", !0),
+                              ]),
+                              _: 1,
+                            }
+                          ),
+                        ]),
+                      ]))
+                    : b("", !0),
+                  c.review.review_response &&
+                  Object.keys(c.review.review_response).length > 1
+                    ? (_(),
+                      j("div", Fe, [
+                        v(
+                          Oe,
+                          {
+                            response: c.review.review_response,
+                            contractorId: c.contractorId,
+                            profileId: c.profileId,
+                          },
+                          null,
+                          8,
+                          ["response", "contractorId", "profileId"]
+                        ),
+                      ]))
+                    : b("", !0),
+                ]),
+              ];
+            }),
+            _: 1,
+          }
+        )
+      );
+    },
+  },
+  Me = { class: "text-sm font-bold mb-3 text-gray-600" },
+  He = { class: "mb-4" },
+  ze = { class: "text-sm font-bold text-gray-600 mt-3 mb-2" },
+  Ke = ["placeholder"],
+  qe = { class: "flex items-center justify-between sm:w-96 mb-5" },
+  Je = { class: "text-md font-bold text-gray-600 mt-3 mb-2" },
+  Ve = { class: "flex items-center justify-between sm:w-96 mb-5" },
+  Xe = { class: "text-md font-bold text-gray-600 mt-3 mb-2" },
+  Ze = { class: "flex items-center justify-between sm:w-96 mb-5" },
+  Qe = { class: "text-md font-bold text-gray-600 mt-3 mb-2" },
+  Ye = { class: "flex items-center justify-between sm:w-96 mb-5" },
+  et = { class: "text-md font-bold text-gray-600 mt-3 mb-2" },
+  tt = { class: "flex items-center gap-4 mt-6 w-full" },
+  at = t("div", null, "Add", -1),
+  st = { src: "/images/avatars/Spinner.gif", alt: "spinner", width: "30" },
+  lt = {
+    __name: "GiveRating",
+    props: { profileId: { type: Number }, contractorId: { type: Number } },
+    emits: ["addReview"],
+    setup(c, { emit: U }) {
+      const { profileId: z, contractorId: x } = c,
+        u = [
+          "cConnect Referral",
+          "Friend Referral",
+          "Other Contractor",
+          "Job Site",
+          "Store/Gas Station",
+          "Other",
+        ],
+        d = ye({
+          rating_reason: "",
+          hired_by_contractor: !1,
+          paid_on_time: !1,
+          hired_contractor: !1,
+          paid_them: !1,
+          rating: 0,
+        }),
+        k = te(),
+        e = xe(d),
+        h = i("cConnect Referral"),
+        I = i(!1),
+        $ = i(!1),
+        g = i(""),
+        p = i(""),
+        r = O(() => k.getters.translations);
+      C(
+        () => e.rating.value,
+        () => {
+          g.value = "";
+        }
+      ),
+        C(
+          () => e.rating_reason.value,
+          () => {
+            p.value = "";
+          }
+        );
+      function T(n) {
+        e.rating.value = n;
+      }
+      const A = (n) => {
+          h.value = n;
+        },
+        S = (n) => {
+          e[n].value = !e[n].value;
+        },
+        V = () => {
+          let n = !0;
+          return (
+            (g.value = ""),
+            (p.value = ""),
+            (e.rating.value <= 0 || e.rating.value > 5) &&
+              ((g.value = r.value && r.value.rating_should_be_greate_than_zero),
+              (n = !1)),
+            (!e.rating_reason.value || e.rating_reason.value.trim() === "") &&
+              ((p.value = r.value && r.value.rating_should_not_be_empty),
+              (n = !1)),
+            n
+          );
+        },
+        G = async () => {
+          if (V())
+            try {
+              console.log("profileId", z), (I.value = !0), ($.value = !0);
+              const n = {
+                rating_text: _e(e.rating_reason),
+                hired_by_contractor: e.hired_by_contractor.value,
+                paid_on_time: e.paid_on_time.value,
+                hired_contractor: e.hired_contractor.value,
+                give_full_payment: e.paid_them.value,
+                how_did_you_meet_this_contractor: h.value,
+                rating: e.rating.value,
+                reviewer_id: z,
+                contractor_id: x,
+                is_under_appeal: !1,
+              };
+              (await axios.post("/api/reviews", n, ae())).data &&
+                (ge("Review Successfully Created"),
+                setTimeout(() => {
+                  U("addReview"),
+                    console.log("this executed3"),
+                    k.commit("ratings/setShouldLoadPosts", !1),
+                    k.commit("ratings/setShouldFetchPostsOnClose", !0);
+                }, 2e3));
+            } catch (n) {
+              console.log(n), se(n.response.data.message, 500);
+            } finally {
+              (I.value = !1), ($.value = !1);
+            }
+        },
+        f = i(),
+        l = (n) => {
+          if (n.key === "Tab") {
+            n.preventDefault();
+            const m = n.target.selectionStart,
+              D = n.target.selectionEnd;
+            (d.rating_reason =
+              d.rating_reason.substring(0, m) +
+              "      " +
+              d.rating_reason.substring(D)),
+              J(() => {
+                n.target.selectionStart = n.target.selectionEnd = m + 6;
+              });
+          }
+        },
+        P = () => {
+          J(() => {
+            (f.value.style.height = "auto"),
+              (f.value.style.height = f.value.scrollHeight + "px");
+          });
+        };
+      return (n, m) => (
+        _(),
+        j("div", null, [
+          t("div", Me, y(r.value && r.value.select_your_rating), 1),
+          v(Ae, { ratingGlobal: d.rating, "onUpdate:rating": T }, null, 8, [
+            "ratingGlobal",
+          ]),
+          g.value
+            ? (_(),
+              E(ee, { key: 0, class: "mt-2", message: g.value }, null, 8, [
+                "message",
+              ]))
+            : b("", !0),
+          t("div", He, [
+            t(
+              "div",
+              ze,
+              y(r.value && r.value.please_provide_the_basis_for_your_rating),
+              1
+            ),
+            H(
+              t(
+                "textarea",
+                {
+                  id: "rating_reason",
+                  type: "text",
+                  rows: 3,
+                  class:
+                    "mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm overflow-hidden",
+                  required: "",
+                  "onUpdate:modelValue":
+                    m[0] || (m[0] = (D) => (d.rating_reason = D)),
+                  ref_key: "textRef",
+                  ref: f,
+                  onKeydown: l,
+                  onInput: P,
+                  onPaste: P,
+                  placeholder: r.value && r.value.type_reason_for_your_rating,
+                },
+                null,
+                40,
+                Ke
+              ),
+              [[fe, d.rating_reason]]
+            ),
+            p.value
+              ? (_(),
+                E(ee, { key: 0, class: "mt-2", message: p.value }, null, 8, [
+                  "message",
+                ]))
+              : b("", !0),
+          ]),
+          t("div", qe, [
+            t(
+              "div",
+              Je,
+              y(r.value && r.value.were_you_hired_by_this_contractor),
+              1
+            ),
+            t(
+              "div",
+              {
+                class: "switch",
+                onClick: m[1] || (m[1] = (D) => S("hired_by_contractor")),
+              },
+              [
+                t(
+                  "div",
+                  {
+                    class: N([
+                      d.hired_by_contractor ? "switch-bg-on" : "switch-bg-off",
+                    ]),
+                  },
+                  [
+                    t(
+                      "div",
+                      {
+                        class: N([
+                          d.hired_by_contractor
+                            ? "switch-knob-on"
+                            : "switch-knob-off",
+                        ]),
+                      },
+                      null,
+                      2
+                    ),
+                  ],
+                  2
+                ),
+              ]
+            ),
+          ]),
+          t("div", Ve, [
+            t("div", Xe, y(r.value && r.value.were_you_paid_on_time), 1),
+            t(
+              "div",
+              {
+                class: "switch",
+                onClick: m[2] || (m[2] = (D) => S("paid_on_time")),
+              },
+              [
+                t(
+                  "div",
+                  {
+                    class: N([
+                      d.paid_on_time ? "switch-bg-on" : "switch-bg-off",
+                    ]),
+                  },
+                  [
+                    t(
+                      "div",
+                      {
+                        class: N([
+                          d.paid_on_time ? "switch-knob-on" : "switch-knob-off",
+                        ]),
+                      },
+                      null,
+                      2
+                    ),
+                  ],
+                  2
+                ),
+              ]
+            ),
+          ]),
+          t("div", Ze, [
+            t("div", Qe, y(r.value && r.value.did_you_hire_this_contractor), 1),
+            t(
+              "div",
+              {
+                class: "switch",
+                onClick: m[3] || (m[3] = (D) => S("hired_contractor")),
+              },
+              [
+                t(
+                  "div",
+                  {
+                    class: N([
+                      d.hired_contractor ? "switch-bg-on" : "switch-bg-off",
+                    ]),
+                  },
+                  [
+                    t(
+                      "div",
+                      {
+                        class: N([
+                          d.hired_contractor
+                            ? "switch-knob-on"
+                            : "switch-knob-off",
+                        ]),
+                      },
+                      null,
+                      2
+                    ),
+                  ],
+                  2
+                ),
+              ]
+            ),
+          ]),
+          t("div", Ye, [
+            t("div", et, y(r.value && r.value.did_you_give_full_payment), 1),
+            t(
+              "div",
+              {
+                class: "switch",
+                onClick: m[4] || (m[4] = (D) => S("paid_them")),
+              },
+              [
+                t(
+                  "div",
+                  {
+                    class: N([d.paid_them ? "switch-bg-on" : "switch-bg-off"]),
+                  },
+                  [
+                    t(
+                      "div",
+                      {
+                        class: N([
+                          d.paid_them ? "switch-knob-on" : "switch-knob-off",
+                        ]),
+                      },
+                      null,
+                      2
+                    ),
+                  ],
+                  2
+                ),
+              ]
+            ),
+          ]),
+          v(
+            Pe,
+            {
+              options: u,
+              modelValue: h.value,
+              "onUpdate:modelValue": A,
+              label: r.value && r.value.how_did_you_meet_this_contractor,
+            },
+            null,
+            8,
+            ["modelValue", "label"]
+          ),
+          t("div", tt, [
+            v(
+              pe,
+              {
+                style: { height: "42px" },
+                onClick: G,
+                disabled: $.value,
+                class: "w-full flex justify-center gap-2",
+              },
+              {
+                default: w(() => [
+                  at,
+                  H(t("img", st, null, 512), [[Z, I.value]]),
+                ]),
+                _: 1,
+              },
+              8,
+              ["disabled"]
+            ),
+          ]),
+        ])
+      );
+    },
+  },
+  ot = { key: 0 },
+  rt = { class: "flex flex-col gap-10" },
+  nt = { key: 1 },
+  it = { class: "border-t-2 border-gray-300" },
+  dt = { class: "mb-6" },
+  ut = { class: "flex gap-3 flex-wrap" },
+  ct = { key: 2, class: "py-4 border-t-2 border-b-2 border-gray-300" },
+  vt = { class: "mb-6 border-gray-300" },
+  ft = { key: 0, class: "flex gap-8 flex-col" },
+  _t = { key: 1 },
+  gt = {
+    class:
+      "p-2 text-xl text-grey-600 font-bold h-60 flex items-center justify-center",
+  },
+  St = {
+    __name: "ContractorRating",
+    props: { contractorDetails: Object, profileId: [Number, String] },
+    setup(c) {
+      const { contractorDetails: U, profileId: z } = c,
+        x = te(),
+        u = i(1),
+        d = i(!1),
+        k = i(null),
+        e = i([]),
+        h = i(!1),
+        I = i([]),
+        $ = i(null),
+        g = i({}),
+        p = i("latest"),
+        r = i(0),
+        T = i(15),
+        A = i(!1),
+        S = i(),
+        G = Ie().props.value.auth.user;
+      Re(async () => {
+        (h.value = !0),
+          await F(),
+          (h.value = !1),
+          (g.value = U),
+          setTimeout(() => {
+            const a = (o) => {
+              o.forEach((R) => {
+                R.isIntersecting && he();
+              });
+            };
+            new IntersectionObserver(a, {
+              rootMargin: "0px 0px 0px 0px",
+              threshold: 0,
+            }).observe(S.value);
+          }, 1e3);
+      });
+      const f = O(() => x.getters.screenWidth),
+        l = O(() => x.getters.translations),
+        P = O(() => x.state.ratings.reviewId),
+        n = O(() => x.state.ratings.responseId),
+        m = O(() => x.state.ratings.updatedReview),
+        D = O(() => x.state.ratings.updatedResponse);
+      C(m, (a) => {
+        if (a && a.id) {
+          const s = e.value.findIndex((o) => o.id === a.id);
+          s !== -1 && Object.assign(e.value[s], a), F(T.value, u.value, !1, !0);
+        }
+      }),
+        C(D, (a) => {
+          if (a && a.id) {
+            const s = e.value.find((o) => o.id === a.review_id);
+            if (s) {
+              s.review_response = a;
+              const o = e.value.findIndex((R) => R.id === a.review_id);
+              o !== -1 && (e.value = e.value.map((R, W) => (W === o ? s : R)));
+            }
+          }
+        }),
+        C(P, (a) => {
+          if (a) {
+            const s = e.value.findIndex((o) => o.id === a);
+            s !== -1 && e.value.splice(s, 1), F(T.value, u.value, !1, !0);
+          }
+        }),
+        C(n, (a) => {
+          if (a) {
+            const s = e.value.findIndex((o) => o.review_response.id === a);
+            s !== -1 && delete e.value[s].review_response;
+          }
+        }),
+        C(
+          () => $.value,
+          (a, s) => {
+            a != s && x.commit("ratings/SET_AVERAGE_RATING", a);
+          }
+        ),
+        C(
+          () => r.value.total,
+          (a, s) => {
+            a != s && x.commit("ratings/SET_LENGTH", a);
+          }
+        );
+      const he = async () => {
+          (A.value = !0),
+            (u.value = u.value + 1),
+            await F(T.value, u.value),
+            (A.value = !1);
+        },
+        K = (a, s) => {
+          a && (p.value = s), me();
+        },
+        me = async (a = !1) => {
+          (h.value = !0), await F(T.value, u.value, !1, a), (h.value = !1);
+        },
+        F = async (a = T.value, s = 1, o = !0, R = !1) => {
+          let W = "",
+            oe = "";
+          p.value === "latest" || p.value === "oldest"
+            ? (W = p.value)
+            : (oe = p.value);
+          try {
+            const M = await ke.get(
+              `/api/reviews/${U.id}?per_page=${a}&page=${s}&sort_by_date=${W}&sort_by_rating=${oe}`,
+              ae()
+            );
+            o
+              ? (e.value = [...e.value, ...M.data.reviews])
+              : R || (e.value = [...M.data.reviews]),
+              (r.value = M.data.pagination),
+              ($.value = M.data.average_rating);
+            const {
+                five_stars_count: re,
+                four_stars_count: ne,
+                three_stars_count: ie,
+                two_stars_count: de,
+                one_star_count: ue,
+              } = M.data,
+              q = re + ne + ie + de + ue;
+            I.value = [
+              (re / q) * 100,
+              (ne / q) * 100,
+              (ie / q) * 100,
+              (de / q) * 100,
+              (ue / q) * 100,
+            ];
+          } catch {
+            se();
+          }
+        },
+        le = async () => {
+          (d.value = !d.value),
+            d.value &&
+              (await J(),
+              setTimeout(() => {
+                k.value && k.value.$el && k.value.$el.scrollIntoView
+                  ? (k.value.$el || k.value).scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                      inline: "start",
+                    })
+                  : console.error("Unexpected issue with the ref");
+              }, 250));
+        },
+        we = async () => {
+          (h.value = !0),
+            (u.value = 1),
+            await F(T.value, u.value, !1),
+            (h.value = !1),
+            le();
+        },
+        be = (a) => {
+          if (a && a.id) {
+            const s = e.value.find((o) => o.id === a.review_id);
+            if (s) {
+              s.review_response = a;
+              const o = e.value.findIndex((R) => R.id === a.review_id);
+              o !== -1 && (e.value = e.value.map((R, W) => (W === o ? s : R)));
+            }
+          }
+        };
+      return (a, s) =>
+        g.value
+          ? (_(),
+            j("div", ot, [
+              t("div", rt, [
+                v(
+                  X,
+                  {
+                    shadowLevel: 2,
+                    bgColor: "white",
+                    padding: f.value < 640 ? "7px" : "20px",
+                  },
+                  {
+                    default: w(() => [
+                      Object.keys(g.value).length > 0
+                        ? (_(),
+                          E(Ee, { key: 0, contractor: g.value }, null, 8, [
+                            "contractor",
+                          ]))
+                        : b("", !0),
+                      v(
+                        ce,
+                        { loading: h.value, background: "", height: "60vh" },
+                        null,
+                        8,
+                        ["loading"]
+                      ),
+                      h.value
+                        ? b("", !0)
+                        : (_(),
+                          j("div", nt, [
+                            $.value && I.value
+                              ? (_(),
+                                E(
+                                  Q,
+                                  {
+                                    key: 0,
+                                    heading: l.value && l.value.average_ratings,
+                                    class: "mb-6",
+                                  },
+                                  null,
+                                  8,
+                                  ["heading"]
+                                ))
+                              : b("", !0),
+                            $.value && I.value
+                              ? (_(),
+                                E(
+                                  je,
+                                  {
+                                    key: 1,
+                                    averageRating: $.value,
+                                    starPercentages: I.value,
+                                    length: r.value.total,
+                                    class: "mb-6",
+                                  },
+                                  null,
+                                  8,
+                                  ["averageRating", "starPercentages", "length"]
+                                ))
+                              : b("", !0),
+                            t("div", it, [
+                              v(
+                                Q,
+                                {
+                                  class: "mt-4",
+                                  heading: l.value && l.value.order_reviews_by,
+                                },
+                                null,
+                                8,
+                                ["heading"]
+                              ),
+                              t("div", dt, [
+                                t("div", ut, [
+                                  v(
+                                    L,
+                                    {
+                                      selected: p.value === "latest",
+                                      onOnSelect:
+                                        s[0] || (s[0] = (o) => K(o, "latest")),
+                                    },
+                                    {
+                                      default: w(() => [
+                                        B(y(l.value && l.value.latest), 1),
+                                      ]),
+                                      _: 1,
+                                    },
+                                    8,
+                                    ["selected"]
+                                  ),
+                                  v(
+                                    L,
+                                    {
+                                      selected: p.value === "oldest",
+                                      onOnSelect:
+                                        s[1] || (s[1] = (o) => K(o, "oldest")),
+                                    },
+                                    {
+                                      default: w(() => [
+                                        B(y(l.value && l.value.oldest), 1),
+                                      ]),
+                                      _: 1,
+                                    },
+                                    8,
+                                    ["selected"]
+                                  ),
+                                  v(
+                                    L,
+                                    {
+                                      selected: p.value === "highest",
+                                      onOnSelect:
+                                        s[2] || (s[2] = (o) => K(o, "highest")),
+                                    },
+                                    {
+                                      default: w(() => [
+                                        B(
+                                          y(l.value && l.value.highest_rated),
+                                          1
+                                        ),
+                                      ]),
+                                      _: 1,
+                                    },
+                                    8,
+                                    ["selected"]
+                                  ),
+                                  v(
+                                    L,
+                                    {
+                                      selected: p.value === "middle",
+                                      onOnSelect:
+                                        s[3] || (s[3] = (o) => K(o, "middle")),
+                                    },
+                                    {
+                                      default: w(() => [
+                                        B(
+                                          y(l.value && l.value.middle_rated),
+                                          1
+                                        ),
+                                      ]),
+                                      _: 1,
+                                    },
+                                    8,
+                                    ["selected"]
+                                  ),
+                                  v(
+                                    L,
+                                    {
+                                      selected: p.value === "lowest",
+                                      onOnSelect:
+                                        s[4] || (s[4] = (o) => K(o, "lowest")),
+                                    },
+                                    {
+                                      default: w(() => [
+                                        B(y(l.value && l.value.low_rated), 1),
+                                      ]),
+                                      _: 1,
+                                    },
+                                    8,
+                                    ["selected"]
+                                  ),
+                                ]),
+                              ]),
+                            ]),
+                            parseInt(Se(G).id) !==
+                            parseInt(c.contractorDetails.user_id)
+                              ? (_(),
+                                j("div", ct, [
+                                  v(
+                                    L,
+                                    {
+                                      ref_key: "cardRef",
+                                      ref: k,
+                                      onOnSelect: le,
+                                      style: ve({
+                                        boxShadow:
+                                          "0px 0px 3px rgba(0, 0, 0, 0.12), 0px 0px 2px rgba(0, 0, 0, 0.12)",
+                                      }),
+                                      class:
+                                        "w-full text-2xl text-left rounded-lg",
+                                    },
+                                    {
+                                      default: w(() => [
+                                        B(
+                                          y(l.value && l.value.write_a_review),
+                                          1
+                                        ),
+                                      ]),
+                                      _: 1,
+                                    },
+                                    8,
+                                    ["style"]
+                                  ),
+                                  v(
+                                    Y,
+                                    { name: "accordion" },
+                                    {
+                                      default: w(() => [
+                                        d.value
+                                          ? (_(),
+                                            E(
+                                              X,
+                                              {
+                                                key: 0,
+                                                shadowLevel: 1,
+                                                bgColor: "white",
+                                                padding: "10px",
+                                                class: "mt-8",
+                                              },
+                                              {
+                                                default: w(() => [
+                                                  v(
+                                                    Y,
+                                                    { name: "accordion" },
+                                                    {
+                                                      default: w(() => [
+                                                        v(
+                                                          lt,
+                                                          {
+                                                            profileId:
+                                                              c.profileId,
+                                                            contractorId:
+                                                              g.value.id,
+                                                            onAddReview: we,
+                                                          },
+                                                          null,
+                                                          8,
+                                                          [
+                                                            "profileId",
+                                                            "contractorId",
+                                                          ]
+                                                        ),
+                                                      ]),
+                                                      _: 1,
+                                                    }
+                                                  ),
+                                                ]),
+                                                _: 1,
+                                              }
+                                            ))
+                                          : b("", !0),
+                                      ]),
+                                      _: 1,
+                                    }
+                                  ),
+                                ]))
+                              : b("", !0),
+                          ])),
+                    ]),
+                    _: 1,
+                  },
+                  8,
+                  ["padding"]
+                ),
+                h.value
+                  ? b("", !0)
+                  : (_(),
+                    E(
+                      X,
+                      {
+                        key: 0,
+                        shadowLevel: 2,
+                        bgColor: "#fff",
+                        padding: f.value < 640 ? "7px" : "20px",
+                      },
+                      {
+                        default: w(() => [
+                          t("div", vt, [
+                            v(
+                              Q,
+                              {
+                                heading: l.value && l.value.reviews,
+                                class: "mt-4 mb-6",
+                              },
+                              null,
+                              8,
+                              ["heading"]
+                            ),
+                            e.value && e.value.length > 0
+                              ? (_(),
+                                j("div", ft, [
+                                  (_(!0),
+                                  j(
+                                    $e,
+                                    null,
+                                    Ce(
+                                      e.value,
+                                      (o, R) => (
+                                        _(),
+                                        E(
+                                          We,
+                                          {
+                                            key: R,
+                                            review: o,
+                                            onResponseAdded: be,
+                                            contractorId: g.value.id,
+                                            profileId: c.profileId,
+                                          },
+                                          null,
+                                          8,
+                                          [
+                                            "review",
+                                            "contractorId",
+                                            "profileId",
+                                          ]
+                                        )
+                                      )
+                                    ),
+                                    128
+                                  )),
+                                ]))
+                              : b("", !0),
+                            e.value && e.value.length === 0
+                              ? (_(),
+                                j("div", _t, [
+                                  t(
+                                    "div",
+                                    gt,
+                                    y(
+                                      l.value &&
+                                        l.value
+                                          .no_reviews_available_for_this_contractor
+                                    ),
+                                    1
+                                  ),
+                                ]))
+                              : b("", !0),
+                          ]),
+                          H(
+                            t(
+                              "div",
+                              {
+                                ref_key: "loadMoreIntersect",
+                                ref: S,
+                                style: { width: "5px", height: "5px" },
+                              },
+                              null,
+                              512
+                            ),
+                            [[Z, +u.value != +r.value.last_page]]
+                          ),
+                          H(
+                            t(
+                              "div",
+                              { class: "text-center font-bold" },
+                              y(l.value && l.value.no_more_reviews_to_load),
+                              513
+                            ),
+                            [
+                              [
+                                Z,
+                                u.value > 1 &&
+                                  !A.value &&
+                                  +u.value == +r.value.last_page,
+                              ],
+                            ]
+                          ),
+                          v(
+                            ce,
+                            {
+                              classes: "flex gap-2",
+                              loading: A.value,
+                              circleClasses: "small-circle",
+                              textClasses: "small-text",
+                              background: "",
+                              height: "70px",
+                            },
+                            null,
+                            8,
+                            ["loading"]
+                          ),
+                        ]),
+                        _: 1,
+                      },
+                      8,
+                      ["padding"]
+                    )),
+              ]),
+            ]))
+          : b("", !0);
+    },
+  };
+export { St as _ };

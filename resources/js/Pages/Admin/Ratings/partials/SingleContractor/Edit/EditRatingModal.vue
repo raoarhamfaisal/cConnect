@@ -140,7 +140,7 @@ const state = reactive({
 const form = toRefs(state);
 
 const referenceList = [
-  "tContractor Referral",
+  "cConnect Referral",
   "Friend Referral",
   "Other Contractor",
   "Job Site",

@@ -77,8 +77,8 @@ const translations = computed(() => store.getters.translations);
       </section>
       <section class="mb-6 closing">
         <h2 class="text-xl font-semibold mb-2">{{ translations && translations.contact_us }}</h2>
-        <p class="mb-2">{{ translations && translations.tos_questions_contact }} <a href='mailto:tcontractor@gmail.com'
-            class='text-blue-rgba font-bold'>tcontractor@gmail.com</a></p>
+        <p class="mb-2">{{ translations && translations.tos_questions_contact }} <a href='mailto:cConnect@gmail.com'
+            class='text-blue-rgba font-bold'>cConnect@gmail.com</a></p>
       </section>
     </template>
     <div v-else class="h-[100vh] mx-auto w-1/2 flex flex-col items-center justify-center space-y-4">

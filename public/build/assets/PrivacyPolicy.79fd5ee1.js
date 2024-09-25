@@ -1,1 +1,298 @@
-import{_ as u}from"./SignUpLayout.9eb7bf4e.js";import{_ as c,a as r}from"./WelcomeFooter.ba3aa8d4.js";import{u as m,c as v,e as d,h as a,s as _,F as h,d as p,i as n,H as b,f as o,L as f,g as s,t}from"./app.907bb242.js";import"./spanish.afd7e950.js";import"./tContractorWord.60dc90ac.js";import"./_plugin-vue_export-helper.cdc0426e.js";import"./ResponsiveNavLink.04cb55a4.js";import"./iconify.99e09ef6.js";import"./DialogUpgradeToGoldPlatinum.8daf4ac5.js";import"./CustomDialog.f5ff7c4f.js";import"./tContractorWhite.08eee911.js";const g={class:"mb-3 sm:mb-6"},y={class:"text-3xl font-bold mb-6"},w={class:"mb-4"},x={class:"mb-6 closing"},k={class:"text-xl font-semibold mb-2"},B={class:"mb-2"},N={class:"mb-6 closing"},F={class:"text-xl font-semibold mb-2"},S={class:"mb-2"},V={class:"mb-6 closing"},$={class:"text-xl font-semibold mb-2"},H={class:"mb-2"},L={class:"mb-6 closing"},P={class:"text-xl font-semibold mb-2"},q={class:"mb-2"},z={class:"mb-6 closing"},C={class:"text-xl font-semibold mb-2"},D={class:"mb-2"},E={class:"mb-6 closing"},T={class:"text-xl font-semibold mb-2"},U={class:"mb-2"},j=o("a",{href:"mailto:tcontractor@gmail.com",class:"text-blue-rgba font-bold"},"tcontractor@gmail.com",-1),ee={__name:"PrivacyPolicy",props:{showit:Boolean},setup(l){const i=m(),e=v(()=>i.getters.translations);return(A,G)=>(p(),d(h,null,[a(u,null,{default:_(()=>[a(n(b),{title:e.value&&e.value.privacy_policy},null,8,["title"]),a(r,{showNewsFeed:!0,showit:l.showit,showSignUp:!0},null,8,["showit"]),o("div",g,[a(n(f),{href:"/",class:"text-blue-500 hover:underline"},{default:_(()=>[s("\u2190 "+t(e.value&&e.value.back_to_main_page),1)]),_:1})]),o("div",y,t(e.value&&e.value.privacy_policy),1),o("p",w,t(e.value&&e.value.thank_you_being_part_and_we_care_about_privacy),1),o("section",x,[o("h2",k,t(e.value&&e.value.information_we_collect),1),o("p",B,[o("ul",null,[o("li",null,[o("strong",null,t(e.value&&e.value.personal_information),1),s(" "+t(e.value&&e.value.such_as_names_email_addresses_phone_numbers_and_physical_addresses),1)]),o("li",null,[o("strong",null,t(e.value&&e.value.financial_information),1),s(" "+t(e.value&&e.value.credit_debit_card_details_and_other_payment_related_information),1)])])])]),o("section",N,[o("h2",F,t(e.value&&e.value.how_we_use_your_information),1),o("p",S,[o("ul",null,[o("li",null,[o("strong",null,t(e.value&&e.value.provide_maintain_improve),1),s(" "+t(e.value&&e.value.we_use_your_personal_information_to_manage_your_account),1)]),o("li",null,[o("strong",null,t(e.value&&e.value.communications),1),s(" "+t(e.value&&e.value.we_use_your_contact_details_to_communicate_with_you),1)]),o("li",null,[o("strong",null,t(e.value&&e.value.security)+":",1),s(" "+t(e.value&&e.value.we_use_information_about_you_to_verify_accounts_and_activity),1)])])])]),o("section",V,[o("h2",$,t(e.value&&e.value.sharing_your_information),1),o("p",H,[s(t(e.value&&e.value.we_do_not_share_your_personal_information_without_your_consent)+" ",1),o("ul",null,[o("li",null,[o("strong",null,t(e.value&&e.value.legal_compliance),1),s(" "+t(e.value&&e.value.we_may_disclose_your_information_to_comply_with_legal_obligations),1)]),o("li",null,[o("strong",null,t(e.value&&e.value.service_providers),1),s(" "+t(e.value&&e.value.we_may_employ_third_party_companies_to_facilitate_our_services),1)])])])]),o("section",L,[o("h2",P,t(e.value&&e.value.your_rights),1),o("p",q,t(e.value&&e.value.you_have_certain_rights_regarding_personal_information),1)]),o("section",z,[o("h2",C,t(e.value&&e.value.security),1),o("p",D,t(e.value&&e.value.we_implement_technical_and_organizational_safeguards),1)]),o("section",E,[o("h2",T,t(e.value&&e.value.contact_us),1),o("p",U,[s(t(e.value&&e.value.tos_questions_contact)+" ",1),j])])]),_:1}),a(c,{showit:l.showit},null,8,["showit"])],64))}};export{ee as default};
+import { _ as u } from "./SignUpLayout.9eb7bf4e.js";
+import { _ as c, a as r } from "./WelcomeFooter.ba3aa8d4.js";
+import {
+  u as m,
+  c as v,
+  e as d,
+  h as a,
+  s as _,
+  F as h,
+  d as p,
+  i as n,
+  H as b,
+  f as o,
+  L as f,
+  g as s,
+  t,
+} from "./app.907bb242.js";
+import "./spanish.afd7e950.js";
+import "./cConnectWord.60dc90ac.js";
+import "./_plugin-vue_export-helper.cdc0426e.js";
+import "./ResponsiveNavLink.04cb55a4.js";
+import "./iconify.99e09ef6.js";
+import "./DialogUpgradeToGoldPlatinum.8daf4ac5.js";
+import "./CustomDialog.f5ff7c4f.js";
+import "./tContractorWhite.08eee911.js";
+const g = { class: "mb-3 sm:mb-6" },
+  y = { class: "text-3xl font-bold mb-6" },
+  w = { class: "mb-4" },
+  x = { class: "mb-6 closing" },
+  k = { class: "text-xl font-semibold mb-2" },
+  B = { class: "mb-2" },
+  N = { class: "mb-6 closing" },
+  F = { class: "text-xl font-semibold mb-2" },
+  S = { class: "mb-2" },
+  V = { class: "mb-6 closing" },
+  $ = { class: "text-xl font-semibold mb-2" },
+  H = { class: "mb-2" },
+  L = { class: "mb-6 closing" },
+  P = { class: "text-xl font-semibold mb-2" },
+  q = { class: "mb-2" },
+  z = { class: "mb-6 closing" },
+  C = { class: "text-xl font-semibold mb-2" },
+  D = { class: "mb-2" },
+  E = { class: "mb-6 closing" },
+  T = { class: "text-xl font-semibold mb-2" },
+  U = { class: "mb-2" },
+  j = o(
+    "a",
+    { href: "mailto:cConnect@gmail.com", class: "text-blue-rgba font-bold" },
+    "cConnect@gmail.com",
+    -1
+  ),
+  ee = {
+    __name: "PrivacyPolicy",
+    props: { showit: Boolean },
+    setup(l) {
+      const i = m(),
+        e = v(() => i.getters.translations);
+      return (A, G) => (
+        p(),
+        d(
+          h,
+          null,
+          [
+            a(u, null, {
+              default: _(() => [
+                a(n(b), { title: e.value && e.value.privacy_policy }, null, 8, [
+                  "title",
+                ]),
+                a(
+                  r,
+                  { showNewsFeed: !0, showit: l.showit, showSignUp: !0 },
+                  null,
+                  8,
+                  ["showit"]
+                ),
+                o("div", g, [
+                  a(
+                    n(f),
+                    { href: "/", class: "text-blue-500 hover:underline" },
+                    {
+                      default: _(() => [
+                        s(
+                          "\u2190 " + t(e.value && e.value.back_to_main_page),
+                          1
+                        ),
+                      ]),
+                      _: 1,
+                    }
+                  ),
+                ]),
+                o("div", y, t(e.value && e.value.privacy_policy), 1),
+                o(
+                  "p",
+                  w,
+                  t(
+                    e.value &&
+                      e.value.thank_you_being_part_and_we_care_about_privacy
+                  ),
+                  1
+                ),
+                o("section", x, [
+                  o("h2", k, t(e.value && e.value.information_we_collect), 1),
+                  o("p", B, [
+                    o("ul", null, [
+                      o("li", null, [
+                        o(
+                          "strong",
+                          null,
+                          t(e.value && e.value.personal_information),
+                          1
+                        ),
+                        s(
+                          " " +
+                            t(
+                              e.value &&
+                                e.value
+                                  .such_as_names_email_addresses_phone_numbers_and_physical_addresses
+                            ),
+                          1
+                        ),
+                      ]),
+                      o("li", null, [
+                        o(
+                          "strong",
+                          null,
+                          t(e.value && e.value.financial_information),
+                          1
+                        ),
+                        s(
+                          " " +
+                            t(
+                              e.value &&
+                                e.value
+                                  .credit_debit_card_details_and_other_payment_related_information
+                            ),
+                          1
+                        ),
+                      ]),
+                    ]),
+                  ]),
+                ]),
+                o("section", N, [
+                  o(
+                    "h2",
+                    F,
+                    t(e.value && e.value.how_we_use_your_information),
+                    1
+                  ),
+                  o("p", S, [
+                    o("ul", null, [
+                      o("li", null, [
+                        o(
+                          "strong",
+                          null,
+                          t(e.value && e.value.provide_maintain_improve),
+                          1
+                        ),
+                        s(
+                          " " +
+                            t(
+                              e.value &&
+                                e.value
+                                  .we_use_your_personal_information_to_manage_your_account
+                            ),
+                          1
+                        ),
+                      ]),
+                      o("li", null, [
+                        o(
+                          "strong",
+                          null,
+                          t(e.value && e.value.communications),
+                          1
+                        ),
+                        s(
+                          " " +
+                            t(
+                              e.value &&
+                                e.value
+                                  .we_use_your_contact_details_to_communicate_with_you
+                            ),
+                          1
+                        ),
+                      ]),
+                      o("li", null, [
+                        o(
+                          "strong",
+                          null,
+                          t(e.value && e.value.security) + ":",
+                          1
+                        ),
+                        s(
+                          " " +
+                            t(
+                              e.value &&
+                                e.value
+                                  .we_use_information_about_you_to_verify_accounts_and_activity
+                            ),
+                          1
+                        ),
+                      ]),
+                    ]),
+                  ]),
+                ]),
+                o("section", V, [
+                  o("h2", $, t(e.value && e.value.sharing_your_information), 1),
+                  o("p", H, [
+                    s(
+                      t(
+                        e.value &&
+                          e.value
+                            .we_do_not_share_your_personal_information_without_your_consent
+                      ) + " ",
+                      1
+                    ),
+                    o("ul", null, [
+                      o("li", null, [
+                        o(
+                          "strong",
+                          null,
+                          t(e.value && e.value.legal_compliance),
+                          1
+                        ),
+                        s(
+                          " " +
+                            t(
+                              e.value &&
+                                e.value
+                                  .we_may_disclose_your_information_to_comply_with_legal_obligations
+                            ),
+                          1
+                        ),
+                      ]),
+                      o("li", null, [
+                        o(
+                          "strong",
+                          null,
+                          t(e.value && e.value.service_providers),
+                          1
+                        ),
+                        s(
+                          " " +
+                            t(
+                              e.value &&
+                                e.value
+                                  .we_may_employ_third_party_companies_to_facilitate_our_services
+                            ),
+                          1
+                        ),
+                      ]),
+                    ]),
+                  ]),
+                ]),
+                o("section", L, [
+                  o("h2", P, t(e.value && e.value.your_rights), 1),
+                  o(
+                    "p",
+                    q,
+                    t(
+                      e.value &&
+                        e.value
+                          .you_have_certain_rights_regarding_personal_information
+                    ),
+                    1
+                  ),
+                ]),
+                o("section", z, [
+                  o("h2", C, t(e.value && e.value.security), 1),
+                  o(
+                    "p",
+                    D,
+                    t(
+                      e.value &&
+                        e.value
+                          .we_implement_technical_and_organizational_safeguards
+                    ),
+                    1
+                  ),
+                ]),
+                o("section", E, [
+                  o("h2", T, t(e.value && e.value.contact_us), 1),
+                  o("p", U, [
+                    s(t(e.value && e.value.tos_questions_contact) + " ", 1),
+                    j,
+                  ]),
+                ]),
+              ]),
+              _: 1,
+            }),
+            a(c, { showit: l.showit }, null, 8, ["showit"]),
+          ],
+          64
+        )
+      );
+    },
+  };
+export { ee as default };

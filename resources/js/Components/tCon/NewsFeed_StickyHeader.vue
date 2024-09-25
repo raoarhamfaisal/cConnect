@@ -1,6 +1,6 @@
 <script>
 import { Link } from "@inertiajs/inertia-vue3";
-import tContractorWord from "@/Components/tCon/tContractorWord.vue";
+import cConnectWord from "@/Components/tCon/cConnectWord.vue";
 import ButtonPost from "@/Components/tCon/tConSub/ButtonPost.vue";
 import ButtonRefresh from "@/Components/tCon/tConSub/ButtonRefresh.vue";
 import { ref } from "vue";
@@ -8,7 +8,7 @@ import { ref } from "vue";
 export default {
   components: {
     Link,
-    tContractorWord,
+    cConnectWord,
     ButtonPost,
     ButtonRefresh,
     ref,
@@ -41,14 +41,14 @@ export default {
   >
     <div class="flex flex-row justify-around items-center h-16">
       <!-- LOGO -->
-      <!-- XS screens just show the tcontractor icon -->
+      <!-- XS screens just show the cConnect icon -->
       <div class="flex items-center justify-start pl-1">
         <Link
           href="/"
           class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center"
         >
           <div class="hidden sm:block">
-            <tContractorWord />
+            <cConnectWord />
           </div>
           <div class="sm:hidden pt-1">
             <img src="/images/logo/icon_blue.png" width="38" height="38" />

@@ -4,7 +4,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import Header from "@/Layouts/Header.vue";
 
 import AppSpinner from "@/Shared/AppSpinner.vue";
-import tContractorWord from "@/Components/tCon/tContractorWord.vue";
+import cConnectWord from "@/Components/tCon/cConnectWord.vue";
 import ButtonPost from "@/Components/tCon/tConSub/ButtonPost.vue";
 import ButtonRefresh from "@/Components/tCon/tConSub/ButtonRefresh.vue";
 import { Icon } from "@iconify/vue";
@@ -38,7 +38,7 @@ export default {
     Icon,
     Loader,
     AppSpinner,
-    tContractorWord,
+    cConnectWord,
     Header,
     ButtonPost,
     ButtonRefresh,

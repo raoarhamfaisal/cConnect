@@ -1,1 +1,281 @@
-import{A as P}from"./Avatar.72f6a2c8.js";import{_ as F,S as B}from"./PostDisplayEnlarged.adbff492.js";import V from"./DialogContractorPage.ba3ad545.js";import{r as l,u as j,D as H,c as i,w as N,e as f,h as r,s as W,i as k,F as A,d as c,f as e,n as I,K as U,l as p,t as h}from"./app.907bb242.js";import{C as z}from"./Card.0c51827f.js";import{_ as x}from"./Tooltip.df5bf8e9.js";import"./iconify.99e09ef6.js";import"./_plugin-vue_export-helper.cdc0426e.js";import"./tContractorWord.60dc90ac.js";import"./Loader.9dfd413c.js";import"./filepond-plugin-file-poster.b4b2d2f1.js";import"./CustomDialog.f5ff7c4f.js";import"./selectListsHelpters.6d73b684.js";import"./Badge.c427ce3e.js";import"./InputLabel.c691f6db.js";import"./InputError.a485c9eb.js";import"./SelectProfile.a00d96e3.js";import"./ContractorRating.3006b2c1.js";import"./Review.a038e96e.js";import"./EditResponseModal.84ffd735.js";import"./DeleteResponseModal.4a25af00.js";import"./ButtonRatings.029b3347.js";import"./PrimaryButton.d6b2dece.js";import"./Button.f68cd005.js";/* empty css                                                               */import"./StarRating.345caaaf.js";import"./EditRatingModal.2e8212da.js";import"./StarRatingEditable.6da32187.js";import"./DeleteRatingModal.d3c2927a.js";import"./QualifyingQuestions.944a7f65.js";/* empty css                                                             */import"./ContractorInfo.6f4506f5.js";import"./HeadingCard.ac3646cb.js";import"./CustomContractorPageDialog.49cdbf42.js";import"./ContractorPage.cfd29f7f.js";import"./DialogUpgradeToGoldPlatinum.8daf4ac5.js";import"./MoveToTop.8193f768.js";import"./ImageTextSection.vue_vue_type_style_index_0_scoped_a4e46067_lang.cc0ca6e2.js";import"./ResponsiveNavLink.04cb55a4.js";/* empty css                                                                   */const E={class:"flex space-x-2 justify-between"},G={class:"flex justify-center items-center space-x-2"},K={class:"self-start"},q={class:"flex flex-col justify-center"},J={key:1,class:"max-sm:text-xs"},M={key:2,class:"max-sm:text-xs"},O={class:"flex items-start mt-1 max-sm:mt-2 gap-1"},Q={class:"flex flex-col md:mt-2 justify-center items-center"},X={class:"md:mt-2"},Y={class:"font-light text-xs md:text-sm overflow-hidden tracking-tighter"},At={__name:"ContractorHeader",props:["contractor","region_name"],setup(t){var w,C;const m=t,v=l();console.log("contractor",m.contractor);const s=j();let o=H().props.value;const R=(w=o==null?void 0:o.profile)==null?void 0:w.id,D=o==null?void 0:o.profile;console.log(o.profile,"profile");const _=l((C=m.contractor.total_reviews)!=null?C:0),d=l(m.contractor.average_rating),y=l(),a=i(()=>s.getters.screenWidth),n=i(()=>s.getters.userVersion),T=i(()=>s.state.ratings.shouldLoadPosts),g=i(()=>s.state.ratings.averageRating),u=i(()=>s.state.ratings.length);N(T,L=>{L&&(console.log("shoouldLoad Post",g.value!==-1,u.value!==-1),g.value!==-1&&(console.log("shoouldLoad Post2"),d.value=g.value),u.value!==-1&&(console.log("shoouldLoad Post3"),_.value=u.value),s.commit("ratings/setShouldLoadPosts",!1))});const $=()=>{n.value!==1&&v.value.openDialog()},b=()=>{n.value!==1&&(localStorage.setItem("showGoBack","false"),y.value.openDialog())};return(L,Z)=>{var S;return c(),f(A,null,[r(z,{shadowLevel:1,bgColor:"#f9fafb",isInside:!0,padding:a.value<640?"0px":"20px"},{default:W(()=>[e("div",E,[e("span",{class:I(n.value!==1&&"cursor-pointer"),onClick:b},[e("div",G,[e("div",K,[r(P,{imageClass:"w-16 h-16 sm:h-24 sm:w-24",imageSrc:`/${t.contractor.user_avatar||t.contractor.company_logo}`},null,8,["imageSrc"])]),e("div",q,[r(x,{text:`${t.contractor.first_name} ${t.contractor.last_name}`,applyTooltipLength:1260,textLengthToShow:a.value<380?18:20,textClass:"text-md max-sm:translate-y-[0px]  xs:text-lg font-medium font-bold text-gray-900 "},null,8,["text","textLengthToShow"]),r(x,{text:t.contractor.company_name,applyTooltipLength:1260,textLengthToShow:a.value<380?20:23,textClass:"leading-4 text-sm  xs:text-base "},null,8,["text","textLengthToShow"]),t.contractor.city||t.contractor.state?(c(),U(x,{key:0,text:`${t.contractor.city} ${t.contractor.state}`,applyTooltipLength:1260,textLengthToShow:a.value<380?20:23,textClass:"leading-4 text-xs  xs:text-base "},null,8,["text","textLengthToShow"])):p("",!0),n.value!==1?(c(),f("div",J,h(t.contractor.phone_cell||t.contractor.phone_office),1)):p("",!0),n.value!==1?(c(),f("div",M,h(t.contractor.email),1)):p("",!0)])])],2),e("div",O,[e("div",Q,[r(B,{onClick:$,class:I([n.value!==1&&"cursor-pointer","`h-4 md:h-6 `"]),innerStarRadius:a.value>768?17:13,starWidth:a.value>768?24:15,indicatorClasses:"text-small h-4 md:h-6 ",starHeight:a.value>768?24:15,rating:Number(parseFloat(d.value?d.value:0).toFixed(1)),isIndicatorActive:!1},null,8,["class","innerStarRadius","starWidth","starHeight","rating"]),e("div",X,[e("h2",Y,h(_.value),1)])])])])]),_:1},8,["padding"]),r(F,{ref_key:"ratingDialogRef",ref:v,loggedInUserId:k(R),userId:(S=t.contractor)==null?void 0:S.user_id},null,8,["loggedInUserId","userId"]),r(V,{ref_key:"contractorPageDialogRef",ref:y,contractor_id:t.contractor.user_id,region_name:t.region_name,profile:k(D)},null,8,["contractor_id","region_name","profile"])],64)}}};export{At as default};
+import { A as P } from "./Avatar.72f6a2c8.js";
+import { _ as F, S as B } from "./PostDisplayEnlarged.adbff492.js";
+import V from "./DialogContractorPage.ba3ad545.js";
+import {
+  r as l,
+  u as j,
+  D as H,
+  c as i,
+  w as N,
+  e as f,
+  h as r,
+  s as W,
+  i as k,
+  F as A,
+  d as c,
+  f as e,
+  n as I,
+  K as U,
+  l as p,
+  t as h,
+} from "./app.907bb242.js";
+import { C as z } from "./Card.0c51827f.js";
+import { _ as x } from "./Tooltip.df5bf8e9.js";
+import "./iconify.99e09ef6.js";
+import "./_plugin-vue_export-helper.cdc0426e.js";
+import "./cConnectWord.60dc90ac.js";
+import "./Loader.9dfd413c.js";
+import "./filepond-plugin-file-poster.b4b2d2f1.js";
+import "./CustomDialog.f5ff7c4f.js";
+import "./selectListsHelpters.6d73b684.js";
+import "./Badge.c427ce3e.js";
+import "./InputLabel.c691f6db.js";
+import "./InputError.a485c9eb.js";
+import "./SelectProfile.a00d96e3.js";
+import "./ContractorRating.3006b2c1.js";
+import "./Review.a038e96e.js";
+import "./EditResponseModal.84ffd735.js";
+import "./DeleteResponseModal.4a25af00.js";
+import "./ButtonRatings.029b3347.js";
+import "./PrimaryButton.d6b2dece.js";
+import "./Button.f68cd005.js";
+/* empty css                                                               */ import "./StarRating.345caaaf.js";
+import "./EditRatingModal.2e8212da.js";
+import "./StarRatingEditable.6da32187.js";
+import "./DeleteRatingModal.d3c2927a.js";
+import "./QualifyingQuestions.944a7f65.js";
+/* empty css                                                             */ import "./ContractorInfo.6f4506f5.js";
+import "./HeadingCard.ac3646cb.js";
+import "./CustomContractorPageDialog.49cdbf42.js";
+import "./ContractorPage.cfd29f7f.js";
+import "./DialogUpgradeToGoldPlatinum.8daf4ac5.js";
+import "./MoveToTop.8193f768.js";
+import "./ImageTextSection.vue_vue_type_style_index_0_scoped_a4e46067_lang.cc0ca6e2.js";
+import "./ResponsiveNavLink.04cb55a4.js";
+/* empty css                                                                   */ const E =
+    { class: "flex space-x-2 justify-between" },
+  G = { class: "flex justify-center items-center space-x-2" },
+  K = { class: "self-start" },
+  q = { class: "flex flex-col justify-center" },
+  J = { key: 1, class: "max-sm:text-xs" },
+  M = { key: 2, class: "max-sm:text-xs" },
+  O = { class: "flex items-start mt-1 max-sm:mt-2 gap-1" },
+  Q = { class: "flex flex-col md:mt-2 justify-center items-center" },
+  X = { class: "md:mt-2" },
+  Y = {
+    class: "font-light text-xs md:text-sm overflow-hidden tracking-tighter",
+  },
+  At = {
+    __name: "ContractorHeader",
+    props: ["contractor", "region_name"],
+    setup(t) {
+      var w, C;
+      const m = t,
+        v = l();
+      console.log("contractor", m.contractor);
+      const s = j();
+      let o = H().props.value;
+      const R = (w = o == null ? void 0 : o.profile) == null ? void 0 : w.id,
+        D = o == null ? void 0 : o.profile;
+      console.log(o.profile, "profile");
+      const _ = l((C = m.contractor.total_reviews) != null ? C : 0),
+        d = l(m.contractor.average_rating),
+        y = l(),
+        a = i(() => s.getters.screenWidth),
+        n = i(() => s.getters.userVersion),
+        T = i(() => s.state.ratings.shouldLoadPosts),
+        g = i(() => s.state.ratings.averageRating),
+        u = i(() => s.state.ratings.length);
+      N(T, (L) => {
+        L &&
+          (console.log("shoouldLoad Post", g.value !== -1, u.value !== -1),
+          g.value !== -1 &&
+            (console.log("shoouldLoad Post2"), (d.value = g.value)),
+          u.value !== -1 &&
+            (console.log("shoouldLoad Post3"), (_.value = u.value)),
+          s.commit("ratings/setShouldLoadPosts", !1));
+      });
+      const $ = () => {
+          n.value !== 1 && v.value.openDialog();
+        },
+        b = () => {
+          n.value !== 1 &&
+            (localStorage.setItem("showGoBack", "false"), y.value.openDialog());
+        };
+      return (L, Z) => {
+        var S;
+        return (
+          c(),
+          f(
+            A,
+            null,
+            [
+              r(
+                z,
+                {
+                  shadowLevel: 1,
+                  bgColor: "#f9fafb",
+                  isInside: !0,
+                  padding: a.value < 640 ? "0px" : "20px",
+                },
+                {
+                  default: W(() => [
+                    e("div", E, [
+                      e(
+                        "span",
+                        {
+                          class: I(n.value !== 1 && "cursor-pointer"),
+                          onClick: b,
+                        },
+                        [
+                          e("div", G, [
+                            e("div", K, [
+                              r(
+                                P,
+                                {
+                                  imageClass: "w-16 h-16 sm:h-24 sm:w-24",
+                                  imageSrc: `/${
+                                    t.contractor.user_avatar ||
+                                    t.contractor.company_logo
+                                  }`,
+                                },
+                                null,
+                                8,
+                                ["imageSrc"]
+                              ),
+                            ]),
+                            e("div", q, [
+                              r(
+                                x,
+                                {
+                                  text: `${t.contractor.first_name} ${t.contractor.last_name}`,
+                                  applyTooltipLength: 1260,
+                                  textLengthToShow: a.value < 380 ? 18 : 20,
+                                  textClass:
+                                    "text-md max-sm:translate-y-[0px]  xs:text-lg font-medium font-bold text-gray-900 ",
+                                },
+                                null,
+                                8,
+                                ["text", "textLengthToShow"]
+                              ),
+                              r(
+                                x,
+                                {
+                                  text: t.contractor.company_name,
+                                  applyTooltipLength: 1260,
+                                  textLengthToShow: a.value < 380 ? 20 : 23,
+                                  textClass: "leading-4 text-sm  xs:text-base ",
+                                },
+                                null,
+                                8,
+                                ["text", "textLengthToShow"]
+                              ),
+                              t.contractor.city || t.contractor.state
+                                ? (c(),
+                                  U(
+                                    x,
+                                    {
+                                      key: 0,
+                                      text: `${t.contractor.city} ${t.contractor.state}`,
+                                      applyTooltipLength: 1260,
+                                      textLengthToShow: a.value < 380 ? 20 : 23,
+                                      textClass:
+                                        "leading-4 text-xs  xs:text-base ",
+                                    },
+                                    null,
+                                    8,
+                                    ["text", "textLengthToShow"]
+                                  ))
+                                : p("", !0),
+                              n.value !== 1
+                                ? (c(),
+                                  f(
+                                    "div",
+                                    J,
+                                    h(
+                                      t.contractor.phone_cell ||
+                                        t.contractor.phone_office
+                                    ),
+                                    1
+                                  ))
+                                : p("", !0),
+                              n.value !== 1
+                                ? (c(), f("div", M, h(t.contractor.email), 1))
+                                : p("", !0),
+                            ]),
+                          ]),
+                        ],
+                        2
+                      ),
+                      e("div", O, [
+                        e("div", Q, [
+                          r(
+                            B,
+                            {
+                              onClick: $,
+                              class: I([
+                                n.value !== 1 && "cursor-pointer",
+                                "`h-4 md:h-6 `",
+                              ]),
+                              innerStarRadius: a.value > 768 ? 17 : 13,
+                              starWidth: a.value > 768 ? 24 : 15,
+                              indicatorClasses: "text-small h-4 md:h-6 ",
+                              starHeight: a.value > 768 ? 24 : 15,
+                              rating: Number(
+                                parseFloat(d.value ? d.value : 0).toFixed(1)
+                              ),
+                              isIndicatorActive: !1,
+                            },
+                            null,
+                            8,
+                            [
+                              "class",
+                              "innerStarRadius",
+                              "starWidth",
+                              "starHeight",
+                              "rating",
+                            ]
+                          ),
+                          e("div", X, [e("h2", Y, h(_.value), 1)]),
+                        ]),
+                      ]),
+                    ]),
+                  ]),
+                  _: 1,
+                },
+                8,
+                ["padding"]
+              ),
+              r(
+                F,
+                {
+                  ref_key: "ratingDialogRef",
+                  ref: v,
+                  loggedInUserId: k(R),
+                  userId: (S = t.contractor) == null ? void 0 : S.user_id,
+                },
+                null,
+                8,
+                ["loggedInUserId", "userId"]
+              ),
+              r(
+                V,
+                {
+                  ref_key: "contractorPageDialogRef",
+                  ref: y,
+                  contractor_id: t.contractor.user_id,
+                  region_name: t.region_name,
+                  profile: k(D),
+                },
+                null,
+                8,
+                ["contractor_id", "region_name", "profile"]
+              ),
+            ],
+            64
+          )
+        );
+      };
+    },
+  };
+export { At as default };

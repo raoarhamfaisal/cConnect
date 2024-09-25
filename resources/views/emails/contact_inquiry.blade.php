@@ -38,7 +38,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="https://tcontractor.com/uploads/common/site-logo.png" alt="tContractor Logo">
+            <img src="https://cConnect.com/uploads/common/site-logo.png" alt="cConnect Logo">
         </div>
         <div class="content">
             <h2>Contact Inquiry</h2>
@@ -53,8 +53,8 @@
             <p>Please follow up accordingly.</p>
         </div>
         <div class="footer">
-            &copy; {{ date('Y') }} tContractor. All rights reserved.<br>
-            <a href="https://tcontractor.com">Visit our Website</a>
+            &copy; {{ date('Y') }} cConnect. All rights reserved.<br>
+            <a href="https://cConnect.com">Visit our Website</a>
         </div>
     </div>
 </body>

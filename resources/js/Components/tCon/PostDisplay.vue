@@ -4,7 +4,7 @@ import { usePage } from "@inertiajs/inertia-vue3";
 import Avatar from "@/Components/Ratings/Avatar.vue";
 import StarRounded from "@/Components/Ratings/StarRounded.vue";
 
-import tContractorWord from "@/Components/tCon/tContractorWord.vue";
+import cConnectWord from "@/Components/tCon/cConnectWord.vue";
 import LikedUser from "@/Components/PostFooter/LikedUser.vue";
 
 import ButtonPost from "@/Components/tCon/tConSub/ButtonPost.vue";
@@ -30,7 +30,7 @@ import InputError from "@/Components/InputError.vue";
 export default {
   components: {
     ThreeVisibleComments,
-    tContractorWord,
+    cConnectWord,
     ButtonPost,
     ButtonRefresh,
     StarRounded,

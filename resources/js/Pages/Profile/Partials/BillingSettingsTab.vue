@@ -447,7 +447,7 @@ const fetchPaymentHistoryDetails = async () => {
                 {{ translations && translations.for_billing_inquiries }} ,
               </div>
               <a
-                href="mailto:tcontractor@gmail.com"
+                href="mailto:cConnect@gmail.com"
                 class="font-bold ml-1 text-blue-rgba"
                 >{{ translations && translations.please_contact_us }}.</a
               >
@@ -514,7 +514,7 @@ const fetchPaymentHistoryDetails = async () => {
             translations &&
             translations.are_you_sure_you_want_to_cancel_your_subscription_with
           }}
-          <span class="font-bold">tContractor</span>?
+          <span class="font-bold">cConnect</span>?
 
           <p class="text-lg font-semibold">
             {{ translations && translations.upon_cancellation }}:

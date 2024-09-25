@@ -334,8 +334,8 @@ const onSendContactUsInformation = async () => {
         </PrimaryButton>
         <!-- <p class="text-lg">
           {{ translations && translations.reach_out_to_us }}
-          <a href="mailto:tcontractor@gmail.com" class="text-blue-500"
-            >tcontractor@gmail.com</a
+          <a href="mailto:cConnect@gmail.com" class="text-blue-500"
+            >cConnect@gmail.com</a
           >, {{ translations && translations.get_back_to_you }}
         </p> -->
       </section>

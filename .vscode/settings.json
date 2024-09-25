@@ -1,19 +1,19 @@
 {
-     "sqltools.connections": [
-          {
-               "mysqlOptions": {
-                    "authProtocol": "default",
-                    "enableSsl": "Disabled"
-               },
-               "previewLimit": 50,
-               "server": "127.0.0.1",
-               "port": 3306,
-               "driver": "MySQL",
-               "name": "tContractor",
-               "database": "tcontractor",
-               "username": "sail"
-          }
-     ],
-     "editor.defaultFormatter": "esbenp.prettier-vscode",
-     "editor.formatOnSave": true
+  "sqltools.connections": [
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "previewLimit": 50,
+      "server": "127.0.0.1",
+      "port": 3306,
+      "driver": "MySQL",
+      "name": "cConnect",
+      "database": "cConnect",
+      "username": "sail"
+    }
+  ],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true
 }

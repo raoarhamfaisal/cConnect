@@ -1,6 +1,6 @@
 <script setup>
 import { ref, reactive, computed } from "vue";
-import tContractorWord from "@/Components/tCon/tContractorWord.vue";
+import cConnectWord from "@/Components/tCon/cConnectWord.vue";
 import ScrollToLinkVue from "@/Components/tCon/ScrollToLink.vue";
 import { useStore } from "vuex";
 import { Icon } from "@iconify/vue";
@@ -237,7 +237,7 @@ const translations = computed(() => store.getters.translations);
                     {{ translations && translations.hire_sub_with_integrity }}
                   </li>
                   <li>
-                    <tContractorWord></tContractorWord>
+                    <cConnectWord></cConnectWord>
                     {{ translations && translations.private_rating_system }}
                   </li>
                   <li>
@@ -641,7 +641,7 @@ const translations = computed(() => store.getters.translations);
 
               <div v-show="showMore5">
                 <p class="-ml-4 pt-3 text-blue-rgba uppercase font-extrabold">
-                  tContractor provides this Free service by a renowned Master
+                  cConnect provides this Free service by a renowned Master
                   business strategist
                 </p>
 
@@ -760,7 +760,7 @@ const translations = computed(() => store.getters.translations);
                 class="pl-4 text-xl text-blue-700 text-center font-bold capitalize tracking-tight"
               >
                 <h2>
-                  <tContractorWord></tContractorWord>
+                  <cConnectWord></cConnectWord>
                   {{ translations && translations.built_managed_by_contractors
                   }}<br />{{
                     translations && translations.for_contractors_subcontractors
@@ -778,12 +778,12 @@ const translations = computed(() => store.getters.translations);
 
               <div v-show="showMore6">
                 <h2 class="capitalize text-black">
-                  tContractor
+                  cConnect
                   {{ translations && translations.adding_new_features }}
                 </h2>
 
                 <p class="-ml-4 pt-3 text-blue-rgba capitalize font-extrabold">
-                  <tContractorWord></tContractorWord>
+                  <cConnectWord></cConnectWord>
                   {{ translations && translations.important_tool_in_toolbox }}
                   <span class="uppercase text-rose-700">{{
                     translations && translations.better_construction_business

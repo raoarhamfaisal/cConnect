@@ -35,7 +35,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="https://tcontractor.com/uploads/common/site-logo.png" alt="tContractor Logo">
+            <img src="https://cConnect.com/uploads/common/site-logo.png" alt="cConnect Logo">
         </div>
         <div class="content">
             <p>Hello {{ $user->first_name }} {{ $user->last_name }},</p>
@@ -45,7 +45,7 @@
             <br>        
         </div>
         <div class="footer">
-            &copy; 2024 tContractor. All rights reserved.
+            &copy; 2024 cConnect. All rights reserved.
         </div>
     </div>
 </body>

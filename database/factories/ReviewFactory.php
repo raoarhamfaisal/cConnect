@@ -33,7 +33,7 @@ class ReviewFactory extends Factory
             'paid_on_time' => $this->faker->numberBetween(0, 1),
             'hired_contractor' => $this->faker->numberBetween(0, 1),
             'give_full_payment' => $this->faker->numberBetween(0, 1),
-            'how_did_you_meet_this_contractor' => 'tContractor Referral'
+            'how_did_you_meet_this_contractor' => 'cConnect Referral'
         ];
     }
 }

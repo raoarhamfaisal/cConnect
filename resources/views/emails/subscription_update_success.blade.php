@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="https://tcontractor.com/uploads/common/site-logo.png" alt="tContractor Logo">
+            <img src="https://cConnect.com/uploads/common/site-logo.png" alt="cConnect Logo">
         </div>
         <div class="content">
             <p>Hello {{ $user->first_name }} {{ $user->last_name }},</p>
@@ -20,10 +20,10 @@
             Last 4 digits of CC/Bank Account: {{ $last4DigitsOfBankAccount }}
             </p>
             <p>Note: Your discount period has ended, and the new amount reflects the regular subscription price.</p>
-            <a href="https://tcontractor.com/login" style="padding: 10px; background-color: #241e6d; color: white; text-decoration: none; border-radius: 5px;">Log into tContractor</a>
+            <a href="https://cConnect.com/login" style="padding: 10px; background-color: #241e6d; color: white; text-decoration: none; border-radius: 5px;">Log into cConnect</a>
         </div>           
         <div class="footer">
-            &copy; 2024 tContractor. All rights reserved.
+            &copy; 2024 cConnect. All rights reserved.
         </div>
     </div>
 </body>

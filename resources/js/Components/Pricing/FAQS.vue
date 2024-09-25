@@ -66,7 +66,7 @@ const translations = computed(() => store.getters.translations);
           }}<br />
           <br />
           <div>
-            <strong class="inline">tContractor</strong>
+            <strong class="inline">cConnect</strong>
             {{ translations && translations.is_the_answer_to_these_issues }}
           </div>
         </v-expansion-panel-text>
@@ -85,7 +85,7 @@ const translations = computed(() => store.getters.translations);
         >
           <div>
             {{ translations && translations.member_contractor_advertises_free }}
-            <strong class="inline">tContractor</strong>.
+            <strong class="inline">cConnect</strong>.
           </div>
         </v-expansion-panel-text>
       </v-expansion-panel>
@@ -148,7 +148,7 @@ const translations = computed(() => store.getters.translations);
           }}<br /><br />
           <div>
             {{ translations && translations.with }}
-            <strong class="inline">tContractor</strong>,
+            <strong class="inline">cConnect</strong>,
             {{ translations && translations.its_easy }}
           </div>
           <br />
@@ -156,7 +156,7 @@ const translations = computed(() => store.getters.translations);
           {{ translations && translations.most_contractors_would_refuse }}<br />
           <div>
             {{ translations && translations.with }}
-            <strong class="inline">tContractor</strong>,
+            <strong class="inline">cConnect</strong>,
             {{ translations && translations.you_can_now_have_the_tools }}
           </div>
           <br />
@@ -165,7 +165,7 @@ const translations = computed(() => store.getters.translations);
           }}<br /><br />
           <div>
             {{ translations && translations.use_tcontractors_sub_finder }}
-            <strong class="inline">tContractor</strong>.
+            <strong class="inline">cConnect</strong>.
             {{ translations && translations.someone_you_can_reasonably_trust }}
           </div>
         </v-expansion-panel-text>
@@ -184,9 +184,9 @@ const translations = computed(() => store.getters.translations);
           {{ translations && translations.trades_are_what_you_do }}
           <br /><br />
           <div>
-            <strong class="inline">tContractor</strong>
+            <strong class="inline">cConnect</strong>
             {{ translations && translations.has_26_plus_trade_groups }}
-            <strong class="inline">tContractor</strong>
+            <strong class="inline">cConnect</strong>
             {{
               translations &&
               translations.allows_you_to_view_only_your_trade_group
@@ -211,7 +211,7 @@ const translations = computed(() => store.getters.translations);
           }}
           <br /><br />
           <div>
-            <strong class="inline">tContractor</strong>
+            <strong class="inline">cConnect</strong>
             {{ translations && translations.lets_you_limit_your_searches }}
           </div>
         </v-expansion-panel-text>

@@ -30,7 +30,7 @@ class NewEmailVerificationCode extends Mailable
      */
     public function build()
     {
-        return $this->subject('Email Verification Code from tContractor')
+        return $this->subject('Email Verification Code from cConnect')
                     ->view('emails.new_verification')
                     ->with(['token' => $this->token]);
     }

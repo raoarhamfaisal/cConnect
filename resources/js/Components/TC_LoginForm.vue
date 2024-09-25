@@ -42,68 +42,13 @@ const translations = computed(() => store.getters.translations);
 <template>
   <Head :title="translations && translations.log_in" />
 
-  <!-- <div class="relative
-                flex
-                justify-center
-                px-0.5
-                py-2
-                sm:py-6
-                w-full
-                sm:w-auto
-                "> -->
-
-  <!-- <div class="
-                            flex
-                            justify-center
-                            px-2
-                            py-2
-                            bg-gray-100
-                            
-                            rounded-lg
-                            "> -->
-
-  <!-- <div class="
-                                    sm:max-w-md
-                                    sm:min-w-sm
-                                    py-6
-                                    px-10
-                                    sm:px-12
-                                    bg-white
-                                    
-                                    shadow-md
-                                    overflow-hidden
-                                    rounded-xl
-                                    "> -->
-  <!--
-            Replaced with the top 2 divs
-            <div class="min-h-screen
-                    flex
-                    sm:justify-center
-                    items-center
-                    pt-6
-                    sm:pt-0
-                    bg-gray-100
-                    
-                    ">
-            <div class="w-full
-                            sm:max-w-md
-                            mt-6
-                            px-6
-                            py-4
-                            bg-white
-                            
-                            shadow-md
-                            overflow-hidden
-                            sm:rounded-lg
-                        "> -->
-
   <Link
     href="/"
     class="text-2xl sm:text-3xl md:text-3xl font-bold tracking-wide text-center"
   >
-    <span class="text-green-500 italic font-serif">t</span>
+    <span class="text-green-500 italic font-serif">c</span>
     <span class="text-indigo-900 font-extrabold font-sans">C</span>
-    <span class="text-indigo-900 font-bold font-sans">ontractor</span>
+    <span class="text-indigo-900 font-bold font-sans">onnect</span>
   </Link>
 
   <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
@@ -162,7 +107,7 @@ const translations = computed(() => store.getters.translations);
             :href="route('signup')"
             class="text-sm text-indigo-600 hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
-            {{ translations && translations.join }} tContractor
+            {{ translations && translations.join }} cConnect
           </Link>
         </div>
       </div>
@@ -176,8 +121,4 @@ const translations = computed(() => store.getters.translations);
       </PrimaryButton>
     </div>
   </form>
-
-  <!-- </div> -->
-  <!-- </div> -->
-  <!-- </div> -->
 </template>

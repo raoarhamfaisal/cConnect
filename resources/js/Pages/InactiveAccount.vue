@@ -26,9 +26,9 @@
           translations.to_regain_access_please_update_your_billing_information
         }}
         <a
-          href="mailto:support@tcontractor.com"
+          href="mailto:support@cConnect.com"
           class="text-blue-500 hover:underline"
-          >support@tcontractor.com</a
+          >support@cConnect.com</a
         >.
       </p>
       <div class="flex gap-2 mt-3">
@@ -61,9 +61,9 @@
       <p class="mb-4">
         {{ translations && translations.close }}
         <a
-          href="mailto:support@tcontractor.com"
+          href="mailto:support@cConnect.com"
           class="text-blue-500 hover:underline"
-          >support@tcontractor.com</a
+          >support@cConnect.com</a
         >.
       </p>
       <button
@@ -89,9 +89,9 @@
           translations.if_you_have_any_questions_please_contact_our_support_team
         }}
         <a
-          href="mailto:support@tcontractor.com"
+          href="mailto:support@cConnect.com"
           class="text-blue-500 hover:underline"
-          >support@tcontractor.com</a
+          >support@cConnect.com</a
         >.
       </p>
       <div class="flex gap-2 mt-3">

@@ -1,1 +1,375 @@
-import{H as g}from"./Header.8b20dfa0.js";import{u as x,r as y,D as v,c as w,S as b,N as P,e as l,h as s,i as e,s as r,F as S,d,H as k,f as t,L as c,l as m,U as A,V as C}from"./app.907bb242.js";import{C as I}from"./Card.0c51827f.js";import{P as B}from"./PageTitle.f25bd43b.js";import{I as i}from"./iconify.99e09ef6.js";import{_ as F}from"./_plugin-vue_export-helper.cdc0426e.js";import"./spanish.afd7e950.js";import"./tContractorWord.60dc90ac.js";import"./filepond-plugin-file-poster.b4b2d2f1.js";import"./CustomDialog.f5ff7c4f.js";import"./selectListsHelpters.6d73b684.js";import"./Badge.c427ce3e.js";import"./DialogProfileTabs.3ff770e3.js";import"./Trades.1aa0dbd9.js";import"./Views.82daefe6.js";import"./Loader.9dfd413c.js";import"./Avatar.72f6a2c8.js";import"./InputLabel.c691f6db.js";import"./InputError.a485c9eb.js";import"./SelectProfile.a00d96e3.js";import"./DialogUpgradeToGoldPlatinum.8daf4ac5.js";/* empty css                                                             *//* empty css                                                                  */const a=n=>(A("data-v-fb0a3714"),n=n(),C(),n),H=["open"],N={class:"accordion-heading flex items-center"},U=a(()=>t("span",{class:"mx-4"},"Reviews",-1)),V={class:""},L=a(()=>t("span",{class:"mx-4 font-medium"},"All Contractors",-1)),O=a(()=>t("span",{class:"mx-4 font-medium"},"Appealed Reviews",-1)),R=["open"],j={class:"accordion-heading flex items-center"},q=a(()=>t("span",{class:"mx-4 text-[#364fc7]"},"Post Functions",-1)),D=["open"],M={class:"accordion-heading flex items-center"},T=a(()=>t("span",{class:"mx-4 text-[#364fc7]"},"User Functions",-1)),E=["open"],W={class:"accordion-heading flex items-center"},z=a(()=>t("span",{class:"mx-4"},"Payments",-1)),G={class:""},J=a(()=>t("span",{class:"mx-4 font-medium"},"Pricing Plans",-1)),K=a(()=>t("span",{class:"mx-4 font-medium"},"Discout Coupons",-1)),Q=a(()=>t("span",{class:"mx-4 font-medium"},"Cancel Subscription Requests",-1)),X={__name:"AdminPage",props:{profile:Object,showit:Boolean,postSearchFilters:{type:Object,default:()=>({postSearch:""})}},setup(n){var u,f;x();const p=y(!0),o=(f=(u=v().props.value)==null?void 0:u.auth)==null?void 0:f.user,h=w(()=>o?o.appeals_privileges||o.payments_privileges||o.users_privileges:!1);return b(()=>{console.log("onBeforeMount",o.appeals_privileges||o.payments_privileges||o.users_privileges,h),!h.value&&window.location.pathname!=="/post"&&(console.log("incondition",!h),P.Inertia.visit("/post"))}),(_,Y)=>(d(),l(S,null,[s(e(k),{title:"Admin"}),s(g,{profile:n.profile,"show-post-buttons":!1,"post-search-filters":n.postSearchFilters,showit:n.showit},{default:r(()=>[s(I,{shadowLevel:2,bgColor:"white",class:"mt-1",padding:_.screenWidth<640?"7px":"20px"},{default:r(()=>[s(B,{linkUrl:"/post",pageTitle:"Admin"}),e(o).appeals_privileges?(d(),l("details",{key:0,class:"accordion-section",open:p.value},[t("summary",N,[s(e(i),{icon:"material-symbols:reviews",color:"#364fc7",width:"30",height:"30"}),U]),t("div",V,[s(e(c),{class:"flex items-center pl-8 pr-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",href:"/admin/regions/contractors"},{default:r(()=>[s(e(i),{icon:"ion:person-sharp",color:"#1098ad",width:"30",height:"30"}),L]),_:1}),s(e(c),{class:"flex items-center pl-8 pr-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",href:"/admin/regions/appealed"},{default:r(()=>[s(e(i),{icon:"fluent-mdl2:review-request-solid",color:"#1098ad",width:"30",height:"30"}),O]),_:1})])],8,H)):m("",!0),e(o).posts_privileges?(d(),l("details",{key:1,class:"accordion-section",open:p.value},[t("summary",j,[s(e(c),{class:"flex items-center text-gray-600 transition-colors duration-300 transform rounded-lg",href:"/admin/post"},{default:r(()=>[s(e(i),{icon:"ion:person-sharp",color:"#364fc7",width:"30",height:"30"}),q]),_:1})])],8,R)):m("",!0),e(o).users_privileges?(d(),l("details",{key:2,class:"accordion-section",open:p.value},[t("summary",M,[s(e(c),{class:"flex items-center text-gray-600 transition-colors duration-300 transform rounded-lg",href:"/admin/users"},{default:r(()=>[s(e(i),{icon:"ion:person-sharp",color:"#364fc7",width:"30",height:"30"}),T]),_:1})])],8,D)):m("",!0),e(o).payments_privileges?(d(),l("details",{key:3,class:"accordion-section",open:p.value},[t("summary",W,[s(e(i),{icon:"ion:card-sharp",color:"#364fc7",width:"30",height:"30"}),z]),t("div",G,[s(e(c),{class:"flex items-center pl-8 pr-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",href:"/admin/pricing"},{default:r(()=>[s(e(i),{icon:"mdi-credit-card",color:"#1098ad",width:"30",height:"30"}),J]),_:1}),s(e(c),{class:"flex items-center pl-8 pr-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",href:"/admin/coupons"},{default:r(()=>[s(e(i),{icon:"mdi-tag",color:"#1098ad",width:"30",height:"30"}),K]),_:1}),s(e(c),{class:"flex items-center pl-8 pr-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",href:"/admin/cancel-subscription"},{default:r(()=>[s(e(i),{icon:"material-symbols:cancel-presentation-rounded",color:"#1098ad",width:"30",height:"30"}),Q]),_:1})])],8,E)):m("",!0)]),_:1},8,["padding"])]),_:1},8,["profile","post-search-filters","showit"])],64))}},we=F(X,[["__scopeId","data-v-fb0a3714"]]);export{we as default};
+import { H as g } from "./Header.8b20dfa0.js";
+import {
+  u as x,
+  r as y,
+  D as v,
+  c as w,
+  S as b,
+  N as P,
+  e as l,
+  h as s,
+  i as e,
+  s as r,
+  F as S,
+  d,
+  H as k,
+  f as t,
+  L as c,
+  l as m,
+  U as A,
+  V as C,
+} from "./app.907bb242.js";
+import { C as I } from "./Card.0c51827f.js";
+import { P as B } from "./PageTitle.f25bd43b.js";
+import { I as i } from "./iconify.99e09ef6.js";
+import { _ as F } from "./_plugin-vue_export-helper.cdc0426e.js";
+import "./spanish.afd7e950.js";
+import "./cConnectWord.60dc90ac.js";
+import "./filepond-plugin-file-poster.b4b2d2f1.js";
+import "./CustomDialog.f5ff7c4f.js";
+import "./selectListsHelpters.6d73b684.js";
+import "./Badge.c427ce3e.js";
+import "./DialogProfileTabs.3ff770e3.js";
+import "./Trades.1aa0dbd9.js";
+import "./Views.82daefe6.js";
+import "./Loader.9dfd413c.js";
+import "./Avatar.72f6a2c8.js";
+import "./InputLabel.c691f6db.js";
+import "./InputError.a485c9eb.js";
+import "./SelectProfile.a00d96e3.js";
+import "./DialogUpgradeToGoldPlatinum.8daf4ac5.js";
+/* empty css                                                             */ /* empty css                                                                  */ const a =
+    (n) => (A("data-v-fb0a3714"), (n = n()), C(), n),
+  H = ["open"],
+  N = { class: "accordion-heading flex items-center" },
+  U = a(() => t("span", { class: "mx-4" }, "Reviews", -1)),
+  V = { class: "" },
+  L = a(() => t("span", { class: "mx-4 font-medium" }, "All Contractors", -1)),
+  O = a(() => t("span", { class: "mx-4 font-medium" }, "Appealed Reviews", -1)),
+  R = ["open"],
+  j = { class: "accordion-heading flex items-center" },
+  q = a(() =>
+    t("span", { class: "mx-4 text-[#364fc7]" }, "Post Functions", -1)
+  ),
+  D = ["open"],
+  M = { class: "accordion-heading flex items-center" },
+  T = a(() =>
+    t("span", { class: "mx-4 text-[#364fc7]" }, "User Functions", -1)
+  ),
+  E = ["open"],
+  W = { class: "accordion-heading flex items-center" },
+  z = a(() => t("span", { class: "mx-4" }, "Payments", -1)),
+  G = { class: "" },
+  J = a(() => t("span", { class: "mx-4 font-medium" }, "Pricing Plans", -1)),
+  K = a(() => t("span", { class: "mx-4 font-medium" }, "Discout Coupons", -1)),
+  Q = a(() =>
+    t("span", { class: "mx-4 font-medium" }, "Cancel Subscription Requests", -1)
+  ),
+  X = {
+    __name: "AdminPage",
+    props: {
+      profile: Object,
+      showit: Boolean,
+      postSearchFilters: { type: Object, default: () => ({ postSearch: "" }) },
+    },
+    setup(n) {
+      var u, f;
+      x();
+      const p = y(!0),
+        o =
+          (f = (u = v().props.value) == null ? void 0 : u.auth) == null
+            ? void 0
+            : f.user,
+        h = w(() =>
+          o
+            ? o.appeals_privileges ||
+              o.payments_privileges ||
+              o.users_privileges
+            : !1
+        );
+      return (
+        b(() => {
+          console.log(
+            "onBeforeMount",
+            o.appeals_privileges || o.payments_privileges || o.users_privileges,
+            h
+          ),
+            !h.value &&
+              window.location.pathname !== "/post" &&
+              (console.log("incondition", !h), P.Inertia.visit("/post"));
+        }),
+        (_, Y) => (
+          d(),
+          l(
+            S,
+            null,
+            [
+              s(e(k), { title: "Admin" }),
+              s(
+                g,
+                {
+                  profile: n.profile,
+                  "show-post-buttons": !1,
+                  "post-search-filters": n.postSearchFilters,
+                  showit: n.showit,
+                },
+                {
+                  default: r(() => [
+                    s(
+                      I,
+                      {
+                        shadowLevel: 2,
+                        bgColor: "white",
+                        class: "mt-1",
+                        padding: _.screenWidth < 640 ? "7px" : "20px",
+                      },
+                      {
+                        default: r(() => [
+                          s(B, { linkUrl: "/post", pageTitle: "Admin" }),
+                          e(o).appeals_privileges
+                            ? (d(),
+                              l(
+                                "details",
+                                {
+                                  key: 0,
+                                  class: "accordion-section",
+                                  open: p.value,
+                                },
+                                [
+                                  t("summary", N, [
+                                    s(e(i), {
+                                      icon: "material-symbols:reviews",
+                                      color: "#364fc7",
+                                      width: "30",
+                                      height: "30",
+                                    }),
+                                    U,
+                                  ]),
+                                  t("div", V, [
+                                    s(
+                                      e(c),
+                                      {
+                                        class:
+                                          "flex items-center pl-8 pr-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",
+                                        href: "/admin/regions/contractors",
+                                      },
+                                      {
+                                        default: r(() => [
+                                          s(e(i), {
+                                            icon: "ion:person-sharp",
+                                            color: "#1098ad",
+                                            width: "30",
+                                            height: "30",
+                                          }),
+                                          L,
+                                        ]),
+                                        _: 1,
+                                      }
+                                    ),
+                                    s(
+                                      e(c),
+                                      {
+                                        class:
+                                          "flex items-center pl-8 pr-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",
+                                        href: "/admin/regions/appealed",
+                                      },
+                                      {
+                                        default: r(() => [
+                                          s(e(i), {
+                                            icon: "fluent-mdl2:review-request-solid",
+                                            color: "#1098ad",
+                                            width: "30",
+                                            height: "30",
+                                          }),
+                                          O,
+                                        ]),
+                                        _: 1,
+                                      }
+                                    ),
+                                  ]),
+                                ],
+                                8,
+                                H
+                              ))
+                            : m("", !0),
+                          e(o).posts_privileges
+                            ? (d(),
+                              l(
+                                "details",
+                                {
+                                  key: 1,
+                                  class: "accordion-section",
+                                  open: p.value,
+                                },
+                                [
+                                  t("summary", j, [
+                                    s(
+                                      e(c),
+                                      {
+                                        class:
+                                          "flex items-center text-gray-600 transition-colors duration-300 transform rounded-lg",
+                                        href: "/admin/post",
+                                      },
+                                      {
+                                        default: r(() => [
+                                          s(e(i), {
+                                            icon: "ion:person-sharp",
+                                            color: "#364fc7",
+                                            width: "30",
+                                            height: "30",
+                                          }),
+                                          q,
+                                        ]),
+                                        _: 1,
+                                      }
+                                    ),
+                                  ]),
+                                ],
+                                8,
+                                R
+                              ))
+                            : m("", !0),
+                          e(o).users_privileges
+                            ? (d(),
+                              l(
+                                "details",
+                                {
+                                  key: 2,
+                                  class: "accordion-section",
+                                  open: p.value,
+                                },
+                                [
+                                  t("summary", M, [
+                                    s(
+                                      e(c),
+                                      {
+                                        class:
+                                          "flex items-center text-gray-600 transition-colors duration-300 transform rounded-lg",
+                                        href: "/admin/users",
+                                      },
+                                      {
+                                        default: r(() => [
+                                          s(e(i), {
+                                            icon: "ion:person-sharp",
+                                            color: "#364fc7",
+                                            width: "30",
+                                            height: "30",
+                                          }),
+                                          T,
+                                        ]),
+                                        _: 1,
+                                      }
+                                    ),
+                                  ]),
+                                ],
+                                8,
+                                D
+                              ))
+                            : m("", !0),
+                          e(o).payments_privileges
+                            ? (d(),
+                              l(
+                                "details",
+                                {
+                                  key: 3,
+                                  class: "accordion-section",
+                                  open: p.value,
+                                },
+                                [
+                                  t("summary", W, [
+                                    s(e(i), {
+                                      icon: "ion:card-sharp",
+                                      color: "#364fc7",
+                                      width: "30",
+                                      height: "30",
+                                    }),
+                                    z,
+                                  ]),
+                                  t("div", G, [
+                                    s(
+                                      e(c),
+                                      {
+                                        class:
+                                          "flex items-center pl-8 pr-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",
+                                        href: "/admin/pricing",
+                                      },
+                                      {
+                                        default: r(() => [
+                                          s(e(i), {
+                                            icon: "mdi-credit-card",
+                                            color: "#1098ad",
+                                            width: "30",
+                                            height: "30",
+                                          }),
+                                          J,
+                                        ]),
+                                        _: 1,
+                                      }
+                                    ),
+                                    s(
+                                      e(c),
+                                      {
+                                        class:
+                                          "flex items-center pl-8 pr-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",
+                                        href: "/admin/coupons",
+                                      },
+                                      {
+                                        default: r(() => [
+                                          s(e(i), {
+                                            icon: "mdi-tag",
+                                            color: "#1098ad",
+                                            width: "30",
+                                            height: "30",
+                                          }),
+                                          K,
+                                        ]),
+                                        _: 1,
+                                      }
+                                    ),
+                                    s(
+                                      e(c),
+                                      {
+                                        class:
+                                          "flex items-center pl-8 pr-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700",
+                                        href: "/admin/cancel-subscription",
+                                      },
+                                      {
+                                        default: r(() => [
+                                          s(e(i), {
+                                            icon: "material-symbols:cancel-presentation-rounded",
+                                            color: "#1098ad",
+                                            width: "30",
+                                            height: "30",
+                                          }),
+                                          Q,
+                                        ]),
+                                        _: 1,
+                                      }
+                                    ),
+                                  ]),
+                                ],
+                                8,
+                                E
+                              ))
+                            : m("", !0),
+                        ]),
+                        _: 1,
+                      },
+                      8,
+                      ["padding"]
+                    ),
+                  ]),
+                  _: 1,
+                },
+                8,
+                ["profile", "post-search-filters", "showit"]
+              ),
+            ],
+            64
+          )
+        )
+      );
+    },
+  },
+  we = F(X, [["__scopeId", "data-v-fb0a3714"]]);
+export { we as default };

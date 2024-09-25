@@ -1,1 +1,951 @@
-import{u as Bt,c as S,I as Dt,d as s,e as g,h as C,s as I,K as u,i as Wt,J as Vt,n as b,l,f as t,t as x,r as v,p as Et,F as jt,v as Ht,x as Kt,j as At,m as Pt,a0 as Jt,X as $t,B as Ot}from"./app.907bb242.js";import{C as Xt}from"./Card.0c51827f.js";import Qt from"./ContractorHeader.74a7b1c1.js";import{h as Yt}from"./filepond-plugin-file-poster.b4b2d2f1.js";import{I as qt}from"./iconify.99e09ef6.js";import{_ as te}from"./_plugin-vue_export-helper.cdc0426e.js";import{_ as ee}from"./ImageTextSection.vue_vue_type_style_index_0_scoped_a4e46067_lang.cc0ca6e2.js";/* empty css                                                             */import"./Avatar.72f6a2c8.js";import"./PostDisplayEnlarged.adbff492.js";import"./tContractorWord.60dc90ac.js";import"./Loader.9dfd413c.js";import"./InputLabel.c691f6db.js";import"./InputError.a485c9eb.js";import"./SelectProfile.a00d96e3.js";import"./CustomDialog.f5ff7c4f.js";import"./Badge.c427ce3e.js";import"./selectListsHelpters.6d73b684.js";import"./ContractorRating.3006b2c1.js";import"./Review.a038e96e.js";import"./EditResponseModal.84ffd735.js";import"./DeleteResponseModal.4a25af00.js";import"./ButtonRatings.029b3347.js";import"./PrimaryButton.d6b2dece.js";import"./Button.f68cd005.js";/* empty css                                                               */import"./Tooltip.df5bf8e9.js";import"./StarRating.345caaaf.js";import"./EditRatingModal.2e8212da.js";import"./StarRatingEditable.6da32187.js";import"./DeleteRatingModal.d3c2927a.js";import"./QualifyingQuestions.944a7f65.js";import"./ContractorInfo.6f4506f5.js";import"./HeadingCard.ac3646cb.js";import"./DialogContractorPage.ba3ad545.js";import"./CustomContractorPageDialog.49cdbf42.js";import"./ContractorPage.cfd29f7f.js";import"./DialogUpgradeToGoldPlatinum.8daf4ac5.js";import"./MoveToTop.8193f768.js";/* empty css                                                                   */import"./ResponsiveNavLink.04cb55a4.js";const oe=["href"],ae={key:0,class:"flex items-center w-full gap-2 xs:gap-4"},se=["src"],re={__name:"InfoWithIconLink",props:{icon:{type:String,required:!1},imgPath:{type:String,required:!1},iconColor:{type:String,default:"#241e6d"},imgClasses:{type:String,default:""},iconClasses:{type:String,default:""},textClasses:{type:String,default:""},tooltipText:{type:String,required:!0},link:{type:[String,Number,null],required:!0}},setup(e){const T=r=>r?r.startsWith("http://")||r.startsWith("https://")?r:`http://${r}`:"",o=Bt(),f=S(()=>o.getters.translations);return(r,p)=>{const y=Dt("v-tooltip");return s(),g("a",{target:"_blank",href:T(e.link)},[e.link?(s(),g("div",ae,[C(y,{text:e.tooltipText,location:"top"},{activator:I(({props:_})=>[e.icon?(s(),u(Wt(qt),Vt({key:0},_,{icon:e.icon,color:e.iconColor,class:`${e.iconClasses}`}),null,16,["icon","color","class"])):e.imgPath?(s(),g("img",{key:1,src:e.imgPath,class:b(`${e.imgClasses}`)},null,10,se)):l("",!0)]),_:1},8,["text"]),t("div",{class:b(`hover:underline text-sm ${e.textClasses}`)},x(f.value&&f.value.follow_us_on)+" "+x(e.tooltipText),3)])):l("",!0)],8,oe)}}},m=te(re,[["__scopeId","data-v-05f86e77"]]);const le={class:"flex justify-between gap-2 mt-2 sm:mt-3"},ne={class:"flex w-full self-start flex-col gap-2"},ie={class:"flex justify-between"},ce={class:"flex justify-between flex-col gap-2"},de={class:"flex flex-col gap-2"},ue={key:0,class:"flex items-center w-full gap-2 text-gray-700 xs:gap-4 mt-2 sm:mt-0"},me={class:"flex items-center"},ge={class:"font-bold text-sm xs:text-base sm:text-lg ml-1 xs:ml-2"},xe={class:"text-xs xs:text-sm sm:translate-y-[1px] sm:text-base ml-2"},Ce={key:0,class:"flex flex-col gap-2 mr-8 mt-2"},fe=t("button",{class:"xs:text-md translate-x-[1px] font-semibold"},[t("svg",{id:"SvgjsSvg1017",width:"24",height:"24",xmlns:"http://www.w3.org/2000/svg",version:"1.1","xmlns:xlink":"http://www.w3.org/1999/xlink"},[t("defs",{id:"SvgjsDefs1018"}),t("g",{id:"SvgjsG1019"},[t("svg",{xmlns:"http://www.w3.org/2000/svg","fill-rule":"evenodd","stroke-linejoin":"round","stroke-miterlimit":"2","clip-rule":"evenodd",viewBox:"0 0 64 64",width:"24",height:"24"},[t("rect",{width:"24",height:"24",fill:"none"}),t("path",{d:"M58,104C58,98.696 56.946,93.609 55.071,89.858C53.196,86.107 50.652,84 48,84C39.122,84 24.878,84 16,84C13.348,84 10.804,86.107 8.929,89.858C7.054,93.609 6,98.696 6,104C6,117.961 6,136 6,136C6,138.209 6.895,140 8,140L56,140C57.105,140 58,138.209 58,136L58,104ZM54,132L54,104C54,100.817 53.368,97.765 52.243,95.515C51.117,93.264 49.591,92 48,92C39.122,92 24.878,92 16,92C14.409,92 12.883,93.264 11.757,95.515C10.632,97.765 10,100.817 10,104L10,132L54,132Z",transform:"matrix(1 0 0 .5 0 -36)",fill:"#464898",class:"color000 svgShape"}),t("path",{d:"M10,92L10,120C10,123.183 10.632,126.235 11.757,128.485C12.883,130.736 14.409,132 16,132C24.878,132 39.122,132 48,132C49.591,132 51.117,130.736 52.243,128.485C53.368,126.235 54,123.183 54,120C54,117.792 54.896,116 56,116C57.104,116 58,117.792 58,120C58,125.304 56.946,130.391 55.071,134.142C53.196,137.893 50.652,140 48,140C39.122,140 24.878,140 16,140C13.348,140 10.804,137.893 8.929,134.142C7.054,130.391 6,125.304 6,120L6,88C6,85.791 6.895,84 8,84L56,84C57.105,84 58,85.791 58,88C58,88 58,95.188 58,104C58,106.208 57.104,108 56,108C54.896,108 54,106.208 54,104L54,92L10,92Z",transform:"matrix(1 0 0 .5 0 -12)",fill:"#464898",class:"color000 svgShape"}),t("path",{d:"M26,100C26,98.895 25.105,98 24,98L16,98C14.895,98 14,98.895 14,100L14,108C14,109.105 14.895,110 16,110L24,110C25.105,110 26,109.105 26,108L26,100ZM18,102L18,106L22,106L22,102L18,102Z",transform:"translate(0 -84)",fill:"#464898",class:"color000 svgShape"}),t("path",{d:"M24,103L48,103C49.656,103 51,102.104 51,101C51,99.896 49.656,99 48,99L24,99C22.344,99 21,99.896 21,101C21,102.104 22.344,103 24,103Z",transform:"matrix(.66667 0 0 1 16 -85)",fill:"#464898",class:"color000 svgShape"}),t("path",{d:"M24,103L48,103C49.656,103 51,102.104 51,101C51,99.896 49.656,99 48,99L24,99C22.344,99 21,99.896 21,101C21,102.104 22.344,103 24,103Z",transform:"matrix(.66667 0 0 1 16 -77)",fill:"#464898",class:"color000 svgShape"}),t("path",{d:"M26,127.172L36.586,116.586C37.367,115.805 38.633,115.805 39.414,116.586L55.071,132.243C55.85,133.022 55.852,134.285 55.075,135.067C55.075,135.067 55.075,135.067 55.071,135.071C53.196,136.946 50.652,138 48,138L32,138C32,138 16,138 16,138C13.348,138 10.804,136.946 8.929,135.071L8.925,135.067C8.148,134.285 8.15,133.022 8.929,132.243L18.586,122.586C19.367,121.805 20.633,121.805 21.414,122.586L26,127.172ZM50.586,133.414L38,120.828L28.828,130L32.828,134L48,134C48.904,134 49.787,133.796 50.586,133.414ZM27.172,134L20,126.828L13.414,133.414C14.214,133.796 15.097,134 16,134L27.172,134Z",transform:"translate(0 -80)",fill:"#464898",class:"color000 svgShape"})])])])],-1),he={class:b("cursor-pointer hover:underline text-sm")},ve={for:"notes",class:"text-base text-gray-700 font-semibold"},pe={key:0,class:"flex flex-col translate-y-[-2px] gap-2 mr-8"},ke=t("button",{class:"xs:text-md translate-x-[1px] font-semibold"},[t("svg",{id:"SvgjsSvg1017",width:"28",height:"28",xmlns:"http://www.w3.org/2000/svg",version:"1.1","xmlns:xlink":"http://www.w3.org/1999/xlink"},[t("defs",{id:"SvgjsDefs1018"}),t("g",{id:"SvgjsG1019"},[t("svg",{xmlns:"http://www.w3.org/2000/svg","fill-rule":"evenodd","stroke-linejoin":"round","stroke-miterlimit":"2","clip-rule":"evenodd",viewBox:"0 0 64 64",width:"28",height:"28"},[t("rect",{width:"28",height:"28",fill:"none"}),t("path",{d:"M58,104C58,98.696 56.946,93.609 55.071,89.858C53.196,86.107 50.652,84 48,84C39.122,84 24.878,84 16,84C13.348,84 10.804,86.107 8.929,89.858C7.054,93.609 6,98.696 6,104C6,117.961 6,136 6,136C6,138.209 6.895,140 8,140L56,140C57.105,140 58,138.209 58,136L58,104ZM54,132L54,104C54,100.817 53.368,97.765 52.243,95.515C51.117,93.264 49.591,92 48,92C39.122,92 24.878,92 16,92C14.409,92 12.883,93.264 11.757,95.515C10.632,97.765 10,100.817 10,104L10,132L54,132Z",transform:"matrix(1 0 0 .5 0 -36)",fill:"#464898",class:"color000 svgShape"}),t("path",{d:"M10,92L10,120C10,123.183 10.632,126.235 11.757,128.485C12.883,130.736 14.409,132 16,132C24.878,132 39.122,132 48,132C49.591,132 51.117,130.736 52.243,128.485C53.368,126.235 54,123.183 54,120C54,117.792 54.896,116 56,116C57.104,116 58,117.792 58,120C58,125.304 56.946,130.391 55.071,134.142C53.196,137.893 50.652,140 48,140C39.122,140 24.878,140 16,140C13.348,140 10.804,137.893 8.929,134.142C7.054,130.391 6,125.304 6,120L6,88C6,85.791 6.895,84 8,84L56,84C57.105,84 58,85.791 58,88C58,88 58,95.188 58,104C58,106.208 57.104,108 56,108C54.896,108 54,106.208 54,104L54,92L10,92Z",transform:"matrix(1 0 0 .5 0 -12)",fill:"#464898",class:"color000 svgShape"}),t("path",{d:"M26,100C26,98.895 25.105,98 24,98L16,98C14.895,98 14,98.895 14,100L14,108C14,109.105 14.895,110 16,110L24,110C25.105,110 26,109.105 26,108L26,100ZM18,102L18,106L22,106L22,102L18,102Z",transform:"translate(0 -84)",fill:"#464898",class:"color000 svgShape"}),t("path",{d:"M24,103L48,103C49.656,103 51,102.104 51,101C51,99.896 49.656,99 48,99L24,99C22.344,99 21,99.896 21,101C21,102.104 22.344,103 24,103Z",transform:"matrix(.66667 0 0 1 16 -85)",fill:"#464898",class:"color000 svgShape"}),t("path",{d:"M24,103L48,103C49.656,103 51,102.104 51,101C51,99.896 49.656,99 48,99L24,99C22.344,99 21,99.896 21,101C21,102.104 22.344,103 24,103Z",transform:"matrix(.66667 0 0 1 16 -77)",fill:"#464898",class:"color000 svgShape"}),t("path",{d:"M26,127.172L36.586,116.586C37.367,115.805 38.633,115.805 39.414,116.586L55.071,132.243C55.85,133.022 55.852,134.285 55.075,135.067C55.075,135.067 55.075,135.067 55.071,135.071C53.196,136.946 50.652,138 48,138L32,138C32,138 16,138 16,138C13.348,138 10.804,136.946 8.929,135.071L8.925,135.067C8.148,134.285 8.15,133.022 8.929,132.243L18.586,122.586C19.367,121.805 20.633,121.805 21.414,122.586L26,127.172ZM50.586,133.414L38,120.828L28.828,130L32.828,134L48,134C48.904,134 49.787,133.796 50.586,133.414ZM27.172,134L20,126.828L13.414,133.414C14.214,133.796 15.097,134 16,134L27.172,134Z",transform:"translate(0 -80)",fill:"#464898",class:"color000 svgShape"})])])])],-1),we={class:b("cursor-pointer hover:underline text-sm")},Le=["placeholder"],be={class:"max-sm:mt-2 flex flex-col gap-2"},ye=["onClick"],g1={__name:"SubFinderContractor",props:{contractor:Object,region_name:String},emits:"opneUpgradeToGoldPlatinumDialog",setup(e,{emit:T}){var B,D,W,V,q,N,U,F,R,G,z,E,H,K,A,J,O,X,Q,Y,tt,et,ot,at,st,rt,lt,nt,it,ct,dt,ut,mt;const o=e,f=Bt(),r=v((D=(B=o.contractor)==null?void 0:B.notes)!=null?D:""),p=v(),y=v(),_=v(!1),j=Et({trade1:(W=o.contractor)==null?void 0:W.trade1,trade2:(V=o.contractor)==null?void 0:V.trade2,trade3:(q=o.contractor)==null?void 0:q.trade3,trade4:(N=o.contractor)==null?void 0:N.trade4,trade5:(U=o.contractor)==null?void 0:U.trade5,trade6:(F=o.contractor)==null?void 0:F.trade6,trade7:(R=o.contractor)==null?void 0:R.trade7,trade8:(G=o.contractor)==null?void 0:G.trade8,trade9:(z=o.contractor)==null?void 0:z.trade9,trade10:(E=o.contractor)==null?void 0:E.trade10,trade11:(H=o.contractor)==null?void 0:H.trade11,trade12:(K=o.contractor)==null?void 0:K.trade12,trade13:(A=o.contractor)==null?void 0:A.trade13,trade14:(J=o.contractor)==null?void 0:J.trade14,trade15:(O=o.contractor)==null?void 0:O.trade15,trade16:(X=o.contractor)==null?void 0:X.trade16,trade17:(Q=o.contractor)==null?void 0:Q.trade17,trade18:(Y=o.contractor)==null?void 0:Y.trade18,trade19:(tt=o.contractor)==null?void 0:tt.trade19,trade20:(et=o.contractor)==null?void 0:et.trade20,trade21:(ot=o.contractor)==null?void 0:ot.trade21,trade22:(at=o.contractor)==null?void 0:at.trade22,trade23:(st=o.contractor)==null?void 0:st.trade23,trade24:(rt=o.contractor)==null?void 0:rt.trade24,trade25:(lt=o.contractor)==null?void 0:lt.trade25,trade26:(nt=o.contractor)==null?void 0:nt.trade26,trade27:(it=o.contractor)==null?void 0:it.trade27,trade28:(ct=o.contractor)==null?void 0:ct.trade28,trade29:(dt=o.contractor)==null?void 0:dt.trade29,trade30:(ut=o.contractor)==null?void 0:ut.trade30}),M=S(()=>f.getters.screenWidth),a=S(()=>f.getters.translations),k=S(()=>f.getters.userVersion),Nt=()=>{_.value=!1},P=()=>{Pt(()=>{p.value.style.height="auto",p.value.style.height=p.value.scrollHeight+"px"})},Ut=i=>{if(k.value!==1&&i.key==="Tab"){i.preventDefault();const n=i.target.selectionStart,c=i.target.selectionEnd;r.value=r.value.substring(0,n)+"      "+r.value.substring(c),Pt(()=>{i.target.selectionStart=i.target.selectionEnd=n+6})}};let Z=null;const Ft=i=>{var n,c;if(k.value===1){r.value=(c=(n=o.contractor)==null?void 0:n.notes)!=null?c:"";return}P(),_.value=!0,Z&&clearTimeout(Z),Z=setTimeout(async()=>{const L={notes:r.value?Jt(r.value):r.value};console.log(L,r.value,"selectedNote");try{const h=await axios.post(`/api/sub-finder/${o.contractor.id}/preference-and-notes`,L,$t());console.log(h,"response"),h.data}catch{}},500)},$=()=>{y.value.openPostDialog()},Rt=v([{value:"Preferred",label:a.value&&a.value.preferred,selectedClass:"bg-green-500 text-white border-green-500"},{value:"Back-Up",label:a.value&&a.value.back_up,selectedClass:"bg-blue-500 text-white border-blue-500"},{value:"Possible",label:a.value&&a.value.possible,selectedClass:"bg-yellow-500 text-white border-yellow-500"},{value:"Rejected",label:a.value&&a.value.rejected,selectedClass:"bg-red-500 text-white border-red-500"}]),w=v((mt=o.contractor)==null?void 0:mt.preference_status),Gt=async i=>{w.value===i?w.value="":w.value=i;const n={preference_status:w.value};try{const c=await axios.post(`/api/sub-finder/${o.contractor.id}/preference-and-notes`,n,$t());console.log(c,"response"),c.data}catch(c){Ot(c.response.data.message,"inherit")}},zt=()=>{if(k.value===1){T("opneUpgradeToGoldPlatinumDialog");return}};return(i,n)=>{const c=Dt("v-tooltip");return s(),g(jt,null,[C(Xt,{shadowLevel:3,isInside:!0,bgColor:"#fff",padding:M.value<640?"7px":"20px"},{default:I(()=>{var L,h,gt,xt,Ct,ft,ht,vt,pt,kt,wt,Lt,bt,yt,_t,St,Tt,Mt,Zt,It;return[C(Qt,{contractor:e.contractor,region_name:e.region_name},null,8,["contractor","region_name"]),t("div",le,[t("div",ne,[t("div",ie,[t("div",ce,[t("div",de,[e.region_name?(s(),g("div",ue,[t("div",me,[C(c,{text:a.value&&a.value.region,location:"top"},{activator:I(({props:d})=>[C(Wt(qt),Vt(d,{class:"w-6 h-6 sm:w-8 sm:h-8",icon:"mdi:location",color:"#241e6d"}),null,16)]),_:1},8,["text"]),t("div",ge,x(a.value&&a.value.region)+" : ",1),t("div",xe,x(e.region_name),1)])])):l("",!0),C(Yt,{modelValue:j,"onUpdate:modelValue":n[0]||(n[0]=d=>j=d)},null,8,["modelValue"])]),M.value<=640&&k.value!==1?(s(),g("div",Ce,[(L=e.contractor)!=null&&L.website_url?(s(),u(m,{key:0,class:"translate-x-[-2px]",imgPath:"/images/icons/website.png",imgClasses:"w-6  h-6",textClasses:"text-md translate-x-[-2px]",tooltipText:"Website",link:(h=e.contractor)==null?void 0:h.website_url},null,8,["link"])):l("",!0),(gt=e.contractor)!=null&&gt.facebook?(s(),u(m,{key:1,icon:"logos:facebook",iconClasses:"w-5 h-5 sm:w-6 sm:h-6",textClasses:"text-sm sm:text-base",tooltipText:"Facebook",link:(xt=e.contractor)==null?void 0:xt.facebook},null,8,["link"])):l("",!0),(Ct=e.contractor)!=null&&Ct.twitter?(s(),u(m,{key:2,icon:"fa6-brands:square-x-twitter",iconColor:"black",iconClasses:"w-5 h-5 sm:w-6 sm:h-6",textClasses:"text-sm sm:text-base",tooltipText:"Twitter",link:(ft=e.contractor)==null?void 0:ft.twitter},null,8,["link"])):l("",!0),(ht=e.contractor)!=null&&ht.tiktok?(s(),u(m,{key:3,icon:"logos:tiktok-icon",iconClasses:"w-5 h-5 sm:w-6 sm:h-6",textClasses:"text-sm sm:text-base",tooltipText:"TikTok",link:(vt=e.contractor)==null?void 0:vt.tiktok},null,8,["link"])):l("",!0),(pt=e.contractor)!=null&&pt.instagram?(s(),u(m,{key:4,icon:"skill-icons:instagram",iconClasses:"w-5 h-5 sm:w-6 sm:h-6",textClasses:"text-sm sm:text-base",tooltipText:"Instagram",link:(kt=e.contractor)==null?void 0:kt.instagram},null,8,["link"])):l("",!0),t("div",{onClick:$,class:"flex translate-x-[-3px] items-center w-full gap-2 xs:gap-4"},[fe,t("div",he,x(a.value&&a.value.contractors_postings),1)])])):l("",!0),t("label",ve,x(a.value&&a.value.my_notes),1)]),M.value>640&&k.value!==1?(s(),g("div",pe,[(wt=e.contractor)!=null&&wt.website_url?(s(),u(m,{key:0,class:"translate-x-[-2px]",imgPath:"/images/icons/website.png",imgClasses:"w-7  h-7",textClasses:"text-md translate-x-[-2px]",tooltipText:"Website",link:(Lt=e.contractor)==null?void 0:Lt.website_url},null,8,["link"])):l("",!0),(bt=e.contractor)!=null&&bt.facebook?(s(),u(m,{key:1,icon:"logos:facebook",class:"z-10",iconClasses:"w-6 h-6",textClasses:"text-md",tooltipText:"Facebook",link:(yt=e.contractor)==null?void 0:yt.facebook},null,8,["link"])):l("",!0),(_t=e.contractor)!=null&&_t.twitter?(s(),u(m,{key:2,icon:"fa6-brands:square-x-twitter",iconColor:"black",iconClasses:"w-6 h-6",textClasses:"text-md",tooltipText:"Twitter",link:(St=e.contractor)==null?void 0:St.twitter},null,8,["link"])):l("",!0),(Tt=e.contractor)!=null&&Tt.tiktok?(s(),u(m,{key:3,icon:"logos:tiktok-icon",iconClasses:"w-6 h-6",textClasses:"text-md",tooltipText:"TikTok",link:(Mt=e.contractor)==null?void 0:Mt.tiktok},null,8,["link"])):l("",!0),(Zt=e.contractor)!=null&&Zt.instagram?(s(),u(m,{key:4,icon:"skill-icons:instagram",iconClasses:"w-6 h-6",textClasses:"text-md",tooltipText:"Instagram",link:(It=e.contractor)==null?void 0:It.instagram},null,8,["link"])):l("",!0),t("div",{onClick:$,class:"flex translate-x-[-3px] items-center w-full gap-2 xs:gap-4"},[ke,t("div",we,x(a.value&&a.value.contractors_postings),1)])])):l("",!0)]),Ht(t("textarea",{id:"notes","onUpdate:modelValue":n[1]||(n[1]=d=>r.value=d),onPaste:P,ref_key:"textRef",ref:p,onBlur:Nt,onClick:zt,onKeydown:Ut,onInput:Ft,placeholder:a.value&&a.value.type_your_notes,class:"text-sm w-full py-1 min-h-[100px] overflow-y-hidden px-3 focus:shadow-none focus:ring-gray-600 focus:rounded bg-[#f9fafb] border-gray-200 text-grey-600 resize-none rounded focus-within:ring-gray-600 focus:border-gray-600"},null,40,Le),[[Kt,r.value]])]),t("div",be,[(s(!0),g(jt,null,At(Rt.value,d=>(s(),g("button",{onClick:_e=>Gt(d.value),key:d.value,class:b(["w-20 sm:w-28 py-2 border-2 font-medium text-sm sm:text-lg rounded transition transform duration-300 hover:shadow-lg active:scale-95",w.value===d.value?d.selectedClass:"border-gray-700 bg-white"])},x(d.label),11,ye))),128))])])]}),_:1},8,["padding"]),C(ee,{ref_key:"postDialogRef",ref:y,contractorId:e.contractor.user_id},null,8,["contractorId"])],64)}}};export{g1 as default};
+import {
+  u as Bt,
+  c as S,
+  I as Dt,
+  d as s,
+  e as g,
+  h as C,
+  s as I,
+  K as u,
+  i as Wt,
+  J as Vt,
+  n as b,
+  l,
+  f as t,
+  t as x,
+  r as v,
+  p as Et,
+  F as jt,
+  v as Ht,
+  x as Kt,
+  j as At,
+  m as Pt,
+  a0 as Jt,
+  X as $t,
+  B as Ot,
+} from "./app.907bb242.js";
+import { C as Xt } from "./Card.0c51827f.js";
+import Qt from "./ContractorHeader.74a7b1c1.js";
+import { h as Yt } from "./filepond-plugin-file-poster.b4b2d2f1.js";
+import { I as qt } from "./iconify.99e09ef6.js";
+import { _ as te } from "./_plugin-vue_export-helper.cdc0426e.js";
+import { _ as ee } from "./ImageTextSection.vue_vue_type_style_index_0_scoped_a4e46067_lang.cc0ca6e2.js";
+/* empty css                                                             */ import "./Avatar.72f6a2c8.js";
+import "./PostDisplayEnlarged.adbff492.js";
+import "./cConnectWord.60dc90ac.js";
+import "./Loader.9dfd413c.js";
+import "./InputLabel.c691f6db.js";
+import "./InputError.a485c9eb.js";
+import "./SelectProfile.a00d96e3.js";
+import "./CustomDialog.f5ff7c4f.js";
+import "./Badge.c427ce3e.js";
+import "./selectListsHelpters.6d73b684.js";
+import "./ContractorRating.3006b2c1.js";
+import "./Review.a038e96e.js";
+import "./EditResponseModal.84ffd735.js";
+import "./DeleteResponseModal.4a25af00.js";
+import "./ButtonRatings.029b3347.js";
+import "./PrimaryButton.d6b2dece.js";
+import "./Button.f68cd005.js";
+/* empty css                                                               */ import "./Tooltip.df5bf8e9.js";
+import "./StarRating.345caaaf.js";
+import "./EditRatingModal.2e8212da.js";
+import "./StarRatingEditable.6da32187.js";
+import "./DeleteRatingModal.d3c2927a.js";
+import "./QualifyingQuestions.944a7f65.js";
+import "./ContractorInfo.6f4506f5.js";
+import "./HeadingCard.ac3646cb.js";
+import "./DialogContractorPage.ba3ad545.js";
+import "./CustomContractorPageDialog.49cdbf42.js";
+import "./ContractorPage.cfd29f7f.js";
+import "./DialogUpgradeToGoldPlatinum.8daf4ac5.js";
+import "./MoveToTop.8193f768.js";
+/* empty css                                                                   */ import "./ResponsiveNavLink.04cb55a4.js";
+const oe = ["href"],
+  ae = { key: 0, class: "flex items-center w-full gap-2 xs:gap-4" },
+  se = ["src"],
+  re = {
+    __name: "InfoWithIconLink",
+    props: {
+      icon: { type: String, required: !1 },
+      imgPath: { type: String, required: !1 },
+      iconColor: { type: String, default: "#241e6d" },
+      imgClasses: { type: String, default: "" },
+      iconClasses: { type: String, default: "" },
+      textClasses: { type: String, default: "" },
+      tooltipText: { type: String, required: !0 },
+      link: { type: [String, Number, null], required: !0 },
+    },
+    setup(e) {
+      const T = (r) =>
+          r
+            ? r.startsWith("http://") || r.startsWith("https://")
+              ? r
+              : `http://${r}`
+            : "",
+        o = Bt(),
+        f = S(() => o.getters.translations);
+      return (r, p) => {
+        const y = Dt("v-tooltip");
+        return (
+          s(),
+          g(
+            "a",
+            { target: "_blank", href: T(e.link) },
+            [
+              e.link
+                ? (s(),
+                  g("div", ae, [
+                    C(
+                      y,
+                      { text: e.tooltipText, location: "top" },
+                      {
+                        activator: I(({ props: _ }) => [
+                          e.icon
+                            ? (s(),
+                              u(
+                                Wt(qt),
+                                Vt({ key: 0 }, _, {
+                                  icon: e.icon,
+                                  color: e.iconColor,
+                                  class: `${e.iconClasses}`,
+                                }),
+                                null,
+                                16,
+                                ["icon", "color", "class"]
+                              ))
+                            : e.imgPath
+                            ? (s(),
+                              g(
+                                "img",
+                                {
+                                  key: 1,
+                                  src: e.imgPath,
+                                  class: b(`${e.imgClasses}`),
+                                },
+                                null,
+                                10,
+                                se
+                              ))
+                            : l("", !0),
+                        ]),
+                        _: 1,
+                      },
+                      8,
+                      ["text"]
+                    ),
+                    t(
+                      "div",
+                      { class: b(`hover:underline text-sm ${e.textClasses}`) },
+                      x(f.value && f.value.follow_us_on) +
+                        " " +
+                        x(e.tooltipText),
+                      3
+                    ),
+                  ]))
+                : l("", !0),
+            ],
+            8,
+            oe
+          )
+        );
+      };
+    },
+  },
+  m = te(re, [["__scopeId", "data-v-05f86e77"]]);
+const le = { class: "flex justify-between gap-2 mt-2 sm:mt-3" },
+  ne = { class: "flex w-full self-start flex-col gap-2" },
+  ie = { class: "flex justify-between" },
+  ce = { class: "flex justify-between flex-col gap-2" },
+  de = { class: "flex flex-col gap-2" },
+  ue = {
+    key: 0,
+    class: "flex items-center w-full gap-2 text-gray-700 xs:gap-4 mt-2 sm:mt-0",
+  },
+  me = { class: "flex items-center" },
+  ge = { class: "font-bold text-sm xs:text-base sm:text-lg ml-1 xs:ml-2" },
+  xe = { class: "text-xs xs:text-sm sm:translate-y-[1px] sm:text-base ml-2" },
+  Ce = { key: 0, class: "flex flex-col gap-2 mr-8 mt-2" },
+  fe = t(
+    "button",
+    { class: "xs:text-md translate-x-[1px] font-semibold" },
+    [
+      t(
+        "svg",
+        {
+          id: "SvgjsSvg1017",
+          width: "24",
+          height: "24",
+          xmlns: "http://www.w3.org/2000/svg",
+          version: "1.1",
+          "xmlns:xlink": "http://www.w3.org/1999/xlink",
+        },
+        [
+          t("defs", { id: "SvgjsDefs1018" }),
+          t("g", { id: "SvgjsG1019" }, [
+            t(
+              "svg",
+              {
+                xmlns: "http://www.w3.org/2000/svg",
+                "fill-rule": "evenodd",
+                "stroke-linejoin": "round",
+                "stroke-miterlimit": "2",
+                "clip-rule": "evenodd",
+                viewBox: "0 0 64 64",
+                width: "24",
+                height: "24",
+              },
+              [
+                t("rect", { width: "24", height: "24", fill: "none" }),
+                t("path", {
+                  d: "M58,104C58,98.696 56.946,93.609 55.071,89.858C53.196,86.107 50.652,84 48,84C39.122,84 24.878,84 16,84C13.348,84 10.804,86.107 8.929,89.858C7.054,93.609 6,98.696 6,104C6,117.961 6,136 6,136C6,138.209 6.895,140 8,140L56,140C57.105,140 58,138.209 58,136L58,104ZM54,132L54,104C54,100.817 53.368,97.765 52.243,95.515C51.117,93.264 49.591,92 48,92C39.122,92 24.878,92 16,92C14.409,92 12.883,93.264 11.757,95.515C10.632,97.765 10,100.817 10,104L10,132L54,132Z",
+                  transform: "matrix(1 0 0 .5 0 -36)",
+                  fill: "#464898",
+                  class: "color000 svgShape",
+                }),
+                t("path", {
+                  d: "M10,92L10,120C10,123.183 10.632,126.235 11.757,128.485C12.883,130.736 14.409,132 16,132C24.878,132 39.122,132 48,132C49.591,132 51.117,130.736 52.243,128.485C53.368,126.235 54,123.183 54,120C54,117.792 54.896,116 56,116C57.104,116 58,117.792 58,120C58,125.304 56.946,130.391 55.071,134.142C53.196,137.893 50.652,140 48,140C39.122,140 24.878,140 16,140C13.348,140 10.804,137.893 8.929,134.142C7.054,130.391 6,125.304 6,120L6,88C6,85.791 6.895,84 8,84L56,84C57.105,84 58,85.791 58,88C58,88 58,95.188 58,104C58,106.208 57.104,108 56,108C54.896,108 54,106.208 54,104L54,92L10,92Z",
+                  transform: "matrix(1 0 0 .5 0 -12)",
+                  fill: "#464898",
+                  class: "color000 svgShape",
+                }),
+                t("path", {
+                  d: "M26,100C26,98.895 25.105,98 24,98L16,98C14.895,98 14,98.895 14,100L14,108C14,109.105 14.895,110 16,110L24,110C25.105,110 26,109.105 26,108L26,100ZM18,102L18,106L22,106L22,102L18,102Z",
+                  transform: "translate(0 -84)",
+                  fill: "#464898",
+                  class: "color000 svgShape",
+                }),
+                t("path", {
+                  d: "M24,103L48,103C49.656,103 51,102.104 51,101C51,99.896 49.656,99 48,99L24,99C22.344,99 21,99.896 21,101C21,102.104 22.344,103 24,103Z",
+                  transform: "matrix(.66667 0 0 1 16 -85)",
+                  fill: "#464898",
+                  class: "color000 svgShape",
+                }),
+                t("path", {
+                  d: "M24,103L48,103C49.656,103 51,102.104 51,101C51,99.896 49.656,99 48,99L24,99C22.344,99 21,99.896 21,101C21,102.104 22.344,103 24,103Z",
+                  transform: "matrix(.66667 0 0 1 16 -77)",
+                  fill: "#464898",
+                  class: "color000 svgShape",
+                }),
+                t("path", {
+                  d: "M26,127.172L36.586,116.586C37.367,115.805 38.633,115.805 39.414,116.586L55.071,132.243C55.85,133.022 55.852,134.285 55.075,135.067C55.075,135.067 55.075,135.067 55.071,135.071C53.196,136.946 50.652,138 48,138L32,138C32,138 16,138 16,138C13.348,138 10.804,136.946 8.929,135.071L8.925,135.067C8.148,134.285 8.15,133.022 8.929,132.243L18.586,122.586C19.367,121.805 20.633,121.805 21.414,122.586L26,127.172ZM50.586,133.414L38,120.828L28.828,130L32.828,134L48,134C48.904,134 49.787,133.796 50.586,133.414ZM27.172,134L20,126.828L13.414,133.414C14.214,133.796 15.097,134 16,134L27.172,134Z",
+                  transform: "translate(0 -80)",
+                  fill: "#464898",
+                  class: "color000 svgShape",
+                }),
+              ]
+            ),
+          ]),
+        ]
+      ),
+    ],
+    -1
+  ),
+  he = { class: b("cursor-pointer hover:underline text-sm") },
+  ve = { for: "notes", class: "text-base text-gray-700 font-semibold" },
+  pe = { key: 0, class: "flex flex-col translate-y-[-2px] gap-2 mr-8" },
+  ke = t(
+    "button",
+    { class: "xs:text-md translate-x-[1px] font-semibold" },
+    [
+      t(
+        "svg",
+        {
+          id: "SvgjsSvg1017",
+          width: "28",
+          height: "28",
+          xmlns: "http://www.w3.org/2000/svg",
+          version: "1.1",
+          "xmlns:xlink": "http://www.w3.org/1999/xlink",
+        },
+        [
+          t("defs", { id: "SvgjsDefs1018" }),
+          t("g", { id: "SvgjsG1019" }, [
+            t(
+              "svg",
+              {
+                xmlns: "http://www.w3.org/2000/svg",
+                "fill-rule": "evenodd",
+                "stroke-linejoin": "round",
+                "stroke-miterlimit": "2",
+                "clip-rule": "evenodd",
+                viewBox: "0 0 64 64",
+                width: "28",
+                height: "28",
+              },
+              [
+                t("rect", { width: "28", height: "28", fill: "none" }),
+                t("path", {
+                  d: "M58,104C58,98.696 56.946,93.609 55.071,89.858C53.196,86.107 50.652,84 48,84C39.122,84 24.878,84 16,84C13.348,84 10.804,86.107 8.929,89.858C7.054,93.609 6,98.696 6,104C6,117.961 6,136 6,136C6,138.209 6.895,140 8,140L56,140C57.105,140 58,138.209 58,136L58,104ZM54,132L54,104C54,100.817 53.368,97.765 52.243,95.515C51.117,93.264 49.591,92 48,92C39.122,92 24.878,92 16,92C14.409,92 12.883,93.264 11.757,95.515C10.632,97.765 10,100.817 10,104L10,132L54,132Z",
+                  transform: "matrix(1 0 0 .5 0 -36)",
+                  fill: "#464898",
+                  class: "color000 svgShape",
+                }),
+                t("path", {
+                  d: "M10,92L10,120C10,123.183 10.632,126.235 11.757,128.485C12.883,130.736 14.409,132 16,132C24.878,132 39.122,132 48,132C49.591,132 51.117,130.736 52.243,128.485C53.368,126.235 54,123.183 54,120C54,117.792 54.896,116 56,116C57.104,116 58,117.792 58,120C58,125.304 56.946,130.391 55.071,134.142C53.196,137.893 50.652,140 48,140C39.122,140 24.878,140 16,140C13.348,140 10.804,137.893 8.929,134.142C7.054,130.391 6,125.304 6,120L6,88C6,85.791 6.895,84 8,84L56,84C57.105,84 58,85.791 58,88C58,88 58,95.188 58,104C58,106.208 57.104,108 56,108C54.896,108 54,106.208 54,104L54,92L10,92Z",
+                  transform: "matrix(1 0 0 .5 0 -12)",
+                  fill: "#464898",
+                  class: "color000 svgShape",
+                }),
+                t("path", {
+                  d: "M26,100C26,98.895 25.105,98 24,98L16,98C14.895,98 14,98.895 14,100L14,108C14,109.105 14.895,110 16,110L24,110C25.105,110 26,109.105 26,108L26,100ZM18,102L18,106L22,106L22,102L18,102Z",
+                  transform: "translate(0 -84)",
+                  fill: "#464898",
+                  class: "color000 svgShape",
+                }),
+                t("path", {
+                  d: "M24,103L48,103C49.656,103 51,102.104 51,101C51,99.896 49.656,99 48,99L24,99C22.344,99 21,99.896 21,101C21,102.104 22.344,103 24,103Z",
+                  transform: "matrix(.66667 0 0 1 16 -85)",
+                  fill: "#464898",
+                  class: "color000 svgShape",
+                }),
+                t("path", {
+                  d: "M24,103L48,103C49.656,103 51,102.104 51,101C51,99.896 49.656,99 48,99L24,99C22.344,99 21,99.896 21,101C21,102.104 22.344,103 24,103Z",
+                  transform: "matrix(.66667 0 0 1 16 -77)",
+                  fill: "#464898",
+                  class: "color000 svgShape",
+                }),
+                t("path", {
+                  d: "M26,127.172L36.586,116.586C37.367,115.805 38.633,115.805 39.414,116.586L55.071,132.243C55.85,133.022 55.852,134.285 55.075,135.067C55.075,135.067 55.075,135.067 55.071,135.071C53.196,136.946 50.652,138 48,138L32,138C32,138 16,138 16,138C13.348,138 10.804,136.946 8.929,135.071L8.925,135.067C8.148,134.285 8.15,133.022 8.929,132.243L18.586,122.586C19.367,121.805 20.633,121.805 21.414,122.586L26,127.172ZM50.586,133.414L38,120.828L28.828,130L32.828,134L48,134C48.904,134 49.787,133.796 50.586,133.414ZM27.172,134L20,126.828L13.414,133.414C14.214,133.796 15.097,134 16,134L27.172,134Z",
+                  transform: "translate(0 -80)",
+                  fill: "#464898",
+                  class: "color000 svgShape",
+                }),
+              ]
+            ),
+          ]),
+        ]
+      ),
+    ],
+    -1
+  ),
+  we = { class: b("cursor-pointer hover:underline text-sm") },
+  Le = ["placeholder"],
+  be = { class: "max-sm:mt-2 flex flex-col gap-2" },
+  ye = ["onClick"],
+  g1 = {
+    __name: "SubFinderContractor",
+    props: { contractor: Object, region_name: String },
+    emits: "opneUpgradeToGoldPlatinumDialog",
+    setup(e, { emit: T }) {
+      var B,
+        D,
+        W,
+        V,
+        q,
+        N,
+        U,
+        F,
+        R,
+        G,
+        z,
+        E,
+        H,
+        K,
+        A,
+        J,
+        O,
+        X,
+        Q,
+        Y,
+        tt,
+        et,
+        ot,
+        at,
+        st,
+        rt,
+        lt,
+        nt,
+        it,
+        ct,
+        dt,
+        ut,
+        mt;
+      const o = e,
+        f = Bt(),
+        r = v(
+          (D = (B = o.contractor) == null ? void 0 : B.notes) != null ? D : ""
+        ),
+        p = v(),
+        y = v(),
+        _ = v(!1),
+        j = Et({
+          trade1: (W = o.contractor) == null ? void 0 : W.trade1,
+          trade2: (V = o.contractor) == null ? void 0 : V.trade2,
+          trade3: (q = o.contractor) == null ? void 0 : q.trade3,
+          trade4: (N = o.contractor) == null ? void 0 : N.trade4,
+          trade5: (U = o.contractor) == null ? void 0 : U.trade5,
+          trade6: (F = o.contractor) == null ? void 0 : F.trade6,
+          trade7: (R = o.contractor) == null ? void 0 : R.trade7,
+          trade8: (G = o.contractor) == null ? void 0 : G.trade8,
+          trade9: (z = o.contractor) == null ? void 0 : z.trade9,
+          trade10: (E = o.contractor) == null ? void 0 : E.trade10,
+          trade11: (H = o.contractor) == null ? void 0 : H.trade11,
+          trade12: (K = o.contractor) == null ? void 0 : K.trade12,
+          trade13: (A = o.contractor) == null ? void 0 : A.trade13,
+          trade14: (J = o.contractor) == null ? void 0 : J.trade14,
+          trade15: (O = o.contractor) == null ? void 0 : O.trade15,
+          trade16: (X = o.contractor) == null ? void 0 : X.trade16,
+          trade17: (Q = o.contractor) == null ? void 0 : Q.trade17,
+          trade18: (Y = o.contractor) == null ? void 0 : Y.trade18,
+          trade19: (tt = o.contractor) == null ? void 0 : tt.trade19,
+          trade20: (et = o.contractor) == null ? void 0 : et.trade20,
+          trade21: (ot = o.contractor) == null ? void 0 : ot.trade21,
+          trade22: (at = o.contractor) == null ? void 0 : at.trade22,
+          trade23: (st = o.contractor) == null ? void 0 : st.trade23,
+          trade24: (rt = o.contractor) == null ? void 0 : rt.trade24,
+          trade25: (lt = o.contractor) == null ? void 0 : lt.trade25,
+          trade26: (nt = o.contractor) == null ? void 0 : nt.trade26,
+          trade27: (it = o.contractor) == null ? void 0 : it.trade27,
+          trade28: (ct = o.contractor) == null ? void 0 : ct.trade28,
+          trade29: (dt = o.contractor) == null ? void 0 : dt.trade29,
+          trade30: (ut = o.contractor) == null ? void 0 : ut.trade30,
+        }),
+        M = S(() => f.getters.screenWidth),
+        a = S(() => f.getters.translations),
+        k = S(() => f.getters.userVersion),
+        Nt = () => {
+          _.value = !1;
+        },
+        P = () => {
+          Pt(() => {
+            (p.value.style.height = "auto"),
+              (p.value.style.height = p.value.scrollHeight + "px");
+          });
+        },
+        Ut = (i) => {
+          if (k.value !== 1 && i.key === "Tab") {
+            i.preventDefault();
+            const n = i.target.selectionStart,
+              c = i.target.selectionEnd;
+            (r.value =
+              r.value.substring(0, n) + "      " + r.value.substring(c)),
+              Pt(() => {
+                i.target.selectionStart = i.target.selectionEnd = n + 6;
+              });
+          }
+        };
+      let Z = null;
+      const Ft = (i) => {
+          var n, c;
+          if (k.value === 1) {
+            r.value =
+              (c = (n = o.contractor) == null ? void 0 : n.notes) != null
+                ? c
+                : "";
+            return;
+          }
+          P(),
+            (_.value = !0),
+            Z && clearTimeout(Z),
+            (Z = setTimeout(async () => {
+              const L = { notes: r.value ? Jt(r.value) : r.value };
+              console.log(L, r.value, "selectedNote");
+              try {
+                const h = await axios.post(
+                  `/api/sub-finder/${o.contractor.id}/preference-and-notes`,
+                  L,
+                  $t()
+                );
+                console.log(h, "response"), h.data;
+              } catch {}
+            }, 500));
+        },
+        $ = () => {
+          y.value.openPostDialog();
+        },
+        Rt = v([
+          {
+            value: "Preferred",
+            label: a.value && a.value.preferred,
+            selectedClass: "bg-green-500 text-white border-green-500",
+          },
+          {
+            value: "Back-Up",
+            label: a.value && a.value.back_up,
+            selectedClass: "bg-blue-500 text-white border-blue-500",
+          },
+          {
+            value: "Possible",
+            label: a.value && a.value.possible,
+            selectedClass: "bg-yellow-500 text-white border-yellow-500",
+          },
+          {
+            value: "Rejected",
+            label: a.value && a.value.rejected,
+            selectedClass: "bg-red-500 text-white border-red-500",
+          },
+        ]),
+        w = v((mt = o.contractor) == null ? void 0 : mt.preference_status),
+        Gt = async (i) => {
+          w.value === i ? (w.value = "") : (w.value = i);
+          const n = { preference_status: w.value };
+          try {
+            const c = await axios.post(
+              `/api/sub-finder/${o.contractor.id}/preference-and-notes`,
+              n,
+              $t()
+            );
+            console.log(c, "response"), c.data;
+          } catch (c) {
+            Ot(c.response.data.message, "inherit");
+          }
+        },
+        zt = () => {
+          if (k.value === 1) {
+            T("opneUpgradeToGoldPlatinumDialog");
+            return;
+          }
+        };
+      return (i, n) => {
+        const c = Dt("v-tooltip");
+        return (
+          s(),
+          g(
+            jt,
+            null,
+            [
+              C(
+                Xt,
+                {
+                  shadowLevel: 3,
+                  isInside: !0,
+                  bgColor: "#fff",
+                  padding: M.value < 640 ? "7px" : "20px",
+                },
+                {
+                  default: I(() => {
+                    var L,
+                      h,
+                      gt,
+                      xt,
+                      Ct,
+                      ft,
+                      ht,
+                      vt,
+                      pt,
+                      kt,
+                      wt,
+                      Lt,
+                      bt,
+                      yt,
+                      _t,
+                      St,
+                      Tt,
+                      Mt,
+                      Zt,
+                      It;
+                    return [
+                      C(
+                        Qt,
+                        {
+                          contractor: e.contractor,
+                          region_name: e.region_name,
+                        },
+                        null,
+                        8,
+                        ["contractor", "region_name"]
+                      ),
+                      t("div", le, [
+                        t("div", ne, [
+                          t("div", ie, [
+                            t("div", ce, [
+                              t("div", de, [
+                                e.region_name
+                                  ? (s(),
+                                    g("div", ue, [
+                                      t("div", me, [
+                                        C(
+                                          c,
+                                          {
+                                            text: a.value && a.value.region,
+                                            location: "top",
+                                          },
+                                          {
+                                            activator: I(({ props: d }) => [
+                                              C(
+                                                Wt(qt),
+                                                Vt(d, {
+                                                  class:
+                                                    "w-6 h-6 sm:w-8 sm:h-8",
+                                                  icon: "mdi:location",
+                                                  color: "#241e6d",
+                                                }),
+                                                null,
+                                                16
+                                              ),
+                                            ]),
+                                            _: 1,
+                                          },
+                                          8,
+                                          ["text"]
+                                        ),
+                                        t(
+                                          "div",
+                                          ge,
+                                          x(a.value && a.value.region) + " : ",
+                                          1
+                                        ),
+                                        t("div", xe, x(e.region_name), 1),
+                                      ]),
+                                    ]))
+                                  : l("", !0),
+                                C(
+                                  Yt,
+                                  {
+                                    modelValue: j,
+                                    "onUpdate:modelValue":
+                                      n[0] || (n[0] = (d) => (j = d)),
+                                  },
+                                  null,
+                                  8,
+                                  ["modelValue"]
+                                ),
+                              ]),
+                              M.value <= 640 && k.value !== 1
+                                ? (s(),
+                                  g("div", Ce, [
+                                    (L = e.contractor) != null && L.website_url
+                                      ? (s(),
+                                        u(
+                                          m,
+                                          {
+                                            key: 0,
+                                            class: "translate-x-[-2px]",
+                                            imgPath:
+                                              "/images/icons/website.png",
+                                            imgClasses: "w-6  h-6",
+                                            textClasses:
+                                              "text-md translate-x-[-2px]",
+                                            tooltipText: "Website",
+                                            link:
+                                              (h = e.contractor) == null
+                                                ? void 0
+                                                : h.website_url,
+                                          },
+                                          null,
+                                          8,
+                                          ["link"]
+                                        ))
+                                      : l("", !0),
+                                    (gt = e.contractor) != null && gt.facebook
+                                      ? (s(),
+                                        u(
+                                          m,
+                                          {
+                                            key: 1,
+                                            icon: "logos:facebook",
+                                            iconClasses:
+                                              "w-5 h-5 sm:w-6 sm:h-6",
+                                            textClasses: "text-sm sm:text-base",
+                                            tooltipText: "Facebook",
+                                            link:
+                                              (xt = e.contractor) == null
+                                                ? void 0
+                                                : xt.facebook,
+                                          },
+                                          null,
+                                          8,
+                                          ["link"]
+                                        ))
+                                      : l("", !0),
+                                    (Ct = e.contractor) != null && Ct.twitter
+                                      ? (s(),
+                                        u(
+                                          m,
+                                          {
+                                            key: 2,
+                                            icon: "fa6-brands:square-x-twitter",
+                                            iconColor: "black",
+                                            iconClasses:
+                                              "w-5 h-5 sm:w-6 sm:h-6",
+                                            textClasses: "text-sm sm:text-base",
+                                            tooltipText: "Twitter",
+                                            link:
+                                              (ft = e.contractor) == null
+                                                ? void 0
+                                                : ft.twitter,
+                                          },
+                                          null,
+                                          8,
+                                          ["link"]
+                                        ))
+                                      : l("", !0),
+                                    (ht = e.contractor) != null && ht.tiktok
+                                      ? (s(),
+                                        u(
+                                          m,
+                                          {
+                                            key: 3,
+                                            icon: "logos:tiktok-icon",
+                                            iconClasses:
+                                              "w-5 h-5 sm:w-6 sm:h-6",
+                                            textClasses: "text-sm sm:text-base",
+                                            tooltipText: "TikTok",
+                                            link:
+                                              (vt = e.contractor) == null
+                                                ? void 0
+                                                : vt.tiktok,
+                                          },
+                                          null,
+                                          8,
+                                          ["link"]
+                                        ))
+                                      : l("", !0),
+                                    (pt = e.contractor) != null && pt.instagram
+                                      ? (s(),
+                                        u(
+                                          m,
+                                          {
+                                            key: 4,
+                                            icon: "skill-icons:instagram",
+                                            iconClasses:
+                                              "w-5 h-5 sm:w-6 sm:h-6",
+                                            textClasses: "text-sm sm:text-base",
+                                            tooltipText: "Instagram",
+                                            link:
+                                              (kt = e.contractor) == null
+                                                ? void 0
+                                                : kt.instagram,
+                                          },
+                                          null,
+                                          8,
+                                          ["link"]
+                                        ))
+                                      : l("", !0),
+                                    t(
+                                      "div",
+                                      {
+                                        onClick: $,
+                                        class:
+                                          "flex translate-x-[-3px] items-center w-full gap-2 xs:gap-4",
+                                      },
+                                      [
+                                        fe,
+                                        t(
+                                          "div",
+                                          he,
+                                          x(
+                                            a.value &&
+                                              a.value.contractors_postings
+                                          ),
+                                          1
+                                        ),
+                                      ]
+                                    ),
+                                  ]))
+                                : l("", !0),
+                              t("label", ve, x(a.value && a.value.my_notes), 1),
+                            ]),
+                            M.value > 640 && k.value !== 1
+                              ? (s(),
+                                g("div", pe, [
+                                  (wt = e.contractor) != null && wt.website_url
+                                    ? (s(),
+                                      u(
+                                        m,
+                                        {
+                                          key: 0,
+                                          class: "translate-x-[-2px]",
+                                          imgPath: "/images/icons/website.png",
+                                          imgClasses: "w-7  h-7",
+                                          textClasses:
+                                            "text-md translate-x-[-2px]",
+                                          tooltipText: "Website",
+                                          link:
+                                            (Lt = e.contractor) == null
+                                              ? void 0
+                                              : Lt.website_url,
+                                        },
+                                        null,
+                                        8,
+                                        ["link"]
+                                      ))
+                                    : l("", !0),
+                                  (bt = e.contractor) != null && bt.facebook
+                                    ? (s(),
+                                      u(
+                                        m,
+                                        {
+                                          key: 1,
+                                          icon: "logos:facebook",
+                                          class: "z-10",
+                                          iconClasses: "w-6 h-6",
+                                          textClasses: "text-md",
+                                          tooltipText: "Facebook",
+                                          link:
+                                            (yt = e.contractor) == null
+                                              ? void 0
+                                              : yt.facebook,
+                                        },
+                                        null,
+                                        8,
+                                        ["link"]
+                                      ))
+                                    : l("", !0),
+                                  (_t = e.contractor) != null && _t.twitter
+                                    ? (s(),
+                                      u(
+                                        m,
+                                        {
+                                          key: 2,
+                                          icon: "fa6-brands:square-x-twitter",
+                                          iconColor: "black",
+                                          iconClasses: "w-6 h-6",
+                                          textClasses: "text-md",
+                                          tooltipText: "Twitter",
+                                          link:
+                                            (St = e.contractor) == null
+                                              ? void 0
+                                              : St.twitter,
+                                        },
+                                        null,
+                                        8,
+                                        ["link"]
+                                      ))
+                                    : l("", !0),
+                                  (Tt = e.contractor) != null && Tt.tiktok
+                                    ? (s(),
+                                      u(
+                                        m,
+                                        {
+                                          key: 3,
+                                          icon: "logos:tiktok-icon",
+                                          iconClasses: "w-6 h-6",
+                                          textClasses: "text-md",
+                                          tooltipText: "TikTok",
+                                          link:
+                                            (Mt = e.contractor) == null
+                                              ? void 0
+                                              : Mt.tiktok,
+                                        },
+                                        null,
+                                        8,
+                                        ["link"]
+                                      ))
+                                    : l("", !0),
+                                  (Zt = e.contractor) != null && Zt.instagram
+                                    ? (s(),
+                                      u(
+                                        m,
+                                        {
+                                          key: 4,
+                                          icon: "skill-icons:instagram",
+                                          iconClasses: "w-6 h-6",
+                                          textClasses: "text-md",
+                                          tooltipText: "Instagram",
+                                          link:
+                                            (It = e.contractor) == null
+                                              ? void 0
+                                              : It.instagram,
+                                        },
+                                        null,
+                                        8,
+                                        ["link"]
+                                      ))
+                                    : l("", !0),
+                                  t(
+                                    "div",
+                                    {
+                                      onClick: $,
+                                      class:
+                                        "flex translate-x-[-3px] items-center w-full gap-2 xs:gap-4",
+                                    },
+                                    [
+                                      ke,
+                                      t(
+                                        "div",
+                                        we,
+                                        x(
+                                          a.value &&
+                                            a.value.contractors_postings
+                                        ),
+                                        1
+                                      ),
+                                    ]
+                                  ),
+                                ]))
+                              : l("", !0),
+                          ]),
+                          Ht(
+                            t(
+                              "textarea",
+                              {
+                                id: "notes",
+                                "onUpdate:modelValue":
+                                  n[1] || (n[1] = (d) => (r.value = d)),
+                                onPaste: P,
+                                ref_key: "textRef",
+                                ref: p,
+                                onBlur: Nt,
+                                onClick: zt,
+                                onKeydown: Ut,
+                                onInput: Ft,
+                                placeholder: a.value && a.value.type_your_notes,
+                                class:
+                                  "text-sm w-full py-1 min-h-[100px] overflow-y-hidden px-3 focus:shadow-none focus:ring-gray-600 focus:rounded bg-[#f9fafb] border-gray-200 text-grey-600 resize-none rounded focus-within:ring-gray-600 focus:border-gray-600",
+                              },
+                              null,
+                              40,
+                              Le
+                            ),
+                            [[Kt, r.value]]
+                          ),
+                        ]),
+                        t("div", be, [
+                          (s(!0),
+                          g(
+                            jt,
+                            null,
+                            At(
+                              Rt.value,
+                              (d) => (
+                                s(),
+                                g(
+                                  "button",
+                                  {
+                                    onClick: (_e) => Gt(d.value),
+                                    key: d.value,
+                                    class: b([
+                                      "w-20 sm:w-28 py-2 border-2 font-medium text-sm sm:text-lg rounded transition transform duration-300 hover:shadow-lg active:scale-95",
+                                      w.value === d.value
+                                        ? d.selectedClass
+                                        : "border-gray-700 bg-white",
+                                    ]),
+                                  },
+                                  x(d.label),
+                                  11,
+                                  ye
+                                )
+                              )
+                            ),
+                            128
+                          )),
+                        ]),
+                      ]),
+                    ];
+                  }),
+                  _: 1,
+                },
+                8,
+                ["padding"]
+              ),
+              C(
+                ee,
+                {
+                  ref_key: "postDialogRef",
+                  ref: y,
+                  contractorId: e.contractor.user_id,
+                },
+                null,
+                8,
+                ["contractorId"]
+              ),
+            ],
+            64
+          )
+        );
+      };
+    },
+  };
+export { g1 as default };

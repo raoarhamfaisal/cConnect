@@ -1,7 +1,7 @@
 <script>
 import PostShowTheImage from "@/Components/tCon/tConSub/PostShowTheImage.vue";
 
-import tContractorWord from "@/Components/tCon/tContractorWord.vue";
+import cConnectWord from "@/Components/tCon/cConnectWord.vue";
 import StarRounded from "@/Components/Ratings/StarRounded.vue";
 import DialogContractorRating from "@/Components/Ratings/Contractor/DialogContractorRating.vue";
 import Avatar from "@/Components/Ratings/Avatar.vue";
@@ -22,7 +22,7 @@ export default {
   components: {
     PostShowTheImage,
 
-    tContractorWord,
+    cConnectWord,
     StarRounded,
     WriteCommentFooter,
     AllComments,
@@ -917,7 +917,7 @@ export default {
               </div>
               <!-- LOGO -->
               <div class="text-lg font-bold tracking-wide text-center">
-                <tContractorWord />
+                <cConnectWord />
               </div>
             </div>
           </button>

@@ -937,7 +937,7 @@ class PostController extends Controller
         $reportText = $request->input('report_text', 'No details provided.');
 
         // Send an email to the admin
-        Mail::to('ugly@tcontractor.com')->send(new PostReportedMail($post, $reportText));
+        Mail::to('ugly@cConnect.com')->send(new PostReportedMail($post, $reportText));
 
         return response()->json(['message' => 'Your report has been sent to the admin.']);
     }

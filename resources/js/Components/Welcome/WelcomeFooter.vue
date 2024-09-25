@@ -24,7 +24,7 @@
             href="/"
             class="text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center"
           >
-            <tContractorWhite />
+            <cConnectWhite />
           </Link>
         </div>
 
@@ -162,7 +162,7 @@
   </footer>
 </template>
 <script setup>
-import tContractorWhite from "@/Components/tCon/tContractorWhite.vue";
+import cConnectWhite from "@/Components/tCon/cConnectWhite.vue";
 import { useStore } from "vuex";
 import { computed } from "vue";
 

@@ -3,7 +3,7 @@
 import { Inertia } from "@inertiajs/inertia";
 
 import AppSpinner from "@/Shared/AppSpinner.vue";
-import tContractorWord from "@/Components/tCon/tContractorWord.vue";
+import cConnectWord from "@/Components/tCon/cConnectWord.vue";
 import ButtonPost from "@/Components/tCon/tConSub/ButtonPost.vue";
 import ButtonRefresh from "@/Components/tCon/tConSub/ButtonRefresh.vue";
 import PostDisplay from "@/Components/tCon/PostDisplay.vue";
@@ -33,7 +33,7 @@ const defaultPostFormObject = {
 export default {
   components: {
     AppSpinner,
-    tContractorWord,
+    cConnectWord,
     Loader,
     ResponsiveNavLink,
     ButtonPost,

@@ -4,8 +4,7 @@ import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
-import tContractorWord from "@/Components/tCon/tContractorWord.vue";
-import tContractorWhite from "@/Components/tCon/tContractorWhite.vue";
+import cConnectWord from "@/Components/tCon/cConnectWord.vue";
 import { checkCompatEnabled } from "@vue/compiler-core";
 import { ref, watch, onMounted, computed } from "vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
@@ -52,7 +51,7 @@ onMounted(() => {});
 </script>
 
 <template>
-  <Head title="tContractor" />
+  <Head title="cConnect" />
 
   <div class="relative h-screen bg-gray-200">
     <img
@@ -70,7 +69,7 @@ onMounted(() => {});
               href="/"
               class="hidden sm:block sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center"
             >
-              <tContractorWord />
+              <cConnectWord />
             </Link>
           </div>
 
@@ -80,7 +79,7 @@ onMounted(() => {});
               href="#whytContractor"
               class="hidden md:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8"
             >
-              {{ translations && translations.why }} tContractor
+              {{ translations && translations.why }} cConnect
             </Link>
             <Link
               href="#"
@@ -171,7 +170,7 @@ onMounted(() => {});
             <div class="pt-2 pb-3 space-y-1">
               <ResponsiveNavLink href="#whytContractor">
                 {{ translations && translations.why }}
-                <tContractorWord></tContractorWord>
+                <cConnectWord></cConnectWord>
               </ResponsiveNavLink>
 
               <ResponsiveNavLink

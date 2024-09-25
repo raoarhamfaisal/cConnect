@@ -1,5 +1,5 @@
 <script setup>
-import tContractorWord from "@/Components/tCon/tContractorWord.vue";
+import cConnectWord from "@/Components/tCon/cConnectWord.vue";
 import ButtonPost from "@/Components/tCon/tConSub/ButtonPost.vue";
 import DialogProfileTabs from "@/Pages/Profile/Partials/main/DialogProfileTabs.vue";
 import ButtonRefresh from "@/Components/tCon/tConSub/ButtonRefresh.vue";
@@ -151,7 +151,7 @@ const goToRedFlagPage = () => {
         href="/"
         class="lg:text-5xl xl:text-6xl font-bold tracking-wide text-center"
       >
-        <tContractorWord />
+        <cConnectWord />
       </Link>
 
       <!-- src="/images/avatars/1_avatar.jpg" -->

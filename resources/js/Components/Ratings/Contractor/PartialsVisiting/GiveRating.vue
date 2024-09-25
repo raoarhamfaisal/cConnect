@@ -151,7 +151,7 @@ const { profileId, contractorId } = defineProps({
 });
 //States
 const referenceList = [
-  "tContractor Referral",
+  "cConnect Referral",
   "Friend Referral",
   "Other Contractor",
   "Job Site",
@@ -170,7 +170,7 @@ const state = reactive({
 
 const store = useStore();
 const form = toRefs(state);
-const selectedReferal = ref("tContractor Referral");
+const selectedReferal = ref("cConnect Referral");
 const loading = ref(false);
 const disabled = ref(false);
 

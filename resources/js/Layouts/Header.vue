@@ -2,7 +2,7 @@
 import MainSideMenu from "@/Components/tCon/Menu_MainSideMenu.vue";
 import ButtonRefresh from "@/Components/tCon/tConSub/ButtonRefresh.vue";
 import Menu_Hamburger from "@/Components/tCon/Menu_HamburgerMenu.vue";
-import tContractorWord from "@/Components/tCon/tContractorWord.vue";
+import cConnectWord from "@/Components/tCon/cConnectWord.vue";
 import ButtonPost from "@/Components/tCon/tConSub/ButtonPost.vue";
 import { Inertia } from "@inertiajs/inertia";
 import { Link, usePage } from "@inertiajs/inertia-vue3";
@@ -34,7 +34,7 @@ const defaultPostFormObject = {
 
 export default {
   components: {
-    tContractorWord,
+    cConnectWord,
     DialogProfileTabs,
     CustomDialog,
     ButtonPost,
@@ -413,7 +413,7 @@ export default {
                       href="/"
                       class="flex text-xl sx:text-2xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center"
                     >
-                      <tContractorWord />
+                      <cConnectWord />
                     </Link>
                   </div>
 

@@ -19,7 +19,7 @@ class ContactController extends Controller
             'message' => 'required',
         ]);
 
-        Mail::to('support@tcontractor.com')->send(new ContactMail($details));
+        Mail::to('support@cConnect.com')->send(new ContactMail($details));
 
         return response()->json(['message' => 'Email sent successfully!']);
     }

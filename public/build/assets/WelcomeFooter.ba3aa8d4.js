@@ -1,5 +1,1116 @@
-import{_ as V,a as P}from"./spanish.afd7e950.js";import{r as C,D,u as R,c as k,o as A,E as G,G as W,I as B,d as l,e as _,f as t,h as o,s as i,i as h,L as x,g as u,t as a,n as w,J as O,l as v,K as p,T as J,F as K,M as Q,N as b,O as X}from"./app.907bb242.js";import{t as Y}from"./tContractorWord.60dc90ac.js";import{_ as f}from"./ResponsiveNavLink.04cb55a4.js";import{I as Z}from"./iconify.99e09ef6.js";import{_ as ee}from"./DialogUpgradeToGoldPlatinum.8daf4ac5.js";import{_ as te}from"./tContractorWhite.08eee911.js";const se={class:"absolute top-0 left-0 right-0 z-20 bg-blue-30-rgba",style:{"background-image":`linear-gradient(
+import { _ as V, a as P } from "./spanish.afd7e950.js";
+import {
+  r as C,
+  D,
+  u as R,
+  c as k,
+  o as A,
+  E as G,
+  G as W,
+  I as B,
+  d as l,
+  e as _,
+  f as t,
+  h as o,
+  s as i,
+  i as h,
+  L as x,
+  g as u,
+  t as a,
+  n as w,
+  J as O,
+  l as v,
+  K as p,
+  T as J,
+  F as K,
+  M as Q,
+  N as b,
+  O as X,
+} from "./app.907bb242.js";
+import { t as Y } from "./cConnectWord.60dc90ac.js";
+import { _ as f } from "./ResponsiveNavLink.04cb55a4.js";
+import { I as Z } from "./iconify.99e09ef6.js";
+import { _ as ee } from "./DialogUpgradeToGoldPlatinum.8daf4ac5.js";
+import { _ as te } from "./tContractorWhite.08eee911.js";
+const se = {
+    class: "absolute top-0 left-0 right-0 z-20 bg-blue-30-rgba",
+    style: {
+      "background-image": `linear-gradient(
         111.4deg,
         rgba(27, 24, 113, 1) 6.5%,
         rgba(7, 7, 9, 1) 100.2%
-      )`}},ae={class:"container max-w-7xl pr-6 pl-4 sm:px-6 py-2 mx-auto md:px-12"},ie={class:"flex items-center justify-between"},le={class:"flex items-center justify-start"},oe=t("span",{class:"text-green-rgba font-extrabold italic font-serif normal-case"},"t",-1),re=t("span",{class:"text-white font-extrabold font-sans uppercase"},"C",-1),ne=t("span",{class:"text-white font-bold font-sans"},"ontractor",-1),ue={class:"flex items-center justify-end"},ce={key:0,style:{border:"1px solid #ccc"},class:"h-8 w-8 sm:h-10 sm:w-10 rounded-full block object-contain",src:V},ve={key:1,style:{border:"1px solid #ccc"},class:"h-8 w-8 sm:h-10 sm:w-10 rounded-full block object-contain",src:P},de=t("div",{class:"flex justify-left items-center gap-2 font-bold w-32"},[t("img",{style:{border:"1px solid #ccc"},class:"h-8 w-8 object-contain block rounded-full",src:V}),t("div",null,"English")],-1),fe=t("div",{class:"flex justify-left items-center gap-2 font-bold w-44"},[t("img",{style:{border:"1px solid #ccc"},class:"h-8 w-8 object-contain block rounded-full",src:P}),t("div",null,"Spanish / Mexican")],-1),_e={key:0},pe={key:1},he={class:"-mr-4 sm:-mr-2 flex items-center"},ge={class:"h-4 w-4 x365:h-6 x365:w-6",stroke:"currentColor",fill:"none",viewBox:"0 0 24 24"},me={class:""},xe={class:"pt-4 pb-2 pl-3 border-b-2 border-gray-400"},ye={class:"font-bold text-base text-gray-800"},be={key:0},we={key:1},ke={key:0,class:"font-medium text-sm text-gray-500"},$e={class:"pt-2 pb-3 space-y-1"},je={class:"pb-1 border-t-2 border-gray-400"},Ce={class:"mt-3 space-y-1"},Me={key:4,class:"pt-2 pb-2 space-y-1 border-b-2 border-t-2 border-gray-400"},Be={class:"h-6 w-6",stroke:"currentColor",fill:"none",viewBox:"0 0 24 24"},it={__name:"WelcomeHeader",props:{showit:Boolean,showSignUp:{type:Boolean,default:!0},showNewsFeed:{type:Boolean,default:!1}},setup(n){const d=C(!1),r=C(null),$=D().url.value,m=R();let M=localStorage.getItem("lang");M||(M="english",localStorage.setItem("lang","english"));const I=C(M),U=C(null),s=k(()=>m.getters.translations),j=k(()=>m.getters.userVersion),e=k(()=>m.state.profile.profile),F=k(()=>{const c=D().props.value.auth.user;return console.log(c),c?c.appeals_privileges||c.payments_privileges||c.users_privileges:!1}),L=c=>{r.value&&!r.value.contains(c.target)&&(d.value=!1)},N=()=>{d.value=!d.value};A(async()=>{G()&&await m.dispatch("profile/fetchProfile"),document.addEventListener("click",L)}),W(()=>{document.removeEventListener("click",L)});function E(){Q(),d.value=!d.value,m.commit("setUserVersion",0),m.commit("profile/setProfile",{}),m.commit("setUserDetails",{}),b.Inertia.post("/logout")}const S=c=>{localStorage.setItem("lang",c),I.value=c,m.commit("setTranlations",c)},H=c=>{e.value&&e.value.id&&e.value.is_payment_verified&&e.value.active_user&&j.value!==0&&j.value!==1?b.Inertia.visit("red-flag"):e.value&&e.value.id&&(!e.value.is_payment_verified||!e.value.active_user)?!e.value.is_payment_verified&&!e.value.active_user?b.Inertia.visit("/profile-setup"):!e.value.is_payment_verified&&e.value.active_user?b.Inertia.visit("/pricing-plan"):b.Inertia.visit("/inactive-account"):j.value===0||j.value===1?U.value.openDialog():b.Inertia.visit("/inactive-account")};return(c,g)=>{const T=B("v-list-item"),q=B("v-list"),z=B("v-menu");return l(),_(K,null,[t("header",se,[t("nav",ae,[t("div",ie,[t("div",le,[o(h(x),{href:"/",class:"text-xl x350:text-2xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center"},{default:i(()=>[oe,re,ne]),_:1})]),t("div",ue,[o(h(x),{onClick:g[0]||(g[0]=y=>c.$inertia.visit("/#whytContractor")),class:"hidden md:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8"},{default:i(()=>[u(a(s.value&&s.value.why)+" tContractor ",1)]),_:1}),o(h(x),{href:"/about-us#contactUs",class:w(["hidden lg:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8",`${h($)==="http://0.0.0.0/about-us#contactUs"&&"bg-gray-300 rounded"}`])},{default:i(()=>[u(a(s.value&&s.value.contact_us),1)]),_:1},8,["class"]),o(z,{"open-on-hover":"","open-on-click":""},{activator:i(({props:y})=>[t("div",O({class:"cursor-pointer flex gap-1 mr-2 items-center justify-center"},y),[I.value==="english"?(l(),_("img",ce)):(l(),_("img",ve)),o(h(Z),{class:"max-sm:hidden block w-4 h-4",icon:"mingcute:down-fill",color:"white"})],16)]),default:i(()=>[o(q,{class:"mt-2"},{default:i(()=>[o(T,{class:"hover:bg-gray-200",onClick:g[1]||(g[1]=y=>S("english"))},{default:i(()=>[de]),_:1}),o(T,{class:"hover:bg-gray-200",onClick:g[2]||(g[2]=y=>S("spanish"))},{default:i(()=>[fe]),_:1})]),_:1})]),_:1}),n.showit&&n.showNewsFeed?(l(),_("div",_e,[o(h(x),{href:e.value&&e.value.is_payment_verified&&e.value.active_user?c.route("post"):e.value&&(!e.value.is_payment_verified||!e.value.active_user)?!e.value.is_payment_verified&&!e.value.active_user?"/profile-setup":!e.value.is_payment_verified&&e.value.active_user?"/pricing-plan":"/inactive-account":"/inactive-account",class:"block flex justify-center items-center mx-1 x365:mx-2 py-[6px] x365:py-2 sm:py-3 px-2 x365:px-3 sm:px-6 font-bold rounded-lg sm:rounded-xl text-white bg-green-600 max-x365:text-sm hover:bg-green-800 border-green-600"},{default:i(()=>[u(a(s.value&&s.value.news_feed),1)]),_:1},8,["href"])])):v("",!0),n.showit?v("",!0):(l(),_("div",pe,[o(h(x),{onClick:g[3]||(g[3]=y=>c.$inertia.visit("/#loginHere")),class:"block flex justify-center items-center p-1 px-3 sm:p-2 mx-2 sm:px-6 font-bold rounded-xl text-xs sm:text-base text-white bg-blue-800 hover:bg-green-800 border-2 shadow-lg border-green-600"},{default:i(()=>[u(a(s.value&&s.value.login),1)]),_:1})])),t("div",he,[t("button",{ref_key:"dropdownMenu",ref:r,onClick:N,class:"inline-flex items-center justify-center p-[6px] x365:p-2 rounded-md text-black text-gray-500 bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"},[(l(),_("svg",ge,[t("path",{class:w({hidden:d.value,"inline-flex":!d.value}),"stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2",d:"M4 6h16M4 12h16M4 18h16"},null,2),t("path",{class:w({hidden:!d.value,"inline-flex":d.value}),"stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2",d:"M6 18L18 6M6 6l12 12"},null,2)]))],512)])])]),t("div",{class:w([{block:d.value,hidden:!d.value},"absolute top-16 right-4 sm:right-6 lg:right-20 xl:right-32 2xl:right-80 z-30 px-3 text-left border-b border-gray-400 rounded-xl bg-gray-100 flex"])},[t("div",me,[t("div",xe,[t("div",ye,[n.showit?(l(),_("div",be,a(c.$page.props.auth.user.name),1)):v("",!0),n.showit?v("",!0):(l(),_("div",we,a(s.value&&s.value.not_logged_in),1))]),n.showit?(l(),_("div",ke,a(c.$page.props.auth.user.email),1)):v("",!0)]),t("div",$e,[o(f,{href:"/#whytContractor"},{default:i(()=>[u(a(s.value&&s.value.why)+" ",1),o(Y)]),_:1}),n.showit?(l(),p(f,{key:0,href:e.value&&e.value.is_payment_verified&&e.value.active_user?c.route("post"):e.value&&(!e.value.is_payment_verified||!e.value.active_user)?!e.value.is_payment_verified&&!e.value.active_user?"/profile-setup":!e.value.is_payment_verified&&e.value.active_user?"/pricing-plan":"/inactive-account":"/inactive-account",class:"font-bold"},{default:i(()=>[u(a(s.value&&s.value.news_feed),1)]),_:1},8,["href"])):v("",!0),n.showit?(l(),p(f,{key:1,href:e.value&&e.value.is_payment_verified&&e.value.active_user?"sub-finder":e.value&&(!e.value.is_payment_verified||!e.value.active_user)?!e.value.is_payment_verified&&!e.value.active_user?"/profile-setup":!e.value.is_payment_verified&&e.value.active_user?"/pricing-plan":"/inactive-account":"/inactive-account",class:"font-bold"},{default:i(()=>[u(a(s.value&&s.value.sub_finder),1)]),_:1},8,["href"])):v("",!0),n.showit?(l(),_("div",{key:2,class:"block w-full pl-3 pr-4 py-2 border-l-4 border-transparent text-left text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out font-bold cursor-pointer",onClick:H},a(s.value&&s.value.red_flags),1)):v("",!0),n.showit?(l(),p(f,{key:3,href:e.value&&e.value.is_payment_verified&&e.value.active_user?`/contractor/${e.value.user_id}/edit`:e.value&&(!e.value.is_payment_verified||!e.value.active_user)?!e.value.is_payment_verified&&!e.value.active_user?"/profile-setup":!e.value.is_payment_verified&&e.value.active_user?"/pricing-plan":"/inactive-account":"/inactive-account",class:"font-bold"},{default:i(()=>[u(a(s.value&&s.value.contractor_page),1)]),_:1},8,["href"])):v("",!0)]),t("div",je,[t("div",Ce,[n.showit?(l(),p(f,{key:0,href:e.value&&e.value.is_payment_verified&&e.value.active_user?`/posts/${e.value.user_id}`:e.value&&(!e.value.is_payment_verified||!e.value.active_user)?!e.value.is_payment_verified&&!e.value.active_user?"/profile-setup":!e.value.is_payment_verified&&e.value.active_user?"/pricing-plan":"/inactive-account":"/inactive-account"},{default:i(()=>[u(a(s.value&&s.value.my_posts),1)]),_:1},8,["href"])):v("",!0),n.showit?(l(),p(f,{key:1,href:e.value&&e.value.is_payment_verified&&e.value.active_user?"/ratings/contractor":e.value&&(!e.value.is_payment_verified||!e.value.active_user)?!e.value.is_payment_verified&&!e.value.active_user?"/profile-setup":!e.value.is_payment_verified&&e.value.active_user?"/pricing-plan":"/inactive-account":"/inactive-account"},{default:i(()=>[u(a(s.value&&s.value.my_ratings),1)]),_:1},8,["href"])):v("",!0),n.showit?(l(),p(f,{key:2,href:e.value&&e.value.is_payment_verified&&e.value.active_user?"/profile":e.value&&(!e.value.is_payment_verified||!e.value.active_user)?!e.value.is_payment_verified&&!e.value.active_user?"/profile-setup":!e.value.is_payment_verified&&e.value.active_user?"/pricing-plan":"/inactive-account":"/inactive-account"},{default:i(()=>[u(a(s.value&&s.value.my_profile),1)]),_:1},8,["href"])):v("",!0),n.showit?(l(),p(f,{key:3,href:e.value&&e.value.is_payment_verified&&e.value.active_user?"/settings":e.value&&(!e.value.is_payment_verified||!e.value.active_user)?!e.value.is_payment_verified&&!e.value.active_user?"/profile-setup":!e.value.is_payment_verified&&e.value.active_user?"/pricing-plan":"/inactive-account":"/inactive-account"},{default:i(()=>[u(a(s.value&&s.value.settings),1)]),_:1},8,["href"])):v("",!0),o(f,{href:"/about-us#contactUs"},{default:i(()=>[u(a(s.value&&s.value.contact_us),1)]),_:1}),o(f,{href:"/about-us#aboutUs"},{default:i(()=>[u(a(s.value&&s.value.about_us),1)]),_:1}),o(f,{href:"/pricing",as:"button"},{default:i(()=>[u(a(s.value&&s.value.pricing),1)]),_:1}),o(f,{href:"/pricing#faqs",as:"button"},{default:i(()=>[u(a(s.value&&s.value.faqs),1)]),_:1}),F.value&&n.showit?(l(),_("div",Me,[o(f,{href:e.value&&e.value.is_payment_verified&&e.value.active_user?"/admin":e.value&&(!e.value.is_payment_verified||!e.value.active_user)?!e.value.is_payment_verified&&!e.value.active_user?"/profile-setup":!e.value.is_payment_verified&&e.value.active_user?"/pricing-plan":"/inactive-account":"/inactive-account"},{default:i(()=>[u(a(s.value&&s.value.admin),1)]),_:1},8,["href"])])):v("",!0),n.showit?(l(),p(f,{key:5,method:"post",as:"button",onClick:E},{default:i(()=>[u(a(s.value&&s.value.log_out),1)]),_:1})):v("",!0),n.showit?v("",!0):(l(),p(f,{key:6,href:c.route("signup"),as:"button",class:"text-blue-rgba font-bold"},{default:i(()=>[u(a(s.value&&s.value.sign_up),1)]),_:1},8,["href"])),n.showit?v("",!0):(l(),p(f,{key:7,href:"/#loginHere",as:"button",onClick:g[4]||(g[4]=y=>d.value=!d.value)},{default:i(()=>[u(a(s.value&&s.value.log_in),1)]),_:1}))])])]),t("button",{onClick:N,class:"self-start inline-flex items-start justify-center p-2 rounded-md text-black hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"},[(l(),_("svg",Be,[t("path",{class:w({hidden:!d.value,"inline-flex":d.value}),"stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2",d:"M6 18L18 6M6 6l12 12"},null,2)]))])],2)])]),(l(),p(J,{to:"body"},[o(ee,{ref_key:"upgradeToGoldPlatinumDialogRef",ref:U},null,512)]))],64)}}},Ie={class:"bg-blue-rgba"},Ue={class:"container flex flex-col-reverse md:flex-row justify-between py-12 px-6 mx-auto gap-x-3 md:gap-x-5 space-y-8 md:space-y-0"},Le={class:"flex flex-col-reverse items-center justify-between space-y-12 md:flex-col md:space-y-0 md:items-start"},Ne=t("div",{class:"mx-auto my-6 text-center first-letter: text-white md:hidden"}," Copyright \xA9 2024, All Rights Reserved ",-1),Se=X('<div class="flex justify-center space-x-4"><a href="#"><img src="/images/icons/icon-facebook.svg" alt="" class="h-8"></a><a href="#"><img src="/images/icons/icon-twitter.svg" alt="" class="h-8"></a><a href="#"><img src="/images/icons/icon-instagram.svg" alt="" class="h-8"></a></div>',1),Te={class:"flex justify-evenly space-x-10"},De={class:"flex flex-col space-y-3 text-white"},Ve={href:"/",class:"hover:text-blue-400"},Pe={href:"/pricing",class:"hover:text-blue-400"},Re={href:"/about-us#contactUs",class:"hover:text-blue-400"},Fe={class:"flex flex-col space-y-3 text-white"},Ee={href:"/careers",class:"hover:text-blue-400"},He={href:"/terms-of-service",class:"hover:text-blue-400"},qe={href:"/privacy-policy",class:"hover:text-blue-400"},ze={class:"flex flex-col justify-between"},Ae={key:0,class:"flex justify-center space-x-3"},Ge={class:"text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500"},We=t("span",{class:"ml-4 flex-shrink-0 rounded-full border border-current bg-white p-2 text-indigo-600 group-active:text-indigo-500"},[t("svg",{class:"h-5 w-5",xmlns:"http://www.w3.org/2000/svg",fill:"none",viewBox:"0 0 24 24",stroke:"currentColor"},[t("path",{"stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2",d:"M17 8l4 4m0 0l-4 4m4-4H3"})])],-1),Oe={key:1,class:"flex justify-center space-x-3"},Je={class:"text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500"},Ke=t("span",{class:"ml-4 flex-shrink-0 rounded-full border border-current bg-white p-2 text-indigo-600 group-active:text-indigo-500"},[t("svg",{class:"h-5 w-5",xmlns:"http://www.w3.org/2000/svg",fill:"none",viewBox:"0 0 24 24",stroke:"currentColor"},[t("path",{"stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2",d:"M17 8l4 4m0 0l-4 4m4-4H3"})])],-1),Qe=t("div",{class:"hidden text-white md:block mx-auto my-6 text-center first-letter:"}," Copyright \xA9 2024, All Rights Reserved ",-1),lt={__name:"WelcomeFooter",props:{showit:Boolean},setup(n){const d=R(),r=k(()=>d.getters.translations);return($,m)=>(l(),_("footer",Ie,[t("div",Ue,[t("div",Le,[Ne,t("div",null,[o(h(x),{href:"/",class:"text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center"},{default:i(()=>[o(te)]),_:1})]),Se]),t("div",Te,[t("div",De,[t("a",Ve,a(r.value&&r.value.home),1),t("a",Pe,a(r.value&&r.value.pricing),1),o(h(x),{href:"/pricing#faqs",class:"hover:text-blue-400"},{default:i(()=>[u(a(r.value&&r.value.faqs),1)]),_:1}),t("a",Re,a(r.value&&r.value.contact_us),1)]),t("div",Fe,[t("a",Ee,a(r.value&&r.value.careers),1),t("a",He,a(r.value&&r.value.terms_of_service),1),t("a",qe,a(r.value&&r.value.privacy_policy),1)])]),t("div",ze,[n.showit?v("",!0):(l(),_("div",Ae,[o(h(x),{class:"group flex items-center justify-between rounded-xl border border-red-500 bg-red-500 px-5 py-3 mt-8 transition-colors hover:bg-red-800 focus:outline-none focus:ring",href:$.route("signup")},{default:i(()=>[t("span",Ge,a(r.value&&r.value.get_started),1),We]),_:1},8,["href"])])),n.showit?(l(),_("div",Oe,[o(h(x),{href:$.route("post"),class:"group flex items-center justify-between rounded-xl border border-green-600 bg-green-600 hover:bg-green-800 px-5 py-3 mt-8 transition-colors focus:outline-none focus:ring","preserve-scroll":""},{default:i(()=>[t("span",Je,a(r.value&&r.value.news_feed),1),Ke]),_:1},8,["href"])])):v("",!0),Qe])])]))}};export{lt as _,it as a};
+      )`,
+    },
+  },
+  ae = { class: "container max-w-7xl pr-6 pl-4 sm:px-6 py-2 mx-auto md:px-12" },
+  ie = { class: "flex items-center justify-between" },
+  le = { class: "flex items-center justify-start" },
+  oe = t(
+    "span",
+    { class: "text-green-rgba font-extrabold italic font-serif normal-case" },
+    "t",
+    -1
+  ),
+  re = t(
+    "span",
+    { class: "text-white font-extrabold font-sans uppercase" },
+    "C",
+    -1
+  ),
+  ne = t("span", { class: "text-white font-bold font-sans" }, "ontractor", -1),
+  ue = { class: "flex items-center justify-end" },
+  ce = {
+    key: 0,
+    style: { border: "1px solid #ccc" },
+    class: "h-8 w-8 sm:h-10 sm:w-10 rounded-full block object-contain",
+    src: V,
+  },
+  ve = {
+    key: 1,
+    style: { border: "1px solid #ccc" },
+    class: "h-8 w-8 sm:h-10 sm:w-10 rounded-full block object-contain",
+    src: P,
+  },
+  de = t(
+    "div",
+    { class: "flex justify-left items-center gap-2 font-bold w-32" },
+    [
+      t("img", {
+        style: { border: "1px solid #ccc" },
+        class: "h-8 w-8 object-contain block rounded-full",
+        src: V,
+      }),
+      t("div", null, "English"),
+    ],
+    -1
+  ),
+  fe = t(
+    "div",
+    { class: "flex justify-left items-center gap-2 font-bold w-44" },
+    [
+      t("img", {
+        style: { border: "1px solid #ccc" },
+        class: "h-8 w-8 object-contain block rounded-full",
+        src: P,
+      }),
+      t("div", null, "Spanish / Mexican"),
+    ],
+    -1
+  ),
+  _e = { key: 0 },
+  pe = { key: 1 },
+  he = { class: "-mr-4 sm:-mr-2 flex items-center" },
+  ge = {
+    class: "h-4 w-4 x365:h-6 x365:w-6",
+    stroke: "currentColor",
+    fill: "none",
+    viewBox: "0 0 24 24",
+  },
+  me = { class: "" },
+  xe = { class: "pt-4 pb-2 pl-3 border-b-2 border-gray-400" },
+  ye = { class: "font-bold text-base text-gray-800" },
+  be = { key: 0 },
+  we = { key: 1 },
+  ke = { key: 0, class: "font-medium text-sm text-gray-500" },
+  $e = { class: "pt-2 pb-3 space-y-1" },
+  je = { class: "pb-1 border-t-2 border-gray-400" },
+  Ce = { class: "mt-3 space-y-1" },
+  Me = {
+    key: 4,
+    class: "pt-2 pb-2 space-y-1 border-b-2 border-t-2 border-gray-400",
+  },
+  Be = {
+    class: "h-6 w-6",
+    stroke: "currentColor",
+    fill: "none",
+    viewBox: "0 0 24 24",
+  },
+  it = {
+    __name: "WelcomeHeader",
+    props: {
+      showit: Boolean,
+      showSignUp: { type: Boolean, default: !0 },
+      showNewsFeed: { type: Boolean, default: !1 },
+    },
+    setup(n) {
+      const d = C(!1),
+        r = C(null),
+        $ = D().url.value,
+        m = R();
+      let M = localStorage.getItem("lang");
+      M || ((M = "english"), localStorage.setItem("lang", "english"));
+      const I = C(M),
+        U = C(null),
+        s = k(() => m.getters.translations),
+        j = k(() => m.getters.userVersion),
+        e = k(() => m.state.profile.profile),
+        F = k(() => {
+          const c = D().props.value.auth.user;
+          return (
+            console.log(c),
+            c
+              ? c.appeals_privileges ||
+                c.payments_privileges ||
+                c.users_privileges
+              : !1
+          );
+        }),
+        L = (c) => {
+          r.value && !r.value.contains(c.target) && (d.value = !1);
+        },
+        N = () => {
+          d.value = !d.value;
+        };
+      A(async () => {
+        G() && (await m.dispatch("profile/fetchProfile")),
+          document.addEventListener("click", L);
+      }),
+        W(() => {
+          document.removeEventListener("click", L);
+        });
+      function E() {
+        Q(),
+          (d.value = !d.value),
+          m.commit("setUserVersion", 0),
+          m.commit("profile/setProfile", {}),
+          m.commit("setUserDetails", {}),
+          b.Inertia.post("/logout");
+      }
+      const S = (c) => {
+          localStorage.setItem("lang", c),
+            (I.value = c),
+            m.commit("setTranlations", c);
+        },
+        H = (c) => {
+          e.value &&
+          e.value.id &&
+          e.value.is_payment_verified &&
+          e.value.active_user &&
+          j.value !== 0 &&
+          j.value !== 1
+            ? b.Inertia.visit("red-flag")
+            : e.value &&
+              e.value.id &&
+              (!e.value.is_payment_verified || !e.value.active_user)
+            ? !e.value.is_payment_verified && !e.value.active_user
+              ? b.Inertia.visit("/profile-setup")
+              : !e.value.is_payment_verified && e.value.active_user
+              ? b.Inertia.visit("/pricing-plan")
+              : b.Inertia.visit("/inactive-account")
+            : j.value === 0 || j.value === 1
+            ? U.value.openDialog()
+            : b.Inertia.visit("/inactive-account");
+        };
+      return (c, g) => {
+        const T = B("v-list-item"),
+          q = B("v-list"),
+          z = B("v-menu");
+        return (
+          l(),
+          _(
+            K,
+            null,
+            [
+              t("header", se, [
+                t("nav", ae, [
+                  t("div", ie, [
+                    t("div", le, [
+                      o(
+                        h(x),
+                        {
+                          href: "/",
+                          class:
+                            "text-xl x350:text-2xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center",
+                        },
+                        { default: i(() => [oe, re, ne]), _: 1 }
+                      ),
+                    ]),
+                    t("div", ue, [
+                      o(
+                        h(x),
+                        {
+                          onClick:
+                            g[0] ||
+                            (g[0] = (y) =>
+                              c.$inertia.visit("/#whytContractor")),
+                          class:
+                            "hidden md:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8",
+                        },
+                        {
+                          default: i(() => [
+                            u(a(s.value && s.value.why) + " cConnect ", 1),
+                          ]),
+                          _: 1,
+                        }
+                      ),
+                      o(
+                        h(x),
+                        {
+                          href: "/about-us#contactUs",
+                          class: w([
+                            "hidden lg:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8",
+                            `${
+                              h($) === "http://0.0.0.0/about-us#contactUs" &&
+                              "bg-gray-300 rounded"
+                            }`,
+                          ]),
+                        },
+                        {
+                          default: i(() => [
+                            u(a(s.value && s.value.contact_us), 1),
+                          ]),
+                          _: 1,
+                        },
+                        8,
+                        ["class"]
+                      ),
+                      o(
+                        z,
+                        { "open-on-hover": "", "open-on-click": "" },
+                        {
+                          activator: i(({ props: y }) => [
+                            t(
+                              "div",
+                              O(
+                                {
+                                  class:
+                                    "cursor-pointer flex gap-1 mr-2 items-center justify-center",
+                                },
+                                y
+                              ),
+                              [
+                                I.value === "english"
+                                  ? (l(), _("img", ce))
+                                  : (l(), _("img", ve)),
+                                o(h(Z), {
+                                  class: "max-sm:hidden block w-4 h-4",
+                                  icon: "mingcute:down-fill",
+                                  color: "white",
+                                }),
+                              ],
+                              16
+                            ),
+                          ]),
+                          default: i(() => [
+                            o(
+                              q,
+                              { class: "mt-2" },
+                              {
+                                default: i(() => [
+                                  o(
+                                    T,
+                                    {
+                                      class: "hover:bg-gray-200",
+                                      onClick:
+                                        g[1] || (g[1] = (y) => S("english")),
+                                    },
+                                    { default: i(() => [de]), _: 1 }
+                                  ),
+                                  o(
+                                    T,
+                                    {
+                                      class: "hover:bg-gray-200",
+                                      onClick:
+                                        g[2] || (g[2] = (y) => S("spanish")),
+                                    },
+                                    { default: i(() => [fe]), _: 1 }
+                                  ),
+                                ]),
+                                _: 1,
+                              }
+                            ),
+                          ]),
+                          _: 1,
+                        }
+                      ),
+                      n.showit && n.showNewsFeed
+                        ? (l(),
+                          _("div", _e, [
+                            o(
+                              h(x),
+                              {
+                                href:
+                                  e.value &&
+                                  e.value.is_payment_verified &&
+                                  e.value.active_user
+                                    ? c.route("post")
+                                    : e.value &&
+                                      (!e.value.is_payment_verified ||
+                                        !e.value.active_user)
+                                    ? !e.value.is_payment_verified &&
+                                      !e.value.active_user
+                                      ? "/profile-setup"
+                                      : !e.value.is_payment_verified &&
+                                        e.value.active_user
+                                      ? "/pricing-plan"
+                                      : "/inactive-account"
+                                    : "/inactive-account",
+                                class:
+                                  "block flex justify-center items-center mx-1 x365:mx-2 py-[6px] x365:py-2 sm:py-3 px-2 x365:px-3 sm:px-6 font-bold rounded-lg sm:rounded-xl text-white bg-green-600 max-x365:text-sm hover:bg-green-800 border-green-600",
+                              },
+                              {
+                                default: i(() => [
+                                  u(a(s.value && s.value.news_feed), 1),
+                                ]),
+                                _: 1,
+                              },
+                              8,
+                              ["href"]
+                            ),
+                          ]))
+                        : v("", !0),
+                      n.showit
+                        ? v("", !0)
+                        : (l(),
+                          _("div", pe, [
+                            o(
+                              h(x),
+                              {
+                                onClick:
+                                  g[3] ||
+                                  (g[3] = (y) =>
+                                    c.$inertia.visit("/#loginHere")),
+                                class:
+                                  "block flex justify-center items-center p-1 px-3 sm:p-2 mx-2 sm:px-6 font-bold rounded-xl text-xs sm:text-base text-white bg-blue-800 hover:bg-green-800 border-2 shadow-lg border-green-600",
+                              },
+                              {
+                                default: i(() => [
+                                  u(a(s.value && s.value.login), 1),
+                                ]),
+                                _: 1,
+                              }
+                            ),
+                          ])),
+                      t("div", he, [
+                        t(
+                          "button",
+                          {
+                            ref_key: "dropdownMenu",
+                            ref: r,
+                            onClick: N,
+                            class:
+                              "inline-flex items-center justify-center p-[6px] x365:p-2 rounded-md text-black text-gray-500 bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out",
+                          },
+                          [
+                            (l(),
+                            _("svg", ge, [
+                              t(
+                                "path",
+                                {
+                                  class: w({
+                                    hidden: d.value,
+                                    "inline-flex": !d.value,
+                                  }),
+                                  "stroke-linecap": "round",
+                                  "stroke-linejoin": "round",
+                                  "stroke-width": "2",
+                                  d: "M4 6h16M4 12h16M4 18h16",
+                                },
+                                null,
+                                2
+                              ),
+                              t(
+                                "path",
+                                {
+                                  class: w({
+                                    hidden: !d.value,
+                                    "inline-flex": d.value,
+                                  }),
+                                  "stroke-linecap": "round",
+                                  "stroke-linejoin": "round",
+                                  "stroke-width": "2",
+                                  d: "M6 18L18 6M6 6l12 12",
+                                },
+                                null,
+                                2
+                              ),
+                            ])),
+                          ],
+                          512
+                        ),
+                      ]),
+                    ]),
+                  ]),
+                  t(
+                    "div",
+                    {
+                      class: w([
+                        { block: d.value, hidden: !d.value },
+                        "absolute top-16 right-4 sm:right-6 lg:right-20 xl:right-32 2xl:right-80 z-30 px-3 text-left border-b border-gray-400 rounded-xl bg-gray-100 flex",
+                      ]),
+                    },
+                    [
+                      t("div", me, [
+                        t("div", xe, [
+                          t("div", ye, [
+                            n.showit
+                              ? (l(),
+                                _(
+                                  "div",
+                                  be,
+                                  a(c.$page.props.auth.user.name),
+                                  1
+                                ))
+                              : v("", !0),
+                            n.showit
+                              ? v("", !0)
+                              : (l(),
+                                _(
+                                  "div",
+                                  we,
+                                  a(s.value && s.value.not_logged_in),
+                                  1
+                                )),
+                          ]),
+                          n.showit
+                            ? (l(),
+                              _("div", ke, a(c.$page.props.auth.user.email), 1))
+                            : v("", !0),
+                        ]),
+                        t("div", $e, [
+                          o(
+                            f,
+                            { href: "/#whytContractor" },
+                            {
+                              default: i(() => [
+                                u(a(s.value && s.value.why) + " ", 1),
+                                o(Y),
+                              ]),
+                              _: 1,
+                            }
+                          ),
+                          n.showit
+                            ? (l(),
+                              p(
+                                f,
+                                {
+                                  key: 0,
+                                  href:
+                                    e.value &&
+                                    e.value.is_payment_verified &&
+                                    e.value.active_user
+                                      ? c.route("post")
+                                      : e.value &&
+                                        (!e.value.is_payment_verified ||
+                                          !e.value.active_user)
+                                      ? !e.value.is_payment_verified &&
+                                        !e.value.active_user
+                                        ? "/profile-setup"
+                                        : !e.value.is_payment_verified &&
+                                          e.value.active_user
+                                        ? "/pricing-plan"
+                                        : "/inactive-account"
+                                      : "/inactive-account",
+                                  class: "font-bold",
+                                },
+                                {
+                                  default: i(() => [
+                                    u(a(s.value && s.value.news_feed), 1),
+                                  ]),
+                                  _: 1,
+                                },
+                                8,
+                                ["href"]
+                              ))
+                            : v("", !0),
+                          n.showit
+                            ? (l(),
+                              p(
+                                f,
+                                {
+                                  key: 1,
+                                  href:
+                                    e.value &&
+                                    e.value.is_payment_verified &&
+                                    e.value.active_user
+                                      ? "sub-finder"
+                                      : e.value &&
+                                        (!e.value.is_payment_verified ||
+                                          !e.value.active_user)
+                                      ? !e.value.is_payment_verified &&
+                                        !e.value.active_user
+                                        ? "/profile-setup"
+                                        : !e.value.is_payment_verified &&
+                                          e.value.active_user
+                                        ? "/pricing-plan"
+                                        : "/inactive-account"
+                                      : "/inactive-account",
+                                  class: "font-bold",
+                                },
+                                {
+                                  default: i(() => [
+                                    u(a(s.value && s.value.sub_finder), 1),
+                                  ]),
+                                  _: 1,
+                                },
+                                8,
+                                ["href"]
+                              ))
+                            : v("", !0),
+                          n.showit
+                            ? (l(),
+                              _(
+                                "div",
+                                {
+                                  key: 2,
+                                  class:
+                                    "block w-full pl-3 pr-4 py-2 border-l-4 border-transparent text-left text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out font-bold cursor-pointer",
+                                  onClick: H,
+                                },
+                                a(s.value && s.value.red_flags),
+                                1
+                              ))
+                            : v("", !0),
+                          n.showit
+                            ? (l(),
+                              p(
+                                f,
+                                {
+                                  key: 3,
+                                  href:
+                                    e.value &&
+                                    e.value.is_payment_verified &&
+                                    e.value.active_user
+                                      ? `/contractor/${e.value.user_id}/edit`
+                                      : e.value &&
+                                        (!e.value.is_payment_verified ||
+                                          !e.value.active_user)
+                                      ? !e.value.is_payment_verified &&
+                                        !e.value.active_user
+                                        ? "/profile-setup"
+                                        : !e.value.is_payment_verified &&
+                                          e.value.active_user
+                                        ? "/pricing-plan"
+                                        : "/inactive-account"
+                                      : "/inactive-account",
+                                  class: "font-bold",
+                                },
+                                {
+                                  default: i(() => [
+                                    u(a(s.value && s.value.contractor_page), 1),
+                                  ]),
+                                  _: 1,
+                                },
+                                8,
+                                ["href"]
+                              ))
+                            : v("", !0),
+                        ]),
+                        t("div", je, [
+                          t("div", Ce, [
+                            n.showit
+                              ? (l(),
+                                p(
+                                  f,
+                                  {
+                                    key: 0,
+                                    href:
+                                      e.value &&
+                                      e.value.is_payment_verified &&
+                                      e.value.active_user
+                                        ? `/posts/${e.value.user_id}`
+                                        : e.value &&
+                                          (!e.value.is_payment_verified ||
+                                            !e.value.active_user)
+                                        ? !e.value.is_payment_verified &&
+                                          !e.value.active_user
+                                          ? "/profile-setup"
+                                          : !e.value.is_payment_verified &&
+                                            e.value.active_user
+                                          ? "/pricing-plan"
+                                          : "/inactive-account"
+                                        : "/inactive-account",
+                                  },
+                                  {
+                                    default: i(() => [
+                                      u(a(s.value && s.value.my_posts), 1),
+                                    ]),
+                                    _: 1,
+                                  },
+                                  8,
+                                  ["href"]
+                                ))
+                              : v("", !0),
+                            n.showit
+                              ? (l(),
+                                p(
+                                  f,
+                                  {
+                                    key: 1,
+                                    href:
+                                      e.value &&
+                                      e.value.is_payment_verified &&
+                                      e.value.active_user
+                                        ? "/ratings/contractor"
+                                        : e.value &&
+                                          (!e.value.is_payment_verified ||
+                                            !e.value.active_user)
+                                        ? !e.value.is_payment_verified &&
+                                          !e.value.active_user
+                                          ? "/profile-setup"
+                                          : !e.value.is_payment_verified &&
+                                            e.value.active_user
+                                          ? "/pricing-plan"
+                                          : "/inactive-account"
+                                        : "/inactive-account",
+                                  },
+                                  {
+                                    default: i(() => [
+                                      u(a(s.value && s.value.my_ratings), 1),
+                                    ]),
+                                    _: 1,
+                                  },
+                                  8,
+                                  ["href"]
+                                ))
+                              : v("", !0),
+                            n.showit
+                              ? (l(),
+                                p(
+                                  f,
+                                  {
+                                    key: 2,
+                                    href:
+                                      e.value &&
+                                      e.value.is_payment_verified &&
+                                      e.value.active_user
+                                        ? "/profile"
+                                        : e.value &&
+                                          (!e.value.is_payment_verified ||
+                                            !e.value.active_user)
+                                        ? !e.value.is_payment_verified &&
+                                          !e.value.active_user
+                                          ? "/profile-setup"
+                                          : !e.value.is_payment_verified &&
+                                            e.value.active_user
+                                          ? "/pricing-plan"
+                                          : "/inactive-account"
+                                        : "/inactive-account",
+                                  },
+                                  {
+                                    default: i(() => [
+                                      u(a(s.value && s.value.my_profile), 1),
+                                    ]),
+                                    _: 1,
+                                  },
+                                  8,
+                                  ["href"]
+                                ))
+                              : v("", !0),
+                            n.showit
+                              ? (l(),
+                                p(
+                                  f,
+                                  {
+                                    key: 3,
+                                    href:
+                                      e.value &&
+                                      e.value.is_payment_verified &&
+                                      e.value.active_user
+                                        ? "/settings"
+                                        : e.value &&
+                                          (!e.value.is_payment_verified ||
+                                            !e.value.active_user)
+                                        ? !e.value.is_payment_verified &&
+                                          !e.value.active_user
+                                          ? "/profile-setup"
+                                          : !e.value.is_payment_verified &&
+                                            e.value.active_user
+                                          ? "/pricing-plan"
+                                          : "/inactive-account"
+                                        : "/inactive-account",
+                                  },
+                                  {
+                                    default: i(() => [
+                                      u(a(s.value && s.value.settings), 1),
+                                    ]),
+                                    _: 1,
+                                  },
+                                  8,
+                                  ["href"]
+                                ))
+                              : v("", !0),
+                            o(
+                              f,
+                              { href: "/about-us#contactUs" },
+                              {
+                                default: i(() => [
+                                  u(a(s.value && s.value.contact_us), 1),
+                                ]),
+                                _: 1,
+                              }
+                            ),
+                            o(
+                              f,
+                              { href: "/about-us#aboutUs" },
+                              {
+                                default: i(() => [
+                                  u(a(s.value && s.value.about_us), 1),
+                                ]),
+                                _: 1,
+                              }
+                            ),
+                            o(
+                              f,
+                              { href: "/pricing", as: "button" },
+                              {
+                                default: i(() => [
+                                  u(a(s.value && s.value.pricing), 1),
+                                ]),
+                                _: 1,
+                              }
+                            ),
+                            o(
+                              f,
+                              { href: "/pricing#faqs", as: "button" },
+                              {
+                                default: i(() => [
+                                  u(a(s.value && s.value.faqs), 1),
+                                ]),
+                                _: 1,
+                              }
+                            ),
+                            F.value && n.showit
+                              ? (l(),
+                                _("div", Me, [
+                                  o(
+                                    f,
+                                    {
+                                      href:
+                                        e.value &&
+                                        e.value.is_payment_verified &&
+                                        e.value.active_user
+                                          ? "/admin"
+                                          : e.value &&
+                                            (!e.value.is_payment_verified ||
+                                              !e.value.active_user)
+                                          ? !e.value.is_payment_verified &&
+                                            !e.value.active_user
+                                            ? "/profile-setup"
+                                            : !e.value.is_payment_verified &&
+                                              e.value.active_user
+                                            ? "/pricing-plan"
+                                            : "/inactive-account"
+                                          : "/inactive-account",
+                                    },
+                                    {
+                                      default: i(() => [
+                                        u(a(s.value && s.value.admin), 1),
+                                      ]),
+                                      _: 1,
+                                    },
+                                    8,
+                                    ["href"]
+                                  ),
+                                ]))
+                              : v("", !0),
+                            n.showit
+                              ? (l(),
+                                p(
+                                  f,
+                                  {
+                                    key: 5,
+                                    method: "post",
+                                    as: "button",
+                                    onClick: E,
+                                  },
+                                  {
+                                    default: i(() => [
+                                      u(a(s.value && s.value.log_out), 1),
+                                    ]),
+                                    _: 1,
+                                  }
+                                ))
+                              : v("", !0),
+                            n.showit
+                              ? v("", !0)
+                              : (l(),
+                                p(
+                                  f,
+                                  {
+                                    key: 6,
+                                    href: c.route("signup"),
+                                    as: "button",
+                                    class: "text-blue-rgba font-bold",
+                                  },
+                                  {
+                                    default: i(() => [
+                                      u(a(s.value && s.value.sign_up), 1),
+                                    ]),
+                                    _: 1,
+                                  },
+                                  8,
+                                  ["href"]
+                                )),
+                            n.showit
+                              ? v("", !0)
+                              : (l(),
+                                p(
+                                  f,
+                                  {
+                                    key: 7,
+                                    href: "/#loginHere",
+                                    as: "button",
+                                    onClick:
+                                      g[4] ||
+                                      (g[4] = (y) => (d.value = !d.value)),
+                                  },
+                                  {
+                                    default: i(() => [
+                                      u(a(s.value && s.value.log_in), 1),
+                                    ]),
+                                    _: 1,
+                                  }
+                                )),
+                          ]),
+                        ]),
+                      ]),
+                      t(
+                        "button",
+                        {
+                          onClick: N,
+                          class:
+                            "self-start inline-flex items-start justify-center p-2 rounded-md text-black hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out",
+                        },
+                        [
+                          (l(),
+                          _("svg", Be, [
+                            t(
+                              "path",
+                              {
+                                class: w({
+                                  hidden: !d.value,
+                                  "inline-flex": d.value,
+                                }),
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2",
+                                d: "M6 18L18 6M6 6l12 12",
+                              },
+                              null,
+                              2
+                            ),
+                          ])),
+                        ]
+                      ),
+                    ],
+                    2
+                  ),
+                ]),
+              ]),
+              (l(),
+              p(J, { to: "body" }, [
+                o(
+                  ee,
+                  { ref_key: "upgradeToGoldPlatinumDialogRef", ref: U },
+                  null,
+                  512
+                ),
+              ])),
+            ],
+            64
+          )
+        );
+      };
+    },
+  },
+  Ie = { class: "bg-blue-rgba" },
+  Ue = {
+    class:
+      "container flex flex-col-reverse md:flex-row justify-between py-12 px-6 mx-auto gap-x-3 md:gap-x-5 space-y-8 md:space-y-0",
+  },
+  Le = {
+    class:
+      "flex flex-col-reverse items-center justify-between space-y-12 md:flex-col md:space-y-0 md:items-start",
+  },
+  Ne = t(
+    "div",
+    { class: "mx-auto my-6 text-center first-letter: text-white md:hidden" },
+    " Copyright \xA9 2024, All Rights Reserved ",
+    -1
+  ),
+  Se = X(
+    '<div class="flex justify-center space-x-4"><a href="#"><img src="/images/icons/icon-facebook.svg" alt="" class="h-8"></a><a href="#"><img src="/images/icons/icon-twitter.svg" alt="" class="h-8"></a><a href="#"><img src="/images/icons/icon-instagram.svg" alt="" class="h-8"></a></div>',
+    1
+  ),
+  Te = { class: "flex justify-evenly space-x-10" },
+  De = { class: "flex flex-col space-y-3 text-white" },
+  Ve = { href: "/", class: "hover:text-blue-400" },
+  Pe = { href: "/pricing", class: "hover:text-blue-400" },
+  Re = { href: "/about-us#contactUs", class: "hover:text-blue-400" },
+  Fe = { class: "flex flex-col space-y-3 text-white" },
+  Ee = { href: "/careers", class: "hover:text-blue-400" },
+  He = { href: "/terms-of-service", class: "hover:text-blue-400" },
+  qe = { href: "/privacy-policy", class: "hover:text-blue-400" },
+  ze = { class: "flex flex-col justify-between" },
+  Ae = { key: 0, class: "flex justify-center space-x-3" },
+  Ge = {
+    class:
+      "text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500",
+  },
+  We = t(
+    "span",
+    {
+      class:
+        "ml-4 flex-shrink-0 rounded-full border border-current bg-white p-2 text-indigo-600 group-active:text-indigo-500",
+    },
+    [
+      t(
+        "svg",
+        {
+          class: "h-5 w-5",
+          xmlns: "http://www.w3.org/2000/svg",
+          fill: "none",
+          viewBox: "0 0 24 24",
+          stroke: "currentColor",
+        },
+        [
+          t("path", {
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+            "stroke-width": "2",
+            d: "M17 8l4 4m0 0l-4 4m4-4H3",
+          }),
+        ]
+      ),
+    ],
+    -1
+  ),
+  Oe = { key: 1, class: "flex justify-center space-x-3" },
+  Je = {
+    class:
+      "text-lg font-bold text-white uppercase transition-colors group-hover:font-extrabold group-active:text-indigo-500",
+  },
+  Ke = t(
+    "span",
+    {
+      class:
+        "ml-4 flex-shrink-0 rounded-full border border-current bg-white p-2 text-indigo-600 group-active:text-indigo-500",
+    },
+    [
+      t(
+        "svg",
+        {
+          class: "h-5 w-5",
+          xmlns: "http://www.w3.org/2000/svg",
+          fill: "none",
+          viewBox: "0 0 24 24",
+          stroke: "currentColor",
+        },
+        [
+          t("path", {
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+            "stroke-width": "2",
+            d: "M17 8l4 4m0 0l-4 4m4-4H3",
+          }),
+        ]
+      ),
+    ],
+    -1
+  ),
+  Qe = t(
+    "div",
+    {
+      class:
+        "hidden text-white md:block mx-auto my-6 text-center first-letter:",
+    },
+    " Copyright \xA9 2024, All Rights Reserved ",
+    -1
+  ),
+  lt = {
+    __name: "WelcomeFooter",
+    props: { showit: Boolean },
+    setup(n) {
+      const d = R(),
+        r = k(() => d.getters.translations);
+      return ($, m) => (
+        l(),
+        _("footer", Ie, [
+          t("div", Ue, [
+            t("div", Le, [
+              Ne,
+              t("div", null, [
+                o(
+                  h(x),
+                  {
+                    href: "/",
+                    class:
+                      "text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center",
+                  },
+                  { default: i(() => [o(te)]), _: 1 }
+                ),
+              ]),
+              Se,
+            ]),
+            t("div", Te, [
+              t("div", De, [
+                t("a", Ve, a(r.value && r.value.home), 1),
+                t("a", Pe, a(r.value && r.value.pricing), 1),
+                o(
+                  h(x),
+                  { href: "/pricing#faqs", class: "hover:text-blue-400" },
+                  { default: i(() => [u(a(r.value && r.value.faqs), 1)]), _: 1 }
+                ),
+                t("a", Re, a(r.value && r.value.contact_us), 1),
+              ]),
+              t("div", Fe, [
+                t("a", Ee, a(r.value && r.value.careers), 1),
+                t("a", He, a(r.value && r.value.terms_of_service), 1),
+                t("a", qe, a(r.value && r.value.privacy_policy), 1),
+              ]),
+            ]),
+            t("div", ze, [
+              n.showit
+                ? v("", !0)
+                : (l(),
+                  _("div", Ae, [
+                    o(
+                      h(x),
+                      {
+                        class:
+                          "group flex items-center justify-between rounded-xl border border-red-500 bg-red-500 px-5 py-3 mt-8 transition-colors hover:bg-red-800 focus:outline-none focus:ring",
+                        href: $.route("signup"),
+                      },
+                      {
+                        default: i(() => [
+                          t("span", Ge, a(r.value && r.value.get_started), 1),
+                          We,
+                        ]),
+                        _: 1,
+                      },
+                      8,
+                      ["href"]
+                    ),
+                  ])),
+              n.showit
+                ? (l(),
+                  _("div", Oe, [
+                    o(
+                      h(x),
+                      {
+                        href: $.route("post"),
+                        class:
+                          "group flex items-center justify-between rounded-xl border border-green-600 bg-green-600 hover:bg-green-800 px-5 py-3 mt-8 transition-colors focus:outline-none focus:ring",
+                        "preserve-scroll": "",
+                      },
+                      {
+                        default: i(() => [
+                          t("span", Je, a(r.value && r.value.news_feed), 1),
+                          Ke,
+                        ]),
+                        _: 1,
+                      },
+                      8,
+                      ["href"]
+                    ),
+                  ]))
+                : v("", !0),
+              Qe,
+            ]),
+          ]),
+        ])
+      );
+    },
+  };
+export { lt as _, it as a };

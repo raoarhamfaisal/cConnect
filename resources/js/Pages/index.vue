@@ -1,8 +1,8 @@
 <script setup>
 import TC_LoginForm from "@/Components/TC_LoginForm.vue";
 import { Head, Link, useForm, usePage } from "@inertiajs/inertia-vue3";
-import tContractorWord from "@/Components/tCon/tContractorWord.vue";
-import tContractorWhite from "@/Components/tCon/tContractorWhite.vue";
+import cConnectWord from "@/Components/tCon/cConnectWord.vue";
+import cConnectWhite from "@/Components/tCon/cConnectWhite.vue";
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import ScrollToLinkVue from "@/Components/tCon/ScrollToLink.vue";
@@ -298,7 +298,7 @@ const goToRedFlagPage = (event) => {
               href="/"
               class="text-xl x350:text-2xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center"
             >
-              <tContractorWhite />
+              <cConnectWhite />
             </Link>
           </div>
 
@@ -308,7 +308,7 @@ const goToRedFlagPage = (event) => {
               href="#whytContractor"
               class="hidden md:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8"
             >
-              {{ translations && translations.why }} tContractor
+              {{ translations && translations.why }} cConnect
             </ScrollToLinkVue>
 
             <Link
@@ -462,7 +462,7 @@ const goToRedFlagPage = (event) => {
             <div class="pt-2 pb-3 space-y-1">
               <ResponsiveNavLink href="#whytContractor">
                 {{ translations && translations.why }}
-                <tContractorWord></tContractorWord>
+                <cConnectWord></cConnectWord>
               </ResponsiveNavLink>
 
               <ResponsiveNavLink
@@ -759,7 +759,7 @@ const goToRedFlagPage = (event) => {
         >
           <!-- LOGO -->
           <h2 class="sm:hidden text-4xl font-bold tracking-wide text-center">
-            <tContractorWord></tContractorWord>
+            <cConnectWord></cConnectWord>
           </h2>
 
           <span class="font-bold uppercase text-white">
@@ -885,7 +885,7 @@ const goToRedFlagPage = (event) => {
             {{ translations && translations.why_do_you_need }}
             <br />
             <span class="text-center mt-1 text-4xl sm:text-6xl"
-              ><tContractorWord /> ?</span
+              ><cConnectWord /> ?</span
             >
           </h2>
 
@@ -916,7 +916,7 @@ const goToRedFlagPage = (event) => {
               <span
                 class="text-center mt-1 text-4xl sm:text-6xl md:max-lg:text-4xl"
               >
-                <tContractorWord /> ?
+                <cConnectWord /> ?
               </span>
             </h2>
             <p
@@ -973,7 +973,7 @@ const goToRedFlagPage = (event) => {
                 href="/"
                 class="text-5xl md:text-6xl font-bold tracking-wide text-center"
               >
-                <tContractorWhite />
+                <cConnectWhite />
               </Link>
             </div>
             <div>
@@ -1007,7 +1007,7 @@ const goToRedFlagPage = (event) => {
                   {{ translations && translations.everyone_trying_to_sell }}
                   <div class="font-extrabold text-white normal-case">
                     {{ translations && translations.not_here_at }}&nbsp;
-                    <tContractorWhite />
+                    <cConnectWhite />
                   </div>
                   <div class="inline-block mt-2">
                     <div class="inline">
@@ -1110,7 +1110,7 @@ const goToRedFlagPage = (event) => {
               href="/"
               class="text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center"
             >
-              <tContractorWhite />
+              <cConnectWhite />
             </Link>
           </div>
 

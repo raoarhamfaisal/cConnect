@@ -497,7 +497,7 @@
             <div class="">
               <div>
                 {{ translations && translations.you_now_have_access
-                }}<strong>tContractor</strong>
+                }}<strong>cConnect</strong>
                 {{ translations && translations.is_your_source_to }}
               </div>
               <ul>
@@ -526,11 +526,11 @@
             </div>
 
             <!-- Your payment has been processed successfully. We truly appreciate
-              your trust in <strong>tContractor</strong>. With your subscription
+              your trust in <strong>cConnect</strong>. With your subscription
               now active, you have unlocked a world of exclusive services and
               benefits. Dive into our news feed to stay updated and make the
               most of what we have to offer. Welcome to the
-              <strong>tContractor</strong> community! -->
+              <strong>cConnect</strong> community! -->
             <Link
               class="group flex items-center self-start justify-between rounded-xl border border-teal-500 bg-[#16a34a] px-5 py-3 mt-4 hover:bg-[#16a34a] focus:outline-none focus:ring transition transform duration-300 hover:shadow-lg active:scale-95"
               href="/post"

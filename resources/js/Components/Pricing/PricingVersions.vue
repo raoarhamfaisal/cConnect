@@ -342,7 +342,7 @@ const scrollToFAQs = () => {
       <div class="w-full sm:text-lg sm:semi-bold">
         <div>
           {{ translations && translations.you_now_have_access
-          }}<strong>tContractor</strong>
+          }}<strong>cConnect</strong>
           {{ translations && translations.is_your_source_to }}
         </div>
         <ul>

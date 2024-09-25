@@ -43,7 +43,7 @@
             <p><strong>Post ID:</strong> {{ $post->id }}</p>
             <p><strong>Report Details:</strong> {{ $reportText }}</p>
             <p>Please review the post and take appropriate action.</p>
-            <a href="https://tcontractor.com/posts">View Post</a>
+            <a href="https://cConnect.com/posts">View Post</a>
         </div>           
         <div class="footer">
             &copy; {{ date('Y') }} Your Company. All rights reserved.

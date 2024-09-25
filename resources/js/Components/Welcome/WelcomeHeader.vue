@@ -32,7 +32,7 @@
             @click="$inertia.visit('/#whytContractor')"
             class="hidden md:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8"
           >
-            {{ translations && translations.why }} tContractor
+            {{ translations && translations.why }} cConnect
           </Link>
 
           <Link
@@ -198,7 +198,7 @@
           <div class="pt-2 pb-3 space-y-1">
             <ResponsiveNavLink href="/#whytContractor">
               {{ translations && translations.why }}
-              <tContractorWord></tContractorWord>
+              <cConnectWord></cConnectWord>
             </ResponsiveNavLink>
 
             <ResponsiveNavLink
@@ -455,7 +455,7 @@
 </template>
 <script setup>
 import { Link, usePage } from "@inertiajs/inertia-vue3";
-import tContractorWord from "@/Components/tCon/tContractorWord.vue";
+import cConnectWord from "@/Components/tCon/cConnectWord.vue";
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import { Inertia } from "@inertiajs/inertia";

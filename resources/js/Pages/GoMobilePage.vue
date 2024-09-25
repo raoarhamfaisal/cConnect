@@ -6,7 +6,7 @@ import { Link } from "@inertiajs/inertia-vue3";
 import { Icon } from "@iconify/vue";
 
 import MoveToTop from "@/Components/MoveToTop.vue";
-import tContractorWord from "@/Components/tCon/tContractorWord.vue";
+import cConnectWord from "@/Components/tCon/cConnectWord.vue";
 
 import { useStore } from "vuex";
 import { computed } from "vue";
@@ -75,12 +75,12 @@ const translations = computed(() => store.getters.translations);
                 translations &&
                 translations.whether_in_the_office_or_on_the_go_you_can_quickly_access_and_log_in_to
               }}
-              <tContractorWord></tContractorWord>
+              <cConnectWord></cConnectWord>
               {{
                 translations &&
                 translations.on_both_apple_and_android_mobile_devices_and_tablets_we_recommend_you_save
               }}
-              <tContractorWord></tContractorWord>
+              <cConnectWord></cConnectWord>
               {{
                 translations &&
                 translations.to_your_home_screen_by_following_the_instructions_below_for_your_specific_device
@@ -97,9 +97,9 @@ const translations = computed(() => store.getters.translations);
                 <strong>Safari app</strong>
                 {{ translations && translations.and_navigate_to }}
                 <a
-                  href="https://tcontractor.com"
+                  href="https://cConnect.com"
                   class="text-sky-700 hover:underline font-bold"
-                  >https://tcontractor.com
+                  >https://cConnect.com
                 </a>
               </li>
               <li>
@@ -127,12 +127,12 @@ const translations = computed(() => store.getters.translations);
               </li>
               <li>
                 {{ translations && translations.open_the_new }}
-                <tContractorWord></tContractorWord>
+                <cConnectWord></cConnectWord>
                 {{ translations && translations.app_on_your_home_screen }}
               </li>
               <li>
                 {{ translations && translations.sign_in_to }}
-                <tContractorWord></tContractorWord>
+                <cConnectWord></cConnectWord>
                 {{ translations && translations.to_complete_the_process }}
               </li>
             </ol>
@@ -147,9 +147,9 @@ const translations = computed(() => store.getters.translations);
                 <strong>Chrome app</strong>
                 {{ translations && translations.and_navigate_to }}
                 <a
-                  href="https://tcontractor.com"
+                  href="https://cConnect.com"
                   class="text-sky-700 hover:underline font-bold"
-                  >https://tcontractor.com
+                  >https://cConnect.com
                 </a>
               </li>
               <li>
@@ -165,7 +165,7 @@ const translations = computed(() => store.getters.translations);
               </li>
               <li>
                 {{ translations && translations.enter_the_name }}
-                <tContractorWord></tContractorWord>
+                <cConnectWord></cConnectWord>
                 {{ translations && translations.and_tap_the }}
                 {{ translations && translations.scroll_down_list_and_select }}
                 '<strong>Add to Home Screen</strong>'
@@ -178,12 +178,12 @@ const translations = computed(() => store.getters.translations);
               </li>
               <li>
                 {{ translations && translations.open_the_new }}
-                <tContractorWord></tContractorWord>
+                <cConnectWord></cConnectWord>
                 {{ translations && translations.app_on_your_home_screen }}
               </li>
               <li>
                 {{ translations && translations.sign_in_to }}
-                <tContractorWord></tContractorWord>
+                <cConnectWord></cConnectWord>
                 {{ translations && translations.to_complete_the_process }}
               </li>
             </ol>

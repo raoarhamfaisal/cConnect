@@ -221,10 +221,10 @@
       {{ translations && translations.send_any_supporting_document_to }}
       <a
         class="underline text-sky-600"
-        href="mailto:appeal@tContractor.com"
+        href="mailto:appeal@cConnect.com"
         target="_blank"
       >
-        appeal@tContractor.com
+        appeal@cConnect.com
       </a>
     </div>
   </CustomDialog>
