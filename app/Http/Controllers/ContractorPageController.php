@@ -272,7 +272,7 @@ class ContractorPageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function gecConnectInfo($contractor_id)
+    public function getContractorInfo($contractor_id)
     {
         // Get current user id
         $userID = Auth::id();

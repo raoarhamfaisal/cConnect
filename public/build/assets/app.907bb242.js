@@ -45055,7 +45055,7 @@ const Mse = async ({ commit: e, state: t }, n) => {
       },
     },
     actions: {
-      async gecConnectInfo({ commit: e }, t) {
+      async getContractorInfo({ commit: e }, t) {
         e("setLoading", !0);
         try {
           const n = await it.get(`/api/contractor/${t}`, It());

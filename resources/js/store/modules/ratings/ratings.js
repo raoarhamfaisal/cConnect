@@ -139,7 +139,7 @@ export default {
     // ... other mutations ...
   },
   actions: {
-    async gecConnectInfo({ commit }, contractorId) {
+    async getContractorInfo({ commit }, contractorId) {
       commit("setLoading", true);
 
       try {

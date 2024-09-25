@@ -6424,7 +6424,7 @@ const Pt = {
         t({
           openDialog: () => (
             console.log(s, "userId"),
-            n.dispatch("ratings/gecConnectInfo", s),
+            n.dispatch("ratings/getContractorInfo", s),
             l.value.openDialog()
           ),
         }),

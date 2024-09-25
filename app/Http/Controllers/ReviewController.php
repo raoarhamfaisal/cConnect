@@ -28,7 +28,7 @@ class ReviewController extends Controller
      * @param  int  $contractor_id
      * @return \Illuminate\Http\Response
      */
-    public function gecConnectInfo(Request $request, $contractor_id)
+    public function getContractorInfo(Request $request, $contractor_id)
     {
         $contractorDetails = Profile::where('user_id', $contractor_id)
             ->select([

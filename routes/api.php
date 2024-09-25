@@ -85,7 +85,7 @@ Route::get('/badwords', [BadWordController::class, 'index']);
 // });
 
 
-Route::get('/contractor/get-contractor-info/{contractor_id}', [ContractorPageController::class, 'gecConnectInfo'])->name('contractorProfile.gecConnectInfo');
+Route::get('/contractor/get-contractor-info/{contractor_id}', [ContractorPageController::class, 'getContractorInfo'])->name('contractorProfile.getContractorInfo');
 Route::get('/contractor/all-templates', [ContractorProfileController::class, 'getAllTemplates'])->name('contractorProfile.getAllTemplates');
 Route::get('/contractor/all-color-schemes', [ContractorProfileController::class, 'getAllColorSchemes'])->name('contractorProfile.getAllColorSchemes');
 
@@ -250,7 +250,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Review APIs
     Route::post('/reviews', [ReviewController::class, 'store'])->name('review.store');
     Route::get('/reviews/{contractor_id}', [ReviewController::class, 'index'])->name('review.all');
-    Route::get('/contractor/{contractor_id}', [ReviewController::class, 'gecConnectInfo'])->name('review.contractor');
+    Route::get('/contractor/{contractor_id}', [ReviewController::class, 'getContractorInfo'])->name('review.contractor');
     Route::put('reviews/{review}', [ReviewController::class, 'update']);
     Route::post('reviews/{review}/appeal', [ReviewController::class, 'putOnAppeal']);
 
