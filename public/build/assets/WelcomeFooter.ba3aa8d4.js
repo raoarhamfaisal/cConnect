@@ -31,7 +31,7 @@ import { t as Y } from "./cConnectWord.60dc90ac.js";
 import { _ as f } from "./ResponsiveNavLink.04cb55a4.js";
 import { I as Z } from "./iconify.99e09ef6.js";
 import { _ as ee } from "./DialogUpgradeToGoldPlatinum.8daf4ac5.js";
-import { _ as te } from "./tContractorWhite.08eee911.js";
+import { _ as te } from "./cConnectWhite.08eee911.js";
 const se = {
     class: "absolute top-0 left-0 right-0 z-20 bg-blue-30-rgba",
     style: {
@@ -231,8 +231,7 @@ const se = {
                         {
                           onClick:
                             g[0] ||
-                            (g[0] = (y) =>
-                              c.$inertia.visit("/#whytContractor")),
+                            (g[0] = (y) => c.$inertia.visit("/#whycConnect")),
                           class:
                             "hidden md:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8",
                         },
@@ -470,7 +469,7 @@ const se = {
                         t("div", $e, [
                           o(
                             f,
-                            { href: "/#whytContractor" },
+                            { href: "/#whycConnect" },
                             {
                               default: i(() => [
                                 u(a(s.value && s.value.why) + " ", 1),

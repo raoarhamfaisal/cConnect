@@ -96,7 +96,7 @@ export default {
     setReply(state, payload) {
       state.reply = payload;
     },
-    setContractorId(state, payload) {
+    secConnectId(state, payload) {
       state.contractorId = payload;
     },
     setProfile(state, payload) {

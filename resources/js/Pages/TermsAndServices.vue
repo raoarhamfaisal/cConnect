@@ -34,7 +34,7 @@ const translations = computed(() => store.getters.translations);
       <!-- Additional Sections Go Here -->
       <section class="mb-6 closing">
         <h2 class="text-xl font-semibold mb-2">{{ translations && translations.description_of_service }}</h2>
-        <p class="mb-2">{{ translations && translations.tcontractor_platform_description }}</p>
+        <p class="mb-2">{{ translations && translations.cConnect_platform_description }}</p>
       </section>
       <section class="mb-6 closing">
         <h2 class="text-xl font-semibold mb-2">{{ translations && translations.registration_and_account_security }}</h2>

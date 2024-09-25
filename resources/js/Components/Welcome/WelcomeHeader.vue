@@ -13,23 +13,28 @@
       <div class="flex items-center justify-between">
         <!-- LOGO -->
         <div class="flex items-center justify-start">
+          <img
+            style="border: 1px solid #ccc"
+            class="h-8 w-8 sm:h-10 translate-y-1 sm:w-10 rounded-full block object-contain"
+            src="/images/logo.png"
+          />
           <Link
             href="/"
-            class="text-xl x350:text-2xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center"
+            class="ml-1 text-xl x350:text-2xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-wide text-center"
           >
-            <span
+            <!-- <span
               class="text-green-rgba font-extrabold italic font-serif normal-case"
-              >t</span
-            >
+              >c</span
+            > -->
             <span class="text-white font-extrabold font-sans uppercase">C</span>
-            <span class="text-white font-bold font-sans">ontractor</span>
+            <span class="text-white font-bold font-sans">onnect</span>
           </Link>
         </div>
 
         <!-- Cross X Menu Options -->
         <div class="flex items-center justify-end">
           <Link
-            @click="$inertia.visit('/#whytContractor')"
+            @click="$inertia.visit('/#whycConnect')"
             class="hidden md:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8"
           >
             {{ translations && translations.why }} cConnect
@@ -196,7 +201,7 @@
           </div>
 
           <div class="pt-2 pb-3 space-y-1">
-            <ResponsiveNavLink href="/#whytContractor">
+            <ResponsiveNavLink href="/#whycConnect">
               {{ translations && translations.why }}
               <cConnectWord></cConnectWord>
             </ResponsiveNavLink>

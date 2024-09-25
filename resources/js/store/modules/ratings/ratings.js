@@ -121,7 +121,7 @@ export default {
     setIsFetchReviews(state, payload) {
       state.isFetchReviews = payload;
     },
-    setContractorDetails(state, payload) {
+    secConnectDetails(state, payload) {
       state.contractorDetails = payload;
     },
     setIsDeleted(state, payload) {
@@ -139,7 +139,7 @@ export default {
     // ... other mutations ...
   },
   actions: {
-    async getContractorInfo({ commit }, contractorId) {
+    async gecConnectInfo({ commit }, contractorId) {
       commit("setLoading", true);
 
       try {
@@ -148,7 +148,7 @@ export default {
           getAxiosConfig()
         );
         if (response.data) {
-          commit("setContractorDetails", response.data.contractor);
+          commit("secConnectDetails", response.data.contractor);
         }
       } catch (err) {
         somethingWentWrong();

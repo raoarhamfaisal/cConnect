@@ -57,7 +57,7 @@ const translations = computed(() => store.getters.translations);
           collapse-icon="mdi-minus"
           class="text-3xl-imp"
         >
-          {{ translations && translations.why_tcontractor }}
+          {{ translations && translations.why_cConnect }}
         </v-expansion-panel-title>
         <v-expansion-panel-text
           class="p-3 sm:p-6 flex-col text-lg font-semibold text-gray-900"
@@ -164,7 +164,7 @@ const translations = computed(() => store.getters.translations);
           {{ translations && translations.youre_a_roofer_or_general_contractor
           }}<br /><br />
           <div>
-            {{ translations && translations.use_tcontractors_sub_finder }}
+            {{ translations && translations.use_cConnects_sub_finder }}
             <strong class="inline">cConnect</strong>.
             {{ translations && translations.someone_you_can_reasonably_trust }}
           </div>

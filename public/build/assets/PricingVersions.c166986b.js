@@ -475,7 +475,7 @@ const u = (m) => (re("data-v-dcc6de6f"), (m = m()), ce(), m),
                           },
                           {
                             default: d(() => [
-                              n(a(l.value && l.value.why_tcontractor), 1),
+                              n(a(l.value && l.value.why_cConnect), 1),
                             ]),
                             _: 1,
                           }
@@ -794,8 +794,7 @@ const u = (m) => (re("data-v-dcc6de6f"), (m = m()), ce(), m),
                               t("div", null, [
                                 n(
                                   a(
-                                    l.value &&
-                                      l.value.use_tcontractors_sub_finder
+                                    l.value && l.value.use_cConnects_sub_finder
                                   ) + " ",
                                   1
                                 ),
@@ -1331,7 +1330,7 @@ const j = (m) => (re("data-v-8f0f7b40"), (m = m()), ce(), m),
                       t(
                         "div",
                         ht,
-                        a(e.value && e.value.welcome_to_tcontractor),
+                        a(e.value && e.value.welcome_to_cConnect),
                         1
                       ),
                       t("div", bt, [

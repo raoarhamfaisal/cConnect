@@ -735,8 +735,7 @@ const translations = computed(() => store.getters.translations);
                 <Icon width="26" height="26" icon="mdi:faq" />
                 <div class="text-lg sm:text-xl font-bold text-blue-700">
                   {{
-                    translations &&
-                    translations.faqs_learn_more_about_tcontractor
+                    translations && translations.faqs_learn_more_about_cConnect
                   }}
                 </div>
               </div>

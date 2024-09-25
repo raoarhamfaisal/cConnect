@@ -45,7 +45,7 @@ import "./cConnectWord.60dc90ac.js";
 import "./ResponsiveNavLink.04cb55a4.js";
 import "./DialogUpgradeToGoldPlatinum.8daf4ac5.js";
 import "./CustomDialog.f5ff7c4f.js";
-import "./tContractorWhite.08eee911.js";
+import "./cConnectWhite.08eee911.js";
 const re = { class: "relative grid items-center" },
   ue = ["onClick"],
   ie = {

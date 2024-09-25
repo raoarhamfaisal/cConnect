@@ -145,11 +145,11 @@
       "_InputLabel.c691f6db.js",
       "_TextInput.a3698496.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "_ResponsiveNavLink.04cb55a4.js",
       "_DialogUpgradeToGoldPlatinum.8daf4ac5.js",
       "_CustomDialog.f5ff7c4f.js",
-      "_tContractorWhite.08eee911.js"
+      "_cConnectWhite.08eee911.js"
     ],
     "css": ["assets/AboutUs.53d3923a.css"]
   },
@@ -162,11 +162,11 @@
     "imports": [
       "_spanish.afd7e950.js",
       "resources/js/app.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "_ResponsiveNavLink.04cb55a4.js",
       "_iconify.99e09ef6.js",
       "_DialogUpgradeToGoldPlatinum.8daf4ac5.js",
-      "_tContractorWhite.08eee911.js"
+      "_cConnectWhite.08eee911.js"
     ]
   },
   "_PrimaryButton.d6b2dece.js": {
@@ -192,7 +192,7 @@
     "file": "assets/spanish.afd7e950.js",
     "assets": ["assets/usa.a7588245.svg", "assets/spanish.91e759ba.svg"]
   },
-  "_tContractorWord.60dc90ac.js": {
+  "_cConnectWord.60dc90ac.js": {
     "file": "assets/cConnectWord.60dc90ac.js",
     "imports": ["__plugin-vue_export-helper.cdc0426e.js", "resources/js/app.js"]
   },
@@ -208,8 +208,8 @@
     "file": "assets/DialogUpgradeToGoldPlatinum.8daf4ac5.js",
     "imports": ["_CustomDialog.f5ff7c4f.js", "resources/js/app.js"]
   },
-  "_tContractorWhite.08eee911.js": {
-    "file": "assets/tContractorWhite.08eee911.js",
+  "_cConnectWhite.08eee911.js": {
+    "file": "assets/cConnectWhite.08eee911.js",
     "imports": ["resources/js/app.js"]
   },
   "__plugin-vue_export-helper.cdc0426e.js": {
@@ -236,7 +236,7 @@
       "_iconify.99e09ef6.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "_CustomDialog.f5ff7c4f.js",
       "_selectListsHelpters.6d73b684.js",
@@ -262,7 +262,7 @@
     "imports": [
       "resources/js/app.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
       "_iconify.99e09ef6.js",
@@ -393,7 +393,7 @@
       "_SearchInput.af7e43a6.js",
       "_PageTitle.f25bd43b.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "_selectListsHelpters.6d73b684.js",
       "_Badge.c427ce3e.js",
@@ -425,7 +425,7 @@
       "resources/js/Pages/Admin/Ratings/partials/AllContractors/AllRegions.vue",
       "resources/js/app.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "_CustomDialog.f5ff7c4f.js",
@@ -482,7 +482,7 @@
       "_PageTitle.f25bd43b.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "_CustomDialog.f5ff7c4f.js",
       "_iconify.99e09ef6.js",
@@ -682,7 +682,7 @@
       "_PageTitle.f25bd43b.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "_selectListsHelpters.6d73b684.js",
       "_Badge.c427ce3e.js",
@@ -720,7 +720,7 @@
       "_PageTitle.f25bd43b.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "_CustomDialog.f5ff7c4f.js",
       "_iconify.99e09ef6.js",
@@ -819,7 +819,7 @@
       "_Card.0c51827f.js",
       "_PageTitle.f25bd43b.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "_selectListsHelpters.6d73b684.js",
       "_Badge.c427ce3e.js",
@@ -851,7 +851,7 @@
       "_PageTitle.f25bd43b.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "_CustomDialog.f5ff7c4f.js",
       "_iconify.99e09ef6.js",
@@ -895,7 +895,7 @@
       "resources/js/app.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ContractorDetails.vue",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "_CustomDialog.f5ff7c4f.js",
@@ -980,7 +980,7 @@
       "resources/js/app.js",
       "resources/js/Pages/Admin/Ratings/partials/SingleContractor/ContractorDetails.vue",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "_CustomDialog.f5ff7c4f.js",
@@ -1028,7 +1028,7 @@
       "resources/js/Pages/Admin/Ratings/partials/AllContractors/AllRegions.vue",
       "resources/js/app.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "_CustomDialog.f5ff7c4f.js",
@@ -1137,7 +1137,7 @@
       "_Card.0c51827f.js",
       "_PageTitle.f25bd43b.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "_selectListsHelpters.6d73b684.js",
       "_Badge.c427ce3e.js",
@@ -1177,7 +1177,7 @@
       "_PageTitle.f25bd43b.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "_selectListsHelpters.6d73b684.js",
       "_Badge.c427ce3e.js",
@@ -1258,12 +1258,12 @@
       "_TextInput.a3698496.js",
       "_InputIcon.1f121658.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "_ResponsiveNavLink.04cb55a4.js",
       "_DialogUpgradeToGoldPlatinum.8daf4ac5.js",
       "_CustomDialog.f5ff7c4f.js",
-      "_tContractorWhite.08eee911.js"
+      "_cConnectWhite.08eee911.js"
     ]
   },
   "resources/js/Pages/Auth/ResetPassword.vue": {
@@ -1292,13 +1292,13 @@
       "_InputError.a485c9eb.js",
       "_InputLabel.c691f6db.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "_ResponsiveNavLink.04cb55a4.js",
       "_iconify.99e09ef6.js",
       "_DialogUpgradeToGoldPlatinum.8daf4ac5.js",
       "_CustomDialog.f5ff7c4f.js",
-      "_tContractorWhite.08eee911.js"
+      "_cConnectWhite.08eee911.js"
     ]
   },
   "resources/js/Pages/Careers.vue": {
@@ -1310,13 +1310,13 @@
       "_WelcomeFooter.ba3aa8d4.js",
       "resources/js/app.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "_ResponsiveNavLink.04cb55a4.js",
       "_iconify.99e09ef6.js",
       "_DialogUpgradeToGoldPlatinum.8daf4ac5.js",
       "_CustomDialog.f5ff7c4f.js",
-      "_tContractorWhite.08eee911.js"
+      "_cConnectWhite.08eee911.js"
     ]
   },
   "resources/js/Pages/Contractor/ContractorPage.vue": {
@@ -1342,7 +1342,7 @@
       "__plugin-vue_export-helper.cdc0426e.js",
       "_HeadingCard.ac3646cb.js",
       "_selectListsHelpters.6d73b684.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "_ResponsiveNavLink.04cb55a4.js",
       "_InputLabel.c691f6db.js",
       "_InputError.a485c9eb.js",
@@ -1382,7 +1382,7 @@
       "_CustomDialog.f5ff7c4f.js",
       "_Loader.9dfd413c.js",
       "_PostDisplayEnlarged.adbff492.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "_ResponsiveNavLink.04cb55a4.js",
       "__plugin-vue_export-helper.cdc0426e.js",
@@ -1395,7 +1395,7 @@
     "imports": [
       "resources/js/app.js",
       "_Avatar.72f6a2c8.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "_Loader.9dfd413c.js",
       "_iconify.99e09ef6.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
@@ -1529,7 +1529,7 @@
       "_StarRatingEditable.6da32187.js",
       "_Review.a038e96e.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "resources/js/Pages/Profile/Partials/main/DialogProfileTabs.vue",
       "resources/js/Pages/Profile/Partials/Trades.vue",
       "resources/js/Pages/Profile/Partials/Views.vue",
@@ -1599,7 +1599,7 @@
       "_selectListsHelpters.6d73b684.js",
       "_ImageTextSection.vue_vue_type_style_index_0_scoped_a4e46067_lang.cc0ca6e2.js",
       "_PostDisplayEnlarged.adbff492.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "_InputLabel.c691f6db.js",
       "_InputError.a485c9eb.js",
@@ -1654,13 +1654,13 @@
       "_WelcomeFooter.ba3aa8d4.js",
       "resources/js/app.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "_ResponsiveNavLink.04cb55a4.js",
       "_iconify.99e09ef6.js",
       "_DialogUpgradeToGoldPlatinum.8daf4ac5.js",
       "_CustomDialog.f5ff7c4f.js",
-      "_tContractorWhite.08eee911.js"
+      "_cConnectWhite.08eee911.js"
     ]
   },
   "resources/js/Pages/Postings.vue": {
@@ -1671,7 +1671,7 @@
       "_AuthenticatedLayout.9f59e333.js",
       "_Header.8b20dfa0.js",
       "_PostDisplayEnlarged.adbff492.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "_iconify.99e09ef6.js",
       "resources/js/app.js",
@@ -1723,13 +1723,13 @@
       "resources/js/app.js",
       "_MoveToTop.8193f768.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "_ResponsiveNavLink.04cb55a4.js",
       "_iconify.99e09ef6.js",
       "_DialogUpgradeToGoldPlatinum.8daf4ac5.js",
       "_CustomDialog.f5ff7c4f.js",
-      "_tContractorWhite.08eee911.js",
+      "_cConnectWhite.08eee911.js",
       "_freebox.8421bda3.js"
     ]
   },
@@ -1758,7 +1758,7 @@
       "resources/js/Pages/Profile/Partials/main/PaymentStep.vue",
       "_PageTitle.f25bd43b.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "_CustomDialog.f5ff7c4f.js",
@@ -1809,13 +1809,13 @@
       "_WelcomeFooter.ba3aa8d4.js",
       "resources/js/app.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "_ResponsiveNavLink.04cb55a4.js",
       "_iconify.99e09ef6.js",
       "_DialogUpgradeToGoldPlatinum.8daf4ac5.js",
       "_CustomDialog.f5ff7c4f.js",
-      "_tContractorWhite.08eee911.js"
+      "_cConnectWhite.08eee911.js"
     ]
   },
   "resources/js/Pages/Profile/Edit.vue": {
@@ -1827,7 +1827,7 @@
       "resources/js/app.js",
       "resources/js/Pages/Profile/Partials/main/AllTabs.vue",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "_CustomDialog.f5ff7c4f.js",
@@ -2119,7 +2119,7 @@
       "_InputIcon.1f121658.js",
       "_GoogleAddressAutoComplete.36d7109e.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "_iconify.99e09ef6.js",
       "_Badge.c427ce3e.js",
@@ -2145,7 +2145,7 @@
       "resources/js/app.js",
       "resources/js/Pages/Profile/Partials/main/AllSteps.vue",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "_CustomDialog.f5ff7c4f.js",
@@ -2183,7 +2183,7 @@
       "resources/js/app.js",
       "resources/js/Pages/Profile/Partials/main/SettingsTabs.vue",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "_CustomDialog.f5ff7c4f.js",
@@ -2236,7 +2236,7 @@
       "_Loader.9dfd413c.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "_CustomDialog.f5ff7c4f.js",
       "_iconify.99e09ef6.js",
@@ -2307,7 +2307,7 @@
       "_ContractorRating.3006b2c1.js",
       "resources/js/app.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "_CustomDialog.f5ff7c4f.js",
@@ -2359,7 +2359,7 @@
       "_CustomDialog.f5ff7c4f.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "_selectListsHelpters.6d73b684.js",
       "_Badge.c427ce3e.js",
@@ -2400,7 +2400,7 @@
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "_ResponsiveNavLink.04cb55a4.js",
       "__plugin-vue_export-helper.cdc0426e.js"
     ]
@@ -2421,7 +2421,7 @@
       "resources/js/Pages/SubFinder/partials/SubFinderContractor.vue",
       "__plugin-vue_export-helper.cdc0426e.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "_CustomDialog.f5ff7c4f.js",
       "_Badge.c427ce3e.js",
@@ -2476,7 +2476,7 @@
       "_ImageTextSection.vue_vue_type_style_index_0_scoped_a4e46067_lang.cc0ca6e2.js",
       "_Avatar.72f6a2c8.js",
       "_PostDisplayEnlarged.adbff492.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "_Loader.9dfd413c.js",
       "_InputLabel.c691f6db.js",
       "_InputError.a485c9eb.js",
@@ -2526,7 +2526,7 @@
       "_Tooltip.df5bf8e9.js",
       "_iconify.99e09ef6.js",
       "__plugin-vue_export-helper.cdc0426e.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "_Loader.9dfd413c.js",
       "_filepond-plugin-file-poster.b4b2d2f1.js",
       "_CustomDialog.f5ff7c4f.js",
@@ -2572,13 +2572,13 @@
       "_WelcomeFooter.ba3aa8d4.js",
       "resources/js/app.js",
       "_spanish.afd7e950.js",
-      "_tContractorWord.60dc90ac.js",
+      "_cConnectWord.60dc90ac.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "_ResponsiveNavLink.04cb55a4.js",
       "_iconify.99e09ef6.js",
       "_DialogUpgradeToGoldPlatinum.8daf4ac5.js",
       "_CustomDialog.f5ff7c4f.js",
-      "_tContractorWhite.08eee911.js"
+      "_cConnectWhite.08eee911.js"
     ]
   },
   "resources/js/Pages/index.vue": {
@@ -2594,8 +2594,8 @@
       "_InputLabel.c691f6db.js",
       "_PrimaryButton.d6b2dece.js",
       "_TextInput.a3698496.js",
-      "_tContractorWord.60dc90ac.js",
-      "_tContractorWhite.08eee911.js",
+      "_cConnectWord.60dc90ac.js",
+      "_cConnectWhite.08eee911.js",
       "_ResponsiveNavLink.04cb55a4.js",
       "__plugin-vue_export-helper.cdc0426e.js",
       "_iconify.99e09ef6.js",

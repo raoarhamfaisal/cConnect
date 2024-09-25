@@ -45038,7 +45038,7 @@ const Mse = async ({ commit: e, state: t }, n) => {
       setIsFetchReviews(e, t) {
         e.isFetchReviews = t;
       },
-      setContractorDetails(e, t) {
+      secConnectDetails(e, t) {
         e.contractorDetails = t;
       },
       setIsDeleted(e, t) {
@@ -45055,11 +45055,11 @@ const Mse = async ({ commit: e, state: t }, n) => {
       },
     },
     actions: {
-      async getContractorInfo({ commit: e }, t) {
+      async gecConnectInfo({ commit: e }, t) {
         e("setLoading", !0);
         try {
           const n = await it.get(`/api/contractor/${t}`, It());
-          n.data && e("setContractorDetails", n.data.contractor);
+          n.data && e("secConnectDetails", n.data.contractor);
         } catch {
           kt();
         } finally {
@@ -45325,7 +45325,7 @@ const Mse = async ({ commit: e, state: t }, n) => {
       setReply(e, t) {
         e.reply = t;
       },
-      setContractorId(e, t) {
+      secConnectId(e, t) {
         e.contractorId = t;
       },
       setProfile(e, t) {
@@ -51127,7 +51127,7 @@ TT({
               "assets/DialogUpgradeToGoldPlatinum.8daf4ac5.js",
               "assets/CustomDialog.f5ff7c4f.js",
               "assets/CustomDialog.b9fbe597.css",
-              "assets/tContractorWhite.08eee911.js",
+              "assets/cConnectWhite.08eee911.js",
               "assets/PrimaryButton.d6b2dece.js",
               "assets/selectListsHelpters.6d73b684.js",
               "assets/InputError.a485c9eb.js",
@@ -52125,7 +52125,7 @@ TT({
               "assets/DialogUpgradeToGoldPlatinum.8daf4ac5.js",
               "assets/CustomDialog.f5ff7c4f.js",
               "assets/CustomDialog.b9fbe597.css",
-              "assets/tContractorWhite.08eee911.js",
+              "assets/cConnectWhite.08eee911.js",
               "assets/PrimaryButton.d6b2dece.js",
               "assets/TextInput.a3698496.js",
               "assets/InputIcon.1f121658.js",
@@ -52159,7 +52159,7 @@ TT({
               "assets/DialogUpgradeToGoldPlatinum.8daf4ac5.js",
               "assets/CustomDialog.f5ff7c4f.js",
               "assets/CustomDialog.b9fbe597.css",
-              "assets/tContractorWhite.08eee911.js",
+              "assets/cConnectWhite.08eee911.js",
               "assets/TextInput.a3698496.js",
               "assets/InputError.a485c9eb.js",
               "assets/InputLabel.c691f6db.js",
@@ -52180,7 +52180,7 @@ TT({
               "assets/DialogUpgradeToGoldPlatinum.8daf4ac5.js",
               "assets/CustomDialog.f5ff7c4f.js",
               "assets/CustomDialog.b9fbe597.css",
-              "assets/tContractorWhite.08eee911.js",
+              "assets/cConnectWhite.08eee911.js",
             ]
           ),
         "./Pages/Contractor/ContractorPage.vue": () =>
@@ -52405,7 +52405,7 @@ TT({
               "assets/DialogUpgradeToGoldPlatinum.8daf4ac5.js",
               "assets/CustomDialog.f5ff7c4f.js",
               "assets/CustomDialog.b9fbe597.css",
-              "assets/tContractorWhite.08eee911.js",
+              "assets/cConnectWhite.08eee911.js",
             ]
           ),
         "./Pages/Postings.vue": () =>
@@ -52484,7 +52484,7 @@ TT({
               "assets/DialogUpgradeToGoldPlatinum.8daf4ac5.js",
               "assets/CustomDialog.f5ff7c4f.js",
               "assets/CustomDialog.b9fbe597.css",
-              "assets/tContractorWhite.08eee911.js",
+              "assets/cConnectWhite.08eee911.js",
               "assets/PricingVersions.c166986b.js",
               "assets/freebox.8421bda3.js",
               "assets/PricingVersions.0f664e1d.css",
@@ -52546,7 +52546,7 @@ TT({
               "assets/DialogUpgradeToGoldPlatinum.8daf4ac5.js",
               "assets/CustomDialog.f5ff7c4f.js",
               "assets/CustomDialog.b9fbe597.css",
-              "assets/tContractorWhite.08eee911.js",
+              "assets/cConnectWhite.08eee911.js",
             ]
           ),
         "./Pages/Profile/Edit.vue": () =>
@@ -53571,7 +53571,7 @@ TT({
               "assets/DialogUpgradeToGoldPlatinum.8daf4ac5.js",
               "assets/CustomDialog.f5ff7c4f.js",
               "assets/CustomDialog.b9fbe597.css",
-              "assets/tContractorWhite.08eee911.js",
+              "assets/cConnectWhite.08eee911.js",
             ]
           ),
         "./Pages/index.vue": () =>
@@ -53588,7 +53588,7 @@ TT({
               "assets/TextInput.a3698496.js",
               "assets/cConnectWord.60dc90ac.js",
               "assets/_plugin-vue_export-helper.cdc0426e.js",
-              "assets/tContractorWhite.08eee911.js",
+              "assets/cConnectWhite.08eee911.js",
               "assets/ResponsiveNavLink.04cb55a4.js",
               "assets/iconify.99e09ef6.js",
               "assets/DialogUpgradeToGoldPlatinum.8daf4ac5.js",

@@ -110,7 +110,7 @@ const translations = computed(() => store.getters.translations);
                 {{ translations && translations.contractors_trying_to_sell }}
               </p>
               <p class="text-xl text-blue-rgba font-bold">
-                {{ translations && translations.not_here_at_tcontractor }}
+                {{ translations && translations.not_here_at_cConnect }}
               </p>
               <h3
                 class="mx-auto text-xl sm:text-3xl font-bold text-red-600 max-w-[418px]"

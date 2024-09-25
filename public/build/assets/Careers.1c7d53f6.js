@@ -23,7 +23,7 @@ import "./ResponsiveNavLink.04cb55a4.js";
 import "./iconify.99e09ef6.js";
 import "./DialogUpgradeToGoldPlatinum.8daf4ac5.js";
 import "./CustomDialog.f5ff7c4f.js";
-import "./tContractorWhite.08eee911.js";
+import "./cConnectWhite.08eee911.js";
 const b = { class: "bg-gray-100 min-h-screen p-3 sm:p-5 max-sm:rounded" },
   k = { class: "mb-3 sm:mb-6" },
   y = { class: "text-4xl font-bold mb-3 sm:mb-6" },
@@ -126,7 +126,7 @@ const b = { class: "bg-gray-100 min-h-screen p-3 sm:p-5 max-sm:rounded" },
                   t(
                     "p",
                     B,
-                    s(e.value && e.value.building_community_at_tcontractor),
+                    s(e.value && e.value.building_community_at_cConnect),
                     1
                   ),
                   t("div", N, [

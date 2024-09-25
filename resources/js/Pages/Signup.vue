@@ -76,7 +76,7 @@ onMounted(() => {});
           <!-- Cross X Menu Options -->
           <div class="flex items-center justify-end">
             <Link
-              href="#whytContractor"
+              href="#whycConnect"
               class="hidden md:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8"
             >
               {{ translations && translations.why }} cConnect
@@ -168,7 +168,7 @@ onMounted(() => {});
               </div>
             </div>
             <div class="pt-2 pb-3 space-y-1">
-              <ResponsiveNavLink href="#whytContractor">
+              <ResponsiveNavLink href="#whycConnect">
                 {{ translations && translations.why }}
                 <cConnectWord></cConnectWord>
               </ResponsiveNavLink>

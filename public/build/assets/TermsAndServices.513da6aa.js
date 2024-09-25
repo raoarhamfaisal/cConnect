@@ -22,7 +22,7 @@ import "./ResponsiveNavLink.04cb55a4.js";
 import "./iconify.99e09ef6.js";
 import "./DialogUpgradeToGoldPlatinum.8daf4ac5.js";
 import "./CustomDialog.f5ff7c4f.js";
-import "./tContractorWhite.08eee911.js";
+import "./cConnectWhite.08eee911.js";
 const g = { class: "mb-3 sm:mb-6" },
   x = { class: "text-3xl font-bold mb-6" },
   w = { class: "mb-4" },
@@ -110,7 +110,7 @@ const g = { class: "mb-3 sm:mb-6" },
                   t(
                     "p",
                     B,
-                    e(s.value && s.value.tcontractor_platform_description),
+                    e(s.value && s.value.cConnect_platform_description),
                     1
                   ),
                 ]),

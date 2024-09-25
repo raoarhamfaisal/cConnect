@@ -114,18 +114,18 @@ Route::middleware(['auth', 'verified', 'check.session'])->group(function () {
     Route::get('/profile-setup', [ProfileController::class, 'setup'])->name('profile.setup');
     Route::get('/payment', [ProfileController::class, 'getPaymentsPage'])->name('profile.payment');
     // Route::get('/choose-pricing-plan', [ProfileController::class, 'getPricingPlanPage'])->name('profile.choose-pricing-plan');
-    
+
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/profile/general-profile', [ProfileController::class, 'updateGeneralInfo'])->name('profile.updateGeneralInfo');
     Route::patch('/profile/company-info', [ProfileController::class, 'updateCompanyInfo'])->name('profile.updateCompanyInfo');
     Route::patch('/profile/address-info', [ProfileController::class, 'updateAddressInfo'])->name('profile.updateAddressInfo');
     Route::patch('/profile/links', [ProfileController::class, 'updateLinks'])->name('profile.updateLinks');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
+
     Route::middleware('activeUser')->group(function () {
         Route::get('/settings', [ProfileController::class, 'settings'])->name('profile.settings');
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-        
+
         Route::get('/sub-finder', [ProfileController::class, 'getSubFinderPage'])->name('profile.s');
         Route::get('/red-flag', [ProfileController::class, 'getRedFlagPage'])->name('profile.red-flag');
 
@@ -134,8 +134,8 @@ Route::middleware(['auth', 'verified', 'check.session'])->group(function () {
         Route::get('/ratings/{contractor_id}', [RatingController::class, 'index'])->name('ratings.index');
         Route::get('/admin/regions/{region_id}/contractors', [AdminRatingsController::class, 'index'])->name('admin.allContractors');
         Route::get('/admin/regions/contractors', [AdminRatingsController::class, 'getRegionsContractors'])->name('admin.allRegions');
-        Route::get('/admin/regions/{region_id}/contractors/{id}', [ContractorRatingsAdminController::class, 'getContractorGotReviews'])->name('admin.contractor');
-        Route::get('/admin/regions/{region_id}/contractors/{id}/reviews', [ContractorRatingsAdminController::class, 'getContractorGivenReviews'])->name('admin.contractorGivenReviews');
+        Route::get('/admin/regions/{region_id}/contractors/{id}', [ContractorRatingsAdminController::class, 'gecConnectGotReviews'])->name('admin.contractor');
+        Route::get('/admin/regions/{region_id}/contractors/{id}/reviews', [ContractorRatingsAdminController::class, 'gecConnectGivenReviews'])->name('admin.contractorGivenReviews');
         Route::get('/admin/regions/appealed', [AdminRatingsController::class, 'getRegionsAppealed'])->name('admin.allRegions');
         Route::get('/admin/regions/{region_id}/appealed', [AppealedReviewsController::class, 'getAppealedReviews'])->name('admin.appealed');
         // users
@@ -150,9 +150,6 @@ Route::middleware(['auth', 'verified', 'check.session'])->group(function () {
         Route::get('/admin/pricing', [AdminController::class, 'getPaymentsPage'])->name('admin.payments');
         Route::get('/admin/cancel-subscription', [AdminController::class, 'getCancelSubscriptionPage'])->name('admin.payments');
         Route::get('/admin/post', [AdminController::class, 'getPostUserFunctionPage'])->name('admin.payments');
-
-
-
     });
 });
 
@@ -193,14 +190,14 @@ Route::get('/post', [PostController::class, 'index'])
 Route::get('/contractor/posts/{contractor_id}', [PostController::class, 'indexContractor'])
     ->name('post.contractor')
     ->middleware(['auth', 'verified', 'activeUser', 'check.session']);
-    Route::get('/posts/{contractor_id}', [PostController::class, 'indexContractor'])
+Route::get('/posts/{contractor_id}', [PostController::class, 'indexContractor'])
     ->name('post.contractor')
     ->middleware(['auth', 'verified', 'activeUser', 'check.session']);
 
 Route::post('/post', [PostController::class, 'store'])
     ->name('post.store')
     ->middleware(['auth', 'verified', 'activeUser', 'check.session']);
-    // ->middleware(['auth', 'verifyPayment', 'verified']);
+// ->middleware(['auth', 'verifyPayment', 'verified']);
 
 Route::patch('/post/{post_id}', [PostController::class, 'updatePost'])
     ->name('post.updatePost')
@@ -210,7 +207,7 @@ Route::patch('/post/{post_id}', [PostController::class, 'updatePost'])
 Route::post('/upload-post', [PostImageController::class, 'upload'])
     ->name('post.update')
     ->middleware(['auth', 'verified', 'activeUser', 'check.session']);
-    // ->middleware(['auth', 'verifyPayment', 'verified']);
+// ->middleware(['auth', 'verifyPayment', 'verified']);
 
 // Delete image from temp storage
 Route::post('upload-post-revert', [PostImageController::class, 'uploadRevert']);

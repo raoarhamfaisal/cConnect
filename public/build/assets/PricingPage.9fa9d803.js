@@ -25,7 +25,7 @@ import "./ResponsiveNavLink.04cb55a4.js";
 import "./iconify.99e09ef6.js";
 import "./DialogUpgradeToGoldPlatinum.8daf4ac5.js";
 import "./CustomDialog.f5ff7c4f.js";
-import "./tContractorWhite.08eee911.js";
+import "./cConnectWhite.08eee911.js";
 import "./freebox.8421bda3.js";
 const k = {
     key: 0,
@@ -220,7 +220,7 @@ const k = {
                             t(
                               "p",
                               z,
-                              o(e.value && e.value.not_here_at_tcontractor),
+                              o(e.value && e.value.not_here_at_cConnect),
                               1
                             ),
                             t(

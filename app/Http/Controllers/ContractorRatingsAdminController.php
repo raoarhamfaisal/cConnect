@@ -20,168 +20,168 @@ class ContractorRatingsAdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getContractorGotReviews($region_id,$contractor_id)
+    public function gecConnectGotReviews($region_id, $contractor_id)
     {
         // Get current user id
         $userID = Auth()->user('')->id;
         $profile = null;
-    
+
         // Retrieve the contractor details from the Profile table with trades
         $contractor = Profile::where('id', $contractor_id)
-                            ->with('trades')
-                            ->select([
-                                'id',
-                                'user_id',
-                                'email',
-                                'phone_cell',
-                                'first_name',
-                                'last_name',
-                                'phone_cell',
-                                'email',
-                                'company_name',
-                                'city',
-                                'state',
-                                'user_avatar',
-                                'company_logo'
-                            ])
-                            ->first();
-    
+            ->with('trades')
+            ->select([
+                'id',
+                'user_id',
+                'email',
+                'phone_cell',
+                'first_name',
+                'last_name',
+                'phone_cell',
+                'email',
+                'company_name',
+                'city',
+                'state',
+                'user_avatar',
+                'company_logo'
+            ])
+            ->first();
+
         // Convert trades to old structure
         $contractorDetails = $this->convertTradesToOldStructure($contractor->trades);
         $contractorDetails = array_merge($contractor->toArray(), $contractorDetails);
-    
+
         // Get the profile information if the user id exists
-        if($userID) {
+        if ($userID) {
             $profile = Profile::where('user_id', $userID)
-                        ->with('trades')
-                        ->first();
-    
+                ->with('trades')
+                ->first();
+
             $profileTrades = $this->convertTradesToOldStructure($profile->trades);
             $profile = array_merge($profile->toArray(), $profileTrades);
         }
-    
+
         return Inertia::render('Admin/Ratings/ContractorGotReviews', [
             'profile' => $profile,
             'region_id' => $region_id,
             'showit' => Auth::check(),
             'posts' => Post::query()
-            ->orderBy('id', 'DESC')
-            ->when(FacadeRequest::input('postSearch'), function ($query, $postSearch) {
-                $query->where('title', 'like', "%{$postSearch}%");
-            })
-            ->paginate(5)
-            ->withQueryString() 
-            ->through(fn($post) => [
-                'id' => $post->id,
-                'user_id' => $post->user_id,
-                'view' => $post->view,
-                'title' => $post->title,
-                'image' => $post->image,
-                'body1' => $post->body1,
-                'body2' => $post->body2,
-                'is_body_bold' => $post->is_body_bold,
-                'post_text_color_id' => $post->post_text_color_id,
-                'post_background_color_id' => $post->post_background_color_id,
+                ->orderBy('id', 'DESC')
+                ->when(FacadeRequest::input('postSearch'), function ($query, $postSearch) {
+                    $query->where('title', 'like', "%{$postSearch}%");
+                })
+                ->paginate(5)
+                ->withQueryString()
+                ->through(fn($post) => [
+                    'id' => $post->id,
+                    'user_id' => $post->user_id,
+                    'view' => $post->view,
+                    'title' => $post->title,
+                    'image' => $post->image,
+                    'body1' => $post->body1,
+                    'body2' => $post->body2,
+                    'is_body_bold' => $post->is_body_bold,
+                    'post_text_color_id' => $post->post_text_color_id,
+                    'post_background_color_id' => $post->post_background_color_id,
 
-                'title_text_color_id' => $post->title_text_color_id,
-                'title_background_color_id' => $post->title_background_color_id,
-                'title_text_alignment' => $post->title_text_alignment,
-                    
-                'font_size' => $post->font_size,
-                'text_alignment' => $post->text_alignment,
-            
-                'repost' => $post->repost,
-                'repost_comment' => $post->repost_comment,
-                'shares' => $post->shares,
-            ]),
+                    'title_text_color_id' => $post->title_text_color_id,
+                    'title_background_color_id' => $post->title_background_color_id,
+                    'title_text_alignment' => $post->title_text_alignment,
+
+                    'font_size' => $post->font_size,
+                    'text_alignment' => $post->text_alignment,
+
+                    'repost' => $post->repost,
+                    'repost_comment' => $post->repost_comment,
+                    'shares' => $post->shares,
+                ]),
             // pass on any existing search filters that exist
             // along with data
             'postSearchFilters' => FacadeRequest::only(['postSearch']),
             'contractorDetails' => $contractorDetails,
         ]);
     }
-    
-    public function getContractorGivenReviews($region_id,$contractor_id)
+
+    public function gecConnectGivenReviews($region_id, $contractor_id)
     {
         // Get current user id
         $userID = Auth()->user('')->id;
         $profile = null;
-    
+
         // Retrieve the contractor details from the Profile table with trades
         $contractor = Profile::where('id', $contractor_id)
-                            ->with('trades')
-                            ->select([
-                                'id',
-                                'user_id',
-                                'email',
-                                'phone_cell',
-                                'first_name',
-                                'last_name',
-                                'phone_cell',
-                                'email',
-                                'company_name',
-                                'city',
-                                'state',
-                                'user_avatar',
-                                'company_logo'
-                            ])
-                            ->first();
-    
+            ->with('trades')
+            ->select([
+                'id',
+                'user_id',
+                'email',
+                'phone_cell',
+                'first_name',
+                'last_name',
+                'phone_cell',
+                'email',
+                'company_name',
+                'city',
+                'state',
+                'user_avatar',
+                'company_logo'
+            ])
+            ->first();
+
         // Convert trades to old structure
         $contractorDetails = $this->convertTradesToOldStructure($contractor->trades);
         $contractorDetails = array_merge($contractor->toArray(), $contractorDetails);
-    
+
         // Get the profile information if the user id exists
-        if($userID) {
+        if ($userID) {
             $profile = Profile::where('user_id', $userID)
-                        ->with('trades')
-                        ->first();
-    
+                ->with('trades')
+                ->first();
+
             $profileTrades = $this->convertTradesToOldStructure($profile->trades);
             $profile = array_merge($profile->toArray(), $profileTrades);
         }
-    
+
         return Inertia::render('Admin/Ratings/ContractorGivenReviews', [
             'profile' => $profile,
             'region_id' => $region_id,
             'showit' => Auth::check(),
             'posts' => Post::query()
-            ->orderBy('id', 'DESC')
-            ->when(FacadeRequest::input('postSearch'), function ($query, $postSearch) {
-                $query->where('title', 'like', "%{$postSearch}%");
-            })
-            ->paginate(5)
-            ->withQueryString() 
-            ->through(fn($post) => [
-                'id' => $post->id,
-                'user_id' => $post->user_id,
-                'view' => $post->view,
-                'title' => $post->title,
-                'image' => $post->image,
-                'body1' => $post->body1,
-                'body2' => $post->body2,
-                'is_body_bold' => $post->is_body_bold,
-                'post_text_color_id' => $post->post_text_color_id,
-                'post_background_color_id' => $post->post_background_color_id,
+                ->orderBy('id', 'DESC')
+                ->when(FacadeRequest::input('postSearch'), function ($query, $postSearch) {
+                    $query->where('title', 'like', "%{$postSearch}%");
+                })
+                ->paginate(5)
+                ->withQueryString()
+                ->through(fn($post) => [
+                    'id' => $post->id,
+                    'user_id' => $post->user_id,
+                    'view' => $post->view,
+                    'title' => $post->title,
+                    'image' => $post->image,
+                    'body1' => $post->body1,
+                    'body2' => $post->body2,
+                    'is_body_bold' => $post->is_body_bold,
+                    'post_text_color_id' => $post->post_text_color_id,
+                    'post_background_color_id' => $post->post_background_color_id,
 
-                'title_text_color_id' => $post->title_text_color_id,
-                'title_background_color_id' => $post->title_background_color_id,
-                'title_text_alignment' => $post->title_text_alignment,
-                    
-                'font_size' => $post->font_size,
-                'text_alignment' => $post->text_alignment,
-            
-                'repost' => $post->repost,
-                'repost_comment' => $post->repost_comment,
-                'shares' => $post->shares,
-            ]),
+                    'title_text_color_id' => $post->title_text_color_id,
+                    'title_background_color_id' => $post->title_background_color_id,
+                    'title_text_alignment' => $post->title_text_alignment,
+
+                    'font_size' => $post->font_size,
+                    'text_alignment' => $post->text_alignment,
+
+                    'repost' => $post->repost,
+                    'repost_comment' => $post->repost_comment,
+                    'shares' => $post->shares,
+                ]),
             // pass on any existing search filters that exist
             // along with data
             'postSearchFilters' => FacadeRequest::only(['postSearch']),
             'contractorDetails' => $contractorDetails,
         ]);
     }
-    private function convertTradesToOldStructure($trades) 
+    private function convertTradesToOldStructure($trades)
     {
         $oldStructure = [];
         for ($i = 1; $i <= 30; $i++) {
@@ -189,7 +189,7 @@ class ContractorRatingsAdminController extends Controller
         }
         return $oldStructure;
     }
-    
+
 
 
 
@@ -198,43 +198,43 @@ class ContractorRatingsAdminController extends Controller
         // Get current user id
         $userID = Auth()->user('')->id;
         $profile = null;
-    
+
         // Retrieve the contractor details from the Profile table with trades
         $contractor = Profile::where('id', $contractor_id)
-                            ->with('trades')
-                            ->select([
-                                'id',
-                                'user_id',
-                                'email',
-                                'phone_cell',
-                                'region_id',
-                                'first_name',
-                                'last_name',
-                                'region_id',
-                                'phone_cell',
-                                'email',
-                                'company_name',
-                                'city',
-                                'state',
-                                'user_avatar',
-                                'company_logo'
-                            ])
-                            ->first();
-    
+            ->with('trades')
+            ->select([
+                'id',
+                'user_id',
+                'email',
+                'phone_cell',
+                'region_id',
+                'first_name',
+                'last_name',
+                'region_id',
+                'phone_cell',
+                'email',
+                'company_name',
+                'city',
+                'state',
+                'user_avatar',
+                'company_logo'
+            ])
+            ->first();
+
         // Convert trades to old structure
         $contractorDetails = $this->convertTradesToOldStructure($contractor->trades);
         $contractorDetails = array_merge($contractor->toArray(), $contractorDetails);
-    
+
         // Get the profile information if the user id exists
-        if($userID) {
+        if ($userID) {
             $profile = Profile::where('user_id', $userID)
-                        ->with('trades')
-                        ->first();
-    
+                ->with('trades')
+                ->first();
+
             $profileTrades = $this->convertTradesToOldStructure($profile->trades);
             $profile = array_merge($profile->toArray(), $profileTrades);
         }
-    
+
         return Inertia::render('Admin/History/ContractorHistory', [
             'profile' => $profile,
             'showit' => Auth::check(),
@@ -251,17 +251,17 @@ class ContractorRatingsAdminController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function reviewsHistory(Request $request, $id)
-    {   
+    {
 
         // Get all the reviews of the selected Contractor which he has given to other contractors
 
         // Determine pagination parameters from the request's query parameters
         $reviewsPerPage = $request->query('per_page', 15);  // default to 15 if not provided
         $reviewsPage = $request->query('page', 1);          // default to page 1 if not provided
-    
+
         // Fetch all reviews for calculating ratings and counts
         $allReviews = Review::where('reviewer_id', $id)->get();
-            
+
         // Calculate the average rating and counts
         $avgReview = $allReviews->avg('rating');
         $fiveStars = $allReviews->whereBetween('rating', [4.5, 5.0])->count();
@@ -271,38 +271,38 @@ class ContractorRatingsAdminController extends Controller
         $oneStar = $allReviews->whereBetween('rating', [0.0, 1.4])->count();
 
 
-    
+
         // Build the review query with filtering options
         $reviewsByContractIDQuery = Review::where('reviewer_id', $id)
-        ->withTrashed()
-        ->with([
-            'reviewer' => function($query) {
-                $query->with('trades')  // Include the trades relationship
-                      ->select([
-                          'id',
-                          'user_id',
-                          'email',
-                          'phone_cell',
-                          'first_name',
-                          'last_name',
-                          'company_name',
-                          'city',
-                          'state',
-                          'user_avatar',
-                          'company_logo'
-                      ]);
-            }, 
-            'ratingReasons',  
-            'review_response.responseReasons',        
-            'review_response', 
-            'appeal'
-        ]);
-        
-        
+            ->withTrashed()
+            ->with([
+                'reviewer' => function ($query) {
+                    $query->with('trades')  // Include the trades relationship
+                        ->select([
+                            'id',
+                            'user_id',
+                            'email',
+                            'phone_cell',
+                            'first_name',
+                            'last_name',
+                            'company_name',
+                            'city',
+                            'state',
+                            'user_avatar',
+                            'company_logo'
+                        ]);
+                },
+                'ratingReasons',
+                'review_response.responseReasons',
+                'review_response',
+                'appeal'
+            ]);
+
+
         // Apply sorting based on filters
         $sortByDate = $request->query('sort_by_date', '');
         $sortByRating = $request->query('sort_by_rating', '');
-        
+
         switch ($sortByRating) {
             case 'highest':
                 $reviewsByContractIDQuery = $reviewsByContractIDQuery->orderByDesc('rating');
@@ -314,14 +314,14 @@ class ContractorRatingsAdminController extends Controller
                 $reviewsByContractIDQuery = $reviewsByContractIDQuery->orderBy('rating', 'asc');
                 break;
         }
-    
+
         if ($sortByDate === 'oldest') {
             $reviewsByContractIDQuery = $reviewsByContractIDQuery->oldest('rating_date');
-        } else if($sortByDate === 'latest') {
+        } else if ($sortByDate === 'latest') {
             $reviewsByContractIDQuery = $reviewsByContractIDQuery->latest('rating_date');
         }
-    
-    
+
+
         // Fetch paginated reviews
         $reviews = $reviewsByContractIDQuery->paginate($reviewsPerPage, ['*'], 'page', $reviewsPage);
 
@@ -343,8 +343,8 @@ class ContractorRatingsAdminController extends Controller
             }
         }
 
-        
-        
+
+
         // Construct the response
         $response = [
             'reviews' => $reviewsArray['data'],
@@ -366,16 +366,16 @@ class ContractorRatingsAdminController extends Controller
     }
 
 
-    
+
     public function responsesHistory(Request $request, $id)
     {
         // Determine pagination parameters from the request's query parameters
         $perPage = $request->query('per_page', 15);  // default to 15 if not provided
         $page = $request->query('page', 1);          // default to page 1 if not provided
-    
+
         // Fetch all reviews for calculating ratings and counts
         $allReviews = Review::where('reviewer_id', $id)->get();
-    
+
         // Calculate the average rating and counts
         $avgReview = $allReviews->avg('rating');
         $fiveStars = $allReviews->whereBetween('rating', [4.5, 5.0])->count();
@@ -383,36 +383,36 @@ class ContractorRatingsAdminController extends Controller
         $threeStars = $allReviews->whereBetween('rating', [2.5, 3.4])->count();
         $twoStars = $allReviews->whereBetween('rating', [1.5, 2.4])->count();
         $oneStar = $allReviews->whereBetween('rating', [0.0, 1.4])->count();
-    
+
         // Build the review query with filtering options
         $reviewsForContractIDQuery = Review::where('contractor_id', $id)
             ->withTrashed()
             ->with([
-                'reviewer' => function($query) {
+                'reviewer' => function ($query) {
                     $query->with('trades:id')  // Include the trades relationship with just the id
-                          ->select([
-                              'id',
-                              'user_id',
-                              'email',
-                              'phone_cell',
-                              'first_name',
-                              'last_name',
-                              'company_name',
-                              'city',
-                              'state',
-                              'user_avatar',
-                              'company_logo'
-                          ]);
-                }, 
-                'ratingReasons',  
-                'review_response.responseReasons',        
-                'review_response', 
+                        ->select([
+                            'id',
+                            'user_id',
+                            'email',
+                            'phone_cell',
+                            'first_name',
+                            'last_name',
+                            'company_name',
+                            'city',
+                            'state',
+                            'user_avatar',
+                            'company_logo'
+                        ]);
+                },
+                'ratingReasons',
+                'review_response.responseReasons',
+                'review_response',
             ]);
-    
+
         // Apply sorting based on filters
         $sortByDate = $request->query('sort_by_date', '');
         $sortByRating = $request->query('sort_by_rating', '');
-    
+
         switch ($sortByRating) {
             case 'highest':
                 $reviewsForContractIDQuery = $reviewsForContractIDQuery->orderByDesc('rating');
@@ -424,16 +424,16 @@ class ContractorRatingsAdminController extends Controller
                 $reviewsForContractIDQuery = $reviewsForContractIDQuery->orderBy('rating', 'asc');
                 break;
         }
-    
+
         if ($sortByDate === 'oldest') {
             $reviewsForContractIDQuery = $reviewsForContractIDQuery->oldest('rating_date');
-        } else if($sortByDate === 'latest') {
+        } else if ($sortByDate === 'latest') {
             $reviewsForContractIDQuery = $reviewsForContractIDQuery->latest('rating_date');
         }
-    
+
         // Fetch paginated reviews
         $responses = $reviewsForContractIDQuery->paginate($perPage, ['*'], 'page', $page);
-    
+
         // // Convert trades to the old structure for each reviewer
         // foreach ($responses as $response) {
         //     if (isset($response->reviewer)) {
@@ -453,7 +453,7 @@ class ContractorRatingsAdminController extends Controller
                 $review['reviewer'] = array_merge($review['reviewer'], $transformedTrades);
             }
         }
-    
+
         $response = [
             'reviews' => $responsesArray['data'],
             'pagination' => [
@@ -469,19 +469,19 @@ class ContractorRatingsAdminController extends Controller
             'two_stars_count' => $twoStars,
             'one_star_count' => $oneStar
         ];
-    
+
         return response()->json($response);
     }
-    
+
     // Search the Contractor
     public function searchContractor(Request $request, Region $region)
     {
         // Determine pagination parameters from the request's query parameters
         $perPage = $request->query('per_page', 15); // Default to 15 if not provided
         $page = $request->query('page', 1); // Default to page 1 if not provided
-    
+
         $query = Profile::query();
-    
+
         // Specify the columns to retrieve
         $query->select([
             'profiles.id',
@@ -499,27 +499,27 @@ class ContractorRatingsAdminController extends Controller
         ]);
 
         $query->where('region_id', $region->id);
-    
+
         $searchTerm = $request->get('search');
-    
+
         if ($searchTerm) {
             $query->where(function ($subQuery) use ($searchTerm) {
                 $subQuery->where('profiles.first_name', 'like', '%' . $searchTerm . '%')
-                         ->orWhere('profiles.last_name', 'like', '%' . $searchTerm . '%')
-                         ->orWhere('profiles.email', 'like', '%' . $searchTerm . '%')
-                         ->orWhere('profiles.company_name', 'like', '%' . $searchTerm . '%')
-                         ->orWhere('profiles.phone_cell', 'like', '%' . $searchTerm . '%')
-                         ->orWhere('profiles.phone_office', 'like', '%' . $searchTerm . '%');
+                    ->orWhere('profiles.last_name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('profiles.email', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('profiles.company_name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('profiles.phone_cell', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('profiles.phone_office', 'like', '%' . $searchTerm . '%');
             });
         }
-    
-        $contractors = $query->leftJoin('reviews', function($join) {
+
+        $contractors = $query->leftJoin('reviews', function ($join) {
             $join->on('profiles.id', '=', 'reviews.contractor_id')
-            ->where('reviews.is_review_active', 1);
+                ->where('reviews.is_review_active', 1);
         })
-        ->groupBy('profiles.id')
-        ->paginate($perPage, ['*'], 'page', $page);
-    
+            ->groupBy('profiles.id')
+            ->paginate($perPage, ['*'], 'page', $page);
+
         // Construct the response
         $response = [
             'profiles' => $contractors->items(),
@@ -530,10 +530,10 @@ class ContractorRatingsAdminController extends Controller
                 'total' => $contractors->total(),
             ]
         ];
-    
+
         return response()->json($response);
     }
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -601,4 +601,3 @@ class ContractorRatingsAdminController extends Controller
         //
     }
 }
-

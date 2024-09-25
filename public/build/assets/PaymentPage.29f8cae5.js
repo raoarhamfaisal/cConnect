@@ -1485,8 +1485,7 @@ import "./DialogUpgradeToGoldPlatinum.8daf4ac5.js";
                                 dialogWidth: "width-40",
                                 ref_key: "confirmPaymentDialogRef",
                                 ref: B,
-                                title:
-                                  e.value && e.value.welcome_to_tcontractor,
+                                title: e.value && e.value.welcome_to_cConnect,
                               },
                               {
                                 default: A(() => [

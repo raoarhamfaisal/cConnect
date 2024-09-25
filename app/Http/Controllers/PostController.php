@@ -53,7 +53,7 @@ class PostController extends Controller
         $userTradeIds = [];
 
         $sessionViewSettings = null;
-    
+
         if ($userID) {
             $profile = Profile::where('user_id', $userID)->first();
             // $userTradeIds = $profile && $profile->trades ? $profile->trades->pluck('id')->toArray() : [];
@@ -61,10 +61,10 @@ class PostController extends Controller
             $sessionViewSettings = SessionViewSetting::where('profile_id', $profile->id)->first();
 
             // Retrieve session trade IDs
-            $userTradeIds = SessionTrade::where('profile_id', $profile->id)->pluck('trade_id')->toArray();        
+            $userTradeIds = SessionTrade::where('profile_id', $profile->id)->pluck('trade_id')->toArray();
         }
 
-        if(!$sessionViewSettings) {
+        if (!$sessionViewSettings) {
             $sessionViewSettings = $sessionViewSettings ?: new \stdClass();
             $sessionViewSettings->view_locale = 1;
             $sessionViewSettings->view_regional = 0;
@@ -86,7 +86,7 @@ class PostController extends Controller
         // Retrieve the IDs of the users that the current user has blocked
         $blockedUserIds = $userID ? BlockUser::where('user_id', $userID)->pluck('blocked_user_id')->toArray() : [];
 
-    
+
         return Inertia::render('Postings', [
             'showit' => Auth::check(),
             'userID' => $userID,
@@ -96,14 +96,14 @@ class PostController extends Controller
                 ->select('posts.*', 'posts.id as post_id', 'post_reactions.type as user_reaction')
                 ->leftJoin('post_reactions', function ($join) use ($userID) {
                     $join->on('posts.id', '=', 'post_reactions.post_id')
-                         ->where('post_reactions.user_id', '=', $userID);
+                        ->where('post_reactions.user_id', '=', $userID);
                 })
-            //     ->select('posts.*', 
-            //     'posts.id as post_id',
-            //     DB::raw('(SELECT type FROM post_reactions WHERE post_id = posts.id AND user_id = ?) as user_reaction', [$userID]),
-            //     DB::raw('(SELECT COUNT(*) FROM post_reactions WHERE post_id = posts.id AND type = "like") as likes_count'),
-            //     DB::raw('(SELECT COUNT(*) FROM post_reactions WHERE post_id = posts.id AND type = "dislike") as dislikes_count')
-            // )
+                //     ->select('posts.*', 
+                //     'posts.id as post_id',
+                //     DB::raw('(SELECT type FROM post_reactions WHERE post_id = posts.id AND user_id = ?) as user_reaction', [$userID]),
+                //     DB::raw('(SELECT COUNT(*) FROM post_reactions WHERE post_id = posts.id AND type = "like") as likes_count'),
+                //     DB::raw('(SELECT COUNT(*) FROM post_reactions WHERE post_id = posts.id AND type = "dislike") as dislikes_count')
+                // )
                 ->withCount(['likes', 'dislikes'])
                 ->addSelect([
                     'profiles.first_name',
@@ -141,22 +141,22 @@ class PostController extends Controller
                             $query->where('view_locale', 1)
                                 ->where('view_locale', $sessionViewSettings->view_locale);
                         })
-                        ->orWhere(function ($query) use ($sessionViewSettings) {
-                            $query->where('view_regional', 1)
-                                ->where('view_regional', $sessionViewSettings->view_regional);
-                        })
-                        ->orWhere(function ($query) use ($sessionViewSettings) {
-                            $query->where('view_statewide', 1)
-                                ->where('view_statewide', $sessionViewSettings->view_statewide);
-                        })
-                        ->orWhere(function ($query) use ($sessionViewSettings) {
-                            $query->where('view_nationwide', 1)
-                                ->where('view_nationwide', $sessionViewSettings->view_nationwide);
-                        })
-                        ->orWhere(function ($query) use ($sessionViewSettings) {
-                            $query->where('view_following', 1)
-                                ->where('view_following', $sessionViewSettings->view_following);
-                        });
+                            ->orWhere(function ($query) use ($sessionViewSettings) {
+                                $query->where('view_regional', 1)
+                                    ->where('view_regional', $sessionViewSettings->view_regional);
+                            })
+                            ->orWhere(function ($query) use ($sessionViewSettings) {
+                                $query->where('view_statewide', 1)
+                                    ->where('view_statewide', $sessionViewSettings->view_statewide);
+                            })
+                            ->orWhere(function ($query) use ($sessionViewSettings) {
+                                $query->where('view_nationwide', 1)
+                                    ->where('view_nationwide', $sessionViewSettings->view_nationwide);
+                            })
+                            ->orWhere(function ($query) use ($sessionViewSettings) {
+                                $query->where('view_following', 1)
+                                    ->where('view_following', $sessionViewSettings->view_following);
+                            });
                     });
                 })
                 ->whereHas('trades', function ($query) use ($userTradeIds) {
@@ -168,7 +168,7 @@ class PostController extends Controller
                         $subQuery->where('posts.title', 'like', "%{$postSearch}%")
                             ->orWhere('posts.body1', 'like', "%{$postSearch}%")
                             ->orWhere('posts.body2', 'like', "%{$postSearch}%");
-        
+
                         // Search in user's profile details
                         $subQuery->orWhereHas('user.profile', function ($profileQuery) use ($postSearch) {
                             $profileQuery->where('profiles.first_name', 'like', "%{$postSearch}%")
@@ -201,7 +201,7 @@ class PostController extends Controller
                     'title_text_color_id' => $post->title_text_color_id,
                     'title_background_color_id' => $post->title_background_color_id,
                     'title_text_alignment' => $post->title_text_alignment,
-        
+
 
                     'font_size' => $post->font_size,
                     'text_alignment' => $post->text_alignment,
@@ -230,11 +230,11 @@ class PostController extends Controller
                     'original_user_id' => $post->original_user_id,
                     'original_user_average_rating' => $post->original_user_average_rating,
                     'original_user_total_reviews' => $post->original_user_total_reviews,
-                    'created_at' => $post->created_at, 
-                    'updated_at' => $post->updated_at, 
+                    'created_at' => $post->created_at,
+                    'updated_at' => $post->updated_at,
 
                     'region_id' => $post->region_id
-                
+
                 ]),
             'postSearchFilters' => Request::only(['postSearch']),
         ]);
@@ -245,15 +245,15 @@ class PostController extends Controller
     {
         // Fetch the post with the specified ID, along with its trades
         $post = Post::with('trades')->find($postId);
-    
+
         if (!$post) {
             // If the post doesn't exist, return a 404 response
             return response()->json(['message' => 'Post not found'], 404);
         }
-    
+
         // Extract only the IDs of the trades
         $tradeIds = $post->trades->pluck('id');
-    
+
         // Return the trade IDs as a JSON response
         return response()->json(['trade_ids' => $tradeIds]);
     }
@@ -264,86 +264,86 @@ class PostController extends Controller
 
         $profile = null;
         $userTradeIds = [];
-    
+
         if ($contractor_id) {
             $profile = Profile::where('user_id', $contractor_id)->first();
             $userTradeIds = $profile && $profile->trades ? $profile->trades->pluck('id')->toArray() : [];
         }
 
-    
-            return Inertia::render('Postings', [
-                'showit' => Auth::check(),
-                'contractor_id' => $contractor_id,
-              
-                'profile' => $profile,
-                'posts' => Post::query()
-                    ->select(['posts.*', 'posts.id as post_id'])
-                    ->addSelect([
-                        'profiles.first_name',
-                        'profiles.last_name',
-                        'profiles.version',
-                        'profiles.company_name',
-                        'profiles.city',
-                        'profiles.state',
-                        'profiles.user_avatar',
-                        'profiles.id',
-                        DB::raw('(SELECT AVG(reviews.rating) FROM reviews WHERE reviews.contractor_id = profiles.id AND reviews.is_review_active = 1) as average_rating'),
-                        DB::raw('(SELECT COUNT(*) FROM reviews WHERE reviews.contractor_id = profiles.id AND reviews.is_review_active = 1) as total_reviews')
-                    ])
-                    ->leftJoin('profiles', 'posts.user_id', '=', 'profiles.user_id')
-                    ->where('posts.user_id', $contractor_id)
-                    ->orderBy('posts.created_at', 'desc')
-                    ->orderBy('posts.id', 'desc')
-                    ->paginate(5)
-                    ->withQueryString()
-                    ->through(fn($post) => [
-                        'id' => $post->post_id,
-                        'user_id' => $post->user_id,
-                        'view' => $post->view,
-                        'version' => $post->version,
-                        'title' => $post->title,
-                        'image' => $post->image,
-                        'body1' => $post->body1,
-                        'body2' => $post->body2,
-                        'is_body_bold' => $post->is_body_bold,
-                        'post_text_color_id' => $post->post_text_color_id,
-                        'post_background_color_id' => $post->post_background_color_id,
 
-                        'title_text_color_id' => $post->title_text_color_id,
-                        'title_background_color_id' => $post->title_background_color_id,
-                        'title_text_alignment' => $post->title_text_alignment,
-            
+        return Inertia::render('Postings', [
+            'showit' => Auth::check(),
+            'contractor_id' => $contractor_id,
 
-                        'font_size' => $post->font_size,
-                        'text_alignment' => $post->text_alignment,
-                            
-                        'repost' => $post->repost,
-                        'repost_comment' => $post->repost_comment,
-                        'shares' => $post->shares,
-                        'first_name' => $post->first_name,
-                        'last_name' => $post->last_name,
-                        'company_name' => $post->company_name,
-                        'city' => $post->city,
-                        'state' => $post->state,
-                        'user_avatar' => $post->user_avatar,
-                        'average_rating' => $post->average_rating,
-                        'total_reviews' => $post->total_reviews
-                    
-                    ]),
-                'postSearchFilters' => Request::only(['postSearch']),
-            ]);
+            'profile' => $profile,
+            'posts' => Post::query()
+                ->select(['posts.*', 'posts.id as post_id'])
+                ->addSelect([
+                    'profiles.first_name',
+                    'profiles.last_name',
+                    'profiles.version',
+                    'profiles.company_name',
+                    'profiles.city',
+                    'profiles.state',
+                    'profiles.user_avatar',
+                    'profiles.id',
+                    DB::raw('(SELECT AVG(reviews.rating) FROM reviews WHERE reviews.contractor_id = profiles.id AND reviews.is_review_active = 1) as average_rating'),
+                    DB::raw('(SELECT COUNT(*) FROM reviews WHERE reviews.contractor_id = profiles.id AND reviews.is_review_active = 1) as total_reviews')
+                ])
+                ->leftJoin('profiles', 'posts.user_id', '=', 'profiles.user_id')
+                ->where('posts.user_id', $contractor_id)
+                ->orderBy('posts.created_at', 'desc')
+                ->orderBy('posts.id', 'desc')
+                ->paginate(5)
+                ->withQueryString()
+                ->through(fn($post) => [
+                    'id' => $post->post_id,
+                    'user_id' => $post->user_id,
+                    'view' => $post->view,
+                    'version' => $post->version,
+                    'title' => $post->title,
+                    'image' => $post->image,
+                    'body1' => $post->body1,
+                    'body2' => $post->body2,
+                    'is_body_bold' => $post->is_body_bold,
+                    'post_text_color_id' => $post->post_text_color_id,
+                    'post_background_color_id' => $post->post_background_color_id,
+
+                    'title_text_color_id' => $post->title_text_color_id,
+                    'title_background_color_id' => $post->title_background_color_id,
+                    'title_text_alignment' => $post->title_text_alignment,
+
+
+                    'font_size' => $post->font_size,
+                    'text_alignment' => $post->text_alignment,
+
+                    'repost' => $post->repost,
+                    'repost_comment' => $post->repost_comment,
+                    'shares' => $post->shares,
+                    'first_name' => $post->first_name,
+                    'last_name' => $post->last_name,
+                    'company_name' => $post->company_name,
+                    'city' => $post->city,
+                    'state' => $post->state,
+                    'user_avatar' => $post->user_avatar,
+                    'average_rating' => $post->average_rating,
+                    'total_reviews' => $post->total_reviews
+
+                ]),
+            'postSearchFilters' => Request::only(['postSearch']),
+        ]);
     }
 
-    public function getContractorPosts(Request $request, $contractor_id)
+    public function gecConnectPosts(Request $request, $contractor_id)
     {
         $profile = null;
         $userTradeIds = [];
-    
+
         if ($contractor_id) {
             $profile = Profile::where('user_id', $contractor_id)->first();
             $userTradeIds = $profile && $profile->trades ? $profile->trades->pluck('id')->toArray() : [];
         }
-    
+
         $posts = Post::query()
             ->select(['posts.*', 'posts.id as post_id'])
             ->addSelect([
@@ -365,7 +365,7 @@ class PostController extends Controller
             ->paginate(5)
             ->withQueryString()
             ->toArray();
-    
+
         return response()->json([
             'showit' => Auth::check(),
             'profile' => $profile,
@@ -375,18 +375,18 @@ class PostController extends Controller
     public function selectedTrades($user_id)
     {
         // Get current user
-    
+
         if ($user_id) {
             // Get profile of the current user
             $profile = Profile::where('id', $user_id)->first();
-    
+
             // Get trades of the profile
             if ($profile) {
                 $trades = $profile->trades;
             } else {
                 $trades = [];
             }
-    
+
             return response()->json([
                 'trades' => $trades,
             ]);
@@ -398,14 +398,15 @@ class PostController extends Controller
     }
 
     // A helper function to convert the trades to old structure coming from proffile table in trade1, trade2 format
-    private function convertTradesToOldStructure($trades) {
+    private function convertTradesToOldStructure($trades)
+    {
         $oldStructure = [];
         for ($i = 1; $i <= 30; $i++) {
             $oldStructure["trade{$i}"] = $trades->contains('id', $i) ? 1 : 0;
         }
         return $oldStructure;
     }
-        
+
 
     /**
      * Store a newly created resource in storage.
@@ -424,21 +425,21 @@ class PostController extends Controller
 
         $user = Auth::user();
         $userVersion = $user->profile->version; // Fetch the version identifier from the user's profile
-        
+
         // Fetch version defaults based on the user's version
         $versionDefault = VersionDefault::find($userVersion);
         if (!$versionDefault) {
             return redirect()->back()->with('error', 'Version defaults not found for your account.');
         }
-        
+
         // Convert 'nf_ppm' to PHP_INT_MAX if it's 99
         $postsLimit = $versionDefault->nf_ppm == 99 ? PHP_INT_MAX : $versionDefault->nf_ppm;
-        
+
         $currentMonthPosts = Post::where('user_id', $user->id)
-        ->whereMonth('created_at', now()->month)
-        ->whereYear('created_at', now()->year)
-        ->count();
-        
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->count();
+
         // Check if user has exceeded their posting limit
         if ($currentMonthPosts >= $postsLimit) {
             return redirect()->back()->with('error', 'You have reached your posting limit for this month.');
@@ -452,7 +453,7 @@ class PostController extends Controller
         // Set user_id for post // Customize validation as needed
         $userID = Auth()->user('')->id;
         $validatedInput['user_id'] = $userID;
-    
+
         // Get user info based on user id
         $postersProfile = Profile::where('user_id', $userID)
             ->first()
@@ -461,7 +462,7 @@ class PostController extends Controller
             );
 
 
-        if(!array_key_exists('region_id', $validatedInput) || !$validatedInput['region_id']) {
+        if (!array_key_exists('region_id', $validatedInput) || !$validatedInput['region_id']) {
             $validatedInput['region_id'] = $postersProfile['region_id'];
         }
 
@@ -469,14 +470,16 @@ class PostController extends Controller
 
         // Handle images based on version defaults
         $images = $request->has('image') ? $validatedInput['image'] : [];
-        
+
 
         // Assuming $validatedInput['image'] contains the concatenated image paths
         $tempImagesString = $request->has('image') ? $validatedInput['image'] : '';
         // Split the string into an array using the "|" delimiter
         $tempImages = explode('|', $tempImagesString);
         // Remove any empty elements which might result from trailing delimiters
-        $tempImages = array_filter($tempImages, function($value) { return !is_null($value) && $value !== ''; });
+        $tempImages = array_filter($tempImages, function ($value) {
+            return !is_null($value) && $value !== '';
+        });
 
         // Now $tempImages is an array where each element is the path to an image
         if (count($tempImages) > $versionDefault->nf_ipp) {
@@ -491,7 +494,7 @@ class PostController extends Controller
         if (!$versionDefault->nf_title && !empty($validatedInput['title'])) {
             return redirect()->back()->with('error', 'You are not allowed to add a title.');
         }
-        
+
         // $validatedInput = $InsertPostProfileService->insertPostersProfile($validatedInput);
         //dd($validatedInput);
 
@@ -519,15 +522,15 @@ class PostController extends Controller
         Post::where("id", $postCreated->id)->update(["image" => $newImageString]);
 
         // Attach trades with post
-        
+
         // dd($postCreated, $validatedInput);
 
         // Attach trades with post
-        if($postCreated) {
+        if ($postCreated) {
 
             $trades = $request->input('trades');
 
-            if(!$trades) {
+            if (!$trades) {
                 // Fetch the trades associated with the logged-in user's profile    
                 $profile = Profile::where('user_id', $userID)->with('trades:id')->first();
                 $trades = $profile->trades->pluck('id')->toArray();
@@ -547,11 +550,10 @@ class PostController extends Controller
 
         return redirect()->back()
             ->with('message', 'Post created');
-
     }
 
 
-    
+
 
     public function updatePost(
         $post_id,
@@ -562,14 +564,14 @@ class PostController extends Controller
 
         $user = Auth::user();
         $userVersion = $user->profile->version; // Fetch the version identifier from the user's profile
-    
+
         // Fetch version defaults based on the user's version
         $versionDefault = VersionDefault::find($userVersion);
         if (!$versionDefault) {
             return redirect()->back()->with('error', 'Version defaults not found for your account.');
         }
-    
-  
+
+
 
 
         // Retrieve the post to update
@@ -582,7 +584,7 @@ class PostController extends Controller
         // Set user_id for post // Customize validation as needed
         $userID = Auth()->user('')->id;
         $validatedInput['user_id'] = $userID;
-    
+
         // Get user info based on user id
         $postersProfile = Profile::where('user_id', $userID)
             ->first()
@@ -591,7 +593,7 @@ class PostController extends Controller
             );
 
 
-        if(!array_key_exists('region_id', $validatedInput) || !$validatedInput['region_id']) {
+        if (!array_key_exists('region_id', $validatedInput) || !$validatedInput['region_id']) {
             $validatedInput['region_id'] = $postersProfile['region_id'];
         }
 
@@ -604,7 +606,9 @@ class PostController extends Controller
         // Split the string into an array using the "|" delimiter
         $tempImages = explode('|', $tempImagesString);
         // Remove any empty elements which might result from trailing delimiters
-        $tempImages = array_filter($tempImages, function($value) { return !is_null($value) && $value !== ''; });
+        $tempImages = array_filter($tempImages, function ($value) {
+            return !is_null($value) && $value !== '';
+        });
 
         // Now $tempImages is an array where each element is the path to an image
         if (count($tempImages) > $versionDefault->nf_ipp) {
@@ -619,7 +623,7 @@ class PostController extends Controller
         if (!$versionDefault->nf_title && !empty($validatedInput['title'])) {
             return redirect()->back()->with('error', 'You are not allowed to add a title.');
         }
-        
+
         // $validatedInput = $InsertPostProfileService->insertPostersProfile($validatedInput);
         //dd($validatedInput);
 
@@ -647,15 +651,15 @@ class PostController extends Controller
 
 
         // Attach trades with post
-        
+
         // dd($postToUpdate, $validatedInput);
 
         // Attach trades with post
-        if($postToUpdate) {
+        if ($postToUpdate) {
 
             $trades = $request->input('trades');
 
-            if(!$trades) {
+            if (!$trades) {
                 // Fetch the trades associated with the logged-in user's profile    
                 $profile = Profile::where('user_id', $userID)->with('trades:id')->first();
                 $trades = $profile->trades->pluck('id')->toArray();
@@ -677,7 +681,6 @@ class PostController extends Controller
 
         return redirect()->back()
             ->with('message', 'Post Updated');
-
     }
 
 
@@ -753,7 +756,7 @@ class PostController extends Controller
     // DESTROY ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public function destroy(Post $post)
     {
-    
+
         // Set the active_post field to 0 to deactivate the post
         $post->active_post = 0;
         $post->save();
@@ -764,13 +767,13 @@ class PostController extends Controller
             \Log::error('Error broadcasting PostDeleted event: ' . $e->getMessage());
             // Optionally, handle the error further if needed
         }
-    
+
         // Redirect back with a message
         return redirect()
             ->back()
             ->with('message', 'Post deleted successfully');
     }
-    
+
     // upload ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // Uplloads files to temp storage
     public function upload(Request $request)
@@ -794,21 +797,21 @@ class PostController extends Controller
 
         $user = Auth::user();
         $userVersion = $user->profile->version; // Fetch the version identifier from the user's profile
-        
+
         // Fetch version defaults based on the user's version
         $versionDefault = VersionDefault::find($userVersion);
         if (!$versionDefault) {
             return redirect()->back()->with('error', 'Version defaults not found for your account.');
         }
-        
+
         // Convert 'nf_ppm' to PHP_INT_MAX if it's 99
         $postsLimit = $versionDefault->nf_ppm == 99 ? PHP_INT_MAX : $versionDefault->nf_ppm;
-        
+
         $currentMonthPosts = Post::where('user_id', $user->id)
-        ->whereMonth('created_at', now()->month)
-        ->whereYear('created_at', now()->year)
-        ->count();
-        
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->count();
+
         // Check if user has exceeded their posting limit
         if ($currentMonthPosts >= $postsLimit) {
             return redirect()->back()->with('error', 'You have reached your posting limit for this month.');
@@ -816,8 +819,8 @@ class PostController extends Controller
 
         // Check if the current user has already reposted this post
         $existingRepost = Post::where('original_post_id', $post->id)
-                            ->where('user_id', Auth::id())
-                            ->first();
+            ->where('user_id', Auth::id())
+            ->first();
 
 
 
@@ -834,10 +837,10 @@ class PostController extends Controller
 
         // List the attributes you want to replicate
         $attributesToReplicate = ['view', 'region_id', 'title', 'image', 'body1', 'body2', 'is_body_bold', 'post_text_color_id', 'post_background_color_id', 'font_size', 'text_alignment', 'title_text_alignment', 'title_text_color_id', 'title_background_color_id'];
-        
+
         // Replicate the original post with specified attributes
         $repost = $post->replicate();
-        
+
         // Set the current user as the poster and link to the original post and user
         $repost->user_id = Auth::id();
         $repost->original_post_id = $post->original_post_id ? $post->original_post_id : $post->id;
@@ -847,12 +850,12 @@ class PostController extends Controller
         $repost->repost = 0;
         $repost->repost_comment = $repostComment; // Assign the repost comment
 
-        
+
         // $post->repost++;
-        
+
         $repost->save();
         // $post->save();
-        
+
         $this->updateRepostCounters($repost->id);
 
 
@@ -881,7 +884,7 @@ class PostController extends Controller
     private function updateRepostCounters($repostedPostId)
     {
         $currentPost = Post::find($repostedPostId);
-        
+
         while ($currentPost) {
             // Increment repost count for the current post
             $currentPost->repost++;
@@ -893,7 +896,7 @@ class PostController extends Controller
                 \Log::error('Error broadcasting PostCountersChanged event: ' . $e->getMessage());
                 // Optionally, handle the error further if needed
             }
-    
+
             // Move to the next ancestor (the post this one was reposted from)
             if ($currentPost->parent_post_id) {
                 $currentPost = Post::find($currentPost->parent_post_id);
@@ -905,9 +908,8 @@ class PostController extends Controller
         $currentPost = Post::find($repostedPostId);
         $currentPost->repost = 0;
         $currentPost->save();
-    
     }
-    
+
 
     public function editRepost(HttpRequest $request, Post $post)
     {
@@ -941,6 +943,4 @@ class PostController extends Controller
 
         return response()->json(['message' => 'Your report has been sent to the admin.']);
     }
-
-            
 }

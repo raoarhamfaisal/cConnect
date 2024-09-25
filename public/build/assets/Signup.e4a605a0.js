@@ -624,7 +624,7 @@ const Je = { class: "relative h-screen bg-gray-200" },
                         b(
                           N(O),
                           {
-                            href: "#whytContractor",
+                            href: "#whycConnect",
                             class:
                               "hidden md:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8",
                           },
@@ -783,7 +783,7 @@ const Je = { class: "relative h-screen bg-gray-200" },
                           u("div", pt, [
                             b(
                               w,
-                              { href: "#whytContractor" },
+                              { href: "#whycConnect" },
                               {
                                 default: h(() => [
                                   g(f(r.value && r.value.why) + " ", 1),

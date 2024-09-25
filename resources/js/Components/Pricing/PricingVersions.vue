@@ -337,7 +337,7 @@ const scrollToFAQs = () => {
   >
     <div class="flex items-center justify-center flex-col">
       <div class="text-2xl font-bold self-start mb-1">
-        {{ translations && translations.welcome_to_tcontractor }}
+        {{ translations && translations.welcome_to_cConnect }}
       </div>
       <div class="w-full sm:text-lg sm:semi-bold">
         <div>

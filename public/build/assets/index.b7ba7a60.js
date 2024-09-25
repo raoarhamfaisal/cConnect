@@ -42,7 +42,7 @@ import { _ as J } from "./InputLabel.c691f6db.js";
 import { _ as je } from "./PrimaryButton.d6b2dece.js";
 import { _ as K } from "./TextInput.a3698496.js";
 import { t as L } from "./cConnectWord.60dc90ac.js";
-import { _ as P } from "./tContractorWhite.08eee911.js";
+import { _ as P } from "./cConnectWhite.08eee911.js";
 import { _ as b } from "./ResponsiveNavLink.04cb55a4.js";
 import { _ as ze } from "./_plugin-vue_export-helper.cdc0426e.js";
 import { I as le } from "./iconify.99e09ef6.js";
@@ -1303,7 +1303,7 @@ const F = ze(Ne, [["render", Ae]]),
                       e(
                         "div",
                         Nl,
-                        s(t.value && t.value.faqs_learn_more_about_tcontractor),
+                        s(t.value && t.value.faqs_learn_more_about_cConnect),
                         1
                       ),
                     ]),
@@ -1640,7 +1640,7 @@ const ss = {
   aa = { class: "text-green-800 text-center font-bold pb-2 text-xl" },
   oa = {
     class: "relative z-20 bg-white md:mt-24 lg:mt-28 xl:mt-32 2xl:mt-40",
-    id: "whytContractor",
+    id: "whycConnect",
   },
   ia = { id: "pricing", class: "relative bg-[#16a34a] text-[#073116]" },
   na = { class: "" },
@@ -2021,7 +2021,7 @@ const ss = {
                             i(
                               F,
                               {
-                                href: "#whytContractor",
+                                href: "#whycConnect",
                                 class:
                                   "hidden md:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8",
                               },
@@ -2245,7 +2245,7 @@ const ss = {
                               e("div", js, [
                                 i(
                                   b,
-                                  { href: "#whytContractor" },
+                                  { href: "#whycConnect" },
                                   {
                                     default: r(() => [
                                       o(s(a.value && a.value.why) + " ", 1),

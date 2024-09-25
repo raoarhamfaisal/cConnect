@@ -491,7 +491,7 @@
           :showFooter="false"
           dialogWidth="width-40"
           ref="confirmPaymentDialogRef"
-          :title="translations && translations.welcome_to_tcontractor"
+          :title="translations && translations.welcome_to_cConnect"
         >
           <div class="flex items-center justify-center flex-col">
             <div class="">

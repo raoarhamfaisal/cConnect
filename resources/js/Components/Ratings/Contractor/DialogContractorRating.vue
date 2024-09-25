@@ -38,7 +38,7 @@ const contractorDetails = computed(() => store.state.ratings.contractorDetails);
 
 const openDialog = () => {
   console.log(userId, "userId");
-  store.dispatch("ratings/getContractorInfo", userId);
+  store.dispatch("ratings/gecConnectInfo", userId);
   return dialogRef.value.openDialog();
 };
 defineExpose({ openDialog });

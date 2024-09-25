@@ -37,7 +37,7 @@ const translations = computed(() => store.getters.translations);
         {{ translations && translations.join_our_network_of_contractors }}
       </h1>
       <p class="text-lg mb-3 sm:mb-6">
-        {{ translations && translations.building_community_at_tcontractor }}
+        {{ translations && translations.building_community_at_cConnect }}
       </p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

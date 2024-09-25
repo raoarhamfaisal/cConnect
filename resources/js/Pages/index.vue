@@ -3,6 +3,7 @@ import TC_LoginForm from "@/Components/TC_LoginForm.vue";
 import { Head, Link, useForm, usePage } from "@inertiajs/inertia-vue3";
 import cConnectWord from "@/Components/tCon/cConnectWord.vue";
 import cConnectWhite from "@/Components/tCon/cConnectWhite.vue";
+import cConnectWhiteText from "@/Components/tCon/cConnectWhiteText.vue";
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import ScrollToLinkVue from "@/Components/tCon/ScrollToLink.vue";
@@ -305,7 +306,7 @@ const goToRedFlagPage = (event) => {
           <!-- Cross X Menu Options -->
           <div class="flex items-center justify-end">
             <ScrollToLinkVue
-              href="#whytContractor"
+              href="#whycConnect"
               class="hidden md:block mx-3 text-lg font-bold text-white hover:text-blue-rgba cursor-pointer hover:underline hover:underline-offset-8"
             >
               {{ translations && translations.why }} cConnect
@@ -460,7 +461,7 @@ const goToRedFlagPage = (event) => {
             </div>
 
             <div class="pt-2 pb-3 space-y-1">
-              <ResponsiveNavLink href="#whytContractor">
+              <ResponsiveNavLink href="#whycConnect">
                 {{ translations && translations.why }}
                 <cConnectWord></cConnectWord>
               </ResponsiveNavLink>
@@ -954,7 +955,7 @@ const goToRedFlagPage = (event) => {
 
     <section
       class="relative z-20 bg-white md:mt-24 lg:mt-28 xl:mt-32 2xl:mt-40"
-      id="whytContractor"
+      id="whycConnect"
     >
       <FeaturesGrid></FeaturesGrid>
     </section>
@@ -1007,7 +1008,7 @@ const goToRedFlagPage = (event) => {
                   {{ translations && translations.everyone_trying_to_sell }}
                   <div class="font-extrabold text-white normal-case">
                     {{ translations && translations.not_here_at }}&nbsp;
-                    <cConnectWhite />
+                    <cConnectWhiteText />
                   </div>
                   <div class="inline-block mt-2">
                     <div class="inline">

@@ -28,7 +28,7 @@ class ReviewController extends Controller
      * @param  int  $contractor_id
      * @return \Illuminate\Http\Response
      */
-    public function getContractorInfo(Request $request, $contractor_id)
+    public function gecConnectInfo(Request $request, $contractor_id)
     {
         $contractorDetails = Profile::where('user_id', $contractor_id)
             ->select([
@@ -36,7 +36,7 @@ class ReviewController extends Controller
                 'user_id',
                 'email',
                 'version',
-                'phone_cell',            
+                'phone_cell',
                 'first_name',
                 'last_name',
                 'phone_cell',
@@ -49,22 +49,22 @@ class ReviewController extends Controller
             ])
             ->with('trades:id')
             ->first();
-    
+
         // Convert the trades to the old structure for contractorDetails
         if ($contractorDetails) {
             $contractorTrades = $this->convertTradesToOldStructure($contractorDetails->trades);
             $contractorDetails = array_merge($contractorDetails->toArray(), $contractorTrades);
         }
-    
+
         // Construct the response
         $response = [
             'contractor' => $contractorDetails
         ];
-    
+
         return response()->json($response);
     }
-    
-    private function convertTradesToOldStructure($trades) 
+
+    private function convertTradesToOldStructure($trades)
     {
         $oldStructure = [];
         for ($i = 1; $i <= 30; $i++) {
@@ -72,7 +72,7 @@ class ReviewController extends Controller
         }
         return $oldStructure;
     }
-    
+
 
 
     public function index(Request $request, $contractor_id)
@@ -80,10 +80,10 @@ class ReviewController extends Controller
         // Determine pagination parameters from the request's query parameters
         $perPage = $request->query('per_page', 15);  // default to 15 if not provided
         $page = $request->query('page', 1);          // default to page 1 if not provided
-    
+
         // Fetch all reviews for calculating ratings and counts
         $allReviews = Review::where('contractor_id', $contractor_id)->where('is_review_active', 1)->get();
-    
+
         // Calculate the average rating and counts
         $avgReview = $allReviews->avg('rating');
         $fiveStars = $allReviews->whereBetween('rating', [4.5, 5.0])->count();
@@ -91,25 +91,28 @@ class ReviewController extends Controller
         $threeStars = $allReviews->whereBetween('rating', [2.5, 3.4])->count();
         $twoStars = $allReviews->whereBetween('rating', [1.5, 2.4])->count();
         $oneStar = $allReviews->whereBetween('rating', [0.0, 1.4])->count();
-    
+
         // Build the review query with filtering options
-        $reviewsQuery = Review::with(['reviewer' => function($query) {
-            $query->select([
-                'id',
-                'email',
-                'phone_cell',
-                'user_id',
-                'version',
-                'first_name',
-                'last_name',
-                'company_name',
-                'city',
-                'state',
-                'user_avatar',
-                'company_logo'
-            ])->with('trades:id');
-        },'reviewer.trades', 'review_response', 
-        'appeal' => function($query) {
+        $reviewsQuery = Review::with([
+            'reviewer' => function ($query) {
+                $query->select([
+                    'id',
+                    'email',
+                    'phone_cell',
+                    'user_id',
+                    'version',
+                    'first_name',
+                    'last_name',
+                    'company_name',
+                    'city',
+                    'state',
+                    'user_avatar',
+                    'company_logo'
+                ])->with('trades:id');
+            },
+            'reviewer.trades',
+            'review_response',
+            'appeal' => function ($query) {
                 $query->select([
                     'id as appeal_id',
                     'review_id',
@@ -126,12 +129,12 @@ class ReviewController extends Controller
                 ]);
             }
         ])
-        ->where('contractor_id', $contractor_id)->where('is_review_active', 1);
-    
+            ->where('contractor_id', $contractor_id)->where('is_review_active', 1);
+
         // Apply sorting based on filters
         $sortByDate = $request->query('sort_by_date', '');
         $sortByRating = $request->query('sort_by_rating', '');
-    
+
         switch ($sortByRating) {
             case 'highest':
                 $reviewsQuery = $reviewsQuery->orderByDesc('rating');
@@ -143,16 +146,16 @@ class ReviewController extends Controller
                 $reviewsQuery = $reviewsQuery->orderBy('rating', 'asc');
                 break;
         }
-    
+
         if ($sortByDate === 'oldest') {
             $reviewsQuery = $reviewsQuery->oldest('rating_date');
-        } else if($sortByDate === 'latest') {
+        } else if ($sortByDate === 'latest') {
             $reviewsQuery = $reviewsQuery->latest('rating_date');
         }
-    
+
         // Fetch paginated reviews
         $reviews = $reviewsQuery->paginate($perPage, ['*'], 'page', $page);
-    
+
         // Convert the paginated results to arrays
         $reviewsArray = $reviews->toArray();
 
@@ -188,10 +191,10 @@ class ReviewController extends Controller
             'two_stars_count' => $twoStars,
             'one_star_count' => $oneStar
         ];
-    
+
         return response()->json($response);
     }
-    
+
 
     /**
      * Store a newly created review in storage.
@@ -201,9 +204,9 @@ class ReviewController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         // dd($request->reviewer_id);
-        
+
         $data = $request->validate([
             'reviewer_id' => 'required|integer|exists:profiles,id',
             'contractor_id' => 'required|integer|exists:profiles,id',
@@ -222,21 +225,21 @@ class ReviewController extends Controller
 
         // Check if the reviewer has already created a review for this contractor within the last 48 hours
         $lastReview = Review::where('reviewer_id', $data['reviewer_id'])
-                            ->where('contractor_id', $data['contractor_id'])
-                            ->where('rating_date', '>=', Carbon::now()->subHours(48)->toDateTimeString())
-                            ->first();
+            ->where('contractor_id', $data['contractor_id'])
+            ->where('rating_date', '>=', Carbon::now()->subHours(48)->toDateTimeString())
+            ->first();
 
         if ($lastReview) {
             return response()->json(['message' => 'You can only submit one review for this contractor every 48 hours.'], 403);
         }
 
-    
+
         // Add the current datetime for the rating_date
         $data['rating_date'] = Carbon::now()->toDateTimeString();
-    
+
         // Create the review with the data
         $review = Review::create($data);
-    
+
         return response()->json(['message' => 'Review created successfully!', 'review' => $review], 201);
     }
 
@@ -285,18 +288,17 @@ class ReviewController extends Controller
 
             // Delete the appeal associated with review as well
             $appeal = Appeal::where('review_id', $review->id)->first();
-            if($appeal) {
+            if ($appeal) {
                 $appeal->delete();
             }
-        
+
             $review->update($data);
             $review->is_under_appeal = false;
-        
+
             return response()->json(['message' => 'Review updated successfully!', 'review' => $review], 200);
-        }else {
+        } else {
             return response()->json(['message' => 'You do not have permission to update this review'], 403);
         }
-    
     }
 
 
@@ -321,7 +323,7 @@ class ReviewController extends Controller
 
             // Delete the appeal associated with review as well => it's a sof delete. data will still be in database
             $appeal = Appeal::where('review_id', $review->id)->first();
-            if($appeal) {
+            if ($appeal) {
                 $appeal->delete();
             }
 
@@ -330,7 +332,7 @@ class ReviewController extends Controller
 
             $review->delete();
             return response()->json(['message' => 'Review deleted successfully!'], 200);
-        }else {
+        } else {
             return response()->json(['message' => 'You do not have permission to delete this review'], 403);
         }
     }
@@ -389,7 +391,7 @@ class ReviewController extends Controller
             ];
 
             return response()->json(['message' => 'Review put on appeal successfully!', 'review' => $reviewData], 200);
-        }else {
+        } else {
             return response()->json(['message' => 'You do not have permission to appeal on this review'], 403);
         }
     }
@@ -401,7 +403,7 @@ class ReviewController extends Controller
      * @param  \App\Models\Review  $review
      * @return \Illuminate\Http\Response
      */
-     public function removeAppeal(Request $request, Review $review)
+    public function removeAppeal(Request $request, Review $review)
     {
 
         $appeal = Appeal::where('review_id', $review->id)->first();
@@ -433,7 +435,7 @@ class ReviewController extends Controller
             $review->save();
 
             return response()->json(['message' => 'Appeal for removal successfully submitted!', 'review' => $review], 200);
-        }else {
+        } else {
             return response()->json(['message' => 'You do not have permission to turn offf this appeal'], 403);
         }
     }
@@ -446,7 +448,7 @@ class ReviewController extends Controller
      * @param  \App\Models\Review  $review
      * @return \Illuminate\Http\Response
      */
-    public function getContractorProfiles(Request $request)
+    public function gecConnectProfiles(Request $request)
     {
         // Determine pagination parameters from the request's query parameters
         $perPage = $request->query('per_page', 15); // Default to 15 if not provided
@@ -467,9 +469,9 @@ class ReviewController extends Controller
             'profiles.phone_cell',
             DB::raw('AVG(reviews.rating) as average_rating')
         ])
-        ->leftJoin('reviews', 'profiles.id', '=', 'reviews.contractor_id')
-        ->groupBy('profiles.id')
-        ->paginate($perPage, ['*'], 'page', $page);
+            ->leftJoin('reviews', 'profiles.id', '=', 'reviews.contractor_id')
+            ->groupBy('profiles.id')
+            ->paginate($perPage, ['*'], 'page', $page);
 
         // Construct the response
         $response = [
@@ -492,12 +494,12 @@ class ReviewController extends Controller
      * @param  \App\Models\Review  $review
      * @return \Illuminate\Http\Response
      */
-    public function getAppealedReviews(Request $request,$regionId)
+    public function getAppealedReviews(Request $request, $regionId)
     {
         // Determine pagination parameters from the request's query parameters
         $perPage = $request->query('per_page', 15);  // Default to 15 if not provided
         $page = $request->query('page', 1);          // Default to page 1 if not provided
-    
+
         // Initialize query builder
         $query = Review::with([
             'reviewer' => function ($query) {
@@ -535,18 +537,18 @@ class ReviewController extends Controller
             'review_response'
         ])->withTrashed()->whereHas('contractor', function ($query) use ($regionId) {
             $query->where('region_id', $regionId);
-        }); 
+        });
 
         // Apply sorting based on filters
         $sortByDate = $request->query('sort_by_date', ''); // Default to latest
         $sortByRating = $request->query('sort_by_rating', ''); // Default to highest
-    
+
         if ($sortByDate === 'oldest') {
             $query = $query->oldest('created_at');
         } else if ($sortByDate === 'latest') {
             $query = $query->latest('created_at');
         }
-    
+
         switch ($sortByRating) {
             case 'highest':
                 $query = $query->orderByDesc('rating');
@@ -558,10 +560,10 @@ class ReviewController extends Controller
                 $query = $query->orderBy('rating', 'asc');
                 break;
         }
-    
+
         // Fetch paginated results
         $reviews = $query->paginate($perPage, ['*'], 'page', $page);
-    
+
         // Convert the paginated results to arrays
         $reviewsArray = $reviews->toArray();
 
@@ -589,11 +591,11 @@ class ReviewController extends Controller
                 'total' => $reviews->total(),
             ]
         ];
-    
+
         return response()->json($response);
     }
-    
-    
+
+
 
     /**
      * Deactivate the review
@@ -620,7 +622,7 @@ class ReviewController extends Controller
             'reason_date' => Carbon::now(),
             'type' => 'deactivated_review'
         ]);
-        
+
 
         return response()->json(['message' => 'Review deactivated successfully', 'review' => $review]);
     }
@@ -669,10 +671,10 @@ class ReviewController extends Controller
         // Determine pagination parameters from the request's query parameters
         $perPage = $request->query('per_page', 15);  // default to 15 if not provided
         $page = $request->query('page', 1);          // default to page 1 if not provided
-    
+
         // Fetch all reviews for calculating ratings and counts
         $allReviews = Review::where('contractor_id', $contractor_id)->where('is_review_active', 1)->get();
-    
+
         // Calculate the average rating and counts
         $avgReview = $allReviews->avg('rating');
         $fiveStars = $allReviews->whereBetween('rating', [4.5, 5.0])->count();
@@ -680,25 +682,28 @@ class ReviewController extends Controller
         $threeStars = $allReviews->whereBetween('rating', [2.5, 3.4])->count();
         $twoStars = $allReviews->whereBetween('rating', [1.5, 2.4])->count();
         $oneStar = $allReviews->whereBetween('rating', [0.0, 1.4])->count();
-    
+
         // Build the review query with filtering options
-        $reviewsQuery = Review::with(['reviewer' => function($query) {
-            $query->select([
-                'id',
-                'user_id',
-                'email',
-                'phone_cell',
-                'first_name',
-                'last_name',
-                'company_name',
-                'city',
-                'state',
-                'user_avatar',
-                'company_logo'
-            ])->with('trades:id');
-        },  'ratingReasons',  // Attach rating reasons related to the review
-        'review_response.responseReasons','review_response', 
-        'appeal' => function($query) {
+        $reviewsQuery = Review::with([
+            'reviewer' => function ($query) {
+                $query->select([
+                    'id',
+                    'user_id',
+                    'email',
+                    'phone_cell',
+                    'first_name',
+                    'last_name',
+                    'company_name',
+                    'city',
+                    'state',
+                    'user_avatar',
+                    'company_logo'
+                ])->with('trades:id');
+            },
+            'ratingReasons',  // Attach rating reasons related to the review
+            'review_response.responseReasons',
+            'review_response',
+            'appeal' => function ($query) {
                 $query->select([
                     'id as appeal_id',
                     'review_id',
@@ -715,16 +720,16 @@ class ReviewController extends Controller
                 ]);
             }
         ])
-        ->withTrashed()
-        ->where('contractor_id', $contractor_id);
-    
+            ->withTrashed()
+            ->where('contractor_id', $contractor_id);
+
         // Apply sorting based on filters
         $sortByDate = $request->query('sort_by_date', '');
         $sortByRating = $request->query('sort_by_rating', '');
-        
+
         if ($sortByDate === 'oldest') {
             $reviewsQuery = $reviewsQuery->oldest('rating_date');
-        } else if($sortByDate === 'latest') {
+        } else if ($sortByDate === 'latest') {
             $reviewsQuery = $reviewsQuery->latest('rating_date');
         }
 
@@ -739,10 +744,10 @@ class ReviewController extends Controller
                 $reviewsQuery = $reviewsQuery->orderBy('rating', 'asc');
                 break;
         }
-    
+
         // Fetch paginated reviews
         $reviews = $reviewsQuery->paginate($perPage, ['*'], 'page', $page);
-    
+
         // Convert the paginated results to arrays
         $reviewsArray = $reviews->toArray();
 
@@ -759,30 +764,29 @@ class ReviewController extends Controller
                 $review = array_merge($review, $review['appeal']);
                 unset($review['appeal']);
             }
-            
         }
-    
+
         // Retrieve the contractor details from the Profile table
         $contractorDetails = Profile::where('id', $contractor_id)
-                                    ->select([
-                                        'id',
-                                        'user_id',
-                                        'email',
-                                        'phone_cell',
-                                        'first_name',
-                                        'last_name',
-                                        'company_name',
-                                        'city',
-                                        'state',
-                                        'user_avatar',
-                                        'company_logo'
-                                    ])
-                                    ->with('trades:id')
-                                    ->first();
-    
+            ->select([
+                'id',
+                'user_id',
+                'email',
+                'phone_cell',
+                'first_name',
+                'last_name',
+                'company_name',
+                'city',
+                'state',
+                'user_avatar',
+                'company_logo'
+            ])
+            ->with('trades:id')
+            ->first();
+
         $contractorTrades = $this->convertTradesToOldStructure($contractorDetails->trades);
         $contractorDetails = array_merge($contractorDetails->toArray(), $contractorTrades);
-    
+
         // Construct the response
         $response = [
             'contractor' => $contractorDetails,
@@ -800,11 +804,11 @@ class ReviewController extends Controller
             'two_stars_count' => $twoStars,
             'one_star_count' => $oneStar
         ];
-    
+
         return response()->json($response);
     }
-    
-    
+
+
     /**
      * Update the specified resource for Admin in storage.
      *
@@ -856,7 +860,7 @@ class ReviewController extends Controller
         $review->update($data);
 
 
-        
+
 
 
         // Get the new values
@@ -914,7 +918,7 @@ class ReviewController extends Controller
 
         // Delete the appeal associated with review as well => it's a sof delete. data will still be in database
         $appeal = Appeal::where('review_id', $review->id)->first();
-        if($appeal) {
+        if ($appeal) {
             $appeal->delete();
         }
 
@@ -940,8 +944,8 @@ class ReviewController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function acceptAppeal(Request $request, Review $review)
-     { 
+    public function acceptAppeal(Request $request, Review $review)
+    {
 
         $appeal = Appeal::where('review_id', $reviewId)->first();
 
@@ -968,7 +972,7 @@ class ReviewController extends Controller
 
         if ($contractorProfile) {
             $contractorEmail = $contractorProfile->email;
-            
+
             // Send the acceptance email
             Mail::to($contractorEmail)->send(new AppealAccepted());
         } else {
@@ -976,18 +980,18 @@ class ReviewController extends Controller
         }
 
         return response()->json(['message' => 'Appeal is successfully accepted!', 'review' => $review], 200);
-     }
- 
- 
-     /**
-      * Reject the Appeal from Admin Side
-      *
-      * @param  \App\Models\Review  $review
-      * @return \Illuminate\Http\Response
-      */
-      public function rejectAppeal(Request $request, Review $review)
-     {
-         $appeal = Appeal::where('review_id', $reviewId)->first();
+    }
+
+
+    /**
+     * Reject the Appeal from Admin Side
+     *
+     * @param  \App\Models\Review  $review
+     * @return \Illuminate\Http\Response
+     */
+    public function rejectAppeal(Request $request, Review $review)
+    {
+        $appeal = Appeal::where('review_id', $reviewId)->first();
         // Check if the appeal is under appeal
         if (!$appeal->is_under_appeal) {
             return response()->json(['message' => 'This review is not under appeal.'], 400);
@@ -1003,9 +1007,9 @@ class ReviewController extends Controller
         $appeal->off_appeal_reason_date = null;
         $appeal->off_appeal_reason = '';
 
-        
+
         $appeal->save();
-        
+
         // Send an Reject Eamil to the Contractor explaining the his request for changing the reivew are rejected.
 
         // Get contractor's email address from Profile
@@ -1013,7 +1017,7 @@ class ReviewController extends Controller
 
         if ($contractorProfile) {
             $contractorEmail = $contractorProfile->email;
-            
+
             // Send the acceptance email
             Mail::to($contractorEmail)->send(new AppealRejected());
         } else {
@@ -1022,11 +1026,12 @@ class ReviewController extends Controller
 
 
         return response()->json(['message' => 'Appeal is successfully rejected!', 'review' => $review], 200);
-     }
+    }
 
 
     //  Get All the Regions
-    public function regions(Request $request) {
+    public function regions(Request $request)
+    {
         $regions = Region::all();
         return response()->json(['message' => 'Region successfully got!', 'regions' => $regions], 200);
     }
@@ -1039,12 +1044,12 @@ class ReviewController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function updateAppeal(Request $request, $reviewId)
-     {
+    public function updateAppeal(Request $request, $reviewId)
+    {
         $review = Review::findOrFail($reviewId);
-        
-        
-        if(!$review) {
+
+
+        if (!$review) {
             return response()->json(['message' => 'A reivew with this Id does not exist']);
         }
         $appeal = Appeal::where('review_id', $reviewId)->first();
@@ -1062,18 +1067,18 @@ class ReviewController extends Controller
 
             if (!in_array($appeal_status, ['open', 'on_hold', 'approved', 'denied'])) {
                 return response()->json(['error' => 'Invalid appeal status'], 400);
-            }    
+            }
 
-            if($appeal_status === "open") {
+            if ($appeal_status === "open") {
                 $review->is_review_active = 1;
                 $appeal->is_under_appeal = 1;
-            }else if($appeal_status === "on_hold") {
+            } else if ($appeal_status === "on_hold") {
                 $review->is_review_active = 1;
                 $appeal->is_under_appeal = 1;
-            }else if($appeal_status === "approved") {
+            } else if ($appeal_status === "approved") {
                 $review->is_review_active = 0;
                 $appeal->is_under_appeal = 0;
-            }else if($appeal_status === "denied") {
+            } else if ($appeal_status === "denied") {
                 $review->is_review_active = 1;
                 $appeal->is_under_appeal = 0;
             }
@@ -1082,7 +1087,7 @@ class ReviewController extends Controller
             $appeal->save();
 
             return response()->json(['message' => 'Appeal updated successfully']);
-        }else {
+        } else {
             return response()->json(['message' => 'You do not have permission to update this appeal'], 403);
         }
     }
@@ -1094,19 +1099,19 @@ class ReviewController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function getReviewsByAppealStatus(Request $request, $regionId)
-     {
+    public function getReviewsByAppealStatus(Request $request, $regionId)
+    {
         $appealStatus = $request->input('appeal_status');
         $appealId = $request->query('appeal_id'); // Get the appeal_id from the query parameters
 
         if (!in_array($appealStatus, ['open', 'on_hold', 'approved', 'denied'])) {
             return response()->json(['error' => 'Invalid appeal status'], 400);
         }
- 
+
         // Determine pagination parameters from the request's query parameters
         $perPage = $request->query('per_page', 15);  // Default to 15 if not provided
         $page = $request->query('page', 1);          // Default to page 1 if not provided
-    
+
         // Initialize query builder
         $query = Review::with([
             'reviewer' => function ($query) {
@@ -1144,14 +1149,14 @@ class ReviewController extends Controller
             'review_response',
             'appeal'
         ])->withTrashed()
-        ->select('reviews.*', 'appeals.id as appeal_id') // Select appeal_id
-        ->join('appeals', 'reviews.id', '=', 'appeals.review_id') // Join with appeals table
-        ->whereHas('contractor', function ($query) use ($regionId) {
-            $query->where('region_id', $regionId);
-        })
-        ->whereHas('appeal', function ($query) use ($appealStatus) {
-            $query->where('appeal_status', $appealStatus);
-        }); 
+            ->select('reviews.*', 'appeals.id as appeal_id') // Select appeal_id
+            ->join('appeals', 'reviews.id', '=', 'appeals.review_id') // Join with appeals table
+            ->whereHas('contractor', function ($query) use ($regionId) {
+                $query->where('region_id', $regionId);
+            })
+            ->whereHas('appeal', function ($query) use ($appealStatus) {
+                $query->where('appeal_status', $appealStatus);
+            });
 
 
 
@@ -1162,13 +1167,13 @@ class ReviewController extends Controller
         // Apply sorting based on filters
         $sortByDate = $request->query('sort_by_date', ''); // Default to latest
         $sortByRating = $request->query('sort_by_rating', ''); // Default to highest
-    
+
         if ($sortByDate === 'oldest') {
             $query = $query->oldest('reviews.rating_date');
         } else if ($sortByDate === 'latest') {
             $query = $query->latest('reviews.rating_date');
         }
-    
+
         switch ($sortByRating) {
             case 'highest':
                 $query = $query->orderByDesc('reviews.rating');
@@ -1180,10 +1185,10 @@ class ReviewController extends Controller
                 $query = $query->orderBy('reviews.rating', 'asc');
                 break;
         }
-    
+
         // Fetch paginated results
         $reviews = $query->paginate($perPage, ['*'], 'page', $page);
-    
+
         // Convert the paginated results to arrays
         $reviewsArray = $reviews->toArray();
 
@@ -1211,8 +1216,7 @@ class ReviewController extends Controller
                 'total' => $reviews->total(),
             ]
         ];
-    
+
         return response()->json($response);
     }
-
 }
