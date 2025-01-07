@@ -99,7 +99,7 @@ class RegisteredUserController extends Controller
                 Mail::to($request->email)->send(new NewEmailVerificationCode($token));
             } catch (\Exception $e) {
                 // Log the error for debugging
-                \Log::error('Mail sending failed: ' . $e->getMessage());
+                Log::error('Mail sending failed: ' . $e->getMessage());
                 
                 // Return a response in the format of a validation error
                 return back()->withErrors(['email' => 'Our system couldn\'t deliver the email to this address. Please try a different Email or try again later.']);

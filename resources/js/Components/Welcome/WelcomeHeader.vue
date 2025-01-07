@@ -49,7 +49,7 @@
           >
             {{ translations && translations.contact_us }}
           </Link>
-          <v-menu open-on-hover open-on-click>
+          <!-- <v-menu open-on-hover open-on-click>
             <template v-slot:activator="{ props }">
               <div
                 class="cursor-pointer flex gap-1 mr-2 items-center justify-center"
@@ -107,7 +107,7 @@
                 </div>
               </v-list-item>
             </v-list>
-          </v-menu>
+          </v-menu> -->
           <!-- News Feed Button -->
           <div v-if="showit && showNewsFeed">
             <Link

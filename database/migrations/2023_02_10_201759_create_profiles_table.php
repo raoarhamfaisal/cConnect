@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('region_id')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->boolean('active_user')->default(0);
+            $table->boolean('is_contractor')->default(1);
             $table->boolean('version')->default(0);
             $table->boolean('is_payment_verified')->default(0);
             $table->string('first_name')->nullable();
@@ -59,7 +60,6 @@ return new class extends Migration
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('region_id')->references('id')->on('regions');
-
         });
     }
 

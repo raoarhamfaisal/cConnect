@@ -16,20 +16,20 @@ const props = defineProps({
 
   profile: {
     type: Object,
-    required: true,
+    required: true
   },
 
   isOpen: Boolean,
   showPostButtons: Boolean,
 
   modelValue: String,
-  postSearchFilters: Object,
+  postSearchFilters: Object
 });
 const userProps = usePage().props.value;
 const emit = defineEmits([
   "update:modelValue",
   "submitPostSearch",
-  "postClicked",
+  "postClicked"
 ]);
 const store = useStore();
 const dialogRef = ref();
@@ -208,9 +208,9 @@ const goToRedFlagPage = () => {
           {{ address }}
         </h4>
       </div>
-      <v-menu open-on-hover open-on-click>
+      <!-- <v-menu open-on-hover open-on-click>
         <template v-slot:activator="{ props }">
-          <!-- border-2 border-[#ced0d4] -->
+        
           <div
             class="cursor-pointer mt-2 flex gap-1 items-center justify-center p-1 rounded-md hover:bg-[#ced0d4]"
             v-bind="props"
@@ -269,7 +269,7 @@ const goToRedFlagPage = () => {
             </div>
           </v-list-item>
         </v-list>
-      </v-menu>
+      </v-menu> -->
 
       <!-- POST BUTTON & SEARCH -->
       <div class="flex flex-col items-center mt-4 -mx-2">
@@ -375,7 +375,7 @@ const goToRedFlagPage = () => {
 
           <!-- RED FLAGS / SLIPPERY APPLES SEARCH -->
           <div
-            :class="`flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 cursor-pointer ${
+            :class="` flex items-center px-4 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700 cursor-pointer ${
               url === '/red-flag' && 'bg-gray-100 text-gray-700'
             }`"
             @click="goToRedFlagPage"

@@ -14,6 +14,7 @@ import { computed, reactive, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { somethingWentWrong } from "@/helpers/utilities";
 import { setToken } from "@/helpers/localStorageHelper";
+import CustomSelect from "../../Components/CustomSelect.vue";
 
 const { user, profile } = defineProps({
   showit: Boolean,
@@ -28,10 +29,12 @@ const form = useForm({
   password: "",
   password_confirmation: "",
   id: user?.id ?? "",
+  is_contractor: user?.is_contractor ?? "",
 });
 const isPasswordConfirmationShown = ref(false);
 const store = useStore();
 const isPasswordShown = ref(false);
+const selectedRole = ref("Contractor");
 const errors = reactive({
   first_name: "",
   last_name: "",
@@ -40,6 +43,7 @@ const errors = reactive({
   password: "",
   passwordValidationMessage: "",
   password_confirmation: "",
+  is_contractor: "",
 });
 
 const translations = computed(() => store.getters.translations);
@@ -51,7 +55,16 @@ const validateForm = () => {
   for (let field in errors) {
     errors[field] = "";
   }
+  if (!selectedRole.value) {
+    errors.is_contractor = "Role is required";
 
+    // errors.is_contractor =
+    //   translations.value && translations.value.role_is_required;
+    isValid = false;
+  }
+
+  // Set is_contractor based on role
+  form.is_contractor = selectedRole.value === "Contractor" ? 1 : 0;
   // Validate first_name
   if (!form.first_name.trim()) {
     errors.first_name =
@@ -147,6 +160,10 @@ const submit = () => {
     });
   }
 };
+
+const changeRole = (role) => {
+  selectedRole.value = role; // Update selected role
+};
 const togglePasswordVisibility = () => {
   isPasswordShown.value = !isPasswordShown.value;
 };
@@ -188,6 +205,17 @@ const validatePassword = () => {
       autocomplete="off"
       class="mt-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-6"
     >
+      <div class="mt-4">
+        <CustomSelect
+          class=""
+          :options="['Contractor', 'Customer']"
+          :modelValue="selectedRole"
+          @update:modelValue="changeRole"
+          label="What you are?"
+        />
+        <InputError class="mt-1" :message="errors.is_contractor" />
+      </div>
+      <div></div>
       <div>
         <InputLabel
           for="name"
