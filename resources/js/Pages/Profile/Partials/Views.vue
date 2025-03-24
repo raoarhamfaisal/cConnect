@@ -5,8 +5,8 @@ const props = defineProps({
   profile: Object,
   apiChoice: {
     type: String,
-    default: "1",
-  },
+    default: "1"
+  }
 });
 // 1 => profile
 // 2 => profile-setup
@@ -23,22 +23,22 @@ const form = reactive({
   view_regional: props.profile.view_regional,
   view_statewide: props.profile.view_statewide,
   view_nationwide: props.profile.view_nationwide,
-  view_following: props.profile.view_following,
+  view_following: props.profile.view_following
 });
 
 const switchFields = [
-  "view_locale",
+  // "view_locale",
   "view_regional",
   "view_statewide",
-  "view_nationwide",
-  "view_following",
+  "view_nationwide"
+  // "view_following"
 ];
 const labels = [
-  "View Locale",
+  // "View Locale",
   "View Regional",
-  "View Statewide",
-  "View Nationwide",
-  "View Following",
+  "View Provincial",
+  "View Nationwide"
+  // "View Following",
 ];
 
 const toggleSwitch = (field) => {
@@ -82,7 +82,7 @@ const toggleSwitch = (field) => {
           <div :class="[form[field] === 1 ? 'switch-bg-on' : 'switch-bg-off']">
             <div
               :class="[
-                form[field] === 1 ? 'switch-knob-on' : 'switch-knob-off',
+                form[field] === 1 ? 'switch-knob-on' : 'switch-knob-off'
               ]"
             ></div>
           </div>

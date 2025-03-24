@@ -17,7 +17,7 @@ import { Icon } from "@iconify/vue";
 import DialogUpgradeToGoldPlatinum from "@/Components/DialogUpgradeToGoldPlatinum.vue";
 
 const props = defineProps({
-  showit: Boolean,
+  showit: Boolean
 });
 
 const animate = ref(false);
@@ -28,7 +28,7 @@ const pricingPlan = ref({});
 const form = useForm({
   email: "",
   password: "",
-  remember: false,
+  remember: false
 });
 const dropdownMenu = ref(null);
 let lang = localStorage.getItem("lang");
@@ -165,7 +165,7 @@ onBeforeUnmount(() => {
 
 const submit = () => {
   form.post(route("login"), {
-    onFinish: () => form.reset("password"),
+    onFinish: () => form.reset("password")
   });
 };
 
@@ -416,7 +416,7 @@ const goToRedFlagPage = (event) => {
                   <path
                     :class="{
                       hidden: showingNavigationDropdown,
-                      'inline-flex': !showingNavigationDropdown,
+                      'inline-flex': !showingNavigationDropdown
                     }"
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -426,7 +426,7 @@ const goToRedFlagPage = (event) => {
                   <path
                     :class="{
                       hidden: !showingNavigationDropdown,
-                      'inline-flex': showingNavigationDropdown,
+                      'inline-flex': showingNavigationDropdown
                     }"
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -443,7 +443,7 @@ const goToRedFlagPage = (event) => {
         <div
           :class="{
             block: showingNavigationDropdown,
-            hidden: !showingNavigationDropdown,
+            hidden: !showingNavigationDropdown
           }"
           class="absolute top-16 right-4 sm:right-6 lg:right-20 xl:right-32 2xl:right-80 z-30 px-3 text-left border-b border-gray-400 rounded-xl bg-gray-100 flex"
         >
@@ -726,7 +726,7 @@ const goToRedFlagPage = (event) => {
               <path
                 :class="{
                   hidden: !showingNavigationDropdown,
-                  'inline-flex': showingNavigationDropdown,
+                  'inline-flex': showingNavigationDropdown
                 }"
                 stroke-linecap="round"
                 stroke-linejoin="round"
