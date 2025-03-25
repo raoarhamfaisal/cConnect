@@ -4,6 +4,7 @@
     :isInside="true"
     bgColor="#fff"
     :padding="screenWidth < 640 ? '7px' : '20px'"
+    class="max-w-4xl mx-auto w-full"
   >
     <ContractorHeader :contractor="contractor" :region_name="region_name" />
     <div class="flex justify-between gap-2 mt-2 sm:mt-3">

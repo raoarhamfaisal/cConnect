@@ -555,17 +555,16 @@ export default {
     :post-search-filters="postSearchFilters"
     :showit="showit"
     :show-post-buttons="contractor_id ? false : true"
-    contentWidth="1220px"
-    :color="contractor_id ? '#bebdbb' : 'rgb(156 163 175)'"
+    contentWidth="100%"
+    :color="'#f0f8ff'"
   >
-    <!-- color="rgb(156 163 175)" -->
     <!-- POSTING CONTAINER -->
     <div
-      :class="`flex flex-col items-center justify-start mx-auto lg:mr-1 mt-2 lg:mt-0 shadow-md sm:rounded-3xl`"
+      :class="`flex flex-col items-center justify-start w-full mt-2 lg:mt-0 shadow-md sm:rounded-3xl`"
     >
       <!-- FULL POST WRAPPER News Feed -->
       <div
-        class="flex flex-col w-full items-center justify-start px-2 lg:max-h-screen lg:overflow-y-auto h-screen pb-8 postings"
+        class="flex flex-col w-full items-center justify-start px-2 sm:px-4 lg:px-8 lg:max-h-screen lg:overflow-y-auto h-screen pb-8 postings"
         ref="postingsRef"
       >
         <!-- back page -->
@@ -658,7 +657,7 @@ export default {
             v-for="(post, index) in postsToShow"
             id="scrollPost"
             :key="post.id"
-            class="relative mx-auto w-full py-0"
+            class="relative mx-auto w-full max-w-3xl py-0"
             :ref="index === postsToShow.length - 1 ? 'loadingPostsRef' : ''"
           >
             <!-- INDIVIDUAL POST DISPLAY WITH MENUS -->
@@ -696,7 +695,9 @@ export default {
             v-if="posts.next_page_url === null"
             class="max-lg:pb-6 pt-4 lg:pt-6"
           >
-            <div class="text-white font-semibold text-2xl inline text-center">
+            <div
+              class="text-gray-800 font-semibold text-2xl inline text-center"
+            >
               {{ translations && translations.youre_all_up_to_date }} 🥳
             </div>
           </div>

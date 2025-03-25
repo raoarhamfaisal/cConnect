@@ -158,7 +158,7 @@ const props = defineProps({
   },
   disableOutSideClick: {
     type: Boolean,
-    default: true,
+    default: false,
   },
   shouldFetchPost: {
     type: Boolean,

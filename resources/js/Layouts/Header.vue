@@ -345,18 +345,12 @@ export default {
       url === '/pricing-plan' ||
       url === '/payment'
     "
-    class="bg-gray-100"
+    class="bg-gray-100 w-full"
   >
     <!-- Section Container -->
-    <!-- ${
-        url !== '/post' && 'pt-14'
-      }  -->
-    <div :class="`relative mx-auto mt-0 lg:pt-0 h-screen `">
+    <div :class="`relative mx-auto mt-0 lg:pt-0 h-screen w-full`">
       <div
-        :style="{
-          maxWidth: contentWidth,
-        }"
-        class="flex lg:flex-row lg:justify-center pageContainer lg:items-start lg:gap-x-5 bg-gray-100"
+        class="flex lg:flex-row lg:justify-start pageContainer lg:items-start w-full bg-gray-100"
       >
         <!-- MAIN SIDE MENU -->
         <!-- ******************************************************* -->
@@ -369,6 +363,7 @@ export default {
           :isOpen="isFormOpen"
           @postClicked="openForm"
           @submitPostSearch="submitPostSearch"
+          class="lg:w-1/5 xl:w-1/6"
         >
         </MainSideMenu>
 
@@ -376,20 +371,13 @@ export default {
         <!-- ******************************************************* -->
 
         <div
-          class="flex flex-col items-center justify-start mx-auto lg:mt-0 h-full overflow-x-hidden bg-gray-200"
+          class="flex flex-col items-center justify-start mx-auto lg:mt-0 h-full overflow-x-hidden bg-gray-200 lg:w-4/5 xl:w-5/6"
           id="scrollable"
           :style="{
             backgroundColor: `${color}`,
-            width: '100%',
           }"
         >
-          <div
-            id="NewsFeedScroll"
-            class="h-screen max-lg:pt-14"
-            :style="{
-              width: '100%',
-            }"
-          >
+          <div id="NewsFeedScroll" class="h-screen max-lg:pt-14 w-full">
             <!-- FIXED TOP HEADER -->
             <!-- ONLY ON MOBILE       -->
             <header
@@ -528,7 +516,7 @@ export default {
             <!-- WRAPPER END: For News Feed -->
             <slot></slot>
           </div>
-          <!-- nrewsfeed scroll -->
+          <!-- newsfeed scroll -->
         </div>
         <!-- END: DISPLAY NEWS FEED -->
       </div>
@@ -540,5 +528,6 @@ export default {
 <style scoped>
 .pageContainer {
   margin: auto;
+  width: 100%;
 }
 </style>
