@@ -195,7 +195,7 @@ const translations = computed(() => store.getters.translations);
         </v-expansion-panel-text>
       </v-expansion-panel>
 
-      <v-expansion-panel class="rounded-lg-imp">
+      <!-- <v-expansion-panel class="rounded-lg-imp">
         <v-expansion-panel-title
           expand-icon="mdi-plus"
           collapse-icon="mdi-minus"
@@ -215,7 +215,7 @@ const translations = computed(() => store.getters.translations);
             {{ translations && translations.lets_you_limit_your_searches }}
           </div>
         </v-expansion-panel-text>
-      </v-expansion-panel>
+      </v-expansion-panel> -->
     </v-expansion-panels>
   </div>
 </template>

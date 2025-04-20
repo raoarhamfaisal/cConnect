@@ -23,7 +23,7 @@
             <a href="https://cConnect.com/login" style="padding: 10px; background-color: #241e6d; color: white; text-decoration: none; border-radius: 5px;">Log into cConnect</a>
         </div>           
         <div class="footer">
-            &copy; 2024 cConnect. All rights reserved.
+            &copy; 2025 cConnect. All rights reserved.
         </div>
     </div>
 </body>

@@ -24,6 +24,7 @@ class Review extends Model
         'hired_contractor',
         'give_full_payment',
         'how_did_you_meet_this_contractor',
+        'supporting_document',
     ];
 
     public function reviewer() 

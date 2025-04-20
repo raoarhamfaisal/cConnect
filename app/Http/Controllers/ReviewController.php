@@ -10,15 +10,11 @@ use App\Models\Region;
 use App\Models\RatingReason;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use App\Services\ProcessDocumentService;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AppealAccepted;
 use App\Mail\AppealRejected;
 use Illuminate\Support\Facades\Auth;
-
-
-
-
 
 class ReviewController extends Controller
 {
@@ -217,6 +213,7 @@ class ReviewController extends Controller
             'hired_contractor' => 'required|boolean',
             'give_full_payment' => 'required|boolean',
             'how_did_you_meet_this_contractor' => 'nullable|string|max:255',
+            'supporting_document' => 'nullable|string', // Add supporting_document field
         ]);
 
         // $profile = Profile::where('user_id', '=', $data['reviewer_id'])->first();
@@ -241,6 +238,27 @@ class ReviewController extends Controller
         $review = Review::create($data);
 
         return response()->json(['message' => 'Review created successfully!', 'review' => $review], 201);
+    }
+
+    /**
+     * Handle supporting document upload.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Services\ProcessDocumentService  $documentService
+     * @return \Illuminate\Http\Response
+     */
+    public function uploadSupportingDocument(Request $request, ProcessDocumentService $documentService)
+    {
+        if ($request->hasFile('supportingDocument')) {
+            try {
+                // Process and store the document using our service
+                $path = $documentService->handleProcessDocument($request->file('supportingDocument'));
+                return $path;
+            } catch (\Exception $e) {
+                return response()->json(['error' => $e->getMessage()], 400);
+            }
+        }
+        return response()->json(['error' => 'No file provided'], 400);
     }
 
     /**
@@ -275,6 +293,7 @@ class ReviewController extends Controller
             'hired_contractor' => 'boolean',
             'give_full_payment' => 'boolean',
             'how_did_you_meet_this_contractor' => 'nullable|string|max:255',
+            'supporting_document' => 'nullable|string', // Add supporting_document field
         ]);
 
         // Get the currently authenticated user

@@ -35,6 +35,85 @@
         :message="ratingReasonError"
       />
     </div>
+
+    <!-- Supporting Document Upload -->
+    <div class="mb-4">
+      <label
+        for="supportingDocument"
+        class="block text-sm font-bold text-gray-600 mb-2"
+      >
+        {{
+          (translations && translations.supporting_document) ||
+          "Supporting Document (Optional)"
+        }}
+        <span class="italic lowercase font-normal text-xs">
+          Upload any document that supports your rating
+        </span>
+      </label>
+
+      <file-pond
+        name="supportingDocument"
+        ref="pond"
+        allowFileTypeValidation="true"
+        :allowMultiple="false"
+        acceptedFileTypes="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg,image/png"
+        labelFileTypeNotAllowed="Only PDF, DOC, DOCX, JPG, and PNG files are allowed"
+        allowFileSizeValidation="true"
+        maxFileSize="10MB"
+        labelMaxFileSizeExceeded="Maximum file size is 10MB"
+        :files="supportingDoc"
+        :server="{
+          url: '',
+          timeout: 7000,
+          process: {
+            url: '/upload-supporting-document',
+            method: 'POST',
+            headers: {
+              'X-CSRF-TOKEN': $page.props.csrf_token,
+            },
+            withCredentials: false,
+            onload: handleDocumentLoad,
+            onerror: handleDocumentError,
+          },
+          revert: handleDocumentRevert,
+        }"
+        v-on:init="handleDocumentInit"
+        @processfile="handleDocumentProcessed"
+        @processfilerevert="handleDocumentReverted"
+        :labelIdle="`${
+          (translations && translations.drag_and_drop_files_or) ||
+          'Drag & Drop or'
+        } <span class='filepond--label-action'> ${
+          (translations && translations.browse) || 'Browse'
+        } </span>`"
+      />
+
+      <!-- Show document preview if one is uploaded -->
+      <div v-if="supportingDocPath" class="mt-2 text-sm text-gray-600">
+        <a
+          :href="'/' + supportingDocPath"
+          target="_blank"
+          class="text-blue-600 hover:underline flex items-center"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4 mr-1"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+            />
+          </svg>
+          Document uploaded successfully
+        </a>
+      </div>
+    </div>
+
     <!-- Were you hired by this contractor? -->
     <div class="flex items-center justify-between sm:w-96 mb-5">
       <div class="text-md font-bold text-gray-600 mt-3 mb-2">
@@ -139,6 +218,21 @@ import StarRatingEditable from "@/Components/Ratings/StarRatingEditable.vue";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { useStore } from "vuex";
+
+// Import FilePond and plugins
+import VueFilePond from "vue-filepond";
+import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
+import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
+
+// Import FilePond CSS
+import "filepond/dist/filepond.min.css";
+
+// Create FilePond component with plugins
+const FilePond = VueFilePond(
+  FilePondPluginFileValidateType,
+  FilePondPluginFileValidateSize
+);
+
 //Props
 
 const { profileId, contractorId } = defineProps({
@@ -173,6 +267,8 @@ const form = toRefs(state);
 const selectedReferal = ref("cConnect Referral");
 const loading = ref(false);
 const disabled = ref(false);
+const supportingDoc = ref([]);
+const supportingDocPath = ref("");
 
 // Error refs to store validation messages
 const ratingError = ref("");
@@ -235,6 +331,41 @@ const validate = () => {
   return isValid;
 };
 
+// FilePond document handling methods
+const handleDocumentInit = () => {
+  // Initialize FilePond for supporting document
+  supportingDoc.value = [];
+  supportingDocPath.value = "";
+};
+
+const handleDocumentLoad = (response) => {
+  console.log("Document uploaded, received path:", response);
+  // Set the document path when uploaded
+  supportingDocPath.value = response;
+  return response;
+};
+
+const handleDocumentError = (error) => {
+  console.error("Document upload error:", error);
+  somethingWentWrong("Error uploading document", "error");
+};
+
+const handleDocumentRevert = (filename, load) => {
+  // Clear the document path when removed
+  supportingDocPath.value = "";
+  load();
+};
+
+const handleDocumentProcessed = () => {
+  // Document processing completed
+  console.log("Document processed, path:", supportingDocPath.value);
+};
+
+const handleDocumentReverted = () => {
+  // Document reverted
+  supportingDocPath.value = "";
+};
+
 const handleSubmit = async () => {
   if (validate()) {
     try {
@@ -252,6 +383,7 @@ const handleSubmit = async () => {
         reviewer_id: profileId,
         contractor_id: contractorId,
         is_under_appeal: false,
+        supporting_document: supportingDocPath.value, // Add supporting document path
       };
 
       const response = await axios.post(

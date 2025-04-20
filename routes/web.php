@@ -5,6 +5,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostImageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RatingController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ContractorRatingController;
 use App\Http\Controllers\ContractorPageController;
 use App\Http\Controllers\ContractorRatingsAdminController;
@@ -218,6 +219,9 @@ Route::post('/tokens/create', function (Request $request) {
     $token = Auth()->user()->createToken('sanctum');
     return ['token' => $token->plainTextToken];
 });
+
+// Add route for supporting document upload
+Route::post('/upload-supporting-document', [ReviewController::class, 'uploadSupportingDocument'])->middleware(['auth', 'verified']);
 
 // Route::get('run-server', function(){ Artisan::call('websockets:serve'); });
 

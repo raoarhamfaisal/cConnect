@@ -44,7 +44,7 @@
             <p>This code will expire in 5 minutes. If you did not request this change, please ignore this email or contact support.</p>
         </div>
         <div class="footer">
-            &copy; 2024 cConnect. All rights reserved.
+            &copy; 2025 cConnect. All rights reserved.
         </div>
     </div>
 </body>

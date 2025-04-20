@@ -1694,7 +1694,7 @@ const ss = {
   Ba = e(
     "div",
     { class: "mx-auto my-6 text-center first-letter: text-white md:hidden" },
-    " Copyright \xA9 2024, All Rights Reserved ",
+    " Copyright \xA9 2025, All Rights Reserved ",
     -1
   ),
   Sa = be(
@@ -1783,7 +1783,7 @@ const ss = {
       class:
         "hidden text-white md:block mx-auto mt-6 text-center first-letter:",
     },
-    " Copyright \xA9 2024, All Rights Reserved ",
+    " Copyright \xA9 2025, All Rights Reserved ",
     -1
   ),
   Ja = e(

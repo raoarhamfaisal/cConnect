@@ -17,7 +17,7 @@ import { Icon } from "@iconify/vue";
 import DialogUpgradeToGoldPlatinum from "@/Components/DialogUpgradeToGoldPlatinum.vue";
 
 const props = defineProps({
-  showit: Boolean
+  showit: Boolean,
 });
 
 const animate = ref(false);
@@ -28,7 +28,7 @@ const pricingPlan = ref({});
 const form = useForm({
   email: "",
   password: "",
-  remember: false
+  remember: false,
 });
 const dropdownMenu = ref(null);
 let lang = localStorage.getItem("lang");
@@ -165,7 +165,7 @@ onBeforeUnmount(() => {
 
 const submit = () => {
   form.post(route("login"), {
-    onFinish: () => form.reset("password")
+    onFinish: () => form.reset("password"),
   });
 };
 
@@ -416,7 +416,7 @@ const goToRedFlagPage = (event) => {
                   <path
                     :class="{
                       hidden: showingNavigationDropdown,
-                      'inline-flex': !showingNavigationDropdown
+                      'inline-flex': !showingNavigationDropdown,
                     }"
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -426,7 +426,7 @@ const goToRedFlagPage = (event) => {
                   <path
                     :class="{
                       hidden: !showingNavigationDropdown,
-                      'inline-flex': showingNavigationDropdown
+                      'inline-flex': showingNavigationDropdown,
                     }"
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -443,7 +443,7 @@ const goToRedFlagPage = (event) => {
         <div
           :class="{
             block: showingNavigationDropdown,
-            hidden: !showingNavigationDropdown
+            hidden: !showingNavigationDropdown,
           }"
           class="absolute top-16 right-4 sm:right-6 lg:right-20 xl:right-32 2xl:right-80 z-30 px-3 text-left border-b border-gray-400 rounded-xl bg-gray-100 flex"
         >
@@ -649,9 +649,9 @@ const goToRedFlagPage = (event) => {
                 <ResponsiveNavLink href="/pricing#faqs" as="button">
                   {{ translations && translations.faqs }}
                 </ResponsiveNavLink>
-                <ResponsiveNavLink href="/gomobile" as="button">
+                <!-- <ResponsiveNavLink href="/gomobile" as="button">
                   {{ translations && translations.go_mobile }}
-                </ResponsiveNavLink>
+                </ResponsiveNavLink> -->
                 <div
                   v-if="isAdminUrl && showit"
                   class="pt-2 pb-2 space-y-1 border-b-2 border-t-2 border-gray-400"
@@ -726,7 +726,7 @@ const goToRedFlagPage = (event) => {
               <path
                 :class="{
                   hidden: !showingNavigationDropdown,
-                  'inline-flex': showingNavigationDropdown
+                  'inline-flex': showingNavigationDropdown,
                 }"
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -1094,15 +1094,11 @@ const goToRedFlagPage = (event) => {
                             This one for mobile
                             (we are using flex-col-reverse - we put
                             it first for last place postioning)-->
-          <div
-            class="mx-auto text-xs mb-6 text-center first-letter: text-white md:hidden"
-          >
-            0172402051345
-          </div>
+
           <div
             class="mx-auto my-6 text-center first-letter: text-white md:hidden"
           >
-            Copyright &copy; 2024, All Rights Reserved
+            Copyright &copy; 2025, All Rights Reserved
           </div>
 
           <!-- LOGO -->
@@ -1113,22 +1109,6 @@ const goToRedFlagPage = (event) => {
             >
               <cConnectWhite />
             </Link>
-          </div>
-
-          <!-- Social Links Container -->
-          <div class="flex justify-center space-x-4">
-            <!-- Link 1 Facebook -->
-            <a href="#">
-              <img src="/images/icons/icon-facebook.svg" alt="" class="h-8" />
-            </a>
-            <!-- Link 3 Twitter -->
-            <a href="#">
-              <img src="/images/icons/icon-twitter.svg" alt="" class="h-8" />
-            </a>
-            <!-- Link 5 instagram -->
-            <a href="#">
-              <img src="/images/icons/icon-instagram.svg" alt="" class="h-8" />
-            </a>
           </div>
         </div>
 
@@ -1160,9 +1140,9 @@ const goToRedFlagPage = (event) => {
             <a href="/privacy-policy" class="hover:text-blue-400">
               {{ translations && translations.privacy_policy }}</a
             >
-            <a href="/gomobile" class="hover:text-blue-400">
+            <!-- <a href="/gomobile" class="hover:text-blue-400">
               {{ translations && translations.go_mobile }}</a
-            >
+            > -->
           </div>
         </div>
 
@@ -1256,12 +1236,7 @@ const goToRedFlagPage = (event) => {
           <div
             class="hidden text-white md:block mx-auto mt-6 text-center first-letter:"
           >
-            Copyright &copy; 2024, All Rights Reserved
-          </div>
-          <div
-            class="hidden text-xs text-white md:block my-2 text-center first-letter:"
-          >
-            0172402051345
+            Copyright &copy; 2025, All Rights Reserved
           </div>
         </div>
       </div>

@@ -45,7 +45,7 @@
             <br>        
         </div>
         <div class="footer">
-            &copy; 2024 cConnect. All rights reserved.
+            &copy; 2025 cConnect. All rights reserved.
         </div>
     </div>
 </body>

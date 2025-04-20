@@ -925,7 +925,7 @@ const se = {
   Ne = t(
     "div",
     { class: "mx-auto my-6 text-center first-letter: text-white md:hidden" },
-    " Copyright \xA9 2024, All Rights Reserved ",
+    " Copyright \xA9 2025, All Rights Reserved ",
     -1
   ),
   Se = X(
@@ -1014,7 +1014,7 @@ const se = {
       class:
         "hidden text-white md:block mx-auto my-6 text-center first-letter:",
     },
-    " Copyright \xA9 2024, All Rights Reserved ",
+    " Copyright \xA9 2025, All Rights Reserved ",
     -1
   ),
   lt = {

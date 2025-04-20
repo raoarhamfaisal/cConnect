@@ -187,7 +187,7 @@ export default {
             : " text-right";
       }
       if (this.postToEnlarge.title_text_color_id) {
-        this.textColors.forEach((color) => {
+        this.textColors?.forEach((color) => {
           if (color.id === this.postToEnlarge.title_text_color_id) {
             this.title_text_color = color.color;
           }
@@ -218,7 +218,7 @@ export default {
             : " text-right";
       }
       if (this.postToEnlarge.post_text_color_id) {
-        this.textColors.forEach((color) => {
+        this.textColors?.forEach((color) => {
           if (color.id === this.postToEnlarge.post_text_color_id) {
             this.text_color = color.color;
           }

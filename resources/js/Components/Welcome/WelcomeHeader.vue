@@ -369,9 +369,9 @@
               <ResponsiveNavLink href="/pricing#faqs" as="button">
                 {{ translations && translations.faqs }}
               </ResponsiveNavLink>
-              <ResponsiveNavLink href="/gomobile" as="button">
+              <!-- <ResponsiveNavLink href="/gomobile" as="button">
                 {{ translations && translations.go_mobile }}
-              </ResponsiveNavLink>
+              </ResponsiveNavLink> -->
               <div
                 v-if="isAdminUrl && showit"
                 class="pt-2 pb-2 space-y-1 border-b-2 border-t-2 border-gray-400"

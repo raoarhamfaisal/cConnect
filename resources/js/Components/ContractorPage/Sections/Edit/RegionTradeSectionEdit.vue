@@ -14,7 +14,7 @@
     <!-- User Posting and Edit Button -->
     <div class="flex gap-2 sm:gap-3">
       <!-- User Postings -->
-      <v-tooltip
+      <!-- <v-tooltip
         :text="translations && translations.see_user_posts"
         location="left"
       >
@@ -35,7 +35,7 @@
             </button>
           </div>
         </template>
-      </v-tooltip>
+      </v-tooltip> -->
       <!-- Edit -->
       <IconButton @click="openDialog" icon="nimbus:edit" color="#1864ab" />
     </div>

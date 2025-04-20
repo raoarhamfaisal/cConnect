@@ -15,7 +15,7 @@
         <div
           class="mx-auto my-6 text-center first-letter: text-white md:hidden"
         >
-          Copyright &copy; 2024, All Rights Reserved
+          Copyright &copy; 2025, All Rights Reserved
         </div>
 
         <!-- LOGO -->
@@ -26,22 +26,6 @@
           >
             <cConnectWhite />
           </Link>
-        </div>
-
-        <!-- Social Links Container -->
-        <div class="flex justify-center space-x-4">
-          <!-- Link 1 Facebook -->
-          <a href="#">
-            <img src="/images/icons/icon-facebook.svg" alt="" class="h-8" />
-          </a>
-          <!-- Link 3 Twitter -->
-          <a href="#">
-            <img src="/images/icons/icon-twitter.svg" alt="" class="h-8" />
-          </a>
-          <!-- Link 5 instagram -->
-          <a href="#">
-            <img src="/images/icons/icon-instagram.svg" alt="" class="h-8" />
-          </a>
         </div>
       </div>
 
@@ -74,9 +58,9 @@
           <a href="/privacy-policy" class="hover:text-blue-400">
             {{ translations && translations.privacy_policy }}</a
           >
-          <a href="/gomobile" class="hover:text-blue-400">
+          <!-- <a href="/gomobile" class="hover:text-blue-400">
             {{ translations && translations.go_mobile }}</a
-          >
+          > -->
         </div>
       </div>
 
@@ -155,7 +139,7 @@
         <div
           class="hidden text-white md:block mx-auto my-6 text-center first-letter:"
         >
-          Copyright &copy; 2024, All Rights Reserved
+          Copyright &copy; 2025, All Rights Reserved
         </div>
       </div>
     </div>
