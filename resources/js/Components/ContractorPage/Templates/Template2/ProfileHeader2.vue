@@ -105,38 +105,7 @@
           {{ userVersionMemberText }}
         </div>
       </div>
-      <div class="flex items-center gap-1">
-        <div class="">
-          <img src="/images/icons/pre-diamond.png" width="20" height="30" />
-        </div>
-        <!-- User Posting  -->
-        <div class="flex gap-2 sm:gap-3 translate-x-[-2px]">
-          <!-- User Postings -->
-          <v-tooltip
-            :text="translations && translations.see_user_posts"
-            location="left"
-          >
-            <template v-slot:activator="{ props }">
-              <div
-                @click="openPostDialog"
-                class="active:scale-95 hover:bg-[#f8f9fa] hover:rounded-md"
-              >
-                <!-- :href="`/contractor/posts/${profile.id}`" -->
-                <button
-                  class="xs:text-md w-[28px] h-[28px] xs:w-[35px] xs:h-[35px] font-semibold flex items-center justify-center"
-                >
-                  <img
-                    src="/images/icons/post_b.png"
-                    v-bind="props"
-                    width="28"
-                    height="28"
-                  />
-                </button>
-              </div>
-            </template>
-          </v-tooltip>
-        </div>
-      </div>
+
       <div class="flex flex-col gap-1">
         <Link
           class="rounded-full"
@@ -160,7 +129,7 @@
             color: selectedColorScheme[4],
             borderColor: selectedColorScheme[4],
           }"
-          :class="`bg-white px-4 py-1 text-xs hover:bg-[#f8f9fa] sm:text-sm font-bold rounded-full border-[1px] bg-white cursor-pointer hover:shadow-lg active:scale-95`"
+          :class="`bg-white px-4 py-1 text-xs hover:bg-[#f8f9fa] sm:text-sm font-bold rounded-full border-[1px]  cursor-pointer hover:shadow-lg active:scale-95`"
         >
           {{ translations && translations.share }}
         </button>
@@ -230,7 +199,7 @@ const props = defineProps({
 });
 const snackbarVisible = ref(false);
 let usePageDeatails = usePage().props.value;
-const user = usePageDeatails?.auth?.user;
+
 const profileId = usePageDeatails?.profile?.id;
 const modelText = ref("");
 const notLoggedDialogRef = ref();
@@ -295,25 +264,11 @@ const goBack = () => {
   } else {
     Inertia.visit("/sub-finder");
   }
-  // if (window.history.length > 1) {
-  //   let previousUrl = document.referrer;
-
-  //   if (previousUrl) {
-  //     let baseUrl = previousUrl.split("?")[0]; // Split by "?" and take the base URL
-  //     window.location.href = baseUrl; // Navigate to the cleaned URL
-  //   } else {
-  //     window.history.back(); // If no referrer found, just go back
-  //   }
-  // } else {
-  //   console.log("No history available");
-  // }
 };
 
 const store = useStore();
-const blueRgba = ref("#241e6d");
 const first_name = ref(props.profile.first_name);
 const last_name = ref(props.profile.last_name);
-const user_avatar = ref(props.profile.user_avatar);
 const company_name = ref(props.profile.company_name);
 const city = ref(props.profile.city);
 const state = ref(props.profile.state);
@@ -354,14 +309,6 @@ const openContractorRatingDialog = () => {
   } else {
     modelText.value = "ratings";
 
-    openNotLoggedDialog();
-  }
-};
-const openPostDialog = () => {
-  if (profileId) {
-    postDialogRef.value.openDialog();
-  } else {
-    modelText.value = "posts";
     openNotLoggedDialog();
   }
 };

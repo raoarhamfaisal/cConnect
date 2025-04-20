@@ -67,7 +67,7 @@
               color: '#c78b22',
               borderColor: '#c78b22',
             }"
-            :class="`bg-white px-4 py-1 text-xs hover:bg-[#f8f9fa] sm:text-sm font-bold rounded-full border-[1px] bg-white cursor-pointer hover:shadow-lg active:scale-95`"
+            :class="`bg-white px-4 py-1 text-xs hover:bg-[#f8f9fa] sm:text-sm font-bold rounded-full border-[1px] cursor-pointer hover:shadow-lg active:scale-95`"
           >
             {{ translations && translations.share }}
           </button>
@@ -146,9 +146,6 @@
         </div>
       </div>
       <div class="flex items-center gap-1">
-        <div class="">
-          <img src="/images/icons/pre-diamond.png" width="20" height="30" />
-        </div>
         <div class="flex flex-col justify-center items-center">
           <StarRounded
             @click="openContractorRatingDialog"
@@ -172,31 +169,6 @@
           >
             {{ userVersionMemberText }}
           </div>
-        </div>
-
-        <div class="flex gap-2 sm:gap-3 translate-x-[-2px]">
-          <v-tooltip
-            :text="translations && translations.see_user_posts"
-            location="left"
-          >
-            <template v-slot:activator="{ props }">
-              <div
-                @click="openPostDialog"
-                class="active:scale-95 hover:bg-[#f8f9fa] hover:rounded-md"
-              >
-                <button
-                  class="xs:text-md w-[28px] h-[28px] xs:w-[35px] xs:h-[35px] font-semibold flex items-center justify-center"
-                >
-                  <img
-                    src="/images/icons/post_b.png"
-                    v-bind="props"
-                    width="28"
-                    height="28"
-                  />
-                </button>
-              </div>
-            </template>
-          </v-tooltip>
         </div>
       </div>
     </div>
@@ -252,11 +224,11 @@ const props = defineProps({
     default: 0,
   },
 });
-const mainColor = ref("#4169E1");
+
 const snackbarVisible = ref(false);
 const notLoggedDialogRef = ref();
 let usePageDeatails = usePage().props.value;
-const user = usePageDeatails?.auth?.user;
+
 const profileId = usePageDeatails?.profile?.id;
 const modelText = ref("");
 const showGoBack = ref(true);
@@ -277,11 +249,6 @@ const userVersionMemberText = computed(() => {
     return translations.value && translations.value.platinum_member;
   }
 });
-
-function image_path(img) {
-  // function adds the filepath
-  return POSTS_IMAGES_FULL_PATH + img;
-}
 
 onMounted(() => {
   const showBack = localStorage.getItem("showGoBack");
@@ -361,24 +328,11 @@ const goBack = () => {
   } else {
     Inertia.visit("/sub-finder");
   }
-  // if (window.history.length > 1) {
-  //   let previousUrl = document.referrer;
-
-  //   if (previousUrl) {
-  //     let baseUrl = previousUrl.split("?")[0]; // Split by "?" and take the base URL
-  //     window.location.href = baseUrl; // Navigate to the cleaned URL
-  //   } else {
-  //     window.history.back(); // If no referrer found, just go back
-  //   }
-  // } else {
-  //   console.log("No history available");
-  // }
 };
 
-const blueRgba = ref("#241e6d");
 const first_name = ref(props.profile.first_name);
 const last_name = ref(props.profile.last_name);
-const user_avatar = ref(props.profile.user_avatar);
+
 const company_name = ref(props.profile.company_name);
 const city = ref(props.profile.city);
 const state = ref(props.profile.state);
@@ -386,9 +340,6 @@ const state = ref(props.profile.state);
 //  Emits
 
 //Computed
-const selectedColorScheme = computed(
-  () => store.state.contractor.selectedColorScheme || template1Default
-);
 // const contractorId = computed(() => store.state.profile.contractorId);
 const fullName = computed(() => first_name.value + " " + last_name.value);
 const truncatedName = computed(() => {
@@ -408,14 +359,6 @@ const openContractorRatingDialog = () => {
   } else {
     modelText.value = "ratings";
 
-    openNotLoggedDialog();
-  }
-};
-const openPostDialog = () => {
-  if (profileId) {
-    postDialogRef.value.openPostDialog();
-  } else {
-    modelText.value = "posts";
     openNotLoggedDialog();
   }
 };
