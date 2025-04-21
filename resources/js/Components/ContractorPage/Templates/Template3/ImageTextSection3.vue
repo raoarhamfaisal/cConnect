@@ -133,7 +133,7 @@ import { computed, ref } from "vue";
 import { template1Default } from "@/helpers/templateDefaults";
 
 import { useStore } from "vuex";
-// State
+// Province
 const props = defineProps({
   screenWidth: {
     type: [String, Number],

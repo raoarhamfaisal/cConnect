@@ -76,7 +76,7 @@ import Avatar from "@/Components/Ratings/Avatar.vue";
 
 import { computed, ref } from "vue";
 
-// State
+// Province
 const props = defineProps({
   profile: Object,
   screenWidth: Number,

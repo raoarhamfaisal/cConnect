@@ -2423,7 +2423,7 @@ const pt = {
                             te,
                             {
                               icon: "entypo:location",
-                              tooltipText: "State",
+                              tooltipText: "Province",
                               text: V.value,
                             },
                             null,
@@ -2434,7 +2434,7 @@ const pt = {
                             te,
                             {
                               icon: "map:post-box",
-                              tooltipText: "Zip Code",
+                              tooltipText: "Postal Code",
                               text: w.value,
                             },
                             null,
@@ -2445,7 +2445,7 @@ const pt = {
                             te,
                             {
                               icon: "tabler:location-filled",
-                              tooltipText: "County",
+                              tooltipText: "District",
                               text: _.value,
                             },
                             null,
@@ -2804,7 +2804,7 @@ const pt = {
                             modelValue: d.county,
                             "onUpdate:modelValue":
                               D[15] || (D[15] = (F) => (d.county = F)),
-                            placeholder: "Type your County",
+                            placeholder: "Type your District",
                           },
                           null,
                           8,

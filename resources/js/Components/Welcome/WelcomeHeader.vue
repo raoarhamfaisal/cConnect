@@ -398,7 +398,7 @@
                       : '/inactive-account'
                   "
                 >
-                  {{ translations && translations.admin }}
+                  {{ isContractor ? "Contractor Page" : "Customer Page" }}
                 </ResponsiveNavLink>
               </div>
 
@@ -466,7 +466,7 @@ import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import { Inertia } from "@inertiajs/inertia";
 import { getToken, removeToken } from "@/helpers/localStorageHelper";
 import { useStore } from "vuex";
-import { Icon } from "@iconify/vue";
+
 import DialogUpgradeToGoldPlatinum from "@/Components/DialogUpgradeToGoldPlatinum.vue";
 
 defineProps({
@@ -482,7 +482,7 @@ defineProps({
 });
 
 const showingNavigationDropdown = ref(false);
-
+const userProps = usePage().props.value;
 const dropdownMenu = ref(null);
 const url = usePage().url.value;
 const store = useStore();
@@ -513,6 +513,11 @@ const isAdminUrl = computed(() => {
   return false;
 });
 
+const isContractor = computed(() => {
+  const profile = userProps.auth.user.profile;
+
+  return profile && profile.is_contractor === 1;
+});
 // Methods
 
 const handleOutsideClick = (e) => {

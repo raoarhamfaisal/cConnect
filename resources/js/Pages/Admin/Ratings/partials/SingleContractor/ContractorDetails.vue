@@ -168,7 +168,7 @@ import { useStore } from "vuex";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import PageTitle from "@/Components/PageTitle.vue";
 
-// State
+// Province
 const { contractorDetails, gotReviews, givenReviews } = defineProps({
   profile: Object,
   region_id: [String, Number],

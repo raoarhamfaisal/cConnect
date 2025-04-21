@@ -7356,7 +7356,7 @@ var zP = { exports: {} };
             if (((this.state = y), j !== y)) {
               var q = y;
               q === "connected" && (q += " with new socket ID " + P.socket_id),
-                Le.debug("State changed", j + " -> " + q),
+                Le.debug("Province changed", j + " -> " + q),
                 this.timeline.info({ state: y, params: P }),
                 this.emit("state_change", { previous: j, current: y }),
                 this.emit(y, P);

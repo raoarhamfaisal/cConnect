@@ -177,7 +177,7 @@ import {
 } from "@/helpers/utilities";
 import { useStore } from "vuex";
 
-// State
+// Province
 const props = defineProps({
   profile: Object,
   region_name: String,

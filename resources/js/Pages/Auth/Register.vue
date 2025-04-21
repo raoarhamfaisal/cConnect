@@ -10,10 +10,10 @@ import TextInput from "@/Components/TextInput.vue";
 import InputIcon from "@/Components/InputIcon.vue";
 
 import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
-import { computed, reactive, ref, watch } from "vue";
+import { computed, reactive, ref } from "vue";
 import { useStore } from "vuex";
 import { somethingWentWrong } from "@/helpers/utilities";
-import { setToken } from "@/helpers/localStorageHelper";
+
 import CustomSelect from "../../Components/CustomSelect.vue";
 
 const { user, profile } = defineProps({
@@ -162,7 +162,7 @@ const submit = () => {
 };
 
 const changeRole = (role) => {
-  selectedRole.value = role; // Update selected role
+  selectedRole.value = role;
 };
 const togglePasswordVisibility = () => {
   isPasswordShown.value = !isPasswordShown.value;
@@ -211,7 +211,7 @@ const validatePassword = () => {
           :options="['Contractor', 'Customer']"
           :modelValue="selectedRole"
           @update:modelValue="changeRole"
-          label="What you are?"
+          label="Who are you?"
         />
         <InputError class="mt-1" :message="errors.is_contractor" />
       </div>

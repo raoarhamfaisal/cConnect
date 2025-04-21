@@ -210,7 +210,7 @@ import { usePage } from "@inertiajs/inertia-vue3";
 import { Inertia } from "@inertiajs/inertia";
 import { POSTS_IMAGES_FULL_PATH } from "@/config/constants";
 
-// State
+// Province
 const props = defineProps({
   profile: Object,
   loggedInUserId: [String, Number],

@@ -92,7 +92,6 @@ class PostController extends Controller
             'userID' => $userID,
             'profile' => $profile,
             'posts' => Post::query()
-
                 ->select('posts.*', 'posts.id as post_id', 'post_reactions.type as user_reaction')
                 ->leftJoin('post_reactions', function ($join) use ($userID) {
                     $join->on('posts.id', '=', 'post_reactions.post_id')
@@ -131,34 +130,12 @@ class PostController extends Controller
                 }])
                 ->leftJoin('profiles', 'posts.user_id', '=', 'profiles.user_id')
                 ->leftJoin('profiles as original_profiles', 'posts.original_user_id', '=', 'original_profiles.user_id')
-                ->where('posts.region_id', $profile['region_id'])
+                // apply region filter only when regional view is enabled
+                ->when($sessionViewSettings->view_regional === 1, function ($query) use ($profile) {
+                    $query->where('posts.region_id', $profile['region_id']);
+                })
                 ->where('posts.active_post', 1)
                 ->whereNotIn('posts.user_id', $blockedUserIds)
-                ->whereHas('user.profile', function ($query) use ($sessionViewSettings) {
-                    // Ensure the post creator has matching view settings with the logged-in user
-                    $query->where(function ($query) use ($sessionViewSettings) {
-                        $query->where(function ($query) use ($sessionViewSettings) {
-                            $query->where('view_locale', 1)
-                                ->where('view_locale', $sessionViewSettings->view_locale);
-                        })
-                            ->orWhere(function ($query) use ($sessionViewSettings) {
-                                $query->where('view_regional', 1)
-                                    ->where('view_regional', $sessionViewSettings->view_regional);
-                            })
-                            ->orWhere(function ($query) use ($sessionViewSettings) {
-                                $query->where('view_statewide', 1)
-                                    ->where('view_statewide', $sessionViewSettings->view_statewide);
-                            })
-                            ->orWhere(function ($query) use ($sessionViewSettings) {
-                                $query->where('view_nationwide', 1)
-                                    ->where('view_nationwide', $sessionViewSettings->view_nationwide);
-                            })
-                            ->orWhere(function ($query) use ($sessionViewSettings) {
-                                $query->where('view_following', 1)
-                                    ->where('view_following', $sessionViewSettings->view_following);
-                            });
-                    });
-                })
                 ->whereHas('trades', function ($query) use ($userTradeIds) {
                     $query->whereIn('trades.id', $userTradeIds);
                 })

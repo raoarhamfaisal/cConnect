@@ -5,8 +5,8 @@ const props = defineProps({
   profile: Object,
   apiChoice: {
     type: String,
-    default: "1"
-  }
+    default: "1",
+  },
 });
 // 1 => profile
 // 2 => profile-setup
@@ -23,26 +23,39 @@ const form = reactive({
   view_regional: props.profile.view_regional,
   view_statewide: props.profile.view_statewide,
   view_nationwide: props.profile.view_nationwide,
-  view_following: props.profile.view_following
+  view_following: props.profile.view_following,
 });
+console.log("form", form);
 
 const switchFields = [
   // "view_locale",
   "view_regional",
-  "view_statewide",
-  "view_nationwide"
-  // "view_following"
+  // "view_statewide",
+  "view_nationwide",
+  // "view_following",
 ];
 const labels = [
   // "View Locale",
   "View Regional",
-  "View Provincial",
-  "View Nationwide"
+  // "View Provincial",
+  "View Nationwide",
   // "View Following",
 ];
 
 const toggleSwitch = (field) => {
+  // toggle current field
   form[field] = form[field] === 1 ? 0 : 1;
+
+  // ensure only one is on at a time
+  if (form[field] === 1) {
+    switchFields.forEach((f) => {
+      if (f !== field) {
+        form[f] = 0;
+      }
+    });
+  }
+
+  // dispatch update based on apiChoice
   if (props.apiChoice === "1") {
     store.dispatch("profile/updateViews", form);
   } else if (props.apiChoice === "2") {
@@ -58,7 +71,7 @@ const toggleSwitch = (field) => {
     <header class="flex space-x-2">
       <div>
         <h2
-          :class="` font-medium font-bold ${
+          :class="` font-bold ${
             apiChoice === '3'
               ? 'text-blue-rgba text-xl'
               : 'text-gray-900 text-lg'
@@ -82,7 +95,7 @@ const toggleSwitch = (field) => {
           <div :class="[form[field] === 1 ? 'switch-bg-on' : 'switch-bg-off']">
             <div
               :class="[
-                form[field] === 1 ? 'switch-knob-on' : 'switch-knob-off'
+                form[field] === 1 ? 'switch-knob-on' : 'switch-knob-off',
               ]"
             ></div>
           </div>

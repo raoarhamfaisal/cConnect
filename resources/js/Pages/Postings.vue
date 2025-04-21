@@ -363,7 +363,7 @@ export default {
       const lastPost = this.$refs.loadingPostsRef[0];
       if (lastPost) {
         const headerTop = lastPost.getBoundingClientRect().top;
-        console.log(headerTop, "headerTop");
+
         if (headerTop <= 800) {
           if (!this.loadingPosts) {
             this.loadMorePosts();

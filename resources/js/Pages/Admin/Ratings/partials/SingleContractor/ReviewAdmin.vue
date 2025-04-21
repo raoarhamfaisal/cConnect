@@ -313,7 +313,7 @@ import { computed, ref } from "vue";
 import { Icon } from "@iconify/vue";
 import { Link, usePage } from "@inertiajs/inertia-vue3";
 
-//State
+//Province
 
 const { review, contractorId } = defineProps({
   showNotes: {

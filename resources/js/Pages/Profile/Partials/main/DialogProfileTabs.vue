@@ -25,7 +25,7 @@ import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import Loader from "@/Components/Ratings/Loader.vue";
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
-// State
+// Province
 defineProps({
   profile: Object,
 });

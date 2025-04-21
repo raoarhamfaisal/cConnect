@@ -73,7 +73,7 @@ import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import { ref } from "vue";
 import { useStore } from "vuex";
 
-// State
+// Province
 const props = defineProps({
   profile: Object,
   screenWidth: Number,

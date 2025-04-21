@@ -228,7 +228,7 @@ import { Inertia } from "@inertiajs/inertia";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import PageTitle from "@/Components/PageTitle.vue";
 
-// State
+// Province
 const { contractorDetails } = defineProps({
   profile: Object,
   contractorDetails: Object,

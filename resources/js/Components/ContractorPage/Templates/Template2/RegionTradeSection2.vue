@@ -73,7 +73,7 @@ import { useStore } from "vuex";
 import { computed, ref, reactive } from "vue";
 import { template1Default } from "@/helpers/templateDefaults";
 
-// State
+// Province
 const props = defineProps({
   profile: Object,
   region_name: String,

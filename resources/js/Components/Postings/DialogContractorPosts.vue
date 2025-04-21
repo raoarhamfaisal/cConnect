@@ -23,7 +23,7 @@ import ContractorPosts from "@/Components/Postings/ContractorPosts.vue";
 import { ref } from "vue";
 import { somethingWentWrong } from "@/helpers/utilities";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
-// State
+// Province
 const { contractorId } = defineProps({
   contractorId: [String, Number],
 });

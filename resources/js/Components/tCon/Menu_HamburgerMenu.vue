@@ -26,6 +26,7 @@ const props = defineProps({
 
 const dialogRef = ref();
 const store = useStore();
+const userProps = usePage().props.value;
 
 const url = usePage().url.value;
 let lang = localStorage.getItem("lang");
@@ -52,6 +53,11 @@ const translations = computed(() => store.getters.translations);
 const userVersion = computed(() => store.getters.userVersion);
 const isAdminUrl = computed(() => {
   return usePage().props.value.auth.user.appeals_privileges === 1;
+});
+const isContractor = computed(() => {
+  const profile = userProps.auth.user.profile;
+
+  return profile && profile.is_contractor === 1;
 });
 const userVersionMemberText = computed(() => {
   if (props.profile.version === 1) {
@@ -329,7 +335,7 @@ const goToRedFlagPage = () => {
               height="20"
             />
             <span class="mx-4 font-medium">{{
-              translations && translations.contractor_page
+              isContractor ? "Contractor Page" : "Customer Page"
             }}</span>
           </Link>
 

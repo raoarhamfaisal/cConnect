@@ -24,7 +24,7 @@ import Loader from "@/Components/Ratings/Loader.vue";
 import ContractorRating from "@/Components/Ratings/Contractor/ContractorRating.vue";
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
-// State
+// Province
 const { userId } = defineProps({
   userId: [String, Number],
   loggedInUserId: [String, Number],

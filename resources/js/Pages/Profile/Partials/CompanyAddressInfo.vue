@@ -6,7 +6,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { usePage } from "@inertiajs/inertia-vue3";
 import UserAvatar from "../components/UserAvatar.vue";
-import { stateList } from "@/helpers/selectListsHelpters.js";
+import { provincesList } from "@/helpers/selectListsHelpters.js";
 
 import { watch, ref, onMounted, onBeforeUnmount, computed } from "vue";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
@@ -274,21 +274,17 @@ onBeforeUnmount(() => {
           <InputError class="mt-2" :message="errors.city" />
         </div>
         <div class="mb-4 sm:mb-0">
-          <InputLabel
-            for="state"
-            class="font-bold mb-1"
-            :value="translations && translations.state + '*'"
-          />
+          <InputLabel for="state" class="font-bold mb-1" :value="'Province*'" />
           <TextInput
             id="state"
             type="text"
             class="mt-1 block w-full"
             v-model="form.state"
             @input="clearError('state')"
-            :placeholder="translations && translations.type_your_state"
+            placeholder="Type your Province"
           />
           <!-- <SelectProfile
-            :options="stateList"
+            :options="provincesList"
             :modelValue="form.state"
             @update:modelValue="
               (value) => {
@@ -301,35 +297,27 @@ onBeforeUnmount(() => {
         </div>
 
         <div class="mb-4 sm:mb-0">
-          <InputLabel
-            class="font-bold"
-            for="zipcode"
-            :value="translations && translations.zip_code + '*'"
-          />
+          <InputLabel class="font-bold" for="zipcode" :value="'Postal Code*'" />
           <TextInput
             id="zipcode"
             type="text"
             class="mt-1 block w-full"
             v-model="form.zipcode"
             @input="clearError('zipcode')"
-            :placeholder="translations && translations.type_your_zip_code"
+            placeholder="Type your Postal Code"
           />
           <InputError class="mt-2" :message="errors.zipcode" />
         </div>
 
         <div class="mb-4 sm:mb-0">
-          <InputLabel
-            class="font-bold"
-            for="county"
-            :value="translations && translations.county + '*'"
-          />
+          <InputLabel class="font-bold" for="county" :value="'District*'" />
           <TextInput
             id="county"
             type="text"
             class="mt-1 block w-full"
             v-model="form.county"
             @input="clearError('county')"
-            :placeholder="translations && translations.type_your_county"
+            placeholder="Type your District"
           />
           <InputError class="mt-2" :message="errors.county" />
         </div>

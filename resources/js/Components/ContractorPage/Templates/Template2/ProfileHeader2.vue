@@ -183,7 +183,7 @@ import { useStore } from "vuex";
 import { usePage } from "@inertiajs/inertia-vue3";
 import { Inertia } from "@inertiajs/inertia";
 
-// State
+// Province
 const props = defineProps({
   profile: Object,
   loggedInUserId: [String, Number],

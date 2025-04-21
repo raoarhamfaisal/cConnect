@@ -68,7 +68,7 @@ import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import { template1Default } from "@/helpers/templateDefaults";
 
-// State
+// Province
 const props = defineProps({
   profile: Object,
   loggedInUserId: [String, Number],

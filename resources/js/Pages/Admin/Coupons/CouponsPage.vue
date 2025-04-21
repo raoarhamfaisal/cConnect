@@ -495,7 +495,7 @@ import PageTitle from "@/Components/PageTitle.vue";
 import { DatePicker } from "v-calendar";
 import "v-calendar/style.css";
 
-// State
+// Province
 const props = defineProps({
   profile: Object,
   showit: Boolean,

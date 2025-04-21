@@ -183,7 +183,7 @@ import { useStore } from "vuex";
 import { computed, ref, watch, onMounted, reactive } from "vue";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
-// State
+// Province
 const props = defineProps({
   profile: Object,
   region_name: String,

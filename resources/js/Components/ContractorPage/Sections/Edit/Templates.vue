@@ -72,7 +72,7 @@ import { useStore } from "vuex";
 import { startOptionToArray } from "@/helpers/utilities";
 // import { colorSchemeList } from "@/helpers/selectListsHelpters";
 
-// State
+// Province
 const store = useStore();
 const props = defineProps({
   templateList: Array,

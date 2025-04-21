@@ -37,7 +37,7 @@
         </div>
         <div class="flex flex-col justify-center">
           <h2
-            class="text-md xs:text-xl font-medium font-bold text-gray-900"
+            class="text-md xs:text-xl font-bold text-gray-900"
             v-if="company_name"
           >
             {{ company_name }}
@@ -72,15 +72,19 @@
         :text="address_2"
       />
       <InfoWithIcon icon="mdi:city" tooltipText="City" :text="city" />
-      <InfoWithIcon icon="entypo:location" tooltipText="State" :text="state" />
+      <InfoWithIcon
+        icon="entypo:location"
+        tooltipText="Province"
+        :text="state"
+      />
       <InfoWithIcon
         icon="map:post-box"
-        tooltipText="Zip Code"
+        tooltipText="Postal Code"
         :text="zipcode"
       />
       <InfoWithIcon
         icon="tabler:location-filled"
-        tooltipText="County"
+        tooltipText="District"
         :text="county"
       />
     </div>
@@ -109,12 +113,6 @@
         :imageSrc="`/${company_logo ? company_logo : profile.user_avatar}`"
         @update-image="handleImageUpdate"
       />
-      <!-- <UserAvatar
-        :cover="false"
-        v-if="!loadingImage"
-        :imageSrc="`/${company_logo ? company_logo : profile.user_avatar}`"
-        @update-image="handleImageUpdate"
-      /> -->
     </div>
     <div
       class="mt-6 space-y-6 sm:space-y-0 w-full sm:grid sm:grid-cols-2 sm:gap-4"
@@ -224,11 +222,11 @@
       <div>
         <InputLabel
           class="font-bold mb-1"
-          for="state"
-          :value="translations && translations.state + '*'"
+          for="province"
+          :value="'Province*'"
         />
         <SelectProfile
-          :options="stateList"
+          :options="provincesList"
           :modelValue="tempCompanyProfile.state"
           @update:modelValue="
             (value) => {
@@ -241,34 +239,26 @@
       </div>
 
       <div>
-        <InputLabel
-          class="font-bold"
-          for="zipcode"
-          :value="translations && translations.zip_code + '*'"
-        />
+        <InputLabel class="font-bold" for="zipcode" :value="'Postal Code*'" />
         <TextInput
           id="zipcode"
           type="text"
           class="mt-1 block w-full"
           @input="clearError('zipcode')"
           v-model="tempCompanyProfile.zipcode"
-          :placeholder="translations && translations.type_your_zip_code"
+          placeholder="Type your Postal Code"
         />
         <InputError class="mt-2" :message="errors.zipcode" />
       </div>
       <div>
-        <InputLabel
-          class="font-bold"
-          for="county"
-          :value="translations && translations.county + '*'"
-        />
+        <InputLabel class="font-bold" for="county" :value="'District*'" />
         <TextInput
           id="county"
           type="text"
           @input="clearError('county')"
           class="mt-1 block w-full"
           v-model="tempCompanyProfile.county"
-          placeholder="Type your County"
+          placeholder="Type your District"
         />
         <InputError class="mt-2" :message="errors.county" />
       </div>
@@ -278,7 +268,7 @@
 <script setup>
 import IconButton from "@/Components/IconButton.vue";
 import InfoWithIcon from "@/Components/ContractorPage/InfoWithIcon.vue";
-import { stateList } from "@/helpers/selectListsHelpters.js";
+import { provincesList } from "@/helpers/selectListsHelpters.js";
 import InputError from "@/Components/InputError.vue";
 
 import Card from "@/Components/Card.vue";
@@ -308,7 +298,7 @@ import GoogleAddressAutocomplete from "@/Components/GoogleAddressAutoComplete.vu
 import { useStore } from "vuex";
 
 const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-// State
+// Province
 const props = defineProps({
   profile: Object,
 

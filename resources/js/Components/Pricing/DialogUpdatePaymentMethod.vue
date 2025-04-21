@@ -268,12 +268,9 @@
                     <InputError class="mt-2" :message="errors.city" />
                   </div>
                   <div class="mb-4 sm:mb-0">
-                    <InputLabel
-                      class="font-bold mb-1"
-                      :value="translations && translations.state + '*'"
-                    />
+                    <InputLabel class="font-bold mb-1" :value="'Province*'" />
                     <SelectProfile
-                      :options="stateList"
+                      :options="provincesList"
                       :modelValue="form.state"
                       @update:modelValue="
                         (value) => {
@@ -289,7 +286,7 @@
                     <InputLabel
                       class="font-bold"
                       for="zip"
-                      :value="translations && translations.zip_code + '*'"
+                      :value="'Postal Code*'"
                     />
                     <TextInput
                       id="zip"
@@ -297,9 +294,7 @@
                       class="mt-1 block w-full"
                       v-model="form.zip"
                       @input="clearError('zip')"
-                      :placeholder="
-                        translations && translations.type_your_zip_code
-                      "
+                      placeholder="Type your Postal Code"
                     />
                     <InputError class="mt-2" :message="errors.zip" />
                   </div>
@@ -320,24 +315,6 @@
                       />
                       <InputError class="mt-2" :message="errors.county" />
                     </div> -->
-                  <div class="mb-4 sm:mb-0">
-                    <InputLabel
-                      class="font-bold"
-                      for="country"
-                      :value="translations && translations.county + '*'"
-                    />
-                    <TextInput
-                      id="country"
-                      type="text"
-                      class="mt-1 block w-full"
-                      v-model="form.country"
-                      @input="clearError('country')"
-                      :placeholder="
-                        translations && translations.type_your_country
-                      "
-                    />
-                    <InputError class="mt-2" :message="errors.country" />
-                  </div>
                 </div>
                 <InputError class="mt-2" :message="subscriptionApiError" />
 
@@ -405,7 +382,6 @@
 <script setup>
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 
-import Button from "@/Components/Ratings/Button.vue";
 import axios from "axios";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
@@ -414,12 +390,10 @@ import SelectProfile from "@/Components/SelectProfile.vue";
 
 import Loader from "@/Components/Ratings/Loader.vue";
 
-import Card from "@/Components/Card.vue";
-
 import { useStore } from "vuex";
 
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
-import PageTitle from "@/Components/PageTitle.vue";
+
 import {
   computed,
   nextTick,
@@ -430,12 +404,12 @@ import {
   watch,
 } from "vue";
 // import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
-import { stateList } from "@/helpers/selectListsHelpters.js";
+import { provincesList } from "@/helpers/selectListsHelpters.js";
 import InputIcon from "@/Components/InputIcon.vue";
 
 import GoogleAddressAutocomplete from "@/Components/GoogleAddressAutoComplete.vue";
 
-// State
+// Province
 const props = defineProps({
   profile: Object,
   isUpdateAndSubscribe: {
@@ -448,8 +422,7 @@ const dialogRef = ref();
 const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const store = useStore();
 const loading = ref(false);
-const pricingPlan = ref({});
-const planType = ref("MONTHLY");
+
 const paymentMethod = ref("");
 const sameAsProfile = ref(false);
 const isCvvShown = ref(false);
@@ -467,7 +440,7 @@ const form = reactive({
   state: "",
   zip: "",
   // county: "",
-  country: "",
+  country: "US",
 });
 
 const errors = reactive({
@@ -527,7 +500,7 @@ watch(
       form.state = "";
       form.zip = "";
       // form.county = "";
-      form.country = "";
+      form.country = "US";
     }
   }
 );
@@ -664,7 +637,7 @@ const validateForm = () => {
 
   // Validate county
   // if (!form.county?.trim()) {
-  //   errors.county = "County is required";
+  //   errors.county = "District is required";
   //   isValid = false;
   // }
   if (!form.country?.trim()) {

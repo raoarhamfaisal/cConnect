@@ -19,7 +19,7 @@ import EditMode from "@/Components/ContractorPage/EditMode.vue";
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 
-// State
+// Province
 const props = defineProps({
   profile: Object,
   templateList: Array,

@@ -170,7 +170,7 @@ const selectAllTrades = async () => {
 
 // for more and less
 
-const isExpanded = ref(false); // State to manage if the text is expanded or not
+const isExpanded = ref(false); // Province to manage if the text is expanded or not
 
 const toggleText = () => {
   isExpanded.value = !isExpanded.value;

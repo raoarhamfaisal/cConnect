@@ -191,7 +191,7 @@ import { somethingWentWrong } from "@/helpers/utilities";
 import { useStore } from "vuex";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 
-// State
+// Province
 const { contractorDetails, profileId } = defineProps({
   contractorDetails: Object,
   profileId: [Number, String],

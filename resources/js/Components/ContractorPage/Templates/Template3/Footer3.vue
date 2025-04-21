@@ -84,9 +84,9 @@
         <div>{{ profile.email }}</div>
       </div>
 
-      <!-- For County -->
+      <!-- For District -->
       <div v-if="profile.county">
-        <v-tooltip text="County" location="top">
+        <v-tooltip text="District" location="top">
           <template v-slot:activator="{ props }">
             <Icon
               v-bind="props"
@@ -96,7 +96,7 @@
             />
           </template>
         </v-tooltip>
-        <div>County: {{ profile.county }}</div>
+        <div>District: {{ profile.county }}</div>
       </div>
 
       <div
@@ -178,7 +178,7 @@ import { template1Default } from "@/helpers/templateDefaults";
 
 import { useStore } from "vuex";
 
-// State
+// Province
 const props = defineProps({
   profile: Object,
 

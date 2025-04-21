@@ -978,7 +978,7 @@ const H = ["#e5e7eb", "#ffffff", "#000000", "#241e6d", "#1864ab"],
                       s("div", Ct, [
                         r(
                           b,
-                          { text: "County", location: "top" },
+                          { text: "District", location: "top" },
                           {
                             activator: _(({ props: k }) => [
                               r(
@@ -996,7 +996,7 @@ const H = ["#e5e7eb", "#ffffff", "#000000", "#241e6d", "#1864ab"],
                             _: 1,
                           }
                         ),
-                        o("div", null, "County: " + c(e.profile.county), 1),
+                        o("div", null, "District: " + c(e.profile.county), 1),
                       ]))
                     : i("", !0),
                   o("div", St, [
@@ -2884,7 +2884,7 @@ const Xo = { key: 0, class: "flex justify-center mb-3" },
                       s("div", al, [
                         r(
                           S,
-                          { text: "County", location: "top" },
+                          { text: "District", location: "top" },
                           {
                             activator: _(({ props: b }) => [
                               r(
@@ -2902,7 +2902,7 @@ const Xo = { key: 0, class: "flex justify-center mb-3" },
                             _: 1,
                           }
                         ),
-                        o("div", null, "County: " + c(e.profile.county), 1),
+                        o("div", null, "District: " + c(e.profile.county), 1),
                       ]))
                     : i("", !0),
                   e.profile.website_url
@@ -5174,7 +5174,7 @@ const ea = (e) => (ie("data-v-18c3ab74"), (e = e()), ce(), e),
                       s("div", na, [
                         r(
                           a,
-                          { text: "County", location: "top" },
+                          { text: "District", location: "top" },
                           {
                             activator: _(({ props: g }) => [
                               r(
@@ -5192,7 +5192,7 @@ const ea = (e) => (ie("data-v-18c3ab74"), (e = e()), ce(), e),
                             _: 1,
                           }
                         ),
-                        o("div", null, "County: " + c(e.profile.county), 1),
+                        o("div", null, "District: " + c(e.profile.county), 1),
                       ]))
                     : i("", !0),
                   o("div", ia, [
@@ -6407,7 +6407,7 @@ const Ya = { key: 0, class: "flex mb-3" },
                       s("div", lr, [
                         r(
                           b,
-                          { text: "County", location: "top" },
+                          { text: "District", location: "top" },
                           {
                             activator: _(({ props: k }) => [
                               r(
@@ -6425,7 +6425,7 @@ const Ya = { key: 0, class: "flex mb-3" },
                             _: 1,
                           }
                         ),
-                        o("div", null, "County: " + c(e.profile.county), 1),
+                        o("div", null, "District: " + c(e.profile.county), 1),
                       ]))
                     : i("", !0),
                   o("div", sr, [
@@ -8221,7 +8221,7 @@ const $n = { key: 0, class: "flex mb-3" },
                       s("div", Ln, [
                         r(
                           b,
-                          { text: "County", location: "top" },
+                          { text: "District", location: "top" },
                           {
                             activator: _(({ props: k }) => [
                               r(
@@ -8239,7 +8239,7 @@ const $n = { key: 0, class: "flex mb-3" },
                             _: 1,
                           }
                         ),
-                        o("div", null, "County: " + c(e.profile.county), 1),
+                        o("div", null, "District: " + c(e.profile.county), 1),
                       ]))
                     : i("", !0),
                   o("div", Dn, [

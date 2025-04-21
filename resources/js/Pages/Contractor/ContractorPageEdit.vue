@@ -59,7 +59,7 @@ import { useStore } from "vuex";
 import { usePage } from "@inertiajs/inertia-vue3";
 import { Inertia } from "@inertiajs/inertia";
 
-// State
+// Province
 const { profile, contractor_id } = defineProps({
   profile: Object,
   region_name: String,

@@ -16,25 +16,23 @@ const props = defineProps({
 
   profile: {
     type: Object,
-    required: true
+    required: true,
   },
 
   isOpen: Boolean,
   showPostButtons: Boolean,
 
   modelValue: String,
-  postSearchFilters: Object
+  postSearchFilters: Object,
 });
 const userProps = usePage().props.value;
 const emit = defineEmits([
   "update:modelValue",
   "submitPostSearch",
-  "postClicked"
+  "postClicked",
 ]);
 const store = useStore();
 const dialogRef = ref();
-const contractorPageRef = ref();
-const showContractorPageModal = ref(false);
 const url = usePage().url.value;
 let lang = localStorage.getItem("lang");
 if (!lang) {
@@ -53,7 +51,7 @@ function postClicked(isOpen) {
 }
 const isAdminUrl = computed(() => {
   const user = userProps.auth.user;
-  console.log(usePage().props.value, "usepage");
+  console.log(user, "user");
   if (user) {
     return (
       user.appeals_privileges ||
@@ -62,6 +60,11 @@ const isAdminUrl = computed(() => {
     );
   }
   return false;
+});
+const isContractor = computed(() => {
+  const profile = userProps.auth.user.profile;
+
+  return profile && profile.is_contractor === 1;
 });
 const loadingImage = computed(() => store.state.profile.loadingImage);
 const translations = computed(() => store.getters.translations);
@@ -116,12 +119,6 @@ const truncatedName = computed(() => {
   return fullName.length < 27 ? fullName : fullName.substring(0, 23) + "...";
 });
 
-const onSelectLang = (lang) => {
-  localStorage.setItem("lang", lang);
-  selectedLanguage.value = lang;
-  store.commit("setTranlations", lang);
-};
-
 const goToRedFlagPage = () => {
   if (userVersion.value === 1) {
     store.commit("setIsUpgradeToGoldPlatinumDialogOpen", true);
@@ -129,9 +126,6 @@ const goToRedFlagPage = () => {
     Inertia.visit("/red-flag");
   }
 };
-// const openContractorPageModal = () => {
-//   contractorPageRef.value.openDialog();
-// };
 </script>
 
 <template>
@@ -200,7 +194,7 @@ const goToRedFlagPage = () => {
           {{ profile.email }}
         </h4>
 
-        <!-- City State Zip -->
+        <!-- City Province Zip -->
         <h4
           v-if="showit && shouldShowAddress"
           class="mx-2 text-sm font-medium text-gray-500"
@@ -409,7 +403,7 @@ const goToRedFlagPage = () => {
               height="30"
             />
             <span class="mx-4 font-medium">{{
-              translations && translations.contractor_page
+              isContractor ? "Contractor Page" : "Customer Page"
             }}</span>
           </Link>
 

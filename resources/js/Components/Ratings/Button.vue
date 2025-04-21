@@ -38,7 +38,7 @@ const props = defineProps({
 });
 const emit = defineEmits();
 
-// State for the button
+// Province for the button
 const isSelected = ref(props.selected);
 const showTooltip = ref(false);
 

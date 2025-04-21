@@ -156,6 +156,7 @@ class RegisteredUserController extends Controller
                 'last_name' => $request->last_name,
                 'company_name' => $request->company_name,
                 'email' => $request->email,
+                "is_contractor" => $request->is_contractor,
                 'view_locale' => 1,
                 'view_regional' => 1
             ]);

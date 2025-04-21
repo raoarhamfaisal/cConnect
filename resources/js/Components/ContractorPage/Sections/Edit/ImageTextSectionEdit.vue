@@ -197,7 +197,7 @@ const FilePond = VueFilePond(
   FilePondPluginFilePoster,
   FilePondPluginFileValidateSize
 );
-// State
+// Province
 const props = defineProps({
   screenWidth: {
     type: [String, Number],

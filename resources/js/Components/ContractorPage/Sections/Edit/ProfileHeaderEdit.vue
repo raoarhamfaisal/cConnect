@@ -171,13 +171,9 @@
         <InputError class="mt-2" :message="errors.city" />
       </div>
       <div>
-        <InputLabel
-          class="font-bold mb-1"
-          for="state"
-          :value="translations && translations.state + '*'"
-        />
+        <InputLabel class="font-bold mb-1" for="state" :value="'Province*'" />
         <SelectProfile
-          :options="stateList"
+          :options="provincesList"
           :modelValue="tempProfile.state"
           @update:modelValue="
             (value) => {
@@ -207,7 +203,7 @@ import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import StarRating from "@/Components/Ratings/StarRating.vue";
-import { stateList } from "@/helpers/selectListsHelpters";
+import { provincesList } from "@/helpers/selectListsHelpters";
 
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 
@@ -222,7 +218,7 @@ import {
 } from "@/helpers/axiosConfigHelpers";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 import { useStore } from "vuex";
-// State
+// Province
 const props = defineProps({
   profile: Object,
   screenWidth: Number,

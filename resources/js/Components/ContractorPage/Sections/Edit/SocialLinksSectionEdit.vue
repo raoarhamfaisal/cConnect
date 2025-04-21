@@ -207,7 +207,7 @@ const propertiesToProcess = [
   "tiktok",
   "instagram",
 ];
-// State
+// Province
 const props = defineProps({
   profile: Object,
   screenWidth: Number,

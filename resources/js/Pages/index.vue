@@ -55,6 +55,12 @@ const isAdminUrl = computed(() => {
   return false;
 });
 
+const isContractor = computed(() => {
+  const profile = usePage().props.value.auth.user;
+
+  return profile && profile.is_contractor === 1;
+});
+
 const profile = computed(() => store.state.profile.profile);
 const userVersion = computed(() => store.getters.userVersion);
 const notFreeVersion = computed(
@@ -545,7 +551,7 @@ const goToRedFlagPage = (event) => {
                 "
                 class="font-bold"
               >
-                {{ translations && translations.contractor_page }}
+                {{ isContractor ? "Contractor Page" : "Customer Page" }}
               </ResponsiveNavLink>
             </div>
             <!-- Responsive Settings Options -->

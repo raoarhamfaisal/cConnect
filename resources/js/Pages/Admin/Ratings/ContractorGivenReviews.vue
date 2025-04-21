@@ -25,7 +25,7 @@ import ContractorDetails from "@/Pages/Admin/Ratings/partials/SingleContractor/C
 import { onBeforeMount } from "vue";
 import { usePage } from "@inertiajs/inertia-vue3";
 
-// State
+// Province
 const { contractorDetails } = defineProps({
   profile: Object,
   region_id: [String, Number],

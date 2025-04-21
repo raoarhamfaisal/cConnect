@@ -276,36 +276,6 @@ export default {
                 translations && translations.block_this_contact
               }}</span>
             </button>
-
-            <!-- DropDown: FOLLOW CONTACT -->
-            <Link
-              :href="route('post')"
-              class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
-            >
-              <img
-                src="/images/icons/Icon-person-blue.png"
-                width="20"
-                height="20"
-              />
-              <span class="mx-4 font-medium">{{
-                translations && translations.follow_contact
-              }}</span>
-            </Link>
-
-            <!-- DropDown: UN-FOLLOW -->
-            <Link
-              :href="route('post')"
-              class="flex items-center px-4 py-1 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-300 hover:text-gray-700"
-            >
-              <img
-                src="/images/icons/icon-unfollow.png"
-                width="20"
-                height="20"
-              />
-              <span class="mx-4 font-medium">{{
-                translations && translations.un_follow_contact
-              }}</span>
-            </Link>
           </div>
         </div>
       </div>

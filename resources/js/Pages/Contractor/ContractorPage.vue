@@ -62,7 +62,7 @@ import { template1Default } from "@/helpers/templateDefaults";
 
 import { useStore } from "vuex";
 
-// State
+// Province
 const { profile, contractor_id } = defineProps({
   profile: Object,
   contractor_id: [String, Number],

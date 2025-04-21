@@ -20,7 +20,7 @@ import ContractorPage from "@/Pages/Contractor/ContractorPage.vue";
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 
-// State
+// Province
 const { profile } = defineProps({
   profile: Object,
   contractor_id: [String, Number],

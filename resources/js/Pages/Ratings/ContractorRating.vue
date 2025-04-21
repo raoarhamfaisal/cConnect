@@ -20,7 +20,7 @@
 import Header from "@/Layouts/Header.vue";
 import ContractorRating from "@/Components/Ratings/Contractor/ContractorRating.vue";
 
-// State
+// Province
 const { contractorDetails } = defineProps({
   contractorDetails: Object,
   profile: Object,
