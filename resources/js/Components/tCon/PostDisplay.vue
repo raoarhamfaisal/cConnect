@@ -1105,6 +1105,8 @@ export default {
                 width: screenWidth >= 640 ? '4.5rem' : '3.7rem',
                 height: screenWidth >= 640 ? '4.5rem' : '3.7rem',
               }"
+              isNotSelf
+              :isContractor="post.is_contractor"
               :imageSrc="post.user_avatar"
             />
           </div>
@@ -1115,7 +1117,8 @@ export default {
           <h2 class="font-bold text-lg sm:text-xl" style="line-height: 1.5rem">
             <!-- {{  post }} -->
 
-            {{ post.id }}: {{ post.first_name + " " + post.last_name }}
+            <!-- {{ post.id }}:  -->
+            {{ post.first_name + " " + post.last_name }}
           </h2>
 
           <div class="">

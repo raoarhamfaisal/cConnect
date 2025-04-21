@@ -135,6 +135,7 @@
         :response="review.review_response"
         :contractorId="contractorId"
         :profileId="profileId"
+        :isContractor="isContractor"
       />
     </div>
   </section>
@@ -162,6 +163,9 @@ const { review } = defineProps({
   },
   contractorId: {
     type: Number,
+  },
+  isContractor: {
+    type: Boolean,
   },
 });
 

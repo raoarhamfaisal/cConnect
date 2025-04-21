@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
             padding: 20px;
             background-color: #f4f4f4;
         }
+
         .container {
             max-width: 600px;
             margin: 0 auto;
@@ -18,13 +20,16 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         .header {
             text-align: center;
             margin-bottom: 20px;
         }
+
         .content {
             margin-bottom: 20px;
         }
+
         .footer {
             text-align: center;
             font-size: 12px;
@@ -32,14 +37,16 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
-            <img src="https://cConnect.com/uploads/common/site-logo.png" alt="cConnect Logo">
+            <img style="width: 300px;" src="https://raoarhamfaisal.me/images/cConnect-logo.png" alt="cConnect Logo">
         </div>
         <div class="content">
             <p>Hello {{ $user->name }},</p>
-            <p>We have received your request to cancel your subscription. Your subscription will be reviewed and processed accordingly.</p>
+            <p>We have received your request to cancel your subscription. Your subscription will be reviewed and
+                processed accordingly.</p>
             <p>Thank you for using our services.</p>
         </div>
         <div class="footer">
@@ -47,4 +54,5 @@
         </div>
     </div>
 </body>
+
 </html>

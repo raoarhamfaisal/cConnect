@@ -3,7 +3,11 @@
     ref="dialogRef"
     :showFooter="false"
     dialogWidth="width-75 contractorDialog"
-    :title="translations && translations.contractor_ratings"
+    :title="
+      contractorDetails?.is_contractor
+        ? 'Contractor\'s Response'
+        : 'Customer\'s Response'
+    "
   >
     <Loader :loading="loading" background="white" height="70vh"></Loader>
     <ContractorRating

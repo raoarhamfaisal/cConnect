@@ -963,7 +963,7 @@ export default {
                 class="font-bold text-lg sm:text-xl"
                 style="line-height: 1.5rem"
               >
-                {{ postToEnlarge.id }}:
+                <!-- {{ postToEnlarge.id }}: -->
                 {{ postToEnlarge.first_name + " " + postToEnlarge.last_name }}
               </h2>
               <div class="">

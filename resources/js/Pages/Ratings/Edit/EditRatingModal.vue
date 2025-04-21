@@ -72,7 +72,7 @@
       :options="referenceList"
       :modelValue="selectedReferal"
       @update:modelValue="changeReferal"
-      label="{{translations && translations.how_did_you_meet_this_contractor}}"
+      label="How did you meet this contractor?"
     />
   </CustomDialog>
 </template>

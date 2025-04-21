@@ -87,31 +87,6 @@
           (translations && translations.browse) || 'Browse'
         } </span>`"
       />
-
-      <!-- Show document preview if one is uploaded -->
-      <div v-if="supportingDocPath" class="mt-2 text-sm text-gray-600">
-        <a
-          :href="'/' + supportingDocPath"
-          target="_blank"
-          class="text-blue-600 hover:underline flex items-center"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-4 w-4 mr-1"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-            />
-          </svg>
-          Document uploaded successfully
-        </a>
-      </div>
     </div>
 
     <!-- Were you hired by this contractor? -->

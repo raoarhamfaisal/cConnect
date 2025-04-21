@@ -72,7 +72,6 @@ class RegisteredUserController extends Controller
             $user = User::find($userID);
 
 
-            // dd($user);
 
             $request->validate([
                 'first_name' => 'required|string|max:255',
@@ -87,8 +86,9 @@ class RegisteredUserController extends Controller
                     Rule::unique(User::class), // Ensure the email is unique in the users table
                     Rule::unique(Profile::class, 'email'), // Ensure the email is unique in the profiles table
                     Rule::unique(ContractorProfile::class, 'email'), // Ensure the email is unique in the contractor_profiles table
-                ],        
+                ],
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
+                'is_contractor' => 'required|integer',
             ]);
 
             
@@ -160,6 +160,8 @@ class RegisteredUserController extends Controller
                 'view_locale' => 1,
                 'view_regional' => 1
             ]);
+            // dd($profile);
+
 
             $randomTrades = [];
             $profile->trades()->attach($randomTrades);  

@@ -26,6 +26,7 @@ const props = defineProps({
   postSearchFilters: Object,
 });
 const userProps = usePage().props.value;
+
 const emit = defineEmits([
   "update:modelValue",
   "submitPostSearch",
@@ -39,7 +40,7 @@ if (!lang) {
   lang = "english";
   localStorage.setItem("lang", "english");
 }
-const selectedLanguage = ref(lang);
+
 console.log(url, "url");
 const newPostSearchValue = () => {
   emit("submitPostSearch");
@@ -51,7 +52,7 @@ function postClicked(isOpen) {
 }
 const isAdminUrl = computed(() => {
   const user = userProps.auth.user;
-  console.log(user, "user");
+
   if (user) {
     return (
       user.appeals_privileges ||
@@ -62,7 +63,7 @@ const isAdminUrl = computed(() => {
   return false;
 });
 const isContractor = computed(() => {
-  const profile = userProps.auth.user.profile;
+  const profile = userProps.auth.user.profile || userProps.profile;
 
   return profile && profile.is_contractor === 1;
 });
@@ -161,9 +162,15 @@ const goToRedFlagPage = () => {
         </v-skeleton-loader>
         <Avatar
           v-if="!loadingImage"
+          :showCustomerBadge="false"
           :imageSrc="`/${profile.user_avatar}`"
           class="sm:w-24 sm:h-24"
         />
+        <span
+          class="bg-blue-500 text-white flex items-center justify-center rounded-full px-2 py-0.5 text-[11px] mt-2"
+        >
+          {{ isContractor ? "Contractor" : "Customer" }}
+        </span>
         <div class="mt-2 text-gray-600 text-[13px]">
           {{ userVersionMemberText }}
         </div>

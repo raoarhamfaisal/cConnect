@@ -1,9 +1,4 @@
 <template>
-  <div
-    class="ml-16 sm:ml-[5.55rem] mb-[-4px] sm:mb-0 text-gray-600 text-[11px] sm:text-[13px]"
-  >
-    {{ userVersionMemberText }}
-  </div>
   <div class="flex space-x-2 justify-between">
     <div
       class="flex justify-center items-center space-x-2"
@@ -12,7 +7,11 @@
       }"
     >
       <div>
-        <Avatar :imageSrc="`/${review.reviewer.user_avatar}`" />
+        <Avatar
+          isNotSelf
+          :isContractor="review.reviewer.is_contractor"
+          :imageSrc="`/${review.reviewer.user_avatar}`"
+        />
       </div>
       <div class="flex flex-col justify-center">
         <Tooltip
@@ -300,6 +299,34 @@
           {{ translations && translations.see_less }}
         </span>
       </p>
+    </div>
+
+    <!-- Supporting Document -->
+    <div v-if="review.supporting_document" class="flex gap-2 mt-4">
+      <div class="pl-2 text-sm xs:text-md font-bold">
+        {{ "Supporting Document:" }}
+      </div>
+      <a
+        :href="`/${review.supporting_document}`"
+        target="_blank"
+        class="text-blue-600 hover:underline flex items-center text-sm"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4 mr-1"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+          />
+        </svg>
+        {{ "View Document" }}
+      </a>
     </div>
   </div>
   <EditRatingModal

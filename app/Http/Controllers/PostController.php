@@ -113,6 +113,7 @@ class PostController extends Controller
                     'profiles.state',
                     'profiles.user_avatar',
                     'profiles.id',
+                    'profiles.is_contractor',
                     DB::raw('(SELECT AVG(reviews.rating) FROM reviews WHERE reviews.contractor_id = profiles.id AND reviews.is_review_active = 1) as average_rating'),
                     DB::raw('(SELECT COUNT(*) FROM reviews WHERE reviews.contractor_id = profiles.id AND reviews.is_review_active = 1) as total_reviews'),
                     'original_profiles.first_name as original_user_first_name',
@@ -178,6 +179,7 @@ class PostController extends Controller
                     'title_text_color_id' => $post->title_text_color_id,
                     'title_background_color_id' => $post->title_background_color_id,
                     'title_text_alignment' => $post->title_text_alignment,
+                    
 
 
                     'font_size' => $post->font_size,
@@ -194,6 +196,7 @@ class PostController extends Controller
                     'company_name' => $post->company_name,
                     'city' => $post->city,
                     'state' => $post->state,
+                    'is_contractor' => $post->is_contractor,
                     'user_avatar' => $post->user_avatar,
                     'average_rating' => $post->average_rating,
                     'total_reviews' => $post->total_reviews,
@@ -263,6 +266,7 @@ class PostController extends Controller
                     'profiles.city',
                     'profiles.state',
                     'profiles.user_avatar',
+                    'profiles.is_contractor',
                     'profiles.id',
                     DB::raw('(SELECT AVG(reviews.rating) FROM reviews WHERE reviews.contractor_id = profiles.id AND reviews.is_review_active = 1) as average_rating'),
                     DB::raw('(SELECT COUNT(*) FROM reviews WHERE reviews.contractor_id = profiles.id AND reviews.is_review_active = 1) as total_reviews')
@@ -289,6 +293,7 @@ class PostController extends Controller
                     'title_text_color_id' => $post->title_text_color_id,
                     'title_background_color_id' => $post->title_background_color_id,
                     'title_text_alignment' => $post->title_text_alignment,
+                    'is_contractor' => $post->is_contractor,
 
 
                     'font_size' => $post->font_size,
@@ -332,6 +337,7 @@ class PostController extends Controller
                 'profiles.state',
                 'profiles.user_avatar',
                 'profiles.id',
+                'profiles.is_contractor',
                 DB::raw('(SELECT AVG(reviews.rating) FROM reviews WHERE reviews.contractor_id = profiles.id AND reviews.is_review_active = 1) as average_rating'),
                 DB::raw('(SELECT COUNT(*) FROM reviews WHERE reviews.contractor_id = profiles.id AND reviews.is_review_active = 1) as total_reviews')
             ])

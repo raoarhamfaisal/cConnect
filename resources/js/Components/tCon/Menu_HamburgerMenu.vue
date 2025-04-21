@@ -55,7 +55,7 @@ const isAdminUrl = computed(() => {
   return usePage().props.value.auth.user.appeals_privileges === 1;
 });
 const isContractor = computed(() => {
-  const profile = userProps.auth.user.profile;
+  const profile = userProps.auth.user.profile || userProps.profile;
 
   return profile && profile.is_contractor === 1;
 });
@@ -118,9 +118,18 @@ const goToRedFlagPage = () => {
     >
       <div class="">
         <div v-if="showit" class="pt-2 pb-0 ml-3">
-          <Avatar :imageSrc="`/${profile.user_avatar}`" class="mt-2" />
+          <Avatar
+            :showCustomerBadge="false"
+            :imageSrc="`/${profile.user_avatar}`"
+            class="mt-2"
+          />
+          <span
+            class="bg-blue-500 text-white text-left rounded-full px-2 py-0.5 text-[10px] mt-2"
+          >
+            {{ isContractor ? "Contractor" : "Customer" }}
+          </span>
           <div
-            class="mt-2 mb-[-4px] text-gray-800 text-[11px] xs:text-xs sm:text-sm"
+            class="mt-1 mb-[-4px] text-gray-800 text-[11px] xs:text-xs sm:text-sm"
           >
             {{ userVersionMemberText }}
           </div>

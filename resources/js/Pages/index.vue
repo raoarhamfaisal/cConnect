@@ -13,13 +13,14 @@ import { getToken, removeToken } from "@/helpers/localStorageHelper";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { somethingWentWrong } from "@/helpers/utilities";
 import { Inertia } from "@inertiajs/inertia";
-import { Icon } from "@iconify/vue";
+
 import DialogUpgradeToGoldPlatinum from "@/Components/DialogUpgradeToGoldPlatinum.vue";
 
 const props = defineProps({
   showit: Boolean,
 });
 
+const userProps = usePage().props.value;
 const animate = ref(false);
 const loading = ref(false);
 const showingNavigationDropdown = ref(false);
@@ -44,7 +45,7 @@ const store = useStore();
 const translations = computed(() => store.getters.translations);
 const isAdminUrl = computed(() => {
   const user = usePage().props.value.auth.user;
-  console.log(user);
+
   if (user) {
     return (
       user.appeals_privileges ||
@@ -56,16 +57,12 @@ const isAdminUrl = computed(() => {
 });
 
 const isContractor = computed(() => {
-  const profile = usePage().props.value.auth.user;
-
+  const profile = userProps.auth.user.profile || userProps.profile;
   return profile && profile.is_contractor === 1;
 });
 
 const profile = computed(() => store.state.profile.profile);
 const userVersion = computed(() => store.getters.userVersion);
-const notFreeVersion = computed(
-  () => userVersion.value !== 0 && userVersion.value !== 1
-);
 
 const getStartedButtonText = computed(() => {
   if (getToken() && profile.value && profile.value.id) {

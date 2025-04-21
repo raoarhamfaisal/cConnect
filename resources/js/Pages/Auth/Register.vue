@@ -5,7 +5,6 @@ import InputLabel from "@/Components/InputLabel.vue";
 import WelcomeHeader from "@/Components/Welcome/WelcomeHeader.vue";
 import WelcomeFooter from "@/Components/Welcome/WelcomeFooter.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import { Icon } from "@iconify/vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputIcon from "@/Components/InputIcon.vue";
 

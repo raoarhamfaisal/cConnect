@@ -41,6 +41,7 @@ class profile extends Model
         'view_nationwide',
         'view_following',
         'notes_on_user',
+        "is_contractor"
 
     ];
 

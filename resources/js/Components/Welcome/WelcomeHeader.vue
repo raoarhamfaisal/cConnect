@@ -514,7 +514,7 @@ const isAdminUrl = computed(() => {
 });
 
 const isContractor = computed(() => {
-  const profile = userProps.auth.user.profile;
+  const profile = userProps.auth.user.profile || userProps.profile;
 
   return profile && profile.is_contractor === 1;
 });

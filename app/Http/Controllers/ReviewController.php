@@ -39,6 +39,7 @@ class ReviewController extends Controller
                 'email',
                 'company_name',
                 'city',
+                'is_contractor',
                 'state',
                 'user_avatar',
                 'company_logo'
@@ -103,7 +104,8 @@ class ReviewController extends Controller
                     'city',
                     'state',
                     'user_avatar',
-                    'company_logo'
+                    'company_logo',
+                        'is_contractor',
                 ])->with('trades:id');
             },
             'reviewer.trades',
@@ -485,6 +487,7 @@ class ReviewController extends Controller
             'profiles.user_avatar',
             'profiles.company_logo',
             'profiles.email',
+            'profiles.is_contractor',
             'profiles.phone_cell',
             DB::raw('AVG(reviews.rating) as average_rating')
         ])
@@ -532,6 +535,7 @@ class ReviewController extends Controller
                     'company_name',
                     'city',
                     'state',
+                    'is_contractor',
                     'user_avatar',
                     'company_logo'
                 ])->with('trades:id');
@@ -544,6 +548,7 @@ class ReviewController extends Controller
                     'phone_cell',
                     'first_name',
                     'last_name',
+                    'is_contractor',
                     'company_name',
                     'city',
                     'state',
@@ -715,8 +720,10 @@ class ReviewController extends Controller
                     'company_name',
                     'city',
                     'state',
+                    'is_contractor',
                     'user_avatar',
                     'company_logo'
+
                 ])->with('trades:id');
             },
             'ratingReasons',  // Attach rating reasons related to the review
@@ -1145,7 +1152,8 @@ class ReviewController extends Controller
                     'city',
                     'state',
                     'user_avatar',
-                    'company_logo'
+                    'company_logo',
+                        'is_contractor',
                 ])->with('trades:id');
             },
             'contractor' => function ($query) {
@@ -1160,7 +1168,8 @@ class ReviewController extends Controller
                     'city',
                     'state',
                     'user_avatar',
-                    'company_logo'
+                    'company_logo',
+                        'is_contractor',
                 ])->with('trades:id');
             },
             'ratingReasons',

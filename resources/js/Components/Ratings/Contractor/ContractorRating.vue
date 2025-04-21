@@ -131,6 +131,7 @@
               @responseAdded="onResponseAdd"
               :contractorId="contractor.id"
               :profileId="profileId"
+              :isContractor="contractor.is_contractor"
             />
           </div>
           <div v-if="contractorReviews && contractorReviews.length === 0">

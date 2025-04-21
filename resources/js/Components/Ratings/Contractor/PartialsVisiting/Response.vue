@@ -9,7 +9,7 @@
     <section>
       <div class="flex justify-between">
         <div class="font-bold text-md xs:text-lg sm:text-2xl text-2xl mb-2">
-          {{ translations && translations.contractors_response }}
+          {{ isContractor ? "Contractor's Response" : "Customer's Response" }}
         </div>
         <div
           v-if="screenWidth >= 600 && contractorId === profileId"
@@ -102,7 +102,7 @@
 import Card from "@/Components/Card.vue";
 import EditResponseModal from "@/Pages/Ratings/Edit/EditResponseModal.vue";
 import DeleteResponseModal from "@/Pages/Ratings/Edit/DeleteResponseModal.vue";
-import { computed, onMounted, onUnmounted, ref } from "vue";
+import { computed, ref } from "vue";
 import { convertDateFormat } from "@/helpers/utilities";
 
 import ButtonRatings from "@/Components/Ratings/ButtonRatings.vue";
@@ -117,6 +117,10 @@ defineProps({
   },
   contractorId: {
     type: Number,
+  },
+  isContractor: {
+    type: Boolean,
+    default: false,
   },
 });
 const showFullReview = ref(false);

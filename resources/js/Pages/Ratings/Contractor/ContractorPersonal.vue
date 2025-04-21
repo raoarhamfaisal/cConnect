@@ -102,6 +102,7 @@
                 :review="review"
                 :contractorId="contractor.id"
                 :profileId="profile.id"
+                :isContractor="contractor.is_contractor"
               />
             </div>
             <div v-if="contractorReviews.length === 0">
