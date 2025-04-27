@@ -5,8 +5,8 @@
     dialogWidth="width-75 contractorDialog"
     :title="
       contractorDetails?.is_contractor
-        ? 'Contractor\'s Response'
-        : 'Customer\'s Response'
+        ? 'Contractor\'s Ratings'
+        : 'Customer\'s Ratings'
     "
   >
     <Loader :loading="loading" background="white" height="70vh"></Loader>

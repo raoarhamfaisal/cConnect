@@ -506,7 +506,7 @@ const determineBorderVisibility = (index) => {
                     @click="isSearchByCustomer = 0"
                     class="w-full cursor-pointer text-sm sm:text-xl"
                   >
-                    {{ translations && translations.contractor_non_member }}
+                    Contractor
                   </div>
                 </div>
               </div>
@@ -532,7 +532,10 @@ const determineBorderVisibility = (index) => {
 
       <div class="mt-4">
         <div class="bg-white border-2 border-black table-container">
-          <TableHead @sortChanged="handleSortChange" />
+          <TableHead
+            @sortChanged="handleSortChange"
+            :isSearchByCustomer="isSearchByCustomer"
+          />
 
           <template v-if="!loading && redFlags && redFlags.length > 0">
             <RedFlag
@@ -765,7 +768,7 @@ const determineBorderVisibility = (index) => {
               @click="newRedFlag.is_contractor_or_customer = false"
               class="w-full cursor-pointer text-sm sm:text-xl"
             >
-              {{ translations && translations.contractor_non_member }}
+              Contractor
             </div>
           </div>
         </div>

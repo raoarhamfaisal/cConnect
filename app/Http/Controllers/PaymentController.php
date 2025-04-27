@@ -151,9 +151,9 @@ class PaymentController extends Controller
             $apiRequest->setSubscription($subscription);
             $controller = new AnetController\ARBCreateSubscriptionController($apiRequest);
 
-            // dd(env('MERCHANT_LOGIN_ID'));
+            // dd(env('MERCHANT_TRANSACTION_KEY'));
 
-            $subscriptionResponse = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::PRODUCTION);
+            $subscriptionResponse = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::SANDBOX);
 
             if($subscriptionResponse && $subscriptionResponse->getMessages()->getResultCode() == "Ok") {
                 // 3. Handle successful payments
@@ -633,7 +633,7 @@ class PaymentController extends Controller
        
            $controller = new AnetController\ARBCancelSubscriptionController($subscriptionRequest);
        
-           $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
+           $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
        
            if (($response != null) && ($response->getMessages()->getResultCode() == "Ok"))
            {
@@ -834,7 +834,7 @@ class PaymentController extends Controller
         $controller = new AnetController\ARBUpdateSubscriptionController($request);
 
 
-        $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
+        $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
 
         
         return $response;
@@ -888,7 +888,7 @@ class PaymentController extends Controller
 
         // Create the controller and get the response
         $controller = new AnetController\UpdateCustomerPaymentProfileController($paymentprofileRequest);
-        $response = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::PRODUCTION); // or PRODUCTION
+        $response = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::SANDBOX); // or SANDBOX
 
         return $response;
     }

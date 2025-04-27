@@ -182,7 +182,7 @@ const clearError = (field) => {
             @input="clearError('phone_cell')"
             autocomplete="phone_cell"
             :placeholder="translations && translations.type_your_phone_number"
-            v-mask="'###-###-#####'"
+            v-mask="'####-#######'"
           />
           <!-- placeholder="###-###-####" -->
           <InputError class="mt-2" :message="errors.phone_cell" />

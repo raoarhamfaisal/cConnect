@@ -11,7 +11,9 @@
       style="text-align: left; font-weight: bold; color: white"
     >
       <div class="flex gap-2 justify-start items-center">
-        <div>{{ translations && translations.customer_name }}</div>
+        <div>
+          {{ isSearchByCustomer ? "Customer's Name" : "Contractor's Name" }}
+        </div>
 
         <div class="flex flex-col">
           <Icon
@@ -94,6 +96,11 @@ import { computed } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
+defineProps({
+  isSearchByCustomer: {
+    type: Number,
+  },
+});
 const emit = defineEmits(["sortChanged"]);
 
 //Computed

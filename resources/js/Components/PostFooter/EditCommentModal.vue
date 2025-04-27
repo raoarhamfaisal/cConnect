@@ -8,11 +8,7 @@
       @opened="onOpened"
       :loading="loadingSending"
       :disabled="disabledSending"
-      :title="`${translations && translations.edit} ${
-        isReply
-          ? translations && translations.reply_first_cap
-          : translations && translations.comment
-      }`"
+      :title="`Edit ${isReply ? 'Reply' : 'Comment'}`"
     >
       <form @submit.prevent="handleSubmit">
         <!-- response -->

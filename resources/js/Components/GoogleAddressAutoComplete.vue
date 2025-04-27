@@ -25,13 +25,12 @@ const props = defineProps({
 const emit = defineEmits(["update:modelValue", "callback"]);
 
 const autocompleteInput = ref(null);
-let scriptLoaded = false;
 let internalModelValue = ref(props.modelValue);
 
 const setupAutocomplete = () => {
   const options = {
     //   bounds: defaultBounds,
-    componentRestrictions: { country: "us" },
+    componentRestrictions: { country: "pk" },
     fields: ["address_components"],
     //   strictBounds: false,
   };
@@ -44,7 +43,7 @@ const setupAutocomplete = () => {
     autocomplete.addListener("place_changed", () => {
       const place = autocomplete.getPlace();
 
-      console.log(place,'componenetType')
+      console.log(place, "componenetType");
       for (const component of place.address_components) {
         const componentType = component.types[0];
 
@@ -54,10 +53,6 @@ const setupAutocomplete = () => {
         if (componentType == "route") {
           internalModelValue.value += component.long_name;
         }
-        // if (componentType !== "street_number" && componentType !== "route") {
-        //   // internalModelValue.value = place.formatted_address;
-        //   internalModelValue.value = autocompleteInput.value.value;
-        // }
       }
 
       emit("update:modelValue", internalModelValue.value);

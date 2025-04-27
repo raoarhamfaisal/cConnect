@@ -147,7 +147,7 @@
           class="mt-1 block w-full"
           v-model="tempCompanyProfile.phone_cell"
           :placeholder="translations && translations.type_your_phone_cell"
-          v-mask="'###-###-#####'"
+          v-mask="'####-#######'"
           @input="clearError('phone_cell')"
           autocomplete="tel"
         />
@@ -192,7 +192,7 @@
         <InputLabel
           class="font-bold"
           for="address_2"
-          :value="`${translations && translations.address} 2*`"
+          :value="`${translations && translations.address} 2`"
         />
         <GoogleAddressAutocomplete
           id="address_2"

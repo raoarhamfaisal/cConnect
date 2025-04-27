@@ -172,12 +172,8 @@
   </div>
 </template>
 <script setup>
-import InfoWithIcon from "@/Components/ContractorPage/InfoWithIcon.vue";
 import { Icon } from "@iconify/vue";
 
-import Card from "@/Components/Card.vue";
-
-import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import Avatar from "@/Components/Ratings/Avatar.vue";
 import { computed, ref } from "vue";
 import { template1Default } from "@/helpers/templateDefaults";
@@ -191,17 +187,14 @@ const props = defineProps({
   screenWidth: Number,
 });
 
-const iconColor = ref("#241e6d");
 const store = useStore();
 const company_name = ref(props.profile.company_name);
-const company_logo = ref(props.profile.company_logo);
 const phone_cell = ref(props.profile.phone_cell);
 const phone_office = ref(props.profile.phone_office);
 const address_1 = ref(props.profile.address_1);
 const address_2 = ref(props.profile.address_2);
 const city = ref(props.profile.city);
 const state = ref(props.profile.state);
-const county = ref(props.profile.county);
 const zipcode = ref(props.profile.zipcode);
 
 //Computed

@@ -1,15 +1,12 @@
 <script setup>
 import InputLabel from "@/Components/InputLabel.vue";
 import SelectProfile from "@/Components/SelectProfile.vue";
-import InputError from "@/Components/InputError.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
+
 import TextInput from "@/Components/TextInput.vue";
 import { usePage } from "@inertiajs/inertia-vue3";
 import UserAvatar from "../components/UserAvatar.vue";
-import { provincesList } from "@/helpers/selectListsHelpters.js";
 
 import { watch, ref, onMounted, onBeforeUnmount, computed } from "vue";
-import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 import GoogleAddressAutocomplete from "@/Components/GoogleAddressAutoComplete.vue";
 import { useStore } from "vuex";
 
