@@ -306,7 +306,6 @@ export default {
     },
     async updateProfileGeneralInfo({ commit }, payload) {
       commit("setLoading", true);
-
       try {
         const response = await axios.patch(
           `/api/profile/all-basic-info`,

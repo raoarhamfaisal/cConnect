@@ -58,7 +58,6 @@ const errors = reactive({
   first_name: "",
   last_name: "",
   phone_cell: "",
-  company_name: "",
   phone_office: "",
   address_1: "",
   city: "",
@@ -151,12 +150,6 @@ const validateForm = () => {
   if (!form.address_1?.trim()) {
     errors.address_1 =
       translations.value && translations.value.address_1_is_required;
-    isValid = false;
-  }
-  // Validate company_name
-  if (!form.company_name?.trim()) {
-    errors.company_name =
-      translations.value && translations.value.company_name_is_required;
     isValid = false;
   }
 

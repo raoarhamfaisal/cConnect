@@ -360,7 +360,7 @@
             <InputLabel
               class="font-bold"
               for="company_name"
-              :value="translations && translations.company_name + '*'"
+              :value="translations && translations.company_name"
             />
             <TextInput
               id="company_name"
@@ -547,10 +547,10 @@ const validateForm = () => {
     isValid = false;
   }
   // Validate company_name
-  if (!userToEdit.value.profile.company_name.trim()) {
-    errors.company_name = "Company name is required";
-    isValid = false;
-  }
+  // if (!userToEdit.value.profile.company_name.trim()) {
+  //   errors.company_name = "Company name is required";
+  //   isValid = false;
+  // }
 
   // Validate region_id
   if (!selectedReferal.value) {

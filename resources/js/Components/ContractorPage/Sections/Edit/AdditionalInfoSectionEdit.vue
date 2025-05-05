@@ -121,7 +121,7 @@
         <InputLabel
           class="font-bold"
           for="company_name"
-          :value="translations && translations.company_name + '*'"
+          :value="translations && translations.company_name"
         />
         <TextInput
           id="company_name"
@@ -164,7 +164,7 @@
           type="tel"
           class="mt-1 block w-full"
           @input="clearError('phone_office')"
-          v-mask="'###-###-#####'"
+          v-mask="'###-#######'"
           v-model="tempCompanyProfile.phone_office"
           :placeholder="translations && translations.type_your_phone_office"
         />
@@ -280,15 +280,7 @@ import TextInput from "@/Components/TextInput.vue";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
 import CompanyAvatar from "@/Components/Ratings/CompanyAvatar.vue";
-import {
-  reactive,
-  ref,
-  watchEffect,
-  onMounted,
-  onBeforeUnmount,
-  nextTick,
-  computed,
-} from "vue";
+import { reactive, ref, onMounted, onBeforeUnmount, computed } from "vue";
 import {
   getAxiosConfigFormData,
   getAxiosConfig,
@@ -417,12 +409,6 @@ const validateForm = () => {
   if (!tempCompanyProfile.address_1?.trim()) {
     errors.address_1 =
       translations.value && translations.value.address_1_is_required;
-    isValid = false;
-  }
-  // Validate company_name
-  if (!tempCompanyProfile.company_name?.trim()) {
-    errors.company_name =
-      translations.value && translations.value.company_name_is_required;
     isValid = false;
   }
 

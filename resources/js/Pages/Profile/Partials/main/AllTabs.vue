@@ -1,6 +1,5 @@
 <script setup>
 // import DeleteUserForm from "./Partials/DeleteUserForm.vue";
-import UpdatePasswordForm from "@/Pages/Profile/Partials/UpdatePasswordForm.vue";
 import GeneralInfo from "@/Pages/Profile/Partials/GeneralInfo.vue";
 import Tabs from "@/Pages/Profile/components/Tabs.vue";
 import CompanyAddressInfo from "@/Pages/Profile/Partials/CompanyAddressInfo.vue";
@@ -57,7 +56,6 @@ const errors = reactive({
   first_name: "",
   last_name: "",
   phone_cell: "",
-  company_name: "",
   phone_office: "",
   address_1: "",
   city: "",
@@ -139,12 +137,7 @@ const validateForm = () => {
     errors.state = translations.value && translations.value.state_is_required;
     isValid = false;
   }
-  // Validate company_name
-  if (!form.company_name?.trim()) {
-    errors.company_name =
-      translations.value && translations.value.company_name_is_required;
-    isValid = false;
-  }
+
   // Validate zipcode
   if (form.zipcode?.trim().length < 5) {
     errors.zipcode =

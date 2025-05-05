@@ -252,7 +252,7 @@ const onSendContactUsInformation = async () => {
               @input="clearError('phone')"
               autocomplete="phone"
               :placeholder="translations && translations.type_your_phone_number"
-              v-mask="'###-###-#####'"
+              v-mask="'###-#######'"
             />
             <!-- placeholder="###-###-####" -->
             <InputError class="mt-2" :message="errors.phone" />

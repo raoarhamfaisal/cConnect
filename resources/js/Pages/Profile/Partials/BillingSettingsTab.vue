@@ -361,7 +361,9 @@ const fetchPaymentHistoryDetails = async () => {
                             }}</strong>
                           </p>
                         </div>
-                        <div>{{ pricingPlan.sales_tax }}%</div>
+                        <div>
+                          {{ (pricingPlan.sales_tax * 100).toFixed(2) }}%
+                        </div>
                       </div>
                       <div
                         class="flex justify-between"

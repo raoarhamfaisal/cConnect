@@ -64,7 +64,7 @@ import Template3 from "@/Components/ContractorPage/Templates/Template3.vue";
 import Template4 from "@/Components/ContractorPage/Templates/Template4.vue";
 import Template5 from "@/Components/ContractorPage/Templates/Template5.vue";
 
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import { useStore } from "vuex";
 import { template1Default } from "@/helpers/templateDefaults";
 

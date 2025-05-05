@@ -76,12 +76,6 @@ const validateForm = () => {
     isValid = false;
   }
 
-  // Validate company_name
-  if (!form.company_name.trim()) {
-    errors.company_name =
-      translations.value && translations.value.company_name_is_required;
-    isValid = false;
-  }
   // Add validations for other fields similarly, for example:
   if (!form.email.trim()) {
     errors.email = translations.value && translations.value.email_is_required;
@@ -120,8 +114,7 @@ const validateForm = () => {
   }
 
   if (form.password.trim() !== form.password_confirmation.trim()) {
-    errors.password_confirmation =
-      translations.value && translations.value.last_name_is_required;
+    errors.password_confirmation = "Confirm password is required";
     isValid = false;
   }
 
@@ -254,7 +247,7 @@ const validatePassword = () => {
         <InputLabel
           for="company_name"
           class="font-bold"
-          :value="translations && translations.company_name + '*'"
+          :value="translations && translations.company_name"
         />
         <TextInput
           id="company_name"
@@ -346,15 +339,6 @@ const validatePassword = () => {
           autocomplete="new-password"
         />
 
-        <!-- <TextInput
-          id="password_confirmation"
-          type="password"
-          class="mt-1 block w-full"
-          v-model="form.password_confirmation"
-          @input="clearError('password_confirmation')"
-          required
-          autocomplete="new-password"
-        /> -->
         <!-- Display Matched/Unmatched message with icon -->
         <div v-if="form.password_confirmation.length >= 1">
           <span

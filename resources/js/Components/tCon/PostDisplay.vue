@@ -658,7 +658,7 @@ export default {
       if (days > 0) return `${days}d`;
       if (hours > 0) return `${hours}h`;
       if (minutes > 0) return `${minutes}m`;
-      return "<1";
+      return "<1m";
     },
     validate() {
       let isValid = true;

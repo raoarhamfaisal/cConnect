@@ -24,7 +24,7 @@
     />
   </div>
   <div
-    class="pt-2 sm:pt-8 sm:pt-8 max-w-[1400px] mx-auto w-full"
+    class="pt-2 sm:pt-8 max-w-[1400px] mx-auto w-full min-h-screen"
     v-if="!loading && selectedTemplate !== 1"
     :style="{
       backgroundColor: selectedColorScheme[0]

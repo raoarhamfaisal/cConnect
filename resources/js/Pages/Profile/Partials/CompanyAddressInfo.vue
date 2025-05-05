@@ -188,7 +188,7 @@ onBeforeUnmount(() => {
           <InputLabel
             class="font-bold"
             for="company_name"
-            :value="translations && translations.company_name + '*'"
+            :value="translations && translations.company_name"
           />
           <TextInput
             id="company_name"
@@ -200,7 +200,6 @@ onBeforeUnmount(() => {
             :placeholder="translations && translations.type_your_company_name"
             autocomplete="company-name"
           />
-          <InputError class="mt-2" :message="errors.company_name" />
         </div>
 
         <div>
@@ -215,7 +214,7 @@ onBeforeUnmount(() => {
             class="mt-1 block w-full"
             @input="clearError('phone_office')"
             v-model="form.phone_office"
-            v-mask="'###-###-#####'"
+            v-mask="'###-#######'"
             :placeholder="translations && translations.type_your_phone_office"
             autocomplete="tel"
           />

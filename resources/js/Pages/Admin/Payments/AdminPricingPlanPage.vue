@@ -82,7 +82,7 @@
                 <td>${{ plan?.platinum_billed_monthly_price }}</td>
                 <td>${{ plan?.platinum_billed_annual_price }}</td>
                 <td>${{ plan?.platinum_advertised_price }}</td>
-                <td>{{ plan?.sales_tax }}%</td>
+                <td>{{ (plan?.sales_tax * 100).toFixed(2) }}%</td>
                 <td class="flex gap-2 justify-center items-center">
                   <Icon
                     icon="mdi:edit"
@@ -320,7 +320,6 @@
 <script setup>
 import Header from "@/Layouts/Header.vue";
 import { Head, usePage } from "@inertiajs/inertia-vue3";
-import Button from "@/Components/Ratings/Button.vue";
 import axios from "axios";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
@@ -329,28 +328,13 @@ import SelectProfile from "@/Components/SelectProfile.vue";
 
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 
-import HeadingCard from "@/Components/Ratings/HeadingCard.vue";
-
 import { Icon } from "@iconify/vue";
 
 import Card from "@/Components/Card.vue";
 
-import {
-  ref,
-  onMounted,
-  computed,
-  onBeforeMount,
-  watch,
-  reactive,
-  nextTick,
-} from "vue";
-import SearchInput from "@/Components/Ratings/SearchInput.vue";
+import { ref, onMounted, computed, onBeforeMount, watch, reactive } from "vue";
 
-import {
-  filterBadWordsWithoutValue,
-  somethingWentWrong,
-  changesSaved,
-} from "@/helpers/utilities";
+import { somethingWentWrong, changesSaved } from "@/helpers/utilities";
 import { useStore } from "vuex";
 import { Inertia } from "@inertiajs/inertia";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
@@ -462,8 +446,11 @@ const validateForm = () => {
   if (!singlePlan.value.sales_tax) {
     errors.sales_tax = "Sales Tax is Required";
     isValid = false;
-  } else if (+singlePlan.value.sales_tax > 1) {
-    errors.sales_tax = "Sales Tax cannot be greater than 1";
+  } else if (
+    +singlePlan.value.sales_tax > 100 ||
+    +singlePlan.value.sales_tax < 0
+  ) {
+    errors.sales_tax = "Sales Tax must be between 0 and 100";
     isValid = false;
   }
 
@@ -557,7 +544,7 @@ const handleEditSubmit = async () => {
 
     const updatedPlan = {
       region_id: region_id,
-      sales_tax: +singlePlan.value.sales_tax,
+      sales_tax: +singlePlan.value.sales_tax / 100,
       gold_billed_annual_price: +singlePlan.value.gold_billed_annual_price,
       gold_billed_monthly_price: +singlePlan.value.gold_billed_monthly_price,
       gold_advertised_price: +singlePlan.value.gold_advertised_price,
@@ -648,7 +635,7 @@ const handleCreateSubmit = async () => {
 
     const planToCreate = {
       region_id: region_id,
-      sales_tax: +singlePlan.value.sales_tax,
+      sales_tax: +singlePlan.value.sales_tax / 100,
       gold_billed_annual_price: +singlePlan.value.gold_billed_annual_price,
       gold_billed_monthly_price: +singlePlan.value.gold_billed_monthly_price,
       gold_advertised_price: +singlePlan.value.gold_advertised_price,

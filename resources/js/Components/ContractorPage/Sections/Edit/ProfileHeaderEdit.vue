@@ -138,7 +138,7 @@
         <InputLabel
           class="font-bold"
           for="company_name"
-          :value="translations && translations.company_name + '*'"
+          :value="translations && translations.company_name"
         />
         <TextInput
           id="company_name"
@@ -297,10 +297,10 @@ const validateForm = () => {
     isValid = false;
   }
   // Validate company_name
-  if (!tempProfile.company_name.trim()) {
-    errors.company_name = "Company name is required";
-    isValid = false;
-  }
+  // if (!tempProfile.company_name.trim()) {
+  //   errors.company_name = "Company name is required";
+  //   isValid = false;
+  // }
 
   // Validate city
   if (!tempProfile.city.trim()) {

@@ -285,6 +285,9 @@ class ContractorPageController extends Controller
         if ($contractor_id) {
             $contractorProfile = ContractorProfile::where('user_id', $contractor_id)->with('trades')->first();
 
+            $baseProfile = Profile::where('user_id', $contractor_id)->first(['is_contractor']);
+
+            $contractorProfile['is_contractor'] = $baseProfile->is_contractor;
             if (!$contractorProfile) {
                 $profile = Profile::where('user_id', $contractor_id)->with('trades')->first();
 

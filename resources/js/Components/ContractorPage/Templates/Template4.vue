@@ -13,7 +13,7 @@
           :total_reviews="total_reviews"
           :profile="profile"
         />
-        <div class="mt-6">
+        <div class="mt-6" v-if="isContractor">
           <ImageTextSection4
             v-if="profile.image_sections && profile.image_sections.length > 0"
             :image_sections="profile.image_sections"
@@ -24,7 +24,7 @@
 
         <div
           class="my-6"
-          v-if="profile.bottom_text"
+          v-if="profile.bottom_text && isContractor"
           :style="{
             color: selectedColorScheme[2],
           }"
@@ -35,7 +35,7 @@
             :screen-width="screenWidth"
           />
         </div>
-        <div class="flex flex-col mb-6 md:flex-row gap-2 items-stretch">
+        <div class="flex flex-col mb-6 md:flex-row gap-2 items-stretch mt-3">
           <Card
             :shadowLevel="2"
             cardInnerClasses="h-full"
@@ -67,14 +67,18 @@
         </div>
 
         <BragSection4
-          v-if="profile.brag_sections && profile.brag_sections.length > 0"
+          v-if="
+            profile.brag_sections &&
+            profile.brag_sections.length > 0 &&
+            isContractor
+          "
           :brag_sections="profile.brag_sections"
           :contractor-id="profile.id"
           :screen-width="screenWidth"
         />
         <!-- Image Selection -->
         <div
-          v-if="profile.bottom_text || profile.closing_text"
+          v-if="(profile.bottom_text || profile.closing_text) && isContractor"
           class="flex gap-2 flex-col mt-6"
           :style="{
             color: selectedColorScheme[2],
@@ -125,6 +129,11 @@ const store = useStore();
 const selectedColorScheme = computed(
   () => store.state.contractor.selectedColorScheme || template1Default
 );
+
+const isContractor = computed(() => {
+  const profile = props.profile;
+  return profile && profile.is_contractor === 1;
+});
 </script>
 
 <style></style>

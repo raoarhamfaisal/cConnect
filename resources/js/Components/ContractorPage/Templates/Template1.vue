@@ -16,7 +16,13 @@
         />
       </div>
 
-      <div v-if="profile.image_sections && profile.image_sections.length > 0">
+      <div
+        v-if="
+          profile.image_sections &&
+          profile.image_sections.length > 0 &&
+          isContractor
+        "
+      >
         <ImageTextSection
           :image_sections="profile.image_sections"
           :contractor-id="profile.id"
@@ -25,7 +31,7 @@
       </div>
 
       <div
-        v-if="profile.bottom_text"
+        v-if="profile.bottom_text && isContractor"
         class="bg-[#f8f2e8] py-10 sm:py-20 overflow-hidden"
         :style="{
           color: '#2d2c2b',
@@ -69,7 +75,13 @@
         </Card>
       </div>
 
-      <div v-if="profile.brag_sections && profile.brag_sections.length > 0">
+      <div
+        v-if="
+          profile.brag_sections &&
+          profile.brag_sections.length > 0 &&
+          isContractor
+        "
+      >
         <BragSection
           :brag_sections="profile.brag_sections"
           :contractor-id="profile.id"
@@ -77,7 +89,7 @@
         />
       </div>
       <!-- Image Selection -->
-      <div v-if="profile.bottom_text || profile.closing_text">
+      <div v-if="(profile.bottom_text || profile.closing_text) && isContractor">
         <div
           class="flex gap-2 overflow-hidden flex-col bg-[#f8f2e8] py-10 sm:py-20"
           :style="{
@@ -124,11 +136,15 @@ const props = defineProps({
   },
 });
 const store = useStore();
-
 //Computed
 const selectedColorScheme = computed(
   () => store.state.contractor.selectedColorScheme || template1Default
 );
+
+const isContractor = computed(() => {
+  const profile = props.profile;
+  return profile && profile.is_contractor === 1;
+});
 </script>
 
 <style></style>

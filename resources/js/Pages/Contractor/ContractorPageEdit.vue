@@ -1,7 +1,9 @@
 <template>
   <Head
     :title="`${translations && translations.edit} ${
-      translations && translations.contractor_page
+      isContractor
+        ? translations && translations.contractor_page
+        : 'Customer Page'
     }
     `"
   />
@@ -84,10 +86,16 @@ const average_rating = ref(null);
 const contractorProfile = ref({});
 const total_reviews = ref(0);
 const colorSchemeArray = ref([]);
+const userProps = usePage().props.value;
 
 const userVersion = computed(() => store.getters.userVersion);
 const translations = computed(() => store.getters.translations);
 
+const isContractor = computed(() => {
+  const profile = userProps.auth.user.profile || userProps.profile;
+
+  return profile && profile.is_contractor === 1;
+});
 onMounted(() => {
   localStorage.setItem("prevUrl", "/edit");
   fetchContractorDetails();
@@ -105,7 +113,8 @@ onMounted(() => {
   }
 });
 
-//Computed
+//mehtods
+
 const fetchContractorDetails = async () => {
   loading.value = true;
   try {

@@ -51,7 +51,7 @@
             <p>Amount Paid: ${{ $amount }} <br>
                 Last 4 digits of CC/Bank Account: {{ $last4DigitsOfBankAccount }}
             </p>
-            <a href="https://cConnect.com/login"
+            <a href="http://localhost/#loginHere"
                 style="padding: 10px; background-color: #241e6d; color: white; text-decoration: none; border-radius: 5px;">Log
                 into cConnect</a>
         </div>

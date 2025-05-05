@@ -62,6 +62,7 @@
 
       <!-- Image Selection -->
       <Card
+        v-if="isContractor"
         :shadowLevel="2"
         bgColor="white"
         :padding="screenWidth < 640 ? '7px' : '20px'"
@@ -91,8 +92,10 @@
                 class="flex text-blue-rgba items-center font-extrabold text-2xl"
               >
                 {{
-                  translations &&
-                  translations.about_us_why_you_should_work_for_or_hire_us
+                  isContractor
+                    ? translations &&
+                      translations.about_us_why_you_should_work_for_or_hire_us
+                    : "About Us : What are you looking for?"
                 }}
               </div>
               <IconButton
@@ -176,6 +179,7 @@ import {
   toolbarConfig,
 } from "@/helpers/utilities";
 import { useStore } from "vuex";
+import { usePage } from "@inertiajs/inertia-vue3";
 
 // Province
 const props = defineProps({
@@ -221,8 +225,16 @@ const onReady = (editor) => {
     );
 };
 const store = useStore();
+const userProps = usePage().props.value;
+
 // computed
 const translations = computed(() => store.getters.translations);
+const isContractor = computed(() => {
+  const profile = userProps.auth.user.profile || userProps.profile;
+
+  return profile && profile.is_contractor === 1;
+});
+
 const processedBottomText = computed(() => {
   const parser = new DOMParser();
   const doc = parser.parseFromString(bottomText.value, "text/html");

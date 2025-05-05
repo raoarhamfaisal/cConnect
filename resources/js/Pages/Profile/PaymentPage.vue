@@ -164,38 +164,6 @@
                   />
                 </div>
               </div>
-
-              <!-- <div
-                :class="[
-                  'shadow-md flex gap-4 justify-center items-center  border-2 cursor-pointer transition-all duration-300 active:scale-100 p-2 sm:p-5 rounded',
-                  paymentMethod === 'ACH'
-                    ? 'border-[#4169E1] border-[2px]'
-                    : 'border-black hover:scale-[1.02] border-[2px]',
-                ]"
-                @click="selectPayment('ACH')"
-              >
-                <div
-                  class="h-3 sm:h-4 border-2 w-3 sm:w-4 rounded-full mx-auto"
-                  :style="{
-                    background: paymentMethod === 'ACH' ? '#4169E1' : 'white',
-                    borderColor: paymentMethod === 'ACH' ? '#4169E1' : 'black',
-                  }"
-                ></div>
-                <div
-                  class="flex max-xl:flex-col max-xl:gap-0 items-center justify-center"
-                >
-                  <div
-                    class="font-bold mr-1 translate-y-[0px] text-sm sm:text-lg"
-                  >
-                    Bank Transfer
-                  </div>
-                  <img
-                    src="/images/icons/ach.png"
-                    alt="Authorize.net Logo"
-                    class="w-48"
-                  />
-                </div>
-              </div> -->
             </div>
           </div>
 
@@ -413,23 +381,6 @@
                       />
                       <InputError class="mt-2" :message="errors.zipcode" />
                     </div>
-
-                    <!-- <div class="mb-4 sm:mb-0">
-                      <InputLabel
-                        class="font-bold"
-                        for="county"
-                        :value="translations && translations.county + '*'"
-                      />
-                      <TextInput
-                        id="county"
-                        type="text"
-                        class="mt-1 block w-full"
-                        v-model="form.county"
-                        @input="clearError('county')"
-                        placeholder="Type your county"
-                      />
-                      <InputError class="mt-2" :message="errors.county" />
-                    </div> -->
                   </div>
                   <InputError class="mt-2" :message="subscriptionApiError" />
 
