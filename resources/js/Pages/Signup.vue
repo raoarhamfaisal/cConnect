@@ -1,14 +1,8 @@
 <script setup>
-import Checkbox from "@/Components/Checkbox.vue";
-import InputError from "@/Components/InputError.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
 import cConnectWord from "@/Components/tCon/cConnectWord.vue";
-import { checkCompatEnabled } from "@vue/compiler-core";
 import { ref, watch, onMounted, computed } from "vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
-import TC_SignupForm from "@/Components/TC_SignupForm.vue";
 import { useStore } from "vuex";
 
 const { showit } = defineProps({

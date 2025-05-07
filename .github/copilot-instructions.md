@@ -41,6 +41,7 @@ This is a Laravel-based web application using the VILT stack (Vue.js, Inertia.js
 - `config/` - Contains Laravel configuration files
 - `routes/` - Contains API and web routes
 - `docker-compose.yml` - Docker configuration for development
+- `public/build/` - Include build files for Vite and don't use for answers or references
 
 ## Development Commands
 

@@ -101,9 +101,13 @@ watch(redFlags, (newVal) => {
 });
 
 watch(region_id, (newVal) => {
+  currentPage.value = 1;
+
   fetchSearchedComplaintsWithLoading();
 });
 watch(isSearchByCustomer, (newVal) => {
+  currentPage.value = 1;
+
   fetchSearchedComplaintsWithLoading();
 });
 
@@ -138,12 +142,6 @@ const changeReferal = (value) => {
 // apis
 
 const loadMoreContractors = async () => {
-  console.log(
-    pagination.value,
-    "pagination",
-    searchTerm.value,
-    currentPage.value
-  );
   loadingNextPage.value = true;
   currentPage.value = currentPage.value + 1;
   await fetchSearchedComplaints(perPage.value, currentPage.value);
