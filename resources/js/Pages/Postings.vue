@@ -568,6 +568,7 @@ export default {
       <div
         class="flex flex-col w-full items-center justify-start px-2 sm:px-4 lg:px-8 lg:max-h-screen lg:overflow-y-auto h-screen pb-8 postings"
         ref="postingsRef"
+        id="posting-container"
       >
         <!-- back page -->
         <div
@@ -724,7 +725,7 @@ export default {
       <!-- WRAPPER END: For News Feed -->
     </div>
     <!-- END POSTING CONTAINER -->
-    <MoveToTop />
+    <MoveToTop scrollableContainer="posting-container" />
   </Header>
 </template>
 

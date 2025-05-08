@@ -69,7 +69,6 @@ export default {
       try {
         const res = await axios.get("/api/chat/threads", getAxiosConfig());
         let threads = res.data;
-
         if (
           state.partner &&
           state.partner.id !== 0 &&
@@ -81,6 +80,13 @@ export default {
             last_message: null,
           });
           commit("SET_CURRENT", threads[0].conversation_id);
+        } else if (
+          state.partner &&
+          threads.some((t) => t.partner.id === state.partner.id)
+        ) {
+          const thread = threads.find((t) => t.partner.id === state.partner.id);
+          commit("SET_CURRENT", thread.conversation_id);
+          await dispatch("fetchMessages", thread.conversation_id);
         } else {
           commit("/SET_PARTNER", {
             id: 0,
@@ -91,6 +97,7 @@ export default {
           commit("SET_CURRENT", null);
         }
 
+        console.log("Fetched threads:", threads, state.currentId);
         commit("SET_THREADS", threads);
 
         // Only auto-select if there's no current selection
