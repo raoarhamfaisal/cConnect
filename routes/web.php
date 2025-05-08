@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ConversationController;
+use App\Http\Controllers\MessageController;
+
 
 Route::get('/', function () {
     return Inertia::render('index', [
@@ -224,7 +226,8 @@ Route::post('/tokens/create', function (Request $request) {
 // Add route for supporting document upload
 Route::post('/upload-supporting-document', [ReviewController::class, 'uploadSupportingDocument'])->middleware(['auth', 'verified']);
 
-
+// Chat attachments
+Route::post('/chat/upload-attachment', [MessageController::class, 'upload'])->middleware(['auth', 'verified']);
 
 Route::delete('/post/{post}', [PostController::class, 'destroy'])
     ->name('post.destroy')

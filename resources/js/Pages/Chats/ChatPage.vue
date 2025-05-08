@@ -19,11 +19,15 @@
           ref="messageListRef"
           :messages="messages"
           :user-id="authUser.id"
+          @editMessage="openEditModal"
         />
 
         <ChatComposer @send="send" />
       </template>
     </div>
+
+    <!-- Edit Message Modal -->
+    <EditMessageModal ref="editMessageModal" />
   </div>
 </template>
 
@@ -34,9 +38,11 @@ import ChatSidebar from "@/Pages/Chats/partials/ChatSidebar.vue";
 import ChatHeader from "@/Pages/Chats/partials/ChatHeader.vue";
 import MessageList from "@/Pages/Chats/partials/MessageList.vue";
 import ChatComposer from "@/Pages/Chats/partials/ChatComposer.vue";
+import EditMessageModal from "@/Pages/Chats/partials/EditMessageModal.vue";
 
 const store = useStore();
 const messageListRef = ref(null);
+const editMessageModal = ref(null);
 const threads = computed(() => store.getters["chat/threads"]);
 const currentId = computed(() => store.getters["chat/currentId"]);
 const currentThread = computed(() => store.getters["chat/currentThread"]);
@@ -69,12 +75,28 @@ function select(partnerId) {
   }
 }
 
-function send(text) {
-  store.dispatch("chat/sendMessage", text).then(() => {
+function send(data) {
+  let payload;
+  if (typeof data === "string") {
+    payload = { text: data };
+  } else {
+    payload = {
+      text: data.text,
+      attachments: data.attachments || [],
+    };
+  }
+
+  return store.dispatch("chat/sendMessage", payload).then(() => {
     if (messageListRef.value) {
       messageListRef.value.scrollToBottom();
     }
   });
+}
+
+function openEditModal() {
+  if (editMessageModal.value) {
+    editMessageModal.value.openDialog();
+  }
 }
 
 onMounted(() => {

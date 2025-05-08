@@ -9,6 +9,8 @@ use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
 use Laravel\Sanctum\PersonalAccessToken;
 use Laravel\Sanctum\Sanctum;
+use App\Services\ChatAttachmentService;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -18,7 +20,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(ChatAttachmentService::class, function ($app) {
+            return new ChatAttachmentService();
+        });
     }
 
     /**

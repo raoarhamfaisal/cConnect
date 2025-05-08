@@ -10,6 +10,7 @@ export default {
     messages: [],
     loading: false,
     messagesLoading: false,
+    editingMessage: null,
   }),
   getters: {
     threads: (s) => s.threads,
@@ -20,6 +21,7 @@ export default {
     messages: (s) => s.messages,
     loading: (s) => s.loading,
     messagesLoading: (s) => s.messagesLoading,
+    editingMessage: (s) => s.editingMessage,
   },
   mutations: {
     SET_PARTNER(state, p) {
@@ -56,6 +58,51 @@ export default {
     },
     SET_MESSAGES_LOADING(state, status) {
       state.messagesLoading = status;
+    },
+    SET_EDITING_MESSAGE(state, message) {
+      state.editingMessage = message;
+    },
+    UPDATE_MESSAGE(state, updatedMessage) {
+      const index = state.messages.findIndex((m) => m.id === updatedMessage.id);
+      if (index !== -1) {
+        state.messages.splice(index, 1, updatedMessage);
+      }
+
+      // Also update in threads if it's the last message
+      const threadIndex = state.threads.findIndex(
+        (t) => t.conversation_id === state.currentId
+      );
+      if (
+        threadIndex !== -1 &&
+        state.threads[threadIndex].last_message &&
+        state.threads[threadIndex].last_message.id === updatedMessage.id
+      ) {
+        state.threads[threadIndex].last_message = updatedMessage;
+      }
+    },
+    DELETE_MESSAGE(state, messageId) {
+      const index = state.messages.findIndex((m) => m.id === messageId);
+      if (index !== -1) {
+        // For soft delete - mark as deleted but keep in array
+        state.messages[index].deleted = true;
+        state.messages[index].body = null;
+
+        // For hard delete - remove from array
+        // state.messages.splice(index, 1);
+      }
+
+      // Update in threads if it's the last message
+      const threadIndex = state.threads.findIndex(
+        (t) => t.conversation_id === state.currentId
+      );
+      if (
+        threadIndex !== -1 &&
+        state.threads[threadIndex].last_message &&
+        state.threads[threadIndex].last_message.id === messageId
+      ) {
+        state.threads[threadIndex].last_message.deleted = true;
+        state.threads[threadIndex].last_message.body = null;
+      }
     },
   },
   actions: {
@@ -164,8 +211,21 @@ export default {
     },
 
     // 4) send a message
-    async sendMessage({ commit, state, dispatch }, body) {
-      if (!body.trim()) return;
+    async sendMessage({ commit, state, dispatch }, payload) {
+      // Handle string or object payload
+      const messageData =
+        typeof payload === "string"
+          ? { body: payload.trim() }
+          : {
+              body: payload.text.trim(),
+              attachments: payload.attachments || [],
+            };
+
+      if (
+        !messageData.body &&
+        (!messageData.attachments || messageData.attachments.length === 0)
+      )
+        return;
 
       // Create conversation on first send
       if (
@@ -177,12 +237,55 @@ export default {
       }
 
       // Now send the message
+      const formData = new FormData();
+      if (messageData.body) {
+        formData.append("body", messageData.body);
+      }
+
+      // Add attachments if any
+      if (messageData.attachments && messageData.attachments.length > 0) {
+        messageData.attachments.forEach((path, index) => {
+          formData.append(`attachmentPaths[${index}]`, path);
+        });
+      }
+
+      const config = getAxiosConfig();
+      config.headers["Content-Type"] = "multipart/form-data";
+
       const res = await axios.post(
         `/api/chat/threads/${state.currentId}/messages`,
-        { body },
-        getAxiosConfig()
+        formData,
+        config
       );
+
       commit("ADD_MESSAGE", res.data);
+    },
+
+    // Edit a message
+    async editMessage({ commit }, { messageId, body }) {
+      try {
+        const res = await axios.put(
+          `/api/chat/messages/${messageId}`,
+          { body },
+          getAxiosConfig()
+        );
+        commit("UPDATE_MESSAGE", res.data);
+        return res.data;
+      } catch (error) {
+        console.error("Error editing message:", error);
+        throw error;
+      }
+    },
+
+    // Delete a message
+    async deleteMessage({ commit }, messageId) {
+      try {
+        await axios.delete(`/api/chat/messages/${messageId}`, getAxiosConfig());
+        commit("DELETE_MESSAGE", messageId);
+      } catch (error) {
+        console.error("Error deleting message:", error);
+        throw error;
+      }
     },
   },
 };

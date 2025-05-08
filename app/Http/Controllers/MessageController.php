@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Conversation;
+use App\Models\Message;
 use App\Events\MessageSent;
 use Illuminate\Support\Facades\Auth;
+use App\Services\ChatAttachmentService;
 
 class MessageController extends Controller
 {
@@ -59,7 +61,16 @@ class MessageController extends Controller
         $msgs = $conversation->messages()
             ->with('sender.profile','attachments')
             ->orderBy('created_at')
-            ->get();
+            ->get()
+            ->map(function($message) {
+                // Keep the message structure but indicate deletion status
+                if ($message->deleted) {
+                    // Set the body to null for deleted messages but keep them in the results
+                    // This allows frontend to show "This message was deleted" placeholder
+                    $message->body = null;
+                }
+                return $message;
+            });
 
         return response()->json($msgs);
     }
@@ -68,8 +79,14 @@ class MessageController extends Controller
      * POST /api/chat/threads/{conversation}/messages
      * Send a new message (with optional file uploads).
      */
-    public function store(Request $request, Conversation $conversation)
+    public function store(Request $request, Conversation $conversation, ChatAttachmentService $attachmentService)
     {
+        \Log::info('Message with attachments received', [
+            'has_attachments' => $request->hasFile('attachments'),
+            'has_attachment_paths' => $request->has('attachmentPaths'),
+            'attachment_paths' => $request->input('attachmentPaths'),
+        ]);
+        
         $me = Auth::id();
         abort_unless(
             $conversation->participants()->where('user_id',$me)->exists(),
@@ -79,6 +96,7 @@ class MessageController extends Controller
         $data = $request->validate([
             'body'         => 'nullable|string',
             'attachments.*'=> 'file|max:5120',
+            'attachmentPaths.*' => 'nullable|string',
         ]);
 
         $msg = $conversation->messages()->create([
@@ -86,12 +104,24 @@ class MessageController extends Controller
             'body'    => $data['body'] ?? null,
         ]);
 
+        // Handle direct file uploads
         if($request->hasFile('attachments')){
             foreach($request->file('attachments') as $file){
-                $path = $file->store('chat/attachments','public');
+                $attachment = $attachmentService->processPermanentAttachment($file, $msg->id);
                 $msg->attachments()->create([
-                    'file_path'=>$path,
-                    'file_type'=>$file->getClientMimeType(),
+                    'file_path' => $attachment['path'],
+                    'file_type' => $attachment['type'],
+                ]);
+            }
+        }
+
+        // Handle paths from previously uploaded temporary files
+        if($request->has('attachmentPaths')){
+            foreach($request->input('attachmentPaths') as $tempPath){
+                $attachment = $attachmentService->processPermanentAttachment($tempPath, $msg->id);
+                $msg->attachments()->create([
+                    'file_path' => $attachment['path'],
+                    'file_type' => $attachment['type'],
                 ]);
             }
         }
@@ -137,5 +167,122 @@ class MessageController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+
+       /**
+     * Handle chat attachment upload.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Services\ChatAttachmentService $attachmentService
+     * @return \Illuminate\Http\Response
+     */
+    public function upload(Request $request, ChatAttachmentService $attachmentService)
+    {
+        // Debug information to see what's in the request
+        \Log::info('Upload request details:', [
+            'all_files' => $request->allFiles(),
+            'content_type' => $request->header('Content-Type'),
+            'has_filepond' => $request->hasFile('filepond'),
+            'all_input' => $request->all(),
+            'csrf_token' => $request->header('X-CSRF-TOKEN'),
+            'is_ajax' => $request->ajax(),
+        ]);
+
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        // Try to find the file in any field
+        $fileField = null;
+        $file = null;
+
+        if ($request->hasFile('filepond')) {
+            $fileField = 'filepond';
+            $file = $request->file('filepond');
+        } else {
+            // Check all files to find one
+            foreach ($request->allFiles() as $field => $uploadedFile) {
+                $fileField = $field;
+                $file = is_array($uploadedFile) ? $uploadedFile[0] : $uploadedFile;
+                break;
+            }
+        }
+
+        if ($file) {
+            try {
+                \Log::info("Processing file from field: {$fileField}", [
+                    'mime' => $file->getMimeType(),
+                    'size' => $file->getSize(),
+                    'name' => $file->getClientOriginalName()
+                ]);
+                
+                // Process and store the temp attachment using our service
+                $path = $attachmentService->processTempAttachment($file);
+                return $path;
+            } catch (\Exception $e) {
+                \Log::error('File upload error: ' . $e->getMessage(), [
+                    'exception' => $e,
+                    'trace' => $e->getTraceAsString()
+                ]);
+                return response()->json(['error' => $e->getMessage()], 400);
+            }
+        }
+        
+        return response()->json(['error' => 'No file provided - Check your form field names'], 400);
+    }
+
+    /**
+     * Update a message
+     * 
+     * @param Request $request
+     * @param Message $message
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request, Message $message)
+    {
+        // Check if user owns the message
+        if ($message->user_id !== Auth::id()) {
+            return response()->json(['error' => 'Unauthorized to edit this message'], 403);
+        }
+
+        $data = $request->validate([
+            'body' => 'required|string',
+        ]);
+
+        $message->update([
+            'body' => $data['body'],
+            'edited' => true
+        ]);
+
+        // Reload relations
+        $message->load('sender.profile', 'attachments');
+
+        return response()->json($message);
+    }
+
+    /**
+     * Delete a message
+     * 
+     * @param Message $message
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy(Message $message)
+    {
+        // Check if user owns the message
+        if ($message->user_id !== Auth::id()) {
+            return response()->json(['error' => 'Unauthorized to delete this message'], 403);
+        }
+
+        // Optional: soft delete or mark as deleted instead of hard delete
+        $message->update([
+            'body' => null,
+            'deleted' => true
+        ]);
+
+        // Alternative hard delete if preferred:
+        // $message->delete();
+
+        return response()->json(['success' => true, 'message' => 'Message deleted successfully']);
     }
 }
