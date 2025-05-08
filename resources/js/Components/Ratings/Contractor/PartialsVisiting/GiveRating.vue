@@ -358,7 +358,7 @@ const handleSubmit = async () => {
         reviewer_id: profileId,
         contractor_id: contractorId,
         is_under_appeal: false,
-        supporting_document: supportingDocPath.value, // Add supporting document path
+        supporting_document: supportingDocPath.value,
       };
 
       const response = await axios.post(

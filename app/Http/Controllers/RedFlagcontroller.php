@@ -6,6 +6,7 @@ use App\Models\RedFlag;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Services\ProcessDocumentService;
 
 class RedFlagController extends Controller
 {
@@ -17,6 +18,7 @@ class RedFlagController extends Controller
             'name_of_the_contractor_or_customer' => 'required|string|max:255',
             'complaint' => 'required|string',
             'is_contractor_or_customer' => 'required|boolean',
+            'supporting_document' => 'nullable|string',
         ]);
 
         $userID = Auth::user()->id;
@@ -28,6 +30,7 @@ class RedFlagController extends Controller
             'name_of_the_contractor_or_customer' => $request->name_of_the_contractor_or_customer,
             'complaint' => $request->complaint,
             'is_contractor_or_customer' => $request->is_contractor_or_customer,
+            'supporting_document' => $request->supporting_document,
         ]);
 
         return response()->json($redFlag, 201);
@@ -48,9 +51,18 @@ class RedFlagController extends Controller
             'name_of_the_contractor_or_customer' => 'required|string|max:255',
             'complaint' => 'required|string',
             'is_contractor_or_customer' => 'required|boolean',
+            'supporting_document' => 'nullable|string',
         ]);
 
-        $redFlag->update($request->all());
+        $redFlag->update(
+            [...$request->only([
+                'region_id',
+                'name_of_the_contractor_or_customer',
+                'complaint',
+                'is_contractor_or_customer',
+                'supporting_document',
+            ])]
+        );
 
         return response()->json($redFlag, 200);
     }
@@ -196,5 +208,21 @@ class RedFlagController extends Controller
         ];
     
         return response()->json($response);
+    }
+    
+    /**
+     * Handle supporting document upload.
+     */
+    public function uploadSupportingDocument(Request $request, ProcessDocumentService $documentService)
+    {
+        if ($request->hasFile('supportingDocument')) {
+            try {
+                $path = $documentService->handleProcessDocument($request->file('supportingDocument'));
+                return $path;
+            } catch (\Exception $e) {
+                return response()->json(['error' => $e->getMessage()], 400);
+            }
+        }
+        return response()->json(['error' => 'No file provided'], 400);
     }
 }

@@ -14,7 +14,8 @@ class RedFlag extends Model
 
 
     protected $fillable = [
-        'profile_id', 'region_id', 'name_of_the_contractor_or_customer', 
+        'profile_id', 'region_id', 'name_of_the_contractor_or_customer',
+        'supporting_document',
         'complaint', 'is_contractor_or_customer'
     ];
     

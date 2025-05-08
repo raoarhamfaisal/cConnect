@@ -126,6 +126,33 @@
                 }}
               </div>
               <div>{{ redFlag.profile.city }}, {{ redFlag.profile.state }}</div>
+              <!-- Supporting Document -->
+              <div v-if="redFlag.supporting_document" class="flex gap-2 mt-4">
+                <div class="text-sm xs:text-md font-bold">
+                  {{ "Supporting Document:" }}
+                </div>
+                <a
+                  :href="`/${redFlag.supporting_document}`"
+                  target="_blank"
+                  class="text-blue-600 hover:underline flex items-center text-sm"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 mr-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                    />
+                  </svg>
+                  {{ "View Document" }}
+                </a>
+              </div>
             </div>
           </div>
           <div>
@@ -144,6 +171,32 @@
                 }}
               </div>
               <div>{{ redFlag.profile.city }}, {{ redFlag.profile.state }}</div>
+              <div v-if="redFlag.supporting_document" class="flex gap-2 mt-4">
+                <div class="text-sm xs:text-md font-bold">
+                  {{ "Supporting Document:" }}
+                </div>
+                <a
+                  :href="`/${redFlag.supporting_document}`"
+                  target="_blank"
+                  class="text-blue-600 hover:underline flex items-center text-sm"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 mr-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                    />
+                  </svg>
+                  {{ "View Document" }}
+                </a>
+              </div>
             </div>
           </div>
           <!-- complaint text -->

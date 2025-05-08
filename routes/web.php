@@ -12,6 +12,8 @@ use App\Http\Controllers\ContractorRatingsAdminController;
 use App\Http\Controllers\AppealedReviewsController;
 use App\Http\Controllers\AdminRatingsController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\RedFlagcontroller;
+
 use App\Models\Profile;
 
 
@@ -225,9 +227,9 @@ Route::post('/tokens/create', function (Request $request) {
 
 // Add route for supporting document upload
 Route::post('/upload-supporting-document', [ReviewController::class, 'uploadSupportingDocument'])->middleware(['auth', 'verified']);
+Route::post('/red-flags/upload-supporting-document', [RedFlagController::class, 'uploadSupportingDocument'])->middleware(['auth', 'verified']);
 
-// Chat attachments
-Route::post('/chat/upload-attachment', [MessageController::class, 'upload'])->middleware(['auth', 'verified']);
+
 
 Route::delete('/post/{post}', [PostController::class, 'destroy'])
     ->name('post.destroy')
@@ -242,3 +244,5 @@ require __DIR__ . '/auth.php';
 Route::middleware(['auth','verified','check.session'])
      ->get('/chats', [ConversationController::class,'index'])
      ->name('chat.index');
+    // Chat attachments
+Route::post('/chat/upload-attachment', [MessageController::class, 'upload'])->middleware(['auth', 'verified']);

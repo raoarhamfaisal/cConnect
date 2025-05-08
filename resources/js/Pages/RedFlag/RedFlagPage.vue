@@ -14,9 +14,17 @@ import TableHead from "@/Pages/RedFlag/partials/TableHead.vue";
 import RedFlag from "@/Pages/RedFlag/partials/RedFlag.vue";
 
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
-
+import VueFilePond from "vue-filepond";
+import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
+import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
+
+// Create FilePond component
+const FilePond = VueFilePond(
+  FilePondPluginFileValidateType,
+  FilePondPluginFileValidateSize
+);
 
 const props = defineProps({
   profile: Object,
@@ -221,6 +229,7 @@ const addNewRedFlagDialogRef = ref();
 const bestPracticeDialogRef = ref();
 const doYouAgreeBestPracticeCheck = ref();
 const agreedBestPractice = ref(false);
+const supportingDocPath = ref("");
 
 const openBestPracticeCard = () => {
   if (!agreedBestPractice.value) {
@@ -251,6 +260,7 @@ const newRedFlag = reactive({
   complaint: "",
   is_contractor_or_customer: null,
   region_id: selectedObj ? selectedObj.id.toString() : undefined,
+  supporting_document: "",
 });
 const errors = reactive({
   name_of_the_contractor_or_customer: null,
@@ -338,9 +348,14 @@ const onAddNewRedFlag = async () => {
   addingRedFlag.value = true;
   if (validateForm()) {
     try {
+      const payload = {
+        ...newRedFlag,
+        supporting_document: supportingDocPath.value,
+      };
+      console.log("payload", payload, supportingDocPath.value);
       const response = await axios.post(
         `/api/red-flags`,
-        newRedFlag,
+        payload,
         getAxiosConfig()
       );
 
@@ -386,6 +401,32 @@ const determineBorderVisibility = (index) => {
   const isCurrentOpen = openAccordions.value.includes(index);
   const isNextOpen = openAccordions.value.includes(index + 1);
   return isCurrentOpen && !isNextOpen;
+};
+
+// FilePond handlers
+const supportingDoc = ref([]);
+const handleDocumentInit = () => {
+  supportingDoc.value = [];
+  supportingDocPath.value = "";
+};
+const handleDocumentLoad = (response) => {
+  console.log("response", response);
+  supportingDocPath.value = response;
+  return response;
+};
+const handleDocumentError = (err) => {
+  console.error(err);
+  somethingWentWrong();
+};
+const handleDocumentRevert = (filename, load) => {
+  supportingDocPath.value = "";
+  load();
+};
+const handleDocumentProcessed = () => {
+  /* optional log */
+};
+const handleDocumentReverted = () => {
+  supportingDocPath.value = "";
 };
 </script>
 
@@ -788,6 +829,38 @@ const determineBorderVisibility = (index) => {
             <InputError class="mt-2" :message="errors.region_id" />
           </div>
         </div>
+
+        <!-- Supporting Document Upload -->
+        <div class="mb-4">
+          <InputLabel
+            class="font-bold text-base mb-1"
+            value="Supporting Document (Optional)"
+          />
+          <file-pond
+            ref="pond"
+            name="supportingDocument"
+            :files="supportingDoc"
+            allowFileTypeValidation
+            acceptedFileTypes="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg,image/png"
+            allowFileSizeValidation
+            maxFileSize="10MB"
+            :server="{
+              process: {
+                url: '/red-flags/upload-supporting-document',
+                method: 'POST',
+                headers: { 'X-CSRF-TOKEN': $page.props.csrf_token },
+                onload: handleDocumentLoad,
+                onerror: handleDocumentError,
+              },
+              revert: handleDocumentRevert,
+            }"
+            @init="handleDocumentInit"
+            @processfile="handleDocumentProcessed"
+            @processfilerevert="handleDocumentReverted"
+            :labelIdle="`Drag & Drop or <span class='filepond--label-action'>Browse</span>`"
+          />
+        </div>
+
         <!-- Submit -->
         <button
           @click="onAddNewRedFlag"
@@ -826,96 +899,3 @@ const determineBorderVisibility = (index) => {
   color: #fff;
 }
 </style>
-
-<!-- const redFlags = ref([
-  {
-    id: 1,
-    flagAddedBy: {
-      name: "John Doe",
-      city: "Dallasman",
-      state: "Texas",
-    },
-
-    customerName: "George SuperIdolSmithy",
-    complaint:
-      "I thought they did sub-par work work.  asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid. asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid.",
-    region: "1001 Dallas Ft Worth",
-    dateReported: "12/30/23",
-    isComplaintOnCustomer: true,
-  },
-  {
-    id: 2,
-    flagAddedBy: {
-      name: "John Doe",
-      city: "Dallasman",
-      state: "Texas",
-    },
-
-    customerName: "Rosealina Smithwhateverlast",
-    complaint:
-      "Never paid the final insurance check. She told me that her insurance adjuster said that was her money so she took her family on a cruise. I asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel.",
-    region: "1001 Dallas Ft Worth",
-    dateReported: "12/30/23",
-    isComplaintOnCustomer: true,
-  },
-  {
-    id: 3,
-    flagAddedBy: {
-      name: "John Doe",
-      city: "Dallasman",
-      state: "Texas",
-    },
-
-    customerName: "George SuperIdolSmithy",
-    complaint:
-      "I thought they did sub-par work work.  asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid. asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid.",
-    region: "1001 Dallas Ft Worth",
-    dateReported: "12/30/23",
-    isComplaintOnCustomer: true,
-  },
-  {
-    id: 4,
-    flagAddedBy: {
-      name: "John Doe",
-      city: "Dallasman",
-      state: "Texas",
-    },
-
-    customerName: "Rosealina Smithwhateverlast",
-    complaint:
-      "Never paid the final insurance check. She told me that her insurance adjuster said that was her money so she took her family on a cruise. I asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel.",
-    region: "1001 Dallas Ft Worth",
-    dateReported: "12/30/23",
-    isComplaintOnCustomer: true,
-  },
-  {
-    id: 5,
-    flagAddedBy: {
-      name: "John Doe",
-      city: "Dallasman",
-      state: "Texas",
-    },
-
-    customerName: "George SuperIdolSmithy",
-    complaint:
-      "I thought they did sub-par work work.  asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid. asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid.",
-    region: "1001 Dallas Ft Worth",
-    dateReported: "12/30/23",
-    isComplaintOnCustomer: true,
-  },
-  {
-    id: 6,
-    flagAddedBy: {
-      name: "John Doe",
-      city: "Dallasman",
-      state: "Texas",
-    },
-
-    customerName: "Rosealina Smithwhateverlast",
-    complaint:
-      "Never paid the final insurance check. She told me that her insurance adjuster said that was her money so she took her family on a cruise. I asked told her that I need to file a lien on the house. Lien is filed but she still hasn't paid. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus reprehenderit sit quaerat, veritatis facilis sapiente ab? Culpa deleniti voluptatibus ea nisi quibusdam eligendi, beatae, magnam reiciendis, sed omnis vel.",
-    region: "1001 Dallas Ft Worth",
-    dateReported: "12/30/23",
-    isComplaintOnCustomer: true,
-  },
-]); -->
