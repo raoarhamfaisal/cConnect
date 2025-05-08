@@ -26,6 +26,7 @@ import { changesSaved, somethingWentWrong } from "@/helpers/utilities";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { filterBadWordsWithoutValue } from "@/helpers/utilities";
 import InputError from "@/Components/InputError.vue";
+import { Inertia } from "@inertiajs/inertia";
 
 export default {
   components: {
@@ -47,6 +48,7 @@ export default {
     throttle,
     DialogContractorRating,
     Icon,
+    Inertia,
   },
 
   mounted() {
@@ -944,6 +946,17 @@ export default {
     onRepostEdit(repostedComment, postId) {
       this.$emit("repostEdited", repostedComment, postId);
     },
+    openChat() {
+      this.$store.commit("chat/SET_CURRENT", null);
+      this.$store.commit("chat/SET_MESSAGES", []);
+      this.$store.commit("chat/SET_PARTNER", {
+        id: this.post.user_id,
+        first_name: this.post.first_name,
+        last_name: this.post.last_name,
+        avatar: this.post.user_avatar,
+      });
+      this.$inertia.visit(`/chats`);
+    },
   },
 };
 </script>
@@ -955,15 +968,6 @@ export default {
     :userId="post.user_id"
   />
 
-  <!-- commentModal -->
-  <!-- <DialogAllComments
-    ref="commentDialogRef"
-    @unshiftIntoComments="onAddingComment"
-    v-model:modelValue="allComments"
-    v-model:addedNumber="addedNumber"
-    :postId="post.id"
-    :pagination="pagination"
-  /> -->
   <!-- likes modal -->
   <CustomDialog
     ref="likeDialogRef"
@@ -1090,48 +1094,63 @@ export default {
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <div class="flex flex-row justify-between items-center w-full mt-2">
       <!-- User Avatar & User /// INDIVIDUAL POST: TOP POSTING ROW -->
-      <Link
-        :href="`/contractor/${post.user_id}`"
-        class="flex flex-row gap-2 justify-start items-start"
-      >
-        <!-- Avatar -->
-        <div
-          class="cursor-pointer flex justify-start items-start flex-none w=16"
+      <div class="flex gap-1 w-full">
+        <Link
+          :href="`/contractor/${post.user_id}`"
+          class="flex flex-row gap-2 justify-start items-start"
         >
-          <!-- <Link :href="route('post.show')" class="block "> -->
-          <div class="block">
-            <Avatar
-              :style="{
-                width: screenWidth >= 640 ? '4.5rem' : '3.7rem',
-                height: screenWidth >= 640 ? '4.5rem' : '3.7rem',
-              }"
-              isNotSelf
-              :isContractor="post.is_contractor"
-              :imageSrc="post.user_avatar"
-            />
-          </div>
-        </div>
-
-        <!-- User Info -->
-        <div class="flex flex-col justify-center ml-1">
-          <h2 class="font-bold text-lg sm:text-xl" style="line-height: 1.5rem">
-            <!-- {{  post }} -->
-
-            <!-- {{ post.id }}:  -->
-            {{ post.first_name + " " + post.last_name }}
-          </h2>
-
-          <div class="">
-            {{ post.company_name }}
+          <!-- Avatar -->
+          <div
+            class="cursor-pointer flex justify-start items-start flex-none w=16"
+          >
+            <!-- <Link :href="route('post.show')" class="block "> -->
+            <div class="block">
+              <Avatar
+                :style="{
+                  width: screenWidth >= 640 ? '4.5rem' : '3.7rem',
+                  height: screenWidth >= 640 ? '4.5rem' : '3.7rem',
+                }"
+                isNotSelf
+                :isContractor="post.is_contractor"
+                :imageSrc="post.user_avatar"
+              />
+            </div>
           </div>
 
-          <div class="">
-            <h2 class="font-light text-sm overflow-hidden">
-              {{ post.city }} {{ post.state }}
+          <!-- User Info -->
+          <div class="flex flex-col justify-center ml-1">
+            <h2
+              class="font-bold text-lg sm:text-xl"
+              style="line-height: 1.5rem"
+            >
+              <!-- {{  post }} -->
+              <span class="flex items-center">
+                <!-- {{ post.id }}:  -->
+                {{ post.first_name + " " + post.last_name }}
+              </span>
             </h2>
+
+            <div class="">
+              {{ post.company_name }}
+            </div>
+
+            <div class="">
+              <h2 class="font-light text-sm overflow-hidden">
+                {{ post.city }} {{ post.state }}
+              </h2>
+            </div>
           </div>
-        </div>
-      </Link>
+        </Link>
+        <Icon
+          v-if="profile.user_id !== post.user_id"
+          icon="material-symbols:chat"
+          color="#16a34a"
+          class="ml-2 cursor-pointer"
+          width="24"
+          height="24"
+          @click.prevent.stop="openChat"
+        />
+      </div>
 
       <!-- Ratings / post action menu / posting date -->
       <div

@@ -2,10 +2,10 @@ import { createStore } from "vuex";
 import ratings from "./modules/ratings/ratings";
 import profile from "./modules/profile/profile";
 import contractor from "./modules/contractor/contractor";
+import chat from "./modules/chat/chat";
 import axios from "axios";
 import { somethingWentWrong } from "@/helpers/utilities";
 import { setToken } from "@/helpers/localStorageHelper";
-import { getAxiosConfig } from "../helpers/axiosConfigHelpers";
 import { getToken } from "../helpers/localStorageHelper";
 
 export const store = createStore({
@@ -13,6 +13,7 @@ export const store = createStore({
     ratings,
     profile,
     contractor,
+    chat,
   },
   state: {
     screenWidth: window.innerWidth,

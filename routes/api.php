@@ -28,7 +28,7 @@ use App\Http\Controllers\PostReactionController;
 
 use App\Http\Controllers\BadWordController;
 use App\Http\Controllers\VersionController;
-
+use App\Http\Controllers\MessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,7 +39,7 @@ use App\Http\Controllers\VersionController;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
-*/
+*/  
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -94,6 +94,7 @@ Route::get('/contractor/all-color-schemes', [ContractorProfileController::class,
 Route::get('/all-versions', [VersionController::class, 'getAllVersions']);
 // Your authenticated routes here
 Route::middleware('auth:sanctum')->group(function () {
+
 
 
     Route::get('/user-version', [VersionController::class, 'getUserVersion']);
@@ -315,4 +316,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('/admin/discount-coupon/{regionId}/all', [DiscountCouponController::class, 'getAllDiscountCouponsForARegion']);
     });
+});
+
+
+Route::middleware('auth:sanctum')->prefix('chat')->group(function(){
+    Route::get   ('threads',                       [MessageController::class,'threads']);
+    Route::post  ('threads',                       [MessageController::class,'createThread']);
+    Route::get   ('threads/{conversation}/messages',[MessageController::class,'messages']);
+    Route::post  ('threads/{conversation}/messages',[MessageController::class,'store']);
 });

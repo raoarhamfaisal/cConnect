@@ -5,9 +5,8 @@ import { useStore } from "vuex";
 import { Icon } from "@iconify/vue";
 import MoveToTop from "@/Components/MoveToTop.vue";
 
-import { computed, nextTick, onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import SelectProfile from "@/Components/SelectProfile.vue";
-import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import { subFinderOptions as options } from "@/helpers/selectListsHelpters";
 import Loader from "@/Components/Ratings/Loader.vue";
@@ -212,14 +211,6 @@ const buttonClass = (value) => [
   "text-base",
   value === preference_status.value ? "bg-indigo-800 text-white" : "",
 ];
-
-// Define the button data for sort options
-// const sortButtonData = [
-//   { value: "high_rated", label: "High Rated" },
-//   { value: "low_rated", label: "Low Rated" },
-//   { value: "newly_registered", label: "Newly Registered" },
-//   { value: "oldest_registered", label: "Oldest Registered" },
-// ];
 
 const sortButtonData = computed(() => [
   {

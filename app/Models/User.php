@@ -71,7 +71,17 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(UserVersionDetail::class);
     }
 
+     public function conversations()
+    {
+        return $this->belongsToMany(Conversation::class)
+                    ->withPivot('last_read_at')
+                    ->withTimestamps();
+    }
 
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
 
 
 }

@@ -19,6 +19,7 @@ import PostDisplayEnlarged from "@/Components/tCon/PostDisplayEnlarged.vue";
 import { mapActions, mapGetters, mapState } from "vuex";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { somethingWentWrong } from "@/helpers/utilities";
+import MoveToTop from "../Components/MoveToTop.vue";
 
 const defaultPostFormObject = {
   user_id: 0,
@@ -47,6 +48,7 @@ export default {
     Head,
     Link,
     ref,
+    MoveToTop,
   },
 
   mounted() {
@@ -722,6 +724,7 @@ export default {
       <!-- WRAPPER END: For News Feed -->
     </div>
     <!-- END POSTING CONTAINER -->
+    <MoveToTop />
   </Header>
 </template>
 

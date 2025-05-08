@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use App\Http\Controllers\ConversationController;
 
 Route::get('/', function () {
     return Inertia::render('index', [
@@ -223,31 +224,18 @@ Route::post('/tokens/create', function (Request $request) {
 // Add route for supporting document upload
 Route::post('/upload-supporting-document', [ReviewController::class, 'uploadSupportingDocument'])->middleware(['auth', 'verified']);
 
-// Route::get('run-server', function(){ Artisan::call('websockets:serve'); });
 
-
-
-// ->name('post.uploadImages')
-// ->middleware(['auth', 'verified']);
-
-// Route::get('/post/create', [PostController::class, 'create'])
-//     ->name('post.create')
-//     ->middleware(['auth', 'verified']);
-
-// Route::post('/post', [PostController::class, 'show'])
-//     ->name('post.show')
-//     ->middleware(['auth', 'verified']);
-
-// Route::get('/post/{id}/edit', [PostController::class, 'edit'])
-//     ->name('post.edit')
-//     ->middleware(['auth', 'verified']);
-
-// Route::put('/post/{id}', [PostController::class, 'update'])
-//     ->name('post.update')
-//     ->middleware(['auth', 'verified']);
 
 Route::delete('/post/{post}', [PostController::class, 'destroy'])
     ->name('post.destroy')
     ->middleware(['auth', 'verified', 'activeUser', 'check.session']);
 
 require __DIR__ . '/auth.php';
+
+
+
+//Chat Routes
+
+Route::middleware(['auth','verified','check.session'])
+     ->get('/chats', [ConversationController::class,'index'])
+     ->name('chat.index');
