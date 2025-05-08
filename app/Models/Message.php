@@ -15,6 +15,7 @@ class Message extends Model
         'body',
         'edited',
         'deleted',
+        'reply_to',
     ];
 
     protected $casts = [
@@ -35,5 +36,16 @@ class Message extends Model
     public function attachments()
     {
         return $this->hasMany(MessageAttachment::class);
+    }
+    
+    // Add relationship for reply functionality
+    public function replyTo()
+    {
+        return $this->belongsTo(Message::class, 'reply_to');
+    }
+    
+    public function replies()
+    {
+        return $this->hasMany(Message::class, 'reply_to');
     }
 }

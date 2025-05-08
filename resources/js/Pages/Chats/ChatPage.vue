@@ -20,9 +20,14 @@
           :messages="messages"
           :user-id="authUser.id"
           @editMessage="openEditModal"
+          @replyToMessage="setReplyToMessage"
         />
 
-        <ChatComposer @send="send" />
+        <ChatComposer
+          @send="send"
+          :replyTo="replyToMessage"
+          @cancelReply="clearReplyToMessage"
+        />
       </template>
     </div>
 
@@ -43,6 +48,7 @@ import EditMessageModal from "@/Pages/Chats/partials/EditMessageModal.vue";
 const store = useStore();
 const messageListRef = ref(null);
 const editMessageModal = ref(null);
+const replyToMessage = ref(null);
 const threads = computed(() => store.getters["chat/threads"]);
 const currentId = computed(() => store.getters["chat/currentId"]);
 const currentThread = computed(() => store.getters["chat/currentThread"]);
@@ -75,6 +81,14 @@ function select(partnerId) {
   }
 }
 
+function setReplyToMessage(message) {
+  replyToMessage.value = message;
+}
+
+function clearReplyToMessage() {
+  replyToMessage.value = null;
+}
+
 function send(data) {
   let payload;
   if (typeof data === "string") {
@@ -86,11 +100,38 @@ function send(data) {
     };
   }
 
-  return store.dispatch("chat/sendMessage", payload).then(() => {
-    if (messageListRef.value) {
-      messageListRef.value.scrollToBottom();
-    }
-  });
+  // Add reply_to if replying to a message
+  if (replyToMessage.value) {
+    // Keep a reference to the full message object for the UI while we wait for API response
+    const replyMessageReference = { ...replyToMessage.value };
+
+    // Add the ID to the payload for the API
+    payload.reply_to = replyToMessage.value.id;
+
+    // After dispatch, modify the returned message to ensure replyTo is properly set
+    return store.dispatch("chat/sendMessage", payload).then((newMessage) => {
+      // If the message doesn't have replyTo set but has reply_to, set it manually
+      if (newMessage && newMessage.reply_to && !newMessage.replyTo) {
+        newMessage.replyTo = replyMessageReference;
+
+        // Update the message in the store to ensure UI shows the reply
+        store.commit("chat/UPDATE_MESSAGE", newMessage);
+      }
+
+      if (messageListRef.value) {
+        messageListRef.value.scrollToBottom();
+      }
+
+      // Clear the reply reference after sending
+      clearReplyToMessage();
+    });
+  } else {
+    return store.dispatch("chat/sendMessage", payload).then(() => {
+      if (messageListRef.value) {
+        messageListRef.value.scrollToBottom();
+      }
+    });
+  }
 }
 
 function openEditModal() {

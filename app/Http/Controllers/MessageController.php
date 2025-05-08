@@ -85,6 +85,7 @@ class MessageController extends Controller
             'has_attachments' => $request->hasFile('attachments'),
             'has_attachment_paths' => $request->has('attachmentPaths'),
             'attachment_paths' => $request->input('attachmentPaths'),
+            'reply_to' => $request->input('reply_to'),
         ]);
         
         $me = Auth::id();
@@ -97,11 +98,13 @@ class MessageController extends Controller
             'body'         => 'nullable|string',
             'attachments.*'=> 'file|max:5120',
             'attachmentPaths.*' => 'nullable|string',
+            'reply_to'     => 'nullable|exists:messages,id',
         ]);
 
         $msg = $conversation->messages()->create([
             'user_id' => $me,
             'body'    => $data['body'] ?? null,
+            'reply_to' => $data['reply_to'] ?? null,
         ]);
 
         // Handle direct file uploads
@@ -126,10 +129,20 @@ class MessageController extends Controller
             }
         }
 
-        // reload relations for response
-        $msg->load('sender.profile','attachments');
+        // More explicit loading of relationships
+        if ($msg->reply_to) {
+            $msg->load([
+                'sender.profile', 
+                'attachments', 
+                'replyTo' => function ($query) {
+                    $query->with('sender.profile');
+                }
+            ]);
+        } else {
+            $msg->load('sender.profile', 'attachments');
+        }
 
-        return response()->json($msg,201);
+        return response()->json($msg, 201);
     }
 
     public function createThread(Request $request)

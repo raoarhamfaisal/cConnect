@@ -49,6 +49,28 @@
         />
       </div>
 
+      <!-- Reply Preview Area -->
+      <div
+        v-if="replyTo"
+        class="flex justify-between items-center mb-2 p-2 bg-gray-100 rounded border-l-4 border-blue-500"
+      >
+        <div class="flex flex-col">
+          <span class="text-xs font-bold text-blue-600">
+            {{
+              profile.user_id === replyTo.user_id
+                ? "You"
+                : replyTo.sender?.first_name + " " + replyTo.sender?.last_name
+            }}
+          </span>
+          <span class="text-sm text-gray-600 line-clamp-1">{{
+            replyPreviewText
+          }}</span>
+        </div>
+        <button @click="cancelReply" class="text-gray-500 hover:text-gray-700">
+          <Icon icon="mdi:close" width="18" height="18" />
+        </button>
+      </div>
+
       <div class="flex gap-2 w-full items-start overflow-auto max-h-[165px]">
         <Icon
           type="button"
@@ -124,8 +146,19 @@ const FilePond = VueFilePond(
   FilePondPluginImagePreview
 );
 
+const props = defineProps({
+  replyTo: {
+    type: Object,
+    default: null,
+  },
+});
+
 const $page = usePage();
-const emit = defineEmits(["send"]);
+const userProps = usePage().props.value;
+
+const profile = userProps.auth.user.profile || userProps.profile;
+
+const emit = defineEmits(["send", "cancelReply"]);
 const message = ref("");
 const loading = ref(false);
 const store = useStore();
@@ -133,7 +166,6 @@ const messageAreaRef = ref();
 const container = ref();
 const minHeight = ref(70);
 const paddingHeight = ref(25);
-
 // File upload
 const filePreviewVisible = ref(false);
 const pond = ref(null);
@@ -187,6 +219,25 @@ const adjustHeight = () => {
   });
 };
 
+// Computed property for reply preview text
+const replyPreviewText = computed(() => {
+  if (!props.replyTo) return "";
+
+  if (props.replyTo.deleted) {
+    return "This message was deleted";
+  }
+
+  if (props.replyTo.body) {
+    return props.replyTo.body;
+  }
+
+  if (props.replyTo.attachments?.length) {
+    return "Attachment";
+  }
+
+  return "";
+});
+
 // File upload methods
 const toggleFileUpload = () => {
   filePreviewVisible.value = !filePreviewVisible.value;
@@ -202,7 +253,6 @@ const handleAttachmentInit = () => {
 };
 
 const handleAttachmentLoad = (response) => {
-  console.log("File uploaded, received path:", response);
   attachmentPaths.value.push(response);
   return response;
 };
@@ -230,6 +280,11 @@ const handleAttachmentProcessed = () => {
 
 const handleAttachmentReverted = () => {
   isUploadInProgress.value = false;
+};
+
+// Function to cancel reply
+const cancelReply = () => {
+  emit("cancelReply");
 };
 
 async function sendMessage() {

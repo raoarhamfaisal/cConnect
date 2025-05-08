@@ -219,6 +219,7 @@ export default {
           : {
               body: payload.text.trim(),
               attachments: payload.attachments || [],
+              reply_to: payload.reply_to,
             };
 
       if (
@@ -242,6 +243,11 @@ export default {
         formData.append("body", messageData.body);
       }
 
+      // Add reply_to if present
+      if (messageData.reply_to) {
+        formData.append("reply_to", messageData.reply_to);
+      }
+
       // Add attachments if any
       if (messageData.attachments && messageData.attachments.length > 0) {
         messageData.attachments.forEach((path, index) => {
@@ -252,13 +258,34 @@ export default {
       const config = getAxiosConfig();
       config.headers["Content-Type"] = "multipart/form-data";
 
-      const res = await axios.post(
-        `/api/chat/threads/${state.currentId}/messages`,
-        formData,
-        config
-      );
+      try {
+        const res = await axios.post(
+          `/api/chat/threads/${state.currentId}/messages`,
+          formData,
+          config
+        );
 
-      commit("ADD_MESSAGE", res.data);
+        // Store original message reference for the reply before adding to state
+        let messageToAdd = { ...res.data };
+
+        // If this message is a reply but replyTo wasn't loaded from the backend
+        if (messageToAdd.reply_to && !messageToAdd.replyTo) {
+          // Find the original message directly from our messages array
+          const originalMessage = state.messages.find(
+            (m) => m.id === messageToAdd.reply_to
+          );
+          if (originalMessage) {
+            // Create a proper replyTo reference with full sender information
+            messageToAdd.replyTo = originalMessage;
+          }
+        }
+
+        commit("ADD_MESSAGE", messageToAdd);
+        return messageToAdd;
+      } catch (error) {
+        console.error("Error sending message:", error);
+        throw error;
+      }
     },
 
     // Edit a message

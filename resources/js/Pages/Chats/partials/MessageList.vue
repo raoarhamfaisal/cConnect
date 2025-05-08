@@ -80,7 +80,7 @@
                     : 'bg-gray-200 text-gray-800 rounded-bl-none'
                 "
               >
-                <!-- Action menu for own messages - make it always visible but more prominent on hover -->
+                <!-- Action menu for own messages -->
                 <div
                   v-if="message.user_id === userId && !message.deleted"
                   class="absolute top-1 right-2 opacity-70 group-hover:opacity-100 transition-opacity"
@@ -103,6 +103,14 @@
                     </template>
                     <v-list>
                       <v-list-item
+                        @click="replyToMessage(message)"
+                        class="hover:bg-gray-200"
+                      >
+                        <v-list-item-title class="cursor-pointer"
+                          >Reply</v-list-item-title
+                        >
+                      </v-list-item>
+                      <v-list-item
                         @click="editMessage(message)"
                         class="hover:bg-gray-200"
                       >
@@ -121,6 +129,26 @@
                     </v-list>
                   </v-menu>
                 </div>
+
+                <!-- Action menu for other user's messages (reply only) -->
+                <div
+                  v-if="message.user_id !== userId && !message.deleted"
+                  class="absolute top-1 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <button
+                    @click="replyToMessage(message)"
+                    class="p-1 rounded-full bg-gray-300 hover:bg-gray-400 text-gray-700"
+                  >
+                    <Icon icon="mdi:reply" />
+                  </button>
+                </div>
+
+                <!-- Reply preview if this message is a reply -->
+                <ReplyMessageBubble
+                  v-if="message.reply_to && !message.deleted"
+                  :replyMessage="findReplyMessage(message)"
+                  :isDark="message.user_id === userId"
+                />
 
                 <!-- Message content -->
                 <template v-if="message.deleted">
@@ -231,6 +259,7 @@ import { ref, onUpdated, defineExpose, computed, inject } from "vue";
 import { Icon } from "@iconify/vue";
 import { useStore } from "vuex";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
+import ReplyMessageBubble from "./ReplyMessageBubble.vue";
 
 const props = defineProps({
   messages: Array,
@@ -242,7 +271,7 @@ const msgListRef = ref(null);
 const deleteDialogRef = ref(null);
 const messageToDelete = ref(null);
 const deleting = ref(false);
-const emit = defineEmits(["editMessage"]);
+const emit = defineEmits(["editMessage", "replyToMessage"]);
 
 // Get loading state from store
 const loading = computed(() => store.state.chat?.messagesLoading || false);
@@ -410,6 +439,38 @@ function getFileIcon(mimeType) {
     return "mdi:file-outline";
   }
 }
+
+// Improved function to find reply messages that works immediately after send
+const findReplyMessage = (message) => {
+  // First try using the replyTo property if it exists (from backend)
+  if (message.replyTo) {
+    return message.replyTo;
+  }
+  // If not available, try to find the message in our local messages array
+  if (message.reply_to) {
+    const replyMsg = props.messages.find(
+      (m) => m.id === message.reply_to.id || m.id === message.reply_to
+    );
+    if (replyMsg) {
+      return replyMsg;
+    }
+  }
+
+  // If we still can't find it, return a placeholder
+  return message.reply_to
+    ? {
+        id: message.reply_to,
+        body: "Original message",
+        user_id: null,
+        sender: { first_name: "User", last_name: "" },
+      }
+    : null;
+};
+
+// Add function to handle replying to a message
+const replyToMessage = (message) => {
+  emit("replyToMessage", message);
+};
 </script>
 
 <style scoped>
