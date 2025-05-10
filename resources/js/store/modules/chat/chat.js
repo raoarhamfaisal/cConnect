@@ -11,6 +11,7 @@ export default {
     loading: false,
     messagesLoading: false,
     editingMessage: null,
+    onlineUsers: [],
   }),
   getters: {
     threads: (s) => s.threads,
@@ -29,6 +30,17 @@ export default {
     },
   },
   mutations: {
+    SET_ONLINE_USERS(state, ids) {
+      state.onlineUsers = ids;
+    },
+    ADD_ONLINE_USER(state, id) {
+      if (!state.onlineUsers.includes(id)) {
+        state.onlineUsers.push(id);
+      }
+    },
+    REMOVE_ONLINE_USER(state, id) {
+      state.onlineUsers = state.onlineUsers.filter((x) => x !== id);
+    },
     SET_PARTNER(state, p) {
       state.partner = p;
     },

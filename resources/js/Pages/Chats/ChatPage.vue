@@ -70,6 +70,7 @@ onMounted(() => {
 
   // Setup WebSocket listeners for conversation updates
   setupWebSocketListeners();
+  setupPresence();
 });
 
 // Clean up WebSocket subscriptions when component is unmounted
@@ -78,6 +79,7 @@ onUnmounted(() => {
   if (currentConversationId) {
     window.Echo.leave(`private-conversation.${currentConversationId}`);
   }
+  window.Echo.leave("online-status");
 });
 
 // Watch for changes to the current conversation ID to update WebSocket subscriptions
@@ -159,7 +161,20 @@ function listenToConversation(conversationId) {
     }
   );
 }
-
+function setupPresence() {
+  window.Echo.join("online-status")
+    .here((users) => {
+      // users = [{id, name}, …]
+      const ids = users.map((u) => u.id);
+      store.commit("chat/SET_ONLINE_USERS", ids);
+    })
+    .joining((user) => {
+      store.commit("chat/ADD_ONLINE_USER", user.id);
+    })
+    .leaving((user) => {
+      store.commit("chat/REMOVE_ONLINE_USER", user.id);
+    });
+}
 const select = async (partnerId) => {
   // Find the thread associated with this partner
   const thread = threads.value.find((t) => t.partner.id === partnerId);

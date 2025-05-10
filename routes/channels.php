@@ -24,9 +24,11 @@ Broadcast::channel('conversation.{conversationId}', function () {
 });
 
 // Regular channel for online status - no authorization needed
-Broadcast::channel('online-status', function () {
-    return true;
+Broadcast::channel('online-status', function ($user) {
+    // Only authenticated users can join
+    return ['id' => $user->id, 'name' => $user->first_name];
 });
+
 
 // This file is used to define channel authorization logic
 Broadcast::routes();

@@ -10,15 +10,28 @@
       <div class="font-semibold">
         {{ partner.first_name }} {{ partner.last_name }}
       </div>
-      <div class="text-xs text-green-500">Online</div>
+      <div
+        class="text-xs"
+        :class="isOnline ? 'text-green-500' : 'text-gray-400'"
+      >
+        {{ isOnline ? "Online" : "" }}
+      </div>
     </div>
   </header>
 </template>
 
 <script setup>
 import Avatar from "@/Components/Ratings/Avatar.vue";
+import { computed } from "vue";
+import { useStore } from "vuex";
 
 const props = defineProps({
   partner: Object,
 });
+
+const store = useStore();
+
+const isOnline = computed(() =>
+  store.state.chat.onlineUsers.includes(props.partner.id)
+);
 </script>
