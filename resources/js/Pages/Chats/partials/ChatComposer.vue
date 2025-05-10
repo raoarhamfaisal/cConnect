@@ -86,13 +86,13 @@
           :rows="1"
           placeholder="Type a message…"
           class="text-xl w-full py-1 min-h-[40px] overflow-hidden px-3 focus:shadow-none focus:ring-gray-600 focus:rounded bg-[#f9fafb] border-gray-400 text-grey-600 resize-none rounded focus-within:ring-gray-600 focus:border-gray-600"
-          @keyup.enter="sendMessage"
+          @keydown.enter.prevent="handleEnterKey"
         ></textarea>
         <Icon
           type="button"
           :disabled="loading || isUploadInProgress"
           @click="sendMessage"
-          :class="`w-8 h-8 sx:w-10 sx:h-10 cursor-pointer text-gray-500 apply-stroke ${
+          :class="`w-8 h-8 sx:w-10 sx:h-10 cursor-pointer text-gray-500 apply-stroke transition-opacity duration-200 ${
             loading || isUploadInProgress ? 'opacity-40' : 'opacity-100'
           }`"
           icon="carbon:send-filled"
@@ -100,33 +100,12 @@
       </div>
     </div>
   </div>
-  <v-dialog
-    class="dialog-modal"
-    v-model="loading"
-    scrim="transparent"
-    persistent
-    width="auto"
-  >
-    <Card
-      :shadowLevel="2"
-      bgColor="#364fc7"
-      :padding="screenWidth < 640 ? '7px' : '10px'"
-    >
-      <div class="text-white">Sending Message...</div>
-      <v-progress-linear
-        indeterminate
-        color="#fff"
-        class="mb-0"
-      ></v-progress-linear>
-    </Card>
-  </v-dialog>
 </template>
 
 <script setup>
 import { ref, computed, nextTick, onMounted, watch } from "vue";
 import { useStore } from "vuex";
 import { Icon } from "@iconify/vue";
-import Card from "@/Components/Card.vue";
 import { usePage } from "@inertiajs/inertia-vue3";
 
 // Import FilePond and plugins
@@ -287,9 +266,20 @@ const cancelReply = () => {
   emit("cancelReply");
 };
 
+const handleEnterKey = (event) => {
+  // If shift is pressed, allow default behavior (new line)
+  if (event.shiftKey) {
+    return;
+  }
+
+  // Otherwise, prevent default (new line) and send message
+  event.preventDefault();
+  sendMessage();
+};
+
 async function sendMessage() {
   if (!message.value.trim() && attachmentPaths.value.length === 0) return;
-  if (isUploadInProgress.value) return;
+  if (isUploadInProgress.value || loading.value) return;
 
   loading.value = true;
   try {

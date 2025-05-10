@@ -8,6 +8,7 @@ use App\Models\Message;
 use App\Events\MessageSent;
 use Illuminate\Support\Facades\Auth;
 use App\Services\ChatAttachmentService;
+use Illuminate\Support\Facades\DB;
 
 class MessageController extends Controller
 {
@@ -15,39 +16,50 @@ class MessageController extends Controller
     {
         $me = Auth::user();
 
-        $threads = $me->conversations()
+        // Get conversations with latest messages ordered correctly
+        $conversations = Conversation::whereHas('participants', function($query) use ($me) {
+                $query->where('user_id', $me->id);
+            })
             ->with([
-                // load the other participant and their profile
                 'participants' => fn($q) => $q
                     ->where('user_id', '<>', $me->id)
                     ->with('profile'),
                 'latestMessage',
             ])
-            ->latest('updated_at')
-            ->get()
-            ->map(function($conv) use ($me) {
-                // Get unread count for this conversation
-                $unreadCount = $this->getUnreadCount($conv->id, $me->id);
-                
-                return [
-                    'conversation_id' => $conv->id,
-                    'partner' => [
-                        'id'         => $conv->participants->first()->id,
-                        'first_name' => $conv->participants->first()->first_name,
-                        'last_name'  => $conv->participants->first()->last_name,
-                        'avatar'     => $conv->participants->first()->profile->user_avatar ?? null,
-                        'is_contractor' => $conv->participants->first()->profile->is_contractor,
-                    ],
-                    'last_message' => $conv->latestMessage
-                        ? [
-                            'body'       => $conv->latestMessage->body,
-                            'created_at' => $conv->latestMessage->created_at,
-                            'user_id'    => $conv->latestMessage->user_id,
-                        ]
-                        : null,
-                    'unread_count' => $unreadCount
-                ];
-            });
+            // Join the latest message to sort by
+            ->addSelect(['latest_message_time' => Message::select('created_at')
+                ->whereColumn('conversation_id', 'conversations.id')
+                ->latest()
+                ->limit(1)
+            ])
+            ->orderByDesc('latest_message_time')
+            ->orderByDesc('conversations.updated_at') // Fallback if no messages
+            ->get();
+
+        // Format threads for response
+        $threads = $conversations->map(function($conv) use ($me) {
+            // Get unread count for this conversation
+            $unreadCount = $this->getUnreadCount($conv->id, $me->id);
+            
+            return [
+                'conversation_id' => $conv->id,
+                'partner' => [
+                    'id'         => $conv->participants->first()->id,
+                    'first_name' => $conv->participants->first()->first_name,
+                    'last_name'  => $conv->participants->first()->last_name,
+                    'avatar'     => $conv->participants->first()->profile->user_avatar ?? null,
+                    'is_contractor' => $conv->participants->first()->profile->is_contractor ?? false,
+                ],
+                'last_message' => $conv->latestMessage
+                    ? [
+                        'body'       => $conv->latestMessage->body,
+                        'created_at' => $conv->latestMessage->created_at,
+                        'user_id'    => $conv->latestMessage->user_id,
+                    ]
+                    : null,
+                'unread_count' => $unreadCount
+            ];
+        });
 
         return response()->json($threads);
     }
@@ -101,9 +113,6 @@ class MessageController extends Controller
                 }
                 return $message;
             });
-
-        // Mark messages as read when fetched
-        $this->markAsRead($conversation->id);
 
         return response()->json($msgs);
     }
@@ -179,6 +188,9 @@ class MessageController extends Controller
             }
         }
 
+        // Update conversation timestamp to ensure proper ordering
+        $conversation->touch();
+        
         // More explicit loading of relationships
         if ($msg->reply_to) {
             $msg->load([

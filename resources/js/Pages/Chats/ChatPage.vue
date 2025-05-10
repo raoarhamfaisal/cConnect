@@ -37,7 +37,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useStore } from "vuex";
 import ChatSidebar from "@/Pages/Chats/partials/ChatSidebar.vue";
 import ChatHeader from "@/Pages/Chats/partials/ChatHeader.vue";
@@ -56,21 +56,28 @@ const messages = computed(() => store.getters["chat/messages"]);
 const props = defineProps({ authUser: Object });
 const authUser = props.authUser;
 
-// Add watcher for current conversation change
-watch(
-  currentId,
-  (newId) => {
-    if (newId) {
-      // Mark messages as read whenever the current conversation changes
-      store.dispatch("chat/markMessagesAsRead");
-    }
-  },
-  { immediate: true }
-);
+// Track if this is the initial load
+const isInitialLoad = ref(true);
 
-function select(partnerId) {
+async function select(partnerId) {
   // Find the thread associated with this partner
   const thread = threads.value.find((t) => t.partner.id === partnerId);
+
+  // If we're selecting the same thread we're already viewing, just mark as read
+  if (currentId.value && thread.conversation_id === currentId.value) {
+    // Don't mark as read if this is the initial default selection
+    if (!isInitialLoad.value) {
+      // Mark as read and clear unread count
+      store.dispatch("chat/markMessagesAsRead");
+      store.commit("chat/UPDATE_THREAD_UNREAD_COUNT", {
+        conversationId: currentId.value,
+        count: 0,
+      });
+    }
+    return;
+  } else if (currentId.value) {
+    await store.dispatch("chat/markMessagesAsRead");
+  }
 
   // Set the partner info
   store.dispatch("chat/initPartner", {
@@ -85,11 +92,24 @@ function select(partnerId) {
       if (messageListRef.value) {
         messageListRef.value.scrollToBottom();
       }
+
+      // Only mark as read when user explicitly selects a thread (not on initial load)
+      if (!isInitialLoad.value) {
+        store.dispatch("chat/markMessagesAsRead");
+        store.commit("chat/UPDATE_THREAD_UNREAD_COUNT", {
+          conversationId: thread.conversation_id,
+          count: 0,
+        });
+      }
+
+      // Set initial load to false after first selection
+      isInitialLoad.value = false;
     });
   } else {
     // For new conversations without an ID yet
     store.commit("chat/SET_CURRENT", null);
     store.commit("chat/SET_MESSAGES", []);
+    isInitialLoad.value = false;
   }
 }
 
@@ -154,6 +174,7 @@ function openEditModal() {
 
 onMounted(() => {
   store.dispatch("chat/fetchThreads").then(() => {
+    // only scroll, don't select or mark as read
     if (messageListRef.value) {
       messageListRef.value.scrollToBottom();
     }

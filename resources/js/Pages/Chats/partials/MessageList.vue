@@ -24,7 +24,12 @@
     </div>
 
     <!-- Content State -->
-    <div v-else class="space-y-1">
+    <div
+      v-else
+      class="space-y-1"
+      @scroll="handleScroll"
+      @click="handleMessageInteraction"
+    >
       <template v-for="(group, dateKey) in groupedMessages" :key="dateKey">
         <!-- Date Header -->
         <div class="flex justify-center my-4">
@@ -35,211 +40,219 @@
           </div>
         </div>
 
-        <!-- Unread messages divider -->
-        <div
-          v-if="hasUnreadMessagesInDate(group, dateKey)"
-          class="flex justify-center my-3"
-        >
+        <div v-for="(message, index) in group" :key="message.id">
+          <!-- Unread divider immediately above the first unread message -->
           <div
-            class="bg-red-100 text-red-600 rounded-full px-4 py-1 text-xs font-medium"
+            v-if="shouldShowUnreadDivider(message)"
+            class="flex justify-center my-3"
           >
-            Unread messages
-          </div>
-        </div>
-
-        <!-- Messages in this group -->
-        <div
-          v-for="message in group"
-          :key="message.id"
-          class="message-container"
-          :class="{ 'unread-message': isUnreadMessage(message) }"
-        >
-          <div
-            class="flex items-start mb-4 group"
-            :class="
-              message.user_id === userId ? 'justify-end' : 'justify-start'
-            "
-          >
-            <!-- Avatar for other user's messages -->
-            <div v-if="message.user_id !== userId" class="mr-2 flex-shrink-0">
-              <img
-                v-if="message.sender?.profile?.user_avatar"
-                :src="message.sender.profile.user_avatar"
-                class="h-8 w-8 rounded-full"
-                alt="User avatar"
-              />
-              <div
-                v-else
-                class="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center"
+            <div
+              class="bg-red-100 text-red-600 rounded-full px-4 py-1 text-xs font-medium flex items-center gap-2"
+            >
+              <span
+                class="bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold"
               >
-                <span class="text-gray-600 text-sm">
-                  {{
-                    getInitials(
-                      message.sender?.first_name,
-                      message.sender?.last_name
-                    )
-                  }}
-                </span>
-              </div>
+                {{ group.length - index }}
+              </span>
+              <span>Unread messages</span>
             </div>
+          </div>
 
-            <div class="flex flex-col max-w-[75%]">
-              <!-- Message bubble with improved action menu -->
-              <div
-                class="px-4 py-2 rounded-lg text-sm relative group"
-                :class="
-                  message.user_id === userId
-                    ? 'bg-blue-500 text-white rounded-br-none'
-                    : 'bg-gray-200 text-gray-800 rounded-bl-none'
-                "
-              >
-                <!-- Action menu for own messages -->
+          <div
+            class="message-container"
+            :class="{ 'unread-message': isUnreadMessage(message) }"
+          >
+            <div
+              class="flex items-start mb-4 group"
+              :class="
+                message.user_id === userId ? 'justify-end' : 'justify-start'
+              "
+            >
+              <!-- Avatar for other user's messages -->
+              <div v-if="message.user_id !== userId" class="mr-2 flex-shrink-0">
+                <img
+                  v-if="message.sender?.profile?.user_avatar"
+                  :src="message.sender.profile.user_avatar"
+                  class="h-8 w-8 rounded-full object-cover"
+                  alt="User avatar"
+                />
                 <div
-                  v-if="message.user_id === userId && !message.deleted"
-                  class="absolute top-1 right-2 opacity-70 group-hover:opacity-100 transition-opacity"
+                  v-else
+                  class="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center"
                 >
-                  <v-menu offset-y>
-                    <template v-slot:activator="{ props }">
-                      <button
-                        v-bind="props"
-                        class="p-1 rounded-full bg-blue-600 hover:bg-blue-700 text-white"
+                  <span class="text-gray-600 text-sm">
+                    {{
+                      getInitials(
+                        message.sender?.first_name,
+                        message.sender?.last_name
+                      )
+                    }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="flex flex-col max-w-[75%]">
+                <!-- Message bubble with improved action menu -->
+                <div
+                  class="px-4 py-2 rounded-lg text-sm relative group"
+                  :class="
+                    message.user_id === userId
+                      ? 'bg-blue-500 text-white rounded-br-none'
+                      : 'bg-gray-200 text-gray-800 rounded-bl-none'
+                  "
+                >
+                  <!-- Action menu for own messages -->
+                  <div
+                    v-if="message.user_id === userId && !message.deleted"
+                    class="absolute top-1 right-2 opacity-70 group-hover:opacity-100 transition-opacity"
+                  >
+                    <v-menu offset-y>
+                      <template v-slot:activator="{ props }">
+                        <button
+                          v-bind="props"
+                          class="p-1 rounded-full bg-blue-600 hover:bg-blue-700 text-white"
+                        >
+                          <Icon
+                            icon="pepicons-pencil:dots-x"
+                            :class="
+                              message.user_id === userId
+                                ? 'text-white'
+                                : 'text-gray-700'
+                            "
+                          />
+                        </button>
+                      </template>
+                      <v-list>
+                        <v-list-item
+                          @click="replyToMessage(message)"
+                          class="hover:bg-gray-200"
+                        >
+                          <v-list-item-title class="cursor-pointer"
+                            >Reply</v-list-item-title
+                          >
+                        </v-list-item>
+                        <v-list-item
+                          @click="editMessage(message)"
+                          class="hover:bg-gray-200"
+                        >
+                          <v-list-item-title class="cursor-pointer"
+                            >Edit</v-list-item-title
+                          >
+                        </v-list-item>
+                        <v-list-item
+                          @click="confirmDeleteMessage(message)"
+                          class="hover:bg-gray-200"
+                        >
+                          <v-list-item-title class="cursor-pointer"
+                            >Delete</v-list-item-title
+                          >
+                        </v-list-item>
+                      </v-list>
+                    </v-menu>
+                  </div>
+
+                  <!-- Action menu for other user's messages (reply only) -->
+                  <div
+                    v-if="message.user_id !== userId && !message.deleted"
+                    class="absolute top-1 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <button
+                      @click="replyToMessage(message)"
+                      class="p-1 rounded-full bg-gray-300 hover:bg-gray-400 text-gray-700"
+                    >
+                      <Icon icon="mdi:reply" />
+                    </button>
+                  </div>
+
+                  <!-- Reply preview if this message is a reply -->
+                  <ReplyMessageBubble
+                    v-if="message.reply_to && !message.deleted"
+                    :replyMessage="findReplyMessage(message)"
+                    :isDark="message.user_id === userId"
+                  />
+
+                  <!-- Message content -->
+                  <template v-if="message.deleted">
+                    <em class="text-gray-500">This message was deleted</em>
+                  </template>
+                  <template v-else>
+                    <div class="mr-8" v-html="processUrls(message.body)"></div>
+
+                    <!-- Attachments -->
+                    <div
+                      v-if="
+                        message.attachments && message.attachments.length > 0
+                      "
+                      class="mt-2"
+                    >
+                      <div
+                        v-for="attachment in message.attachments"
+                        :key="attachment.id"
+                        class="mt-1"
                       >
-                        <Icon
-                          icon="pepicons-pencil:dots-x"
+                        <!-- Image preview for image files -->
+                        <a
+                          v-if="isImage(attachment.file_type)"
+                          :href="'/' + attachment.file_path"
+                          target="_blank"
+                          class="block"
+                        >
+                          <img
+                            :src="'/' + attachment.file_path"
+                            alt="Attachment"
+                            class="max-h-40 max-w-full rounded border border-gray-200"
+                          />
+                        </a>
+
+                        <!-- Document link for other file types -->
+                        <a
+                          v-else
+                          :href="'/' + attachment.file_path"
+                          target="_blank"
+                          class="flex items-center p-2 bg-gray-50 rounded border border-gray-200 hover:bg-gray-100"
                           :class="
                             message.user_id === userId
-                              ? 'text-white'
-                              : 'text-gray-700'
+                              ? 'text-blue-900'
+                              : 'text-blue-600'
                           "
-                        />
-                      </button>
-                    </template>
-                    <v-list>
-                      <v-list-item
-                        @click="replyToMessage(message)"
-                        class="hover:bg-gray-200"
-                      >
-                        <v-list-item-title class="cursor-pointer"
-                          >Reply</v-list-item-title
                         >
-                      </v-list-item>
-                      <v-list-item
-                        @click="editMessage(message)"
-                        class="hover:bg-gray-200"
-                      >
-                        <v-list-item-title class="cursor-pointer"
-                          >Edit</v-list-item-title
-                        >
-                      </v-list-item>
-                      <v-list-item
-                        @click="confirmDeleteMessage(message)"
-                        class="hover:bg-gray-200"
-                      >
-                        <v-list-item-title class="cursor-pointer"
-                          >Delete</v-list-item-title
-                        >
-                      </v-list-item>
-                    </v-list>
-                  </v-menu>
-                </div>
-
-                <!-- Action menu for other user's messages (reply only) -->
-                <div
-                  v-if="message.user_id !== userId && !message.deleted"
-                  class="absolute top-1 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  <button
-                    @click="replyToMessage(message)"
-                    class="p-1 rounded-full bg-gray-300 hover:bg-gray-400 text-gray-700"
-                  >
-                    <Icon icon="mdi:reply" />
-                  </button>
-                </div>
-
-                <!-- Reply preview if this message is a reply -->
-                <ReplyMessageBubble
-                  v-if="message.reply_to && !message.deleted"
-                  :replyMessage="findReplyMessage(message)"
-                  :isDark="message.user_id === userId"
-                />
-
-                <!-- Message content -->
-                <template v-if="message.deleted">
-                  <em class="text-gray-500">This message was deleted</em>
-                </template>
-                <template v-else>
-                  <div class="mr-8" v-html="processUrls(message.body)"></div>
-
-                  <!-- Attachments -->
-                  <div
-                    v-if="message.attachments && message.attachments.length > 0"
-                    class="mt-2"
-                  >
-                    <div
-                      v-for="attachment in message.attachments"
-                      :key="attachment.id"
-                      class="mt-1"
-                    >
-                      <!-- Image preview for image files -->
-                      <a
-                        v-if="isImage(attachment.file_type)"
-                        :href="'/' + attachment.file_path"
-                        target="_blank"
-                        class="block"
-                      >
-                        <img
-                          :src="'/' + attachment.file_path"
-                          alt="Attachment"
-                          class="max-h-40 max-w-full rounded border border-gray-200"
-                        />
-                      </a>
-
-                      <!-- Document link for other file types -->
-                      <a
-                        v-else
-                        :href="'/' + attachment.file_path"
-                        target="_blank"
-                        class="flex items-center p-2 bg-gray-50 rounded border border-gray-200 hover:bg-gray-100"
-                        :class="
-                          message.user_id === userId
-                            ? 'text-blue-900'
-                            : 'text-blue-600'
-                        "
-                      >
-                        <Icon
-                          :icon="getFileIcon(attachment.file_type)"
-                          class="mr-2"
-                          width="20"
-                          height="20"
-                        />
-                        <span class="text-sm truncate">
-                          {{ getFileName(attachment.file_path) }}
-                        </span>
-                      </a>
+                          <Icon
+                            :icon="getFileIcon(attachment.file_type)"
+                            class="mr-2"
+                            width="20"
+                            height="20"
+                          />
+                          <span class="text-sm truncate">
+                            {{ getFileName(attachment.file_path) }}
+                          </span>
+                        </a>
+                      </div>
                     </div>
-                  </div>
 
-                  <!-- Edited indicator -->
-                  <div
-                    v-if="message.edited"
-                    class="text-xs mt-1 italic text-right"
-                    :class="
-                      message.user_id === userId
-                        ? 'text-blue-200'
-                        : 'text-gray-500'
-                    "
-                  >
-                    (edited)
-                  </div>
-                </template>
-              </div>
+                    <!-- Edited indicator -->
+                    <div
+                      v-if="message.edited"
+                      class="text-xs mt-1 italic text-right"
+                      :class="
+                        message.user_id === userId
+                          ? 'text-blue-200'
+                          : 'text-gray-500'
+                      "
+                    >
+                      (edited)
+                    </div>
+                  </template>
+                </div>
 
-              <!-- Timestamp -->
-              <div
-                class="text-xs text-gray-500 mt-1"
-                :class="message.user_id === userId ? 'text-right' : 'text-left'"
-              >
-                {{ formatTime(message.created_at) }}
+                <!-- Timestamp -->
+                <div
+                  class="text-xs text-gray-500 mt-1"
+                  :class="
+                    message.user_id === userId ? 'text-right' : 'text-left'
+                  "
+                >
+                  {{ formatTime(message.created_at) }}
+                </div>
               </div>
             </div>
           </div>
@@ -496,11 +509,6 @@ const replyToMessage = (message) => {
 // Add new code for unread messages
 const firstUnreadMessage = ref(null);
 
-onMounted(() => {
-  // When conversation is opened, mark messages as read
-  store.dispatch("chat/markMessagesAsRead");
-});
-
 // Watch the messages array for changes
 watch(
   () => props.messages,
@@ -533,18 +541,42 @@ const isUnreadMessage = (message) => {
   return firstUnreadMessage.value && message.id === firstUnreadMessage.value.id;
 };
 
-// Check if there are any unread messages in a date group
-const hasUnreadMessagesInDate = (messageGroup, dateKey) => {
-  if (!firstUnreadMessage.value) return false;
+// Replace the existing hasUnreadMessagesInDate function with shouldShowUnreadDivider
+const shouldShowUnreadDivider = (message) => {
+  // If this isn't an unread message or no unread messages indicator exists, don't show the divider
+  if (!firstUnreadMessage.value || message.id !== firstUnreadMessage.value.id)
+    return false;
 
-  const firstUnreadDate = new Date(firstUnreadMessage.value.created_at);
-  const firstUnreadDateKey = firstUnreadDate.toISOString().split("T")[0];
-
-  return (
-    dateKey === firstUnreadDateKey &&
-    messageGroup.some((m) => m.id === firstUnreadMessage.value.id)
-  );
+  // This is the first unread message, show the divider
+  return true;
 };
+
+// Add new function to handle user interaction with messages
+const handleMessageInteraction = () => {
+  if (store.getters["chat/currentThread"]?.unread_count > 0) {
+    store.dispatch("chat/markMessagesAsRead");
+  }
+};
+
+// Track if user has scrolled through messages
+const handleScroll = (event) => {
+  const { scrollTop, scrollHeight, clientHeight } = event.target;
+
+  // If user has scrolled more than 70% through the messages, mark as read
+  if (scrollTop + clientHeight > scrollHeight * 0.7) {
+    if (store.getters["chat/currentThread"]?.unread_count > 0) {
+      store.dispatch("chat/markMessagesAsRead");
+    }
+  }
+};
+
+// Do NOT call markMessagesAsRead in onMounted anymore
+onMounted(() => {
+  // Only scroll to bottom, don't mark as read automatically
+  if (msgListRef.value) {
+    msgListRef.value.scrollTop = msgListRef.value.scrollHeight;
+  }
+});
 </script>
 
 <style scoped>

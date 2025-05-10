@@ -72,14 +72,14 @@ watch(
     </v-tooltip>
     <img
       v-if="imageSrc && !imageFailed"
-      :class="`object-contain w-full border-[1px] border-gray-400  h-full rounded-full`"
+      :class="`object-cover w-full border-[1px] border-gray-400  h-full rounded-full`"
       :src="imageSrc"
       alt="avatar"
       @error="handleImageError"
     />
     <div
       v-else
-      class="object-contain w-full h-full rounded-full flex items-center justify-center bg-gray-400"
+      class="object-cover w-full h-full rounded-full flex items-center justify-center bg-gray-400"
     >
       <Icon icon="fluent-mdl2:contact" color="white" width="24" />
     </div>

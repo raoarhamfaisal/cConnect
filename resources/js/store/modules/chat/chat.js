@@ -38,15 +38,8 @@ export default {
     SET_CURRENT(state, id) {
       state.currentId = id;
 
-      // When setting a current conversation, mark its unread count as 0
-      if (id) {
-        const threadIndex = state.threads.findIndex(
-          (t) => t.conversation_id === id
-        );
-        if (threadIndex !== -1) {
-          state.threads[threadIndex].unread_count = 0;
-        }
-      }
+      // DO NOT automatically set unread count to 0 here
+      // This will be handled explicitly through user interaction
     },
     SET_MESSAGES(state, m) {
       state.messages = m;
@@ -224,11 +217,8 @@ export default {
         );
         commit("SET_MESSAGES", res.data);
 
-        // Messages have been fetched, mark them as read
-        commit("UPDATE_THREAD_UNREAD_COUNT", {
-          conversationId: conversationId,
-          count: 0,
-        });
+        // Do NOT mark messages as read automatically here
+        // Only get them for display
 
         return res.data;
       } catch (error) {
@@ -241,7 +231,7 @@ export default {
     },
 
     // Explicitly mark messages as read (useful when user views but doesn't send a message)
-    async markMessagesAsRead({ state }) {
+    async markMessagesAsRead({ commit, state }) {
       if (!state.currentId) return;
 
       try {
@@ -250,6 +240,12 @@ export default {
           {},
           getAxiosConfig()
         );
+
+        // Also update the unread count in the store to zero
+        commit("UPDATE_THREAD_UNREAD_COUNT", {
+          conversationId: state.currentId,
+          count: 0,
+        });
       } catch (error) {
         console.error("Error marking messages as read:", error);
       }
