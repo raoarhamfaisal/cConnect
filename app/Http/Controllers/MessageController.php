@@ -13,37 +13,67 @@ class MessageController extends Controller
 {
     public function threads()
     {
-    $me = Auth::user();
+        $me = Auth::user();
 
-    $threads = $me->conversations()
-        ->with([
-            // load the other participant and their profile
-            'participants' => fn($q) => $q
-                ->where('user_id', '<>', $me->id)
-                ->with('profile'),
-            'latestMessage',
-        ])
-        ->latest('updated_at')
-        ->get()
-        ->map(fn($conv) => [
-            'conversation_id' => $conv->id,
-            'partner' => [
-                'id'         => $conv->participants->first()->id,
-                'first_name' => $conv->participants->first()->first_name,
-                'last_name'  => $conv->participants->first()->last_name,
-                'avatar'     => $conv->participants->first()->profile->user_avatar ?? null,
-                'is_contractor' => $conv->participants->first()->profile->is_contractor,
-            ],
-            'last_message' => $conv->latestMessage
-                ? [
-                    'body'       => $conv->latestMessage->body,
-                    'created_at' => $conv->latestMessage->created_at,
-                    'user_id'    => $conv->latestMessage->user_id,
-                ]
-                : null,
-        ]);
+        $threads = $me->conversations()
+            ->with([
+                // load the other participant and their profile
+                'participants' => fn($q) => $q
+                    ->where('user_id', '<>', $me->id)
+                    ->with('profile'),
+                'latestMessage',
+            ])
+            ->latest('updated_at')
+            ->get()
+            ->map(function($conv) use ($me) {
+                // Get unread count for this conversation
+                $unreadCount = $this->getUnreadCount($conv->id, $me->id);
+                
+                return [
+                    'conversation_id' => $conv->id,
+                    'partner' => [
+                        'id'         => $conv->participants->first()->id,
+                        'first_name' => $conv->participants->first()->first_name,
+                        'last_name'  => $conv->participants->first()->last_name,
+                        'avatar'     => $conv->participants->first()->profile->user_avatar ?? null,
+                        'is_contractor' => $conv->participants->first()->profile->is_contractor,
+                    ],
+                    'last_message' => $conv->latestMessage
+                        ? [
+                            'body'       => $conv->latestMessage->body,
+                            'created_at' => $conv->latestMessage->created_at,
+                            'user_id'    => $conv->latestMessage->user_id,
+                        ]
+                        : null,
+                    'unread_count' => $unreadCount
+                ];
+            });
 
-    return response()->json($threads);
+        return response()->json($threads);
+    }
+
+    /**
+     * Get count of unread messages for a conversation
+     */
+    private function getUnreadCount($conversationId, $userId)
+    {
+        // Get the last read timestamp for this user in this conversation
+        $lastRead = Conversation::find($conversationId)
+            ->participants()
+            ->where('user_id', $userId)
+            ->first()
+            ->pivot
+            ->last_read_at;
+
+        // Count messages that are newer than last_read_at and not from current user
+        $query = Message::where('conversation_id', $conversationId)
+            ->where('user_id', '!=', $userId);
+            
+        if ($lastRead) {
+            $query->where('created_at', '>', $lastRead);
+        }
+        
+        return $query->count();
     }
 
     /**
@@ -72,7 +102,27 @@ class MessageController extends Controller
                 return $message;
             });
 
+        // Mark messages as read when fetched
+        $this->markAsRead($conversation->id);
+
         return response()->json($msgs);
+    }
+
+    /**
+     * POST /api/chat/mark-as-read/{conversation}
+     * Mark all messages in a conversation as read for the current user
+     */
+    public function markAsRead($conversationId)
+    {
+        $user = Auth::user();
+        
+        $user->conversations()
+            ->where('conversations.id', $conversationId)
+            ->updateExistingPivot($conversationId, [
+                'last_read_at' => now()
+            ]);
+            
+        return response()->json(['success' => true]);
     }
 
     /**

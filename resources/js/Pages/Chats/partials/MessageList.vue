@@ -35,11 +35,24 @@
           </div>
         </div>
 
+        <!-- Unread messages divider -->
+        <div
+          v-if="hasUnreadMessagesInDate(group, dateKey)"
+          class="flex justify-center my-3"
+        >
+          <div
+            class="bg-red-100 text-red-600 rounded-full px-4 py-1 text-xs font-medium"
+          >
+            Unread messages
+          </div>
+        </div>
+
         <!-- Messages in this group -->
         <div
           v-for="message in group"
           :key="message.id"
           class="message-container"
+          :class="{ 'unread-message': isUnreadMessage(message) }"
         >
           <div
             class="flex items-start mb-4 group"
@@ -255,7 +268,15 @@
 </template>
 
 <script setup>
-import { ref, onUpdated, defineExpose, computed, inject } from "vue";
+import {
+  ref,
+  onUpdated,
+  defineExpose,
+  computed,
+  inject,
+  watch,
+  onMounted,
+} from "vue";
 import { Icon } from "@iconify/vue";
 import { useStore } from "vuex";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
@@ -471,6 +492,59 @@ const findReplyMessage = (message) => {
 const replyToMessage = (message) => {
   emit("replyToMessage", message);
 };
+
+// Add new code for unread messages
+const firstUnreadMessage = ref(null);
+
+onMounted(() => {
+  // When conversation is opened, mark messages as read
+  store.dispatch("chat/markMessagesAsRead");
+});
+
+// Watch the messages array for changes
+watch(
+  () => props.messages,
+  () => {
+    // Find the first unread message
+    if (props.messages && props.messages.length) {
+      const currentThread = store.getters["chat/currentThread"];
+
+      // If we have unread messages, find the first one
+      if (currentThread && currentThread.unread_count > 0) {
+        // We can't directly identify unread messages since we don't have the last_read_at timestamp
+        // in the frontend, but we can identify them by their position in the messages array
+        const totalMessages = props.messages.length;
+        const unreadCount = currentThread.unread_count;
+
+        if (unreadCount < totalMessages) {
+          firstUnreadMessage.value =
+            props.messages[totalMessages - unreadCount];
+        }
+      } else {
+        firstUnreadMessage.value = null;
+      }
+    }
+  },
+  { immediate: true }
+);
+
+// Check if a message is the first unread message
+const isUnreadMessage = (message) => {
+  return firstUnreadMessage.value && message.id === firstUnreadMessage.value.id;
+};
+
+// Check if there are any unread messages in a date group
+const hasUnreadMessagesInDate = (messageGroup, dateKey) => {
+  if (!firstUnreadMessage.value) return false;
+
+  const firstUnreadDate = new Date(firstUnreadMessage.value.created_at);
+  const firstUnreadDateKey = firstUnreadDate.toISOString().split("T")[0];
+
+  return (
+    dateKey === firstUnreadDateKey &&
+    messageGroup.some((m) => m.id === firstUnreadMessage.value.id)
+  );
+};
 </script>
 
 <style scoped>
@@ -494,5 +568,19 @@ const replyToMessage = (message) => {
 
 .message-container {
   transition: all 0.3s ease;
+}
+
+.unread-message {
+  position: relative;
+}
+
+.unread-message::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  width: 5px;
+  height: 100%;
+  background-color: #ef4444;
+  border-radius: 4px;
 }
 </style>

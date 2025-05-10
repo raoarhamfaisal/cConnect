@@ -40,7 +40,9 @@ class StorePostRequest extends FormRequest
             'title_text_alignment' => 'nullable|in:left,center,right',
             'title_text_color_id' => 'nullable|exists:post_colors,id',
             'title_background_color_id' => 'nullable|exists:post_colors,id',
-                
+            'is_job_posting' => 'sometimes|boolean',
+            'is_job_completed' => 'sometimes|boolean',
+
         ];
     }
 

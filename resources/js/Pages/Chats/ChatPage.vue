@@ -37,7 +37,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { useStore } from "vuex";
 import ChatSidebar from "@/Pages/Chats/partials/ChatSidebar.vue";
 import ChatHeader from "@/Pages/Chats/partials/ChatHeader.vue";
@@ -55,6 +55,18 @@ const currentThread = computed(() => store.getters["chat/currentThread"]);
 const messages = computed(() => store.getters["chat/messages"]);
 const props = defineProps({ authUser: Object });
 const authUser = props.authUser;
+
+// Add watcher for current conversation change
+watch(
+  currentId,
+  (newId) => {
+    if (newId) {
+      // Mark messages as read whenever the current conversation changes
+      store.dispatch("chat/markMessagesAsRead");
+    }
+  },
+  { immediate: true }
+);
 
 function select(partnerId) {
   // Find the thread associated with this partner

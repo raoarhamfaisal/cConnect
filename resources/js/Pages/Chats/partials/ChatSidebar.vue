@@ -7,7 +7,7 @@
       <div class="flex items-center gap-2">
         <Icon
           icon="material-symbols:chat"
-          color="#16a34a"
+          color="#3b82f6"
           width="30"
           height="30"
         />
@@ -39,7 +39,7 @@
         :key="thread.partner.id"
         @click="selectThread(thread.partner.id)"
         :class="[
-          'flex items-center p-3 cursor-pointer hover:bg-gray-100 border-b border-gray-100 transition-colors duration-150 ',
+          'flex items-center p-3 cursor-pointer hover:bg-gray-100 border-b border-gray-100 transition-colors duration-150 relative',
           thread.conversation_id === currentId
             ? 'bg-green-50 border-l-4 border-l-green-500'
             : '',
@@ -58,6 +58,14 @@
           <div class="text-sm text-gray-500 truncate">
             {{ thread.last_message?.body || "" }}
           </div>
+        </div>
+
+        <!-- Unread message counter -->
+        <div
+          v-if="thread.unread_count && thread.unread_count > 0"
+          class="absolute right-3 top-3 bg-green-500 text-white rounded-full flex items-center justify-center text-xs font-bold min-w-[20px] h-5 px-1"
+        >
+          {{ thread.unread_count }}
         </div>
       </li>
     </ul>

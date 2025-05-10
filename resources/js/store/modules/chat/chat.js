@@ -22,6 +22,11 @@ export default {
     loading: (s) => s.loading,
     messagesLoading: (s) => s.messagesLoading,
     editingMessage: (s) => s.editingMessage,
+    totalUnreadCount: (s) => {
+      return s.threads.reduce((total, thread) => {
+        return total + (thread.unread_count || 0);
+      }, 0);
+    },
   },
   mutations: {
     SET_PARTNER(state, p) {
@@ -32,6 +37,16 @@ export default {
     },
     SET_CURRENT(state, id) {
       state.currentId = id;
+
+      // When setting a current conversation, mark its unread count as 0
+      if (id) {
+        const threadIndex = state.threads.findIndex(
+          (t) => t.conversation_id === id
+        );
+        if (threadIndex !== -1) {
+          state.threads[threadIndex].unread_count = 0;
+        }
+      }
     },
     SET_MESSAGES(state, m) {
       state.messages = m;
@@ -102,6 +117,14 @@ export default {
       ) {
         state.threads[threadIndex].last_message.deleted = true;
         state.threads[threadIndex].last_message.body = null;
+      }
+    },
+    UPDATE_THREAD_UNREAD_COUNT(state, { conversationId, count }) {
+      const threadIndex = state.threads.findIndex(
+        (t) => t.conversation_id === conversationId
+      );
+      if (threadIndex !== -1) {
+        state.threads[threadIndex].unread_count = count;
       }
     },
   },
@@ -190,7 +213,7 @@ export default {
     },
 
     // 3) load messages for existing thread
-    async fetchMessages({ commit }, conversationId) {
+    async fetchMessages({ commit, state }, conversationId) {
       if (!conversationId) return;
 
       commit("SET_MESSAGES_LOADING", true);
@@ -200,6 +223,13 @@ export default {
           getAxiosConfig()
         );
         commit("SET_MESSAGES", res.data);
+
+        // Messages have been fetched, mark them as read
+        commit("UPDATE_THREAD_UNREAD_COUNT", {
+          conversationId: conversationId,
+          count: 0,
+        });
+
         return res.data;
       } catch (error) {
         console.error("Error fetching messages:", error);
@@ -207,6 +237,21 @@ export default {
         return [];
       } finally {
         commit("SET_MESSAGES_LOADING", false);
+      }
+    },
+
+    // Explicitly mark messages as read (useful when user views but doesn't send a message)
+    async markMessagesAsRead({ state }) {
+      if (!state.currentId) return;
+
+      try {
+        await axios.post(
+          `/api/chat/threads/${state.currentId}/mark-read`,
+          {},
+          getAxiosConfig()
+        );
+      } catch (error) {
+        console.error("Error marking messages as read:", error);
       }
     },
 

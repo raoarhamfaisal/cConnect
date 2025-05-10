@@ -172,6 +172,8 @@ class PostController extends Controller
                     'image' => $post->image,
                     'body1' => $post->body1,
                     'body2' => $post->body2,
+                    'is_job_posting' => $post->is_job_posting,
+                    'is_job_completed' => $post->is_job_completed,
                     'is_body_bold' => $post->is_body_bold,
                     'post_text_color_id' => $post->post_text_color_id,
                     'post_background_color_id' => $post->post_background_color_id,
@@ -286,6 +288,8 @@ class PostController extends Controller
                     'image' => $post->image,
                     'body1' => $post->body1,
                     'body2' => $post->body2,
+                    'is_job_posting' => $post->is_job_posting,
+                    'is_job_completed' => $post->is_job_completed,
                     'is_body_bold' => $post->is_body_bold,
                     'post_text_color_id' => $post->post_text_color_id,
                     'post_background_color_id' => $post->post_background_color_id,
@@ -405,7 +409,7 @@ class PostController extends Controller
         InsertPostProfileService $InsertPostProfileService,
         ProcessImageService $processImageService
     ) {
-
+        // dd($request);
         $user = Auth::user();
         $userVersion = $user->profile->version; // Fetch the version identifier from the user's profile
 
@@ -819,7 +823,7 @@ class PostController extends Controller
 
 
         // List the attributes you want to replicate
-        $attributesToReplicate = ['view', 'region_id', 'title', 'image', 'body1', 'body2', 'is_body_bold', 'post_text_color_id', 'post_background_color_id', 'font_size', 'text_alignment', 'title_text_alignment', 'title_text_color_id', 'title_background_color_id'];
+        $attributesToReplicate = ['view', 'region_id', 'title', 'image', 'body1', 'body2','is_job_posting','is_job_completed', 'is_body_bold', 'post_text_color_id', 'post_background_color_id', 'font_size', 'text_alignment', 'title_text_alignment', 'title_text_color_id', 'title_background_color_id'];
 
         // Replicate the original post with specified attributes
         $repost = $post->replicate();

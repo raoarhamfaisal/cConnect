@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');               // sender
             $table->text('body')->nullable();
             $table->unsignedBigInteger('reply_to')->nullable();   // refers to another message
-            $table->timestamps();
+            $table->timestamps(); // also added edited and deleted fields  in add_edit_delete_fields_to_messages migration
 
             $table->foreign('conversation_id')->references('id')->on('conversations')->cascadeOnDelete();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();

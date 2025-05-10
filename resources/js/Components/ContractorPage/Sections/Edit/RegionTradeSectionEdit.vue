@@ -13,29 +13,6 @@
     />
     <!-- User Posting and Edit Button -->
     <div class="flex gap-2 sm:gap-3">
-      <!-- User Postings -->
-      <!-- <v-tooltip
-        :text="translations && translations.see_user_posts"
-        location="left"
-      >
-        <template v-slot:activator="{ props }">
-          <div
-            @click="openPostDialog"
-            class="active:scale-95 hover:bg-[#f8f9fa] hover:rounded-md"
-          >
-            <button
-              class="xs:text-md w-[28px] h-[28px] xs:w-[35px] xs:h-[35px] font-semibold flex items-center justify-center"
-            >
-              <img
-                src="/images/icons/post_b.png"
-                v-bind="props"
-                width="28"
-                height="28"
-              />
-            </button>
-          </div>
-        </template>
-      </v-tooltip> -->
       <!-- Edit -->
       <IconButton @click="openDialog" icon="nimbus:edit" color="#1864ab" />
     </div>
@@ -178,7 +155,6 @@ import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
 import { Icon } from "@iconify/vue";
 
 import { options } from "@/helpers/selectListsHelpters.js";
-import { Link } from "@inertiajs/inertia-vue3";
 import { useStore } from "vuex";
 import { computed, ref, watch, onMounted, reactive } from "vue";
 import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
@@ -316,18 +292,7 @@ const toggleSwitch = (field) => {
     }
   }
 
-  if (field === "trade1") {
-    const newValue = tempTradesPost[field] === 1 ? 0 : 1;
-    if (userVersion.value !== 1) {
-      for (let i = 1; i <= 24; i++) {
-        tempTradesPost[`trade${i}`] = newValue;
-      }
-    } else {
-      tempTradesPost[`trade${1}`] = newValue;
-    }
-  } else {
-    tempTradesPost[field] = tempTradesPost[field] === 1 ? 0 : 1;
-  }
+  tempTradesPost[field] = tempTradesPost[field] === 1 ? 0 : 1;
   const allSelected = Object.values(tempTradesPost).every(
     (value) => value === 1
   );

@@ -122,6 +122,7 @@ export default {
         region_id: (this.profile && this.profile.region_id) || null,
         trades: [],
         shares: 0,
+        is_job_posting: 0,
       },
       userID: null,
       url: usePage().url.value,
@@ -216,7 +217,6 @@ export default {
         url = "/post/" + formData.id;
         formData._method = "PUT";
       }
-
       // see results - chrome: inpect/network/headers & payload
       // 1) goes to web.php router
       // 2) router listens for Route::post('/post')

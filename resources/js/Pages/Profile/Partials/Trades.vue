@@ -1,6 +1,4 @@
 <script setup>
-import { somethingWentWrong } from "@/helpers/utilities";
-
 import { options } from "@/helpers/selectListsHelpters.js";
 import { computed, onMounted, reactive, ref } from "vue";
 import { useStore } from "vuex";
@@ -89,18 +87,7 @@ const toggleSwitch = async (field) => {
     }
   }
 
-  if (field === "trade1") {
-    const newValue = form[field] === 1 ? 0 : 1;
-    if (userVersion.value !== 1) {
-      for (let i = 1; i <= 24; i++) {
-        form[`trade${i}`] = newValue;
-      }
-    } else {
-      form[`trade${1}`] = newValue;
-    }
-  } else {
-    form[field] = form[field] === 1 ? 0 : 1;
-  }
+  form[field] = form[field] === 1 ? 0 : 1;
   const allSelected = Object.values(form).every((value) => value === 1);
   if (allSelected) {
     selectAll.value = true;

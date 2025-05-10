@@ -327,5 +327,6 @@ Route::middleware('auth:sanctum')->prefix('chat')->group(function(){
     Route::put   ('messages/{message}',            [MessageController::class,'update']);
     Route::delete('messages/{message}',            [MessageController::class,'destroy']);
     Route::post  ('upload-attachment',             [MessageController::class,'upload']);
+    Route::post  ('threads/{conversation}/mark-read', [MessageController::class,'markAsRead']);
 });
 

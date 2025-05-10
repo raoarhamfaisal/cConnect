@@ -21,6 +21,8 @@ class Post extends Model
         'region_id',
         'user_id',
         'active_post',
+        'is_job_posting',
+        'is_job_completed',
         'title',
         'image',    
         'body1',

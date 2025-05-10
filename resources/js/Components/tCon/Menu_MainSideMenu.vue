@@ -527,7 +527,7 @@ const goToChatsPage = () => {
           >
             <Icon
               icon="material-symbols:chat"
-              color="#16a34a"
+              color="#3b82f6"
               width="30"
               height="30"
             />

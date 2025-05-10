@@ -177,6 +177,7 @@ export default {
         this.form.title_text_alignment = "left";
         this.myFiles = [];
         this.form.image = "";
+        this.form.is_job_posting = 0;
         this.$store.dispatch("ratings/getTrades", this.id);
       }
     },
@@ -238,19 +239,7 @@ export default {
         }
       }
 
-      if (field === "trade1") {
-        const newState = !this.tradesPost["trade1"];
-        if (this.userVersion !== 1) {
-          for (let i = 1; i <= 24; i++) {
-            this.tradesPost["trade" + i] = newState;
-          }
-        } else {
-          // for free version
-          this.tradesPost["trade" + 1] = newState;
-        }
-      } else {
-        this.tradesPost[field] = !this.tradesPost[field];
-      }
+      this.tradesPost[field] = !this.tradesPost[field];
       const allSelected = Object.values(this.tradesPost).every(
         (value) => value === 1 || value === true
       );
@@ -453,6 +442,9 @@ export default {
           this.tradesPost[key] = 1;
         }
       }
+    },
+    toggleJobPosting() {
+      this.form.is_job_posting = this.form.is_job_posting ? 0 : 1;
     },
   },
 };
@@ -711,23 +703,42 @@ Array.prototype.remove = function () {
                   {{ $page.props.errors.body2 }}
                 </div>
               </div>
+
+              <!-- Job Opportunity TOGGLE -->
+
+              <div class="flex items-center justify-between sm:w-52 mb-5">
+                <label class="mr-4 max-sm:text-sm font-bold"
+                  >Job Opportunity</label
+                >
+                <div class="switch" @click="toggleJobPosting">
+                  <div
+                    :class="[
+                      form.is_job_posting ? 'switch-bg-on' : 'switch-bg-off',
+                    ]"
+                  >
+                    <div
+                      :class="[
+                        form.is_job_posting
+                          ? 'switch-knob-on'
+                          : 'switch-knob-off',
+                      ]"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+              <!-- REGION -->
               <div class="mb-4 sm:mb-0">
                 <InputLabel
                   class="font-bold mb-1 mt-1"
                   :value="translations && translations.region"
                 />
                 <div class="text-lg">{{ selectedReferal }}</div>
-                <!-- <SelectProfile
-                  :options="referenceList"
-                  disabled="true"
-                  :modelValue="selectedReferal"
-                  @update:modelValue="changeReferal"
-                /> -->
                 <InputError
                   class="mt-2"
                   :message="$page.props.errors.region_id"
                 />
               </div>
+
               <div class="mb-4 sm:mb-0 mt-1">
                 <div class="flex justify-between mb-2">
                   <div class="text-lg font-bold text-[#241e6d]">

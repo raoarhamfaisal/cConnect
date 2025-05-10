@@ -251,19 +251,7 @@ export default {
         }
       }
 
-      if (field === "trade1") {
-        const newState = !this.tradesPost["trade1"];
-        if (this.userVersion !== 1) {
-          for (let i = 1; i <= 24; i++) {
-            this.tradesPost["trade" + i] = newState;
-          }
-        } else {
-          // for free version
-          this.tradesPost["trade" + 1] = newState;
-        }
-      } else {
-        this.tradesPost[field] = !this.tradesPost[field];
-      }
+      this.tradesPost[field] = !this.tradesPost[field];
 
       if (allSelected) {
         this.selectAll = true;
@@ -518,6 +506,17 @@ export default {
       } finally {
         this.loadingPostTrades = false;
       }
+    },
+    toggleJobPosting() {
+      if (this.form.is_job_posting) {
+        this.form.is_job_posting = 0;
+        this.form.is_job_completed = 0;
+      } else {
+        this.form.is_job_posting = 1;
+      }
+    },
+    toggleJobCompleted() {
+      this.form.is_job_completed = this.form.is_job_completed ? 0 : 1;
     },
   },
 };
@@ -831,6 +830,54 @@ Array.prototype.remove = function () {
                   {{ $page.props.errors.body2 }}
                 </div>
               </div>
+              <!-- Job Opportunity TOGGLE -->
+
+              <div class="flex items-center justify-between sm:w-60 mb-5">
+                <label class="mr-4 max-sm:text-sm font-bold"
+                  >Job Opportunity</label
+                >
+                <div class="switch" @click="toggleJobPosting">
+                  <div
+                    :class="[
+                      form.is_job_posting ? 'switch-bg-on' : 'switch-bg-off',
+                    ]"
+                  >
+                    <div
+                      :class="[
+                        form.is_job_posting
+                          ? 'switch-knob-on'
+                          : 'switch-knob-off',
+                      ]"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+              <!-- JOB Completed TOGGLE -->
+
+              <div
+                v-if="form.is_job_posting"
+                class="flex items-center justify-between sm:w-60 mb-5"
+              >
+                <label class="mr-4 max-sm:text-sm font-bold"
+                  >Mark as Completed</label
+                >
+                <div class="switch" @click="toggleJobCompleted">
+                  <div
+                    :class="[
+                      form.is_job_completed ? 'switch-bg-on' : 'switch-bg-off',
+                    ]"
+                  >
+                    <div
+                      :class="[
+                        form.is_job_completed
+                          ? 'switch-knob-on'
+                          : 'switch-knob-off',
+                      ]"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+              <!-- REGION -->
               <div class="mb-4 sm:mb-0">
                 <InputLabel
                   class="font-bold mb-1 mt-1"

@@ -27,6 +27,8 @@ import { getAxiosConfig } from "@/helpers/axiosConfigHelpers";
 import { filterBadWordsWithoutValue } from "@/helpers/utilities";
 import InputError from "@/Components/InputError.vue";
 import { Inertia } from "@inertiajs/inertia";
+import JobPosting from "../Postings/JobPosting.vue";
+import MessageButton from "../Postings/MessageButton.vue";
 
 export default {
   components: {
@@ -49,6 +51,8 @@ export default {
     DialogContractorRating,
     Icon,
     Inertia,
+    JobPosting,
+    MessageButton,
   },
 
   mounted() {
@@ -1141,21 +1145,26 @@ export default {
             </div>
           </div>
         </Link>
-        <Icon
-          v-if="profile.user_id !== post.user_id"
-          icon="material-symbols:chat"
-          color="#16a34a"
-          class="ml-2 cursor-pointer"
-          width="24"
-          height="24"
-          @click.prevent.stop="openChat"
-        />
       </div>
 
       <!-- Ratings / post action menu / posting date -->
       <div
-        class="flex flex-row justify-end items-center self-start flex-none w-28"
+        class="flex flex-row justify-end items-center self-start flex-none w-68"
       >
+        <div
+          v-if="profile.user_id !== post.user_id || post.is_job_posting"
+          class="hidden sm:flex gap-2 flex-col self-start md:mt-2 items-center"
+        >
+          <JobPosting
+            :isJobPosting="post.is_job_posting"
+            :isJobCompleted="post.is_job_completed"
+          />
+          <MessageButton
+            :profile="profile"
+            :post="post"
+            @open-chat="openChat"
+          />
+        </div>
         <!-- User RATINGS /// INDIVIDUAL POST: TOP POSTING ROW -->
         <div class="flex flex-row flex-none justify-end items-center px-2">
           <!-- Premium Marking -->
@@ -1265,6 +1274,13 @@ export default {
         </div>
       </div>
       <!-- END Ratings / post action menu / posting date -->
+    </div>
+    <div
+      class="flex sm:hidden gap-1 justify-between w-full mt-1.5"
+      v-if="profile.user_id !== post.user_id || post.is_job_posting"
+    >
+      <MessageButton :profile="profile" :post="post" @open-chat="openChat" />
+      <JobPosting :isJobPosting="post.is_job_posting" />
     </div>
     <div
       class="flex gap-2 self-start sm:mt-[-4px] md:mt-[-6px] ml-[3px]"
