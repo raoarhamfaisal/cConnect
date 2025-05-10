@@ -37,7 +37,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, onUnmounted, watch } from "vue";
 import { useStore } from "vuex";
 import ChatSidebar from "@/Pages/Chats/partials/ChatSidebar.vue";
 import ChatHeader from "@/Pages/Chats/partials/ChatHeader.vue";
@@ -59,7 +59,108 @@ const authUser = props.authUser;
 // Track if this is the initial load
 const isInitialLoad = ref(true);
 
-async function select(partnerId) {
+// Setup WebSocket listeners when the component is mounted
+onMounted(() => {
+  store.dispatch("chat/fetchThreads").then(() => {
+    // only scroll, don't select or mark as read
+    if (messageListRef.value) {
+      messageListRef.value.scrollToBottom();
+    }
+  });
+
+  // Setup WebSocket listeners for conversation updates
+  setupWebSocketListeners();
+});
+
+// Clean up WebSocket subscriptions when component is unmounted
+onUnmounted(() => {
+  const currentConversationId = currentId.value;
+  if (currentConversationId) {
+    window.Echo.leave(`private-conversation.${currentConversationId}`);
+  }
+});
+
+// Watch for changes to the current conversation ID to update WebSocket subscriptions
+watch(currentId, (newId, oldId) => {
+  if (oldId) {
+    window.Echo.leave(`private-conversation.${oldId}`);
+  }
+  if (newId) {
+    listenToConversation(newId);
+  }
+});
+
+// Setup WebSocket listeners for the chat
+function setupWebSocketListeners() {
+  // Listen to the current conversation if one is selected
+  if (currentId.value) {
+    listenToConversation(currentId.value);
+  }
+}
+
+// Listen to a specific conversation channel
+function listenToConversation(conversationId) {
+  // Regular channel for message events
+  window.Echo.channel(`conversation.${conversationId}`).listen(
+    "MessageSent",
+    (event) => {
+      // event contains the message fields directly
+      if (event.user_id !== authUser.id) {
+        // Check if this is an edit or delete operation
+        const existingMessageIndex = store.state.chat.messages.findIndex(
+          (m) => m.id === event.id
+        );
+
+        if (existingMessageIndex !== -1) {
+          // This is an edited or deleted message
+          if (event.deleted) {
+            // Handle deleted message
+            store.commit("chat/DELETE_MESSAGE", event.id);
+          } else if (event.edited) {
+            // Handle edited message
+            store.commit("chat/UPDATE_MESSAGE", event);
+          } else {
+            // Regular update - might be for attachments or other properties
+            store.commit("chat/UPDATE_MESSAGE", event);
+          }
+        } else {
+          // This is a new message
+          store.commit("chat/ADD_MESSAGE", event);
+
+          // Scroll to bottom to show new message
+          if (messageListRef.value) {
+            messageListRef.value.scrollToBottom();
+          }
+
+          // Update the thread's last message
+          store.commit("chat/UPDATE_THREAD_LAST_MESSAGE", {
+            conversationId: event.conversation_id,
+            message: {
+              body: event.body,
+              created_at: event.created_at,
+              user_id: event.user_id,
+            },
+          });
+
+          // Unread count handling
+          if (
+            document.visibilityState === "visible" &&
+            currentId.value === event.conversation_id
+          ) {
+            store.dispatch("chat/markMessagesAsRead");
+          } else {
+            store.commit(
+              "chat/INCREMENT_THREAD_UNREAD_COUNT",
+              event.conversation_id
+            );
+          }
+        }
+      }
+    }
+  );
+}
+
+const select = async (partnerId) => {
   // Find the thread associated with this partner
   const thread = threads.value.find((t) => t.partner.id === partnerId);
 
@@ -111,7 +212,7 @@ async function select(partnerId) {
     store.commit("chat/SET_MESSAGES", []);
     isInitialLoad.value = false;
   }
-}
+};
 
 function setReplyToMessage(message) {
   replyToMessage.value = message;
@@ -171,15 +272,6 @@ function openEditModal() {
     editMessageModal.value.openDialog();
   }
 }
-
-onMounted(() => {
-  store.dispatch("chat/fetchThreads").then(() => {
-    // only scroll, don't select or mark as read
-    if (messageListRef.value) {
-      messageListRef.value.scrollToBottom();
-    }
-  });
-});
 </script>
 
 <style scoped>

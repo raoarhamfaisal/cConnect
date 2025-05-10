@@ -18,7 +18,7 @@
 <script setup>
 import Avatar from "@/Components/Ratings/Avatar.vue";
 
-defineProps({
+const props = defineProps({
   partner: Object,
 });
 </script>

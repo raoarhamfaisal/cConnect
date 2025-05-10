@@ -120,6 +120,58 @@ export default {
         state.threads[threadIndex].unread_count = count;
       }
     },
+    UPDATE_THREAD_LAST_MESSAGE(state, { conversationId, message }) {
+      const threadIndex = state.threads.findIndex(
+        (t) => t.conversation_id === conversationId
+      );
+
+      if (threadIndex !== -1) {
+        state.threads[threadIndex].last_message = message;
+
+        // Move this conversation to the top of the list
+        if (threadIndex > 0) {
+          const thread = state.threads.splice(threadIndex, 1)[0];
+          state.threads.unshift(thread);
+        }
+      }
+    },
+    INCREMENT_THREAD_UNREAD_COUNT(state, conversationId) {
+      const threadIndex = state.threads.findIndex(
+        (t) => t.conversation_id === conversationId
+      );
+
+      if (threadIndex !== -1) {
+        state.threads[threadIndex].unread_count =
+          (state.threads[threadIndex].unread_count || 0) + 1;
+      }
+    },
+    UPDATE_THREAD_LAST_MESSAGE_ON_EDIT_DELETE(
+      state,
+      { conversationId, messageId, isDeleted }
+    ) {
+      const threadIndex = state.threads.findIndex(
+        (t) => t.conversation_id === conversationId
+      );
+
+      if (
+        threadIndex !== -1 &&
+        state.threads[threadIndex].last_message &&
+        state.threads[threadIndex].last_message.id === messageId
+      ) {
+        if (isDeleted) {
+          // For deleted messages, mark as deleted and remove body
+          state.threads[threadIndex].last_message.deleted = true;
+          state.threads[threadIndex].last_message.body = null;
+        } else {
+          // For edited messages, update with modified text from the messages array
+          const editedMessage = state.messages.find((m) => m.id === messageId);
+          if (editedMessage) {
+            state.threads[threadIndex].last_message.body = editedMessage.body;
+            state.threads[threadIndex].last_message.edited = true;
+          }
+        }
+      }
+    },
   },
   actions: {
     initPartner({ commit }, p) {

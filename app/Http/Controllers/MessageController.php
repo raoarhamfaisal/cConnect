@@ -204,6 +204,9 @@ class MessageController extends Controller
             $msg->load('sender.profile', 'attachments');
         }
 
+        // Broadcast the message event
+        broadcast(new \App\Events\MessageSent($msg))->toOthers();
+
         return response()->json($msg, 201);
     }
 
@@ -332,6 +335,9 @@ class MessageController extends Controller
 
         // Reload relations
         $message->load('sender.profile', 'attachments');
+    
+        // Broadcast message updated event
+        broadcast(new \App\Events\MessageSent($message))->toOthers();
 
         return response()->json($message);
     }
@@ -354,10 +360,30 @@ class MessageController extends Controller
             'body' => null,
             'deleted' => true
         ]);
-
-        // Alternative hard delete if preferred:
-        // $message->delete();
+    
+        // Broadcast message deleted event
+        broadcast(new \App\Events\MessageSent($message))->toOthers();
 
         return response()->json(['success' => true, 'message' => 'Message deleted successfully']);
+    }
+
+    /**
+     * Update user online status
+     * 
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateUserStatus(Request $request)
+    {
+        $user = Auth::user();
+        $status = $request->input('status', 'online');
+        
+        // Broadcast user online status event
+        broadcast(new \App\Events\UserOnlineStatus(
+            $user->id,
+            $status === 'online'
+        ));
+        
+        return response()->json(['success' => true]);
     }
 }
