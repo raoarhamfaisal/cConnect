@@ -235,6 +235,7 @@ export default {
             await dispatch("fetchMessages", first);
           }
         }
+        dispatch("markMessagesAsRead", false);
       } catch (error) {
         console.error("Error fetching threads:", error);
       } finally {
@@ -295,7 +296,7 @@ export default {
     },
 
     // Explicitly mark messages as read (useful when user views but doesn't send a message)
-    async markMessagesAsRead({ commit, state }) {
+    async markMessagesAsRead({ commit, state }, updateUnreadCount = true) {
       if (!state.currentId) return;
 
       try {
@@ -306,10 +307,12 @@ export default {
         );
 
         // Also update the unread count in the store to zero
-        commit("UPDATE_THREAD_UNREAD_COUNT", {
-          conversationId: state.currentId,
-          count: 0,
-        });
+        if (updateUnreadCount) {
+          commit("UPDATE_THREAD_UNREAD_COUNT", {
+            conversationId: state.currentId,
+            count: 0,
+          });
+        }
       } catch (error) {
         console.error("Error marking messages as read:", error);
       }

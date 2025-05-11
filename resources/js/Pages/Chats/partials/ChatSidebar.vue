@@ -62,7 +62,19 @@
 
         <!-- Unread message counter -->
         <div
-          v-if="thread.unread_count && thread.unread_count > 0"
+          v-if="
+            thread.conversation_id === currentId &&
+            showBadge[thread.conversation_id]
+          "
+          class="absolute right-3 top-3 bg-green-500 text-white rounded-full flex items-center justify-center text-xs font-bold min-w-[20px] h-5 px-1"
+        >
+          {{ thread.unread_count }}
+        </div>
+
+        <div
+          v-else-if="
+            thread.conversation_id !== currentId && thread.unread_count > 0
+          "
           class="absolute right-3 top-3 bg-green-500 text-white rounded-full flex items-center justify-center text-xs font-bold min-w-[20px] h-5 px-1"
         >
           {{ thread.unread_count }}
@@ -75,7 +87,7 @@
 <script setup>
 import Avatar from "@/Components/Ratings/Avatar.vue";
 import { Icon } from "@iconify/vue";
-import { computed } from "vue";
+import { computed, reactive, watch } from "vue";
 import { useStore } from "vuex";
 
 const props = defineProps({
@@ -85,9 +97,31 @@ const props = defineProps({
 
 const emit = defineEmits(["select"]);
 const store = useStore();
-
-// Get loading state from store
 const loading = computed(() => store.state.chat?.loading || false);
+
+// reactive flags per conversation
+const showBadge = reactive({});
+
+// watch for unread_count increases on the current thread
+watch(
+  () =>
+    props.threads.map((t) => ({
+      id: t.conversation_id,
+      count: t.unread_count,
+    })),
+  (newList, oldList = []) => {
+    newList.forEach(({ id, count }) => {
+      const prev = oldList.find((o) => o.id === id)?.count || 0;
+      if (id === props.currentId && count > prev) {
+        showBadge[id] = true;
+        setTimeout(() => {
+          showBadge[id] = false;
+        }, 1000);
+      }
+    });
+  },
+  { deep: true }
+);
 
 function selectThread(partnerId) {
   emit("select", partnerId);

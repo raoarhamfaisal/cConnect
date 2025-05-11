@@ -106,8 +106,12 @@ function listenToConversation(conversationId) {
   window.Echo.channel(`conversation.${conversationId}`).listen(
     "MessageSent",
     (event) => {
+      console.log("MessageSent event received:", event);
       // event contains the message fields directly
-      if (event.user_id !== authUser.id) {
+      if (
+        event.user_id !== authUser.id &&
+        event.conversation_id === currentId.value
+      ) {
         // Check if this is an edit or delete operation
         const existingMessageIndex = store.state.chat.messages.findIndex(
           (m) => m.id === event.id
@@ -143,19 +147,12 @@ function listenToConversation(conversationId) {
               user_id: event.user_id,
             },
           });
+          store.dispatch("chat/markMessagesAsRead", false);
 
-          // Unread count handling
-          if (
-            document.visibilityState === "visible" &&
-            currentId.value === event.conversation_id
-          ) {
-            store.dispatch("chat/markMessagesAsRead");
-          } else {
-            store.commit(
-              "chat/INCREMENT_THREAD_UNREAD_COUNT",
-              event.conversation_id
-            );
-          }
+          store.commit(
+            "chat/INCREMENT_THREAD_UNREAD_COUNT",
+            event.conversation_id
+          );
         }
       }
     }
@@ -185,10 +182,6 @@ const select = async (partnerId) => {
     if (!isInitialLoad.value) {
       // Mark as read and clear unread count
       store.dispatch("chat/markMessagesAsRead");
-      store.commit("chat/UPDATE_THREAD_UNREAD_COUNT", {
-        conversationId: currentId.value,
-        count: 0,
-      });
     }
     return;
   } else if (currentId.value) {
@@ -212,10 +205,6 @@ const select = async (partnerId) => {
       // Only mark as read when user explicitly selects a thread (not on initial load)
       if (!isInitialLoad.value) {
         store.dispatch("chat/markMessagesAsRead");
-        store.commit("chat/UPDATE_THREAD_UNREAD_COUNT", {
-          conversationId: thread.conversation_id,
-          count: 0,
-        });
       }
 
       // Set initial load to false after first selection
@@ -238,48 +227,48 @@ function clearReplyToMessage() {
 }
 
 function send(data) {
-  let payload;
-  if (typeof data === "string") {
-    payload = { text: data };
-  } else {
-    payload = {
-      text: data.text,
-      attachments: data.attachments || [],
-    };
-  }
+  store.dispatch("chat/markMessagesAsRead");
+  let payload =
+    typeof data === "string"
+      ? { text: data }
+      : { text: data.text, attachments: data.attachments || [] };
 
-  // Add reply_to if replying to a message
   if (replyToMessage.value) {
-    // Keep a reference to the full message object for the UI while we wait for API response
-    const replyMessageReference = { ...replyToMessage.value };
-
-    // Add the ID to the payload for the API
     payload.reply_to = replyToMessage.value.id;
-
-    // After dispatch, modify the returned message to ensure replyTo is properly set
-    return store.dispatch("chat/sendMessage", payload).then((newMessage) => {
-      // If the message doesn't have replyTo set but has reply_to, set it manually
-      if (newMessage && newMessage.reply_to && !newMessage.replyTo) {
-        newMessage.replyTo = replyMessageReference;
-
-        // Update the message in the store to ensure UI shows the reply
-        store.commit("chat/UPDATE_MESSAGE", newMessage);
-      }
-
-      if (messageListRef.value) {
-        messageListRef.value.scrollToBottom();
-      }
-
-      // Clear the reply reference after sending
-      clearReplyToMessage();
-    });
-  } else {
-    return store.dispatch("chat/sendMessage", payload).then(() => {
-      if (messageListRef.value) {
-        messageListRef.value.scrollToBottom();
-      }
-    });
   }
+
+  // show pending message
+  const tempId = `temp-${Date.now()}`;
+  const tempMsg = {
+    id: tempId,
+    user_id: authUser.id,
+    body: payload.text,
+    attachments: payload.attachments || [],
+    created_at: new Date().toISOString(),
+    reply_to: payload.reply_to || null,
+    status: "pending",
+    sender: {
+      first_name: authUser.first_name,
+      last_name: authUser.last_name,
+      profile: { user_avatar: authUser.avatar },
+    },
+  };
+  store.commit("chat/ADD_MESSAGE", tempMsg);
+  messageListRef.value?.scrollToBottom();
+
+  // clear UI reply instantly
+  clearReplyToMessage();
+
+  // send in background
+  store.dispatch("chat/sendMessage", payload).then((newMessage) => {
+    // update temp message in place with real message data and delivered status
+    store.commit("chat/UPDATE_MESSAGE", {
+      ...newMessage,
+      id: tempId, // keep the tempId so it replaces the pending one
+      status: "delivered",
+    });
+    messageListRef.value?.scrollToBottom();
+  });
 }
 
 function openEditModal() {

@@ -24,12 +24,7 @@
     </div>
 
     <!-- Content State -->
-    <div
-      v-else
-      class="space-y-1"
-      @scroll="handleScroll"
-      @click="handleMessageInteraction"
-    >
+    <div v-else class="space-y-1">
       <template v-for="(group, dateKey) in groupedMessages" :key="dateKey">
         <!-- Date Header -->
         <div class="flex justify-center my-4">
@@ -43,7 +38,10 @@
         <div v-for="(message, index) in group" :key="message.id">
           <!-- Unread divider immediately above the first unread message -->
           <div
-            v-if="shouldShowUnreadDivider(message)"
+            v-if="
+              currentThread?.unread_count > 0 &&
+              group.length - index === currentThread?.unread_count
+            "
             class="flex justify-center my-3"
           >
             <div
@@ -58,10 +56,7 @@
             </div>
           </div>
 
-          <div
-            class="message-container"
-            :class="{ 'unread-message': isUnreadMessage(message) }"
-          >
+          <div class="message-container">
             <div
               class="flex items-start mb-4 group"
               :class="
@@ -177,81 +172,32 @@
                   </template>
                   <template v-else>
                     <div class="mr-8" v-html="processUrls(message.body)"></div>
-
-                    <!-- Attachments -->
-                    <div
-                      v-if="
-                        message.attachments && message.attachments.length > 0
-                      "
-                      class="mt-2"
-                    >
-                      <div
-                        v-for="attachment in message.attachments"
-                        :key="attachment.id"
-                        class="mt-1"
-                      >
-                        <!-- Image preview for image files -->
-                        <a
-                          v-if="isImage(attachment.file_type)"
-                          :href="'/' + attachment.file_path"
-                          target="_blank"
-                          class="block"
-                        >
-                          <img
-                            :src="'/' + attachment.file_path"
-                            alt="Attachment"
-                            class="max-h-40 max-w-full rounded border border-gray-200"
-                          />
-                        </a>
-
-                        <!-- Document link for other file types -->
-                        <a
-                          v-else
-                          :href="'/' + attachment.file_path"
-                          target="_blank"
-                          class="flex items-center p-2 bg-gray-50 rounded border border-gray-200 hover:bg-gray-100"
-                          :class="
-                            message.user_id === userId
-                              ? 'text-blue-900'
-                              : 'text-blue-600'
-                          "
-                        >
-                          <Icon
-                            :icon="getFileIcon(attachment.file_type)"
-                            class="mr-2"
-                            width="20"
-                            height="20"
-                          />
-                          <span class="text-sm truncate">
-                            {{ getFileName(attachment.file_path) }}
-                          </span>
-                        </a>
-                      </div>
-                    </div>
-
-                    <!-- Edited indicator -->
-                    <div
-                      v-if="message.edited"
-                      class="text-xs mt-1 italic text-right"
-                      :class="
-                        message.user_id === userId
-                          ? 'text-blue-200'
-                          : 'text-gray-500'
-                      "
-                    >
-                      (edited)
-                    </div>
                   </template>
                 </div>
 
-                <!-- Timestamp -->
+                <!-- Timestamp + delivery ticks + sending/sent text -->
                 <div
-                  class="text-xs text-gray-500 mt-1"
+                  class="text-xs text-gray-500 mt-1 flex items-center justify-end space-x-1"
                   :class="
                     message.user_id === userId ? 'text-right' : 'text-left'
                   "
                 >
-                  {{ formatTime(message.created_at) }}
+                  <span>{{ formatTime(message.created_at) }}</span>
+                  <Icon
+                    v-if="
+                      message.user_id === userId && message.status !== 'pending'
+                    "
+                    icon="mdi:check-all"
+                    class="w-4 h-4 text-gray-400"
+                  />
+
+                  <Icon
+                    v-if="
+                      message.user_id === userId && message.status === 'pending'
+                    "
+                    icon="mdi:check"
+                    class="w-4 h-4 text-gray-400"
+                  />
                 </div>
               </div>
             </div>
@@ -281,15 +227,7 @@
 </template>
 
 <script setup>
-import {
-  ref,
-  onUpdated,
-  defineExpose,
-  computed,
-  inject,
-  watch,
-  onMounted,
-} from "vue";
+import { ref, onUpdated, defineExpose, computed, onMounted } from "vue";
 import { Icon } from "@iconify/vue";
 import { useStore } from "vuex";
 import CustomDialog from "@/Components/Ratings/CustomDialog.vue";
@@ -306,35 +244,44 @@ const deleteDialogRef = ref(null);
 const messageToDelete = ref(null);
 const deleting = ref(false);
 const emit = defineEmits(["editMessage", "replyToMessage"]);
+const currentThread = computed(() => store.getters["chat/currentThread"]);
 
 // Get loading state from store
 const loading = computed(() => store.state.chat?.messagesLoading || false);
 
-// Group messages by date
+// Filter out duplicate messages (same body, user_id, created_at, and status 'delivered' vs 'pending')
 const groupedMessages = computed(() => {
   const groups = {};
+  if (!props.messages || props.messages.length === 0) return groups;
 
-  if (!props.messages || props.messages.length === 0) {
-    return groups;
+  // Remove duplicates: keep only the latest status for each temp/real message
+  const uniqueMessages = [];
+  const seen = new Set();
+  for (let i = props.messages.length - 1; i >= 0; i--) {
+    const m = props.messages[i];
+    // Use a composite key (body, user_id, created_at, reply_to)
+    const key = [
+      m.user_id,
+      m.body,
+      m.created_at,
+      m.reply_to || "",
+      m.attachments?.length || 0,
+    ].join("|");
+    if (!seen.has(key)) {
+      uniqueMessages.unshift(m);
+      seen.add(key);
+    }
   }
 
-  props.messages.forEach((message) => {
-    // Extract date part only from created_at
+  uniqueMessages.forEach((message) => {
     const date = new Date(message.created_at);
-    const dateKey = date.toISOString().split("T")[0]; // YYYY-MM-DD format
-
-    if (!groups[dateKey]) {
-      groups[dateKey] = [];
-    }
-
+    const dateKey = date.toISOString().split("T")[0];
+    if (!groups[dateKey]) groups[dateKey] = [];
     groups[dateKey].push(message);
   });
 
-  // Sort groups by date, oldest first so newest (Today) appears at the bottom
   return Object.fromEntries(
-    Object.entries(groups).sort((a, b) => {
-      return new Date(a[0]) - new Date(b[0]); // Changed to ascending order (oldest to newest)
-    })
+    Object.entries(groups).sort((a, b) => new Date(a[0]) - new Date(b[0]))
   );
 });
 
@@ -504,70 +451,6 @@ const findReplyMessage = (message) => {
 // Add function to handle replying to a message
 const replyToMessage = (message) => {
   emit("replyToMessage", message);
-};
-
-// Add new code for unread messages
-const firstUnreadMessage = ref(null);
-
-// Watch the messages array for changes
-watch(
-  () => props.messages,
-  () => {
-    // Find the first unread message
-    if (props.messages && props.messages.length) {
-      const currentThread = store.getters["chat/currentThread"];
-
-      // If we have unread messages, find the first one
-      if (currentThread && currentThread.unread_count > 0) {
-        // We can't directly identify unread messages since we don't have the last_read_at timestamp
-        // in the frontend, but we can identify them by their position in the messages array
-        const totalMessages = props.messages.length;
-        const unreadCount = currentThread.unread_count;
-
-        if (unreadCount < totalMessages) {
-          firstUnreadMessage.value =
-            props.messages[totalMessages - unreadCount];
-        }
-      } else {
-        firstUnreadMessage.value = null;
-      }
-    }
-  },
-  { immediate: true }
-);
-
-// Check if a message is the first unread message
-const isUnreadMessage = (message) => {
-  return firstUnreadMessage.value && message.id === firstUnreadMessage.value.id;
-};
-
-// Replace the existing hasUnreadMessagesInDate function with shouldShowUnreadDivider
-const shouldShowUnreadDivider = (message) => {
-  // If this isn't an unread message or no unread messages indicator exists, don't show the divider
-  if (!firstUnreadMessage.value || message.id !== firstUnreadMessage.value.id)
-    return false;
-
-  // This is the first unread message, show the divider
-  return true;
-};
-
-// Add new function to handle user interaction with messages
-const handleMessageInteraction = () => {
-  if (store.getters["chat/currentThread"]?.unread_count > 0) {
-    store.dispatch("chat/markMessagesAsRead");
-  }
-};
-
-// Track if user has scrolled through messages
-const handleScroll = (event) => {
-  const { scrollTop, scrollHeight, clientHeight } = event.target;
-
-  // If user has scrolled more than 70% through the messages, mark as read
-  if (scrollTop + clientHeight > scrollHeight * 0.7) {
-    if (store.getters["chat/currentThread"]?.unread_count > 0) {
-      store.dispatch("chat/markMessagesAsRead");
-    }
-  }
 };
 
 // Do NOT call markMessagesAsRead in onMounted anymore
