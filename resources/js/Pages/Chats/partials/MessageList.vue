@@ -11,7 +11,7 @@
 
     <!-- Empty State -->
     <div
-      v-else-if="messages.length === 0"
+      v-else-if="messages.length === 0 && !hasPendingMessages"
       class="h-full flex flex-col justify-center items-center text-gray-500"
     >
       <Icon
@@ -172,6 +172,45 @@
                   </template>
                   <template v-else>
                     <div class="mr-8" v-html="processUrls(message.body)"></div>
+                    <!-- Attachments -->
+                    <div
+                      v-if="message.attachments && message.attachments.length"
+                      class="mt-3 space-y-3"
+                    >
+                      <div
+                        v-for="(file, idx) in message.attachments"
+                        :key="idx"
+                      >
+                        <template v-if="isImage(file.file_type)">
+                          <a
+                            :href="file.file_path"
+                            target="_blank"
+                            class="block"
+                          >
+                            <img
+                              :src="file.file_path"
+                              class="max-w-xs max-h-40 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition"
+                              alt="attachment"
+                            />
+                          </a>
+                        </template>
+                        <template v-else>
+                          <a
+                            :href="file.file_path"
+                            target="_blank"
+                            class="flex items-center space-x-2 bg-gray-100 p-2 rounded-lg hover:bg-gray-200 transition"
+                          >
+                            <Icon
+                              :icon="getFileIcon(file.file_type)"
+                              class="w-6 h-6 text-gray-600"
+                            />
+                            <span class="text-gray-700 truncate">
+                              {{ file.name || getFileName(file.file_path) }}
+                            </span>
+                          </a>
+                        </template>
+                      </div>
+                    </div>
                   </template>
                 </div>
 
@@ -249,7 +288,15 @@ const currentThread = computed(() => store.getters["chat/currentThread"]);
 // Get loading state from store
 const loading = computed(() => store.state.chat?.messagesLoading || false);
 
-// Filter out duplicate messages (same body, user_id, created_at, and status 'delivered' vs 'pending')
+// Check if there are any pending messages being sent
+const hasPendingMessages = computed(() => {
+  return (
+    store.state.chat?.pendingMessages?.length > 0 ||
+    props.messages.some((m) => m.status === "pending")
+  );
+});
+
+// Fix to properly group messages by local date
 const groupedMessages = computed(() => {
   const groups = {};
   if (!props.messages || props.messages.length === 0) return groups;
@@ -274,8 +321,15 @@ const groupedMessages = computed(() => {
   }
 
   uniqueMessages.forEach((message) => {
+    // Create date object from timestamp
     const date = new Date(message.created_at);
-    const dateKey = date.toISOString().split("T")[0];
+
+    // Format date as YYYY-MM-DD in local timezone instead of UTC
+    const localDate = new Date(
+      date.getTime() - date.getTimezoneOffset() * 60000
+    );
+    const dateKey = localDate.toISOString().split("T")[0];
+
     if (!groups[dateKey]) groups[dateKey] = [];
     groups[dateKey].push(message);
   });
@@ -285,28 +339,31 @@ const groupedMessages = computed(() => {
   );
 });
 
-// Format date headers (Today, Yesterday, day of week, or full date)
+// Fixed date header formatter that correctly handles local time
 const formatDateHeader = (dateStr) => {
-  const date = new Date(dateStr);
+  // Parse the date string (YYYY-MM-DD format)
+  const dateParts = dateStr.split("-");
+  const year = parseInt(dateParts[0]);
+  const month = parseInt(dateParts[1]) - 1; // JS months are 0-indexed
+  const day = parseInt(dateParts[2]);
+
+  // Create date objects using local time
+  const date = new Date(year, month, day);
   const today = new Date();
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
 
-  // Set time to beginning of day for comparison
+  // Reset time portions for comparison
   today.setHours(0, 0, 0, 0);
   yesterday.setHours(0, 0, 0, 0);
-  date.setHours(0, 0, 0, 0);
 
-  // Calculate days difference
-  const diffTime = today - date;
-  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-
-  if (diffDays === 0) {
+  // Simple date comparison (already in local time)
+  if (date.getTime() === today.getTime()) {
     return "Today";
-  } else if (diffDays === 1) {
+  } else if (date.getTime() === yesterday.getTime()) {
     return "Yesterday";
-  } else if (diffDays > 1 && diffDays < 7) {
-    // Show day name for days within the last week
+  } else if (today - date < 7 * 24 * 60 * 60 * 1000) {
+    // Within a week
     const dayNames = [
       "Sunday",
       "Monday",
@@ -318,8 +375,8 @@ const formatDateHeader = (dateStr) => {
     ];
     return dayNames[date.getDay()];
   } else {
-    // For older messages, show the full date
-    return date.toLocaleDateString("en-US", {
+    // Format the date as a string with month name
+    return date.toLocaleDateString(undefined, {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -483,6 +540,16 @@ onMounted(() => {
 
 .message-container {
   transition: all 0.3s ease;
+  animation: fade-in 0.2s ease-in;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .unread-message {

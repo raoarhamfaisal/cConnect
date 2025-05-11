@@ -47,7 +47,7 @@
       >
         <Avatar
           :image-src="thread.partner.avatar"
-          image-class="min-w-[40px] h-10 mr-3"
+          image-class="w-[40px] h-10 mr-3"
           :is-not-self="true"
           :is-contractor="thread.partner.is_contractor"
         />

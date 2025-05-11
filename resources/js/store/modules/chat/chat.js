@@ -85,7 +85,7 @@ export default {
     UPDATE_MESSAGE(state, updatedMessage) {
       const index = state.messages.findIndex((m) => m.id === updatedMessage.id);
       if (index !== -1) {
-        state.messages.splice(index, 1, updatedMessage);
+        state.messages[index] = updatedMessage;
       }
 
       // Also update in threads if it's the last message

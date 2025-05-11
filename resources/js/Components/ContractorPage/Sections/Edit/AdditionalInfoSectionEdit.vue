@@ -108,8 +108,8 @@
 
       <UserAvatar
         v-if="!loadingImage"
-        :cover="false"
         :rounded="false"
+        :cover="true"
         :imageSrc="`/${company_logo ? company_logo : profile.user_avatar}`"
         @update-image="handleImageUpdate"
       />

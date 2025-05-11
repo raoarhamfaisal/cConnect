@@ -126,7 +126,7 @@ const k = {
                                 null,
                                 o(
                                   e.value &&
-                                    e.value.find_local_or_statewide_subs
+                                    e.value.Find Local or Nationwide Subs to Hire!
                                 ) + "! ",
                                 1
                               ),

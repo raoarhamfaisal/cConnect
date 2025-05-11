@@ -985,11 +985,7 @@ const goToRedFlagPage = (event) => {
                 class="text-xl font-semibold tracking-tighter text-[#] list-disc"
               >
                 <!-- a6b9b9 -->
-                <li>
-                  {{
-                    translations && translations.find_local_or_statewide_subs
-                  }}
-                </li>
+                <li>Find Local or Nationwide Subs to Hire!</li>
                 <li>
                   {{ translations && translations.advertise_your_business }}
                 </li>

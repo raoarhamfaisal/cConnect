@@ -2921,7 +2921,7 @@ const ss = {
                                   null,
                                   s(
                                     a.value &&
-                                      a.value.find_local_or_statewide_subs
+                                      a.value.Find Local or Nationwide Subs to Hire!
                                   ),
                                   1
                                 ),

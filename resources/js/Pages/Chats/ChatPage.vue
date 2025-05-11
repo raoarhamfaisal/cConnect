@@ -236,24 +236,25 @@ function send(data) {
   if (replyToMessage.value) {
     payload.reply_to = replyToMessage.value.id;
   }
-
-  // show pending message
-  const tempId = `temp-${Date.now()}`;
-  const tempMsg = {
-    id: tempId,
-    user_id: authUser.id,
-    body: payload.text,
-    attachments: payload.attachments || [],
-    created_at: new Date().toISOString(),
-    reply_to: payload.reply_to || null,
-    status: "pending",
-    sender: {
-      first_name: authUser.first_name,
-      last_name: authUser.last_name,
-      profile: { user_avatar: authUser.avatar },
-    },
-  };
-  store.commit("chat/ADD_MESSAGE", tempMsg);
+  if (messages.value.length > 0) {
+    // show pending message
+    const tempId = `temp-${Date.now()}`;
+    const tempMsg = {
+      id: tempId,
+      user_id: authUser.id,
+      body: payload.text,
+      attachments: payload.attachments || [],
+      created_at: new Date().toISOString(),
+      reply_to: payload.reply_to || null,
+      status: "pending",
+      sender: {
+        first_name: authUser.first_name,
+        last_name: authUser.last_name,
+        profile: { user_avatar: authUser.avatar },
+      },
+    };
+    store.commit("chat/ADD_MESSAGE", tempMsg);
+  }
   messageListRef.value?.scrollToBottom();
 
   // clear UI reply instantly
@@ -262,11 +263,16 @@ function send(data) {
   // send in background
   store.dispatch("chat/sendMessage", payload).then((newMessage) => {
     // update temp message in place with real message data and delivered status
-    store.commit("chat/UPDATE_MESSAGE", {
-      ...newMessage,
-      id: tempId, // keep the tempId so it replaces the pending one
-      status: "delivered",
-    });
+    if (messages.value.length > 0) {
+      store.commit("chat/UPDATE_MESSAGE", {
+        ...newMessage,
+        id: tempId, // keep the tempId so it replaces the pending one
+        status: "delivered",
+      });
+    } else {
+      // if no messages, just add the new message
+      store.commit("chat/ADD_MESSAGE", newMessage);
+    }
     messageListRef.value?.scrollToBottom();
   });
 }

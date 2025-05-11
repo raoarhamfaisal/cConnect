@@ -174,8 +174,8 @@ onBeforeUnmount(() => {
       </v-skeleton-loader>
       <UserAvatar
         v-if="!loadingImage"
-        :cover="false"
         :rounded="false"
+        :cover="true"
         :imageSrc="company_logo"
         @update-image="handleImageUpdate"
       />

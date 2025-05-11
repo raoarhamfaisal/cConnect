@@ -89,7 +89,7 @@
       </v-skeleton-loader>
       <UserAvatar
         v-if="!loadingImage"
-        :cover="false"
+        :cover="true"
         :imageSrc="`/${user_avatar}`"
         @update-image="handleImageUpdate"
       />

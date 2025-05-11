@@ -57,11 +57,7 @@ const translations = computed(() => store.getters.translations);
               <ul
                 class="text-xl sm:text-2xl font-semibold tracking-tighter list-disc pl-8"
               >
-                <li>
-                  {{
-                    translations && translations.find_local_or_statewide_subs
-                  }}!
-                </li>
+                <li>Find Local or Nationwide Subs to Hire!</li>
                 <li>
                   {{ translations && translations.hire_someone_you_can_trust }}
                 </li>
@@ -77,7 +73,6 @@ const translations = computed(() => store.getters.translations);
                     translations.advertise_your_business_for_free
                   }}
                 </li>
-                <li>{{ translations && translations.got_a_job_to_be_done }}</li>
                 <li>
                   {{ translations && translations.got_a_job_to_be_done }}
                 </li>
